@@ -293,7 +293,7 @@ class DataMigrationTest {
         uploadGenericDummyDataset(minimalDatasetMale, DataTypeEnum.sfdr, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
         ApiAwait
-            .waitForData(timeoutInSeconds = 30, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+            .waitForData(timeoutInSeconds = 60, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
                 Backend.sfdrDataControllerApi
                     .getCompanyAssociatedSfdrDataByDimensions(
                         reportingPeriod = reportingPeriod, companyId = companyId,

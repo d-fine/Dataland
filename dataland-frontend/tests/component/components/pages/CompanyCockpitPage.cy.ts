@@ -8,10 +8,11 @@ import {
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { computed } from 'vue';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { computed, ref } from 'vue';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
+  KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -31,6 +32,9 @@ describe('Component test for the company cockpit', () => {
   const dummyPublicationDates = ['2025-02-25', '2024-01-13', undefined];
   const dummyReportingPeriods = ['2025', '2024', '2023'];
   const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyLastName = 'mock-last-name';
+  const dummyEmail = 'mock@Company.com';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
     DataTypeEnum.EutaxonomyNonFinancials,
@@ -59,11 +63,13 @@ describe('Component test for the company cockpit', () => {
    * @param companyId of the company associated with the mock assignment
    * @returns a mock company role assignment
    */
-  function generateCompanyRoleAssignment(companyRole: CompanyRole, companyId: string): CompanyRoleAssignment {
+  function generateCompanyRoleAssignment(companyRole: CompanyRole, companyId: string): CompanyRoleAssignmentExtended {
     return {
       companyRole: companyRole,
       companyId: companyId,
       userId: dummyUserId,
+      firstName: dummyFirstName,
+      email: dummyEmail,
     };
   }
 
@@ -110,7 +116,10 @@ describe('Component test for the company cockpit', () => {
     cy.intercept('**/community/company-ownership/*', {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
     }).as('fetchCompanyOwnershipExistence');
-    cy.intercept('**/documents/**', (request) => {
+    cy.intercept('HEAD', `/community/company-role-assignments/CompanyOwner/${dummyCompanyId}/${dummyUserId}`, {
+      statusCode: 200,
+    }).as('checkUserCompanyOwnerRole');
+    cy.intercept('GET', '**/documents/**', (request) => {
       request.reply({
         statusCode: 200,
         body: [
@@ -125,7 +134,7 @@ describe('Component test for the company cockpit', () => {
   /**
    * Mounts the company cockpit page with a specific authentication
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
-   * @param isMobile determines if the mount shall happen from a mobie-users perspective
+   * @param isMobile determines if the mount shall happen from a mobile-users perspective
    * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
    * @param companyRoleAssignments defines the company role assignments that the current user shall have
    * @returns the mounted component
@@ -134,7 +143,7 @@ describe('Component test for the company cockpit', () => {
     isLoggedIn: boolean,
     isMobile: boolean,
     keycloakRoles?: string[],
-    companyRoleAssignments?: CompanyRoleAssignment[]
+    companyRoleAssignments?: CompanyRoleAssignmentExtended[]
   ): Cypress.Chainable {
     const chainable = getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -146,7 +155,7 @@ describe('Component test for the company cockpit', () => {
       global: {
         provide: {
           useMobileView: computed((): boolean => isMobile),
-          companyRoleAssignments: companyRoleAssignments,
+          companyRoleAssignments: ref(companyRoleAssignments),
         },
       },
       props: {
@@ -161,10 +170,9 @@ describe('Component test for the company cockpit', () => {
 
   /**
    * Validates the existence of the back-button
-   * @param isMobile determines if the validation shall be executed from a moble users perspective
    */
-  function validateBackButtonExistence(isMobile: boolean): void {
-    const backButtonSelector = `span[data-test="${isMobile ? 'back-button-mobile' : 'back-button'}"]`;
+  function validateBackButtonExistence(): void {
+    const backButtonSelector = `[data-test="back-button"]`;
     cy.get(backButtonSelector).should('exist');
   }
 
@@ -202,11 +210,9 @@ describe('Component test for the company cockpit', () => {
     const frameworkName = 'vsme';
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     if (isUserCompanyOwner) {
-      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');
+      cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
     } else {
-      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-        'not.exist'
-      );
+      cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('not.exist');
     }
   }
 
@@ -238,9 +244,9 @@ describe('Component test for the company cockpit', () => {
         frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
       if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('exist');
       } else {
-        cy.get(`[data-test=${frameworkName}-view-data-button]`).should('not.exist');
+        cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('not.exist');
       }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
@@ -248,32 +254,14 @@ describe('Component test for the company cockpit', () => {
       }
       if (isProvideDataButtonExpected) {
         if (frameworkName != 'lksg') {
-          cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-            'exist'
-          );
+          cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
         }
       } else {
-        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
+        cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should(
           'not.exist'
         );
       }
     });
-  }
-
-  /**
-   * Validates if the mobile header of the company info sheet is currently fixed or not
-   * @param isScrolled determines if the mobile page is currently scrolled or not
-   */
-  function validateMobileHeader(isScrolled: boolean): void {
-    const sheetSelector = '[data-test=sheet]';
-    const attachedSheetSelector = '[data-test=sheet-attached]';
-    const mobileHeaderTitleSelector = '[data-test=mobile-header-title]';
-    cy.get(mobileHeaderTitleSelector).should(
-      'have.text',
-      isScrolled ? companyInformationForTest.companyName : 'Company Overview'
-    );
-    cy.get(sheetSelector).should(isScrolled ? 'have.css' : 'not.have.css', 'visibility', 'hidden');
-    cy.get(attachedSheetSelector).should(isScrolled ? 'have.not.css' : 'have.css', 'visibility', 'hidden');
   }
 
   /**
@@ -329,7 +317,7 @@ describe('Component test for the company cockpit', () => {
         .should('exist')
         .and('contain', 'test_' + category)
         .find('div[data-test=download-link-component]')
-        .children('a')
+        .children('button, span')
         .then((children) => {
           expect(children[0]).to.contain('(2025-02-25)');
           expect(children[1]).to.contain('(2024-01-13)');
@@ -337,9 +325,7 @@ describe('Component test for the company cockpit', () => {
         });
 
       for (let i = 1; i <= 3; i++) {
-        cy.get('[data-test="download-link-test_' + category + `_${i}"]`)
-          .should('exist')
-          .and('have.attr', 'title', 'test_' + category + `_${i}`);
+        cy.get('[data-test="download-link-test_' + category + `_${i}"]`).should('exist');
       }
     }
   });
@@ -350,7 +336,7 @@ describe('Component test for the company cockpit', () => {
     const isProvideDataButtonExpected = false;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(false, false, []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -372,7 +358,7 @@ describe('Component test for the company cockpit', () => {
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER], []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -386,7 +372,7 @@ describe('Component test for the company cockpit', () => {
     const isProvideDataButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], []);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -400,7 +386,7 @@ describe('Component test for the company cockpit', () => {
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
-    validateBackButtonExistence(false);
+    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -444,16 +430,76 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]);
 
-    cy.wait(3000);
-    cy.scrollTo('bottom');
-    validateMobileHeader(true);
-    cy.scrollTo('top');
-    validateMobileHeader(false);
-
-    validateBackButtonExistence(true);
+    validateBackButtonExistence();
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+  });
+
+  it('Users Page has to be visible for Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
+    cy.get('[data-test="usersTab"]').should('be.visible').click();
+  });
+
+  it('Users Page is not visible for non Dataland Admins', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
+    cy.get('[data-test="usersTab"]').should('not.exist');
+  });
+
+  it('Users Page is visible for a CompanyOwner', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('not.be.visible');
+    cy.get('[data-test="company-roles-card"]').should('be.visible');
+    cy.get('[data-test="datasetsTab"]').click();
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+  });
+
+  it('Users are being displayed correctly in the Users Page', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      const q = req.query as Record<string, string | undefined>;
+      if (q.role === CompanyRole.Member) {
+        req.reply({
+          statusCode: 200,
+          body: [
+            {
+              companyRole: 'Member',
+              companyId: dummyCompanyId,
+              userId: dummyUserId,
+              email: dummyEmail,
+              firstName: dummyFirstName,
+              lastName: dummyLastName,
+            },
+          ],
+        });
+      } else {
+        req.reply({ statusCode: 200, body: [] });
+      }
+    }).as('roleFetch');
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+    cy.wait('@roleFetch');
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td').contains(dummyFirstName).should('exist');
+      cy.get('td').contains(dummyLastName).should('exist');
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('td').contains(dummyUserId).should('exist');
+    });
+    cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
+    });
   });
 });

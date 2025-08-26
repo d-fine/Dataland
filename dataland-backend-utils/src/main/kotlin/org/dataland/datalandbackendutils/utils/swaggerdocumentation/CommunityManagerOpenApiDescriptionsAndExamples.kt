@@ -25,11 +25,10 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
         "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
             "the posted requests. If set to false, these updates are listed in the weekly summary email."
 
-    const val USER_ID_DESCRIPTION = "The ID of the user who created the data request."
+    const val GENERAL_USER_ID_DESCRIPTION = "The Dataland user ID of the user in question."
+    const val DATA_REQUEST_USER_ID_DESCRIPTION = "The ID of the user who created the data request."
+    const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user in the company role assignment."
     const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
-
-    const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user."
-    const val COMPANY_ROLE_USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
@@ -50,16 +49,28 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
-    const val ALREADY_EXISTING_NON_FINAL_REQUESTS_DESCRIPTION =
-        "Contains information about all already existing data requests that are \"Open\" or \"Answered\"."
+    const val ALREADY_EXISTING_REQUESTS_DESCRIPTION =
+        "Contains information about all already existing data requests."
 
     const val ALREADY_EXISTING_DATASETS_DESCRIPTION = "Contains information about all already existing data sets"
 
     const val REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION = "Contains all company identifiers that were rejected by Dataland"
     const val REJECTED_COMPANY_IDENTIFIERS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE}\"]"
 
-    const val USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
+    const val GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the Dataland user in question."
+    const val DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
+    const val COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user in the company role assignment."
     const val USER_EMAIL_ADDRESS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE
+
+    const val GENERAL_FIRST_NAME_DESCRIPTION = "The first name of the Dataland user in question."
+    const val FIRST_NAME_EXAMPLE = "Jane"
+
+    const val GENERAL_LAST_NAME_DESCRIPTION = "The last name of the Dataland user in question."
+    const val LAST_NAME_EXAMPLE = "Doe"
+
+    const val COMPANY_ROLE_FIRST_NAME_DESCRIPTION = "The first name of the user in the company role assignment."
+
+    const val COMPANY_ROLE_LAST_NAME_DESCRIPTION = "The last name of the user in the company role assignment."
 
     const val CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the user created the data request."
     const val CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE

@@ -3,7 +3,9 @@
     <TheHeader />
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
-        <BackButton id="backButton" label="BACK" class="pl-2" />
+        <div class="col-12 text-left">
+          <BackButton id="backButton" />
+        </div>
         <Card class="col-12 text-left page-wrapper-card">
           <template #title>New Dataset - Company</template>
           <template #content>
@@ -20,11 +22,14 @@
                       @select-company="pushToChooseFrameworkForDataUploadPageForItem"
                       wrapper-class-additions="w-full"
                     />
-                    <div v-if="isAdmin" class="mt-6">
+                    <div v-if="isAdmin">
                       <span>Can't find the company? </span>
-                      <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
-                        >Add it.</a
-                      >
+                      <PrimeButton
+                        label="Add it."
+                        @click="autoScrollToCreateACompanyForm"
+                        variant="text"
+                        data-test="add-it-button"
+                      />
                     </div>
                   </div>
                 </div>
@@ -69,6 +74,7 @@ import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import Card from 'primevue/card';
 import { defineComponent, inject, ref } from 'vue';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'ChooseCompany',
@@ -82,6 +88,7 @@ export default defineComponent({
     CompaniesOnlySearchBar,
     CreateCompany,
     Card,
+    PrimeButton,
   },
   data() {
     return {
@@ -131,3 +138,14 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+
+.d-card {
+  background: var(--default-neutral-white);
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
+}
+</style>

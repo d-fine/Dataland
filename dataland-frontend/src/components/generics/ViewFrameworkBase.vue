@@ -1,6 +1,6 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
-  <TheContent class="paper-section min-h-screen">
+  <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
@@ -24,7 +24,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -36,48 +36,51 @@
             </div>
           </div>
 
-          <div class="flex align-content-end align-items-center">
-            <QualityAssuranceButtons
+          <div class="button-container">
+            <PrimeButton
               v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
-              :meta-info="singleDataMetaInfoToDisplay"
-              :company-name="fetchedCompanyInformation.companyName"
+              label="REJECT"
+              data-test="qaRejectButton"
+              icon="pi pi-times"
+              variant="outlined"
+              @click="setQaStatusTo('Rejected')"
             />
 
             <PrimeButton
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="DOWNLOAD DATA"
+              v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
+              label="APPROVE"
+              data-test="qaApproveButton"
+              icon="pi pi-check"
+              @click="setQaStatusTo('Accepted')"
+            />
+
+            <PrimeButton
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
-            >
-              <span class="px-2 py-1">DOWNLOAD DATA</span>
-            </PrimeButton>
+              label="DOWNLOAD DATA"
+              icon="pi pi-download"
+            />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="EDIT DATA"
               @click="editDataset"
               data-test="editDatasetButton"
-            >
-              <span class="px-2 py-1">EDIT DATA</span>
-              <span
-                v-if="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay"
-                class="material-icons-outlined"
-                >arrow_drop_down</span
-              >
-            </PrimeButton>
-            <router-link
+              label="EDIT DATA"
+              :icon="
+                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
+                  ? 'pi pi-chevron-down'
+                  : 'pi pi-pencil'
+              "
+              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+            />
+            <PrimeButton
               v-if="hasUserUploaderRights"
-              :to="targetLinkForAddingNewDataset"
-              class="no-underline ml-3"
-              data-test="gotoNewDatasetButton"
-            >
-              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                <span class="material-icons-outlined px-2">queue</span>
-                <span class="px-2">NEW DATASET</span>
-              </PrimeButton>
-            </router-link>
+              icon="pi pi-plus"
+              label="NEW DATASET"
+              data-test="goToNewDatasetButton"
+              @click="linkToNewDataset"
+            />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SimpleReportingPeriodSelectorDialog
@@ -107,7 +110,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
@@ -121,19 +123,26 @@ import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, ExportFileType } from '@clients/backend';
+import {
+  type CompanyInformation,
+  type DataMetaInformation,
+  type DataTypeEnum,
+  ExportFileType,
+  type QaStatus,
+} from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import OverlayPanel from 'primevue/overlaypanel';
-import { computed, inject, onMounted, provide, watch, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
 import { useDialog } from 'primevue/usedialog';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
 
 const props = defineProps<{
   companyID: string;
@@ -161,15 +170,6 @@ const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 
-provide(
-  'hideEmptyFields',
-  computed(() => hideEmptyFields.value)
-);
-provide(
-  'mapOfReportingPeriodToActiveDataset',
-  computed(() => mapOfReportingPeriodToActiveDataset.value)
-);
-
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
   for (const d of activeDataForCurrentCompanyAndFramework.value) {
@@ -177,6 +177,9 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
   }
   return map;
 });
+
+provide('hideEmptyFields', hideEmptyFields);
+provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -201,7 +204,6 @@ const isEditableByCurrentUser = computed(
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
 );
 
-const targetLinkForAddingNewDataset = computed(() => `/companies/${props.companyID}/frameworks/upload`);
 const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
     dataMetaInformation.value.map((meta) => ({
@@ -256,6 +258,38 @@ onMounted(async () => {
   }
   await setViewPageAttributesForUser();
 });
+
+/**
+ * Navigates to the new dataset creation page
+ */
+function linkToNewDataset(): void {
+  void router.push(`/companies/${props.companyID}/frameworks/upload`);
+}
+
+/**
+ * Sets dataset quality status to the given status
+ * @param qaStatus the QA status to be assigned
+ */
+function setQaStatusTo(qaStatus: QaStatus): void {
+  const { dataId, dataType, reportingPeriod } = props.singleDataMetaInfoToDisplay || {};
+  const message = `${qaStatus} ${dataType} data for ${fetchedCompanyInformation.value.companyName} for the reporting period ${reportingPeriod}.`;
+
+  dialog.open(QaDatasetModal, {
+    props: {
+      header: qaStatus,
+      modal: true,
+      dismissableMask: false,
+    },
+    data: {
+      dataId,
+      qaStatus,
+      message,
+    },
+    onClose: () => {
+      void router.push('/qualityassurance');
+    },
+  });
+}
 
 /**
  * Retrieves all data meta data available for current company
@@ -460,3 +494,14 @@ function downloadData(): void {
   });
 }
 </script>
+<style scoped>
+.button-container {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

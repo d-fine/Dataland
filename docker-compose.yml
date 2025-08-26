@@ -96,6 +96,7 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -190,6 +191,7 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   e2etests:
@@ -346,6 +348,7 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
@@ -545,6 +548,8 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
+    command:
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   specification-service:

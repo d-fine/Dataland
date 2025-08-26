@@ -1,63 +1,47 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="0">
-      <TheContent class="min-h-screen paper-section relative">
-        <div
-          id="searchBarAndFiltersContainer"
-          class="w-full bg-white pt-4"
-          :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
-          ref="searchBarAndFiltersContainer"
-        >
+    <DatasetsTabMenu :initialTabIndex="0">
+      <TheContent class="min-h-screen relative">
+        <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
           <FrameworkDataSearchBar
             id="frameworkDataSearchBar"
             ref="frameworkDataSearchBar"
-            class="pl-4 m-0"
             v-model="currentSearchBarInput"
             :filter="currentCombinedFilter"
             :chunk-size="rowsPerPage"
             :current-page="currentPage"
-            :searchBarId="searchBarId"
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"
           />
 
-          <div
-            id="searchFiltersPanel"
-            class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-            :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
-          >
-            <div class="flex" id="searchFiltersContainer">
-              <div
-                id="scrolledSearchToggler"
-                :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
-              >
-                <span class="mr-3 font-semibold">Search Data for Companies</span>
-                <PrimeButton
-                  name="search_bar_collapse"
-                  icon="pi pi-search"
-                  class="p-button-rounded surface-ground border-none m-2"
-                  @click="toggleSearchBar"
-                >
-                  <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-                </PrimeButton>
-              </div>
-
+          <div class="search-filters-panel">
+            <div>
               <FrameworkDataSearchFilters
                 id="frameworkDataSearchFilters"
-                class="ml-3"
+                class="col-8"
                 ref="frameworkDataSearchFilters"
-                :show-heading="!pageScrolled || searchBarToggled"
                 v-model:selected-country-codes="currentFilteredCountryCodes"
                 v-model:selected-frameworks="currentFilteredFrameworks"
                 v-model:selected-sectors="currentFilteredSectors"
               />
             </div>
 
-            <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <BulkDataRequestButton />
-              <NewDatasetButton v-if="hasUserUploaderRights" />
+            <div v-if="!isSearchBarContainerCollapsed" class="button-container">
+              <PrimeButton
+                label="BULK DATA REQUEST"
+                data-test="bulkDataRequestButton"
+                @click="routeToBulkDataRequest()"
+                icon="pi pi-file"
+              />
+              <PrimeButton
+                v-if="hasUserUploaderRights"
+                icon="pi pi-plus"
+                label="NEW DATASET"
+                @click="linkToNewDatasetPage()"
+                data-test="newDatasetButton"
+              />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -65,7 +49,7 @@
 
         <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          <DatalandProgressSpinner />
         </div>
 
         <FrameworkDataSearchResults
@@ -84,12 +68,11 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
@@ -110,26 +93,24 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 export default defineComponent({
   setup() {
     return {
-      searchBarAndFiltersContainer: ref<Element>(),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       searchResults: ref(),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   name: 'SearchCompaniesForFrameworkData',
   components: {
-    NewDatasetButton,
-    BulkDataRequestButton,
+    DatalandProgressSpinner,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
     FrameworkDataSearchBar,
-    PrimeButton,
     FrameworkDataSearchResults,
     TheFooter,
+    PrimeButton,
   },
   created() {
     window.addEventListener('scroll', this.windowScrollHandler);
@@ -142,11 +123,8 @@ export default defineComponent({
   },
   data() {
     return {
-      searchBarToggled: false,
-      pageScrolled: false,
       route: useRoute(),
       resultsArray: [] as Array<BasicCompanyInformation>,
-      latestScrollPosition: 0,
       currentSearchBarInput: '',
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
@@ -157,9 +135,7 @@ export default defineComponent({
         sectorFilter: [],
         countryCodeFilter: [],
       } as FrameworkDataSearchFilterInterface,
-      scrollEmittedByToggleSearchBar: false,
-      hiddenSearchBarHeight: 0,
-      searchBarId: 'search_bar_top',
+      isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
       currentPage: 0,
       totalRecords: 0,
@@ -215,6 +191,18 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Redirect to the bulk data request page
+     */
+    routeToBulkDataRequest() {
+      void router.push('/bulkdatarequest');
+    },
+    /**
+     * Redirects to the new dataset page
+     */
+    linkToNewDatasetPage() {
+      void router.push('/companies/choose');
+    },
+    /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
      * @param pageNumber the new page index
@@ -231,31 +219,14 @@ export default defineComponent({
      * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
      */
     handleScroll() {
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
-      const windowScrollY = window.scrollY;
-      if (this.scrollEmittedByToggleSearchBar) {
-        this.scrollEmittedByToggleSearchBar = false;
-      } else {
-        if (this.searchBarToggled) {
-          this.searchBarToggled = false;
-          this.searchBarId = 'search_bar_top';
-          window.scrollBy(0, this.hiddenSearchBarHeight);
-        }
-        if (this.latestScrollPosition > windowScrollY) {
-          //ScrollUP event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop >= 60;
-
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        } else {
-          //ScrollDOWN event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 152;
-
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        }
-      }
+      document
+        .getElementById('searchBarAndFiltersContainer')
+        ?.classList.toggle('collapsed-search-container', document.documentElement.scrollTop >= 64);
+      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+      this.frameworkDataSearchBar?.closeOverlay();
+      this.isSearchBarContainerCollapsed = document.documentElement.scrollTop >= 64;
     },
+
     /**
      * Parses the framework filter query parameters.
      * @param route the current route
@@ -368,7 +339,6 @@ export default defineComponent({
 
       if (chunkIndex == 0) this.handlePageUpdate(0);
       this.waitingForDataToDisplay = false;
-      this.searchBarToggled = false;
 
       const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
 
@@ -397,19 +367,6 @@ export default defineComponent({
       this.waitingForDataToDisplay = true;
       this.currentSearchBarInput = companyNameFilter;
     },
-    /**
-     * Expands the searchbar that got collapsed when the user scrolled down
-     */
-    async toggleSearchBar() {
-      this.searchBarToggled = true;
-      this.scrollEmittedByToggleSearchBar = true;
-      if (this.searchBarAndFiltersContainer) {
-        this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer.clientHeight;
-      }
-      window.scrollBy(0, -this.hiddenSearchBarHeight);
-      await this.$nextTick();
-      this.searchBarId = 'search_bar_scrolled';
-    },
   },
   unmounted() {
     window.removeEventListener('scroll', this.windowScrollHandler);
@@ -418,11 +375,52 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.d-search-toggle {
-  z-index: 99;
-  top: 4rem;
+.search-filters-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
-.d-search-filters-panel {
-  height: 5rem;
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.search-bar-and-filters-container {
+  margin: 0;
+  width: 100%;
+  padding-left: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  z-index: 100;
+
+  #frameworkDataSearchBar {
+    width: 70%;
+  }
+}
+
+.button-container {
+  padding: 0 var(--spacing-xs);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.collapsed-search-container {
+  display: flex;
+  flex-direction: row;
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+  background-color: var(--p-surface-0);
+  justify-content: space-between;
+  align-items: end;
+  padding-top: 0;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>

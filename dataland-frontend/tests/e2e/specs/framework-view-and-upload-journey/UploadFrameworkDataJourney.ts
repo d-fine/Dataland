@@ -39,7 +39,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let dataIdOfLksgUpload: string;
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
-      before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
+      before(() => {
         let euTaxoFinancialPreparedFixture: FixtureData<EutaxonomyFinancialsData>;
         let lksgPreparedFixture: FixtureData<LksgData>;
         cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
@@ -53,50 +53,46 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
-            .then(() => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
-            })
-            .then((storedCompany) => {
-              storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadFrameworkDataForPublicToolboxFramework(
-                EuTaxonomyFinancialsBaseFrameworkDefinition,
-                token,
-                storedCompanyForManyDatasetsCompany.companyId,
-                '2023',
-                euTaxoFinancialPreparedFixture.t
-              );
-            })
-            .then((dataMetaInformationOfFirstUpload) => {
-              dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
-              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
-              // eslint-disable-next-line cypress/no-unnecessary-waiting
-              return cy
-                .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
-                .then(() => {
-                  return uploadFrameworkDataForPublicToolboxFramework(
-                    EuTaxonomyFinancialsBaseFrameworkDefinition,
-                    token,
-                    storedCompanyForManyDatasetsCompany.companyId,
-                    '2022',
-                    euTaxoFinancialPreparedFixture.t
-                  );
-                })
-                .then((dataMetaInformationOfSecondUpload) => {
-                  dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-                  return uploadFrameworkDataForPublicToolboxFramework(
-                    LksgBaseFrameworkDefinition,
-                    token,
-                    storedCompanyForManyDatasetsCompany.companyId,
-                    generateReportingPeriod(),
-                    lksgPreparedFixture.t
-                  );
-                })
-                .then((dataMetaInformationLksgUpload) => {
-                  dataIdOfLksgUpload = dataMetaInformationLksgUpload.dataId;
-                });
-            });
+        getKeycloakToken(admin_name, admin_pw).then(async (token: string): Promise<void> => {
+          await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
+          storedCompanyForManyDatasetsCompany = await uploadCompanyViaApi(
+            token,
+            generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany)
+          );
+          dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyFinancialsBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              '2023',
+              euTaxoFinancialPreparedFixture.t
+            )
+          ).dataId;
+
+          const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
+
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
+
+          dataIdOfSecondEuTaxoFinancialsUpload = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyFinancialsBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              '2022',
+              euTaxoFinancialPreparedFixture.t
+            )
+          ).dataId;
+
+          dataIdOfLksgUpload = (
+            await uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
+              token,
+              storedCompanyForManyDatasetsCompany.companyId,
+              generateReportingPeriod(),
+              lksgPreparedFixture.t
+            )
+          ).dataId;
         });
       });
 
@@ -105,9 +101,9 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.visitAndCheckAppMount('/companies');
         verifySearchResultTableExists();
 
-        cy.get('button').contains('New Dataset').click({ force: true });
+        cy.get('button').contains('NEW DATASET').click({ force: true });
         cy.url().should('eq', getBaseUrl() + '/companies/choose');
-        cy.get('div[id=option1Container').find('a:contains(Add it)').click({ force: true });
+        cy.get('div[id=option1Container]').find("[data-test='add-it-button']").click();
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('medium_timeout_in_ms') as number });
@@ -173,7 +169,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
         dataIdOfLksgDataset: string
       ): void {
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
@@ -185,7 +181,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=eutaxonomyDataSetsContainer')
+        cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
@@ -197,7 +193,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=lksgContainer').find(`a.text-primary:contains(LkSG)`).click({ force: true });
+        cy.get('div[id=lksgContainer]').find(`a.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
           .url()
           .should(
@@ -230,7 +226,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visitAndCheckAppMount('/companies');
           verifySearchResultTableExists();
-          cy.get('button').contains('New Dataset').click({ force: true });
+          cy.get('button').contains('NEW DATASET').click({ force: true });
           cy.get('input[id=company_search_bar_standard]')
             .should('exist')
             .url()
@@ -239,7 +235,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           cy.get('input[id=company_search_bar_standard]').click({ force: true });
           cy.get('input[id=company_search_bar_standard]').type(testCompanyNameForManyDatasetsCompany);
           cy.wait('@searchCompanyName', { timeout: Cypress.env('short_timeout_in_ms') as number });
-          cy.get('ul[class=p-autocomplete-items]').should('exist');
+          cy.get('.p-autocomplete-list-container').should('exist');
           cy.get('input[id=company_search_bar_standard]').type('{downArrow}');
           cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
           cy.get('input[id=company_search_bar_standard]').type('{enter}');
@@ -257,6 +253,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             dataIdOfSecondEuTaxoFinancialsUpload,
             dataIdOfLksgUpload
           );
+
+          cy.wait(Cypress.env('short_timeout_in_ms') as number);
 
           checkIfDropDownSwitchRendersData();
         }

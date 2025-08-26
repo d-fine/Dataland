@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
     <h1>Loading portfolio data...</h1>
-    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+    <DatalandProgressSpinner />
   </div>
   <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
     <h1>Error loading portfolio data</h1>
@@ -10,29 +10,31 @@
   </div>
   <div v-else>
     <div class="button_bar">
-      <PrimeButton class="primary-button" @click="openEditModal()" data-test="edit-portfolio">
-        <i class="material-icons pr-2">edit</i> Edit Portfolio
-      </PrimeButton>
-
-      <PrimeButton class="primary-button" @click="openDownloadModal()" data-test="download-portfolio">
-        <i class="pi pi-download pr-2" /> Download Portfolio
-      </PrimeButton>
-      <div class="p-badge badge-light-green outline rounded" data-test="isMonitoredBadge" v-if="isMonitored">
-        <span class="material-icons-outlined fs-sm pr-1">verified</span>
-        Portfolio actively monitored
-      </div>
-
+      <Button @click="openEditModal()" data-test="edit-portfolio" label="EDIT PORTFOLIO" icon="pi pi-pencil" />
+      <Button
+        @click="openDownloadModal()"
+        data-test="download-portfolio"
+        label="DOWNLOAD PORTFOLIO"
+        icon="pi pi-download"
+      />
       <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
-        <PrimeButton
-          class="primary-button"
+        <Button
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
           :disabled="!isPremiumUser"
-        >
-          <i class="pi pi-bell pr-2" /> EDIT MONITORING
-        </PrimeButton>
-        <button class="tertiary-button" data-test="reset-filter" @click="resetFilters()">Reset Filter</button>
+          icon="pi pi-bell"
+          label="ACTIVE MONITORING"
+        />
       </div>
+
+      <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+      <Button
+        class="reset-button-align-right"
+        data-test="reset-filter"
+        @click="resetFilters()"
+        variant="text"
+        label="RESET"
+      />
     </div>
 
     <DataTable
@@ -71,31 +73,35 @@
       </Column>
       <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="country"
-              name="country"
-              :value="country"
-              data-test="countryFilterValue"
-              @change="filterCallback"
-            />
-            <label :for="country">{{ country }}</label>
+          <div data-test="countryFilterOverlay">
+            <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="country"
+                name="country"
+                :value="country"
+                data-test="countryFilterValue"
+                @change="filterCallback"
+              />
+              <label :for="country">{{ country }}</label>
+            </div>
           </div>
         </template>
       </Column>
       <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
         <template #filter="{ filterModel, filterCallback }">
-          <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="sector"
-              name="sector"
-              :value="sector"
-              data-test="sectorFilterValue"
-              @change="filterCallback"
-            />
-            <label :for="sector">{{ sector }}</label>
+          <div data-test="sectorFilterOverlay">
+            <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="sector"
+                name="sector"
+                :value="sector"
+                data-test="sectorFilterValue"
+                @change="filterCallback"
+              />
+              <label :for="sector">{{ sector }}</label>
+            </div>
           </div>
         </template>
       </Column>
@@ -117,20 +123,22 @@
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <div
-            v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
-            :key="availableReportingPeriods"
-            class="filter-checkbox"
-          >
-            <Checkbox
-              v-model="filterModel.value"
-              :inputId="availableReportingPeriods"
-              name="availableReportingPeriods"
-              :value="availableReportingPeriods"
-              :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-              @change="filterCallback"
-            />
-            <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
+          <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
+            <div
+              v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
+              :key="availableReportingPeriods"
+              class="filter-checkbox"
+            >
+              <Checkbox
+                v-model="filterModel.value"
+                :inputId="availableReportingPeriods"
+                name="availableReportingPeriods"
+                :value="availableReportingPeriods"
+                :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+                @change="filterCallback"
+              />
+              <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
+            </div>
           </div>
         </template>
       </Column>
@@ -139,6 +147,7 @@
 </template>
 
 <script setup lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
@@ -147,15 +156,16 @@ import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/Str
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
-import { FilterMatchMode } from 'primevue/api';
-import PrimeButton from 'primevue/button';
+import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
+import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch, computed } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -216,8 +226,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
-const countryOptions = ref<string[]>(new Array<string>());
-const sectorOptions = ref<string[]>(new Array<string>());
+const countryOptions = ref<string[]>([]);
+const sectorOptions = ref<string[]>([]);
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
@@ -244,6 +254,12 @@ const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
 const isPremiumUser = ref(false);
+
+const monitoredTagAttributes = computed(() => ({
+  value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
+  icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
+  severity: isMonitored.value ? 'success' : 'danger',
+}));
 
 onMounted(() => {
   void checkPremiumRole();
@@ -443,8 +459,10 @@ function openEditModal(): void {
       portfolio: enrichedPortfolio.value,
       isMonitoring: isMonitored.value,
     },
-    onClose() {
-      loadPortfolio();
+    onClose(options) {
+      if (!options?.data?.isDeleted) {
+        loadPortfolio();
+      }
       emit('update:portfolio-overview');
     },
   });
@@ -519,7 +537,7 @@ function openMonitoringModal(): void {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 label {
   margin-left: 0.5em;
 }
@@ -543,50 +561,23 @@ a:after {
   font-weight: bold;
 }
 
-:deep(.p-inputtext) {
-  background: none;
-}
-
-:deep(.p-column-filter) {
-  margin: 0.5rem;
-}
-
-:deep(.p-datatable .p-sortable-column .p-sortable-column-icon) {
-  color: inherit;
-}
-
-.selection-button {
-  background: white;
-  color: #5a4f36;
-  border: 2px solid #5a4f36;
-  border-radius: 0.5em;
-  height: 2.25rem;
-}
-
 .button_bar {
   display: flex;
-  margin: 1rem;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
   gap: 1rem;
   align-items: center;
-
-  :last-child {
-    margin-left: auto;
-  }
+  background-color: var(--p-surface-50);
 }
 
-.monitor-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.5rem;
-
-  :deep(.p-inputswitch) {
-    transform: scale(1.3);
-    margin-left: 0.3rem; /* push it right so it’s not clipped */
-  }
-
-  span {
-    white-space: nowrap;
-  }
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+.reset-button-align-right {
+  margin-left: auto;
 }
 </style>

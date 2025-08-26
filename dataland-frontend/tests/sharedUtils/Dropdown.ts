@@ -9,14 +9,14 @@ export function selectItemFromDropdownByValue(
   valueToSelect: string | number | RegExp,
   exactMatchNotNeeded?: boolean
 ): void {
-  dropdownDiv.find('.p-dropdown-trigger').click();
+  dropdownDiv.find('.p-select-dropdown').click();
   if (exactMatchNotNeeded) {
-    cy.get('.p-dropdown-items').contains(valueToSelect).should('contain.text', valueToSelect).click();
+    cy.get('.p-select-option').contains(valueToSelect).should('contain.text', valueToSelect).click();
   } else {
-    cy.get('.p-dropdown-items')
+    cy.get('.p-select-option')
       .contains(new RegExp(`^${valueToSelect}$`))
       .should('have.text', valueToSelect);
-    cy.get('.p-dropdown-items')
+    cy.get('.p-select-option')
       .contains(new RegExp(`^${valueToSelect}$`))
       .click();
   }
@@ -31,6 +31,6 @@ export function selectItemFromDropdownByIndex(
   dropdownDiv: Cypress.Chainable<JQuery<HTMLElement>>,
   indexToSelect: number
 ): void {
-  dropdownDiv.find('.p-dropdown-trigger').click();
-  cy.get('.p-dropdown-items').find('li').eq(indexToSelect).click();
+  dropdownDiv.find('.p-select-dropdown').click();
+  cy.get('.p-select-list').find('li').eq(indexToSelect).click();
 }

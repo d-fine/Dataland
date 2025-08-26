@@ -34,7 +34,7 @@
               @click="addCompanyAlternativeName"
               name="addAlternativeName"
               label="Add"
-              class="p-button-text"
+              variant="text"
               icon="pi pi-plus"
             ></PrimeButton>
           </div>
@@ -68,7 +68,7 @@
                 validation-label="Headquarters"
               />
             </div>
-            <div>
+            <div data-test="country-code-selector">
               <SingleSelectFormField
                 container-class=""
                 name="countryCode"
@@ -189,6 +189,7 @@
           <h4>GICS classification</h4>
 
           <SingleSelectFormField
+            data-test="sector-selector"
             :label="companyDataNames.sector"
             :description="companyDataExplanations.sector"
             name="sector"
@@ -196,7 +197,6 @@
             placeholder="Please choose"
             :options="gicsSectors.map((it) => ({ value: it, label: it }))"
           />
-
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
@@ -403,3 +403,86 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+
+  .form-field-label {
+    display: flex;
+    align-self: center;
+    h5 {
+      margin: 0.5rem 0;
+    }
+  }
+  p {
+    margin: 0.25rem;
+  }
+
+  .form-list-item {
+    color: var(--input-label-color);
+    background: var(--el-list-item-bg);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--spacing-xxs);
+    text-align: center;
+    min-width: 1.5rem;
+    border-radius: 1rem;
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--input-label-color);
+    display: inline-flex;
+    align-items: center;
+    em {
+      margin-left: 0.5rem;
+      cursor: pointer;
+      &:hover {
+        color: hsl(from var(--input-label-color) h s calc(l - 20));
+      }
+    }
+  }
+}
+</style>

@@ -29,9 +29,8 @@
         @click="updateRequest()"
         style="width: 100%; justify-content: center"
         data-test="updateRequestButton"
-      >
-        <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
-      </PrimeButton>
+        label="UPDATE REQUEST"
+      />
     </div>
     <div v-if="activeTab === 'message history'" data-test="viewHistoryModal">
       <div v-for="message in messageHistory" :key="message.creationTimestamp">
@@ -87,22 +86,15 @@
       <PrimeButton label="CLOSE" @click="closeSuccessModal(dialogIsSuccess)" class="p-button-outlined" />
     </div>
   </PrimeDialog>
-  <div>
-    <PrimeButton
-      class="uppercase p-button-outlined p-button p-button-sm d-letters"
-      aria-label="RESOLVE REQUEST"
-      @click="resolveRequest"
-      data-test="resolveRequestButton"
-    >
-      <span class="px-2">RESOLVE REQUEST</span>
+  <div class="button-bar">
+    <PrimeButton @click="resolveRequest" data-test="resolveRequestButton" label="RESOLVE REQUEST" variant="outlined">
     </PrimeButton>
     <PrimeButton
-      class="uppercase p-button p-button-sm d-letters"
       aria-label="REOPEN REQUEST"
       @click="reOpenRequest"
       data-test="reOpenRequestButton"
+      label="REOPEN REQUEST"
     >
-      <span class="px-2">REOPEN REQUEST</span>
     </PrimeButton>
   </div>
 </template>
@@ -204,14 +196,12 @@ export default defineComponent({
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async resolveRequest() {
       await this.patchDataRequest(this.dataRequestId, RequestStatus.Resolved);
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
-     * @param event ClickEvent
      */
     async reOpenRequest() {
       await this.fetchMessageHistory();
@@ -297,7 +287,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables';
+.button-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
 
 .no-line-height {
   line-height: 0;
@@ -314,14 +308,13 @@ export default defineComponent({
 }
 
 .tab-menu button.active {
-  border-bottom: 2px solid #e67f3fff;
-  color: #e67f3fff;
+  border-bottom: 2px solid var(--p-primary-color);
+  color: var(--p-primary-color);
 }
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
+  padding: var(--spacing-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -334,5 +327,21 @@ export default defineComponent({
   border-bottom: #e0dfde solid 1px;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.info-icon {
+  cursor: help;
+}
+
+.d-letters {
+  letter-spacing: 0.05em;
+}
+
+.red-text {
+  color: var(--red);
+}
+
+.green-text {
+  color: var(--green);
 }
 </style>

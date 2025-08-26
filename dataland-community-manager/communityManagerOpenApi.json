@@ -20,6 +20,75 @@
     }
   ],
   "paths": {
+    "/user-validation/email": {
+      "post": {
+        "tags": [
+          "user-validation-controller"
+        ],
+        "summary": "Validate an email address and obtain user-related information from an email address.",
+        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
+        "operationId": "postEmailAddressValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAddress"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully validated the posted email address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeycloakUserInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The posted string does not have the format of an email address."
+          },
+          "403": {
+            "description": "You do not have permission to query user information based on email addresses."
+          },
+          "404": {
+            "description": "No Dataland user is registered under this email address."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/single": {
       "post": {
         "tags": [
@@ -161,7 +230,7 @@
           "company-roles-controller"
         ],
         "summary": "Assign company role for the company to the user.",
-        "description": "The company role for the specified company is being assigned to the user. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
+        "description": "The company role for the specified company is being assigned to the user, who must be known to Keycloak. Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
         "operationId": "assignCompanyRole",
         "parameters": [
           {
@@ -187,7 +256,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -206,6 +275,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "At least one of the specified IDs (user and company) is unknown."
           },
           "default": {
             "description": "An error occurred",
@@ -268,7 +340,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -342,7 +414,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "The unique identifier of the user.",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1240,8 +1312,8 @@
           "company-roles-controller"
         ],
         "summary": "Get company role assignments that match the provided filters.",
-        "description": "Get company role assignments that match the provided filters. Endpoint fully accessible to all Dataland-Admins. Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
-        "operationId": "getCompanyRoleAssignments",
+        "description": "Get company role assignments extended by basic user information that match the provided filters. The endpoint is fully accessible to all Dataland Admins. Company Role Assignees can access the endpoint if the companyId filter is set to their company. Any Dataland user can access the endpoint if the userId filter is set to their userId.",
+        "operationId": "getExtendedCompanyRoleAssignments",
         "parameters": [
           {
             "name": "role",
@@ -1266,7 +1338,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "The unique identifier of the user.",
+            "description": "The unique identifier of the user in the company role assignment.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1277,30 +1349,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company role assignments.",
+            "description": "Successfully retrieved extended company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                    "$ref": "#/components/schemas/CompanyRoleAssignmentExtended"
                   }
                 }
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
           "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CompanyRoleAssignment"
-                  }
-                }
-              }
-            }
+            "description": "The specified company does not exist on Dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -1507,6 +1572,47 @@
   },
   "components": {
     "schemas": {
+      "EmailAddress": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          }
+        }
+      },
+      "KeycloakUserInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the Dataland user in question.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the Dataland user in question.",
+            "example": "Doe"
+          }
+        }
+      },
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
@@ -1683,7 +1789,7 @@
         "required": [
           "acceptedDataRequests",
           "alreadyExistingDatasets",
-          "alreadyExistingNonFinalRequests",
+          "alreadyExistingRequests",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
@@ -1695,9 +1801,9 @@
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
-          "alreadyExistingNonFinalRequests": {
+          "alreadyExistingRequests": {
             "type": "array",
-            "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
+            "description": "Contains information about all already existing data requests.",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
@@ -1790,7 +1896,7 @@
           },
           "userId": {
             "type": "string",
-            "description": "The ID of the user who created the data request.",
+            "description": "The unique identifier of the user in the company role assignment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
@@ -2157,6 +2263,45 @@
             "description": "The count of existing data requests for this framework, reporting period, company and priority.",
             "format": "int64",
             "example": 23
+          }
+        }
+      },
+      "CompanyRoleAssignmentExtended": {
+        "required": [
+          "companyId",
+          "companyRole",
+          "email",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyRole": {
+            "$ref": "#/components/schemas/CompanyRole"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique identifier of the user in the company role assignment.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user in the company role assignment.",
+            "example": "test@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user in the company role assignment.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user in the company role assignment.",
+            "example": "Doe"
           }
         }
       },

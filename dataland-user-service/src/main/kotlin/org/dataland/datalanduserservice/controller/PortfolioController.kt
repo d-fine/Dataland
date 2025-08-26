@@ -6,6 +6,8 @@ import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.SupportRequestData
+import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
@@ -19,6 +21,7 @@ import java.util.UUID
 /**
  * RestController for the Portfolio API
  */
+@Suppress("TooManyFunctions")
 @RestController
 class PortfolioController
     @Autowired
@@ -27,6 +30,7 @@ class PortfolioController
         private val validator: Validator,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
         private val portfolioMonitoringService: PortfolioMonitoringService,
+        private val messageQueuePublisherService: MessageQueuePublisherService,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -87,5 +91,11 @@ class PortfolioController
                     correlationId,
                 ),
             )
+        }
+
+        override fun postSupportRequest(supportRequestData: SupportRequestData): ResponseEntity<Unit> {
+            val correlationId = UUID.randomUUID().toString()
+            messageQueuePublisherService.publishSupportRequest(supportRequestData, correlationId)
+            return ResponseEntity.status(HttpStatus.CREATED).build()
         }
     }

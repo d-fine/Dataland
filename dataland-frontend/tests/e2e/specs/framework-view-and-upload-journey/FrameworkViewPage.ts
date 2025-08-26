@@ -80,10 +80,7 @@ describeIf(
       verifySearchResultTableExists();
       cy.wait('@searchCompanies');
       cy.wait('@fetchFilters');
-      const companySelector = 'span:contains(VIEW)';
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(100);
-      cy.get(companySelector).first().click();
+      cy.get('[data-test="viewButton"]').first().click();
     }
 
     /**
@@ -92,7 +89,7 @@ describeIf(
      * @param isOnViewPage determines if cypress is expected to be on the view page
      */
     function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
-      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
+      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search-bar-input';
       cy.intercept({
         url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
         times: 1,
@@ -100,7 +97,7 @@ describeIf(
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
-      const companySelector = '.p-autocomplete-item';
+      const companySelector = '.p-autocomplete-option';
       cy.get(companySelector).first().click({ force: true });
     }
 
@@ -426,7 +423,7 @@ describeIf(
       cy.contains('2023-04-18').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
-      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active').click();
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'VIEW ACTIVE').click();
 
       cy.url().should(
         'contain',
@@ -435,7 +432,7 @@ describeIf(
       cy.contains('2023-06-22').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
-      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All').click();
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL').click();
 
       cy.url().should('contain', `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
       cy.contains('2022-07-30').should('exist');
@@ -452,7 +449,7 @@ describeIf(
       cy.contains('2022-07-30').should('not.exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
-      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All');
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL');
       clickBackButton();
 
       cy.url().should(
@@ -462,7 +459,7 @@ describeIf(
       cy.contains('2023-04-18').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
-      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active');
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'VIEW ACTIVE');
     });
 
     it(

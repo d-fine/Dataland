@@ -494,6 +494,138 @@
         ]
       }
     },
+    "/metadata/active-dataset-search": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if active datasets are available.",
+        "description": "Checks if any active datasets are available applying the provided data dimensions and returns the corresponding meta data.",
+        "operationId": "retrieveMetaDataOfActiveDatasets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BasicDataDimensions"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta data of active datasets.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/isinleimapping/": {
+      "post": {
+        "tags": [
+          "isin-lei-data-controller"
+        ],
+        "summary": "Post a new ISIN-LEI mapping.",
+        "description": "Replaces all ISIN-LEI mappings with the given mappings.",
+        "operationId": "postIsinLeiMapping",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IsinLeiMappingData"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated ISIN-LEI mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/internal/cached/public/get-batch": {
       "post": {
         "tags": [
@@ -1254,6 +1386,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Company could not be added. Please check that the strings specified in companyContactDetails are valid email addresses, that there is no repetition among specified identifiers of the same kind, that all specified identifiers are new and that you did not specify more than one LEI."
           },
           "default": {
             "description": "An error occurred",
@@ -2240,6 +2375,71 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BasicDataDimensions"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/isinleimapping/isins": {
+      "get": {
+        "tags": [
+          "isin-lei-data-controller"
+        ],
+        "summary": "Retrieves all ISINs for a given LEI",
+        "description": "All ISINs associated to the given LEI are returned. Returns empty list if no ISINs are registered for the LEI.",
+        "operationId": "getIsinsByLei",
+        "parameters": [
+          {
+            "name": "lei",
+            "in": "query",
+            "description": "The LEI for which the associated ISINs are requested.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all ISINs associated with the provided LEI.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
@@ -5402,6 +5602,46 @@
                 "$ref": "#/components/schemas/QaStatus"
               }
             ]
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The framework of the dataset on Dataland.",
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "example": "2023"
+          }
+        }
+      },
+      "IsinLeiMappingData": {
+        "required": [
+          "isin",
+          "lei"
+        ],
+        "type": "object",
+        "properties": {
+          "isin": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string"
           }
         }
       },
@@ -15644,31 +15884,6 @@
           }
         }
       },
-      "BasicDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The framework of the dataset on Dataland.",
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
-            "example": "2023"
-          }
-        }
-      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -15786,15 +16001,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },

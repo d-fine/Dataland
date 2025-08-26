@@ -1,0 +1,197 @@
+<template>
+  <section v-if="joinCampaignSection" class="joincampaign" aria-labelledby="joincampaign-heading">
+    <div class="joincampaign__wrapper">
+      <h2 id="joincampaign-heading" class="joincampaign__title">
+        {{ joinCampaignSection.text[0] }}
+        <span v-if="joinCampaignSection.text[1]"> {{ joinCampaignSection.text[1] }}</span
+        >{{ joinCampaignSection.text[2] }}
+      </h2>
+      <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
+      <Button
+        label="I AM INTERESTED"
+        data-test="join-campaign-button"
+        ariaLabel="Indicate interest by opening email client"
+        @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
+        :pt="{
+          root: {
+            style: {
+              width: 'fit-content',
+              whiteSpace: 'nowrap',
+            },
+          },
+        }"
+        rounded
+      />
+      <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
+        <tr v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">
+          <td class="joincampaign__cell joincampaign__cell--icon">
+            <span>{{ card.title }}</span>
+          </td>
+          <td class="joincampaign__cell">
+            {{ card.text }}
+          </td>
+        </tr>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { computed, type ComputedRef } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import { openEmailClient } from '@/utils/Email';
+import Button from 'primevue/button';
+
+const { sections } = defineProps<{ sections?: Section[] }>();
+const findSection = (title: string): ComputedRef<Section | null> => {
+  return computed(() => sections?.find((section) => section.title === title) ?? null);
+};
+const joinCampaignSection = findSection('Join a campaign');
+const getInTouchSection = findSection('Get in touch');
+</script>
+
+<style scoped lang="scss">
+.joincampaign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140px 0;
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 61px 32px;
+    max-width: 900px;
+    padding: 0 32px;
+  }
+
+  &__title,
+  &__title * {
+    font-size: 100px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 106px; /* 106% */
+    letter-spacing: 0.25px;
+    text-align: left;
+    margin: 0;
+    grid-column: 1 / -1;
+    transition:
+      font-size 0.4s ease,
+      line-height 0.4s ease;
+    span {
+      color: var(--p-primary-color);
+    }
+  }
+
+  &__paragraph {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 48px; /* 120% */
+    letter-spacing: 0.25px;
+    grid-column: 1 / -1;
+    text-align: left;
+    margin: 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-self: flex-end;
+    gap: 32px;
+    grid-column: 1 / -1;
+    margin-top: 79px;
+    justify-content: center;
+  }
+  &__row {
+    border-radius: 16px;
+    border: 1px solid rgba(244, 244, 244, 0.33);
+    background: var(--basic-white, #fff);
+    box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    padding: 46px 32px;
+    text-align: left;
+    min-width: 228px;
+  }
+  &__cell {
+    color: var(--grey-tones-900);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.25px;
+    &--icon,
+    &--icon * {
+      color: var(--p-highlight-color);
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 40px; /* 125% */
+      letter-spacing: 0.25px;
+    }
+  }
+  &__join-link {
+    margin-top: auto; // Push it to the bottom
+    text-decoration: none;
+    color: var(--p-primary-color);
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 56px; /* 116.667% */
+    letter-spacing: 0.25px;
+    text-align: right;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .joincampaign {
+    padding: 80px 0;
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+    }
+    &__title {
+      font-size: 64px;
+      line-height: 72px;
+      max-width: 551px;
+    }
+    &__grid {
+      grid-template-columns: repeat(2, 2fr);
+      gap: 61px 22px;
+      grid-column: 1 / -1;
+      margin-top: 0;
+    }
+    &__row {
+      gap: 24px;
+      padding: 46px 40px;
+      min-height: 340px;
+    }
+  }
+}
+@media only screen and (max-width: 768px) {
+  .joincampaign {
+    padding: 64px 0;
+    &__wrapper {
+      gap: 32px 16px;
+      padding: 0 16px;
+    }
+    &__title {
+      font-size: 48px;
+      line-height: 56px;
+    }
+    &__paragraph {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      grid-column: 1 / -1;
+    }
+    &__row {
+      min-height: unset;
+    }
+  }
+}
+</style>
