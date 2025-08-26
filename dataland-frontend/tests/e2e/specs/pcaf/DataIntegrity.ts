@@ -56,6 +56,8 @@ describeIf(
             pcafFixtureData.reportingPeriod,
             pcafFixtureData.t
           );
+          console.log(dataMetaInformation);
+          cy.pause();
 
           // Define intercepts for test
           cy.intercept({
@@ -73,7 +75,7 @@ describeIf(
           let initiallyUploadedData: PcafData;
           cy.visitAndCheckAppMount(
             `/companies/${storedCompanyId}/frameworks/${DataTypeEnum.Pcaf}` +
-              `/upload?templateDataId=${dataMetaInformation.dataId}`
+              `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
           );
 
           cy.wait('@getInitiallyUploadedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
