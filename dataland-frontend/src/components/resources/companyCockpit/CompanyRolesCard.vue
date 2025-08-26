@@ -7,6 +7,14 @@
       <i :class="group?.icon" />
       {{ group?.title }}
       <Button
+        v-if="!showInfoMessage"
+        icon="pi pi-info-circle"
+        variant="text"
+        rounded
+        @click="showInfoBox"
+        title="Show Info"
+      />
+      <Button
         v-if="roleHasUsers && allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
@@ -17,7 +25,13 @@
     </template>
 
     <template #subtitle>
-      <Message severity="info" closable style="margin-top: var(--spacing-xs)">
+      <Message
+        v-if="showInfoMessage"
+        severity="info"
+        :closable="true"
+        @close="hideInfoBox"
+        style="margin-top: var(--spacing-xs)"
+      >
         {{ group?.info }}
       </Message>
     </template>
@@ -135,6 +149,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { useStorage } from '@vueuse/core';
 
 type Group = {
   role: CompanyRole;
@@ -168,6 +183,7 @@ const selectedRole = ref<CompanyRole | null>(null);
 
 const rowMenus = ref<Record<string, RowMenuRef>>({});
 const isGlobalAdmin = ref(false);
+const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
 
 const groups: readonly Group[] = [
   {
@@ -236,6 +252,20 @@ const roleTargetText = computed(() => {
   const last = u.lastName?.trim();
   return first && last ? `${first} ${last}, ${u.email}` : (u.email ?? '');
 });
+
+/**
+ * Hides the info box
+ */
+function hideInfoBox(): void {
+  showInfoMessage.value = false;
+}
+
+/**
+ * Shows the info box
+ */
+function showInfoBox(): void {
+  showInfoMessage.value = true;
+}
 
 /**
  * Sets the Menu ref for a specific row by user ID.
