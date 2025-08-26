@@ -8,7 +8,7 @@
       {{ group?.title }}
       <Button
         v-if="!showInfoMessage"
-        hidden
+        hidden="hidden"
         icon="pi pi-info-circle"
         variant="text"
         data-test="info-icon"
