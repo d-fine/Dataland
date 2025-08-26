@@ -6,7 +6,6 @@
         id="get-help-topic"
         v-model="selectedTopic"
         :options="availableTopics"
-        optionLabel="name"
         placeholder="Where do you need help with?"
       />
     </div>
@@ -59,19 +58,19 @@ const message = ref('');
 const emailSendingError = ref<boolean>();
 const emailSendingSuccess = ref<boolean>();
 const emailSendingMessage = ref('');
-const availableTopics = ref([{ name: 'Find company identifiers' }, { name: 'Other topic' }]);
-const selectedTopic = ref<{ name: string } | undefined>();
+const availableTopics = ref(['Find company identifiers','Other topic']);
+const selectedTopic = ref<string | undefined>();
 
-const isValidForm = computed(() => message.value && selectedTopic.value?.name);
+const isValidForm = computed(() => message.value && selectedTopic.value);
 
 /**
  * Send an email to request support
  */
 async function sendEmail(): Promise<void> {
-  if (!selectedTopic.value?.name || !message.value) {
+  if (!selectedTopic.value || !message.value) {
     return;
   }
-  const supportRequest: SupportRequestData = { topic: selectedTopic.value?.name, message: message.value };
+  const supportRequest: SupportRequestData = { topic: selectedTopic.value, message: message.value };
   try {
     isSendingMail.value = true;
     await apiClientProvider.apiClients.portfolioController.postSupportRequest(supportRequest);
