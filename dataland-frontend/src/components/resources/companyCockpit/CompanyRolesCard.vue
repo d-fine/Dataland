@@ -49,21 +49,11 @@
         <Column field="userId" header="User ID" style="width: 30%" />
         <Column v-if="allowedToEditRoles" :exportable="false" header="" style="width: 5%; text-align: right">
           <template #body="slotProps">
-            <Button
-              icon="pi pi-ellipsis-v"
-              variant="text"
-              rounded
-              @click="(e) => toggleRowMenu(e, slotProps.data.userId)"
-            />
-            <Menu
-              :id="`row-menu-${slotProps.data.userId}`"
-              :model="menuItemsFor(slotProps.data)"
-              :popup="true"
-              :ref="(el) => setRowMenuRef(slotProps.data.userId, el)"
-            />
+            <Button icon="pi pi-ellipsis-v" variant="text" rounded @click="(e) => openRowMenu(e, slotProps.data)" />
           </template>
         </Column>
       </DataTable>
+
       <Button
         v-else-if="allowedToEditRoles"
         icon="pi pi-plus"
@@ -72,6 +62,7 @@
         @click="openAddUserDialog"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
+      <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" />
     </template>
   </Card>
 
@@ -129,6 +120,7 @@
 
 <script setup lang="ts">
 import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 
 import Button from 'primevue/button';
 import Card from 'primevue/card';
@@ -160,8 +152,13 @@ type Group = {
 };
 
 type TableRow = { userId: string; email: string; firstName: string; lastName: string };
-type RowMenuRef = InstanceType<typeof Menu> | null;
+
 type MenuItem = { label: string; command: () => void };
+type MenuAPI = { toggle: (e: MouseEvent) => void };
+type MenuInstance = ComponentPublicInstance<MenuAPI>;
+
+const rowMenu = ref<MenuInstance | null>(null);
+const activeRow = ref<TableRow | null>(null);
 
 const props = defineProps<{
   companyId: string;
@@ -181,7 +178,6 @@ const showRemoveUserDialog = ref(false);
 const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
 
-const rowMenus = ref<Record<string, RowMenuRef>>({});
 const isGlobalAdmin = ref(false);
 const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
 
@@ -245,6 +241,38 @@ const roleTargetText = computed(() => {
   return first && last ? `${first} ${last}, ${u.email}` : (u.email ?? '');
 });
 
+const rowMenuItems = computed<MenuItem[]>(() =>
+  activeRow.value
+    ? [
+        {
+          label: 'Change User’s Role',
+          command: (): void => {
+            selectedUser.value = activeRow.value!;
+            selectedRole.value = null;
+            showChangeRoleDialog.value = true;
+          },
+        },
+        {
+          label: 'Remove User',
+          command: (): void => {
+            selectedUser.value = activeRow.value!;
+            showRemoveUserDialog.value = true;
+          },
+        },
+      ]
+    : []
+);
+
+/**
+ * Opens the context menu for a specific row in the company roles table.
+ * @param e - The mouse event that triggered the menu opening.
+ * @param row - The table row data containing user information (userId, email, firstName, lastName).
+ */
+function openRowMenu(e: MouseEvent, row: TableRow): void {
+  activeRow.value = row;
+  rowMenu.value?.toggle(e);
+}
+
 /**
  * Determines if a role option should be disabled in the role selection list.
  * @param opt - The role option to check, containing a CompanyRole.
@@ -271,44 +299,6 @@ function showInfoBox(): void {
 }
 
 /**
- * Sets the Menu ref for a specific row by user ID.
- */
-function setRowMenuRef(id: string, el: RowMenuRef): void {
-  if (el) rowMenus.value[id] = el;
-}
-
-/**
- * Toggles the row menu for a specific user.
- */
-function toggleRowMenu(event: MouseEvent, id: string): void {
-  rowMenus.value[id]?.toggle(event);
-}
-
-/**
- * Returns the menu items for a given table row.
- * @returns An array of menu items.
- */
-function menuItemsFor(row: TableRow): MenuItem[] {
-  return [
-    {
-      label: 'Change User’s Role',
-      command: (): void => {
-        selectedUser.value = row;
-        selectedRole.value = null; // preselect current role
-        showChangeRoleDialog.value = true;
-      },
-    },
-    {
-      label: 'Remove User',
-      command: (): void => {
-        selectedUser.value = row;
-        showRemoveUserDialog.value = true;
-      },
-    },
-  ];
-}
-
-/**
  * Fetches the company user information for the current role and company.
  */
 async function getCompanyUserInformation(): Promise<void> {
@@ -332,6 +322,7 @@ async function confirmChangeRole(): Promise<void> {
     await api.assignCompanyRole(selectedRole.value, props.companyId, selectedUser.value.userId);
     showChangeRoleDialog.value = false;
     await getCompanyUserInformation();
+    emit('users-changed');
   } catch (err) {
     console.error('Failed to change role:', err);
   }
