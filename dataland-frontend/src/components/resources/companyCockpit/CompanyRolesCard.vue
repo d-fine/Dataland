@@ -38,18 +38,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed, onMounted, inject } from 'vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
 import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { CompanyRole } from '@clients/communitymanager';
+import type Keycloak from 'keycloak-js';
 
 import Card from 'primevue/card';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
 import Message from 'primevue/message';
+import { computed, inject, onMounted, ref } from 'vue';
 
 const props = defineProps<{
   companyId: string;
