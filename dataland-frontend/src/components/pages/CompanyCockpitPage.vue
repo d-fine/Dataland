@@ -30,6 +30,15 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
+    <Dialog v-model:visible="showSuccess" header="Success" :modal="true">
+      <div style="text-align: center; padding: 8px 0">
+        <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
+        <div style="margin-top: 8px">{{ successMessage }}</div>
+      </div>
+      <template #footer>
+        <Button label="OK" @click="showSuccess = false" />
+      </template>
+    </Dialog>
   </TheContent>
   <TheFooter />
 </template>
@@ -51,6 +60,8 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -91,13 +102,18 @@ const roles = [
 ] as const;
 
 const refreshAllCards = ref(0);
+const showSuccess = ref(false);
+const successMessage = ref('');
 
 /**
  * Handler for user changes in company roles.
  * Triggers refresh of all role cards by incrementing the refresh counter.
  */
-function handleUsersChanged(): void {
-  refreshAllCards.value++;
+function handleUsersChanged(message?: string): void {
+  successMessage.value = message ?? 'Changes saved.';
+  showSuccess.value = true; // open dialog in parent
+  refreshAllCards.value++; // then refresh all cards
+  console.debug('CompanyCockpitPage - handleUsersChanged', message, showSuccess.value);
 }
 
 /**
