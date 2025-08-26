@@ -8,8 +8,10 @@
       {{ group?.title }}
       <Button
         v-if="!showInfoMessage"
+        hidden
         icon="pi pi-info-circle"
         variant="text"
+        data-test="info-icon"
         rounded
         @click="showInfoBox"
         title="Show Info"
@@ -19,6 +21,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
+        data-test="add-user-button"
         @click="openAddUserDialog"
         style="float: right"
       />
@@ -31,6 +34,7 @@
         :closable="true"
         @close="hideInfoBox"
         style="margin-top: var(--spacing-xs)"
+        data-test="info-message"
       >
         {{ group?.info }}
       </Message>
@@ -49,7 +53,13 @@
         <Column field="userId" header="User ID" style="width: 30%" />
         <Column v-if="allowedToEditRoles" :exportable="false" header="" style="width: 5%; text-align: right">
           <template #body="slotProps">
-            <Button icon="pi pi-ellipsis-v" variant="text" rounded @click="(e) => openRowMenu(e, slotProps.data)" />
+            <Button
+              icon="pi pi-ellipsis-v"
+              variant="text"
+              rounded
+              @click="(e) => openRowMenu(e, slotProps.data)"
+              data-test="dialog-button"
+            />
           </template>
         </Column>
       </DataTable>
@@ -60,9 +70,10 @@
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
         @click="openAddUserDialog"
+        data-test="add-user-button"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
-      <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" />
+      <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" data-test="dialog-menu" />
     </template>
   </Card>
 
@@ -104,7 +115,12 @@
       </template>
     </Listbox>
     <template #footer>
-      <Button label="Change Role" :disabled="selectedRole === null" @click="confirmChangeRole" />
+      <Button
+        label="Change Role"
+        :disabled="selectedRole === null"
+        @click="confirmChangeRole"
+        data-test="change-role-button"
+      />
     </template>
   </Dialog>
 

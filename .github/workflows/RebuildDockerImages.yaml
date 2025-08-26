@@ -13,7 +13,7 @@ jobs:
     outputs:
       buildscript_json_array: ${{ steps.gather-buildscripts-step.outputs.BUILDSCRIPT_JSON_ARRAY }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - name: Gather Buildscripts
         id: gather-buildscripts-step
         run: |
@@ -33,7 +33,7 @@ jobs:
     env:
       BUILD_SCRIPT: ${{ matrix.buildScript }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -47,7 +47,7 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
