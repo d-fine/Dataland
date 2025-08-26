@@ -7,14 +7,13 @@
       <i :class="group?.icon" />
       {{ group?.title }}
       <Button
-        v-if="!showInfoMessage"
-        hidden="hidden"
         icon="pi pi-info-circle"
         variant="text"
         data-test="info-icon"
         rounded
         @click="showInfoBox"
         title="Show Info"
+        :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
       />
       <Button
         v-if="roleHasUsers && allowedToEditRoles"
@@ -26,14 +25,13 @@
         style="float: right"
       />
     </template>
-
     <template #subtitle>
       <Message
-        v-if="showInfoMessage"
+        v-show="showInfoMessage"
         severity="info"
         :closable="true"
         @close="hideInfoBox"
-        style="margin-top: var(--spacing-xs)"
+        style="margin-top: var(--spacing-xs); min-height: 3rem;"
         data-test="info-message"
       >
         {{ group?.info }}
