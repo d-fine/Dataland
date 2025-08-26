@@ -1,57 +1,63 @@
 <template>
-    <div class="content-wrapper">
-      <Card>
-        <template #content>
-          <b>Add user by email address</b>
-          <div class="search-container">
-            <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
-            <Button label="SELECT" @click="selectUser" />
-            <Message
-              v-if="unknownUserError"
-              severity="error"
-              data-test="unknown-user-error"
-              :pt="{
-                root: {
-                  style: 'margin-top: var(--spacing-xxs); width: 20em; word-wrap: break-word;',
-                },
-              }"
-            >
-              {{ unknownUserError }}
-            </Message>
-          </div>
-        </template>
-      </Card>
-      <Card class="selected-users-section">
-        <template #content>
-          <div class="selected-users-header">
-            <h3>Selected Users</h3>
-            <Tag :value="userCountText" severity="secondary" />
-          </div>
-          <div v-if="hasSelectedUsers">
-            <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
-              <Tag :value="user.initials" />
-              <div class="user-info">
-                <b>{{ user.name }}</b>
-                <span class="email-row">{{ user.email }}</span>
-              </div>
-              <Button icon="pi pi-times" variant="text" @click="handleRemoveUser(user.userId)" rounded />
+  <div class="content-wrapper">
+    <Card>
+      <template #content>
+        <b>Add user by email address</b>
+        <div class="search-container">
+          <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
+          <Button label="SELECT" @click="selectUser" data-test="select-user-button" />
+          <Message
+            v-if="unknownUserError"
+            severity="error"
+            data-test="unknown-user-error"
+            :pt="{
+              root: {
+                style: 'margin-top: var(--spacing-xxs); width: 20em; word-wrap: break-word;',
+              },
+            }"
+          >
+            {{ unknownUserError }}
+          </Message>
+        </div>
+      </template>
+    </Card>
+    <Card class="selected-users-section">
+      <template #content>
+        <div class="selected-users-header">
+          <h3>Selected Users</h3>
+          <Tag :value="userCountText" severity="secondary" data-test="user-count-tag" />
+        </div>
+        <div v-if="hasSelectedUsers">
+          <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
+            <Tag :value="user.initials" />
+            <div class="user-info">
+              <b>{{ user.name }}</b>
+              <span class="email-row">{{ user.email }}</span>
             </div>
+            <Button
+              icon="pi pi-times"
+              variant="text"
+              @click="handleRemoveUser(user.userId)"
+              rounded
+              data-test="remove-user-button"
+            />
           </div>
-          <div v-else>
-            <p>No users selected</p>
-          </div>
-        </template>
-      </Card>
-    </div>
-    <div class="dialog-actions">
-      <Button
-        label="ADD SELECTED USERS"
-        icon="pi pi-plus"
-        class="add-button"
-        @click="handleAddUser"
-        data-test="save-changes-button"
-      />
-    </div>
+        </div>
+        <div v-else>
+          <p>No users selected</p>
+        </div>
+      </template>
+    </Card>
+  </div>
+  <div class="dialog-actions">
+    <Button
+      label="ADD SELECTED USERS"
+      icon="pi pi-plus"
+      class="add-button"
+      @click="handleAddUser"
+      data-test="save-changes-button"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -102,7 +108,7 @@ function generateInitials(name: string): string {
   return name
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase())
-    .join('')
+    .join('');
 }
 
 /**
@@ -125,13 +131,13 @@ async function validateAndAddUser(email: string): Promise<void> {
       userId: response.data.id,
     };
 
-    // const alreadySelected =
-    //   selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
-    //
-    // if (alreadySelected) {
-    //   unknownUserError.value = 'This user has already been selected.';
-    //   return;
-    // }
+    const alreadySelected =
+      selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
+
+    if (alreadySelected) {
+      unknownUserError.value = 'This user has already been selected.';
+      return;
+    }
 
     selectedUsers.value.push(user);
     searchQuery.value = '';
