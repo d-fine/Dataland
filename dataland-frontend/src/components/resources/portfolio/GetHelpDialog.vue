@@ -58,7 +58,7 @@ const message = ref('');
 const emailSendingError = ref<boolean>();
 const emailSendingSuccess = ref<boolean>();
 const emailSendingMessage = ref('');
-const availableTopics = ref(['Find company identifiers','Other topic']);
+const availableTopics = ref(['Find company identifiers', 'Other topic']);
 const selectedTopic = ref<string | undefined>();
 
 const isValidForm = computed(() => message.value && selectedTopic.value);
