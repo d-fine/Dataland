@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="content-wrapper">
       <Card>
         <template #content>
@@ -53,7 +52,6 @@
         data-test="save-changes-button"
       />
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -223,6 +221,7 @@ async function handleAddUser(): Promise<void> {
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
+  padding: var(--spacing-xs);
 }
 
 .selected-users-section {
