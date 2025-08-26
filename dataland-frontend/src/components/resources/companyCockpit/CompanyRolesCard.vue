@@ -31,7 +31,7 @@
         severity="info"
         :closable="true"
         @close="hideInfoBox"
-        style="margin-top: var(--spacing-xs); min-height: 3rem;"
+        style="margin-top: var(--spacing-xs); min-height: 3rem"
         data-test="info-message"
       >
         {{ group?.info }}
