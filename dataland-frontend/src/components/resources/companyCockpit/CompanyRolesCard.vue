@@ -27,7 +27,7 @@
     </template>
     <template #subtitle>
       <Message
-        v-show="showInfoMessage"
+        v-if="showInfoMessage"
         severity="info"
         :closable="true"
         @close="hideInfoBox"

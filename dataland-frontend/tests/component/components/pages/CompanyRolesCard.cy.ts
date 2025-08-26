@@ -154,6 +154,10 @@ describe('Component test for CompanyRolesCard', () => {
     }
   }
 
+  before(function () {
+    cy.clearLocalStorage();
+  });
+
   describe('Role Display Tests', () => {
     it('displays Company Owner role card correctly', () => {
       mockCompanyRoleAssignments([]);

@@ -19,7 +19,6 @@ import {
   KEYCLOAK_ROLES,
 } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
-import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
@@ -45,6 +44,7 @@ describe('Component test for the company cockpit', () => {
   let allFrameworks: Set<DataTypeEnum>;
 
   before(function () {
+    cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       companyInformationForTest = lksgFixtures[0].companyInformation;
@@ -464,7 +464,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="company-roles-card"]').should('not.be.visible');
   });
 
-  it('Users are being displayed correctly in the Users Page', () => {
+  it.only('Users are being displayed correctly in the Users Page', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
     cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
       const q = req.query as Record<string, string | undefined>;
@@ -490,13 +490,17 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
     cy.wait('@roleFetch');
     cy.get('[data-test="usersTab"]').click();
+    cy.wait('@roleFetch');
+    cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
     cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('exist');
       cy.get('td').contains(dummyLastName).should('exist');
       cy.get('td').contains(dummyEmail).should('exist');
       cy.get('td').contains(dummyUserId).should('exist');
     });
     cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('not.exist');
       cy.get('td').contains(dummyLastName).should('not.exist');
       cy.get('td').contains(dummyEmail).should('not.exist');
