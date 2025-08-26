@@ -204,7 +204,7 @@ function onFrameworkChange(framework: string | undefined): void {
  */
 function onModalOpen(): void {
   if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
+    selectedFramework.value = availableFrameworks.value[0]?.value;
   }
   onFrameworkChange(selectedFramework.value);
 }
