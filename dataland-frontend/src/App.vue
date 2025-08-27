@@ -1,5 +1,7 @@
 <template>
   <DynamicDialog />
+  <div v-if="allowsUnauthorized">Landing Page Type</div>
+  <div v-else>Application Page Type</div>
   <router-view />
 </template>
 
@@ -19,6 +21,7 @@ import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
+import router from '@/router';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -39,6 +42,7 @@ export default defineComponent({
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
       companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
+      allowsUnauthorized: false as boolean,
     };
   },
 
@@ -85,6 +89,12 @@ export default defineComponent({
 
   created() {
     this.processUserAuthentication();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    router
+      .afterEach((to, from) => {
+        this.allowsUnauthorized = (to.meta.allowsUnauthorized as boolean) ?? false;
+      })
+      .bind(this);
   },
 
   mounted() {
