@@ -57,7 +57,7 @@ const frameworkToUploadComponent = computed(() => {
     case `${DataTypeEnum.Pcaf}`:
       return CreatePcafDataset;
     default:
-      console.log('Create page for framework not found.')
+      console.log('Create page for framework not found.');
       return null;
   }
 });
