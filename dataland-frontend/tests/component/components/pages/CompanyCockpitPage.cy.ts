@@ -503,7 +503,7 @@ describe('Component test for the company cockpit', () => {
       cy.get('td').should('not.exist');
     });
   });
-  it.only('should hide and show info box', () => {
+  it('should hide and show info box', () => {
     mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN]);
     cy.get('[data-test="usersTab"]').click();
