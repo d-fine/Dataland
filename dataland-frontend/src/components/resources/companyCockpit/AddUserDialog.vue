@@ -142,7 +142,6 @@ async function validateAndAddUser(email: string): Promise<void> {
     selectedUsers.value.push(user);
     searchQuery.value = '';
   } catch (error) {
-    console.log('ERROR: ', error);
     if (error instanceof AxiosError) {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
     } else {
@@ -183,13 +182,20 @@ async function handleAddUser(): Promise<void> {
       return;
     }
 
-    for (const user of usersToAdd) {
-      await companyRolesControllerApi.assignCompanyRole(role.value, companyId.value, user.userId.toString());
-    }
+    await Promise.all(
+      usersToAdd.map((user) =>
+        companyRolesControllerApi.assignCompanyRole(role.value, companyId.value, user.userId.toString())
+      )
+    );
 
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });
-  } catch {
-    unknownUserError.value = 'Failed to save changes. Please try again.';
+  }  catch (error) {
+    if (error instanceof AxiosError) {
+      unknownUserError.value = error.response?.data?.errors?.[0]?.message;
+    } else {
+      unknownUserError.value = 'An unknown error occurred while validating the user.';
+      console.error(error);
+    }
   } finally {
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });
   }
