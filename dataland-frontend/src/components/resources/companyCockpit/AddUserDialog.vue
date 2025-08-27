@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject, type Ref } from 'vue';
+import { ref, computed, inject } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
@@ -69,17 +69,24 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { type CompanyRole } from '@clients/communitymanager';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { AxiosError } from 'axios';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-const companyId = computed(() => dialogRef?.value.data.companyId as string);
-const role = computed(() => dialogRef?.value.data.role as CompanyRole);
-const existingUsers: User[] = dialogRef?.value.data.existingUsers || [];
+
+const props = defineProps<{
+  companyId: string;
+  role: CompanyRole;
+  existingUsers: Array<{ userId: string; email: string; firstName: string; lastName: string }>;
+}>();
+
+const emit = defineEmits<{
+  'users-added': [message?: string];
+  'close-dialog': [];
+}>();
+
 const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
 const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
@@ -132,7 +139,8 @@ async function validateAndAddUser(email: string): Promise<void> {
     };
 
     const alreadySelected =
-      selectedUsers.value.some((u) => u.userId === user.userId) || existingUsers.some((u) => u.userId === user.userId);
+      selectedUsers.value.some((u) => u.userId === user.userId) ||
+      props.existingUsers.some((u) => u.userId === user.userId);
 
     if (alreadySelected) {
       unknownUserError.value = 'This user has already been selected.';
@@ -174,29 +182,28 @@ function handleRemoveUser(userId: string): void {
  */
 async function handleAddUser(): Promise<void> {
   try {
-    const originalUserIds = new Set(existingUsers.map((user) => user.userId));
+    const originalUserIds = new Set(props.existingUsers.map((user) => user.userId));
     const usersToAdd = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
 
     if (usersToAdd.length === 0) {
-      dialogRef?.value.close({ selectedUsers: selectedUsers.value });
+      emit('close-dialog');
       return;
     }
 
     await Promise.all(
       usersToAdd.map((user) =>
-        companyRolesControllerApi.assignCompanyRole(role.value, companyId.value, user.userId.toString())
+        companyRolesControllerApi.assignCompanyRole(props.role, props.companyId, user.userId.toString())
       )
     );
 
-    dialogRef?.value.close({ selectedUsers: selectedUsers.value });
+    emit('users-added', 'User(s) successfully added.');
   } catch (error) {
     if (error instanceof AxiosError) {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
     } else {
-      unknownUserError.value = 'An unknown error occurred while validating the user.';
+      unknownUserError.value = 'An unknown error occurred while adding users.';
+      console.error(error);
     }
-  } finally {
-    dialogRef?.value.close({ selectedUsers: selectedUsers.value });
   }
 }
 </script>

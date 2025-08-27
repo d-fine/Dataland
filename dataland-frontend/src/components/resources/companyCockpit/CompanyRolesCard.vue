@@ -21,7 +21,7 @@
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
         data-test="add-user-button"
-        @click="openAddUserDialog"
+        @click="showAddUserDialog = true"
         style="float: right"
       />
     </template>
@@ -61,19 +61,17 @@
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
-        @click="openAddUserDialog"
+        @click="showAddUserDialog = true"
         data-test="add-user-button"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
       <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" data-test="dialog-menu" />
     </template>
   </Card>
-
-  <!-- Change Role Modal -->
   <Dialog
     v-model:visible="showChangeRoleDialog"
     v-if="allowedToEditRoles"
-    header="Change User’s Role"
+    header="Change User's Role"
     :modal="true"
     :closable="true"
   >
@@ -115,14 +113,21 @@
       />
     </template>
   </Dialog>
-
-  <!-- Remove User Modal -->
   <Dialog v-model:visible="showRemoveUserDialog" :header="`Remove Company Role`" :modal="true" :closable="true">
     <span>You're about to remove the user:</span><br />
     <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
     <template #footer>
       <Button label="Remove User" @click="confirmRemoveUser" />
     </template>
+  </Dialog>
+  <Dialog
+    v-model:visible="showAddUserDialog"
+    :header="`Add ${group?.title}`"
+    :modal="true"
+    :closable="true"
+    :style="{ backgroundColor: 'var(--p-surface-50)' }"
+  >
+    <AddUserDialog :companyId="companyId" :role="role" :existingUsers="rowsForRole" @users-added="handleUsersAdded" />
   </Dialog>
 </template>
 
@@ -138,7 +143,6 @@ import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import Menu from 'primevue/menu';
 import Message from 'primevue/message';
-import { useDialog } from 'primevue/usedialog';
 
 import type Keycloak from 'keycloak-js';
 import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
@@ -174,7 +178,6 @@ const props = defineProps<{
   userRole?: CompanyRole | null;
 }>();
 
-const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -183,6 +186,7 @@ const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
 
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
+const showAddUserDialog = ref(false);
 
 const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
@@ -355,40 +359,14 @@ async function confirmRemoveUser(): Promise<void> {
 
 const emit = defineEmits<{ (e: 'users-changed', message?: string): void }>();
 
-let previousRowsForRole: TableRow[] = [];
 /**
- * Opens the Add User dialog for the current role and company.
+ * Handles the event when users are added through the AddUserDialog.
+ * @param message - Optional success message to emit
  */
-function openAddUserDialog(): void {
-  previousRowsForRole = [...rowsForRole.value];
-  dialog.open(AddUserDialog, {
-    props: {
-      modal: true,
-      header: `Add ${group.value?.title}`,
-      pt: {
-        root: {
-          style: { backgroundColor: 'var(--p-surface-50)' },
-        },
-      },
-    },
-    data: {
-      companyId: props.companyId,
-      role: props.role,
-      existingUsers: rowsForRole.value,
-    },
-    onClose: () => {
-      void getCompanyUserInformation()
-        .then(() => {
-          const hasChanged = previousRowsForRole.length !== rowsForRole.value.length;
-          if (hasChanged) {
-            emit('users-changed', 'User(s) successfully added.');
-          }
-        })
-        .catch((err) => {
-          console.error('Failed to refresh company users after adding:', err);
-        });
-    },
-  });
+async function handleUsersAdded(message?: string): Promise<void> {
+  showAddUserDialog.value = false;
+  await getCompanyUserInformation();
+  emit('users-changed', message || 'User(s) successfully added.');
 }
 
 watch([(): string => props.companyId, (): CompanyRole => props.role], async function () {
