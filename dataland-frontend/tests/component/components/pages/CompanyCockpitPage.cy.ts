@@ -44,6 +44,7 @@ describe('Component test for the company cockpit', () => {
   let allFrameworks: Set<DataTypeEnum>;
 
   before(function () {
+    cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       companyInformationForTest = lksgFixtures[0].companyInformation;
@@ -489,7 +490,10 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
     cy.wait('@roleFetch');
     cy.get('[data-test="usersTab"]').click();
+    cy.wait('@roleFetch');
+    cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
     cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('exist');
       cy.get('td').contains(dummyLastName).should('exist');
       cy.get('td').contains(dummyEmail).should('exist');
@@ -500,6 +504,23 @@ describe('Component test for the company cockpit', () => {
       cy.get('td').contains(dummyLastName).should('not.exist');
       cy.get('td').contains(dummyEmail).should('not.exist');
       cy.get('td').contains(dummyUserId).should('not.exist');
+    });
+  });
+  it('should hide and show info box', () => {
+    mockRequestsOnMounted(true);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN]);
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('[data-test="info-message"]').should('be.visible');
+      cy.get('[data-test="info-icon"]').should('not.be.visible');
+      cy.pause();
+      cy.get('[data-test="info-message"]').find('button').click();
+      cy.get('[data-test="info-icon"]').should('be.visible');
+      cy.get('[data-test="info-message"]').should('not.exist');
+      cy.pause();
+      cy.get('[data-test="info-icon"]').click();
+      cy.get('[data-test="info-message"]').should('be.visible');
+      cy.get('[data-test="info-icon"]').should('not.be.visible');
     });
   });
 });

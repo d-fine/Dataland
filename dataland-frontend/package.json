@@ -30,6 +30,7 @@
     "@ibm/plex": "^6.4.1",
     "@primeuix/themes": "^1.1.1",
     "@primevue/core": "^4.3.6",
+    "@vueuse/core": "^13.7.0",
     "axios": "^1.10.0",
     "currency-codes": "^2.2.0",
     "i18n-iso-countries": "^7.14.0",
