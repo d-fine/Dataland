@@ -1,6 +1,7 @@
 package org.dataland.batchmanager.gleif
 
 import org.dataland.datalandbatchmanager.model.AlternativeEntityName
+import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues
 import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.HeadquartersAddress
@@ -49,7 +50,7 @@ class SelectionLogicTest {
                     otherEntityNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "TRADING_OR_OPERATING_NAME",
+                                type = CompanyNameSelectionStaticValues.AltenativeNameType.TRADING_OR_OPERATING_NAME.toString(),
                                 name = "سوكاما SA",
                                 lang = "ar",
                             ),
@@ -72,12 +73,16 @@ class SelectionLogicTest {
                     transliteratedNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Forening Aktiebolag",
                                 lang = "en",
                             ),
                             AlternativeEntityName(
-                                type = "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Forening AKIEBOLAG",
                                 lang = "en",
                             ),
@@ -85,7 +90,9 @@ class SelectionLogicTest {
                     otherEntityNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "Forening Ltd",
                                 lang = "en-US",
                             ),
@@ -98,12 +105,16 @@ class SelectionLogicTest {
                     transliteratedNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Malin AB",
                                 lang = "es",
                             ),
                             AlternativeEntityName(
-                                type = "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Malin ab",
                                 lang = "fr",
                             ),
@@ -121,17 +132,23 @@ class SelectionLogicTest {
                     transliteratedNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Hoksve AS",
                                 lang = "en",
                             ),
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Hoksve as",
                                 lang = "en",
                             ),
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "Hoksve",
                                 lang = "fr",
                             ),
@@ -144,12 +161,16 @@ class SelectionLogicTest {
                     transliteratedNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "JVR a.s.",
                                 lang = "fr",
                             ),
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "JVR AS",
                                 lang = "pl",
                             ),
@@ -167,7 +188,9 @@ class SelectionLogicTest {
                     transliteratedNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                        .toString(),
                                 name = "SPS SA",
                                 lang = "en",
                             ),
@@ -175,12 +198,16 @@ class SelectionLogicTest {
                     otherEntityNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "SPS LLC",
                                 lang = "en",
                             ),
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "SPS Ltd",
                                 lang = "en",
                             ),
@@ -198,17 +225,23 @@ class SelectionLogicTest {
                     otherEntityNames =
                         listOf(
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "Auron Ltd",
                                 lang = "en",
                             ),
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "Auron GmbH",
                                 lang = "de",
                             ),
                             AlternativeEntityName(
-                                type = "ALTERNATIVE_LANGUAGE_LEGAL_NAME",
+                                type =
+                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                        .toString(),
                                 name = "Auron SL",
                                 lang = "es",
                             ),
