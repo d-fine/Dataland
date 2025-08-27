@@ -16,16 +16,13 @@ describe('Check the Get Help form', () => {
   });
 
   it('Should validate the form: enable button when topic and message are provided', () => {
-    // Select a topic
     cy.get('#get-help-topic').click();
     cy.contains('Find company identifiers').click();
     cy.get('#get-help-topic').should('contain.text', 'Find company identifiers');
 
-    // Enter a message
     cy.get('#get-help-message').type('I need help with finding identifiers.');
     cy.get('#get-help-message').should('have.value', 'I need help with finding identifiers.');
 
-    // Validate that the send button is enabled
     cy.get('.send-button').should('not.be.disabled');
   });
 
@@ -35,42 +32,47 @@ describe('Check the Get Help form', () => {
   });
 
   it('Should send the email successfully and show a success message', () => {
-    // Mock API response for successful email request
     cy.intercept('POST', '**/portfolios/support', {
       statusCode: 200,
       body: { success: true },
     }).as('sendSupportRequest');
 
-    // Fill out the form
     cy.get('#get-help-topic').click();
     cy.contains('Find company identifiers').click();
     cy.get('#get-help-message').type('I need help with finding identifiers.');
 
-    // Send the email
     cy.get('.send-button').click();
     cy.wait('@sendSupportRequest');
 
-    // Confirm success message is displayed
     cy.get('.p-message-success').should('contain.text', 'Thank you for contacting us. We have received your request.');
   });
 
   it('Should handle API errors gracefully', () => {
-    // Mock API response for failed email request
     cy.intercept('POST', '**/portfolios/support', {
       statusCode: 500,
       body: { message: 'Internal server error' },
     }).as('sendSupportRequest');
 
-    // Fill out the form
     cy.get('#get-help-topic').click();
     cy.contains('Other topic').click();
     cy.get('#get-help-message').type('This is a test message.');
 
-    // Attempt to send the email
     cy.get('.send-button').click();
     cy.wait('@sendSupportRequest');
 
-    // Confirm error message is displayed
     cy.get('.p-message-error').should('contain.text', 'Request failed with status code 500');
+  });
+
+  it('Should not throw console errors when typing text before selecting a topic', () => {
+    cy.window().then((win) => {
+      cy.stub(win.console, 'error').as('consoleError');
+    });
+    cy.get('#get-help-message').type('I need help with finding identifiers.');
+    cy.get('#get-help-message').should('have.value', 'I need help with finding identifiers.');
+    cy.get('@consoleError').should('not.have.been.called');
+    cy.get('#get-help-topic').click();
+    cy.contains('Find company identifiers').click();
+    cy.get('.send-button').should('not.be.disabled');
+    cy.get('@consoleError').should('not.have.been.called');
   });
 });
