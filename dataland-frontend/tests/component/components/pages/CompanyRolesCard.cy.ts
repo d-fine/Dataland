@@ -148,7 +148,6 @@ describe('Component test for CompanyRolesCard', () => {
   /**
    * Validates the Add User button visibility and functionality
    * @param shouldBeVisible whether the button should be visible
-   * @param expectedLabel the expected button label
    */
   function validateAddUserButton(shouldBeVisible: boolean): void {
     if (shouldBeVisible) {
