@@ -501,19 +501,23 @@ describe('Component test for the company cockpit', () => {
     });
     cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
       cy.get('td').should('not.exist');
-      cy.get('td').should('not.exist');
-      cy.get('td').should('not.exist');
-      cy.get('td').should('not.exist');
     });
   });
   it('should hide and show info box', () => {
     mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN]);
     cy.get('[data-test="usersTab"]').click();
-    cy.get('[data-test="info-message"]').should('be.visible');
-    cy.get('[data-test="info-message"]').first().find('button').click();
-    cy.get('[data-test="info-icon"]').should('be.visible');
-    cy.get('[data-test="info-icon"]').first().click();
-    cy.get('[data-test="info-message"]').should('be.visible');
+    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('[data-test="info-message"]').should('be.visible');
+      cy.get('[data-test="info-icon"]').should('not.be.visible');
+      cy.pause();
+      cy.get('[data-test="info-message"]').find('button').click();
+      cy.get('[data-test="info-icon"]').should('be.visible');
+      cy.get('[data-test="info-message"]').should('not.exist');
+      cy.pause();
+      cy.get('[data-test="info-icon"]').click();
+      cy.get('[data-test="info-message"]').should('be.visible');
+      cy.get('[data-test="info-icon"]').should('not.be.visible');
+    });
   });
 });
