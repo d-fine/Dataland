@@ -39,11 +39,7 @@
     </template>
 
     <template #content>
-      <DataTable
-        :key="allowedToEditRoles ? 'edit-on' : 'edit-off'"
-        :value="rowsForRole"
-        tableStyle="min-width: 50rem;"
-      >
+      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem;">
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
         <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
@@ -365,7 +361,7 @@ let previousRowsForRole: TableRow[] = [];
  */
 function openAddUserDialog(): void {
   previousRowsForRole = [...rowsForRole.value];
-  console.log("This is the prevoious",previousRowsForRole.length)
+  console.log('This is the prevoious', previousRowsForRole.length);
   dialog.open(AddUserDialog, {
     props: {
       modal: true,
@@ -382,16 +378,17 @@ function openAddUserDialog(): void {
       existingUsers: rowsForRole.value,
     },
     onClose: () => {
-      void getCompanyUserInformation().then(() => {
-        const hasChanged =
-          previousRowsForRole.length !== rowsForRole.value.length
-        if (hasChanged) {
-          emit('users-changed', 'User(s) successfully added.');
-        }
-      }).catch((err) => {
-        console.error('Failed to refresh company users after adding:', err);
-      });
-    }
+      void getCompanyUserInformation()
+        .then(() => {
+          const hasChanged = previousRowsForRole.length !== rowsForRole.value.length;
+          if (hasChanged) {
+            emit('users-changed', 'User(s) successfully added.');
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to refresh company users after adding:', err);
+        });
+    },
   });
 }
 

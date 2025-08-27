@@ -189,7 +189,7 @@ async function handleAddUser(): Promise<void> {
     );
 
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });
-  }  catch (error) {
+  } catch (error) {
     if (error instanceof AxiosError) {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
     } else {
