@@ -52,6 +52,7 @@
   <div class="dialog-actions">
     <Button
       label="ADD SELECTED USERS"
+      :disabled="!hasSelectedUsers"
       icon="pi pi-plus"
       class="add-button"
       @click="handleAddUser"
@@ -84,7 +85,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'users-added': [message?: string];
-  'close-dialog': [];
 }>();
 
 const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
@@ -186,7 +186,6 @@ async function handleAddUser(): Promise<void> {
     const usersToAdd = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
 
     if (usersToAdd.length === 0) {
-      emit('close-dialog');
       return;
     }
 
