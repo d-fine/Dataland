@@ -194,7 +194,6 @@ async function handleAddUser(): Promise<void> {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
     } else {
       unknownUserError.value = 'An unknown error occurred while validating the user.';
-      console.error(error);
     }
   } finally {
     dialogRef?.value.close({ selectedUsers: selectedUsers.value });

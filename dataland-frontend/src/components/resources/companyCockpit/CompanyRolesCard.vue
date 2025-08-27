@@ -40,7 +40,6 @@
 
     <template #content>
       <DataTable
-        v-if="roleHasUsers"
         :key="allowedToEditRoles ? 'edit-on' : 'edit-off'"
         :value="rowsForRole"
         tableStyle="min-width: 50rem;"
@@ -61,9 +60,8 @@
           </template>
         </Column>
       </DataTable>
-
       <Button
-        v-else-if="allowedToEditRoles"
+        v-if="!roleHasUsers && allowedToEditRoles"
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
@@ -361,27 +359,20 @@ async function confirmRemoveUser(): Promise<void> {
 
 const emit = defineEmits<{ (e: 'users-changed', message?: string): void }>();
 
+let previousRowsForRole: TableRow[] = [];
 /**
  * Opens the Add User dialog for the current role and company.
  */
 function openAddUserDialog(): void {
+  previousRowsForRole = [...rowsForRole.value];
+  console.log("This is the prevoious",previousRowsForRole.length)
   dialog.open(AddUserDialog, {
     props: {
       modal: true,
       header: `Add ${group.value?.title}`,
       pt: {
         root: {
-          style: {
-            backgroundColor: 'var(--p-surface-50)',
-          },
-        },
-        title: {
-          style: {
-            maxWidth: '15em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          },
+          style: { backgroundColor: 'var(--p-surface-50)' },
         },
       },
     },
@@ -391,8 +382,16 @@ function openAddUserDialog(): void {
       existingUsers: rowsForRole.value,
     },
     onClose: () => {
-      emit('users-changed', 'User successfully added.');
-    },
+      void getCompanyUserInformation().then(() => {
+        const hasChanged =
+          previousRowsForRole.length !== rowsForRole.value.length
+        if (hasChanged) {
+          emit('users-changed', 'User(s) successfully added.');
+        }
+      }).catch((err) => {
+        console.error('Failed to refresh company users after adding:', err);
+      });
+    }
   });
 }
 
