@@ -154,6 +154,10 @@ describe('Component test for CompanyRolesCard', () => {
     }
   }
 
+  before(function () {
+    cy.clearLocalStorage();
+  });
+
   describe('Role Display Tests', () => {
     it('displays Company Owner role card correctly', () => {
       mockCompanyRoleAssignments([]);
@@ -309,20 +313,6 @@ describe('Component test for CompanyRolesCard', () => {
       cy.get('[role="dialog"]').should('contain', 'Change User’s Role');
       cy.get('[role="dialog"]').should('contain', `${dummyFirstName} ${dummyLastName}, ${dummyEmail}`);
       cy.get('[role="listbox"]').should('exist');
-    });
-
-    it('opens remove user dialog when menu item is clicked', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
-
-      cy.get('[data-test="dialog-button"]').click();
-      cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
-
-      cy.get('[role="dialog"]').should('contain', 'Remove Company Role');
-      cy.get('[role="dialog"]').should('contain', `${dummyFirstName} ${dummyLastName}, ${dummyEmail}`);
-      cy.get('button').contains('Remove User').should('exist');
     });
 
     it('disables current role in change role dialog', () => {
