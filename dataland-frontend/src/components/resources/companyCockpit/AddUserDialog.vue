@@ -32,7 +32,7 @@
             <Tag :value="user.initials" />
             <div class="user-info">
               <b>{{ user.name }}</b>
-              <span class="email-row">{{ user.email }}</span>
+              <span>{{ user.email }}</span>
             </div>
             <Button
               icon="pi pi-times"
