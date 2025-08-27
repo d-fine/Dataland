@@ -6,25 +6,29 @@
       <h2>Loading PCAF data...</h2>
       <DatalandProgressSpinner />
     </div>
-    <Form
-      v-slot="$form"
-      :initial-values="companyAssociatedPcafData"
-      @submit="postNuclearAndGasData"
+    <FormKit
       v-else
-      class="uploadFormWrapper form-container"
+      v-model="companyAssociatedDataPcafData"
+      :actions="false"
+      type="form"
+      :id="formId"
+      :name="formId"
+      @submit="postPcafData"
+      @submit-invalid="checkCustomInputs"
+      form-class="uploadFormWrapper form-container"
     >
       <div class="form-content">
+        <FormKit type="hidden" name="companyId" :model-value="companyID" />
+        <FormKit type="hidden" name="reportingPeriod" :model-value="reportingPeriod?.getFullYear.toString()" />
+
         <div class="subcategory-container">
           <div class="label-container">
             <h4 class="subcategory-label">Reporting Period</h4>
           </div>
           <div class="form-field-container">
-            <UploadFormHeader
-              label='Reporting Period'
-              description='The year for which the data is reported.'
-            />
+            <UploadFormHeader label="Reporting Period" description="The year for which the data is reported." />
             <DatePicker
-              id="reporting-period-picker"
+              input-id="reporting-period-picker"
               v-model="reportingPeriod"
               :showIcon="true"
               view="year"
@@ -34,43 +38,49 @@
           </div>
         </div>
 
-        <div v-for="category in pcafDataModel" :key="category.name">
-          <div v-for="subcategory in category.subcategories" :key="subcategory.name">
-            <div v-if="subcategoryVisibilityMap.get(subcategory) ?? true">
-              <div class="subcategory-container">
-                <div class="label-container">
-                  <h4 :id="subcategory.name" class="subcategory-label">{{ subcategory.label }}</h4>
-                  <Tag :value="category.label.toUpperCase()" severity="secondary" />
-                </div>
-                <div class="form-field-container">
-                  <div v-for="field in subcategory.fields" :key="field.name">
-                    <component
-                      v-if="field.showIf(companyAssociatedPcafData?.data as NuclearAndGasData)"
-                      :is="getComponentByName(field.component)"
-                      :label="field.label"
-                      :placeholder="field.placeholder"
-                      :description="field.description"
-                      :name="field.name"
-                      :options="field.options"
-                      :required="field.required"
-                      :validation="field.validation"
-                      :validation-label="field.validationLabel"
-                      :data-test="field.name"
-                      :unit="field.unit"
-                      class="form-field"
-                    />
+        <FormKit type="group" name="data" label="data">
+          <FormKit type="group" v-for="category in pcafDataModel" :key="category.name" :name="category.name">
+            <div v-for="subcategory in category.subcategories" :key="subcategory.name">
+              <div v-if="subcategoryVisibilityMap.get(subcategory) ?? true">
+                <div class="subcategory-container">
+                  <div class="label-container">
+                    <h4 :id="subcategory.name" class="subcategory-label">{{ subcategory.label }}</h4>
+                    <Tag :value="category.label.toUpperCase()" severity="secondary" />
+                  </div>
+                  <div class="form-field-container">
+                    <FormKit
+                      type="group"
+                      v-for="field in subcategory.fields"
+                      :key="field.name"
+                      :name="subcategory.name"
+                    >
+                      <component
+                        v-if="field.showIf(companyAssociatedDataPcafData?.data as PcafData)"
+                        :is="getComponentByName(field.component)"
+                        :label="field.label"
+                        :placeholder="field.placeholder"
+                        :description="field.description"
+                        :name="field.name"
+                        :options="field.options"
+                        :required="field.required"
+                        :validation="field.validation"
+                        :validation-label="field.validationLabel"
+                        :data-test="field.name"
+                        :unit="field.unit"
+                      />
+                    </FormKit>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </FormKit>
+        </FormKit>
       </div>
 
       <div class="sidebar">
-        <PrimeButton type="submit" label="SUBMIT DATA" fluid />
-        <div v-if="isInputValidated" class="message-container">
-          <Message v-if="isInputValid" severity="success">Upload successfully executed.</Message>
+        <PrimeButton type="submit" label="SUBMIT DATA" :disabled="isJustClicked" @click="onSubmitButtonClick" fluid />
+        <div v-if="isPostRequestProcessed" class="message-container">
+          <Message v-if="!errorMessage" severity="success">Upload successfully executed.</Message>
           <Message v-else severity="error">{{ errorMessage }}</Message>
         </div>
 
@@ -79,9 +89,7 @@
           <li v-for="category in pcafDataModel" :key="category.name">
             <ul>
               <li v-for="subcategory in category.subcategories" :key="subcategory.name">
-                <a v-if="subcategoryVisibilityMap.get(subcategory) ?? true"
-                   :href='`#${subcategory.name}`'
-                >
+                <a v-if="subcategoryVisibilityMap.get(subcategory) ?? true" :href="`#${subcategory.name}`">
                   {{ subcategory.label }}
                 </a>
               </li>
@@ -89,7 +97,7 @@
           </li>
         </ul>
       </div>
-    </Form>
+    </FormKit>
   </div>
 </template>
 
@@ -101,13 +109,18 @@ import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFramewo
 import { pcafDataModel } from '@/frameworks/pcaf/UploadConfig.ts';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils.ts';
 import { getFilledKpis } from '@/utils/DataPoint.ts';
 import type { Subcategory } from '@/utils/GenericFrameworkTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { objectDropNull } from '@/utils/UpdateObjectUtils.ts';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils.ts';
-import { type CompanyAssociatedDataPcafData, DataTypeEnum, type NuclearAndGasData, type PcafData } from '@clients/backend';
-import { Form } from '@primevue/forms';
+import { checkCustomInputs } from '@/utils/ValidationUtils.ts';
+import { type CompanyAssociatedDataPcafData, DataTypeEnum, type PcafData } from '@clients/backend';
+import { submitForm } from '@formkit/core';
+import { FormKit } from '@formkit/vue';
+import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import DatePicker from 'primevue/datepicker';
@@ -121,16 +134,17 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const props = defineProps({
   companyID: {
     type: String,
-    required: true
+    required: true,
   },
 });
 const emits = defineEmits(['datasetCreated']);
 const route = useRoute();
 
-const companyAssociatedPcafData = ref<CompanyAssociatedDataPcafData>();
+const companyAssociatedDataPcafData = ref<CompanyAssociatedDataPcafData>({} as CompanyAssociatedDataPcafData);
 const errorMessage = ref('');
-const isInputValid = ref(false);
-const isInputValidated = ref(false);
+const formId = 'createNuclearAndGasForm';
+const isJustClicked = ref(false);
+const isPostRequestProcessed = ref(false);
 const listOfFilledKpis = ref<string[]>();
 const reportingPeriod = ref<Date | undefined>(undefined);
 const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
@@ -139,12 +153,14 @@ const waitingForData = ref(false);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf);
-const pcafDataApi: PublicFrameworkDataApi<PcafData> | undefined =
-  frameworkDefinition?.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+const pcafDataApi: PublicFrameworkDataApi<PcafData> | undefined = frameworkDefinition?.getPublicFrameworkApiClient(
+  undefined,
+  apiClientProvider.axiosInstance
+);
 
 const subcategoryVisibilityMap = computed((): Map<Subcategory, boolean> => {
-  if (companyAssociatedPcafData.value) {
-    return createSubcategoryVisibilityMap(pcafDataModel, companyAssociatedPcafData.value?.data);
+  if (companyAssociatedDataPcafData.value) {
+    return createSubcategoryVisibilityMap(pcafDataModel, companyAssociatedDataPcafData.value?.data);
   }
   return new Map<Subcategory, boolean>();
 });
@@ -154,9 +170,6 @@ onMounted(() => {
     (templateDataId && typeof templateDataId === 'string') ||
     (templateReportingPeriod && typeof templateReportingPeriod === 'string')
   ) {
-    console.log('templateDataId: ', templateDataId);
-    console.log('templateReportingPeriod: ', templateReportingPeriod);
-
     void loadPcafData();
   }
 });
@@ -177,30 +190,53 @@ async function loadPcafData(): Promise<void> {
       )?.data;
     }
     if (!pcafData) {
-      throw ReferenceError('DataResponse from PcafDataController invalid.');
+      throw ReferenceError('Response from PcafDataController invalid.');
     }
     listOfFilledKpis.value = getFilledKpis(pcafData);
-    companyAssociatedPcafData.value = objectDropNull(pcafData) as CompanyAssociatedDataPcafData;
+    companyAssociatedDataPcafData.value = objectDropNull(pcafData) as CompanyAssociatedDataPcafData;
   } catch (e) {
-    console.error("Error while loading PCAF data", e)
+    console.error('Error while loading PCAF data', e);
   } finally {
     waitingForData.value = false;
   }
 }
 
 /**
- * Sends data to add NuclearAndGas data
+ * Send POST request to add PCAF data
  */
-async function postNuclearAndGasData(): Promise<void> {
+async function postPcafData(): Promise<void> {
   try {
+    const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+      companyAssociatedDataPcafData.value.companyId,
+      getKeycloakPromise
+    );
 
-  } catch (e) {
-
+    await pcafDataApi?.postFrameworkData(companyAssociatedDataPcafData.value, isCompanyOwnerOrDataUploader);
+    emits('datasetCreated');
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      errorMessage.value = formatAxiosErrorMessage(error);
+    } else {
+      errorMessage.value =
+        'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
+    }
+    console.error(error);
   } finally {
-    isInputValidated.value = true;
+    isPostRequestProcessed.value = true;
   }
 }
 
+/**
+ * Triggers the form submit, and disables the submitButton for a short amount of time.
+ */
+function onSubmitButtonClick(): void {
+  if (isJustClicked.value) {
+    return;
+  }
+  submitForm(formId);
+  isJustClicked.value = true;
+  setTimeout(() => (isJustClicked.value = false), 500);
+}
 </script>
 
 <style scoped>
