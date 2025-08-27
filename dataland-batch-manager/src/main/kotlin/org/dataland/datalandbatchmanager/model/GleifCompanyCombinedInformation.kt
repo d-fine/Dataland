@@ -3,6 +3,7 @@ package org.dataland.datalandbatchmanager.model
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues.AltenativeNameType
 import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues.ENGLISH_LANGUAGE_STRING_GLEIF
 import org.dataland.datalandbatchmanager.model.CompanyNameSelectionStaticValues.noCompanyNameReplacementLanguageWhiteList
 
@@ -64,7 +65,7 @@ data class GleifCompanyCombinedInformation(
     }
 
     override fun getNameAndIdentifier(): String =
-        "${gleifLeiRecord.entity.legalName} " +
+        "${gleifLeiRecord.entity.legalName.name} " +
             " (LEI: ${gleifLeiRecord.lei})"
 
     internal val companyName = determineCompanyName()
@@ -115,10 +116,26 @@ data class GleifCompanyCombinedInformation(
                     englishNames.firstOrNull()?.name ?: if (allowNonEnglish) otherNames.firstOrNull()?.name else null
                 }
 
-        return selectName(transliteratedNames, "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME", true)
-            ?: selectName(otherNames, "TRADING_OR_OPERATING_NAME", false)
-            ?: selectName(otherNames, "ALTERNATIVE_LANGUAGE_LEGAL_NAME", false)
-            ?: selectName(transliteratedNames, "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME", true)
+        return selectName(
+            transliteratedNames,
+            AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME.toString(),
+            true,
+        )
+            ?: selectName(
+                otherNames,
+                AltenativeNameType.TRADING_OR_OPERATING_NAME.toString(),
+                false,
+            )
+            ?: selectName(
+                otherNames,
+                AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME.toString(),
+                false,
+            )
+            ?: selectName(
+                transliteratedNames,
+                AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME.toString(),
+                true,
+            )
             ?: legalName
     }
 
