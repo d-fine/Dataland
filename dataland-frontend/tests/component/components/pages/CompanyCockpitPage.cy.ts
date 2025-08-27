@@ -500,7 +500,10 @@ describe('Component test for the company cockpit', () => {
       cy.get('td').contains(dummyUserId).should('exist');
     });
     cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
-      cy.get('td').should('not.exist');
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
     });
   });
   it('should hide and show info box', () => {

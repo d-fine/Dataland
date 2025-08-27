@@ -124,7 +124,11 @@ describe('Component test for CompanyRolesCard', () => {
    */
   function validateUserTable(expectedUsers: CompanyRoleAssignmentExtended[]): void {
     if (expectedUsers.length === 0) {
-      cy.get('table').should('not.exist');
+      cy.get('table').should('exist');
+      cy.get('table').contains(dummyFirstName).should('not.exist');
+      cy.get('table').contains(dummyLastName).should('not.exist');
+      cy.get('table').contains(dummyEmail).should('not.exist');
+      cy.get('table').contains(dummyUserId).should('not.exist');
       return;
     }
 
@@ -310,7 +314,7 @@ describe('Component test for CompanyRolesCard', () => {
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
 
-      cy.get('[role="dialog"]').should('contain', 'Change User’s Role');
+      cy.get('[role="dialog"]').should('contain', 'Change Role');
       cy.get('[role="dialog"]').should('contain', `${dummyFirstName} ${dummyLastName}, ${dummyEmail}`);
       cy.get('[role="listbox"]').should('exist');
     });

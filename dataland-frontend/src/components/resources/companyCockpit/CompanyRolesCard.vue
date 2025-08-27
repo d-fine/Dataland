@@ -21,7 +21,7 @@
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
         data-test="add-user-button"
-        @click="showAddUserDialog=true"
+        @click="showAddUserDialog = true"
         style="float: right"
       />
     </template>
@@ -61,7 +61,7 @@
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
-        @click="showAddUserDialog=true"
+        @click="showAddUserDialog = true"
         data-test="add-user-button"
         style="display: flex; margin: var(--spacing-xs) auto 0"
       />
@@ -127,12 +127,7 @@
     :closable="true"
     :style="{ backgroundColor: 'var(--p-surface-50)' }"
   >
-    <AddUserDialog
-      :companyId="companyId"
-      :role="role"
-      :existingUsers="rowsForRole"
-      @users-added="handleUsersAdded"
-    />
+    <AddUserDialog :companyId="companyId" :role="role" :existingUsers="rowsForRole" @users-added="handleUsersAdded" />
   </Dialog>
 </template>
 
