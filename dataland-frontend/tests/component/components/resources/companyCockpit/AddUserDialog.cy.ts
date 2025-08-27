@@ -10,7 +10,7 @@ describe('AddMemberDialog Component Tests', function () {
       props: {
         companyId: 'company-123',
         role: 'admin',
-        existingUsers
+        existingUsers,
       },
       keycloak: minimalKeycloakMock({}),
       global: {
