@@ -4,7 +4,6 @@
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
       <TheContent>
         <MarginWrapper class="mb-2">
-          <BackButton id="backButton" label="BACK" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
         <Card class="col-12 text-left page-wrapper-card">
@@ -67,7 +66,6 @@
 </template>
 
 <script lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -95,7 +93,6 @@ export default defineComponent({
     CompanyInformation,
     AuthenticationWrapper,
     TheHeader,
-    BackButton,
     TheContent,
     Card,
     MetaInfoPerCompanyAndFramework,

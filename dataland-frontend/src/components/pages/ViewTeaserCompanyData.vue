@@ -14,7 +14,6 @@
     />
   </div>
   <div v-if="!isAtLeastOneTeaserCompanyExisting || !isAtLeastOneDatasetExistingForTeaserCompany">
-    <BackButton />
     <h3>No sample data published</h3>
     <h4>
       Currently there is no dataset published for preview by the Dataland administrators. Please come back later to see
@@ -29,14 +28,12 @@ import type Keycloak from 'keycloak-js';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import BackButton from '@/components/general/BackButton.vue';
 import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'ViewTeaserCompanyData',
   components: {
     ViewFrameworkData,
-    BackButton,
   },
   setup() {
     return {

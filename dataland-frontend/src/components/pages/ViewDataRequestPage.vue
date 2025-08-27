@@ -3,7 +3,6 @@
     <TheContent class="min-h-screen flex sheet">
       <TheHeader />
       <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
-        <BackButton style="display: flex" />
         <h1 class="text-left">Data Request</h1>
       </div>
 
@@ -260,7 +259,6 @@
 </template>
 
 <script lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -295,7 +293,6 @@ export default defineComponent({
     PrimeDialog,
     PrimeButton,
     ToggleSwitch,
-    BackButton,
     AuthenticationWrapper,
     TheHeader,
     TheFooter,

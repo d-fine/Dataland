@@ -4,7 +4,6 @@
 
     <TheContent class="flex">
       <div class="col-12 text-left pb-0">
-        <BackButton />
         <h1>{{ pageTitle }}</h1>
       </div>
       <div class="grid m-0">
@@ -147,7 +146,6 @@
 </template>
 
 <script lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -174,7 +172,6 @@ export default defineComponent({
     TheContent,
     TheHeader,
     MiddleCenterDiv,
-    BackButton,
     PrimeButton,
     PrimeDialog,
     ApiKeyCard,

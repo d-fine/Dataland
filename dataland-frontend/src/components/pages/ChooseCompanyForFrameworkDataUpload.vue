@@ -3,9 +3,7 @@
     <TheHeader />
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
-        <div class="col-12 text-left">
-          <BackButton id="backButton" />
-        </div>
+        <div class="col-12 text-left"></div>
         <Card class="col-12 text-left page-wrapper-card">
           <template #title>New Dataset - Company</template>
           <template #content>
@@ -59,7 +57,6 @@
 
 <script lang="ts">
 import CreateCompany from '@/components/forms/CreateCompany.vue';
-import BackButton from '@/components/general/BackButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -82,7 +79,6 @@ export default defineComponent({
     TheFooter,
     AuthorizationWrapper,
     AuthenticationWrapper,
-    BackButton,
     TheHeader,
     TheContent,
     CompaniesOnlySearchBar,

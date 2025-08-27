@@ -4,7 +4,6 @@
     <TheContent>
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID" :data-type="frameworkType">
         <MarginWrapper>
-          <BackButton id="backButton" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
         <component :is="frameworkToUploadComponent" :companyID="companyID" @datasetCreated="redirectToMyDatasets()" />
@@ -21,7 +20,6 @@ import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
-import BackButton from '@/components/general/BackButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
