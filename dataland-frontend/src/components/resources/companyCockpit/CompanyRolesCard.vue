@@ -184,6 +184,7 @@ const props = defineProps<{
 
 const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);

@@ -111,9 +111,8 @@ const successMessage = ref('');
  */
 function handleUsersChanged(message?: string): void {
   successMessage.value = message ?? 'Changes saved.';
-  showSuccess.value = true; // open dialog in parent
-  refreshAllCards.value++; // then refresh all cards
-  console.debug('CompanyCockpitPage - handleUsersChanged', message, showSuccess.value);
+  showSuccess.value = true;
+  refreshAllCards.value++;
 }
 
 /**
@@ -148,7 +147,6 @@ watch(activeTab, (val) => {
 
 onMounted(async () => {
   await setUserRights();
-  console.debug('CompanyCockpitPage - userRole', userRole.value);
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
