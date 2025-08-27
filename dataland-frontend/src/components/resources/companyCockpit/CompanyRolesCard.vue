@@ -361,7 +361,6 @@ let previousRowsForRole: TableRow[] = [];
  */
 function openAddUserDialog(): void {
   previousRowsForRole = [...rowsForRole.value];
-  console.log('This is the prevoious', previousRowsForRole.length);
   dialog.open(AddUserDialog, {
     props: {
       modal: true,
