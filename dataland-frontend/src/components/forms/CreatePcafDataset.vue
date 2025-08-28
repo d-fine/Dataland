@@ -19,7 +19,7 @@
     >
       <div class="form-content">
         <FormKit type="hidden" name="companyId" :model-value="companyID" />
-        <FormKit type="hidden" name="reportingPeriod" :model-value="reportingPeriod?.getFullYear.toString()" />
+        <FormKit type="hidden" name="reportingPeriod" :model-value="reportingPeriod?.getFullYear().toString()" />
 
         <div class="subcategory-container">
           <div class="label-container">
@@ -69,8 +69,8 @@
                         :unit="field.unit"
                         @reports-updated="updateDocumentsList"
                         @field-specific-documents-updated="
-                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
+                          updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                        "
                       />
                     </FormKit>
                   </div>
@@ -131,9 +131,9 @@ import DatePicker from 'primevue/datepicker';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
 import Tag from 'primevue/tag';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
-import { type DocumentToUpload } from '@/utils/FileUploadUtils.ts';
+import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const props = defineProps({
@@ -147,7 +147,7 @@ const route = useRoute();
 
 const companyAssociatedDataPcafData = ref<CompanyAssociatedDataPcafData>({} as CompanyAssociatedDataPcafData);
 const errorMessage = ref('');
-const formId = 'createNuclearAndGasForm';
+const formId = 'createPcafForm';
 const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const listOfFilledKpis = ref<string[]>();
@@ -169,44 +169,20 @@ const subcategoryVisibilityMap = computed((): Map<Subcategory, boolean> => {
   }
   return new Map<Subcategory, boolean>();
 });
-
-
-/**
- *
+const namesAndReferencesOfAllCompanyReportsForTheDataset = ref<Record<string, string>>({});
 
 onMounted(() => {
   if (
     (templateDataId && typeof templateDataId === 'string') ||
     (templateReportingPeriod && typeof templateReportingPeriod === 'string')
   ) {
-    // holt Daten aus backend aber das sind nur MetaDaten (Doc hash etc.)
-    // Für docs nicht aus datenmodell holen
-    // Bei PCAF über API CAll aus Backend
-    // Mir ist egal was zu den Docs steht
-    // Wenn daten aus dem backend zieht, dann muss er das im frontend pre selected
-    // leerer Datensatz -> keine loadPcafData, dann sollte man in extendedDatepoints die docs auswählen können
-    // bei onmounted alle docs laden -> so zur Verfügung stellen dass die mit dme Formkit pre select funktioniert (siehe NuG Page)
-    // für preselct: schauen wie referneced reports gecalled wird und was ich brauchen. Kann sein dass wenn ich pcaf datensatz hole, dass vielleicht shcon alles da ist
-
-    // 1. Schritt: onLoad Documents laden ->
     void loadPcafData();
   }
+  void updateDocumentsList();
 });
- */
 
-onMounted(async () => {
-  if (templateDataId || templateReportingPeriod) {
-    await loadPcafData(); // Dataset laden
-    // Dokument-IDs aus fieldSpecificDocuments extrahieren
-    const allDocIds = Object.values(
-      (companyAssociatedDataPcafData.value as CompanyAssociatedDataPcafData & { fieldSpecificDocuments?: Record<string, string[]> })
-        .fieldSpecificDocuments ?? {}
-    ).flat(); // string[]
-    if (allDocIds.length) {
-      await updateDocumentsList(allDocIds); // Array von IDs übergeben
-    }
-  }
-});
+const providedReports = computed(() => namesAndReferencesOfAllCompanyReportsForTheDataset.value);
+provide('namesAndReferencesOfAllCompanyReportsForTheDataset', providedReports);
 
 /**
  * Loads the PCAF dataset identified either by the provided reportingPeriod and companyId,
@@ -272,24 +248,37 @@ function onSubmitButtonClick(): void {
   setTimeout(() => (isJustClicked.value = false), 500);
 }
 
-const availableReports = ref<DocumentToUpload[]>([]);
-
 /**
- * Fetches and updates the list of available document metadata based on the provided document IDs.
- * @param documentIds - A comma-separated string of document IDs to fetch metadata for.
+ * Updates the list of available document metadata based on uploaded documents.
+ * @returns Object with document names as keys and document IDs as values
  */
-async function updateDocumentsList(documentIds: string[]): Promise<void> {
+async function updateDocumentsList(): Promise<Record<string, string>> {
   try {
-    const clientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const documentControllerApi = clientProvider.apiClients.documentController;
+    const documentControllerApi = apiClientProvider.apiClients.documentController;
+    const documentsObject: Record<string, string> = {};
 
-    const documents = await Promise.all(
-      documentIds.map(id => documentControllerApi.getDocument(id).then(res => res.data as unknown as DocumentToUpload))
-    );
+    try {
+      const response = await documentControllerApi.searchForDocumentMetaInformation(
+        companyAssociatedDataPcafData.value.companyId
+      );
+      const documents = response.data;
 
-    availableReports.value = documents;
+      documents.forEach((doc: DocumentMetaInfoResponse) => {
+        if (doc.documentName && doc.documentId) {
+          documentsObject[doc.documentName] = doc.documentId;
+        }
+      });
+
+      namesAndReferencesOfAllCompanyReportsForTheDataset.value = documentsObject;
+
+      return documentsObject;
+    } catch (error) {
+      console.error(`Error fetching documents:`, error);
+      return {};
+    }
   } catch (error) {
-    console.error("Error fetching document metadata:", error);
+    console.error('Error updating documents list:', error);
+    return {};
   }
 }
 
