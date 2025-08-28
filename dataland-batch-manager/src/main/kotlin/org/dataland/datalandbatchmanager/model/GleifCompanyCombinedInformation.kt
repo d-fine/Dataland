@@ -65,7 +65,7 @@ data class GleifCompanyCombinedInformation(
     }
 
     override fun getNameAndIdentifier(): String =
-        "${gleifLeiRecord.entity.legalName.name} " +
+        "$companyName " +
             " (LEI: ${gleifLeiRecord.lei})"
 
     internal val companyName = determineCompanyName()

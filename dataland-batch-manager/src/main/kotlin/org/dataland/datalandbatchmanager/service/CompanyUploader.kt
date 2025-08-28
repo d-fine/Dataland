@@ -137,7 +137,6 @@ class CompanyUploader(
             try {
                 logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
-                logger.info("Post for ${companyInformation.getNameAndIdentifier()}: ${companyInformation.toCompanyPost()}")
             } catch (exception: ClientException) {
                 val (conflictingCompanyId, conflictingIdentifiers) =
                     checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
@@ -172,13 +171,11 @@ class CompanyUploader(
             logger.info("Getting single company data for ${companyInformation.getNameAndIdentifier()}")
             existingAlternativeNames =
                 companyDataControllerApi.getCompanyById(companyId).companyInformation.companyAlternativeNames
-            logger.info("Existing alternative names for ${companyInformation.getNameAndIdentifier()}: $existingAlternativeNames")
         }
         val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers, existingAlternativeNames) ?: return
         executeWithRetryAndThrottling {
             logger.info("Patching single company data for ${companyInformation.getNameAndIdentifier()}")
             companyDataControllerApi.patchCompanyById(companyId, companyPatch)
-            logger.info("Patch for ${companyInformation.getNameAndIdentifier()}: $companyPatch")
         }
     }
 
