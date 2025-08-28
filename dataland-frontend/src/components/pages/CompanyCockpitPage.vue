@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject, unref } from 'vue';
+import { ref, reactive, watch, onMounted, inject } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -87,7 +87,7 @@ const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
-const userRole = ref<CompanyRole | undefined>(undefined);
+const userRole = ref<CompanyRole | null>(null);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
@@ -122,12 +122,13 @@ function handleUsersChanged(message?: string): void {
 async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
 
-  const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  const userRole = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
+  userRole.value =
+    companyRoleAssignmentsRef.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ||
+    null;
   isUserCompanyOwnerOrUploader.value =
-    userRole.includes(CompanyRole.CompanyOwner) || userRole.includes(CompanyRole.DataUploader);
+    userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserCompanyMember.value = userRole.length > 0;
+  isUserCompanyMember.value = userRole.value !== null;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }

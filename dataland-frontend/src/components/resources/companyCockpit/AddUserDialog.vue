@@ -4,7 +4,12 @@
       <template #content>
         <b>Add user by email address</b>
         <div class="search-container">
-          <InputText v-model="searchQuery" placeholder="Enter email address" class="search-input" />
+          <InputText
+            v-model="searchQuery"
+            placeholder="Enter email address"
+            class="search-input"
+            data-test="email-input-field"
+          />
           <Button label="SELECT" @click="selectUser" data-test="select-user-button" />
           <Message
             v-if="unknownUserError"
