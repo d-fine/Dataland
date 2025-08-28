@@ -28,15 +28,15 @@ class SelectionLogicTest {
         @JvmStatic
         fun provideCompanyCases() =
             listOf(
-                *group1and2Cases().toTypedArray(),
-                *group3Cases().toTypedArray(),
-                *group4Cases().toTypedArray(),
-                *group5aCases().toTypedArray(),
-                *group5bCases().toTypedArray(),
+                *group1and2SimpleAndWhiteListedCases().toTypedArray(),
+                *group3TransliterationsAndASCIIStringCases().toTypedArray(),
+                *group4AutoASCIITransliterationCases().toTypedArray(),
+                *group5aAlternativesInSingleLanguageCases().toTypedArray(),
+                *group5bAlternativesInMultipleLanguagesCases().toTypedArray(),
             )
 
         // Group 1 and 2 combined: Simple and whitelisted cases
-        private fun group1and2Cases() =
+        private fun group1and2SimpleAndWhiteListedCases() =
             listOf(
                 Case(
                     description = "Not whitelisted (ar), no transliterated or other names",
@@ -64,122 +64,134 @@ class SelectionLogicTest {
             )
 
         // Group 3: Cases involving transliterations and ASCII strings
-        private fun group3Cases() =
+        private val case3aTransliterationsAndASCIIStrings =
+            Case(
+                description = "Not whitelisted (sv) with Preferred ASCII in en + Alternative in en-US",
+                legalName = LegalName(lang = "sv", name = "Förening Aktiebolag"),
+                transliteratedNames =
+                    listOf(
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Forening Aktiebolag",
+                            lang = "en",
+                        ),
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Forening AKIEBOLAG",
+                            lang = "en",
+                        ),
+                    ),
+                otherEntityNames =
+                    listOf(
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
+                                    .toString(),
+                            name = "Forening Ltd",
+                            lang = "en-US",
+                        ),
+                    ),
+                expected = "Forening Aktiebolag",
+            )
+
+        private val case3bTransliterationsAndASCIIStrings =
+            Case(
+                description = "Not whitelisted (sv) with Preferred ASCII in es + fr",
+                legalName = LegalName(lang = "sv", name = "Målin Aktiebolag"),
+                transliteratedNames =
+                    listOf(
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Malin AB",
+                            lang = "es",
+                        ),
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Malin ab",
+                            lang = "fr",
+                        ),
+                    ),
+                expected = "Malin AB",
+            )
+
+        private fun group3TransliterationsAndASCIIStringCases() =
             listOf(
-                Case(
-                    description = "Not whitelisted (sv) with Preferred ASCII in en + Alternative in en-US",
-                    legalName = LegalName(lang = "sv", name = "Förening Aktiebolag"),
-                    transliteratedNames =
-                        listOf(
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Forening Aktiebolag",
-                                lang = "en",
-                            ),
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Forening AKIEBOLAG",
-                                lang = "en",
-                            ),
-                        ),
-                    otherEntityNames =
-                        listOf(
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.ALTERNATIVE_LANGUAGE_LEGAL_NAME
-                                        .toString(),
-                                name = "Forening Ltd",
-                                lang = "en-US",
-                            ),
-                        ),
-                    expected = "Forening Aktiebolag",
-                ),
-                Case(
-                    description = "Not whitelisted (sv) with Preferred ASCII in es + fr",
-                    legalName = LegalName(lang = "sv", name = "Målin Aktiebolag"),
-                    transliteratedNames =
-                        listOf(
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Malin AB",
-                                lang = "es",
-                            ),
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Malin ab",
-                                lang = "fr",
-                            ),
-                        ),
-                    expected = "Malin AB",
-                ),
+                case3aTransliterationsAndASCIIStrings,
+                case3bTransliterationsAndASCIIStrings,
             )
 
         // Group 4: AUTO ASCII transliterations
-        private fun group4Cases() =
+
+        private val case4aAutoASCIITransliterations =
+            Case(
+                description = "Not whitelisted (da) with AUTO ASCII in en + fr",
+                legalName = LegalName(lang = "da", name = "Høksve A/S"),
+                transliteratedNames =
+                    listOf(
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Hoksve AS",
+                            lang = "en",
+                        ),
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Hoksve as",
+                            lang = "en",
+                        ),
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "Hoksve",
+                            lang = "fr",
+                        ),
+                    ),
+                expected = "Hoksve AS",
+            )
+
+        private val case4bAutoASCIITransliterations =
+            Case(
+                description = "Not whitelisted (da) with AUTO ASCII in fr + pl",
+                legalName = LegalName(lang = "da", name = "JVR A/S"),
+                transliteratedNames =
+                    listOf(
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "JVR a.s.",
+                            lang = "fr",
+                        ),
+                        AlternativeEntityName(
+                            type =
+                                CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
+                                    .toString(),
+                            name = "JVR AS",
+                            lang = "pl",
+                        ),
+                    ),
+                expected = "JVR a.s.",
+            )
+
+        private fun group4AutoASCIITransliterationCases() =
             listOf(
-                Case(
-                    description = "Not whitelisted (da) with AUTO ASCII in en + fr",
-                    legalName = LegalName(lang = "da", name = "Høksve A/S"),
-                    transliteratedNames =
-                        listOf(
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Hoksve AS",
-                                lang = "en",
-                            ),
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Hoksve as",
-                                lang = "en",
-                            ),
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "Hoksve",
-                                lang = "fr",
-                            ),
-                        ),
-                    expected = "Hoksve AS",
-                ),
-                Case(
-                    description = "Not whitelisted (da) with AUTO ASCII in fr + pl",
-                    legalName = LegalName(lang = "da", name = "JVR A/S"),
-                    transliteratedNames =
-                        listOf(
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "JVR a.s.",
-                                lang = "fr",
-                            ),
-                            AlternativeEntityName(
-                                type =
-                                    CompanyNameSelectionStaticValues.AltenativeNameType.AUTO_ASCII_TRANSLITERATED_LEGAL_NAME
-                                        .toString(),
-                                name = "JVR AS",
-                                lang = "pl",
-                            ),
-                        ),
-                    expected = "JVR a.s.",
-                ),
+                case4aAutoASCIITransliterations, case4bAutoASCIITransliterations,
             )
 
         // Group 5a: Cases with alternatives in a single language
-        private fun group5aCases() =
+        private fun group5aAlternativesInSingleLanguageCases() =
             listOf(
                 Case(
                     description = "Not whitelisted (pl) with Alternative in en + AUTO ASCII",
@@ -216,7 +228,7 @@ class SelectionLogicTest {
             )
 
         // Group 5b: Cases with alternatives in multiple languages
-        private fun group5bCases() =
+        private fun group5bAlternativesInMultipleLanguagesCases() =
             listOf(
                 Case(
                     description = "Not whitelisted (pl) with Alternatives in en, de, es",
