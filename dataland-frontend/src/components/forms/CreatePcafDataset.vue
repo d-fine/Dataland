@@ -67,6 +67,10 @@
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
                         :unit="field.unit"
+                        @reports-updated="updateDocumentsList"
+                        @field-specific-documents-updated="
+                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                       />
                     </FormKit>
                   </div>
@@ -129,6 +133,7 @@ import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import { computed, inject, onMounted, ref } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
+import { type DocumentToUpload } from '@/utils/FileUploadUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const props = defineProps({
@@ -165,12 +170,41 @@ const subcategoryVisibilityMap = computed((): Map<Subcategory, boolean> => {
   return new Map<Subcategory, boolean>();
 });
 
+
+/**
+ *
+
 onMounted(() => {
   if (
     (templateDataId && typeof templateDataId === 'string') ||
     (templateReportingPeriod && typeof templateReportingPeriod === 'string')
   ) {
+    // holt Daten aus backend aber das sind nur MetaDaten (Doc hash etc.)
+    // Für docs nicht aus datenmodell holen
+    // Bei PCAF über API CAll aus Backend
+    // Mir ist egal was zu den Docs steht
+    // Wenn daten aus dem backend zieht, dann muss er das im frontend pre selected
+    // leerer Datensatz -> keine loadPcafData, dann sollte man in extendedDatepoints die docs auswählen können
+    // bei onmounted alle docs laden -> so zur Verfügung stellen dass die mit dme Formkit pre select funktioniert (siehe NuG Page)
+    // für preselct: schauen wie referneced reports gecalled wird und was ich brauchen. Kann sein dass wenn ich pcaf datensatz hole, dass vielleicht shcon alles da ist
+
+    // 1. Schritt: onLoad Documents laden ->
     void loadPcafData();
+  }
+});
+ */
+
+onMounted(async () => {
+  if (templateDataId || templateReportingPeriod) {
+    await loadPcafData(); // Dataset laden
+    // Dokument-IDs aus fieldSpecificDocuments extrahieren
+    const allDocIds = Object.values(
+      (companyAssociatedDataPcafData.value as CompanyAssociatedDataPcafData & { fieldSpecificDocuments?: Record<string, string[]> })
+        .fieldSpecificDocuments ?? {}
+    ).flat(); // string[]
+    if (allDocIds.length) {
+      await updateDocumentsList(allDocIds); // Array von IDs übergeben
+    }
   }
 });
 
@@ -236,6 +270,42 @@ function onSubmitButtonClick(): void {
   submitForm(formId);
   isJustClicked.value = true;
   setTimeout(() => (isJustClicked.value = false), 500);
+}
+
+const availableReports = ref<DocumentToUpload[]>([]);
+
+/**
+ * Fetches and updates the list of available document metadata based on the provided document IDs.
+ * @param documentIds - A comma-separated string of document IDs to fetch metadata for.
+ */
+async function updateDocumentsList(documentIds: string[]): Promise<void> {
+  try {
+    const clientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+    const documentControllerApi = clientProvider.apiClients.documentController;
+
+    const documents = await Promise.all(
+      documentIds.map(id => documentControllerApi.getDocument(id).then(res => res.data as unknown as DocumentToUpload))
+    );
+
+    availableReports.value = documents;
+  } catch (error) {
+    console.error("Error fetching document metadata:", error);
+  }
+}
+
+/**
+ * Updates the documents associated with a specific field in the PCAF data.
+ * @param fieldName - The name of the field to update documents for.
+ * @param documents - The list of document IDs to associate with the field.
+ */
+function updateDocumentsOnField(fieldName: string, documentIds: string[]): void {
+  const data = companyAssociatedDataPcafData.value as CompanyAssociatedDataPcafData & {
+    fieldSpecificDocuments?: Record<string, string[]>;
+  };
+  if (!data.fieldSpecificDocuments) {
+    data.fieldSpecificDocuments = {};
+  }
+  data.fieldSpecificDocuments[fieldName] = documentIds;
 }
 </script>
 
