@@ -9,6 +9,7 @@ COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document
 COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json
 COPY ./dataland-email-service/emailServiceOpenApi.json ./dataland-email-service/emailServiceOpenApi.json
 COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/userServiceOpenApi.json
+COPY ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-specification-service/specificationServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-e2etests/ ./dataland-e2etests
