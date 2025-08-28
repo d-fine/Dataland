@@ -53,6 +53,7 @@
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.6.0",
     "@vue/test-utils": "2.4.6",
+    # Mark as manually blocked
     "@vue/tsconfig": "0.8.1",
     "cypress": "13.17.0",
     "cypress-wait-until": "3.0.2",
