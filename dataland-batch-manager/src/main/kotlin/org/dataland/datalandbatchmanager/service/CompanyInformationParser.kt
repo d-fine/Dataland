@@ -14,7 +14,7 @@ import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
 
 /**
- * Class to read in the zipped CSV file and return buffered GleifCompanyInformation objects
+ * Class to read in the zipped CSV or XML file and return buffered GleifCompanyInformation objects
  */
 @Component
 class CompanyInformationParser {
@@ -112,7 +112,7 @@ class CompanyInformationParser {
      * @return An iterable of the corresponding objects
      */
     fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifRelationshipInformation> =
-        readCsVDataFromBufferedReader(bufferedReader)
+        readCsvDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed xml content into an GleifLEIData object
