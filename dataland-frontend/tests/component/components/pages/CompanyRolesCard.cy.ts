@@ -124,7 +124,11 @@ describe('Component test for CompanyRolesCard', () => {
    */
   function validateUserTable(expectedUsers: CompanyRoleAssignmentExtended[]): void {
     if (expectedUsers.length === 0) {
-      cy.get('table').should('not.exist');
+      cy.get('table').should('exist');
+      cy.get('table').contains(dummyFirstName).should('not.exist');
+      cy.get('table').contains(dummyLastName).should('not.exist');
+      cy.get('table').contains(dummyEmail).should('not.exist');
+      cy.get('table').contains(dummyUserId).should('not.exist');
       return;
     }
 
@@ -144,7 +148,6 @@ describe('Component test for CompanyRolesCard', () => {
   /**
    * Validates the Add User button visibility and functionality
    * @param shouldBeVisible whether the button should be visible
-   * @param expectedLabel the expected button label
    */
   function validateAddUserButton(shouldBeVisible: boolean): void {
     if (shouldBeVisible) {
@@ -310,7 +313,7 @@ describe('Component test for CompanyRolesCard', () => {
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
 
-      cy.get('[role="dialog"]').should('contain', 'Change User’s Role');
+      cy.get('[role="dialog"]').should('contain', 'Change Role');
       cy.get('[role="dialog"]').should('contain', `${dummyFirstName} ${dummyLastName}, ${dummyEmail}`);
       cy.get('[role="listbox"]').should('exist');
     });
@@ -331,7 +334,7 @@ describe('Component test for CompanyRolesCard', () => {
     it('emits users-changed event after successful role change', () => {
       const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
       mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner).then(({ wrapper, component }) => {
+      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner).then(({ wrapper }) => {
         cy.wait('@getRoleAssignments');
         cy.get('[data-test="dialog-button"]').click();
         cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();

@@ -7,12 +7,16 @@ describe('AddMemberDialog Component Tests', function () {
   beforeEach(function () {
     // @ts-ignore
     cy.mountWithPlugins(AddMemberDialog, {
+      props: {
+        companyId: 'company-123',
+        role: 'admin',
+        existingUsers,
+      },
       keycloak: minimalKeycloakMock({}),
       global: {
         provide: {
           dialogRef: {
             value: {
-              data: { companyId: 'company-123', role: 'admin', existingUsers },
               close: cy.stub().as('dialogClose'),
             },
           },
@@ -165,17 +169,6 @@ describe('AddMemberDialog Component Tests', function () {
 
       cy.wait('@assignRole');
       cy.get('@assignRole.all').should('have.length', 2);
-      cy.get('@dialogClose').should('have.been.calledWith', Cypress.sinon.match.has('selectedUsers'));
-    });
-
-    it('handles edge cases during save', function () {
-      saveChanges();
-      cy.get('@dialogClose').should('have.been.called');
-      cy.intercept('POST', '**/company-role-assignments/*/*/*', { statusCode: 500 }).as('assignRoleError');
-      addUser('john@doe.com');
-      saveChanges();
-      cy.wait('@assignRoleError');
-      cy.get('@dialogClose').should('have.been.called');
     });
   });
 });

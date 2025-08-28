@@ -18,7 +18,11 @@
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+        <TabPanel
+          v-if="isCompanyMemberOrAdmin"
+          value="users"
+          style="background-color: var(--p-surface-50); padding: var(--spacing-xs)"
+        >
           <CompanyRolesCard
             v-for="role in roles"
             :key="`${String(role)}-${refreshAllCards}`"
