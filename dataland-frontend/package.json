@@ -44,7 +44,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.14.5",
+    "@cypress/code-coverage": "3.14.6",
     "@faker-js/faker": "9.9.0",
     "@tsconfig/node20": "20.1.6",
     "@types/markdown-it": "14.1.2",
@@ -59,11 +59,11 @@
     "depcheck": "1.4.7",
     "dompurify": "3.2.6",
     "eslint": "9.31.0",
-    "eslint-plugin-cypress": "5.1.0",
+    "eslint-plugin-cypress": "5.1.1",
     "eslint-plugin-jsdoc": "51.4.1",
     "eslint-plugin-vue": "10.3.0",
     "git-commit-id": "2.0.1",
-    "lint-staged": "16.1.2",
+    "lint-staged": "16.1.5",
     "markdown-it": "14.1.0",
     "mocha": "11.7.1",
     "npm-check-updates": "18.0.2",
@@ -76,6 +76,6 @@
     "vite": "6.3.5",
     "vite-plugin-istanbul": "7.1.0",
     "vue-markdown-render": "2.2.1",
-    "vue-tsc": "3.0.3"
+    "vue-tsc": "3.0.5"
   }
 }
