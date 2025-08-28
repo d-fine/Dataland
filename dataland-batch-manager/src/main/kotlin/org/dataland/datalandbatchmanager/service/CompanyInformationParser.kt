@@ -87,7 +87,7 @@ class CompanyInformationParser {
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding T objects
      */
-    private final inline fun <reified T> readCsVDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
+    private final inline fun <reified T> readCsvDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
         Iterable<T> {
             CsvMapper()
                 .registerModule(kotlinModule())
@@ -127,5 +127,5 @@ class CompanyInformationParser {
      * @return An iterable of the corresponding objects
      */
     fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<NorthDataCompanyInformation> =
-        readCsVDataFromBufferedReader(bufferedReader)
+        readCsvDataFromBufferedReader(bufferedReader)
 }
