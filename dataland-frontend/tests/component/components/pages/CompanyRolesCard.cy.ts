@@ -334,7 +334,7 @@ describe('Component test for CompanyRolesCard', () => {
     it('emits users-changed event after successful role change', () => {
       const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
       mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner).then(({ wrapper, component }) => {
+      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner).then(({ wrapper }) => {
         cy.wait('@getRoleAssignments');
         cy.get('[data-test="dialog-button"]').click();
         cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
