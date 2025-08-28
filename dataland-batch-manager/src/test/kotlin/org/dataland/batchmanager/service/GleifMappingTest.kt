@@ -104,9 +104,7 @@ class GleifMappingTest {
         val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
         val gleifRecord = CompanyInformationParser().readGleifCompanyDataFromBufferedReader(input).leiRecords.first()
 
-        println(gleifRecord.entity.legalName)
         val companyInformation = GleifCompanyCombinedInformation(gleifRecord).toCompanyPost()
-        println(companyInformation)
         Assertions.assertEquals(
             expectedGleifRecord,
             gleifRecord,

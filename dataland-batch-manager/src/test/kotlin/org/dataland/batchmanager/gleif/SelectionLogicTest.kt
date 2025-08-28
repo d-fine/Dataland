@@ -8,7 +8,6 @@ import org.dataland.datalandbatchmanager.model.HeadquartersAddress
 import org.dataland.datalandbatchmanager.model.LEIRecord
 import org.dataland.datalandbatchmanager.model.LegalName
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -315,12 +314,7 @@ class SelectionLogicTest {
                 )
             val result = combinedInfo.toCompanyPost().companyAlternativeNames
 
-            // Assert: Validate the result
-            if (expected == null) {
-                assertNull(result)
-            } else {
-                assertEquals(expected, result)
-            }
+            assertEquals(expected, result)
         }
     }
 }
