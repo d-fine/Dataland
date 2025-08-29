@@ -70,18 +70,19 @@ export const sfdrDataModel = [
     subcategories: [
       {
         name: 'greenhouseGasEmissions',
-        label: 'Greenhouse gas emissions ',
+        label: 'Greenhouse gas emissions',
         fields: [
           {
             name: 'scope1GhgEmissionsInTonnes',
             label: 'Scope 1 GHG emissions',
             description:
-              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope2GhgEmissionsInTonnes',
@@ -98,23 +99,25 @@ export const sfdrDataModel = [
             name: 'scope2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 2 GHG emissions (location-based)',
             description:
-              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 2 GHG emissions (market-based)',
             description:
-              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope1And2GhgEmissionsInTonnes',
@@ -159,6 +162,7 @@ export const sfdrDataModel = [
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope3UpstreamGhgEmissionsInTonnes',

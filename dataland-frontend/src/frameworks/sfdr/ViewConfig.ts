@@ -69,7 +69,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
     children: [
       {
         type: 'section',
-        label: 'Greenhouse gas emissions ',
+        label: 'Greenhouse gas emissions',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -77,7 +77,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 GHG emissions',
             explanation:
-              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -109,7 +109,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (location-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -125,7 +125,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (market-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(

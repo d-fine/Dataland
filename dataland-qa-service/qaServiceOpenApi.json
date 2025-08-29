@@ -316,6 +316,149 @@
         ]
       }
     },
+    "/data/pcaf/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "pcaf-data-qa-report-controller"
+        ],
+        "operationId": "getPcafDataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationPcafData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "pcaf-data-qa-report-controller"
+        ],
+        "operationId": "postPcafDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PcafData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas/{dataId}/reports": {
       "get": {
         "tags": [
@@ -1187,6 +1330,75 @@
         ]
       }
     },
+    "/data/pcaf/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "pcaf-data-qa-report-controller"
+        ],
+        "operationId": "setPcafDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1494,6 +1706,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1592,6 +1805,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1855,6 +2069,72 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndQaReportMetadata"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "pcaf-data-qa-report-controller"
+        ],
+        "operationId": "getPcafDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationPcafData"
                 }
               }
             }
@@ -3271,6 +3551,230 @@
           "active": {
             "type": "boolean",
             "description": "Boolean flag. True if and only if the QA report is marked as active."
+          }
+        }
+      },
+      "ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Listed",
+              "Unlisted"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "CommunicationServices",
+              "ConsumerDiscretionary",
+              "ConsumerStaples",
+              "Energy",
+              "Financials",
+              "HealthCare",
+              "Industrials",
+              "Industry",
+              "InformationTechnology",
+              "Machinery",
+              "Materials",
+              "RealEstate",
+              "Sovereign"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "PcafCompanyValue": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueListedCompany"
+          },
+          "unlistedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueUnlistedCompany"
+          }
+        }
+      },
+      "PcafCompanyvalueListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "bookValueOfDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "minoritiesInterestInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafCompanyvalueUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/PcafGeneral"
+          },
+          "companyValue": {
+            "$ref": "#/components/schemas/PcafCompanyValue"
+          },
+          "environmental": {
+            "$ref": "#/components/schemas/PcafEnvironmental"
+          }
+        }
+      },
+      "PcafEnvironmental": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "$ref": "#/components/schemas/PcafEnvironmentalGreenhouseGasEmissions"
+          }
+        }
+      },
+      "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafGeneral": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/PcafGeneralCompany"
+          }
+        }
+      },
+      "PcafGeneralCompany": {
+        "type": "object",
+        "properties": {
+          "mainPcafSector": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
+          },
+          "companyExchangeStatus": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
           }
         }
       },
@@ -6134,6 +6638,7 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ]
           },
@@ -6160,6 +6665,21 @@
           },
           "ref": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationPcafData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/PcafData"
           }
         }
       },

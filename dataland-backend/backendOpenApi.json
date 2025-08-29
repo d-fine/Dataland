@@ -827,6 +827,76 @@
         ]
       }
     },
+    "/data/pcaf": {
+      "post": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedPcafData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "description": "If true, data is not sent to QA.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas": {
       "post": {
         "tags": [
@@ -3142,6 +3212,333 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/{dataId}": {
+      "get": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedPcafData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "description": "The unique identifier of the dataset.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/export": {
+      "get": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "exportCompanyAssociatedPcafDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The reporting periods for which the data export is requested.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
+          },
+          {
+            "name": "companyIds",
+            "in": "query",
+            "description": "A list of Dataland company ids for which the data export is requested.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
+          },
+          {
+            "name": "fileFormat",
+            "in": "query",
+            "description": "The file format for the data export.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFileType"
+            }
+          },
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully exported datasets.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Company Id could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "getAllCompanyPcafData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "description": "Boolean parameter. If set to true or empty, only currently active data is returned. If set to false, all data is returned regardless of active status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": 2023
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationPcafData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/": {
+      "get": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedPcafDataByDimensions",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": 2023
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
                 }
               }
             }
@@ -8529,6 +8926,332 @@
             ]
           }
         }
+      },
+      "CompanyAssociatedDataPcafData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PcafData"
+          }
+        }
+      },
+      "ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompanyCompanyExchangeStatusOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompanyMainPcafSectorOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Machinery\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\"",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "PcafCompanyValue": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyvalueListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyvalueUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneral"
+              }
+            ]
+          },
+          "companyValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyValue"
+              }
+            ]
+          },
+          "environmental": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmental"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmental": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalGreenhouseGasEmissions"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralGeneral"
+              }
+            ]
+          },
+          "company": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneralCompany": {
+        "type": "object",
+        "properties": {
+          "mainPcafSector": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
+              }
+            ]
+          },
+          "companyExchangeStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "type": "string",
+        "enum": [
+          "Listed",
+          "Unlisted"
+        ]
+      },
+      "PcafGeneralCompanyMainPcafSectorOptions": {
+        "type": "string",
+        "enum": [
+          "CommunicationServices",
+          "ConsumerDiscretionary",
+          "ConsumerStaples",
+          "Energy",
+          "Financials",
+          "HealthCare",
+          "Industrials",
+          "Industry",
+          "InformationTechnology",
+          "Machinery",
+          "Materials",
+          "RealEstate",
+          "Sovereign"
+        ]
+      },
+      "PcafGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The date the fiscal year ends.",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "PcafGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "string",
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "\"Option 1\"",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "CompanyAssociatedDataNuclearAndGasData": {
         "required": [
@@ -15922,6 +16645,21 @@
           }
         }
       },
+      "DataAndMetaInformationPcafData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PcafData"
+          }
+        }
+      },
       "DataAndMetaInformationNuclearAndGasData": {
         "required": [
           "data",
@@ -16078,6 +16816,7 @@
           "eutaxonomy-non-financials",
           "nuclear-and-gas",
           "lksg",
+          "pcaf",
           "vsme"
         ]
       },

@@ -4,6 +4,7 @@ import eutaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 import lksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import nuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
+import pcafBaseFrameworkDefinition from '@/frameworks/pcaf/BaseFrameworkDefinition';
 import sfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefinition<object>> = {
@@ -11,5 +12,6 @@ export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefin
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   lksg: lksgBaseFrameworkDefinition,
   nuclearAndGas: nuclearAndGasBaseFrameworkDefinition,
+  pcaf: pcafBaseFrameworkDefinition,
   sfdr: sfdrBaseFrameworkDefinition,
 };

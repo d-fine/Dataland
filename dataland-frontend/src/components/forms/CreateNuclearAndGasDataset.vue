@@ -123,6 +123,7 @@
   </Card>
 </template>
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -172,6 +173,7 @@ export default defineComponent({
   },
   name: 'CreateNuclearAndGasDataset',
   components: {
+    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,

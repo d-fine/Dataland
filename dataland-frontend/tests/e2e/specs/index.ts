@@ -43,6 +43,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-financials');
   require('./eu-taxonomy-non-financials');
   require('./vsme');
+  require('./pcaf');
   require('./company-ownership');
 }
 

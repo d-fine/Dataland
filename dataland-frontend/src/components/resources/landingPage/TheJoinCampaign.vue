@@ -23,14 +23,14 @@
         rounded
       />
       <div class="joincampaign__grid" role="grid" aria-labelledby="joincampaign-heading">
-        <tr v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">
-          <td class="joincampaign__cell joincampaign__cell--icon">
+        <div v-for="(card, index) in joinCampaignSection.cards" :key="index" class="joincampaign__row">
+          <div class="joincampaign__cell joincampaign__cell--icon">
             <span>{{ card.title }}</span>
-          </td>
-          <td class="joincampaign__cell">
+          </div>
+          <div class="joincampaign__cell">
             {{ card.text }}
-          </td>
-        </tr>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -96,7 +96,7 @@ const getInTouchSection = findSection('Get in touch');
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     align-self: flex-end;
     gap: 32px;
     grid-column: 1 / -1;

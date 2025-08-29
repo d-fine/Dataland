@@ -3,6 +3,7 @@ import eutaxonomyFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxo
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition';
 import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFrameworkDefinition';
 import nuclearAndGasFrontendFrameworkDefinition from '@/frameworks/nuclear-and-gas/FrontendFrameworkDefinition';
+import pcafFrontendFrameworkDefinition from '@/frameworks/pcaf/FrontendFrameworkDefinition';
 import sfdrFrontendFrameworkDefinition from '@/frameworks/sfdr/FrontendFrameworkDefinition';
 import vsmeFrontendFrameworkDefinition from '@/frameworks/vsme/FrontendFrameworkDefinition';
 import { type FrontendFrameworkDefinition } from '@/frameworks/BaseFrameworkDefinition';
@@ -13,6 +14,7 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   nuclearAndGas: nuclearAndGasFrontendFrameworkDefinition,
+  pcaf: pcafFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
   vsme: vsmeFrontendFrameworkDefinition,
 };

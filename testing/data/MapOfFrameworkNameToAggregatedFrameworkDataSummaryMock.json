@@ -14,7 +14,10 @@
 	"lksg": {
 		"numberOfProvidedReportingPeriods": 30
 	},
-	"vsme": {
+	"pcaf": {
 		"numberOfProvidedReportingPeriods": 22
+	},
+	"vsme": {
+		"numberOfProvidedReportingPeriods": 20
 	}
 }
