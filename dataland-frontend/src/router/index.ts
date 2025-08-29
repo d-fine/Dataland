@@ -40,7 +40,7 @@ const routes = [
     name: 'Welcome to Dataland',
     component: LandingPage,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -48,7 +48,7 @@ const routes = [
     name: 'About Page',
     component: AboutPage,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -56,7 +56,7 @@ const routes = [
     name: 'View Sample Data in Preview Mode',
     component: ViewTeaserCompanyData,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -180,7 +180,7 @@ const routes = [
     name: 'DataPrivacy',
     component: DataPrivacy,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -188,7 +188,7 @@ const routes = [
     name: 'TermsAndConditions',
     component: TermsAndConditions,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -196,7 +196,7 @@ const routes = [
     name: 'Pricing',
     component: PricingAndRemuneration,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -204,7 +204,7 @@ const routes = [
     name: 'TokenTerms',
     component: TokenTerms,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -212,7 +212,7 @@ const routes = [
     name: 'LandingImprint',
     component: TheImprint,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
@@ -220,14 +220,14 @@ const routes = [
     name: 'NoContentFound',
     component: NoContentFound,
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
   {
     path: '/:notFound(.*)',
     redirect: '/nocontent',
     meta: {
-      allowsUnauthorized: true,
+      requiresAuthentication: false,
     },
   },
 ];

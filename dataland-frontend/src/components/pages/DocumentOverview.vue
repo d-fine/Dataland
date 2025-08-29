@@ -1,101 +1,97 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader v-if="!useMobileView" />
+  <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <div class="selection-header">
+    <ChangeFrameworkDropdown
+      :data-meta-information="dataMetaInformation"
+      data-type="Documents"
+      :company-id="companyId"
+    />
+    <FrameworkDataSearchDropdownFilter
+      :disabled="waitingForData"
+      v-model="selectedDocumentType"
+      ref="DocumentTypeFilter"
+      :available-items="availableDocumentTypes"
+      filter-name="Types"
+      data-test="document-type-picker"
+      id="document-type-filter"
+      filter-placeholder="Search by document type"
+      style="margin: 0 1rem"
+    />
+    <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
+  </div>
 
-    <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
-    <div class="selection-header">
-      <ChangeFrameworkDropdown
-        :data-meta-information="dataMetaInformation"
-        data-type="Documents"
-        :company-id="companyId"
-      />
-      <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedDocumentType"
-        ref="DocumentTypeFilter"
-        :available-items="availableDocumentTypes"
-        filter-name="Types"
-        data-test="document-type-picker"
-        id="document-type-filter"
-        filter-placeholder="Search by document type"
-        style="margin: 0 1rem"
-      />
-      <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
-    </div>
-
-    <TheContent class="flex flex-col p-3">
-      <DataTable
-        v-if="documentsFiltered && documentsFiltered.length > 0"
-        data-test="documents-overview-table"
-        :value="documentsFiltered"
-        :paginator="true"
-        :lazy="true"
-        paginator-position="bottom"
-        :total-records="totalRecords"
-        :rows="rowsPerPage"
-        :first="firstRowIndex"
-        @sort="onSort($event)"
-        @page="onPage($event)"
-        :alwaysShowPaginator="true"
-      >
-        <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
-        <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
-          <template #body="tableRow">
-            {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
-          </template>
-        </Column>
-        <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
-          <template #body="tableRow">
-            <div>
-              {{ dateStringFormatter(tableRow.data.publicationDate) }}
-            </div>
-          </template>
-        </Column>
-        <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
-        <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-          <template #body="tableRow">
-            <PrimeButton
-              label="VIEW DETAILS"
-              icon="pi pi-angle-right"
-              iconPos="right"
-              variant="link"
-              :pt="{
-                root: { style: { whiteSpace: 'nowrap' } },
-              }"
-              @click="openMetaInfoDialog(tableRow.data.documentId)"
-            />
-          </template>
-        </Column>
-        <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-          <template #body="tableRow">
-            <PrimeButton
-              :label="
-                activeDownloadId === tableRow.data.documentId && percentCompleted > 0
-                  ? `DOWNLOAD (${percentCompleted}%)`
-                  : 'DOWNLOAD'
-              "
-              data-test="document-download-button"
-              @click="
-                handleDocumentDownload({
-                  fileReference: tableRow.data.documentId,
-                  downloadName: documentNameOrId(tableRow.data),
-                })
-              "
-              icon="pi pi-download"
-              :pt="{ root: { style: 'width: 12rem;' } }"
-            />
-          </template>
-        </Column>
-      </DataTable>
-      <div v-else class="centered-element-wrapper">
-        <div class="text-content-wrapper">
-          <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
-        </div>
+  <TheContent class="flex flex-col p-3">
+    <DataTable
+      v-if="documentsFiltered && documentsFiltered.length > 0"
+      data-test="documents-overview-table"
+      :value="documentsFiltered"
+      :paginator="true"
+      :lazy="true"
+      paginator-position="bottom"
+      :total-records="totalRecords"
+      :rows="rowsPerPage"
+      :first="firstRowIndex"
+      @sort="onSort($event)"
+      @page="onPage($event)"
+      :alwaysShowPaginator="true"
+    >
+      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
+      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
+        <template #body="tableRow">
+          {{ humanizeStringOrNumber(tableRow.data.documentCategory) }}
+        </template>
+      </Column>
+      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
+        <template #body="tableRow">
+          <div>
+            {{ dateStringFormatter(tableRow.data.publicationDate) }}
+          </div>
+        </template>
+      </Column>
+      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="tableRow">
+          <PrimeButton
+            label="VIEW DETAILS"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            variant="link"
+            :pt="{
+              root: { style: { whiteSpace: 'nowrap' } },
+            }"
+            @click="openMetaInfoDialog(tableRow.data.documentId)"
+          />
+        </template>
+      </Column>
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="tableRow">
+          <PrimeButton
+            :label="
+              activeDownloadId === tableRow.data.documentId && percentCompleted > 0
+                ? `DOWNLOAD (${percentCompleted}%)`
+                : 'DOWNLOAD'
+            "
+            data-test="document-download-button"
+            @click="
+              handleDocumentDownload({
+                fileReference: tableRow.data.documentId,
+                downloadName: documentNameOrId(tableRow.data),
+              })
+            "
+            icon="pi pi-download"
+            :pt="{ root: { style: 'width: 12rem;' } }"
+          />
+        </template>
+      </Column>
+    </DataTable>
+    <div v-else class="centered-element-wrapper">
+      <div class="text-content-wrapper">
+        <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
       </div>
-    </TheContent>
-    <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
-    <TheFooter />
-  </AuthenticationWrapper>
+    </div>
+  </TheContent>
+  <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
+  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -103,7 +99,6 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
@@ -121,7 +116,6 @@ import type Keycloak from 'keycloak-js';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
 import { inject, onMounted, type Ref, ref, watch } from 'vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import PrimeButton from 'primevue/button';
 import {
   createNewPercentCompletedRef,
@@ -134,7 +128,6 @@ const props = defineProps<{
 }>();
 
 const waitingForData = ref(true);
-const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
 const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrieveAvailableDocumentCategories());

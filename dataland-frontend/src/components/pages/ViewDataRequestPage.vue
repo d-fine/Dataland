@@ -1,272 +1,265 @@
 <template>
-  <AuthenticationWrapper>
-    <TheContent class="min-h-screen flex sheet">
-      <TheHeader />
-      <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
-        <h1 class="text-left">Data Request</h1>
+  <TheContent class="min-h-screen flex sheet">
+    <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
+      <h1 class="text-left">Data Request</h1>
+    </div>
+
+    <PrimeDialog
+      id="successModal"
+      :dismissableMask="true"
+      :modal="true"
+      v-model:visible="successModalIsVisible"
+      :closable="false"
+      style="border-radius: 0.75rem; text-align: center"
+      :show-header="false"
+      data-test="successModal"
+    >
+      <div class="text-center" style="display: flex; flex-direction: column">
+        <div style="margin: 10px">
+          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+        </div>
+        <div style="margin: 10px">
+          <h2 class="m-0" data-test="successText">Success</h2>
+        </div>
       </div>
+      <div class="text-block" style="margin: 15px; white-space: pre">You have successfully withdrawn your request.</div>
+      <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
+    </PrimeDialog>
+    <PrimeDialog
+      :dismissableMask="true"
+      :modal="true"
+      v-if="showNewMessageDialog"
+      v-model:visible="showNewMessageDialog"
+      :closable="true"
+      style="text-align: center"
+      :show-header="true"
+    >
+      <template #header>
+        <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
+      </template>
+      <EmailDetails
+        :is-optional="false"
+        :show-errors="toggleEmailDetailsError"
+        @has-new-input="updateEmailFields"
+        data-test="newMessageModal"
+      />
+      <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
+        <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
+      </PrimeButton>
+    </PrimeDialog>
 
-      <PrimeDialog
-        id="successModal"
-        :dismissableMask="true"
-        :modal="true"
-        v-model:visible="successModalIsVisible"
-        :closable="false"
-        style="border-radius: 0.75rem; text-align: center"
-        :show-header="false"
-        data-test="successModal"
-      >
-        <div class="text-center" style="display: flex; flex-direction: column">
-          <div style="margin: 10px">
-            <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-          </div>
-          <div style="margin: 10px">
-            <h2 class="m-0" data-test="successText">Success</h2>
-          </div>
+    <PrimeDialog
+      id="reopenModal"
+      :dismissableMask="true"
+      :modal="true"
+      v-model:visible="reopenModalIsVisible"
+      :closable="true"
+      style="text-align: left; height: fit-content; width: 21vw"
+      data-test="reopenModal"
+      class="modal pl-2"
+    >
+      <template #header>
+        <span style="font-weight: bold; margin-right: auto">REOPEN REQUEST</span>
+      </template>
+
+      <FormKit type="form" :actions="false" class="formkit-wrapper">
+        <label for="Message">
+          <b style="margin-bottom: 8px">Message</b>
+        </label>
+        <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
+        <p
+          v-show="reopenMessageError && reopenMessage.length < 10"
+          class="text-danger"
+          data-test="noMessageErrorMessage"
+        >
+          You have not provided a sufficient reason yet. Please provide a reason.
+        </p>
+        <p class="gray-text font-italic" style="text-align: left">
+          Please enter the reason why you think that the dataset should be available. Your message will be forwarded to
+          the data provider.
+        </p>
+      </FormKit>
+      <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
+    </PrimeDialog>
+
+    <PrimeDialog
+      id="reopenedModal"
+      :dismissableMask="true"
+      :modal="true"
+      v-model:visible="reopenedModalIsVisible"
+      :closable="false"
+      style="border-radius: 0.75rem; text-align: center"
+      :show-header="false"
+      data-test="reopenedModal"
+    >
+      <div class="text-center" style="display: flex; flex-direction: column">
+        <div style="margin: 10px">
+          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
         </div>
-        <div class="text-block" style="margin: 15px; white-space: pre">
-          You have successfully withdrawn your request.
+        <div style="margin: 10px">
+          <h2 class="m-0" data-test="successText">Reopened</h2>
         </div>
-        <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
-      </PrimeDialog>
-      <PrimeDialog
-        :dismissableMask="true"
-        :modal="true"
-        v-if="showNewMessageDialog"
-        v-model:visible="showNewMessageDialog"
-        :closable="true"
-        style="text-align: center"
-        :show-header="true"
-      >
-        <template #header>
-          <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
-        </template>
-        <EmailDetails
-          :is-optional="false"
-          :show-errors="toggleEmailDetailsError"
-          @has-new-input="updateEmailFields"
-          data-test="newMessageModal"
-        />
-        <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
-          <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
-        </PrimeButton>
-      </PrimeDialog>
+      </div>
+      <div class="text-block" style="margin: 15px; white-space: pre">
+        You have successfully reopened your data request.
+      </div>
+      <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
+    </PrimeDialog>
 
-      <PrimeDialog
-        id="reopenModal"
-        :dismissableMask="true"
-        :modal="true"
-        v-model:visible="reopenModalIsVisible"
-        :closable="true"
-        style="text-align: left; height: fit-content; width: 21vw"
-        data-test="reopenModal"
-        class="modal pl-2"
-      >
-        <template #header>
-          <span style="font-weight: bold; margin-right: auto">REOPEN REQUEST</span>
-        </template>
+    <div class="py-4">
+      <div class="grid col-9 justify-content-around">
+        <div class="col-4">
+          <div class="card" data-test="card_requestDetails">
+            <div class="card__title">Request Details</div>
+            <div class="card__separator" />
+            <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
+            <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
+            <div class="card__subtitle">Company</div>
+            <div class="card__data">{{ companyName }}</div>
+            <div class="card__subtitle">Framework</div>
+            <div class="card__data">
+              {{ getFrameworkTitle(storedDataRequest.dataType) }}
 
-        <FormKit type="form" :actions="false" class="formkit-wrapper">
-          <label for="Message">
-            <b style="margin-bottom: 8px">Message</b>
-          </label>
-          <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
-          <p
-            v-show="reopenMessageError && reopenMessage.length < 10"
-            class="text-danger"
-            data-test="noMessageErrorMessage"
+              <div
+                v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
+                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              >
+                <br />
+                {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
+              </div>
+            </div>
+            <div class="card__subtitle">Reporting year</div>
+            <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+          </div>
+          <div
+            v-show="answeringDataSetUrl"
+            class="link claim-panel-text"
+            style="font-weight: bold"
+            data-test="viewDataset"
+            @click="goToAnsweringDataSetPage()"
           >
-            You have not provided a sufficient reason yet. Please provide a reason.
-          </p>
-          <p class="gray-text font-italic" style="text-align: left">
-            Please enter the reason why you think that the dataset should be available. Your message will be forwarded
-            to the data provider.
-          </p>
-        </FormKit>
-        <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
-      </PrimeDialog>
-
-      <PrimeDialog
-        id="reopenedModal"
-        :dismissableMask="true"
-        :modal="true"
-        v-model:visible="reopenedModalIsVisible"
-        :closable="false"
-        style="border-radius: 0.75rem; text-align: center"
-        :show-header="false"
-        data-test="reopenedModal"
-      >
-        <div class="text-center" style="display: flex; flex-direction: column">
-          <div style="margin: 10px">
-            <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-          </div>
-          <div style="margin: 10px">
-            <h2 class="m-0" data-test="successText">Reopened</h2>
+            VIEW DATASET
           </div>
         </div>
-        <div class="text-block" style="margin: 15px; white-space: pre">
-          You have successfully reopened your data request.
-        </div>
-        <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
-      </PrimeDialog>
-
-      <div class="py-4">
-        <div class="grid col-9 justify-content-around">
-          <div class="col-4">
-            <div class="card" data-test="card_requestDetails">
-              <div class="card__title">Request Details</div>
-              <div class="card__separator" />
-              <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
-              <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
-              <div class="card__subtitle">Company</div>
-              <div class="card__data">{{ companyName }}</div>
-              <div class="card__subtitle">Framework</div>
-              <div class="card__data">
-                {{ getFrameworkTitle(storedDataRequest.dataType) }}
-
-                <div
-                  v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
-                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                >
-                  <br />
-                  {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
-                </div>
-              </div>
-              <div class="card__subtitle">Reporting year</div>
-              <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
-            </div>
-            <div
-              v-show="answeringDataSetUrl"
-              class="link claim-panel-text"
-              style="font-weight: bold"
-              data-test="viewDataset"
-              @click="goToAnsweringDataSetPage()"
-            >
-              VIEW DATASET
-            </div>
-          </div>
-          <div class="grid col-8 flex-direction-column">
-            <div class="col-12">
-              <div class="card" data-test="card_requestIs">
-                <span style="display: flex; align-items: center">
-                  <span class="card__title">Request is:</span>
-                  <DatalandTag
-                    :severity="storedDataRequest.requestStatus || ''"
-                    :value="storedDataRequest.requestStatus"
-                    class="dataland-inline-tag"
-                  />
-                  <span class="card__title">and Access is:</span>
-                  <DatalandTag
-                    :severity="storedDataRequest.accessStatus || ''"
-                    :value="storedDataRequest.accessStatus"
-                    class="dataland-inline-tag"
-                  />
-                  <span class="card__subtitle">
-                    since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
-                  </span>
-                  <span style="margin-left: auto">
-                    <ReviewRequestButtons
-                      v-if="isUsersOwnRequest && isRequestStatusAnswered()"
-                      @request-reopened-or-resolved="initializeComponent()"
-                      :data-request-id="storedDataRequest.dataRequestId"
-                    />
-                  </span>
-                </span>
-                <div class="card__separator" />
-                <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
-              </div>
-              <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
-                <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
-                <div class="card__separator" />
-                Receive emails directly or via summary
-                <ToggleSwitch
-                  style="margin: 1rem 0"
-                  data-test="notifyMeImmediatelyInput"
-                  inputId="notifyMeImmediatelyInput"
-                  v-model="storedDataRequest.notifyMeImmediately"
-                  @update:modelValue="changeReceiveEmails()"
+        <div class="grid col-8 flex-direction-column">
+          <div class="col-12">
+            <div class="card" data-test="card_requestIs">
+              <span style="display: flex; align-items: center">
+                <span class="card__title">Request is:</span>
+                <DatalandTag
+                  :severity="storedDataRequest.requestStatus || ''"
+                  :value="storedDataRequest.requestStatus"
+                  class="dataland-inline-tag"
                 />
-                <label for="notifyMeImmediatelyInput">
-                  <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
-                  <span v-else>weekly summary</span>
-                </label>
-              </div>
-              <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
-                <span style="display: flex; align-items: center">
-                  <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
-                  <span
-                    v-show="isNewMessageAllowed()"
-                    style="cursor: pointer; display: flex; align-items: center"
-                    @click="openMessageDialog()"
-                    data-test="newMessage"
-                  >
-                    <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
-                    <span style="font-weight: bold">NEW MESSAGE</span>
-                  </span>
+                <span class="card__title">and Access is:</span>
+                <DatalandTag
+                  :severity="storedDataRequest.accessStatus || ''"
+                  :value="storedDataRequest.accessStatus"
+                  class="dataland-inline-tag"
+                />
+                <span class="card__subtitle">
+                  since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                 </span>
-                <div class="card__separator" />
-                <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
-                  <div style="color: black; font-weight: bold; font-size: small">
-                    {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
-                  </div>
-                  <div class="message">
-                    <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
-                    <div class="card__separator" />
-                    <div style="color: gray">
-                      {{ message.message }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card" v-show="isRequestReopenable(storedDataRequest.requestStatus)" data-test="card_reopen">
-                <div class="card__title">Reopen Request</div>
-                <div class="card__separator" />
-                <div>
-                  Currently, your request has the status non-sourceable. If you believe that your data should be
-                  available, you can reopen the request and comment why you believe the data should be available.<br />
-                  <br />
-                  <a
-                    class="link"
-                    style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
-                    @click="openModalReopenRequest()"
-                  >
-                    Reopen request</a
-                  >
-                </div>
-              </div>
-              <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
-                <div class="card__title">Withdraw Request</div>
-                <div class="card__separator" />
-                <div>
-                  Once a data request is withdrawn, it will be removed from your data request list. The company owner
-                  will not be notified anymore. <br />
-                  <br />
-                  <PrimeButton
-                    data-test="withdrawRequestButton"
-                    label="WITHDRAW REQUEST"
-                    @click="withdrawRequest()"
-                    variant="link"
+                <span style="margin-left: auto">
+                  <ReviewRequestButtons
+                    v-if="isUsersOwnRequest && isRequestStatusAnswered()"
+                    @request-reopened-or-resolved="initializeComponent()"
+                    :data-request-id="storedDataRequest.dataRequestId"
                   />
+                </span>
+              </span>
+              <div class="card__separator" />
+              <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
+            </div>
+            <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
+              <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
+              <div class="card__separator" />
+              Receive emails directly or via summary
+              <ToggleSwitch
+                style="margin: 1rem 0"
+                data-test="notifyMeImmediatelyInput"
+                inputId="notifyMeImmediatelyInput"
+                v-model="storedDataRequest.notifyMeImmediately"
+                @update:modelValue="changeReceiveEmails()"
+              />
+              <label for="notifyMeImmediatelyInput">
+                <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
+                <span v-else>weekly summary</span>
+              </label>
+            </div>
+            <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
+              <span style="display: flex; align-items: center">
+                <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
+                <span
+                  v-show="isNewMessageAllowed()"
+                  style="cursor: pointer; display: flex; align-items: center"
+                  @click="openMessageDialog()"
+                  data-test="newMessage"
+                >
+                  <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
+                  <span style="font-weight: bold">NEW MESSAGE</span>
+                </span>
+              </span>
+              <div class="card__separator" />
+              <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
+                <div style="color: black; font-weight: bold; font-size: small">
+                  {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
                 </div>
+                <div class="message">
+                  <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
+                  <div class="card__separator" />
+                  <div style="color: gray">
+                    {{ message.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card" v-show="isRequestReopenable(storedDataRequest.requestStatus)" data-test="card_reopen">
+              <div class="card__title">Reopen Request</div>
+              <div class="card__separator" />
+              <div>
+                Currently, your request has the status non-sourceable. If you believe that your data should be
+                available, you can reopen the request and comment why you believe the data should be available.<br />
+                <br />
+                <a
+                  class="link"
+                  style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
+                  @click="openModalReopenRequest()"
+                >
+                  Reopen request</a
+                >
+              </div>
+            </div>
+            <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
+              <div class="card__title">Withdraw Request</div>
+              <div class="card__separator" />
+              <div>
+                Once a data request is withdrawn, it will be removed from your data request list. The company owner will
+                not be notified anymore. <br />
+                <br />
+                <PrimeButton
+                  data-test="withdrawRequestButton"
+                  label="WITHDRAW REQUEST"
+                  @click="withdrawRequest()"
+                  variant="link"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <TheFooter />
-    </TheContent>
-  </AuthenticationWrapper>
+    </div>
+    <TheFooter />
+  </TheContent>
 </template>
 
 <script lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
@@ -293,8 +286,6 @@ export default defineComponent({
     PrimeDialog,
     PrimeButton,
     ToggleSwitch,
-    AuthenticationWrapper,
-    TheHeader,
     TheFooter,
     StatusHistory,
   },

@@ -1,5 +1,4 @@
 <template>
-  <TheHeader v-if="!useMobileView" />
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
@@ -101,7 +100,6 @@ import { ref, reactive, computed, watch, onMounted, inject, unref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
@@ -143,7 +141,6 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
   'companyRoleAssignments',
   ref([])
 );
-const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users'>('datasets');

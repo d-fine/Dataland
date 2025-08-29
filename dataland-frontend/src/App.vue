@@ -1,8 +1,13 @@
 <template>
   <DynamicDialog />
-  <div v-if="routedPageRequiresNoAuthentication">Landing Page Type</div>
-  <div v-else>Application Page Type</div>
-  <router-view />
+  <AuthenticationWrapper v-if="routedPageRequiresAuthentication">
+    <TheHeader />
+    <router-view />
+  </AuthenticationWrapper>
+  <template v-else>
+    <LandingPageHeader />
+    <router-view />
+  </template>
 </template>
 
 <script lang="ts">
@@ -22,6 +27,10 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import router from '@/router';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -30,7 +39,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { DynamicDialog },
+  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper },
 
   data() {
     return {
@@ -42,7 +51,7 @@ export default defineComponent({
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
       companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
-      routedPageRequiresNoAuthentication: false as boolean,
+      routedPageRequiresAuthentication: false as boolean,
     };
   },
 
@@ -90,9 +99,11 @@ export default defineComponent({
   created() {
     this.processUserAuthentication();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    router.afterEach((to, from) => {
-      this.routedPageRequiresNoAuthentication = (to.meta && to.meta.allowsUnauthorized as boolean) ?? false;
-    }).bind(this);
+    router
+      .afterEach((to, from) => {
+        this.routedPageRequiresAuthentication = (to.meta && (to.meta.requiresAuthentication as boolean)) ?? true;
+      })
+      .bind(this);
   },
 
   mounted() {

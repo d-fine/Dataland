@@ -1,5 +1,4 @@
 <template>
-  <TheHeader />
   <div class="surface-ground pb-8">
     <h2 class="font-light d-letters text-4xl m-6 text-left">
       We are working on making the website display properly on mobile. <br />
@@ -11,7 +10,6 @@
 
 <script setup lang="ts">
 import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 </script>
 <style scoped>
 .d-letters {

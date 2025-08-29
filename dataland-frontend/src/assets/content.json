@@ -6,8 +6,7 @@
       "sections": [
         {
           "title": "Welcome to Dataland",
-          "text": ["This is the main introduction of our homepage."],
-          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"]
+          "text": ["This is the main introduction of our homepage."]
         },
         {
           "title": "Intro",
