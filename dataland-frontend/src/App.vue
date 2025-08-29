@@ -1,6 +1,6 @@
 <template>
   <DynamicDialog />
-  <div v-if="allowsUnauthorized">Landing Page Type</div>
+  <div v-if="routedPageRequiresNoAuthentication">Landing Page Type</div>
   <div v-else>Application Page Type</div>
   <router-view />
 </template>
@@ -42,7 +42,7 @@ export default defineComponent({
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
       companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
-      allowsUnauthorized: false as boolean,
+      routedPageRequiresNoAuthentication: false as boolean,
     };
   },
 
@@ -90,11 +90,9 @@ export default defineComponent({
   created() {
     this.processUserAuthentication();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    router
-      .afterEach((to, from) => {
-        this.allowsUnauthorized = (to.meta.allowsUnauthorized as boolean) ?? false;
-      })
-      .bind(this);
+    router.afterEach((to, from) => {
+      this.routedPageRequiresNoAuthentication = (to.meta && to.meta.allowsUnauthorized as boolean) ?? false;
+    }).bind(this);
   },
 
   mounted() {
