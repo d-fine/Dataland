@@ -24,6 +24,7 @@ import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fie
 import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssessmentsFormField.vue';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import SingleSelectFormFieldSector from '@/components/forms/parts/fields/SingleSelectFormFieldSector.vue';
 import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
 import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
 import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
@@ -62,6 +63,7 @@ const componentNameMap: { [key: string]: any } = {
   RadioButtonsFormField,
   RiskAssessmentsFormField,
   SingleSelectFormField,
+  SingleSelectFormFieldSector,
   SiteAndAreaFormField,
   SubsidiaryFormField,
   UploadReports,

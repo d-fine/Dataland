@@ -106,7 +106,7 @@ export const pcafDataModel = [
               },
             ],
 
-            component: 'SingleSelectFormField',
+            component: 'SingleSelectFormFieldSector',
             required: false,
             showIf: (): boolean => true,
           },
