@@ -5,7 +5,7 @@ export const pcafDataModel = [
   {
     name: 'general',
     label: 'General',
-    color: 'orange',
+    color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -97,7 +97,7 @@ export const pcafDataModel = [
                 value: 'Materials',
               },
               {
-                label: 'Real estate',
+                label: 'Real Estate',
                 value: 'RealEstate',
               },
               {
@@ -106,7 +106,7 @@ export const pcafDataModel = [
               },
             ],
 
-            component: 'SingleSelectFormFieldSector',
+            component: 'SingleSelectFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -136,7 +136,7 @@ export const pcafDataModel = [
   {
     name: 'companyValue',
     label: 'Company Value',
-    color: 'yellow',
+    color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -202,7 +202,7 @@ export const pcafDataModel = [
   {
     name: 'environmental',
     label: 'Environmental',
-    color: 'green',
+    color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
