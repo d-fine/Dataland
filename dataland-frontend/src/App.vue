@@ -98,8 +98,7 @@ export default defineComponent({
 
   created() {
     this.processUserAuthentication();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    router
+    router // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .afterEach((to, from) => {
         this.routedPageRequiresAuthentication = (to.meta && (to.meta.requiresAuthentication as boolean)) ?? true;
       })

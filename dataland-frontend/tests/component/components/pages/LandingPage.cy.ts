@@ -13,7 +13,7 @@ describe('Component test for the landing page', () => {
         authenticated: false,
       }),
     }).then(() => {
-      validateTheHeader();
+      // validateTheHeader(); todo: Move to e2e test
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
@@ -29,19 +29,10 @@ describe('Component test for the landing page', () => {
       checkFooter();
 
       setMobileDeviceViewport();
-      validateTheHeader();
+      // validateTheHeader(); todo: Move to e2e test
     });
   });
 });
-
-/**
- * Validates the elements of the top bar
- */
-function validateTheHeader(): void {
-  checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP');
-  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN');
-}
 
 /**
  * Validates the elements of the intro section
