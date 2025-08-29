@@ -80,7 +80,14 @@
       </div>
 
       <div class="sidebar">
-        <PrimeButton type="submit" data-test="submitButton" label="ADD DATA" :disabled="isJustClicked" @click="onSubmitButtonClick" fluid />
+        <PrimeButton
+          type="submit"
+          data-test="submitButton"
+          label="ADD DATA"
+          :disabled="isJustClicked"
+          @click="onSubmitButtonClick"
+          fluid
+        />
         <div v-if="isPostRequestProcessed" class="message-container">
           <Message v-if="!errorMessage" severity="success">Upload successfully executed.</Message>
           <Message v-else severity="error">{{ errorMessage }}</Message>

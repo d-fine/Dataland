@@ -3,8 +3,6 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { type CompanyAssociatedDataPcafData } from '@clients/backend';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown.ts';
-import { mount } from 'cypress/vue';
-
 const mockDocuments = [
   {
     documentId: 'doc1-id',
@@ -90,10 +88,7 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
 
       cy.get('.p-datepicker-year').contains('2024').click();
 
-      selectItemFromDropdownByValue(
-        cy.get('[data-test="mainPcafSector"]'),
-        'Energy'
-      );
+      selectItemFromDropdownByValue(cy.get('[data-test="mainPcafSector"]'), 'Energy');
 
       cy.get('[data-test="marketCapitalizationInEUR"]').within(() => {
         cy.get('[data-test="dataPointToggleButton"]').click();
@@ -128,7 +123,7 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
       props: { companyID: 'company-id' },
     }).then(() => {
       cy.get('button[data-test="submitButton"]').click();
-      cy.get('button[data-test="submitButton"]').click();
+      cy.get('button[data-test="submitButton"]').should('be.disabled');
     });
   });
 });
