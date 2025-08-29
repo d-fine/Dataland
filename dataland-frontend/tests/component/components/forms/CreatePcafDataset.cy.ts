@@ -3,6 +3,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { type CompanyAssociatedDataPcafData } from '@clients/backend';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown.ts';
+import { mount } from 'cypress/vue';
 
 const mockDocuments = [
   {
@@ -89,6 +90,11 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
 
       cy.get('.p-datepicker-year').contains('2024').click();
 
+      selectItemFromDropdownByValue(
+        cy.get('[data-test="mainPcafSector"]'),
+        'Energy'
+      );
+
       cy.get('[data-test="marketCapitalizationInEUR"]').within(() => {
         cy.get('[data-test="dataPointToggleButton"]').click();
         cy.get('.formkit-outer.col-4 input[type="text"]').clear().type('1000');
@@ -99,6 +105,30 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
       );
       cy.get('button[data-test="submitButton"]').click();
       cy.wait('@postPcafData');
+    });
+  });
+
+  it('shows error message when POST fails', () => {
+    cy.intercept('POST', '**/api/data/pcaf*', {
+      statusCode: 500,
+      body: { errors: [{ summary: 'Server error', message: 'Something went wrong' }] },
+    }).as('postPcafDataError');
+
+    getMountingFunction({ keycloak: minimalKeycloakMock() })(CreatePcafDataset, {
+      props: { companyID: 'company-id' },
+    }).then(() => {
+      cy.get('button[data-test="submitButton"]').click();
+      cy.wait('@postPcafDataError');
+
+      cy.get('.p-message-error').should('contain.text', 'Server error');
+    });
+  });
+  it('prevents double submit by disabling the button briefly', () => {
+    getMountingFunction({ keycloak: minimalKeycloakMock() })(CreatePcafDataset, {
+      props: { companyID: 'company-id' },
+    }).then(() => {
+      cy.get('button[data-test="submitButton"]').click();
+      cy.get('button[data-test="submitButton"]').click();
     });
   });
 });
