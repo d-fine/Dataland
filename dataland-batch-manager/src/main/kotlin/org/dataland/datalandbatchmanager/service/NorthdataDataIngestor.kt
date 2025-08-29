@@ -20,7 +20,7 @@ import kotlin.time.measureTime
 @Component
 class NorthdataDataIngestor(
     @Autowired private val companyUploader: CompanyUploader,
-    @Autowired private val csvParser: CsvParser,
+    @Autowired private val companyInformationParser: CompanyInformationParser,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -51,8 +51,8 @@ class NorthdataDataIngestor(
     }
 
     private fun updateCompaniesFromNorthDataFile(zipFile: File) {
-        val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
-        val northDataIterable = csvParser.readNorthDataFromBufferedReader(northStream)
+        val northStream = companyInformationParser.getCsvStreamFromNorthDataZipFile(zipFile)
+        val northDataIterable = companyInformationParser.readNorthDataFromBufferedReader(northStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {

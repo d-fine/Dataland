@@ -16,14 +16,14 @@ import kotlin.time.measureTime
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param gleifParser reads in the xml file from GLEIF and creates GleifCompanyInformation objects
  */
 @Suppress("LongParameterList")
 @Component
 class GleifGoldenCopyIngestor(
     @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
-    @Autowired private val gleifParser: CsvParser,
+    @Autowired private val gleifParser: CompanyInformationParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val relationshipExtractor: RelationshipExtractor,
 ) {
@@ -114,7 +114,7 @@ class GleifGoldenCopyIngestor(
     @Synchronized
     fun processIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
-        val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
+        val newMappingFile = File.createTempFile("gleif_mapping_update", ".xml")
         val duration =
             measureTime {
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
@@ -129,15 +129,15 @@ class GleifGoldenCopyIngestor(
     }
 
     private fun uploadCompanies(zipFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifIterable = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream)
+        val gleifDataStream = gleifParser.getXmlStreamFromZip(zipFile)
+        val gleifRecords = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream).leiRecords
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
             uploadThreadPool
                 .submit {
                     StreamSupport
-                        .stream(gleifIterable.spliterator(), true)
+                        .stream(gleifRecords.spliterator(), true)
                         .forEach {
                             companyUploader.uploadOrPatchSingleCompany(
                                 GleifCompanyCombinedInformation(

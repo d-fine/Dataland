@@ -20,7 +20,10 @@ interface ExternalCompanyInformation {
      * @param conflictingIdentifiers the set of conflicting identifiers
      * @return the Dataland CompanyInformationPatch object or null if no update is applicable
      */
-    fun toCompanyPatch(conflictingIdentifiers: Set<String?>? = null): CompanyInformationPatch?
+    fun toCompanyPatch(
+        conflictingIdentifiers: Set<String?>? = null,
+        existingAlternativeNames: List<String>? = null,
+    ): CompanyInformationPatch?
 
     /**
      * Method returning the name and main identifier of a company associated with the external data structure

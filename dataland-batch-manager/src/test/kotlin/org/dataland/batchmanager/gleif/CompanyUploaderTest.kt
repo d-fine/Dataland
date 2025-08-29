@@ -9,12 +9,16 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyId
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbatchmanager.model.Entity
 import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.HeadquartersAddress
+import org.dataland.datalandbatchmanager.model.LEIRecord
+import org.dataland.datalandbatchmanager.model.LegalName
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -40,15 +44,27 @@ import java.util.stream.Stream
 class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var companyUploader: CompanyUploader
-    private lateinit var mockStoredCompany: StoredCompany
     lateinit var logAppender: TestLogAppender
     lateinit var logger: Logger
+
+    private val mockStoredCompany =
+        StoredCompany(
+            companyId = VIOLATING_COMPANY_ID,
+            companyInformation =
+                CompanyInformation(
+                    companyName = "",
+                    headquarters = "",
+                    identifiers = emptyMap(),
+                    countryCode = "",
+                    companyAlternativeNames = emptyList(),
+                ),
+            dataRegisteredByDataland = emptyList(),
+        )
 
     @BeforeEach
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
-        mockStoredCompany = mock()
     }
 
     @BeforeEach
@@ -210,32 +226,50 @@ class CompanyUploaderTest {
         whenever(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
+
+        whenever(mockCompanyDataControllerApi.getCompanyById(VIOLATING_COMPANY_ID)).thenReturn(
+            mockStoredCompany,
+        )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
 
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
-            .patchCompanyById("violating-company-id", expectedPatch)
+            .patchCompanyById(VIOLATING_COMPANY_ID, expectedPatch)
     }
 
     companion object {
+        private const val VIOLATING_COMPANY_ID = "violating-company-id"
+
         private val dummyGleifCompanyInformation1 =
             GleifCompanyCombinedInformation(
-                GleifCompanyInformation(
-                    companyName = "CompanyName1",
-                    countryCode = "CompanyCountry",
-                    headquarters = "CompanyCity",
-                    headquartersPostalCode = "CompanyPostalCode",
+                LEIRecord(
                     lei = "DummyLei1",
+                    entity =
+                        Entity(
+                            LegalName(name = "CompanyName1", lang = "en"),
+                            headquartersAddress =
+                                HeadquartersAddress(
+                                    city = "CompanyCity",
+                                    postalCode = "CompanyPostalCode",
+                                    country = "CompanyCountry",
+                                ),
+                        ),
                 ),
             )
 
         private val dummyGleifCompanyInformation2 =
             GleifCompanyCombinedInformation(
-                GleifCompanyInformation(
-                    companyName = "CompanyName2",
-                    countryCode = "CompanyCountry",
-                    headquarters = "CompanyCity",
-                    headquartersPostalCode = "CompanyPostalCode",
+                LEIRecord(
                     lei = "DummyLei2",
+                    entity =
+                        Entity(
+                            LegalName(name = "CompanyName2", lang = "en"),
+                            headquartersAddress =
+                                HeadquartersAddress(
+                                    city = "CompanyCity",
+                                    postalCode = "CompanyPostalCode",
+                                    country = "CompanyCountry",
+                                ),
+                        ),
                 ),
             )
 

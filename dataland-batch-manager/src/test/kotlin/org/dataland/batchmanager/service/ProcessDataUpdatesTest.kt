@@ -5,8 +5,8 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
-import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
@@ -31,6 +31,7 @@ import org.mockito.kotlin.whenever
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 import java.net.ConnectException
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
@@ -42,7 +43,7 @@ class ProcessDataUpdatesTest {
     private val mockGleifGoldenCopyIngestorTest = mock<GleifGoldenCopyIngestor>()
     private val mockNorthDataAccessor = mock<NorthDataAccessor>()
     private val mockNorthDataIngestorTest = mock<NorthdataDataIngestor>()
-    private val mockCsvParser = mock<CsvParser>()
+    private val mockCompanyInformationParser = mock<CompanyInformationParser>()
     private val mockCompanyUploader = mock<CompanyUploader>()
     private val mockRelationshipExtractor = mock<RelationshipExtractor>()
     private val mockBackendActuatorApi = mock<BackendActuatorApi>()
@@ -55,30 +56,30 @@ class ProcessDataUpdatesTest {
 
     @BeforeEach
     fun setupTest() {
-        reset(mockGleifApiAccessor, mockCsvParser, mockBackendActuatorApi, mockGleifGoldenCopyIngestorTest)
+        reset(mockGleifApiAccessor, mockCompanyInformationParser, mockBackendActuatorApi, mockGleifGoldenCopyIngestorTest)
     }
 
     private fun initProcessDataUpdates(
+        gleifGoldenCopyIngestorTest: GleifGoldenCopyIngestor = mockGleifGoldenCopyIngestorTest,
+        nothDataIngestorTest: NorthdataDataIngestor = mockNorthDataIngestorTest,
         flagFileGleif: String? = null,
         flagFileGleifUpdate: String? = null,
         flagFileNorthData: String? = null,
-        forceIngestGleif: Boolean = false,
-        forceIngestNorth: Boolean = false,
     ) {
         processDataUpdates =
             ProcessDataUpdates(
                 mockGleifApiAccessor,
-                mockGleifGoldenCopyIngestorTest,
+                gleifGoldenCopyIngestorTest,
                 mockNorthDataAccessor,
-                mockNorthDataIngestorTest,
+                nothDataIngestorTest,
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockCommunityActuatorApi,
-                forceIngestGleif,
-                forceIngestNorth,
-                flagFileGleif,
-                flagFileGleifUpdate,
-                flagFileNorthData,
+                allGleifCompaniesForceIngest = false,
+                allNorthDataCompaniesForceIngest = false,
+                allGleifCompaniesIngestFlagFilePath = flagFileGleif,
+                allGleifCompaniesIngestManualUpdateFlagFilePath = flagFileGleifUpdate,
+                allNorthDataCompaniesIngestFlagFilePath = flagFileNorthData,
             )
     }
 
@@ -93,52 +94,62 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `test ingestion performs successfully if a file is provided`() {
-        val flagFileGleif = File.createTempFile("test", ".csv")
-        val flagFileGleifUpdate = File.createTempFile("test1", ".csv")
-        val flagFileNorthdata = File.createTempFile("test2", ".csv")
-
+        val flagFileGleif = File.createTempFile("test", ".flag")
+        val flagFileGleifUpdate = File.createTempFile("test1", ".flag")
+        val flagFileNorthdata = File.createTempFile("test2", ".flag")
         val staticMock = mockStatic(File::class.java)
-        staticMock
-            .`when`<File> {
-                File.createTempFile(any(), any())
-            }.thenReturn(mockFile)
+        try {
+            staticMock
+                .`when`<File> {
+                    File.createTempFile(any(), any())
+                }.thenReturn(mockFile)
 
-        companyIngestor =
-            GleifGoldenCopyIngestor(
-                mockIsinLeiDataControllerApi, mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockRelationshipExtractor,
+            companyIngestor =
+                GleifGoldenCopyIngestor(
+                    mockIsinLeiDataControllerApi,
+                    mockGleifApiAccessor,
+                    mockCompanyInformationParser,
+                    mockCompanyUploader,
+                    mockRelationshipExtractor,
+                )
+            val ingestorSpy = spy(companyIngestor)
+            doNothing()
+                .whenever(
+                    ingestorSpy,
+                ).processIsinMappingFile()
+            companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCompanyInformationParser)
+
+            initProcessDataUpdates(
+                gleifGoldenCopyIngestorTest = ingestorSpy,
+                nothDataIngestorTest = companyIngestorNorthData,
+                flagFileGleif = flagFileGleif.absolutePath,
+                flagFileGleifUpdate = flagFileGleifUpdate.absolutePath,
+                flagFileNorthData = flagFileNorthdata.absolutePath,
             )
-        val ingestorSpy = spy(companyIngestor)
-        doNothing()
-            .whenever(
-                ingestorSpy,
-            ).processIsinMappingFile()
-        companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
 
-        processDataUpdates =
-            ProcessDataUpdates(
-                mockGleifApiAccessor, ingestorSpy, mockNorthDataAccessor,
-                companyIngestorNorthData, mockBackendActuatorApi,
-                mockRequestPriorityUpdater,
-                mockCommunityActuatorApi, allGleifCompaniesForceIngest = false, allNorthDataCompaniesForceIngest = false,
-                flagFileGleif.absolutePath, flagFileGleifUpdate.absolutePath, flagFileNorthdata.absolutePath,
-            )
+            val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.xml"))
 
-        val bufferedReader = BufferedReader(BufferedReader.nullReader())
+            doReturn(bufferedReader).whenever(mockCompanyInformationParser).getXmlStreamFromZip(any())
+            doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromZip(any())
+            doReturn(CompanyInformationParser().readGleifCompanyDataFromBufferedReader(bufferedReader))
+                .whenever(
+                    mockCompanyInformationParser,
+                ).readGleifCompanyDataFromBufferedReader(bufferedReader)
 
-        doReturn(bufferedReader).whenever(mockCsvParser).getCsvStreamFromZip(any())
-        doReturn(bufferedReader).whenever(mockCsvParser).getCsvStreamFromNorthDataZipFile(any())
+            doReturn(bufferedReader).whenever(mockCompanyInformationParser).getCsvStreamFromNorthDataZipFile(any())
 
-        doThrow(ConnectException()).doReturn(true).whenever(mockBackendActuatorApi).health()
+            doThrow(ConnectException()).doReturn(true).whenever(mockBackendActuatorApi).health()
 
-        processDataUpdates.processExternalCompanyDataIfEnabled()
+            processDataUpdates.processExternalCompanyDataIfEnabled()
 
-        val numberOfDownloadedFiles = 2
-        staticMock.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
-        verify(mockCsvParser, times(1)).readGleifCompanyDataFromBufferedReader(any())
-        verify(mockCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader(any())
-        verify(mockCsvParser, times(1)).readNorthDataFromBufferedReader(any())
-
-        staticMock.close()
+            val numberOfDownloadedFiles = 2
+            staticMock.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
+            verify(mockCompanyInformationParser, times(1)).readGleifCompanyDataFromBufferedReader(any())
+            verify(mockCompanyInformationParser, times(1)).readGleifRelationshipDataFromBufferedReader(any())
+            verify(mockCompanyInformationParser, times(1)).readNorthDataFromBufferedReader(any())
+        } finally {
+            staticMock.close()
+        }
     }
 
     @Test
@@ -154,7 +165,7 @@ class ProcessDataUpdatesTest {
         // Set up logger and attach test appender
         val logger = LoggerFactory.getLogger(ProcessDataUpdates::class.java) as Logger
         val appender = TestLogAppender()
-        initProcessDataUpdates(forceIngestNorth = false, flagFileNorthData = null)
+        initProcessDataUpdates()
         appender.start()
         logger.addAppender(appender)
 
