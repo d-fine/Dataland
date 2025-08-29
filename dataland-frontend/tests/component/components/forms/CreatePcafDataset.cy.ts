@@ -25,31 +25,25 @@ const mockDocuments = [
   },
 ];
 
-type TestCompanyAssociatedDataPcafData = CompanyAssociatedDataPcafData & {
-  fieldSpecificDocuments?: Record<string, string[]>;
-};
-
-const mockData: TestCompanyAssociatedDataPcafData = {
+const mockData: CompanyAssociatedDataPcafData = {
   companyId: 'company-id',
   reportingPeriod: '2024',
   data: {
-    general: {
-      general: { fiscalYearEnd: '2024' },
-    },
     companyValue: {
       listedCompany: {
         marketCapitalizationInEUR: { value: 1000 },
       },
+      unlistedCompany: {},
     },
     environmental: {
       greenhouseGasEmissions: {
         scope1GhgEmissionsInTonnes: { value: 500 },
       },
     },
-  },
-  fieldSpecificDocuments: {
-    marketCapitalizationInEUR: ['doc1-id'],
-    scope1GhgEmissionsInTonnes: ['doc2-id'],
+    general: {
+      general: { fiscalYearDeviation: null },
+      company: { mainPcafSector: null, companyExchangeStatus: {} },
+    },
   },
 };
 
@@ -57,19 +51,26 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/documents/**', {
       statusCode: 200,
-      body: mockDocuments.map((doc, _) => ({
+      body: mockDocuments.map((doc) => ({
         documentId: doc.documentId,
         documentName: doc.documentName,
         documentCategory: doc.documentCategory,
-        companyIds: [doc.companyId],
+        companyId: doc.companyId,
         publicationDate: doc.publicationDate,
         reportingPeriod: doc.reportingPeriod,
       })),
     }).as('fetchDocumentMetadata');
 
-    cy.intercept('POST', '**/api/data/pcaf/**', {
+    cy.intercept('POST', '**/api/data/pcaf*', {
       statusCode: 200,
-      body: { data: mockData, dataId: 'test-123', success: true, message: 'Data uploaded successfully' },
+      body: {
+        companyId: mockData.companyId,
+        reportingPeriod: mockData.reportingPeriod,
+        data: mockData.data,
+        dataId: 'test-123',
+        success: true,
+        message: 'Data uploaded successfully',
+      },
     }).as('postPcafData');
   });
 
@@ -97,6 +98,7 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
         'MarketCap_2024.pdf'
       );
       cy.get('button[data-test="submitButton"]').click();
+      cy.wait('@postPcafData');
     });
   });
 });
