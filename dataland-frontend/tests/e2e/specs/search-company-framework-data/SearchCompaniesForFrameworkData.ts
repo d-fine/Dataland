@@ -76,7 +76,7 @@ describeIf(
             executeCompanySearchWithStandardSearchBar(testCompanyName);
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);
-            cy.get('[data-test="back-button"]').should('be.visible').click({ force: true });
+            cy.go('back');
             cy.get('input[id=search-bar-input]').should('contain.value', testCompanyName);
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);

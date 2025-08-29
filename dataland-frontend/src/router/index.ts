@@ -39,16 +39,25 @@ const routes = [
     path: '/',
     name: 'Welcome to Dataland',
     component: LandingPage,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/about',
     name: 'About Page',
     component: AboutPage,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/preview',
     name: 'View Sample Data in Preview Mode',
     component: ViewTeaserCompanyData,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/companies/choose',
@@ -170,35 +179,56 @@ const routes = [
     path: '/dataprivacy',
     name: 'DataPrivacy',
     component: DataPrivacy,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/terms',
     name: 'TermsAndConditions',
     component: TermsAndConditions,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/pricing',
     name: 'Pricing',
     component: PricingAndRemuneration,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/token',
     name: 'TokenTerms',
     component: TokenTerms,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/imprint',
     name: 'LandingImprint',
     component: TheImprint,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/nocontent',
     name: 'NoContentFound',
     component: NoContentFound,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/:notFound(.*)',
     redirect: '/nocontent',
+    meta: {
+      requiresAuthentication: false,
+    },
   },
 ];
 

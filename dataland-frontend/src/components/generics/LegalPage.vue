@@ -1,5 +1,4 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
   <div class="static-content">
     <main role="main" class="w-12 flex justify-content-center">
       <div class="lg:w-6 md:w-10 sm:w-10 w-12 text-left">
@@ -12,23 +11,12 @@
 
 <script lang="ts">
 import TheFooter from '@/components/generics/TheFooter.vue';
-import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
-import contentData from '@/assets/content.json';
-import type { Content } from '@/types/ContentTypes';
 import { defineComponent } from 'vue';
-
-const content: Content = contentData;
 
 export default defineComponent({
   name: 'LegalPage',
   components: {
-    TheHeader: LandingPageHeader,
     TheFooter,
-  },
-  data() {
-    return {
-      landingPage: content.pages.find((page) => page.url === '/'),
-    };
   },
 });
 </script>
