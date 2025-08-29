@@ -34,6 +34,7 @@
               view="year"
               dateFormat="yy"
               validation="required"
+              data-test="reporting-period-picker"
             />
           </div>
         </div>
@@ -82,7 +83,7 @@
       </div>
 
       <div class="sidebar">
-        <PrimeButton type="submit" label="SUBMIT DATA" :disabled="isJustClicked" @click="onSubmitButtonClick" fluid />
+        <PrimeButton type="submit" data-test="submitButton" label="ADD DATA" :disabled="isJustClicked" @click="onSubmitButtonClick" fluid />
         <div v-if="isPostRequestProcessed" class="message-container">
           <Message v-if="!errorMessage" severity="success">Upload successfully executed.</Message>
           <Message v-else severity="error">{{ errorMessage }}</Message>
