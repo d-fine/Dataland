@@ -34,6 +34,7 @@
               view="year"
               dateFormat="yy"
               validation="required"
+              data-test="reporting-period-picker"
             />
           </div>
         </div>
@@ -68,9 +69,6 @@
                         :data-test="field.name"
                         :unit="field.unit"
                         @reports-updated="updateDocumentsList"
-                        @field-specific-documents-updated="
-                          updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                        "
                       />
                     </FormKit>
                   </div>
@@ -82,7 +80,14 @@
       </div>
 
       <div class="sidebar">
-        <PrimeButton type="submit" label="SUBMIT DATA" :disabled="isJustClicked" @click="onSubmitButtonClick" fluid />
+        <PrimeButton
+          type="submit"
+          data-test="submitButton"
+          label="ADD DATA"
+          :disabled="isJustClicked"
+          @click="onSubmitButtonClick"
+          fluid
+        />
         <div v-if="isPostRequestProcessed" class="message-container">
           <Message v-if="!errorMessage" severity="success">Upload successfully executed.</Message>
           <Message v-else severity="error">{{ errorMessage }}</Message>
@@ -280,21 +285,6 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
     console.error('Error updating documents list:', error);
     return {};
   }
-}
-
-/**
- * Updates the documents associated with a specific field in the PCAF data.
- * @param fieldName - The name of the field to update documents for.
- * @param documents - The list of document IDs to associate with the field.
- */
-function updateDocumentsOnField(fieldName: string, documentIds: string[]): void {
-  const data = companyAssociatedDataPcafData.value as CompanyAssociatedDataPcafData & {
-    fieldSpecificDocuments?: Record<string, string[]>;
-  };
-  if (!data.fieldSpecificDocuments) {
-    data.fieldSpecificDocuments = {};
-  }
-  data.fieldSpecificDocuments[fieldName] = documentIds;
 }
 </script>
 

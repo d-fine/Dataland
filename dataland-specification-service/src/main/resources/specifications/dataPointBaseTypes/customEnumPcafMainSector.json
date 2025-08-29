@@ -4,7 +4,7 @@
   "businessDefinition" : "Data point with an extended document reference as source storing the main commercial sector.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.CustomPcafMainSectorDataPoint",
   "schema" : {
-    "value" : "PcafGeneralCompanyMainPcafSectorOptions",
+    "value" : "String",
     "quality" : "QualityOptions",
     "comment" : "String",
     "dataSource" : {

@@ -74,7 +74,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                     InformationTechnology: 'Information Technology',
                     Machinery: 'Machinery',
                     Materials: 'Materials',
-                    RealEstate: 'Real estate',
+                    RealEstate: 'Real Estate',
                     Sovereign: 'Sovereign',
                   };
                   return formatStringForDatatable(
@@ -115,7 +115,6 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         ],
       },
     ],
-    labelBadgeColor: 'orange',
   },
   {
     type: 'section',
@@ -190,7 +189,6 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         ],
       },
     ],
-    labelBadgeColor: 'yellow',
   },
   {
     type: 'section',
@@ -271,6 +269,5 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         ],
       },
     ],
-    labelBadgeColor: 'green',
   },
 ];
