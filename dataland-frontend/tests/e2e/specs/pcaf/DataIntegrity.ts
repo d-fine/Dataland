@@ -37,6 +37,7 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
+
     it(
       'Create a company and a PCAF dataset via api, then re-upload it with the ' +
         'upload form in Edit mode and assure that it worked by validating a couple of values',
@@ -61,10 +62,10 @@ describeIf(
           cy.pause();
 
           // Define intercepts for test
-          cy.intercept(
-            'GET',
-            `**/api/data/${DataTypeEnum.Pcaf}?reportingPeriod=${pcafFixtureData.reportingPeriod}&companyId=${storedCompanyId}`
-          ).as('getInitiallyUploadedData');
+          cy.intercept({
+            url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
+            times: 1,
+          }).as('getInitiallyUploadedData');
 
           cy.intercept({
             url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
