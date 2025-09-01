@@ -34,6 +34,7 @@ describeIf(
   function (): void {
     before(() => {
       Cypress.env('excludeBypassQaIntercept', true);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     it(
@@ -60,10 +61,10 @@ describeIf(
           cy.pause();
 
           // Define intercepts for test
-          cy.intercept({
-            url: `**/api/data/pcaf/${dataMetaInformation.dataId}`,
-            times: 1,
-          }).as('getInitiallyUploadedData');
+          cy.intercept(
+            'GET',
+            `**/api/data/${DataTypeEnum.Pcaf}?reportingPeriod=${pcafFixtureData.reportingPeriod}&companyId=${storedCompanyId}`
+          ).as('getInitiallyUploadedData');
 
           cy.intercept({
             url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
