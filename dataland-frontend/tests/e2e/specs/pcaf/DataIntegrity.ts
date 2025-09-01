@@ -60,10 +60,7 @@ describeIf(
           cy.pause();
 
           // Define intercepts for test
-          cy.intercept({
-            url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
-            times: 1,
-          }).as('getInitiallyUploadedData');
+          cy.intercept('GET', `**/api/data/**/${dataMetaInformation.dataId}`).as('getInitiallyUploadedData');
 
           cy.intercept({
             url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
