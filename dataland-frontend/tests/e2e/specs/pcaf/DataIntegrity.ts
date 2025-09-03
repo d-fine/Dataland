@@ -6,6 +6,7 @@ import {
   DataTypeEnum,
   type PcafData,
   PcafDataControllerApi,
+  type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getKeycloakToken } from '@e2e/utils/Auth';
@@ -35,6 +36,48 @@ describeIf(
       Cypress.env('excludeBypassQaIntercept', true);
     });
 
+    /**
+     * Sets up a company and uploads the PCAF framework data for testing.
+     * @param testCompanyName The name of the test company to create.
+     * @returns A Promise resolving to an object containing the token and storedCompany.
+     */
+    function setupCompanyAndFramework(
+      testCompanyName: string
+    ): Cypress.Chainable<{ token: string; storedCompany: StoredCompany }> {
+      return getKeycloakToken(admin_name, admin_pw).then((token) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+            return uploadFrameworkDataForPublicToolboxFramework(
+              PcafFrameworkDefinition,
+              token,
+              storedCompany.companyId,
+              pcafFixtureData.reportingPeriod,
+              pcafFixtureData.t
+            ).then(() => ({ token, storedCompany }));
+          });
+        });
+      });
+    }
+
+    /**
+     * Validates that the re-uploaded dataset matches the initially uploaded data.
+     * @param token The access token for API calls.
+     * @param dataId The ID of the re-uploaded dataset.
+     * @param initiallyUploadedData The original data to compare against.
+     * @returns A Promise resolving when validation is complete.
+     */
+    function validateReuploadedDataset(token: string, dataId: string, initiallyUploadedData: PcafData): Promise<void> {
+      return new PcafDataControllerApi(new Configuration({ accessToken: token }))
+        .getCompanyAssociatedPcafData(dataId)
+        .then((response) => {
+          const reuploadedDatasetFromBackend = response.data.data;
+          compareObjectKeysAndValuesDeep(
+            initiallyUploadedData as Record<string, object>,
+            reuploadedDatasetFromBackend as Record<string, object>
+          );
+        });
+    }
+
     it(
       'Create a company and a PCAF dataset via api, then re-upload it with the ' +
         'upload form in Edit mode and assure that it worked by validating a couple of values',
@@ -42,60 +85,43 @@ describeIf(
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-PCAF-Blanket-Test-' + uniqueCompanyMarker;
 
-        getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
-          await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
-            async (storedCompany) => {
-              await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
-              await uploadFrameworkDataForPublicToolboxFramework(
-                PcafFrameworkDefinition,
-                token,
-                storedCompany.companyId,
-                pcafFixtureData.reportingPeriod,
-                pcafFixtureData.t
-              ).then(() => {
-                let initiallyUploadedData: PcafData;
-                cy.ensureLoggedIn(admin_name, admin_pw);
-                cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
-                  times: 1,
-                }).as('getInitiallyUploadedData');
-                cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
-                  times: 1,
-                }).as('resubmitPcafData');
-                cy.visitAndCheckAppMount(
-                  `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Pcaf}` +
-                    `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
+        cy.wrap(null)
+          .then(() => setupCompanyAndFramework(testCompanyName))
+          .then(({ token, storedCompany }) => {
+            cy.ensureLoggedIn(admin_name, admin_pw);
+            cy.intercept({
+              url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
+              times: 1,
+            }).as('getInitiallyUploadedData');
+            cy.intercept({
+              url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
+              times: 1,
+            }).as('resubmitPcafData');
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Pcaf}` +
+                `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
+            );
+            let initiallyUploadedData: PcafData;
+            cy.wait('@getInitiallyUploadedData', {
+              timeout: Cypress.env('medium_timeout_in_ms') as number,
+            }).then((interception) => {
+              initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
+            });
+            cy.get('h1').should('contain', testCompanyName);
+            cy.get('[data-test="submitButton"]').click();
+            cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+              (interception) => {
+                cy.url().should('eq', getBaseUrl() + '/datasets');
+                isDatasetAccepted();
+                const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+                cy.wrap(null).then(() =>
+                  validateReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId, initiallyUploadedData)
                 );
-                cy.wait('@getInitiallyUploadedData', {
-                  timeout: Cypress.env('medium_timeout_in_ms') as number,
-                }).then((interception) => {
-                  initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
-                });
-                cy.get('h1').should('contain', testCompanyName);
-                cy.get('[data-test="submitButton"]').click();
-                cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                  async (interception) => {
-                    cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetAccepted();
-                    const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                    await new PcafDataControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedPcafData(dataMetaInformationOfReuploadedDataset.dataId)
-                      .then((response) => {
-                        const reuploadedDatasetFromBackend = response.data.data;
-                        compareObjectKeysAndValuesDeep(
-                          initiallyUploadedData as Record<string, object>,
-                          reuploadedDatasetFromBackend as Record<string, object>
-                        );
-                        cy.url().should('eq', getBaseUrl() + '/datasets');
-                        cy.get('[data-test="datasets-table"]').should('be.visible');
-                      });
-                  }
-                );
-              });
-            }
-          );
-        });
+                cy.url().should('eq', getBaseUrl() + '/datasets');
+                cy.get('[data-test="datasets-table"]').should('be.visible');
+              }
+            );
+          });
       }
     );
   }
