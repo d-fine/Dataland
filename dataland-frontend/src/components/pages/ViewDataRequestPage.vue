@@ -249,14 +249,12 @@
         </div>
       </div>
     </div>
-    <TheFooter />
   </TheContent>
 </template>
 
 <script lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
@@ -286,7 +284,6 @@ export default defineComponent({
     PrimeDialog,
     PrimeButton,
     ToggleSwitch,
-    TheFooter,
     StatusHistory,
   },
   props: {

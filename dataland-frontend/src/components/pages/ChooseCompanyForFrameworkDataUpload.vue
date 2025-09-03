@@ -49,13 +49,11 @@
       </Card>
     </TheContent>
   </AuthorizationWrapper>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import CreateCompany from '@/components/forms/CreateCompany.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import router from '@/router';
@@ -71,7 +69,6 @@ import PrimeButton from 'primevue/button';
 export default defineComponent({
   name: 'ChooseCompany',
   components: {
-    TheFooter,
     AuthorizationWrapper,
     TheContent,
     CompaniesOnlySearchBar,

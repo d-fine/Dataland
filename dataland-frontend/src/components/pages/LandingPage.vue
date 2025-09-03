@@ -8,7 +8,6 @@
     <TheJoinCampaign :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
   </main>
-  <TheFooter :isLightVersion="false" />
 </template>
 
 <script setup lang="ts">
@@ -25,7 +24,6 @@ import TheStruggle from '@/components/resources/landingPage/TheStruggle.vue';
 import TheHowItWorks from '@/components/resources/landingPage/TheHowItWorks.vue';
 import TheJoinCampaign from '@/components/resources/landingPage/TheJoinCampaign.vue';
 import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 

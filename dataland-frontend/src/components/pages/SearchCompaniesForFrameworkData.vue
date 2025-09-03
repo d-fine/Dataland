@@ -59,13 +59,11 @@
       @page-update="handlePageUpdate"
     />
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
 import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
@@ -98,7 +96,6 @@ export default defineComponent({
     TheContent,
     FrameworkDataSearchBar,
     FrameworkDataSearchResults,
-    TheFooter,
     PrimeButton,
   },
   created() {

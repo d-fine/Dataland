@@ -5,19 +5,14 @@
         <slot />
       </div>
     </main>
-    <TheFooter :is-light-version="false" />
   </div>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheFooter.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'LegalPage',
-  components: {
-    TheFooter,
-  },
 });
 </script>
 

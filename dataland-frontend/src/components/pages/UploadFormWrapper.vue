@@ -7,7 +7,6 @@
       <component :is="frameworkToUploadComponent" :companyID="companyID" @datasetCreated="redirectToMyDatasets()" />
     </AuthorizationWrapper>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -18,7 +17,6 @@ import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDa
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
 import { redirectToMyDatasets } from '@/components/resources/uploadDataset/DatasetCreationRedirect';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';

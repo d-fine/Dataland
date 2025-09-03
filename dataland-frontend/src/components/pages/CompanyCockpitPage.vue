@@ -92,7 +92,6 @@
       </TabPanels>
     </Tabs>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -101,7 +100,6 @@ import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';

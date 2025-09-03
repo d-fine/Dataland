@@ -231,7 +231,6 @@
       </div>
     </div>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -240,7 +239,6 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -275,7 +273,6 @@ export default defineComponent({
     CompanyInfoSheet,
     TheContent,
     FormKit,
-    TheFooter,
     PrimeButton,
   },
   setup() {

@@ -59,12 +59,10 @@
       </Card>
     </TheContent>
   </AuthorizationWrapper>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
 import MetaInfoPerCompanyAndFramework from '@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
@@ -83,7 +81,6 @@ export default defineComponent({
   name: 'ChooseFramework',
   components: {
     MarginWrapper,
-    TheFooter,
     AuthorizationWrapper,
     CompanyInformation,
     TheContent,

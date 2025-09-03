@@ -1,5 +1,5 @@
 <template>
-  <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo" data-test="dataland footer">
+  <footer class="footer footer--light" role="contentinfo" data-test="dataland footer">
     <div class="footer__row footer__row--top">
       <div class="footer__section footer__section--owned-by">
         <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland Logo" class="footer__logo" />
@@ -124,14 +124,6 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
-
-const { isLightVersion } = defineProps({
-  isLightVersion: {
-    type: Boolean,
-    required: false,
-    default: true,
-  },
-});
 
 const openAccordions = ref<Record<string, boolean>>({});
 

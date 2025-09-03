@@ -20,13 +20,10 @@
       </div>
     </main>
   </TheContent>
-
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
@@ -36,7 +33,6 @@ import { defineComponent, inject } from 'vue';
 export default defineComponent({
   name: 'UnsubscribeFromMailsPage',
   components: {
-    TheFooter,
     TheContent,
     PrimeButton,
   },

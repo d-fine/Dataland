@@ -140,12 +140,10 @@
       </div>
     </div>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
@@ -181,7 +179,6 @@ export default defineComponent({
   components: {
     PrimeButton,
     FrameworkDataSearchDropdownFilter,
-    TheFooter,
     TheContent,
     DataTable,
     Column,

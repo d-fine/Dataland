@@ -171,14 +171,12 @@
       </FormKit>
     </div>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -207,7 +205,6 @@ export default defineComponent({
     BulkDataRequestSummary,
     ToggleSwitch,
     TheContent,
-    TheFooter,
     PrimeButton,
     FormKit,
     BasicFormSection,

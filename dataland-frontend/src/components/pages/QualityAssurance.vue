@@ -121,14 +121,11 @@
       </div>
     </AuthorizationWrapper>
   </TheContent>
-
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import router from '@/router';
@@ -156,7 +153,6 @@ export default defineComponent({
   components: {
     DatalandProgressSpinner,
     AuthorizationWrapper,
-    TheFooter,
     TheContent,
     FrameworkDataSearchDropdownFilter,
     DataTable,

@@ -3,13 +3,11 @@
     <TheAboutIntro :sections="aboutPage?.sections" />
     <TheAboutPrinciples :sections="aboutPage?.sections" />
   </main>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
 import TheAboutIntro from '@/components/resources/aboutPage/TheAboutIntro.vue';
 import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 

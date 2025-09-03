@@ -12,6 +12,7 @@
     <LandingPageHeader />
     <router-view />
   </template>
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -36,7 +37,7 @@ import { useRoute } from 'vue-router';
 
 import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import { useRoute } from 'vue-router';
+import TheFooter from '@/components/generics/TheFooter.vue';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -45,7 +46,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper },
+  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {

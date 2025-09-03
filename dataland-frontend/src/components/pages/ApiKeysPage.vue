@@ -138,13 +138,11 @@
       />
     </template>
   </PrimeDialog>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import MessageComponent from '@/components/messages/MessageComponent.vue';
 import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
 import CreateApiKeyCard from '@/components/resources/apiKey/CreateApiKeyCard.vue';
@@ -170,7 +168,6 @@ export default defineComponent({
     CreateApiKeyCard,
     MessageComponent,
     PrimeTextarea,
-    TheFooter,
   },
   setup() {
     return {

@@ -23,13 +23,11 @@
       <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
     </div>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
 import { type DatasetTableInfo, getMyDatasetTableInfos } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -46,7 +44,6 @@ export default defineComponent({
     DatalandProgressSpinner,
     PrimeButton,
     TheContent,
-    TheFooter,
     DatasetOverviewTable,
   },
   data() {

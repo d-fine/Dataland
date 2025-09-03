@@ -30,17 +30,13 @@
       </TabPanels>
     </Tabs>
   </TheContent>
-  <TheFooter :is-light-version="true" :sections="footerSections" />
 </template>
 
 <script setup lang="ts">
-import contentData from '@/assets/content.json';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import type { Content, Section } from '@/types/ContentTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
@@ -66,8 +62,6 @@ const route = useRoute();
 const currentPortfolioId = ref<string | undefined>(undefined);
 const portfolioNames = ref<BasePortfolioName[]>([]);
 
-const content: Content = contentData;
-const footerSections: Section[] | undefined = content.pages.find((page) => page.url === '/')?.sections;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 onMounted(() => {

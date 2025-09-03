@@ -5,12 +5,9 @@
       For now we invite you to use the desktop version.
     </h2>
   </div>
-  <TheFooter />
 </template>
 
-<script setup lang="ts">
-import TheFooter from '@/components/generics/TheFooter.vue';
-</script>
+<script setup lang="ts"></script>
 <style scoped>
 .d-letters {
   letter-spacing: 0.05em;

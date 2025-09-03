@@ -7,16 +7,14 @@
       <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link>
     </p>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 
 export default {
   name: 'NoContentFound',
-  components: { TheContent, TheFooter },
+  components: { TheContent },
 };
 </script>
 <style scoped>
