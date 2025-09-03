@@ -37,6 +37,7 @@ before(function () {
 function escapeParenthesisInRegExp(inputString: string): string {
   return inputString.replace(/[()]/g, '\\$&');
 }
+
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
@@ -185,7 +186,12 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-overlay').find('li.p-multiselect-option').first().click();
+      cy.get('div.p-multiselect-overlay', { timeout: Cypress.env('short_timeout_in_ms') as number })
+        .should('be.visible')
+        .find('li.p-multiselect-option')
+        .first()
+        .should('be.visible')
+        .click({ force: true });
       verifySearchResultTableExists();
       cy.get('div.p-multiselect-overlay').should('not.exist');
     }
