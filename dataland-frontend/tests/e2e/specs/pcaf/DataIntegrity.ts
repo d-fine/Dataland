@@ -115,6 +115,29 @@ describeIf(
         });
     }
 
+    /**
+     * Handles the validation and navigation after data resubmission.
+     * @param interception The intercepted request response.
+     * @param token The access token for API calls.
+     * @param initiallyUploadedData The original data to compare against.
+     */
+    function handleDataResubmissionValidation(
+      interception: { response?: { body?: DataMetaInformation } },
+      token: string,
+      initiallyUploadedData: PcafData
+    ): void {
+      cy.url().should('eq', getBaseUrl() + '/datasets');
+      isDatasetAccepted();
+
+      const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+      cy.wrap(null).then(() =>
+        validateReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId, initiallyUploadedData)
+      );
+
+      cy.url().should('eq', getBaseUrl() + '/datasets');
+      cy.get('[data-test="datasets-table"]').should('be.visible');
+    }
+
     it(
       'Create a company and a PCAF dataset via api, then re-upload it with the ' +
         'upload form in Edit mode and assure that it worked by validating a couple of values',
@@ -148,14 +171,7 @@ describeIf(
             cy.get('[data-test="submitButton"]').click();
             cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
               (interception) => {
-                cy.url().should('eq', getBaseUrl() + '/datasets');
-                isDatasetAccepted();
-                const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                cy.wrap(null).then(() =>
-                  validateReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId, initiallyUploadedData)
-                );
-                cy.url().should('eq', getBaseUrl() + '/datasets');
-                cy.get('[data-test="datasets-table"]').should('be.visible');
+                handleDataResubmissionValidation(interception, token, initiallyUploadedData);
               }
             );
           });
