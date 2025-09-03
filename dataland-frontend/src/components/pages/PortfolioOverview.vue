@@ -1,43 +1,40 @@
 <template>
-  <DatasetsTabMenu :initialTabIndex="2">
-    <TheContent class="min-h-screen relative">
-      <Tabs
-        :value="currentPortfolioId || 'no-portfolios-available'"
-        :scrollable="true"
-        data-test="portfolios"
-        @update:value="onTabChange"
-      >
-        <div class="tabs-container">
-          <TabList>
-            <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-              <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
-                {{ portfolio.portfolioName }}
-              </div>
-            </Tab>
-          </TabList>
-          <PrimeButton label="ADD NEW PORTFOLIO" @click="addNewPortfolio" icon="pi pi-plus" data-test="add-portfolio" />
-        </div>
-        <TabPanels>
-          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-            <PortfolioDetails
-              :portfolioId="portfolio.portfolioId"
-              @update:portfolio-overview="getPortfolios"
-              :data-test="`portfolio-${portfolio.portfolioName}`"
-            />
-          </TabPanel>
-          <TabPanel value="no-portfolios-available">
-            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </TheContent>
-    <TheFooter :is-light-version="true" :sections="footerSections" />
-  </DatasetsTabMenu>
+  <TheContent class="min-h-screen relative">
+    <Tabs
+      :value="currentPortfolioId || 'no-portfolios-available'"
+      :scrollable="true"
+      data-test="portfolios"
+      @update:value="onTabChange"
+    >
+      <div class="tabs-container">
+        <TabList>
+          <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+            <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
+              {{ portfolio.portfolioName }}
+            </div>
+          </Tab>
+        </TabList>
+        <PrimeButton label="ADD NEW PORTFOLIO" @click="addNewPortfolio" icon="pi pi-plus" data-test="add-portfolio" />
+      </div>
+      <TabPanels>
+        <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+          <PortfolioDetails
+            :portfolioId="portfolio.portfolioId"
+            @update:portfolio-overview="getPortfolios"
+            :data-test="`portfolio-${portfolio.portfolioName}`"
+          />
+        </TabPanel>
+        <TabPanel value="no-portfolios-available">
+          <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  </TheContent>
+  <TheFooter :is-light-version="true" :sections="footerSections" />
 </template>
 
 <script setup lang="ts">
 import contentData from '@/assets/content.json';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';

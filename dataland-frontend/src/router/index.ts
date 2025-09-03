@@ -80,6 +80,7 @@ const routes = [
     path: '/companies',
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
+    meta: { initialTabIndex: 0 },
   },
   {
     path: `/companies/:companyId`,
@@ -124,21 +125,25 @@ const routes = [
     path: '/requestoverview',
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
+    meta: { initialTabIndex: 6 },
   },
   {
     path: `/qualityassurance`,
     name: 'UI for quality assurance',
     component: QualityAssurance,
+    meta: { initialTabIndex: 3 },
   },
   {
     path: '/datasets',
     name: 'Dataset Overview',
     component: DatasetOverview,
+    meta: { initialTabIndex: 1 },
   },
   {
     path: '/requests',
     name: 'MyDataRequestsOverview',
     component: MyDataRequestsOverview,
+    meta: { initialTabIndex: 4 },
   },
   {
     path: `/requests/:requestId`,
@@ -150,6 +155,7 @@ const routes = [
     path: `/companyrequests`,
     name: 'CompanyDataRequestsOverview',
     component: CompanyDataRequestsOverview,
+    meta: { initialTabIndex: 5 },
   },
   {
     path: '/bulkdatarequest',
@@ -166,6 +172,7 @@ const routes = [
     path: '/portfolios',
     name: 'Portfolio Overview',
     component: PortfolioOverview,
+    meta: { initialTabIndex: 2 },
   },
   {
     path: '/api-key',

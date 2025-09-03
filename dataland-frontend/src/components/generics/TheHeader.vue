@@ -7,6 +7,7 @@
     </div>
 
     <div class="col-4">
+      <DatasetsTabMenu :initialTabIndex="initialTabIndex" />
       <slot />
     </div>
 
@@ -24,11 +25,13 @@
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
-import { defineComponent, inject } from 'vue';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import { defineComponent, inject, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'TheHeader',
-  components: { AuthSection, UserProfileDropDown },
+  components: { AuthSection, UserProfileDropDown, DatasetsTabMenu },
   props: {
     showUserProfileDropdown: {
       // todo: Do we need this?
@@ -37,8 +40,11 @@ export default defineComponent({
     },
   },
   setup() {
+    const route = useRoute();
+    const initialTabIndex = computed(() => route.meta.initialTabIndex ?? 0);
     return {
       authenticated: inject<boolean>('authenticated'),
+      initialTabIndex,
     };
   },
 });

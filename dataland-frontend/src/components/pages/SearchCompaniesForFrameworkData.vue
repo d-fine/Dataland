@@ -1,72 +1,69 @@
 <template>
-  <DatasetsTabMenu :initialTabIndex="0">
-    <TheContent class="min-h-screen relative">
-      <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
-        <FrameworkDataSearchBar
-          id="frameworkDataSearchBar"
-          ref="frameworkDataSearchBar"
-          v-model="currentSearchBarInput"
-          :filter="currentCombinedFilter"
-          :chunk-size="rowsPerPage"
-          :current-page="currentPage"
-          :emit-search-results-array="true"
-          @search-confirmed="handleSearchConfirmed"
-          @companies-received="handleCompanyQuery"
-        />
+  <TheContent class="min-h-screen relative">
+    <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
+      <FrameworkDataSearchBar
+        id="frameworkDataSearchBar"
+        ref="frameworkDataSearchBar"
+        v-model="currentSearchBarInput"
+        :filter="currentCombinedFilter"
+        :chunk-size="rowsPerPage"
+        :current-page="currentPage"
+        :emit-search-results-array="true"
+        @search-confirmed="handleSearchConfirmed"
+        @companies-received="handleCompanyQuery"
+      />
 
-        <div class="search-filters-panel">
-          <div>
-            <FrameworkDataSearchFilters
-              id="frameworkDataSearchFilters"
-              class="col-8"
-              ref="frameworkDataSearchFilters"
-              v-model:selected-country-codes="currentFilteredCountryCodes"
-              v-model:selected-frameworks="currentFilteredFrameworks"
-              v-model:selected-sectors="currentFilteredSectors"
-            />
-          </div>
+      <div class="search-filters-panel">
+        <div>
+          <FrameworkDataSearchFilters
+            id="frameworkDataSearchFilters"
+            class="col-8"
+            ref="frameworkDataSearchFilters"
+            v-model:selected-country-codes="currentFilteredCountryCodes"
+            v-model:selected-frameworks="currentFilteredFrameworks"
+            v-model:selected-sectors="currentFilteredSectors"
+          />
+        </div>
 
-          <div v-if="!isSearchBarContainerCollapsed" class="button-container">
-            <PrimeButton
-              label="BULK DATA REQUEST"
-              data-test="bulkDataRequestButton"
-              @click="routeToBulkDataRequest()"
-              icon="pi pi-file"
-            />
-            <PrimeButton
-              v-if="hasUserUploaderRights"
-              icon="pi pi-plus"
-              label="NEW DATASET"
-              @click="linkToNewDatasetPage()"
-              data-test="newDatasetButton"
-            />
-            <span>{{ currentlyVisiblePageText }}</span>
-          </div>
+        <div v-if="!isSearchBarContainerCollapsed" class="button-container">
+          <PrimeButton
+            label="BULK DATA REQUEST"
+            data-test="bulkDataRequestButton"
+            @click="routeToBulkDataRequest()"
+            icon="pi pi-file"
+          />
+          <PrimeButton
+            v-if="hasUserUploaderRights"
+            icon="pi pi-plus"
+            label="NEW DATASET"
+            @click="linkToNewDatasetPage()"
+            data-test="newDatasetButton"
+          />
+          <span>{{ currentlyVisiblePageText }}</span>
         </div>
       </div>
+    </div>
 
-      <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading...</p>
-        <DatalandProgressSpinner />
-      </div>
+    <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
+      <p class="font-medium text-xl">Loading...</p>
+      <DatalandProgressSpinner />
+    </div>
 
-      <FrameworkDataSearchResults
-        v-if="!waitingForDataToDisplay"
-        ref="searchResults"
-        :total-records="totalRecords"
-        :previous-records="previousRecords"
-        :rows-per-page="rowsPerPage"
-        :data="resultsArray"
-        @page-update="handlePageUpdate"
-      />
-    </TheContent>
-  </DatasetsTabMenu>
+    <FrameworkDataSearchResults
+      v-if="!waitingForDataToDisplay"
+      ref="searchResults"
+      :total-records="totalRecords"
+      :previous-records="previousRecords"
+      :rows-per-page="rowsPerPage"
+      :data="resultsArray"
+      @page-update="handlePageUpdate"
+    />
+  </TheContent>
   <TheFooter />
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
@@ -97,7 +94,6 @@ export default defineComponent({
   name: 'SearchCompaniesForFrameworkData',
   components: {
     DatalandProgressSpinner,
-    DatasetsTabMenu,
     FrameworkDataSearchFilters,
     TheContent,
     FrameworkDataSearchBar,
