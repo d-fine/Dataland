@@ -278,7 +278,7 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
 
       return documentsObject;
     } catch (error) {
-      console.error(`Error fetching documents:`, error);
+      console.error('Error fetching documents:', error);
       return {};
     }
   } catch (error) {

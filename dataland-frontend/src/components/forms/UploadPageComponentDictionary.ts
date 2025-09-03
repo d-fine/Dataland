@@ -5,6 +5,7 @@ import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/field
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
+import ExtendedSingleSelectFormField from '@/components/forms/parts/fields/ExtendedSingleSelectFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
 import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue';
 import GrievanceMechanismAssessmentsFormField from '@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue';
@@ -24,7 +25,6 @@ import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fie
 import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssessmentsFormField.vue';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import ExtendedSingleSelectFormField from '@/components/forms/parts/fields/ExtendedSingleSelectFormField.vue';
 import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
 import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
 import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';

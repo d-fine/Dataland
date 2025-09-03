@@ -38,7 +38,7 @@ import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: 'BigDecimalExtendedDataPointFormField',
+  name: 'ExtendedSingleSelectFormField',
   components: { SingleSelectFormElement, ExtendedDataPointFormField },
   props: {
     ...BaseFormFieldProps,
