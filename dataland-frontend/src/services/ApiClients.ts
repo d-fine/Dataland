@@ -14,6 +14,7 @@ import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTim
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
+import { SpecificationControllerApi } from '@clients/specificationservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -30,6 +31,7 @@ interface ApiClients {
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
+  specificationController: SpecificationControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -89,6 +91,7 @@ export class ApiClientProvider {
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
+      specificationController: this.getClientFactory('/specifications')(SpecificationControllerApi),
     };
   }
 
@@ -106,5 +109,18 @@ export class ApiClientProvider {
     return (constructor) => {
       return new constructor(undefined, basePath, this.axiosInstance);
     };
+  }
+}
+
+/**
+ * Unauthenticated API client provider for services that don't require authentication
+ */
+export class UnauthenticatedApiClientProvider {
+  readonly axiosInstance: AxiosInstance;
+  readonly specificationController: SpecificationControllerApi;
+
+  constructor() {
+    this.axiosInstance = axios.create({});
+    this.specificationController = new SpecificationControllerApi(undefined, '/specifications', this.axiosInstance);
   }
 }

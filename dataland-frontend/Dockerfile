@@ -10,6 +10,7 @@ COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaService
 COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./dataland-email-service/emailServiceOpenApi.json ./dataland-email-service/emailServiceOpenApi.json
 COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/userServiceOpenApi.json
+COPY ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-specification-service/specificationServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
