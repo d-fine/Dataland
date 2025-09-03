@@ -11,9 +11,8 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V10__ConvertAlternativeNamesToText : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        context!!
-            .connection
-            .createStatement()
-            .execute("ALTER TABLE stored_company_entity_company_alternative_names ALTER COLUMN company_alternative_names TYPE text;")
+        context!!.connection.createStatement().execute(
+            "ALTER TABLE stored_company_entity_company_alternative_names ALTER COLUMN company_alternative_names TYPE text;",
+        )
     }
 }
