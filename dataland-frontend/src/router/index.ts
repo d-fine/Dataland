@@ -116,6 +116,9 @@ const routes = [
     props: true,
     name: 'CompanyCockpitPage',
     component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: '/requestoverview',
