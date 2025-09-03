@@ -86,6 +86,9 @@ const routes = [
     props: true,
     name: 'Company Cockpit',
     component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: false,
+    },
   },
   {
     path: `/companies/:companyId/frameworks/:dataType`,
@@ -116,9 +119,6 @@ const routes = [
     props: true,
     name: 'CompanyCockpitPage',
     component: CompanyCockpitPage,
-    meta: {
-      requiresAuthentication: false,
-    },
   },
   {
     path: '/requestoverview',
