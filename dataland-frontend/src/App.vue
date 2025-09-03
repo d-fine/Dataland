@@ -1,9 +1,13 @@
 <template>
   <DynamicDialog />
   <AuthenticationWrapper v-if="routedPageRequiresAuthentication">
-    <TheHeader />
+    <TheHeader :show-user-profile-dropdown="keycloakAuthenticated" />
     <router-view />
   </AuthenticationWrapper>
+  <template v-else-if="useRoute().path !== '/'">
+    <TheHeader :show-user-profile-dropdown="keycloakAuthenticated" />
+    <router-view />
+  </template>
   <template v-else>
     <LandingPageHeader />
     <router-view />
@@ -31,6 +35,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 
 import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
+import { useRoute } from 'vue-router';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -113,6 +118,7 @@ export default defineComponent({
   },
 
   methods: {
+    useRoute,
     /**
      * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
      */
