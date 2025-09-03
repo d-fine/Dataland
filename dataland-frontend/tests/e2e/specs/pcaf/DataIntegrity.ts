@@ -16,6 +16,7 @@ import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { type CompanyRoleAssignment } from '@clients/communitymanager';
 
 let pcafFixtureData: FixtureData<PcafData>;
 before(function () {
@@ -37,6 +38,40 @@ describeIf(
     });
 
     /**
+     * Helper to get Keycloak token.
+     */
+    function getToken(): Cypress.Chainable<string> {
+      return getKeycloakToken(admin_name, admin_pw);
+    }
+
+    /**
+     * Helper to create a company.
+     */
+    function createCompany(token: string, testCompanyName: string): Promise<StoredCompany> {
+      return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+    }
+
+    /**
+     * Helper to assign company ownership.
+     */
+    function assignOwnership(token: string, companyId: string): Promise<CompanyRoleAssignment> {
+      return assignCompanyOwnershipToDatalandAdmin(token, companyId);
+    }
+
+    /**
+     * Helper to upload framework data.
+     */
+    function uploadFrameworkData(token: string, companyId: string): Promise<DataMetaInformation> {
+      return uploadFrameworkDataForPublicToolboxFramework(
+        PcafFrameworkDefinition,
+        token,
+        companyId,
+        pcafFixtureData.reportingPeriod,
+        pcafFixtureData.t
+      );
+    }
+
+    /**
      * Sets up a company and uploads the PCAF framework data for testing.
      * @param testCompanyName The name of the test company to create.
      * @returns A Promise resolving to an object containing the token and storedCompany.
@@ -44,19 +79,21 @@ describeIf(
     function setupCompanyAndFramework(
       testCompanyName: string
     ): Cypress.Chainable<{ token: string; storedCompany: StoredCompany }> {
-      return getKeycloakToken(admin_name, admin_pw).then((token) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              PcafFrameworkDefinition,
-              token,
-              storedCompany.companyId,
-              pcafFixtureData.reportingPeriod,
-              pcafFixtureData.t
-            ).then(() => ({ token, storedCompany }));
-          });
-        });
-      });
+      let token: string;
+      let storedCompany: StoredCompany;
+      return getToken()
+        .then((receivedToken) => {
+          token = receivedToken;
+          return createCompany(token, testCompanyName);
+        })
+        .then((company) => {
+          storedCompany = company;
+          return assignOwnership(token, storedCompany.companyId);
+        })
+        .then(() => {
+          return uploadFrameworkData(token, storedCompany.companyId);
+        })
+        .then(() => ({ token, storedCompany }));
     }
 
     /**
