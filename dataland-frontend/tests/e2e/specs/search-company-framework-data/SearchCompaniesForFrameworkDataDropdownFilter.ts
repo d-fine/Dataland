@@ -45,7 +45,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   const frameworkTwo = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1];
   const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2];
 
-  it.only('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
+  it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
     cy.visit('/companies').wait('@companies-meta-information');
