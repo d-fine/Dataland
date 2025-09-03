@@ -34,7 +34,9 @@ describeIf(
   function (): void {
     before(() => {
       Cypress.env('excludeBypassQaIntercept', true);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
+
 
     it(
       'Create a company and a PCAF dataset via api, then re-upload it with the ' +
@@ -61,7 +63,7 @@ describeIf(
 
           // Define intercepts for test
           cy.intercept({
-            url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
+            url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
             times: 1,
           }).as('getInitiallyUploadedData');
 
