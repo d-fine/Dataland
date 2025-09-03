@@ -1,4 +1,4 @@
-const submitButtonSelector = "[data-test='submitButton']";
+const submitButtonSelector = "[data-test='submitButton'] [data-test='submitButton']";
 
 export const submitButton = {
   exists(): void {
