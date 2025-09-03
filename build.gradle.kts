@@ -121,7 +121,6 @@ sonar {
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/pcaf/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
@@ -167,6 +166,7 @@ sonar {
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/pcaf/ViewConfig.ts," +
                 // -> no need to cover these two ViewConfigs because there are no custom fields
 
                 // backend
