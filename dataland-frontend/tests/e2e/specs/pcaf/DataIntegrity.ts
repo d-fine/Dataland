@@ -14,7 +14,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
-import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 
 let pcafFixtureData: FixtureData<PcafData>;
@@ -66,7 +65,7 @@ describeIf(
                   }).as('resubmitPcafData');
                   cy.visitAndCheckAppMount(
                     `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Pcaf}` +
-                    `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
+                      `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
                   );
                   cy.wait('@getInitiallyUploadedData', {
                     timeout: Cypress.env('medium_timeout_in_ms') as number,
@@ -74,13 +73,12 @@ describeIf(
                     initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
                   });
                   cy.get('h1').should('contain', testCompanyName);
-                  submitButton.clickButton();
+                  cy.get('[data-test="submitButton"]').click();
                   cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                     async (interception) => {
                       cy.url().should('eq', getBaseUrl() + '/datasets');
                       isDatasetAccepted();
-                      const dataMetaInformationOfReuploadedDataset = interception.response
-                        ?.body as DataMetaInformation;
+                      const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
                       await new PcafDataControllerApi(new Configuration({ accessToken: token }))
                         .getCompanyAssociatedPcafData(dataMetaInformationOfReuploadedDataset.dataId)
                         .then((response) => {
