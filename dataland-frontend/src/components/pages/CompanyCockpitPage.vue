@@ -98,14 +98,11 @@ Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
   latestDocuments[`latest${category}`] = [];
 });
 
-const roles = [
-  CompanyRole.MemberAdmin,
-  CompanyRole.Member,
-  CompanyRole.CompanyOwner,
-  CompanyRole.DataUploader,
-] as const;
+const roles = Object.values(CompanyRole);
 
+/** Incrementing this value will force re-rendering of all CompanyRolesCard components. */
 const refreshAllCards = ref(0);
+
 const showSuccess = ref(false);
 const successMessage = ref('');
 
