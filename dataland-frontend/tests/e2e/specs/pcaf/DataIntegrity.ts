@@ -34,9 +34,7 @@ describeIf(
   function (): void {
     before(() => {
       Cypress.env('excludeBypassQaIntercept', true);
-      cy.ensureLoggedIn(admin_name, admin_pw);
     });
-
 
     it(
       'Create a company and a PCAF dataset via api, then re-upload it with the ' +
@@ -46,69 +44,58 @@ describeIf(
         const testCompanyName = 'Company-Created-In-PCAF-Blanket-Test-' + uniqueCompanyMarker;
 
         getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
-          // Create company and upload PCAF prepared fixture data via API
-          const storedCompanyId = (await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)))
-            .companyId;
-          await assignCompanyOwnershipToDatalandAdmin(token, storedCompanyId);
-
-          const dataMetaInformation: DataMetaInformation = await uploadFrameworkDataForPublicToolboxFramework(
-            PcafFrameworkDefinition,
-            token,
-            storedCompanyId,
-            pcafFixtureData.reportingPeriod,
-            pcafFixtureData.t
-          );
-          console.log(dataMetaInformation);
-          cy.pause();
-
-          // Define intercepts for test
-          cy.intercept({
-            url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
-            times: 1,
-          }).as('getInitiallyUploadedData');
-
-          cy.intercept({
-            url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
-            times: 1,
-          }).as('resubmitPcafData');
-
-          // Log in via frontend, visit edit page for PCAF dataset uploaded via API, and re-submit data
-          cy.ensureLoggedIn(admin_name, admin_pw);
-          let initiallyUploadedData: PcafData;
-          cy.visitAndCheckAppMount(
-            `/companies/${storedCompanyId}/frameworks/${DataTypeEnum.Pcaf}` +
-              `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
-          );
-
-          cy.wait('@getInitiallyUploadedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-            (interception) => {
-              initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
-            }
-          );
-
-          cy.get('h1').should('contain', testCompanyName);
-          submitButton.clickButton();
-
-          // Intercept the re-submit, and compare the interception's data with the dataset retrieved from the backend
-          cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-            async (interception) => {
-              cy.url().should('eq', getBaseUrl() + '/datasets');
-              isDatasetAccepted();
-              const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-              const pcafDataControllerApi = new PcafDataControllerApi(new Configuration({ accessToken: token }));
-
-              const response = await pcafDataControllerApi.getCompanyAssociatedPcafData(
-                dataMetaInformationOfReuploadedDataset.dataId
-              );
-              const reuploadedDatasetFromBackend = response.data.data;
-
-              compareObjectKeysAndValuesDeep(
-                initiallyUploadedData as Record<string, object>,
-                reuploadedDatasetFromBackend as Record<string, object>
-              );
-
-              cy.url().should('eq', getBaseUrl() + '/datasets');
-              cy.get('[data-test="datasets-table"]').should('be.visible');
+          await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
+            async (storedCompany) => {
+              await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(async () => {
+                await uploadFrameworkDataForPublicToolboxFramework(
+                  PcafFrameworkDefinition,
+                  token,
+                  storedCompany.companyId,
+                  pcafFixtureData.reportingPeriod,
+                  pcafFixtureData.t
+                ).then(() => {
+                  let initiallyUploadedData: PcafData;
+                  cy.ensureLoggedIn(admin_name, admin_pw);
+                  cy.intercept({
+                    url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
+                    times: 1,
+                  }).as('getInitiallyUploadedData');
+                  cy.intercept({
+                    url: `**/api/data/${DataTypeEnum.Pcaf}?bypassQa=true`,
+                    times: 1,
+                  }).as('resubmitPcafData');
+                  cy.visitAndCheckAppMount(
+                    `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Pcaf}` +
+                    `/upload?reportingPeriod=${pcafFixtureData.reportingPeriod}`
+                  );
+                  cy.wait('@getInitiallyUploadedData', {
+                    timeout: Cypress.env('medium_timeout_in_ms') as number,
+                  }).then((interception) => {
+                    initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
+                  });
+                  cy.get('h1').should('contain', testCompanyName);
+                  submitButton.clickButton();
+                  cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                    async (interception) => {
+                      cy.url().should('eq', getBaseUrl() + '/datasets');
+                      isDatasetAccepted();
+                      const dataMetaInformationOfReuploadedDataset = interception.response
+                        ?.body as DataMetaInformation;
+                      await new PcafDataControllerApi(new Configuration({ accessToken: token }))
+                        .getCompanyAssociatedPcafData(dataMetaInformationOfReuploadedDataset.dataId)
+                        .then((response) => {
+                          const reuploadedDatasetFromBackend = response.data.data;
+                          compareObjectKeysAndValuesDeep(
+                            initiallyUploadedData as Record<string, object>,
+                            reuploadedDatasetFromBackend as Record<string, object>
+                          );
+                          cy.url().should('eq', getBaseUrl() + '/datasets');
+                          cy.get('[data-test="datasets-table"]').should('be.visible');
+                        });
+                    }
+                  );
+                });
+              });
             }
           );
         });
