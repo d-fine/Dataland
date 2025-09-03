@@ -326,6 +326,9 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
     margin-left: auto;
     text-align: start;
     flex-grow: 1;
+    position: sticky;
+    top: 5rem;
+    align-self: flex-start;
 
     .message-container {
       margin: var(--spacing-sm) 0;
