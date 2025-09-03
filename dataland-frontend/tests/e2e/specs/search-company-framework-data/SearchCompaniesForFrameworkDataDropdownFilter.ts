@@ -186,12 +186,14 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-overlay', { timeout: Cypress.env('short_timeout_in_ms') as number })
+      cy.get('div.p-multiselect-overlay')
         .should('be.visible')
+        .and('contain.text', humanizeStringOrNumber(frameworkOne))
         .find('li.p-multiselect-option')
         .first()
         .should('be.visible')
-        .click({ force: true });
+        .and('not.have.class', 'p-disabled')
+        .click();
       verifySearchResultTableExists();
       cy.get('div.p-multiselect-overlay').should('not.exist');
     }
