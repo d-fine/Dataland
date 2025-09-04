@@ -97,7 +97,7 @@ div {
 }
 .document-name {
   display: inline-block;
-  max-width: 200px;
+  max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
