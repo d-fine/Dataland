@@ -6,7 +6,7 @@
       @click="handleDocumentDownload()"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
     >
-      <span>{{ label ?? documentDownloadInfo.downloadName }}</span>
+      <span class="document-name">{{ label ?? documentDownloadInfo.downloadName }}</span>
       <span>{{ suffix ?? '' }}</span>
       <span>
         <i
@@ -33,7 +33,7 @@
       :data-test="'download-text-' + documentDownloadInfo.downloadName"
     >
       <span
-        style="overflow: hidden; text-overflow: ellipsis"
+        class="document-name"
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
@@ -90,5 +90,13 @@ const handleDocumentDownload = async (): Promise<void> => {
 div {
   white-space: nowrap;
   max-width: 100%;
+}
+.document-name {
+  display: inline-block;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 </style>
