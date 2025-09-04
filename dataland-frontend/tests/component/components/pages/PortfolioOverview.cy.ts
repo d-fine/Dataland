@@ -25,7 +25,7 @@ describe('Check the portfolio overview view', function (): void {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.wait('@basePortfolios').then(() => {
-        cy.get('[data-test="add-portfolio"]').should('contain', 'Add new Portfolio');
+        cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
         cy.get('[data-test="portfolios"] [data-p-active="true"]').should(
           'contain',
           basePortfolioNames[0].portfolioName
@@ -43,7 +43,7 @@ describe('Check the portfolio overview view', function (): void {
     }).then(() => {
       cy.wait('@basePortfolios').then(() => {
         cy.get('[data-pc-name="tablist-tab-list"]').should('have.length', 0);
-        cy.get('[data-test="add-portfolio"]').should('contain', 'Add new Portfolio');
+        cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
       });
     });
   });

@@ -29,7 +29,7 @@
       >Please choose a topic and enter a message to us.
     </Message>
     <PrimeButton
-      label="Send"
+      label="SEND"
       icon="pi pi-send"
       class="send-button"
       data-test="send-help-request-button"

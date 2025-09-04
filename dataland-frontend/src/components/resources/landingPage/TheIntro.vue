@@ -37,13 +37,6 @@
         },
       }"
     />
-
-    <ButtonComponent
-      :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
-      buttonType="button-component about__button"
-      aria-label="About Page"
-      @click="router.push('/about')"
-    />
   </section>
 </template>
 
@@ -51,17 +44,12 @@
 import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
 import router from '@/router';
 
 const props = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
   return props.sections?.find((section) => section.title === 'Intro') ?? null;
-});
-
-const aboutIntroSection = computed(() => {
-  return props.sections?.find((section) => section.title === 'START YOUR DATALAND JOURNEY') ?? null;
 });
 
 const isMobile = ref(window.innerWidth < 768);
@@ -137,10 +125,6 @@ const handleInputBlur = (): void => {
       line-height: 56px;
       margin-top: 80px;
     }
-  }
-
-  .button-component.about__button {
-    display: none;
   }
 }
 
@@ -230,19 +214,6 @@ const handleInputBlur = (): void => {
         height: 16px;
         background-image: url(/static/icons/Arrow--right.svg);
         transform: rotateY(180deg) translateY(-50%);
-      }
-    }
-
-    .button-component.about__button {
-      display: block;
-      background-color: transparent;
-      margin: 3em auto;
-      color: var(--p-highlight-color);
-      border-color: var(--p-primary-contrast-color);
-
-      &:hover {
-        border-color: var(--p-primary-color);
-        color: var(--p-primary-color);
       }
     }
 

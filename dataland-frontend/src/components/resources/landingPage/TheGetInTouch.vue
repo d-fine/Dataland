@@ -11,11 +11,19 @@
       <div class="getintouch__text">
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
-        <ButtonComponent
-          label="Get In Touch"
-          buttonType="button-component getintouch__text-button"
-          ariaLabel="Get In Touch"
+        <Button
+          label="GET IN TOUCH"
+          data-test="get-in-touch-button"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
+          rounded
+          :pt="{
+            root: {
+              style: {
+                width: 'fit-content',
+                marginTop: 'var(--spacing-sm)',
+              },
+            },
+          }"
         />
       </div>
     </div>
@@ -26,7 +34,7 @@
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import { openEmailClient } from '@/utils/Email';
-import ButtonComponent from '@/components/resources/landingPage/ButtonComponent.vue';
+import Button from 'primevue/button';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -96,11 +104,6 @@ const getInTouchSection = computed(() => {
 
     &-text {
       color: var(--p-primary-color);
-    }
-
-    &-button {
-      margin-top: 32px;
-      width: fit-content;
     }
   }
 }

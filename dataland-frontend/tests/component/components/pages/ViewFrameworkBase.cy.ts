@@ -66,7 +66,7 @@ describe('Component test for ViewFrameworkBase', () => {
       cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
         cy.get('button[data-test=editDatasetButton]').should('not.exist');
-        cy.get('a[data-test=gotoNewDatasetButton]').should('not.exist');
+        cy.get('[data-test=goToNewDatasetButton]').should('not.exist');
       });
     });
   });
@@ -88,7 +88,7 @@ describe('Component test for ViewFrameworkBase', () => {
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
-        cy.get('a[data-test=gotoNewDatasetButton] > button').should('exist');
+        cy.get('[data-test=goToNewDatasetButton]').should('exist');
         cy.get('button[data-test=editDatasetButton]').should('exist');
       });
     });

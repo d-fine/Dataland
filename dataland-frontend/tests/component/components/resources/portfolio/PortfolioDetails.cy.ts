@@ -115,7 +115,7 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'Activate Monitoring');
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
       });
     });
   });
@@ -129,7 +129,7 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'Activate Monitoring');
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio not actively monitored');

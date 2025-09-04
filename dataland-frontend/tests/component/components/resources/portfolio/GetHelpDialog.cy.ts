@@ -22,7 +22,6 @@ describe('Check the Get Help form', () => {
 
     cy.get('#get-help-message').type('I need help with finding identifiers.');
     cy.get('#get-help-message').should('have.value', 'I need help with finding identifiers.');
-
     cy.get('[data-test="send-help-request-button"]').should('not.be.disabled');
   });
 
@@ -40,7 +39,6 @@ describe('Check the Get Help form', () => {
     cy.get('#get-help-topic').click();
     cy.contains('Find company identifiers').click();
     cy.get('#get-help-message').type('I need help with finding identifiers.');
-
     cy.get('[data-test="send-help-request-button"]').click();
     cy.wait('@sendSupportRequest');
 
@@ -56,7 +54,6 @@ describe('Check the Get Help form', () => {
     cy.get('#get-help-topic').click();
     cy.contains('Other topic').click();
     cy.get('#get-help-message').type('This is a test message.');
-
     cy.get('[data-test="send-help-request-button"]').click();
     cy.wait('@sendSupportRequest');
 
