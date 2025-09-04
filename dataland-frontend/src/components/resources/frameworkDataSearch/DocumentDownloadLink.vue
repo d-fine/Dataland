@@ -100,7 +100,5 @@ div {
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: bottom;
 }
 </style>
