@@ -89,7 +89,7 @@ describeIf(
       });
     });
 
-    it.only('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
