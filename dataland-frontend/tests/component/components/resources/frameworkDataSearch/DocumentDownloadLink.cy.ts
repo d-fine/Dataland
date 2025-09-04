@@ -146,6 +146,28 @@ describe('check that the document link component works and is displayed correctl
       cy.get('[data-test="download-link-FileName"]').should('not.contain', 'page');
     });
   });
+
+  it('Check that long document names are truncated with ellipsis', function (): void {
+    const longName = 'ThisIsAVeryLongDocumentNameThatShouldBeTruncatedAndNotFullyVisibleInTheButton';
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentDownloadLink, {
+      keycloak: minimalKeycloakMock({ authenticated: true }),
+      props: {
+        documentDownloadInfo: {
+          downloadName: longName,
+          fileReference: 'dummyFileReference',
+        },
+      },
+    }).then(() => {
+      const selector = '[data-test="Report-Download-' + longName + '"]';
+      cy.get(selector).should('exist').invoke('css', 'text-overflow').should('eq', 'ellipsis');
+      cy.get(selector).invoke('attr', 'title').should('eq', longName);
+      cy.get(selector).then(($el) => {
+        const el = $el[0];
+        expect(el.scrollWidth).to.be.greaterThan(el.clientWidth);
+      });
+    });
+  });
 });
 
 /**
