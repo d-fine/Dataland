@@ -7,6 +7,7 @@ import {
   reader_userId,
   reviewer_userId,
   uploader_userId,
+  premium_user_userId,
 } from '@e2e/utils/Cypress';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
 import { getKeycloakToken } from '@e2e/utils/Auth';
@@ -88,7 +89,8 @@ describeIf(
       });
     });
 
-    it.only('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
         .then((token) =>
@@ -99,14 +101,25 @@ describeIf(
         'fetchAggregatedFrameworkSummaryForAlpha'
       );
       cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
-      cy.pause();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').click();
-        cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
-        cy.get('[data-test="select-user-button"]').click();
-        cy.get('[data-test="save-changes-button"]').click();
       });
-      cy.pause();
+      cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
+      cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
+      cy.get('[data-test="select-user-button"]').click();
+      cy.get('[data-test="save-changes-button"]').click();
+      cy.get('.p-dialog').within(() => {
+        cy.contains('Success');
+        cy.contains('button', 'OK').click();
+      });
+      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+        cy.get('td').contains('PremiumUser').should('exist');
+        cy.get('[data-test="dialog-button"]').click();
+      });
+      cy.get('[data-test="dialog-menu"]').within(() => {
+        cy.pause();
+        cy.get('.p-menu-item').contains("Change User's Role").click();
+      });
     });
 
     /**

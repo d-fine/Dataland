@@ -11,6 +11,7 @@ export const reviewer_pw = getStringCypressEnv('KEYCLOAK_REVIEWER_PASSWORD');
 export const reviewer_userId = 'f7a02ff1-0dab-4e10-a908-7d775c1014ae';
 export const premium_user_name = 'data_premium_user';
 export const premium_user_pw = getStringCypressEnv('KEYCLOAK_PREMIUM_USER_PASSWORD');
+export const premium_user_userId = '68129cce-52e5-473e-bec9-90046eebc619';
 export const admin_name = 'data_admin';
 export const admin_pw = getStringCypressEnv('KEYCLOAK_DATALAND_ADMIN_PASSWORD');
 export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
