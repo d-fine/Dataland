@@ -28,7 +28,7 @@ data class StoredCompanyEntity(
     @Column(name = "company_name", length = 1000)
     var companyName: String,
     @ElementCollection
-    @Column(name = "company_alternative_names")
+    @Column(name = "company_alternative_names", length = 1000)
     @OrderBy("asc")
     var companyAlternativeNames: List<String>?,
     @ElementCollection
