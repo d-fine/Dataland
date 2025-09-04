@@ -159,13 +159,13 @@ describe('check that the document link component works and is displayed correctl
         },
       },
     }).then(() => {
-      cy.get('[data-test="Report-Download-' + longName + '"]')
-        .should('exist')
-        .invoke('css', 'text-overflow')
-        .should('eq', 'ellipsis');
-      cy.get('[data-test="Report-Download-' + longName + '"]')
-        .invoke('attr', 'title')
-        .should('eq', longName);
+      const selector = '[data-test="Report-Download-' + longName + '"]';
+      cy.get(selector).should('exist').invoke('css', 'text-overflow').should('eq', 'ellipsis');
+      cy.get(selector).invoke('attr', 'title').should('eq', longName);
+      cy.get(selector).then(($el) => {
+        const el = $el[0];
+        expect(el.scrollWidth).to.be.greaterThan(el.clientWidth);
+      });
     });
   });
 });
