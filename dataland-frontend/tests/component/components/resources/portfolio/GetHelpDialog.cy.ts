@@ -12,7 +12,7 @@ describe('Check the Get Help form', () => {
   it('Should display the form with initial empty values', () => {
     cy.get('#get-help-topic').should('have.value', '');
     cy.get('#get-help-message').should('have.value', '');
-    cy.get('.send-button').should('be.disabled');
+    cy.get('[data-test="send-help-request-button"]').should('be.disabled');
   });
 
   it('Should validate the form: enable button when topic and message are provided', () => {
@@ -23,11 +23,11 @@ describe('Check the Get Help form', () => {
     cy.get('#get-help-message').type('I need help with finding identifiers.');
     cy.get('#get-help-message').should('have.value', 'I need help with finding identifiers.');
 
-    cy.get('.send-button').should('not.be.disabled');
+    cy.get('[data-test="send-help-request-button"]').should('not.be.disabled');
   });
 
   it('Should show an error message if required fields are missing', () => {
-    cy.get('.send-button').should('be.disabled');
+    cy.get('[data-test="send-help-request-button"]').should('be.disabled');
     cy.get('.p-message-error').should('contain.text', 'Please choose a topic and enter a message to us.');
   });
 
@@ -41,7 +41,7 @@ describe('Check the Get Help form', () => {
     cy.contains('Find company identifiers').click();
     cy.get('#get-help-message').type('I need help with finding identifiers.');
 
-    cy.get('.send-button').click();
+    cy.get('[data-test="send-help-request-button"]').click();
     cy.wait('@sendSupportRequest');
 
     cy.get('.p-message-success').should('contain.text', 'Thank you for contacting us. We have received your request.');
@@ -57,7 +57,7 @@ describe('Check the Get Help form', () => {
     cy.contains('Other topic').click();
     cy.get('#get-help-message').type('This is a test message.');
 
-    cy.get('.send-button').click();
+    cy.get('[data-test="send-help-request-button"]').click();
     cy.wait('@sendSupportRequest');
 
     cy.get('.p-message-error').should('contain.text', 'Request failed with status code 500');

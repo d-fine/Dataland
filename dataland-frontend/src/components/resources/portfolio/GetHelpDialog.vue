@@ -32,6 +32,7 @@
       label="Send"
       icon="pi pi-send"
       class="send-button"
+      data-test="send-help-request-button"
       @click="sendEmail"
       :loading="isSendingMail"
       :disabled="!isValidForm || emailSendingSuccess || isSendingMail"
