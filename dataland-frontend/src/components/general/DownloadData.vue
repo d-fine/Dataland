@@ -12,7 +12,7 @@
         data-test="frameworkSelector"
         type="select"
         :highlightOnSelect="false"
-        @input="onFrameworkChange"
+        @change="onFrameworkChange"
       />
       <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
         Please select a framework.
@@ -163,7 +163,7 @@ onMounted(() => {
     value: false,
   }));
   if (selectedFramework.value) {
-    onFrameworkChange(selectedFramework.value);
+    onFrameworkChange({ value: selectedFramework.value });
   }
   onModalOpen();
 });
@@ -179,9 +179,10 @@ function resetErrors(): void {
 
 /**
  * Handles changing framework selections
- * @param framework selected framework by user
+ * @param event - The change event from PrimeSelect
  */
-function onFrameworkChange(framework: string | undefined): void {
+function onFrameworkChange(event: { value: DataTypeEnum | undefined }): void {
+  const framework = event.value;
   resetErrors();
 
   const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
@@ -206,9 +207,8 @@ function onModalOpen(): void {
   if (!selectedFramework.value) {
     selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onFrameworkChange(selectedFramework.value);
+  onFrameworkChange({ value: selectedFramework.value });
 }
-
 /**
  * Handles the clickEvent of the Download Button
  */
