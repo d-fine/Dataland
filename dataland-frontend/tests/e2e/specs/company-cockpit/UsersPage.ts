@@ -17,7 +17,7 @@ import { assignCompanyRole, removeAllCompanyRoles } from '@e2e/utils/CompanyRole
 import { CompanyRole } from '@clients/communitymanager';
 
 describeIf(
-  'As a user, I want the navigation around the company cockpit to work as expected',
+  'As a user, I want the users page to behave as expected',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
