@@ -1,52 +1,49 @@
 <template>
   <div data-test="download-link-component">
-    <a
+    <PrimeButton
       v-if="isUserLoggedIn"
+      variant="text"
       @click="handleDocumentDownload()"
-      class="cursor-pointer text-primary"
-      :class="fontStyle"
-      :title="documentDownloadInfo.downloadName"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content max-content 1.5em"
     >
-      <span
-        class="underline pl-1"
-        style="overflow: hidden; text-overflow: ellipsis"
-        :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
-        >{{ label ?? documentDownloadInfo.downloadName }}</span
-      >
-      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
-      <span class="pr-2">
+      <span>{{ label ?? documentDownloadInfo.downloadName }}</span>
+      <span>{{ suffix ?? '' }}</span>
+      <span>
         <i
-          v-if="showIcon"
-          class="pi pi-download pl-1"
+          v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
+          class="pi pi-download"
           data-test="download-icon"
-          aria-hidden="true"
-          style="font-size: 12px; margin: auto"
-        />
+        ></i>
+        <i
+          v-else-if="showIcon && percentCompleted > 0 && percentCompleted < 100"
+          class="pi pi-spin pi-spinner"
+          data-test="spinner-icon"
+          style="margin-left: var(--spacing-xs)"
+        ></i>
+
+        <span v-if="percentCompleted > 0 && percentCompleted < 100" data-test="percentage-text">
+          ({{ percentCompleted }}%)
+        </span>
       </span>
-      <DownloadProgressSpinner :percent-completed="percentCompleted" />
-    </a>
+    </PrimeButton>
     <span
       v-else
       :class="fontStyle"
       :title="documentDownloadInfo.downloadName"
       :data-test="'download-text-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content"
     >
       <span
-        class="pl-1"
         style="overflow: hidden; text-overflow: ellipsis"
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
-      <span class="ml-1 pl-1">{{ suffix ?? '' }}</span>
+      <span>{{ suffix ?? '' }}</span>
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, type Ref, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
@@ -55,12 +52,12 @@ import {
   downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import PrimeButton from 'primevue/button';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const percentCompleted = createNewPercentCompletedRef();
+const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
 
 const isUserLoggedIn = ref<undefined | boolean>(undefined);
 
@@ -93,9 +90,5 @@ const handleDocumentDownload = async (): Promise<void> => {
 div {
   white-space: nowrap;
   max-width: 100%;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 </style>

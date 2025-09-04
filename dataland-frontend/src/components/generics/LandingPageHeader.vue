@@ -10,8 +10,22 @@
       </router-link>
     </div>
     <nav class="header__navigation">
-      <router-link to="/" class="header__link" :class="{ 'active-link': isActiveHome }">HOME</router-link>
-      <router-link to="/about" class="header__link" :class="{ 'active-link': isActiveAbout }">ABOUT</router-link>
+      <Button
+        to="/"
+        class="header__link"
+        :class="{ 'active-link': isActiveHome }"
+        label="HOME"
+        variant="text"
+        @click="router.push('/')"
+      />
+      <Button
+        to="/"
+        class="header__link"
+        :class="{ 'active-link': isActiveAbout }"
+        label="ABOUT"
+        variant="text"
+        @click="router.push('/about')"
+      />
     </nav>
     <AuthSection :is-landing-page="true" />
   </header>
@@ -22,6 +36,8 @@ import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import type { Page } from '@/types/ContentTypes';
+import Button from 'primevue/button';
+import router from '@/router';
 
 const route = useRoute();
 
@@ -55,6 +71,7 @@ const isActiveAbout = computed(() => route.path === '/about');
       height: auto;
     }
   }
+
   &__navigation {
     display: flex;
     justify-content: center;
@@ -73,6 +90,7 @@ const isActiveAbout = computed(() => route.path === '/about');
     text-transform: uppercase;
     text-decoration: none;
     border-bottom: 2px solid transparent;
+
     &:hover,
     &.active-link {
       color: var(--p-primary-color);
@@ -80,6 +98,7 @@ const isActiveAbout = computed(() => route.path === '/about');
     }
   }
 }
+
 @media screen and (max-width: 768px) {
   .header {
     padding: 1rem;
@@ -87,11 +106,13 @@ const isActiveAbout = computed(() => route.path === '/about');
     width: 100%;
     border-radius: 0;
     flex-direction: column;
+
     .header__logo {
       img {
         width: 79px;
       }
     }
+
     .header__navigation {
       display: none;
     }

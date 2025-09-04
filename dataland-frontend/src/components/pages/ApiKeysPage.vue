@@ -104,6 +104,7 @@
             <a href="/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Documents</a>
             <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Community</a>
             <a href="/qa/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Quality Assurance</a>
+            <a href="/users/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Users</a>
           </div>
         </div>
       </div>
@@ -127,7 +128,7 @@
           data-test="regenerateApiKeyCancelButton"
           label="CANCEL"
           @click="regenerateConfirmToggle"
-          class="p-button-outlined"
+          variant="outlined"
         />
         <PrimeButton
           data-test="regenerateApiKeyConfirmButton"

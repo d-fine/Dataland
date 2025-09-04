@@ -66,7 +66,7 @@ describeIf(
              * Verifies that the view button redirects to the view framework data page
              */
             function clickFirstSearchResult(): void {
-              cy.get('table.p-datatable-table').contains('td', 'VIEW').click();
+              cy.get('[data-test="viewButton"]').first().click();
             }
 
             cy.visitAndCheckAppMount('/companies');

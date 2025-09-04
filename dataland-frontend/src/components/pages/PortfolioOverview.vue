@@ -18,7 +18,7 @@
               </Tab>
             </TabList>
             <PrimeButton
-              label="Add new Portfolio"
+              label="ADD NEW PORTFOLIO"
               @click="addNewPortfolio"
               icon="pi pi-plus"
               data-test="add-portfolio"

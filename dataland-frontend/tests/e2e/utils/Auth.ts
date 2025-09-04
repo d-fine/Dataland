@@ -10,7 +10,7 @@ export function logout(): void {
   cy.get("[data-test='user-profile-toggle']").click();
   cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.get("a[aria-label='Login to account']").should('exist').should('be.visible');
+  cy.get("[data-test='login-dataland-button']").should('exist').should('be.visible');
 }
 
 let globalJwt = '';
@@ -26,9 +26,8 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept({ times: 1, url: '/api/companies*' }).as('getCompanies');
   cy.intercept({ times: 1, url: '/api/companies/numberOfCompanies**' }).as('numberOfCompanies');
 
-  cy.visitAndCheckAppMount('/')
-    .get("a[aria-label='Login to account']", { timeout: Cypress.env('long_timeout_in_ms') as number })
-    .click();
+  cy.visitAndCheckAppMount('/');
+  cy.get("[data-test='login-dataland-button']", { timeout: Cypress.env('long_timeout_in_ms') as number }).click();
 
   loginWithCredentials(username, password);
 
