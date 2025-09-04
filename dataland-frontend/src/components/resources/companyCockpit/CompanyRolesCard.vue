@@ -72,6 +72,7 @@
     v-model:visible="showChangeRoleDialog"
     v-if="allowedToEditRoles"
     header="Change User's Role"
+    data-test="change-user-role-dialog"
     :modal="true"
     :closable="true"
   >
@@ -117,7 +118,7 @@
     <span>You're about to remove the user:</span><br />
     <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
     <template #footer>
-      <Button label="Remove User" @click="confirmRemoveUser" />
+      <Button label="Remove User" @click="confirmRemoveUser" data-test="remove-user-button" />
     </template>
   </Dialog>
   <Dialog
@@ -276,6 +277,27 @@ const rowMenuItems = computed<MenuItem[]>(() =>
     : []
 );
 
+// In the future if an endpoint exists this map should be fetched from the backend
+const roleModificationPermissionsMap: Record<CompanyRole, CompanyRole[]> = {
+  [CompanyRole.CompanyOwner]: Object.values(CompanyRole),
+  [CompanyRole.DataUploader]: [],
+  [CompanyRole.MemberAdmin]: [CompanyRole.MemberAdmin, CompanyRole.Member],
+  [CompanyRole.Member]: [],
+};
+
+/**
+ * Determines if a role option should be disabled in the role selection list.
+ * Uses the same logic as SecurityUtilsService.roleModificationPermissionsMap.
+ * @param opt - The role option to check, containing a CompanyRole.
+ */
+function isOptionDisabled(opt: { role: CompanyRole }): boolean {
+  if (opt.role === props.role) return true;
+  if (isGlobalAdmin.value) return false;
+  if (!props.userRole) return true;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole] || [];
+  return !allowedRoles.includes(opt.role);
+}
+
 /**
  * Opens the context menu for a specific row in the company roles table.
  * @param e - The mouse event that triggered the menu opening.
@@ -284,17 +306,6 @@ const rowMenuItems = computed<MenuItem[]>(() =>
 function openRowMenu(e: MouseEvent, row: TableRow): void {
   activeRow.value = row;
   rowMenu.value?.toggle(e);
-}
-
-/**
- * Determines if a role option should be disabled in the role selection list.
- * @param opt - The role option to check, containing a CompanyRole.
- */
-function isOptionDisabled(opt: { role: CompanyRole }): boolean {
-  return (
-    opt.role === props.role ||
-    (props.userRole !== CompanyRole.CompanyOwner && !isGlobalAdmin.value && opt.role === CompanyRole.CompanyOwner)
-  );
 }
 
 /**

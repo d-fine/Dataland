@@ -89,7 +89,7 @@ describeIf(
       });
     });
 
-    it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    it.only('As a company admin you should be able to add members, change the role of other members or remove them', () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
@@ -116,9 +116,32 @@ describeIf(
         cy.get('td').contains('PremiumUser').should('exist');
         cy.get('[data-test="dialog-button"]').click();
       });
-      cy.get('[data-test="dialog-menu"]').within(() => {
-        cy.pause();
-        cy.get('.p-menu-item').contains("Change User's Role").click();
+      cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
+
+      cy.get('[data-test="change-user-role-dialog"]').should('be.visible');
+      cy.get('[data-test="change-user-role-dialog"]').contains('.p-listbox-option', 'Admins').click();
+      cy.get('[data-test="change-role-button"]').click();
+      cy.get('.p-dialog').within(() => {
+        cy.contains('Success');
+        cy.contains('button', 'OK').click();
+      });
+      cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
+      cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+        cy.get('td').contains('PremiumUser').should('exist');
+        cy.get('td')
+          .contains('PremiumUser')
+          .parent()
+          .within(() => {
+            cy.get('[data-test="dialog-button"]').click();
+          });
+      });
+
+      cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+
+      cy.get('[data-test="remove-user-button"]').should('be.visible').click();
+
+      cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+        cy.get('td').contains('PremiumUser').should('not.exist');
       });
     });
 
