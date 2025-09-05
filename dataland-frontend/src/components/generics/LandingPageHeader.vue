@@ -2,11 +2,7 @@
   <header class="header" role="banner">
     <div class="header__logo">
       <router-link to="/" aria-label="Go to the Landing Page" aria-current="page">
-        <img
-          v-if="landingPage?.sections[0]?.image?.[0]"
-          :src="landingPage.sections[0].image[0]"
-          alt="Dataland banner logo"
-        />
+        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland banner logo" />
       </router-link>
     </div>
     <nav class="header__navigation">
@@ -35,15 +31,10 @@
 import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
-import type { Page } from '@/types/ContentTypes';
 import Button from 'primevue/button';
 import router from '@/router';
 
 const route = useRoute();
-
-const { landingPage } = defineProps<{
-  landingPage?: Page;
-}>();
 
 const isActiveHome = computed(() => route.path === '/');
 const isActiveAbout = computed(() => route.path === '/about');

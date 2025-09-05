@@ -61,9 +61,9 @@ const { initialTabIndex } = defineProps<{
 }>();
 
 const tabs = ref<Array<TabInfo>>([
+  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'COMPANIES', route: '/companies', isVisible: true },
   { label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'QA', route: '/qualityassurance', isVisible: false },
   { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
@@ -74,7 +74,7 @@ onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
-  currentTabIndex.value = initialTabIndex ?? 0;
+  currentTabIndex.value = initialTabIndex ?? -1;
 });
 
 watchEffect(() => {
