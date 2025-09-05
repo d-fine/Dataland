@@ -1,6 +1,9 @@
 <template>
   <DynamicDialog />
-  <component :is="routedPageRequiresAuthentication ? 'AuthenticationWrapper' : 'div'">
+  <component
+    v-if="route.meta.requiresAuthentication !== undefined"
+    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+  >
     <LandingPageHeader v-if="useLandingPageHeader" />
     <TheHeader v-else :show-user-profile-dropdown="keycloakAuthenticated" />
     <router-view />
@@ -11,7 +14,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
-import { useDialog } from 'primevue/usedialog';
 import Keycloak from 'keycloak-js';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
@@ -31,6 +33,7 @@ import { useRoute } from 'vue-router';
 import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
+import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -57,17 +60,10 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const dialog = useDialog();
-    const routedPageRequiresAuthentication = computed(() => {
-      return (route.meta && (route.meta.requiresAuthentication as boolean)) ?? true;
-    });
     const useLandingPageHeader = computed(() => {
-      return (
-        (route.meta ?? false) &&
-        !(route.meta.requiresAuthentication ?? true) &&
-        (route.meta.useLandingPageHeader ?? true)
-      );
+      return !route.meta.requiresAuthentication && route.meta.useLandingPageHeader;
     });
-    return { routedPageRequiresAuthentication, dialog, useLandingPageHeader };
+    return { route, useLandingPageHeader, dialog };
   },
 
   computed: {

@@ -63,24 +63,36 @@ const routes = [
     path: '/companies/choose',
     name: 'Choose Company',
     component: ChooseCompanyForFrameworkDataUpload,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/companies/:companyID/frameworks/upload',
     props: true,
     name: 'Choose Framework',
     component: ChooseFrameworkForDataUpload,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyID/frameworks/:frameworkType/upload`,
     props: true,
     name: `Upload framework data`,
     component: UploadFormWrapper,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/companies',
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
-    meta: { initialTabIndex: 1 },
+    meta: {
+      initialTabIndex: 1,
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyId`,
@@ -97,94 +109,142 @@ const routes = [
     props: true,
     name: 'Company framework data view page',
     component: ViewFrameworkData,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyId/frameworks/:dataType/:dataId`,
     props: true,
     name: 'Company framework data view page for specific data ID',
     component: ViewFrameworkData,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyId/frameworks/:dataType/reportingPeriods/:reportingPeriod`,
     props: true,
     name: 'Company framework data for specific reporting period',
     component: ViewFrameworkData,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyId/documents`,
     props: true,
     name: 'Document Overview',
     component: DocumentOverview,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companies/:companyId/users`,
     props: true,
     name: 'CompanyCockpitPage',
     component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/requestoverview',
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
-    meta: { initialTabIndex: 6 },
+    meta: {
+      initialTabIndex: 6,
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/qualityassurance`,
     name: 'UI for quality assurance',
     component: QualityAssurance,
-    meta: { initialTabIndex: 3 },
+    meta: {
+      initialTabIndex: 3,
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/datasets',
     name: 'Dataset Overview',
     component: DatasetOverview,
-    meta: { initialTabIndex: 2 },
+    meta: {
+      initialTabIndex: 2,
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/requests',
     name: 'MyDataRequestsOverview',
     component: MyDataRequestsOverview,
-    meta: { initialTabIndex: 4 },
+    meta: {
+      initialTabIndex: 4,
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/requests/:requestId`,
     name: 'Data Request View Page',
     props: true,
     component: ViewDataRequestPage,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: `/companyrequests`,
     name: 'CompanyDataRequestsOverview',
     component: CompanyDataRequestsOverview,
-    meta: { initialTabIndex: 5 },
+    meta: {
+      initialTabIndex: 5,
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/bulkdatarequest',
     name: 'Bulk Data Request',
     component: BulkDataRequest,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/singledatarequest/:companyId',
     name: 'Single Data Request',
     props: true,
     component: SingleDataRequest,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/portfolios',
     name: 'Portfolio Overview',
     component: PortfolioOverview,
-    meta: { initialTabIndex: 0 },
+    meta: {
+      initialTabIndex: 0,
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/api-key',
     name: 'ApiKeysPage',
     component: ApiKeysPage,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/unsubscribe/:subscriptionId',
     name: 'Unsubscribe from mails',
     props: true,
     component: UnsubscribeFromMailsPage,
+    meta: {
+      requiresAuthentication: true,
+    },
   },
   {
     path: '/dataprivacy',
