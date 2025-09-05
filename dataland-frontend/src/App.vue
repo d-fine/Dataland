@@ -1,17 +1,10 @@
 <template>
   <DynamicDialog />
-  <AuthenticationWrapper v-if="routedPageRequiresAuthentication">
-    <TheHeader :show-user-profile-dropdown="keycloakAuthenticated" />
+  <component :is="routedPageRequiresAuthentication ? 'AuthenticationWrapper' : 'div'">
+    <LandingPageHeader v-if="useLandingPageHeader" />
+    <TheHeader v-else :show-user-profile-dropdown="keycloakAuthenticated" />
     <router-view />
-  </AuthenticationWrapper>
-  <template v-else-if="useRoute().path !== '/'">
-    <TheHeader :show-user-profile-dropdown="keycloakAuthenticated" />
-    <router-view />
-  </template>
-  <template v-else>
-    <LandingPageHeader />
-    <router-view />
-  </template>
+  </component>
   <TheFooter />
 </template>
 
@@ -67,7 +60,14 @@ export default defineComponent({
     const routedPageRequiresAuthentication = computed(() => {
       return (route.meta && (route.meta.requiresAuthentication as boolean)) ?? true;
     });
-    return { routedPageRequiresAuthentication, dialog };
+    const useLandingPageHeader = computed(() => {
+      return (
+        (route.meta ?? false) &&
+        !(route.meta.requiresAuthentication ?? true) &&
+        (route.meta.useLandingPageHeader ?? true)
+      );
+    });
+    return { routedPageRequiresAuthentication, dialog, useLandingPageHeader };
   },
 
   computed: {
@@ -123,7 +123,6 @@ export default defineComponent({
   },
 
   methods: {
-    useRoute,
     /**
      * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
      */

@@ -7,7 +7,6 @@
     </div>
 
     <div class="col-4">
-      <DatasetsTabMenu :initialTabIndex="initialTabIndex" />
       <slot />
     </div>
 
@@ -20,6 +19,7 @@
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
+  <DatasetsTabMenu :initialTabIndex="initialTabIndex" />
 </template>
 
 <script lang="ts">
@@ -41,7 +41,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const initialTabIndex = computed(() => route.meta.initialTabIndex ?? 0);
+    const initialTabIndex = computed(() => (route.meta.initialTabIndex as number) ?? 0);
     return {
       authenticated: inject<boolean>('authenticated'),
       initialTabIndex,
