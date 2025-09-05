@@ -35,7 +35,17 @@
               dateFormat="yy"
               validation="required"
               data-test="reporting-period-picker"
+              @update:modelValue="showReportingPeriodError = false"
             />
+            <Message
+              v-if="showReportingPeriodError"
+              severity="error"
+              variant="simple"
+              size="small"
+              data-test="reportingPeriodErrorMessage"
+            >
+              Please select a reporting period.
+            </Message>
           </div>
         </div>
 
@@ -157,6 +167,7 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const listOfFilledKpis = ref<string[]>();
 const reportingPeriod = ref<Date | undefined>(undefined);
+const showReportingPeriodError = ref(false);
 const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
 const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
 const waitingForData = ref(false);
@@ -220,6 +231,10 @@ async function loadPcafData(): Promise<void> {
  * Send POST request to add PCAF data
  */
 async function postPcafData(): Promise<void> {
+  if (!reportingPeriod.value) {
+    showReportingPeriodError.value = true;
+    return;
+  }
   try {
     const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
       companyAssociatedDataPcafData.value.companyId,
@@ -245,9 +260,12 @@ async function postPcafData(): Promise<void> {
  * Triggers the form submit, and disables the submitButton for a short amount of time.
  */
 function onSubmitButtonClick(): void {
-  if (isJustClicked.value) {
+  if (isJustClicked.value) return;
+  if (!reportingPeriod.value) {
+    showReportingPeriodError.value = true;
     return;
   }
+  showReportingPeriodError.value = false;
   submitForm(formId);
   isJustClicked.value = true;
   setTimeout(() => (isJustClicked.value = false), 500);
