@@ -109,7 +109,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import PrimeSelect from 'primevue/select';
+import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -163,7 +163,7 @@ onMounted(() => {
     value: false,
   }));
   if (selectedFramework.value) {
-    onFrameworkChange({ value: selectedFramework.value });
+    onFrameworkChange({ value: selectedFramework.value, originalEvent: new Event('change') });
   }
   onModalOpen();
 });
@@ -181,7 +181,7 @@ function resetErrors(): void {
  * Handles changing framework selections
  * @param event - The change event from PrimeSelect
  */
-function onFrameworkChange(event: { value: DataTypeEnum | undefined }): void {
+function onFrameworkChange(event: SelectChangeEvent): void {
   const framework = event.value;
   resetErrors();
 
@@ -207,7 +207,7 @@ function onModalOpen(): void {
   if (!selectedFramework.value) {
     selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onFrameworkChange({ value: selectedFramework.value });
+  onFrameworkChange({ value: selectedFramework.value, originalEvent: new Event('change') });
 }
 /**
  * Handles the clickEvent of the Download Button
