@@ -1,7 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.batchmanager.utils.ZipFileCreator
-import org.dataland.datalandbatchmanager.service.CsvParser
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -14,7 +14,7 @@ class CsvParserTest {
 
         ZipFileCreator.createZipFile(zipFile, fileContent)
 
-        val bufferedReader = CsvParser().getCsvStreamFromZip(zipFile)
+        val bufferedReader = CompanyInformationParser().getCsvStreamFromZip(zipFile)
         assertEquals(bufferedReader.readLine(), fileContent)
     }
 }
