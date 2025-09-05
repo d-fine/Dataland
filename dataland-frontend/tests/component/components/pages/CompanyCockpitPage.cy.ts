@@ -44,6 +44,7 @@ describe('Component test for the company cockpit', () => {
   let allFrameworks: Set<DataTypeEnum>;
 
   before(function () {
+    cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       companyInformationForTest = lksgFixtures[0].companyInformation;
@@ -449,7 +450,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="usersTab"]').should('not.exist');
   });
 
-  it('Users Page is visible for a CompanyOwner', () => {
+  it('Users Page is visible for a Company Member', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
     mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
@@ -489,7 +490,10 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
     cy.wait('@roleFetch');
     cy.get('[data-test="usersTab"]').click();
+    cy.wait('@roleFetch');
+    cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
     cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('exist');
       cy.get('td').contains(dummyLastName).should('exist');
       cy.get('td').contains(dummyEmail).should('exist');

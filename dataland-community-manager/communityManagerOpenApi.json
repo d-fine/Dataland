@@ -1877,10 +1877,10 @@
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "CompanyOwner",
-          "DataUploader",
           "MemberAdmin",
-          "Member"
+          "Member",
+          "CompanyOwner",
+          "DataUploader"
         ]
       },
       "CompanyRoleAssignment": {

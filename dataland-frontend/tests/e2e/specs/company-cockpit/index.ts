@@ -3,4 +3,5 @@
  */
 describe('Tests for the company cockpit integration', () => {
   require('./Navigation');
+  require('./UsersPage');
 });
