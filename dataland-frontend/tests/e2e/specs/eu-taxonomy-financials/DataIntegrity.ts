@@ -21,7 +21,7 @@ before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
-      'lighweight-eu-taxo-financials-dataset',
+      'eutaxonomy-financials-dataset-with-no-null-fields',
       preparedFixturesEuTaxonomyFinancials
     );
   });

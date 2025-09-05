@@ -36,7 +36,7 @@ function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData
 function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFinancialsData> {
   const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
   const fullDataSet = generateEutaxonomyFinancialsData(0);
-  newFixture.companyInformation.companyName = 'lighweight-eu-taxo-financials-dataset';
+  newFixture.companyInformation.companyName = 'lightweight-eu-taxo-financials-dataset';
   newFixture.t.general = fullDataSet.general;
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
