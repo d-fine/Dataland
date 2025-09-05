@@ -37,15 +37,6 @@
               data-test="reporting-period-picker"
               @update:modelValue="showReportingPeriodError = false"
             />
-            <Message
-              v-if="showReportingPeriodError"
-              severity="error"
-              variant="simple"
-              size="small"
-              data-test="reportingPeriodErrorMessage"
-            >
-              Please select a reporting period.
-            </Message>
           </div>
         </div>
 
@@ -98,6 +89,9 @@
           @click="onSubmitButtonClick"
           fluid
         />
+        <Message v-if="showReportingPeriodError" severity="error" style="margin-top: var(--spacing-sm)">
+          Please select a reporting period.
+        </Message>
         <div v-if="isPostRequestProcessed" class="message-container">
           <Message v-if="!errorMessage" severity="success">Upload successfully executed.</Message>
           <Message v-else severity="error">{{ errorMessage }}</Message>
@@ -130,7 +124,6 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils.ts';
-import { getFilledKpis } from '@/utils/DataPoint.ts';
 import type { Subcategory } from '@/utils/GenericFrameworkTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { objectDropNull } from '@/utils/UpdateObjectUtils.ts';
@@ -165,7 +158,6 @@ const errorMessage = ref('');
 const formId = 'createPcafForm';
 const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
-const listOfFilledKpis = ref<string[]>();
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
 const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
@@ -218,7 +210,6 @@ async function loadPcafData(): Promise<void> {
     if (!pcafData) {
       throw ReferenceError('Response from PcafDataController invalid.');
     }
-    listOfFilledKpis.value = getFilledKpis(pcafData);
     companyAssociatedDataPcafData.value = objectDropNull(pcafData) as CompanyAssociatedDataPcafData;
   } catch (e) {
     console.error('Error while loading PCAF data', e);
@@ -347,9 +338,15 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
     position: sticky;
     top: 5rem;
     align-self: flex-start;
+    width: 300px;
+    max-width: 300px;
+    min-width: 220px;
+    box-sizing: border-box;
 
     .message-container {
       margin: var(--spacing-sm) 0;
+      width: 100%;
+      word-break: break-word;
     }
 
     ul {

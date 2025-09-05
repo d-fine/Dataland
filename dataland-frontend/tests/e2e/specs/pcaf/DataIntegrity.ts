@@ -168,6 +168,12 @@ describeIf(
               initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
             });
             cy.get('h1').should('contain', testCompanyName);
+            cy.get('[data-test="reporting-period-picker"]')
+              .should('be.visible')
+              .then(($picker) => {
+                cy.wrap($picker).click();
+                cy.get('.p-datepicker-year').contains(pcafFixtureData.reportingPeriod.toString()).click();
+              });
             cy.get('[data-test="submitButton"]').click();
             cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
               (interception) => {
