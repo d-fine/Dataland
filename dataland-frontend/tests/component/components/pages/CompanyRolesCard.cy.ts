@@ -92,6 +92,16 @@ describe('Component test for CompanyRolesCard', () => {
   }
 
   /**
+   * Mounts the Member role card component with Company Owner privileges
+   */
+  function mountsMemberCardAsOwner(): void {
+    const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    mockCompanyRoleAssignments(roleAssignments);
+    mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
+    cy.wait('@getRoleAssignments');
+  }
+
+  /**
    * Validates that the card displays the correct role information
    * @param expectedTitle the expected card title
    * @param expectedIcon the expected icon class
@@ -228,75 +238,92 @@ describe('Component test for CompanyRolesCard', () => {
       validateUserTable([]);
       validateAddUserButton(true);
     });
-
-    it('shows Add User button for authorized users', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
-
-      validateAddUserButton(true);
-    });
-
-    it('hides Add User button for unauthorized users', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, null);
-      cy.wait('@getRoleAssignments');
-
-      validateAddUserButton(false);
-    });
   });
 
   describe('Permission Tests', () => {
-    it('allows Company Owners to manage all roles', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+    const permissionTestCases: {
+      allowedRoles: CompanyRole[];
+      userRole: CompanyRole | null;
+      keycloakRoles: string[];
+    }[] = [
+      {
+        allowedRoles: Object.values(CompanyRole) as CompanyRole[],
+        userRole: CompanyRole.CompanyOwner,
+        keycloakRoles: [],
+      },
+      {
+        allowedRoles: [CompanyRole.Member, CompanyRole.MemberAdmin],
+        userRole: CompanyRole.MemberAdmin,
+        keycloakRoles: [],
+      },
+      {
+        allowedRoles: [],
+        userRole: CompanyRole.Member,
+        keycloakRoles: [],
+      },
+      {
+        allowedRoles: [],
+        userRole: CompanyRole.DataUploader,
+        keycloakRoles: [],
+      },
+      {
+        allowedRoles: Object.values(CompanyRole) as CompanyRole[],
+        userRole: null,
+        keycloakRoles: [KEYCLOAK_ROLE_ADMIN],
+      },
+      {
+        allowedRoles: [],
+        userRole: null,
+        keycloakRoles: [KEYCLOAK_ROLE_USER],
+      },
+    ];
 
-      validateAddUserButton(true);
+    permissionTestCases.forEach((testCase) => {
+      Object.values(CompanyRole).forEach((role) => {
+        const shouldExistAndBeEnabled = testCase.allowedRoles.includes(role as CompanyRole);
+        const shouldBeDisabled = !shouldExistAndBeEnabled && testCase.allowedRoles.length > 0;
+        let buttonState = '';
+        if (shouldExistAndBeEnabled) {
+          buttonState = 'visible and enabled';
+        } else if (shouldBeDisabled) {
+          buttonState = 'visible and disabled';
+        } else {
+          buttonState = 'not visible';
+        }
+        let userRoleLabel: string;
+        if (testCase.userRole !== null) {
+          userRoleLabel = testCase.userRole;
+        } else if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_ADMIN)) {
+          userRoleLabel = 'Global Admin';
+        } else if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_USER)) {
+          userRoleLabel = 'Global User';
+        } else {
+          userRoleLabel = 'Unknown';
+        }
+        it(`As a ${userRoleLabel} on the ${role} card, the Add User button should be ${buttonState}`, () => {
+          // Always mock role assignments to set up the alias
+          mockCompanyRoleAssignments([generateCompanyRoleAssignment(role as CompanyRole, dummyCompanyId)]);
+          mountCompanyRolesCard(role as CompanyRole, testCase.userRole, true, testCase.keycloakRoles);
+          cy.wait('@getRoleAssignments');
 
-      cy.get('[data-test="dialog-button"]').should('exist');
-    });
-
-    it('allows Member Admins to manage Members and other Admins', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.MemberAdmin);
-      cy.wait('@getRoleAssignments');
-
-      validateAddUserButton(true);
-      cy.get('[data-test="dialog-button"]').should('exist');
-    });
-
-    it('allows Global Admins to manage all roles', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.CompanyOwner, null, true, [KEYCLOAK_ROLE_ADMIN]);
-      cy.wait('@getRoleAssignments');
-
-      validateAddUserButton(true);
-      cy.get('[data-test="dialog-button"]').should('exist');
-    });
-
-    it('prevents regular users from managing roles', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, null, true, [KEYCLOAK_ROLE_USER]);
-      cy.wait('@getRoleAssignments');
-
-      validateAddUserButton(false);
-      cy.get('[data-test="dialog-button"]').should('not.exist');
+          if (shouldExistAndBeEnabled) {
+            cy.get('[data-test="dialog-button"]').should('exist');
+            cy.get('[data-test="add-user-button"]').should('exist');
+          } else if (shouldBeDisabled) {
+            cy.get('[data-test="dialog-button"]').should('exist').and('be.disabled');
+            cy.get('[data-test="add-user-button"]').should('exist').and('be.disabled');
+          } else {
+            cy.get('[data-test="dialog-button"]').should('not.exist');
+            cy.get('[data-test="add-user-button"]').should('not.exist');
+          }
+        });
+      });
     });
   });
 
   describe('User Actions Tests', () => {
     it('opens row menu when ellipsis button is clicked', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+      mountsMemberCardAsOwner();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[role="menu"]').should('be.visible');
@@ -305,10 +332,7 @@ describe('Component test for CompanyRolesCard', () => {
     });
 
     it('opens change role dialog when menu item is clicked', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+      mountsMemberCardAsOwner();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
@@ -319,10 +343,7 @@ describe('Component test for CompanyRolesCard', () => {
     });
 
     it('disables current role in change role dialog', () => {
-      const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+      mountsMemberCardAsOwner();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();

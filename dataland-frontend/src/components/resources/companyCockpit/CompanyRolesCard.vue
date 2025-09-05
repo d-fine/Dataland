@@ -40,7 +40,7 @@
     </template>
 
     <template #content>
-      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem;">
+      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem">
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
         <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
@@ -53,6 +53,7 @@
               rounded
               @click="(e) => openRowMenu(e, slotProps.data)"
               data-test="dialog-button"
+              :disabled="!allowedToEditSpecificRole(role)"
             />
           </template>
         </Column>
@@ -162,7 +163,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { useStorage } from '@vueuse/core';
 
-type Group = {
+type CompanyRoleDetails = {
   role: CompanyRole;
   title: string;
   icon: string;
@@ -185,6 +186,8 @@ const props = defineProps<{
   userRole?: CompanyRole | null;
 }>();
 
+const emit = defineEmits<{ (e: 'users-changed', message?: string): void }>();
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -201,7 +204,7 @@ const selectedRole = ref<CompanyRole | null>(null);
 const isGlobalAdmin = ref(false);
 const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
 
-const groups: Group[] = [
+const groups: CompanyRoleDetails[] = [
   {
     role: CompanyRole.MemberAdmin,
     title: 'Admins',
@@ -389,8 +392,6 @@ async function confirmRemoveUser(): Promise<void> {
     console.error('Failed to remove user:', err);
   }
 }
-
-const emit = defineEmits<{ (e: 'users-changed', message?: string): void }>();
 
 /**
  * Handles the event when users are added through the AddUserDialog.

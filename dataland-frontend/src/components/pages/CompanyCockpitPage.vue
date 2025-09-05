@@ -108,7 +108,6 @@ const successMessage = ref('');
 
 /**
  * Handler for user changes in company roles.
- * Triggers refresh of all role cards by incrementing the refresh counter.
  */
 function handleUsersChanged(message?: string): void {
   successMessage.value = message ?? 'Changes saved.';
