@@ -114,7 +114,12 @@ describeIf(
       });
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
-        cy.get('[data-test="dialog-button"]').click();
+        cy.get('td')
+          .contains('PremiumUser')
+          .parent()
+          .within(() => {
+            cy.get('[data-test="dialog-button"]').click();
+          });
       });
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
 
