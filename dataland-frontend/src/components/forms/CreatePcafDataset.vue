@@ -89,7 +89,12 @@
           @click="onSubmitButtonClick"
           fluid
         />
-        <Message v-if="showReportingPeriodError" severity="error" style="margin-top: var(--spacing-sm)">
+        <Message
+          v-if="showReportingPeriodError"
+          severity="error"
+          style="margin-top: var(--spacing-sm)"
+          data-test="reporting-period-error"
+        >
           Please select a reporting period.
         </Message>
         <div v-if="isPostRequestProcessed" class="message-container">

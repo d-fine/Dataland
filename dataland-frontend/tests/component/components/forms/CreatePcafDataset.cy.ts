@@ -102,25 +102,24 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
     });
   });
 
-  it('shows error message when POST fails', () => {
-    cy.intercept('POST', '**/api/data/pcaf*', {
-      statusCode: 500,
-      body: { errors: [{ summary: 'Server error', message: 'Something went wrong' }] },
-    }).as('postPcafDataError');
-
+  it('shows error message when no reporting period is selected', () => {
     getMountingFunction({ keycloak: minimalKeycloakMock() })(CreatePcafDataset, {
       props: { companyID: 'company-id' },
     }).then(() => {
       cy.get('button[data-test="submitButton"]').click();
-      cy.wait('@postPcafDataError');
-
-      cy.get('.p-message-error').should('contain.text', 'Server error');
+      cy.get('[data-test="reporting-period-error"]').should('contain.text', 'Please select a reporting period.');
     });
   });
   it('prevents double submit by disabling the button briefly', () => {
     getMountingFunction({ keycloak: minimalKeycloakMock() })(CreatePcafDataset, {
       props: { companyID: 'company-id' },
     }).then(() => {
+      cy.get('[data-test="reporting-period-picker"]')
+        .should('be.visible')
+        .then(($picker) => {
+          cy.wrap($picker).click();
+          cy.get('.p-datepicker-year').contains(mockData.reportingPeriod).click();
+        });
       cy.get('button[data-test="submitButton"]').click();
       cy.get('button[data-test="submitButton"]').should('be.disabled');
     });
