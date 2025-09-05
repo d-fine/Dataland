@@ -162,11 +162,21 @@ onMounted(() => {
     name: period.toString(),
     value: false,
   }));
-  if (selectedFramework.value) {
-    onFrameworkChange({ value: selectedFramework.value, originalEvent: new Event('change') });
+  if (!selectedFramework.value) {
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onModalOpen();
+  updateReportingPeriod();
 });
+
+/**
+ * Handles changing framework selections
+ * @param event - SelectChangeEvent from PrimeSelect
+ */
+function onFrameworkChange(event: SelectChangeEvent): void {
+  resetErrors();
+  selectedFramework.value = event.value as DataTypeEnum;
+  updateReportingPeriod();
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
@@ -178,16 +188,12 @@ function resetErrors(): void {
 }
 
 /**
- * Handles changing framework selections
- * @param event - The change event from PrimeSelect
+ * Handles changing framework selections by updating the reporting periods accordingly
  */
-function onFrameworkChange(event: SelectChangeEvent): void {
-  const framework = event.value;
-  resetErrors();
-
-  const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
-
-  selectedFramework.value = framework as DataTypeEnum;
+function updateReportingPeriod(): void {
+  const reportingPeriods = selectedFramework.value
+    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
+    : [];
 
   allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
@@ -200,15 +206,6 @@ function onFrameworkChange(event: SelectChangeEvent): void {
   }));
 }
 
-/**
- * Sets predefined framework for default
- */
-function onModalOpen(): void {
-  if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
-  }
-  onFrameworkChange({ value: selectedFramework.value, originalEvent: new Event('change') });
-}
 /**
  * Handles the clickEvent of the Download Button
  */
