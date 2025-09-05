@@ -80,7 +80,7 @@ const routes = [
     path: '/companies',
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
-    meta: { initialTabIndex: 0 },
+    meta: { initialTabIndex: 1 },
   },
   {
     path: `/companies/:companyId`,
@@ -138,7 +138,7 @@ const routes = [
     path: '/datasets',
     name: 'Dataset Overview',
     component: DatasetOverview,
-    meta: { initialTabIndex: 1 },
+    meta: { initialTabIndex: 2 },
   },
   {
     path: '/requests',
@@ -173,7 +173,7 @@ const routes = [
     path: '/portfolios',
     name: 'Portfolio Overview',
     component: PortfolioOverview,
-    meta: { initialTabIndex: 2 },
+    meta: { initialTabIndex: 0 },
   },
   {
     path: '/api-key',
