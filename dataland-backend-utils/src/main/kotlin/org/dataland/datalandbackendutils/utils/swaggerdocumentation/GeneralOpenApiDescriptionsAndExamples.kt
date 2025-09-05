@@ -36,4 +36,7 @@ object GeneralOpenApiDescriptionsAndExamples {
 
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE
+
+    const val COMPANY_SEARCH_STRING_DESCRIPTION =
+        "Search string used for company substring matching. Strings to match company names and identifiers."
 }

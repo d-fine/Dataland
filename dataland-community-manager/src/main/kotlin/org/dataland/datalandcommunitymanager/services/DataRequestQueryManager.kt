@@ -169,6 +169,7 @@ class DataRequestQueryManager
         fun getDataRequests(
             ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
+            companySearchString: String?,
             chunkIndex: Int?,
             chunkSize: Int?,
         ): List<ExtendedStoredDataRequest>? {
@@ -176,10 +177,22 @@ class DataRequestQueryManager
 
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
 
+            val companyIds =
+                if (companySearchString == null) {
+                    companyDataControllerApi
+                        .getCompanies(
+                            searchString = companySearchString,
+                            chunkIndex = chunkIndex,
+                            chunkSize = chunkSize,
+                        ).map { it.companyId }
+                } else {
+                    null
+                }
+
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
-                        searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
+                        searchFilter = filter, companyIds = companyIds, resultOffset = offset, resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
             val extendedStoredDataRequestsWithMails =

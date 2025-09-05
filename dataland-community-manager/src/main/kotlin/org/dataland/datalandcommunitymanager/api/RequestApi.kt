@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.validator.MinimumTrimmedSize
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AccessStatusParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AdminCommentParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
@@ -17,6 +18,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestI
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestUserEmailAddressParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
@@ -44,6 +46,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
+
+const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
+const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
+    "$COMPANY_SEARCH_STRING_DESCRIPTION Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -273,6 +279,10 @@ interface RequestApi {
         @RequestParam
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
+        @RequestParam
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        companySearchString: String? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
