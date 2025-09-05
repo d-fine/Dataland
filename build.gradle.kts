@@ -124,6 +124,7 @@ sonar {
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/pcaf/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/eutaxonomy-financials/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
@@ -165,6 +166,7 @@ sonar {
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/pcaf/ViewConfig.ts," +
                 // -> no need to cover these two ViewConfigs because there are no custom fields
 
                 // backend
