@@ -23,6 +23,7 @@
         data-test="add-user-button"
         @click="showAddUserDialog = true"
         style="float: right"
+        :disabled="!allowedToEditSpecificRole(role)"
       />
     </template>
     <template #subtitle>
@@ -64,10 +65,13 @@
         @click="showAddUserDialog = true"
         data-test="add-user-button"
         style="display: flex; margin: var(--spacing-xs) auto 0"
+        :disabled="!allowedToEditSpecificRole(role)"
       />
       <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" data-test="dialog-menu" />
     </template>
   </Card>
+
+  <!-- Change Role Modal -->
   <Dialog
     v-model:visible="showChangeRoleDialog"
     v-if="allowedToEditRoles"
@@ -114,6 +118,8 @@
       />
     </template>
   </Dialog>
+
+  <!-- Remove User Modal -->
   <Dialog v-model:visible="showRemoveUserDialog" :header="`Remove Company Role`" :modal="true" :closable="true">
     <span>You're about to remove the user:</span><br />
     <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
@@ -239,12 +245,6 @@ const rowsForRole = computed<TableRow[]>(() =>
     }))
 );
 
-const roleHasUsers = computed(() => rowsForRole.value.length > 0);
-
-const allowedToEditRoles = computed(
-  () => isGlobalAdmin.value || props.userRole === CompanyRole.CompanyOwner || props.userRole === CompanyRole.MemberAdmin
-);
-
 const emailColumnWidth = computed(() => (allowedToEditRoles.value ? '25%' : '30%'));
 
 const roleTargetText = computed(() => {
@@ -284,6 +284,28 @@ const roleModificationPermissionsMap: Record<CompanyRole, CompanyRole[]> = {
   [CompanyRole.MemberAdmin]: [CompanyRole.MemberAdmin, CompanyRole.Member],
   [CompanyRole.Member]: [],
 };
+
+const roleHasUsers = computed(() => rowsForRole.value.length > 0);
+
+const allowedToEditRoles = computed(() => {
+  if (isGlobalAdmin.value) return true;
+  if (!props.userRole) return false;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole];
+  return Array.isArray(allowedRoles) && allowedRoles.length > 0;
+});
+
+/**
+ * Determines if the current user is allowed to edit a specific role.
+ * Uses the same logic as SecurityUtilsService.roleModificationPermissionsMap.
+ * @param role - The CompanyRole to check permissions for.
+ * @returns True if the user can edit the specified role, false otherwise.
+ */
+function allowedToEditSpecificRole(role: CompanyRole): boolean {
+  if (isGlobalAdmin.value) return true;
+  if (!props.userRole) return false;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole] || [];
+  return Array.isArray(allowedRoles) && allowedRoles.includes(role);
+}
 
 /**
  * Determines if a role option should be disabled in the role selection list.
