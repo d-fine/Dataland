@@ -22,7 +22,10 @@ describe('Check the Portfolio Download view', function (): void {
               value: {
                 data: {
                   portfolio: portfolioFixture,
-                  reportingPeriodsPerFramework: [['sfdr', ['2024', '2023', '2022']]],
+                  reportingPeriodsPerFramework: [
+                    ['sfdr', ['2024', '2023', '2022']],
+                    ['eutaxonomy-financials', ['2021']],
+                  ],
                   isDownloading: false,
                 },
               },
@@ -85,6 +88,24 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
+    });
+
+    it('Change framework and check that only 2021 is selectable for eu-taxonomy-financials framework', function (): void {
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('SFDR').click();
+      ['2024', '2023', '2022'].forEach((year) => {
+        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
+      });
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Financials').click();
+      cy.get('[data-test="listOfReportingPeriods"]').should('exist');
+      ['2025', '2024', '2023', '2022', '2020'].forEach((year) => {
+        cy.get('[data-test="listOfReportingPeriods"]')
+          .contains(year)
+          .parents('[data-test="toggle-chip"]')
+          .should('have.class', 'disabled');
+      });
+      cy.get('[data-test="listOfReportingPeriods"]').contains('2021').should('be.visible').click();
     });
   });
 });

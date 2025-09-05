@@ -37,6 +37,7 @@ before(function () {
 function escapeParenthesisInRegExp(inputString: string): string {
   return inputString.replace(/[()]/g, '\\$&');
 }
+
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
@@ -172,20 +173,31 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
-      cy.get('#framework-filter').click();
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-overlay').find('li.p-multiselect-option').first().click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
+      cy.get('div.p-multiselect-overlay')
+        .should('be.visible')
+        .and('contain.text', humanizeStringOrNumber(frameworkOne))
+        .find('li.p-multiselect-option')
+        .first()
+        .should('be.visible')
+        .and('not.have.class', 'p-disabled')
+        .click();
       verifySearchResultTableExists();
       cy.get('div.p-multiselect-overlay').should('not.exist');
     }
