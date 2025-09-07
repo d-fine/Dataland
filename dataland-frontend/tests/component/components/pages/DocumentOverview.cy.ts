@@ -117,7 +117,11 @@ describe('Component test for the Document Overview', () => {
     const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
 
     cy.get("[data-test='document-type-picker']").should('exist').click();
-    cy.get('#document-type-filter_list').should('exist').children().should('have.length', numOfAllMultiSelectOptions);
+    cy.get('#document-type-filter_list')
+      .should('exist')
+      .children()
+      .should('have.length', numOfAllMultiSelectOptions)
+      .invoke('attr', 'style', 'position: relative; z-index: 1'); //fixing an apparent cypress bug
     cy.contains('li', stringInMultiSelect).should('exist').click();
 
     cy.get("[data-test='documents-overview-table']")

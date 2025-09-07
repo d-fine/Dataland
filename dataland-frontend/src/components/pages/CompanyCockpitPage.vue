@@ -109,7 +109,6 @@ const previousUserRole = ref<CompanyRole | null>(null);
 
 /**
  * Handler for user changes in company roles.
- * Triggers refresh of all role cards by incrementing the refresh counter.
  */
 function handleUsersChanged(message?: string): void {
   let customMessage = message ?? 'Changes saved.';

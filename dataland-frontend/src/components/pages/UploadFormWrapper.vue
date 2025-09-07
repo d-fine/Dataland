@@ -19,6 +19,7 @@ import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFi
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
+import CreatePcafDataset from '@/components/forms/CreatePcafDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 import BackButton from '@/components/general/BackButton.vue';
@@ -53,7 +54,10 @@ const frameworkToUploadComponent = computed(() => {
       return CreateVsmeDataset;
     case `${DataTypeEnum.NuclearAndGas}`:
       return CreateNuclearAndGasDataset;
+    case `${DataTypeEnum.Pcaf}`:
+      return CreatePcafDataset;
     default:
+      console.log('Create page for framework not found.');
       return null;
   }
 });
