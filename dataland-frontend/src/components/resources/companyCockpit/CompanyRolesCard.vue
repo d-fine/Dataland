@@ -186,7 +186,7 @@ const props = defineProps<{
   userRole?: CompanyRole | null;
 }>();
 
-const emit = defineEmits<{ (e: 'users-changed', message?: string): void }>();
+const emit = defineEmits<(e: 'users-changed', message: string) => void>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 
