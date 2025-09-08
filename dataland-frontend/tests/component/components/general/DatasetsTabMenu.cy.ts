@@ -54,7 +54,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         },
       }
     );
-    assertCompaniesTabIsHighlighted();
+    assertPortfoliosTabIsHighlighted();
   }
 
   /**
@@ -70,8 +70,8 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   /**
    * Asserts if the 'Companies' tab is highlighted
    */
-  function assertCompaniesTabIsHighlighted(): void {
-    cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
+  function assertPortfoliosTabIsHighlighted(): void {
+    cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.MyPortfolios).should('exist');
   }
 
   /**
