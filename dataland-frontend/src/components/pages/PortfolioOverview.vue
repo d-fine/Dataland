@@ -117,8 +117,14 @@ function setCurrentPortfolioId(portfolioId?: string): void {
     return;
   }
 
-  const portfolio = portfolioNames.value.find((portfolio) => portfolio.portfolioName === route.params.portfolioName);
-  currentPortfolioId.value = portfolio ? portfolio.portfolioId : portfolioNames.value[0].portfolioId;
+  if (route.params.portfolioName) {
+    const portfolio = portfolioNames.value.find((portfolio) => portfolio.portfolioName === route.params.portfolioName);
+    currentPortfolioId.value = portfolio ? portfolio.portfolioId : portfolioNames.value[0].portfolioId;
+    return;
+  }
+
+  const sessionPortfolio = portfolioNames.value.find((portfolio) => portfolio.portfolioId === currentPortfolioId.value);
+  currentPortfolioId.value = sessionPortfolio ? sessionPortfolio.portfolioId : portfolioNames.value[0].portfolioId;
 }
 
 /**
