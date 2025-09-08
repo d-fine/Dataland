@@ -45,25 +45,35 @@ describeIf(
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
       cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
+      cy.window().then((win) => {
+        cy.stub(win, 'confirm').returns(true);
+      });
     });
 
-    it('Creates, edits and deletes two portfolios, verifying correct display and deletion', () => {
-      // Create first portfolio
+    /**
+     * Adds a portfolio via the UI.
+     * @param name - The name of the portfolio to add.
+     * @param companyId - The company identifier to add.
+     * @param testInvalidId - Whether to test invalid company id handling.
+     */
+    function addPortfolio(name: string, companyId: string, testInvalidId = false): void {
       cy.get('button[data-test="add-portfolio"]').click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
       cy.get('.p-dialog').within(() => {
         cy.get('.p-dialog-header').contains('Add Portfolio');
         cy.get('.portfolio-dialog-content').should('exist');
-        cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
+        cy.get('[data-test="portfolio-name-input"]:visible').type(name);
         cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
         cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        cy.get('[data-test="company-identifiers-input"]:visible').type(invalidCompanyId);
-        cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-        cy.wait('@companyValidation');
-        cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
-        cy.get('[data-test="company-identifiers-input"]:visible').clear();
-        cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
+        if (testInvalidId) {
+          cy.get('[data-test="company-identifiers-input"]:visible').type(invalidCompanyId);
+          cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+          cy.wait('@companyValidation');
+          cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
+          cy.get('[data-test="company-identifiers-input"]:visible').clear();
+        }
+        cy.get('[data-test="company-identifiers-input"]:visible').type(companyId);
         cy.get('[data-test="invalidIdentifierErrorMessage"]:visible').should('not.exist');
         cy.get('[data-test="portfolio-dialog-add-companies"]').click();
         cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
@@ -74,34 +84,32 @@ describeIf(
         });
       });
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
-      cy.get(`[data-test="${portfolioName}"]`).should('exist');
+      cy.get(`[data-test="${name}"]`).should('exist');
+    }
 
-      // Create second portfolio
-
-      cy.get('button[data-test="add-portfolio"]').click({
+    /**
+     * Deletes a portfolio via the UI.
+     * @param name - The name of the portfolio to delete.
+     */
+    function deletePortfolio(name: string): void {
+      cy.get(`[data-test="${name}"]`).should('exist').click();
+      cy.get(`[data-test="portfolio-${name}"] [data-test="edit-portfolio"]`).click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
-      cy.get('.p-dialog').within(() => {
-        cy.get('.p-dialog-header').contains('Add Portfolio');
-        cy.get('.portfolio-dialog-content').should('exist');
-        cy.get('[data-test="portfolio-name-input"]:visible').type(secondPortfolioName);
-        cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
-        cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        cy.get('[data-test="company-identifiers-input"]:visible').type(permIdOfExistingCompany);
-        cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-        cy.wait('@companyValidation');
-        cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
-        cy.get('[data-test="portfolio-dialog-save-button"]').click({
-          timeout: Cypress.env('medium_timeout_in_ms') as number,
-        });
+      cy.get('[data-test="portfolio-dialog-delete-button"]').click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
-      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
-      cy.get(`[data-test="${secondPortfolioName}"]`).should('exist');
+      cy.get(`[data-test="${name}"]`).should('not.exist');
+    }
+
+    it('Creates, edits and deletes two portfolios, verifying correct display and deletion', () => {
+      // Create two portfolios and verify correct display
+      addPortfolio(portfolioName, permIdOfExistingCompany, true);
+      addPortfolio(secondPortfolioName, permIdOfExistingCompany);
       cy.get(`[data-test="portfolio-${secondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
 
-      // Edit second portfolio
+      // Edit the second portfolio and verify it is displayed afterward
       cy.get(`[data-test="${secondPortfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${secondPortfolioName}"] [data-test="edit-portfolio"]`).click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
@@ -119,12 +127,10 @@ describeIf(
         });
       });
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
-
-      // Check that the second portfolio is displayed and not the first
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
 
-      // Go to a company in the second portfolio, return and check that the second portfolio is still active
+      // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] a`).first().click();
       cy.url().should('include', '/companies/');
       cy.visit('/portfolios');
@@ -132,30 +138,8 @@ describeIf(
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
 
-      // Delete the second portfolio
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] [data-test="edit-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.window().then((win) => {
-        cy.stub(win, 'confirm').returns(true);
-      });
-      cy.get('[data-test="portfolio-dialog-delete-button"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.get(`[data-test="${editedSecondPortfolioName}"]`).should('not.exist');
-
-      // Delete the first portfolio
-      cy.get(`[data-test="${portfolioName}"]`).should('exist').click();
-      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="edit-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.window().then((win) => {
-        cy.stub(win, 'confirm').returns(true);
-      });
-      cy.get('[data-test="portfolio-dialog-delete-button"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
+      deletePortfolio(editedSecondPortfolioName);
+      deletePortfolio(portfolioName);
     });
   }
 );
