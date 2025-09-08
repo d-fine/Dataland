@@ -3,8 +3,6 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
 import { type Page, type Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 
 describe('Component test for the landing page', () => {
   it('Check if essential elements are present', () => {
@@ -13,7 +11,6 @@ describe('Component test for the landing page', () => {
         authenticated: false,
       }),
     }).then(() => {
-      // validateTheHeader(); todo: Move to e2e test
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
@@ -26,10 +23,6 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('SFDR');
       cy.get('[data-test="join-campaign-button"]').should('exist');
       cy.get('[data-test="get-in-touch-button"]').should('exist');
-      checkFooter();
-
-      setMobileDeviceViewport();
-      // validateTheHeader(); todo: Move to e2e test
     });
   });
 });
