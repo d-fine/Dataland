@@ -275,7 +275,7 @@ describeIf(
               token,
               companyIdOfAlpha,
               '2019',
-              getPreparedFixture('lighweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
+              getPreparedFixture('lightweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
             );
           });
       });

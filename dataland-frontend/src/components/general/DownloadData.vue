@@ -12,7 +12,7 @@
         data-test="frameworkSelector"
         type="select"
         :highlightOnSelect="false"
-        @input="onFrameworkChange"
+        @change="onFrameworkChange"
       />
       <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
         Please select a framework.
@@ -109,7 +109,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import PrimeSelect from 'primevue/select';
+import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -162,11 +162,21 @@ onMounted(() => {
     name: period.toString(),
     value: false,
   }));
-  if (selectedFramework.value) {
-    onFrameworkChange(selectedFramework.value);
+  if (!selectedFramework.value) {
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onModalOpen();
+  updateReportingPeriod();
 });
+
+/**
+ * Handles changing framework selections
+ * @param event - SelectChangeEvent from PrimeSelect
+ */
+function onFrameworkChange(event: SelectChangeEvent): void {
+  resetErrors();
+  selectedFramework.value = event.value as DataTypeEnum;
+  updateReportingPeriod();
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
@@ -178,15 +188,12 @@ function resetErrors(): void {
 }
 
 /**
- * Handles changing framework selections
- * @param framework selected framework by user
+ * Handles changing framework selections by updating the reporting periods accordingly
  */
-function onFrameworkChange(framework: string | undefined): void {
-  resetErrors();
-
-  const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
-
-  selectedFramework.value = framework as DataTypeEnum;
+function updateReportingPeriod(): void {
+  const reportingPeriods = selectedFramework.value
+    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
+    : [];
 
   allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
     name: period.toString(),
@@ -197,16 +204,6 @@ function onFrameworkChange(framework: string | undefined): void {
     name: period.toString(),
     value: false,
   }));
-}
-
-/**
- * Sets predefined framework for default
- */
-function onModalOpen(): void {
-  if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
-  }
-  onFrameworkChange(selectedFramework.value);
 }
 
 /**
