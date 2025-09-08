@@ -40,6 +40,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         roles: keycloakRoles,
         userId: dummyUserId,
       }),
+      router: router,
     })(
       //@ts-ignore
       DatasetsTabMenu,
@@ -49,12 +50,11 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
             companyRoleAssignments: ref(companyRoleAssignments),
           },
         },
-        props: {
-          initialTabIndex: 0,
-        },
       }
-    );
-    assertPortfoliosTabIsHighlighted();
+    ).then(() => {
+      void router.push('/portfolios');
+      assertPortfoliosTabIsHighlighted();
+    });
   }
 
   /**
@@ -130,9 +130,8 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     isTabVisible(RoleBasedTabs.AllDataRequests, true);
   });
   it('Validate if route navigation leads to correct route when tab is changed', () => {
-    cy.spy(router, 'push').as('routerPush');
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
     cy.get('[data-pc-name="tablist"]').contains('MY DATASETS').click();
-    cy.get('@routerPush').should('have.been.calledWith', '/datasets');
+    cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.MyDatasets).should('exist');
   });
 });

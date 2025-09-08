@@ -61,7 +61,7 @@ export default defineComponent({
     const route = useRoute();
     const dialog = useDialog();
     const useLandingPageHeader = computed(() => {
-      return !route.meta.requiresAuthentication && route.meta.useLandingPageHeader;
+      return route.meta.useLandingPageHeader ?? !route.meta.requiresAuthentication;
     });
     return { route, useLandingPageHeader, dialog };
   },

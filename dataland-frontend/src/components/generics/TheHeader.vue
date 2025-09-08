@@ -19,15 +19,14 @@
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
-  <DatasetsTabMenu :initialTabIndex="initialTabIndex" />
+  <DatasetsTabMenu />
 </template>
 
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import { defineComponent, inject, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'TheHeader',
@@ -40,11 +39,8 @@ export default defineComponent({
     },
   },
   setup() {
-    const route = useRoute();
-    const initialTabIndex = computed(() => (route.meta.initialTabIndex as number) ?? 0);
     return {
       authenticated: inject<boolean>('authenticated'),
-      initialTabIndex,
     };
   },
 });
