@@ -103,8 +103,11 @@ async function getPortfolios(): Promise<void> {
 }
 
 /**
- * Sets the current portfolio ID based on the route parameter or the first portfolio in the list.
- * If the portfolioName is not provided as route parameter, it is set to the first portfolio in the list.
+ * Sets the current portfolio ID based on the following priority:
+ * 1. If a portfolioId is provided (e.g. after modal), use it if valid.
+ * 2. If not, and a route parameter for portfolioName is present, use the corresponding portfolioId if valid.
+ * 3. If not, and a session-stored portfolioId exists, use it if valid.
+ * 4. If none of the above are valid, fall back to the first portfolio in the list.
  */
 function setCurrentPortfolioId(portfolioId?: string): void {
   if (portfolioNames.value.length === 0) {
@@ -112,19 +115,22 @@ function setCurrentPortfolioId(portfolioId?: string): void {
     return;
   }
 
-  if (portfolioId) {
+  if (portfolioId && portfolioNames.value.some((p) => p.portfolioId === portfolioId)) {
     currentPortfolioId.value = portfolioId;
     return;
   }
 
-  if (route.params.portfolioName) {
-    const portfolio = portfolioNames.value.find((portfolio) => portfolio.portfolioName === route.params.portfolioName);
-    currentPortfolioId.value = portfolio ? portfolio.portfolioId : portfolioNames.value[0].portfolioId;
+  const routePortfolio = portfolioNames.value.find((p) => p.portfolioName === route.params.portfolioName)?.portfolioId;
+  if (routePortfolio) {
+    currentPortfolioId.value = routePortfolio;
     return;
   }
 
-  const sessionPortfolio = portfolioNames.value.find((portfolio) => portfolio.portfolioId === currentPortfolioId.value);
-  currentPortfolioId.value = sessionPortfolio ? sessionPortfolio.portfolioId : portfolioNames.value[0].portfolioId;
+  if (currentPortfolioId.value && portfolioNames.value.some((p) => p.portfolioId === currentPortfolioId.value)) {
+    return; // already valid, keep as is
+  }
+
+  currentPortfolioId.value = portfolioNames.value[0].portfolioId;
 }
 
 /**
