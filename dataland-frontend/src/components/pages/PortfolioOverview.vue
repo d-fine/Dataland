@@ -66,6 +66,7 @@ import Tabs from 'primevue/tabs';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useSessionStorage } from '@vueuse/core';
 
 /**
  * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
@@ -76,7 +77,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 const route = useRoute();
 
-const currentPortfolioId = ref<string | undefined>(undefined);
+const SESSION_STORAGE_KEY = 'last-selected-portfolio-id';
+const currentPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
 const portfolioNames = ref<BasePortfolioName[]>([]);
 
 const content: Content = contentData;
@@ -149,6 +151,7 @@ function addNewPortfolio(): void {
  */
 function onTabChange(value: string | number): void {
   setCurrentPortfolioId(String(value));
+  // currentPortfolioId is automatically synced to session storage
 }
 </script>
 
