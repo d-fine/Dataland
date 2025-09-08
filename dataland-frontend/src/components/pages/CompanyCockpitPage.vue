@@ -105,14 +105,20 @@ const refreshAllCards = ref(0);
 
 const showSuccess = ref(false);
 const successMessage = ref('');
+const previousUserRole = ref<CompanyRole | null>(null);
 
 /**
  * Handler for user changes in company roles.
  */
 function handleUsersChanged(message?: string): void {
-  successMessage.value = message ?? 'Changes saved.';
+  let customMessage = message ?? 'Changes saved.';
+  if (previousUserRole.value && previousUserRole.value !== userRole.value) {
+    customMessage = `Changes saved. Previous role '${previousUserRole.value}' rights are now lost.`;
+  }
+  successMessage.value = customMessage;
   showSuccess.value = true;
   refreshAllCards.value++;
+  previousUserRole.value = userRole.value;
 }
 
 /**
@@ -148,6 +154,7 @@ watch(activeTab, (val) => {
 
 onMounted(async () => {
   await setUserRights();
+  previousUserRole.value = userRole.value;
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
