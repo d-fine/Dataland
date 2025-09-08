@@ -1,8 +1,8 @@
 import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import { getMountingFunction } from '@ct/testUtils/Mount';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { getMountingFunction } from '@ct/testUtils/Mount.ts';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for CompanyRolesCard', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
