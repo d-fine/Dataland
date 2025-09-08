@@ -92,12 +92,21 @@ describe('Component test for CompanyRolesCard', () => {
   }
 
   /**
-   * Mounts the Member role card component with Company Owner privileges
+   * Mounts the Member role card component with Company Owner privileges or with custom role assignments
+   * @param userRole The role of the user mounting the card
+   * @param roleOfCard The role to display on the card (default: CompanyRole.Member)
+   * @param existingCompanyRoleAssignments Optional: existing role assignments to use instead of default
    */
-  function mountsMemberCardAsOwner(): void {
-    const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+  function mountCardAs(
+    userRole: CompanyRole = CompanyRole.CompanyOwner,
+    roleOfCard: CompanyRole = CompanyRole.Member,
+    existingCompanyRoleAssignments?: CompanyRoleAssignmentExtended[]
+  ): void {
+    const roleAssignments = existingCompanyRoleAssignments ?? [
+      generateCompanyRoleAssignment(roleOfCard, dummyCompanyId),
+    ];
     mockCompanyRoleAssignments(roleAssignments);
-    mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
+    mountCompanyRolesCard(roleOfCard, userRole);
     cy.wait('@getRoleAssignments');
   }
 
@@ -160,40 +169,39 @@ describe('Component test for CompanyRolesCard', () => {
   });
 
   describe('Role Display Tests', () => {
-    it('displays Company Owner role card correctly', () => {
-      mockCompanyRoleAssignments([]);
-      mountCompanyRolesCard(CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+    const roleDisplayCases = [
+      {
+        role: CompanyRole.CompanyOwner,
+        expectedTitle: 'Company Owners',
+        expectedIcon: 'pi pi-crown',
+        expectedInfo: 'Company owners have the highest level of access and can add other users as company owners',
+      },
+      {
+        role: CompanyRole.MemberAdmin,
+        expectedTitle: 'Admins',
+        expectedIcon: 'pi pi-shield',
+        expectedInfo: 'The User Admin has the rights to add or remove other user admins and members',
+      },
+      {
+        role: CompanyRole.Member,
+        expectedTitle: 'Members',
+        expectedIcon: 'pi pi-users',
+        expectedInfo: 'Members have the ability to request unlimited data',
+      },
+      {
+        role: CompanyRole.DataUploader,
+        expectedTitle: 'Uploaders',
+        expectedIcon: 'pi pi-cloud-upload',
+        expectedInfo: 'Uploaders have the responsibility of ensuring all relevant data is uploaded',
+      },
+    ];
 
-      validateCardHeader('Company Owners', 'pi pi-crown');
-      validateInfoMessage('Company owners have the highest level of access and can add other users as company owners');
-    });
-
-    it('displays Member Admin role card correctly', () => {
-      mockCompanyRoleAssignments([]);
-      mountCompanyRolesCard(CompanyRole.MemberAdmin);
-      cy.wait('@getRoleAssignments');
-
-      validateCardHeader('Admins', 'pi pi-shield');
-      validateInfoMessage('The User Admin has the rights to add or remove other user admins and members');
-    });
-
-    it('displays Member role card correctly', () => {
-      mockCompanyRoleAssignments([]);
-      mountCompanyRolesCard(CompanyRole.Member);
-      cy.wait('@getRoleAssignments');
-
-      validateCardHeader('Members', 'pi pi-users');
-      validateInfoMessage('Members have the ability to request unlimited data');
-    });
-
-    it('displays Data Uploader role card correctly', () => {
-      mockCompanyRoleAssignments([]);
-      mountCompanyRolesCard(CompanyRole.DataUploader);
-      cy.wait('@getRoleAssignments');
-
-      validateCardHeader('Uploaders', 'pi pi-cloud-upload');
-      validateInfoMessage('Uploaders have the responsibility of ensuring all relevant data is uploaded');
+    roleDisplayCases.forEach(({ role, expectedTitle, expectedIcon, expectedInfo }) => {
+      it(`displays ${expectedTitle} role card correctly`, () => {
+        mountCardAs(undefined, role);
+        validateCardHeader(expectedTitle, expectedIcon);
+        validateInfoMessage(expectedInfo);
+      });
     });
   });
 
@@ -211,17 +219,12 @@ describe('Component test for CompanyRolesCard', () => {
         ),
       ];
 
-      mockCompanyRoleAssignments(roleAssignments);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
-
+      mountCardAs(undefined, undefined, roleAssignments);
       validateUserTable(roleAssignments);
     });
 
     it('shows empty state when no users have the role', () => {
-      mockCompanyRoleAssignments([]);
-      mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner);
-      cy.wait('@getRoleAssignments');
+      mountCardAs(undefined, undefined, []);
 
       validateUserTable([]);
       cy.get('[data-test="add-user-button"]').should('exist');
@@ -313,7 +316,7 @@ describe('Component test for CompanyRolesCard', () => {
 
   describe('User Actions Tests', () => {
     it('opens row menu when ellipsis button is clicked', () => {
-      mountsMemberCardAsOwner();
+      mountCardAs();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[role="menu"]').should('be.visible');
@@ -322,7 +325,7 @@ describe('Component test for CompanyRolesCard', () => {
     });
 
     it('opens change role dialog when menu item is clicked', () => {
-      mountsMemberCardAsOwner();
+      mountCardAs();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
@@ -333,7 +336,7 @@ describe('Component test for CompanyRolesCard', () => {
     });
 
     it('disables current role in change role dialog', () => {
-      mountsMemberCardAsOwner();
+      mountCardAs();
 
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
