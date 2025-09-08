@@ -5,7 +5,6 @@
     :companyId="companyId"
     :dataId="dataId"
     :reportingPeriod="reportingPeriod"
-    :viewInPreviewMode="viewInPreviewMode"
   />
 </template>
 
@@ -33,10 +32,6 @@ export default defineComponent({
     },
     reportingPeriod: {
       type: String,
-    },
-    viewInPreviewMode: {
-      type: Boolean,
-      default: false,
     },
   },
   methods: {

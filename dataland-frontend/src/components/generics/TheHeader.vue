@@ -33,7 +33,6 @@ export default defineComponent({
   components: { AuthSection, UserProfileDropDown, DatasetsTabMenu },
   props: {
     showUserProfileDropdown: {
-      // todo: Do we need this?
       type: Boolean,
       default: true,
     },

@@ -6,7 +6,6 @@
       <Button label="Start your Dataland Journey" @click="register" rounded />
     </div>
     <ViewFrameworkData
-      :view-in-preview-mode="true"
       :company-id="companyId"
       :data-type="dataType"
       :data-id="dataId"
