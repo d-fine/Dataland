@@ -10,10 +10,10 @@
       <slot />
     </div>
 
-    <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown && authenticated">
+    <div class="col-4 flex justify-content-end" v-if="authenticated">
       <UserProfileDropDown />
     </div>
-    <div class="col-4 flex justify-content-end" v-if="!authenticated">
+    <div class="col-4 flex justify-content-end" v-else>
       <AuthSection :is-landing-page="false" />
     </div>
   </div>
@@ -31,12 +31,6 @@ import { defineComponent, inject } from 'vue';
 export default defineComponent({
   name: 'TheHeader',
   components: { AuthSection, UserProfileDropDown, DatasetsTabMenu },
-  props: {
-    showUserProfileDropdown: {
-      type: Boolean,
-      default: true,
-    },
-  },
   setup() {
     return {
       authenticated: inject<boolean>('authenticated'),
