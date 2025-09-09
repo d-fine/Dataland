@@ -26,35 +26,19 @@ describeIf(
       setupCommonInterceptions();
     });
 
-    it(
-      'When navigating to the company cockpit as a basic data reader who is also a company member ' +
-        "sees the users page of the company of which it is a member and doesn't see the users page of a company " +
-        'of which it has no company affiliation',
-      () => {
-        removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
-        cy.ensureLoggedIn(reader_name, reader_pw);
-        cy.visitAndCheckAppMount(`/companies/${alphaCompanyIdAndName.companyId}`);
-        cy.get('[data-test="usersTab"]').should('not.exist');
-        cy.then(() => getKeycloakToken(admin_name, admin_pw))
-          .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
-          .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`));
-        cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
-          'fetchAggregatedFrameworkSummaryForAlpha'
-        );
-        cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`);
-        cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
-        cy.get('[data-test="usersTab"]').click();
-        cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-          cy.get('td').contains(reader_userId).should('exist');
-        });
-        cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
-          'fetchAggregatedFrameworkSummaryForBeta'
-        );
-        cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
-        cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-        cy.get('[data-test="usersTab"]').should('not.exist');
-      }
-    );
+    it('When directing by url to the users page as a basic data reader who is only a company member that user should be redirected to the company cockpit page', () => {
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
+      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.then(() => getKeycloakToken(admin_name, admin_pw))
+        .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
+        .then(() => cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`));
+      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForBeta'
+      );
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
+      cy.get('[data-test="usersTab"]').should('not.exist');
+      cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    });
 
     it('As a basic company member you should not be able to add members, change the role of other members or remove them', () => {
       setupUserPage(CompanyRole.Member);

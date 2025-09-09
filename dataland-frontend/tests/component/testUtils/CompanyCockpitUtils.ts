@@ -64,8 +64,12 @@ function generateDocumentMetaInformation(
 }
 
 /**
- * Mocks the requests that happen when the company cockpit page is being mounted
- * @param hasCompanyAtLeastOneOwner has the company at least one company owner
+ * Mocks API requests that are triggered when the component is mounted.
+ *
+ * @param {boolean} hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
+ * @param {CompanyInformation} companyInformationForTest - Mock details of the company information to be returned.
+ * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
+ * - A mapping of data types to the corresponding aggregated framework data summary for testing.
  */
 export function mockRequestsOnMounted(
   hasCompanyAtLeastOneOwner: boolean,

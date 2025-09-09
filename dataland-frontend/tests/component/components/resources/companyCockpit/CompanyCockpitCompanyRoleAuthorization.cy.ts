@@ -14,7 +14,7 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { CompanyRole } from '@clients/communitymanager';
 import { KEYCLOAK_ROLES } from '@/utils/KeycloakRoles';
 
-describe('Component test for the company cockpit', () => {
+describe('Component test for the authorization of company cockpit components', () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
@@ -64,6 +64,13 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="datasetsTab"]').click();
     cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
     cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+  });
+
+  it('Users Page is not visible for a user that is not a Company Member', () => {
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+    cy.get('[data-test="usersTab"]').should('not.exist');
   });
 
   it('Users are being displayed correctly in the Users Page', () => {

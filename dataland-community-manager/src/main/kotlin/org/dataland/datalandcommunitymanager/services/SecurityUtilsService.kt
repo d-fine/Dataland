@@ -121,19 +121,19 @@ class SecurityUtilsService(
      * Returns true if the user has the rights to add/remove the companyRole
      * Uses only the roleModificationPermissionsMap for all logic, no hardcoded role checks.
      * @param companyId dataland companyId
-     * @param companyRoleToModify the companyRole to add/remove
+     * @param companyRoleAfterModification the companyRole to add/remove
      * @param userIdOfRoleToChange the userId of the user that should be checked for the permissions
      */
     @Transactional
     fun hasUserPermissionToModifyTheCompanyRole(
         companyId: UUID,
-        companyRoleToModify: CompanyRole?,
+        companyRoleAfterModification: CompanyRole?,
         userIdOfRoleToChange: String,
     ): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         var hasPermission = false
         if (userId != null) {
-            val userCompanyRole =
+            val companyRoleBeforeModification =
                 companyRoleAssignmentRepository
                     .getCompanyRoleAssignmentsByProvidedParameters(
                         companyId = companyId.toString(), userId = userId, companyRole = null,
@@ -145,8 +145,8 @@ class SecurityUtilsService(
                         companyId = companyId.toString(), userId = userIdOfRoleToChange, companyRole = null,
                     ).firstOrNull()
                     ?.companyRole
-            val allowedRoles = roleModificationPermissionsMap[userCompanyRole] ?: emptyList()
-            hasPermission = (companyRoleToModify == null || allowedRoles.contains(companyRoleToModify)) &&
+            val allowedRoles = roleModificationPermissionsMap[companyRoleBeforeModification] ?: emptyList()
+            hasPermission = (companyRoleAfterModification == null || allowedRoles.contains(companyRoleAfterModification)) &&
                 (userToModifyCompanyRole == null || allowedRoles.contains(userToModifyCompanyRole))
         }
         return hasPermission
