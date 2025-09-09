@@ -20,6 +20,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypePara
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodsParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterNonRequired
@@ -274,13 +275,13 @@ interface RequestApi {
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
         @RequestParam(required = false)
-        @ReportingPeriodParameterNonRequired
-        reportingPeriod: String?,
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>?,
         @RequestParam(required = false)
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
         @RequestParam(required = false)
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Inc.")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,
         @RequestParam(defaultValue = "100")
@@ -350,13 +351,13 @@ interface RequestApi {
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
         @RequestParam(required = false)
-        @ReportingPeriodParameterNonRequired
-        reportingPeriod: String?,
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>?,
         @RequestParam(required = false)
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
         @RequestParam(required = false)
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Inc.")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,
     ): ResponseEntity<Int>

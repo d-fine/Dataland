@@ -34,8 +34,8 @@ class TemporaryTables private constructor() {
                 "OR status_table.request_status IN :#{#searchFilter.preparedRequestStatus} ) AND " +
                 "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
                 "OR status_table.access_status IN :#{#searchFilter.preparedAccessStatus}  ) AND " +
-                "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-                "OR d.reporting_period = :#{#searchFilter.preparedReportingPeriod}) AND " +
+                "(:#{#searchFilter.shouldFilterByReportingPeriods} = false " +
+                "OR d.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
                 "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
                 "OR d.dataland_company_id IN :#{#searchFilter.preparedDatalandCompanyIds}) AND " +
                 "(:#{@DataRequestQueryManager.shouldFilterBySearchStringCompanyIds(#companyIds)} = false " +

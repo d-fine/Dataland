@@ -5,9 +5,11 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_EMAIL_EXAMPLE = "test@example.com"
     const val GENERAL_TIMESTAMP_EXAMPLE = "1751291891271"
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
-    const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
 
-    const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
+    const val GENERAL_REPORTING_PERIODS_DESCRIPTION = "The relevant reporting periods (e.g. fiscal years)."
+    const val GENERAL_REPORTING_PERIODS_EXAMPLE = "[\"2023\",\"2024\"]"
+
+    const val REPORTING_PERIOD_DESCRIPTION = "The relevant reporting period (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
 
     const val UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
