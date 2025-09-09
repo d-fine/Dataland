@@ -13,7 +13,6 @@ describeIf(
   () => {
     let permIdOfExistingCompany: string;
     let permIdOfSecondCompany: string;
-    const invalidCompanyId = ',this1san1nval1d1d';
     const companyTimestamp = Date.now();
     let portfolioTimestamp: number;
     let portfolioName: string;
@@ -54,9 +53,8 @@ describeIf(
      * Adds a portfolio via the UI.
      * @param name - The name of the portfolio to add.
      * @param companyId - The company identifier to add.
-     * @param testInvalidId - Whether to test invalid company id handling.
      */
-    function addPortfolio(name: string, companyId: string, testInvalidId: boolean = false): void {
+    function addPortfolio(name: string, companyId: string): void {
       cy.get('button[data-test="add-portfolio"]').click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
@@ -66,13 +64,6 @@ describeIf(
         cy.get('[data-test="portfolio-name-input"]:visible').type(name);
         cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
         cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        if (testInvalidId) {
-          cy.get('[data-test="company-identifiers-input"]:visible').type(invalidCompanyId);
-          cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-          cy.wait('@companyValidation');
-          cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
-          cy.get('[data-test="company-identifiers-input"]:visible').clear();
-        }
         cy.get('[data-test="company-identifiers-input"]:visible').type(companyId);
         cy.get('[data-test="invalidIdentifierErrorMessage"]:visible').should('not.exist');
         cy.get('[data-test="portfolio-dialog-add-companies"]').click();
@@ -104,7 +95,7 @@ describeIf(
 
     it('Creates, edits and deletes two portfolios, verifying correct display and deletion', () => {
       // Create two portfolios and verify correct display
-      addPortfolio(portfolioName, permIdOfExistingCompany, true);
+      addPortfolio(portfolioName, permIdOfExistingCompany);
       addPortfolio(secondPortfolioName, permIdOfExistingCompany);
       cy.get(`[data-test="portfolio-${secondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');

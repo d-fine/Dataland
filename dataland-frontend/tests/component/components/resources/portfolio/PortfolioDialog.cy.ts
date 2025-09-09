@@ -79,6 +79,7 @@ describe('Check the portfolio dialog', function (): void {
       cy.get('[data-test="portfolio-dialog-add-companies"]').click();
       cy.wait('@validateCompanies');
       cy.get('[id="existing-company-identifiers"]').should('contain', portfolioFixture.entries[0].companyName);
+      cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
       cy.get('[data-test="company-identifiers-input"]').should('have.value', invalidIdentifier);
       cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
 
