@@ -229,7 +229,7 @@ interface RequestApi {
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
      * @param accessStatus If set, only the requests with an access status in accessStatus are returned
      * @param requestPriority If set, only the requests with this priority are returned
-     * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
+     * @param reportingPeriods If set, only the requests with one of these reportingPeriods are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
      * @param chunkSize Limits the number of returned requests
      * @param chunkIndex The index of the chunked requests
@@ -307,7 +307,7 @@ interface RequestApi {
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
      * @param accessStatus If set, only the requests with an access status in accessStatus are counted
      * @param requestPriority If set, only the requests with this priority are counted
-     * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
+     * @param reportingPeriods If set, only the requests with one of these reportingPeriods are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
      * @return The number of requests that match the filter
      */
