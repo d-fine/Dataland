@@ -7,11 +7,11 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * convenient usage of SEPL instructions in the query
  */
 data class QaSearchFilter(
-    val dataTypes: Set<DataTypeEnum>? = null,
-    val reportingPeriods: Set<String>? = null,
-    val companyIds: Set<String>? = null,
-    val companyName: String? = null,
-    val qaStatuses: Set<QaStatus>? = null,
+    val dataTypes: Set<DataTypeEnum>?,
+    val reportingPeriods: Set<String>?,
+    val companyIds: Set<String>?,
+    val companyName: String?,
+    val qaStatuses: Set<QaStatus>?,
 ) {
     val shouldFilterByDataType: Boolean
         get() = dataTypes?.isNotEmpty() ?: false

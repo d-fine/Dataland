@@ -7,9 +7,9 @@ import org.dataland.datalandbackend.model.DataType
  * convenient usage of SpEL  instructions in the query
  */
 data class NonSourceableDataSearchFilter(
-    val companyId: String? = null,
-    val dataType: DataType? = null,
-    val reportingPeriod: String? = null,
+    val companyId: String?,
+    val dataType: DataType?,
+    val reportingPeriod: String?,
     val isNonSourceable: Boolean? = null,
 ) {
     val shouldFilterByCompanyId: Boolean
