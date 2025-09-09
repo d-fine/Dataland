@@ -27,6 +27,13 @@ describeIf(
         });
     });
 
+    beforeEach(() => {
+      cy.intercept('https://youtube.com/**', []);
+      cy.intercept('https://jnn-pa.googleapis.com/**', []);
+      cy.intercept('https://play.google.com/**', []);
+      cy.intercept('https://googleads.g.doubleclick.net/**', []);
+    });
+
     const assertTabVisibility = (tabName: string, isVisible: boolean): void => {
       cy.contains(tabName).should(isVisible ? 'be.visible' : 'not.exist');
     };
