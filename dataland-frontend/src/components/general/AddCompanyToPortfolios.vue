@@ -15,7 +15,7 @@
           style: 'width: 100%;',
         },
       }"
-      style="width: 100%; margin-bottom: 0.5rem"
+      style="width: 100%; margin-bottom: var(--spacing-xs)"
     />
 
     <p class="dataland-info-text small">
