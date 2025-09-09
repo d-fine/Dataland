@@ -14,7 +14,7 @@ describeIf(
     const tabNames = ['COMPANIES', 'MY DATASETS', 'MY PORTFOLIOS', 'MY DATA REQUESTS'];
 
     before(() => {
-      return getKeycloakToken(reader_name, reader_pw)
+      getKeycloakToken(reader_name, reader_pw)
         .then((token: string) => {
           return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
         })
@@ -44,7 +44,7 @@ describeIf(
 
     const visitPagesAndCheckTabsVisibility = (urls: string[], isVisible: boolean): void => {
       urls.forEach((url) => {
-        cy.visit(url);
+        cy.visitAndCheckAppMount(url);
         assertHeaderTabsVisibility(isVisible);
       });
     };
