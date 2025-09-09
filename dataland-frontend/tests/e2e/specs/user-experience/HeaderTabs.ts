@@ -1,8 +1,7 @@
-import { ensureLoggedIn } from '@e2e/utils/Auth.ts';
+import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils.ts';
-import { DataTypeEnum } from '@clients/backend';
+import { DataTypeEnum, type BasicCompanyInformation } from '@clients/backend';
 
 describe('Test header tabs visibility for user role', () => {
   let alphaCompanyIdAndName: { companyId: string; companyName: string };
@@ -11,13 +10,14 @@ describe('Test header tabs visibility for user role', () => {
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
       .then((token: string) => {
-        return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        return cy.wrap(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials));
       })
       .then((basicCompanyInfos) => {
-        expect(basicCompanyInfos).to.be.not.empty;
+        const infos = basicCompanyInfos as BasicCompanyInformation[];
+        expect(infos).to.be.not.empty;
         alphaCompanyIdAndName = {
-          companyId: basicCompanyInfos[0].companyId,
-          companyName: basicCompanyInfos[0].companyName,
+          companyId: infos[0].companyId,
+          companyName: infos[0].companyName,
         };
       });
   });
