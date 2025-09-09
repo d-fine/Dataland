@@ -355,6 +355,7 @@ export default defineComponent({
               selectedPriorityAsSet,
               undefined,
               undefined,
+              undefined,
               this.datasetsPerPage,
               this.currentChunkIndex
             )

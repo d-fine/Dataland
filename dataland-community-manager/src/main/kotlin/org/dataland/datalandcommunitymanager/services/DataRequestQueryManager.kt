@@ -27,7 +27,7 @@ import kotlin.jvm.optionals.getOrElse
 /**
  * Implementation of a request manager service for all request queries
  */
-@Service
+@Service("DataRequestQueryManager")
 class DataRequestQueryManager
     @Suppress("LongParameterList")
     @Autowired
