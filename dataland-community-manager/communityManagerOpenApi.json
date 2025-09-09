@@ -928,6 +928,16 @@
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Strings to match company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Int"
+          },
+          {
             "name": "chunkSize",
             "in": "query",
             "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
