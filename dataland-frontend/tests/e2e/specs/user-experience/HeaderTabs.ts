@@ -14,7 +14,7 @@ describeIf(
     const tabNames = ['COMPANIES', 'MY DATASETS', 'MY PORTFOLIOS', 'MY DATA REQUESTS'];
 
     before(() => {
-      getKeycloakToken(reader_name, reader_pw)
+      return getKeycloakToken(reader_name, reader_pw)
         .then((token: string) => {
           return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
         })
