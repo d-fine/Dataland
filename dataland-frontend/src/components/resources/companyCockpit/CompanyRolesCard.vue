@@ -223,7 +223,7 @@ const groups: CompanyRoleDetails[] = [
     role: CompanyRole.CompanyOwner,
     title: 'Company Owners',
     icon: 'pi pi-crown',
-    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland. The company owner is also the one accountable for the KYC process.",
+    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland.",
     description: 'Highest authority with complete platform control.',
   },
   {
