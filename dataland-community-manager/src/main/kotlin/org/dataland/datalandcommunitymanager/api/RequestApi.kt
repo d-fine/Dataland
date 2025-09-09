@@ -252,37 +252,37 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getDataRequests(
-        @RequestParam
+        @RequestParam(required = false)
         @DataTypeParameterNonRequired
         dataType: Set<DataTypeEnum>?,
-        @RequestParam
+        @RequestParam(required = false)
         @UserIdParameterNonRequired
         userId: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @DataRequestUserEmailAddressParameterNonRequired
         emailAddress: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @AdminCommentParameterNonRequired
         adminComment: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
-        @RequestParam
+        @RequestParam(required = false)
         @AccessStatusParameterNonRequired
         accessStatus: Set<AccessStatus>?,
-        @RequestParam
+        @RequestParam(required = false)
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
-        @RequestParam
+        @RequestParam(required = false)
         @ReportingPeriodParameterNonRequired
         reportingPeriod: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
-        companySearchString: String? = null,
+        companySearchString: String?,
         @RequestParam(defaultValue = "100")
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
@@ -328,31 +328,31 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getNumberOfRequests(
-        @RequestParam
+        @RequestParam(required = false)
         @DataTypeParameterNonRequired
         dataType: Set<DataTypeEnum>?,
-        @RequestParam
+        @RequestParam(required = false)
         @UserIdParameterNonRequired
         userId: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @DataRequestUserEmailAddressParameterNonRequired
         emailAddress: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @AdminCommentParameterNonRequired
         adminComment: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
-        @RequestParam
+        @RequestParam(required = false)
         @AccessStatusParameterNonRequired
         accessStatus: Set<AccessStatus>?,
-        @RequestParam
+        @RequestParam(required = false)
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
-        @RequestParam
+        @RequestParam(required = false)
         @ReportingPeriodParameterNonRequired
         reportingPeriod: String?,
-        @RequestParam
+        @RequestParam(required = false)
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
     ): ResponseEntity<Int>

@@ -126,7 +126,12 @@ class DataRequestQueryManager
             aggregatedPriority: AggregatedRequestPriority?,
         ): List<AggregatedDataRequestWithAggregatedPriority> {
             val aggregatedOpenDataRequestsAllCompanies =
-                getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
+                getAggregatedDataRequests(
+                    identifierValue = null,
+                    dataTypes,
+                    reportingPeriod,
+                    requestStatus = RequestStatus.Open,
+                )
             val aggregatedRequestsWithAggregatedPriority =
                 requestPriorityAggregator.aggregateRequestPriority(aggregatedOpenDataRequestsAllCompanies)
             val filteredAggregatedRequestsWithAggregatedPriority =
@@ -158,6 +163,25 @@ class DataRequestQueryManager
         }
 
         /**
+         * Both arguments represent a constraint on company ID strings. Namely, a null or empty
+         * companyIdsFromFilter value means "no constraint", and so does a null companyIdsFromBackend
+         * value. Otherwise, the filtered company IDs must be contained in the respective iterable.
+         * The function returns the set of company IDs that satisfy both constraints, or null if both
+         * constraints are null.
+         */
+        private fun computeIntersectionFilterSet(
+            companyIdsFromFilter: Set<String>?,
+            companyIdsFromBackend: List<String>?,
+        ): Set<String>? =
+            if (companyIdsFromFilter == null || companyIdsFromFilter.isEmpty()) {
+                companyIdsFromBackend?.toSet()
+            } else if (companyIdsFromBackend == null) {
+                companyIdsFromFilter
+            } else {
+                companyIdsFromFilter.intersect(companyIdsFromBackend.toSet())
+            }
+
+        /**
          * Method to get all data requests based on filters.
          * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
@@ -177,22 +201,33 @@ class DataRequestQueryManager
 
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
 
-            val companyIds =
-                if (companySearchString == null) {
+            val companyIdsMatchingSearchString =
+                if (companySearchString != null) {
                     companyDataControllerApi
                         .getCompanies(
                             searchString = companySearchString,
-                            chunkIndex = chunkIndex,
-                            chunkSize = chunkSize,
+                            chunkIndex = 0,
+                            chunkSize = Int.MAX_VALUE,
                         ).map { it.companyId }
                 } else {
                     null
                 }
 
+            val intersectionFilterSet =
+                computeIntersectionFilterSet(
+                    filter.datalandCompanyIds,
+                    companyIdsMatchingSearchString,
+                )
+
+            if (intersectionFilterSet != null && intersectionFilterSet.isEmpty()) return emptyList()
+
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
-                        searchFilter = filter, companyIds = companyIds, resultOffset = offset, resultLimit = chunkSize,
+                        searchFilter = filter.copy(datalandCompanyIds = intersectionFilterSet),
+                        companyIds = companyIdsMatchingSearchString,
+                        resultOffset = offset,
+                        resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
             val extendedStoredDataRequestsWithMails =

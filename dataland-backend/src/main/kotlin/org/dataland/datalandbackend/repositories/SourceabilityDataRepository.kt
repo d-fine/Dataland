@@ -19,9 +19,12 @@ interface SourceabilityDataRepository : JpaRepository<SourceabilityEntity, Strin
 
     @Query(
         "SELECT nonSourceableData FROM SourceabilityEntity nonSourceableData " +
-            "WHERE nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod} " +
-            "AND nonSourceableData.companyId = :#{#searchFilter.preparedCompanyId} " +
-            "AND nonSourceableData.dataType = :#{#searchFilter.preparedDataType} " +
+            "WHERE :#{#searchFilter.reportingPeriod != null} = true " +
+            "AND nonSourceableData.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
+            "AND :#{#searchFilter.companyId != null} = true " +
+            "AND nonSourceableData.companyId = :#{#searchFilter.companyId} " +
+            "AND :#{searchFilter.dataType != null} = true " +
+            "AND nonSourceableData.dataType = :#{#searchFilter.dataType} " +
             "ORDER BY nonSourceableData.creationTime DESC " +
             "LIMIT 1",
     )
@@ -33,7 +36,7 @@ interface SourceabilityDataRepository : JpaRepository<SourceabilityEntity, Strin
      * Searches for non-sourceable data entries based on a filter defined in NonSourceableDataSearchFilter.
      * The filtering parameters are companyId, dataType, reportingPeriod, and isNonSourceable.
      *
-     * If a filter for companyId, dataType, or reportingPeriod is set (non-null or non-empty),
+     * If a filter for companyId, dataType, or reportingPeriod is set (non-null),
      * only entries matching the criteria will be returned. If the filter is not set, this criterion is ignored.
      * The query is designed to return results matching all specified criteria. If no entries match the criteria, an empty list is returned.
      *
@@ -44,14 +47,14 @@ interface SourceabilityDataRepository : JpaRepository<SourceabilityEntity, Strin
     @Query(
         "SELECT nonSourceableData FROM SourceabilityEntity nonSourceableData " +
             "WHERE " +
-            "(:#{#searchFilter.shouldFilterByCompanyId} = false " +
-            "OR nonSourceableData.companyId = :#{#searchFilter.preparedCompanyId}) AND " +
-            "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR nonSourceableData.dataType = :#{#searchFilter.preparedDataType}) AND " +
-            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod}) AND " +
-            "(:#{#searchFilter.shouldFilterByIsNonSourceable} = false " +
-            "OR nonSourceableData.isNonSourceable = :#{#searchFilter.preparedIsNonSourceable}) " +
+            "(:#{#searchFilter.companyId == null} = true " +
+            "OR nonSourceableData.companyId = :#{#searchFilter.companyId}) AND " +
+            "(:#{#searchFilter.dataType == null} = true " +
+            "OR nonSourceableData.dataType = :#{#searchFilter.dataType}) AND " +
+            "(:#{#searchFilter.reportingPeriod == null} = true " +
+            "OR nonSourceableData.reportingPeriod = :#{#searchFilter.reportingPeriod}) AND " +
+            "(:#{#searchFilter.isNonSourceable == null} = true " +
+            "OR nonSourceableData.isNonSourceable = :#{#searchFilter.isNonSourceable}) " +
             "ORDER BY nonSourceableData.creationTime DESC",
     )
     fun searchNonSourceableData(

@@ -78,15 +78,16 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
                 " SELECT COUNT(*) FROM RankedByDataId entry" +
                 " WHERE" +
                 " entry.num_row = 1 AND" +
-                " (:#{#searchFilter.shouldFilterByDataType} = false" +
-                " OR entry.data_type IN :#{#searchFilter.preparedDataTypes}) AND" +
-                " (:#{#searchFilter.shouldFilterByReportingPeriod} = false" +
-                " OR entry.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND" +
-                " ( (:#{#searchFilter.shouldFilterByCompanyName } = false AND" +
-                " :#{#searchFilter.shouldFilterByCompanyId} = false)" +
-                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) AND" +
-                " (:#{#searchFilter.shouldFilterByQaStatus} = false" +
-                " OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses})",
+                " (:#{#searchFilter.dataTypes == null} = true" +
+                " OR entry.data_type IN :#{#searchFilter.dataTypes}) AND" +
+                " (:#{#searchFilter.reportingPeriods == null} = true" +
+                " OR entry.reporting_period IN :#{#searchFilter.reportingPeriods}) AND" +
+                " (:#{#searchFilter.companyName == null} = true" +
+                " OR entry.company_name ILIKE :#{escape(#searchFilter.companyName)}% ESCAPE :#{escapeCharacter()}) AND" +
+                " (:#{#searchFilter.companyIds == null} = true" +
+                " OR entry.company_id IN :#{#searchFilter.companyIds}) AND" +
+                " (:#{#searchFilter.qaStatuses == null} = true" +
+                " OR entry.qa_status IN :#{#searchFilter.qaStatuses})",
     )
     fun getNumberOfFilteredQaReviews(
         @Param("searchFilter") searchFilter: QaSearchFilter,
