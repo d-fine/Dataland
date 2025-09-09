@@ -1,20 +1,21 @@
 <template>
   <div v-if="!displaySuccessMessage" class="container">
-    <MultiSelect
+    <Listbox
       v-model="selectedPortfolios"
       :options="allUserPortfolios"
       optionLabel="portfolioName"
-      placeholder="Select Portfolios"
-      :showToggleAll="false"
+      multiple
       :disabled="isLoading"
-      data-test="portfolioSelectionMultiSelect"
-      :max-selected-labels="0"
-      :selected-items-label="selectedItemsLabel"
+      data-test="portfolioSelectionListbox"
       :pt="{
-        optionLabel: {
+        option: {
           style: 'max-width: 13rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
         },
+        list: {
+          style: 'width: 100%;',
+        },
       }"
+      style="width: 100%; margin-bottom: 0.5rem"
     />
 
     <p class="dataland-info-text small">
@@ -47,8 +48,8 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import MultiSelect from 'primevue/multiselect';
-import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import Listbox from 'primevue/listbox';
+import { inject, onMounted, type Ref, ref } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -63,10 +64,6 @@ const selectedPortfolios = ref<BasePortfolio[]>([]);
 const errorMessage = ref('');
 const isLoading = ref(false);
 const displaySuccessMessage = ref(false);
-
-const selectedItemsLabel = computed(() => {
-  return `{0} item${selectedPortfolios.value.length > 1 ? 's' : ''} selected`;
-});
 
 onMounted(() => {
   if (!data?.companyId) return;
