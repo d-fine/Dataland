@@ -355,6 +355,10 @@ interface RequestApi {
         @RequestParam(required = false)
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
+        @RequestParam(required = false)
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        companySearchString: String?,
     ): ResponseEntity<Int>
 
     /**

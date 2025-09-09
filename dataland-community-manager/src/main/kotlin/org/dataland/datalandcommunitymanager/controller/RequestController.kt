@@ -140,6 +140,7 @@ class RequestController
             requestPriority: Set<RequestPriority>?,
             reportingPeriod: String?,
             datalandCompanyId: String?,
+            companySearchString: String?,
         ): ResponseEntity<Int> {
             val filter =
                 DataRequestsFilter(
@@ -154,7 +155,7 @@ class RequestController
                     requestPriority,
                 )
 
-            return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
+            return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter, companySearchString))
         }
 
         override fun hasAccessToDataset(

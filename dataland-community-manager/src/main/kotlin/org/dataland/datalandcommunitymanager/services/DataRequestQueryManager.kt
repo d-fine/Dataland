@@ -193,17 +193,7 @@ class DataRequestQueryManager
 
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
 
-            val companyIdsMatchingSearchString =
-                if (companySearchString != null) {
-                    companyDataControllerApi
-                        .getCompanies(
-                            searchString = companySearchString,
-                            chunkIndex = 0,
-                            chunkSize = Int.MAX_VALUE,
-                        ).map { it.companyId }
-                } else {
-                    null
-                }
+            val companyIdsMatchingSearchString = companyIdsMatchingSearchString(companySearchString)
 
             val extendedStoredDataRequests =
                 dataRequestRepository
@@ -228,8 +218,24 @@ class DataRequestQueryManager
          * Returns the number of requests for a specific filter.
          */
         @Transactional
-        fun getNumberOfDataRequests(filter: DataRequestsFilter): Int {
+        fun getNumberOfDataRequests(
+            filter: DataRequestsFilter,
+            companySearchString: String?,
+        ): Int {
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
-            return dataRequestRepository.getNumberOfRequests(filter)
+            val companyIdsMatchingSearchString = companyIdsMatchingSearchString(companySearchString)
+            return dataRequestRepository.getNumberOfRequests(filter, companyIdsMatchingSearchString)
         }
+
+        private fun companyIdsMatchingSearchString(companySearchString: String?): List<String>? =
+            if (companySearchString != null) {
+                companyDataControllerApi
+                    .getCompanies(
+                        searchString = companySearchString,
+                        chunkIndex = 0,
+                        chunkSize = Int.MAX_VALUE,
+                    ).map { it.companyId }
+            } else {
+                null
+            }
     }

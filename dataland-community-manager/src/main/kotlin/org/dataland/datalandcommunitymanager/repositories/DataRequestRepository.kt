@@ -123,6 +123,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun getNumberOfRequests(
         @Param("searchFilter") searchFilter: DataRequestsFilter,
+        @Param("companyIds") companyIds: List<String>?,
     ): Int
 
     /**
