@@ -1,9 +1,8 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
-import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
+import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 
 describeIf(
   'As a user, I want the navigation around the company cockpit to work as expected',
@@ -15,28 +14,14 @@ describeIf(
     let betaCompanyIdAndName: CompanyIdAndName;
 
     before(() => {
-      getKeycloakToken(reader_name, reader_pw)
-        .then((token: string) => {
-          return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
-        })
-        .then((basicCompanyInfos) => {
-          expect(basicCompanyInfos).to.be.not.empty;
-          alphaCompanyIdAndName = {
-            companyId: basicCompanyInfos[0].companyId,
-            companyName: basicCompanyInfos[0].companyName,
-          };
-          betaCompanyIdAndName = {
-            companyId: basicCompanyInfos[1].companyId,
-            companyName: basicCompanyInfos[1].companyName,
-          };
-        });
+      fetchTestCompanies().then(([alpha, beta]) => {
+        alphaCompanyIdAndName = alpha;
+        betaCompanyIdAndName = beta;
+      });
     });
 
     beforeEach(() => {
-      cy.intercept('https://youtube.com/**', []);
-      cy.intercept('https://jnn-pa.googleapis.com/**', []);
-      cy.intercept('https://play.google.com/**', []);
-      cy.intercept('https://googleads.g.doubleclick.net/**', []);
+      setupCommonInterceptions();
     });
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
