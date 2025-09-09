@@ -38,6 +38,8 @@ class TemporaryTables private constructor() {
                 "OR d.reporting_period = :#{#searchFilter.preparedReportingPeriod}) AND " +
                 "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
                 "OR d.dataland_company_id IN :#{#searchFilter.preparedDatalandCompanyIds}) AND " +
+                "(:#{@DataRequestQueryManager.shouldFilterBySearchStringCompanyIds(#companyIds)} = false " +
+                "OR d.dataland_company_id IN :#{@DataRequestQueryManager.preparedSearchStringCompanyIds(#companyIds)}) AND " +
                 "(:#{#searchFilter.shouldFilterByRequestPriority} = false " +
                 "OR d.request_priority IN :#{#searchFilter.preparedRequestPriority}) AND " +
                 "(:#{#searchFilter.shouldFilterByAdminComment} = false " +

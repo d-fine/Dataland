@@ -163,23 +163,15 @@ class DataRequestQueryManager
         }
 
         /**
-         * Both arguments represent a constraint on company ID strings. Namely, a null or empty
-         * companyIdsFromFilter value means "no constraint", and so does a null companyIdsFromBackend
-         * value. Otherwise, the filtered company IDs must be contained in the respective iterable.
-         * The function returns the set of company IDs that satisfy both constraints, or null if both
-         * constraints are null.
+         * This function returns whether companyIdsFromBackend is non-null, indicating if filtering by companyId should be applied.
          */
-        private fun computeIntersectionFilterSet(
-            companyIdsFromFilter: Set<String>?,
-            companyIdsFromBackend: List<String>?,
-        ): Set<String>? =
-            if (companyIdsFromFilter == null || companyIdsFromFilter.isEmpty()) {
-                companyIdsFromBackend?.toSet()
-            } else if (companyIdsFromBackend == null) {
-                companyIdsFromFilter
-            } else {
-                companyIdsFromFilter.intersect(companyIdsFromBackend.toSet())
-            }
+        fun shouldFilterBySearchStringCompanyIds(companyIdsFromBackend: List<String>?) = companyIdsFromBackend != null
+
+        /**
+         * This function returns its parameter companyIdsFromBackend unless the parameter is null, in which case it returns an empty list.
+         * This is to ensure that the built, native SQL query for the filtering logic of the company search string is syntactically correct.
+         */
+        fun preparedSearchStringCompanyIds(companyIdsFromBackend: List<String>?) = companyIdsFromBackend ?: emptyList()
 
         /**
          * Method to get all data requests based on filters.
@@ -213,18 +205,10 @@ class DataRequestQueryManager
                     null
                 }
 
-            val intersectionFilterSet =
-                computeIntersectionFilterSet(
-                    filter.datalandCompanyIds,
-                    companyIdsMatchingSearchString,
-                )
-
-            if (intersectionFilterSet != null && intersectionFilterSet.isEmpty()) return emptyList()
-
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
-                        searchFilter = filter.copy(datalandCompanyIds = intersectionFilterSet),
+                        searchFilter = filter,
                         companyIds = companyIdsMatchingSearchString,
                         resultOffset = offset,
                         resultLimit = chunkSize,
