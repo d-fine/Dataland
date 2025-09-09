@@ -9,7 +9,7 @@
       data-test="portfolioSelectionListbox"
       :pt="{
         option: {
-          style: 'max-width: 13rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
+          style: 'max-width: 100%; width: 100%, overflow: hidden; text-overflow: ellipsis; white-space: nowrap;',
         },
         list: {
           style: 'width: 100%;',
