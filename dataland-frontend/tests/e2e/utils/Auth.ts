@@ -23,8 +23,7 @@ let globalJwt = '';
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept({ url: 'https://www.youtube.com/**' }, { forceNetworkError: false }).as('youtube');
-  cy.intercept({ times: 1, url: '/api/companies*' }).as('getCompanies');
-  cy.intercept({ times: 1, url: '/api/companies/numberOfCompanies**' }).as('numberOfCompanies');
+  cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
   cy.visitAndCheckAppMount('/');
   cy.get("[data-test='login-dataland-button']", { timeout: Cypress.env('long_timeout_in_ms') as number }).click();
@@ -42,11 +41,10 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .click();
   }
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/companies');
-  cy.wait('@getCompanies', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
+  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/portfolios');
+  cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
     globalJwt = interception.request.headers['authorization'] as string;
   });
-  cy.wait('@numberOfCompanies');
 }
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
