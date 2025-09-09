@@ -56,7 +56,7 @@ describeIf(
      * @param companyId - The company identifier to add.
      * @param testInvalidId - Whether to test invalid company id handling.
      */
-    function addPortfolio(name: string, companyId: string, testInvalidId = false): void {
+    function addPortfolio(name: string, companyId: string, testInvalidId: boolean = false): void {
       cy.get('button[data-test="add-portfolio"]').click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
