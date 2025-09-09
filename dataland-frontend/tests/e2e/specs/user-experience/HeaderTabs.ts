@@ -1,7 +1,7 @@
-import { ensureLoggedIn } from '@e2e/utils/Auth';
-import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
-import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
+import { ensureLoggedIn } from '@e2e/utils/Auth.ts';
+import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress.ts';
+import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils.ts';
 import { DataTypeEnum } from '@clients/backend';
 
 describe('Test header tabs visibility for user role', () => {
