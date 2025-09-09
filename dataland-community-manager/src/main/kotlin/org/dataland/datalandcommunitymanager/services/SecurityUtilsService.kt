@@ -119,22 +119,37 @@ class SecurityUtilsService(
 
     /**
      * Returns true if the user has the rights to add/remove the companyRole
+     * Uses only the roleModificationPermissionsMap for all logic, no hardcoded role checks.
      * @param companyId dataland companyId
      * @param companyRoleToModify the companyRole to add/remove
+     * @param userIdOfRoleToChange the userId of the user that should be checked for the permissions
      */
     @Transactional
     fun hasUserPermissionToModifyTheCompanyRole(
         companyId: UUID,
-        companyRoleToModify: CompanyRole,
+        companyRoleToModify: CompanyRole?,
+        userIdOfRoleToChange: String,
     ): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
-        val userCompanyRoles =
-            companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
-                companyId = companyId.toString(), userId = userId, companyRole = null,
-            )
-        return userCompanyRoles.any {
-            roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
+        val userId = SecurityContextHolder.getContext().authentication.name
+        var hasPermission = false
+        if (userId != null) {
+            val userCompanyRole =
+                companyRoleAssignmentRepository
+                    .getCompanyRoleAssignmentsByProvidedParameters(
+                        companyId = companyId.toString(), userId = userId, companyRole = null,
+                    ).firstOrNull()
+                    ?.companyRole
+            val userToModifyCompanyRole =
+                companyRoleAssignmentRepository
+                    .getCompanyRoleAssignmentsByProvidedParameters(
+                        companyId = companyId.toString(), userId = userIdOfRoleToChange, companyRole = null,
+                    ).firstOrNull()
+                    ?.companyRole
+            val allowedRoles = roleModificationPermissionsMap[userCompanyRole] ?: emptyList()
+            hasPermission = (companyRoleToModify == null || allowedRoles.contains(companyRoleToModify)) &&
+                (userToModifyCompanyRole == null || allowedRoles.contains(userToModifyCompanyRole))
         }
+        return hasPermission
     }
 
     /**

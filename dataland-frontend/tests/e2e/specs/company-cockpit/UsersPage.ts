@@ -1,14 +1,4 @@
-import {
-  admin_name,
-  admin_pw,
-  admin_userId,
-  reader_name,
-  reader_pw,
-  reader_userId,
-  reviewer_userId,
-  uploader_userId,
-  premium_user_userId,
-} from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, reader_name, reader_pw, reader_userId, premium_user_userId } from '@e2e/utils/Cypress';
 import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
@@ -76,31 +66,14 @@ describeIf(
     });
 
     it('As a basic company member you should not be able to add members, change the role of other members or remove them', () => {
-      removeCompanyRoles(alphaCompanyIdAndName.companyId, reader_userId);
-      cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.visitAndCheckAppMount(`/companies/${alphaCompanyIdAndName.companyId}/users`);
-      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
-        'fetchAggregatedFrameworkSummaryForAlpha'
-      );
-      assignAllRoles();
-      cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
+      setupUserPage(CompanyRole.Member);
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').should('not.exist');
       });
     });
 
     it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
-      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
-      cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) =>
-          assignCompanyRole(token, CompanyRole.MemberAdmin, alphaCompanyIdAndName.companyId, reader_userId)
-        )
-        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
-      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
-        'fetchAggregatedFrameworkSummaryForAlpha'
-      );
-      cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
+      setupUserPage(CompanyRole.MemberAdmin);
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').click();
       });
@@ -143,7 +116,8 @@ describeIf(
 
       cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
 
-      cy.get('[data-test="remove-user-button"]').should('be.visible').click();
+      cy.get('[data-test="remove-user-button"]').should('be.visible');
+      cy.get('[data-test="remove-user-button"]').click();
 
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td').contains('PremiumUser').should('not.exist');
@@ -151,29 +125,18 @@ describeIf(
     });
 
     /**
-     * Assign several company roles.
+     * Sets up the test environment for user page testing.
      */
-    function assignAllRoles(): void {
+    function setupUserPage(userRole: CompanyRole): void {
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
+      cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) =>
-          assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId).then(() => token)
-        )
-        .then((token) =>
-          assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reviewer_userId).then(
-            () => token
-          )
-        )
-        .then((token) =>
-          assignCompanyRole(token, CompanyRole.DataUploader, alphaCompanyIdAndName.companyId, uploader_userId).then(
-            () => token
-          )
-        )
-        .then((token) =>
-          assignCompanyRole(token, CompanyRole.MemberAdmin, alphaCompanyIdAndName.companyId, admin_userId).then(
-            () => token
-          )
-        )
-        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`));
+        .then((token) => assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId))
+        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
+      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForAlpha'
+      );
+      cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
     }
 
     /**
