@@ -80,7 +80,7 @@ class DataRequestQueryManagerTest {
         DataRequestsFilter(
             dataType = setOf(DataTypeEnum.sfdr, DataTypeEnum.lksg),
             datalandCompanyIds = setOf(testCompanyId),
-            reportingPeriod = testReportingPeriod,
+            reportingPeriods = setOf(testReportingPeriod),
             requestStatus = setOf(RequestStatus.Open),
         )
 
@@ -91,7 +91,7 @@ class DataRequestQueryManagerTest {
             dataType = setOf(DataTypeEnum.sfdr, DataTypeEnum.lksg),
             emailAddress = emailAddressSubstring,
             datalandCompanyIds = setOf(testCompanyId),
-            reportingPeriod = testReportingPeriod,
+            reportingPeriods = setOf(testReportingPeriod),
             requestStatus = setOf(RequestStatus.Open),
         )
 
@@ -214,6 +214,7 @@ class DataRequestQueryManagerTest {
                 filterWithoutEmailAddress,
                 null,
                 null,
+                null,
             )
 
         verify(mockKeycloakUserService, times(0)).searchUsers(anyString())
@@ -230,6 +231,7 @@ class DataRequestQueryManagerTest {
             dataRequestQueryManager.getDataRequests(
                 emptyList(),
                 filterWithEmailAddressBeta,
+                null,
                 null,
                 null,
             )
