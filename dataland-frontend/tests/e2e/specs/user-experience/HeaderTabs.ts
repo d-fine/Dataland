@@ -1,8 +1,8 @@
 import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { describeIf } from '@e2e/support/TestUtility';
 import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress.ts';
-// import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils.ts';
-// import { DataTypeEnum } from '@clients/backend';
+import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils.ts';
+import { DataTypeEnum } from '@clients/backend';
 
 describeIf(
   'Test header tabs visibility for user role',
@@ -10,8 +10,29 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
-    // let alphaCompanyIdAndName: { companyId: string; companyName: string };
+    let alphaCompanyIdAndName: { companyId: string; companyName: string };
     const tabNames = ['COMPANIES', 'MY DATASETS', 'MY PORTFOLIOS', 'MY DATA REQUESTS'];
+
+    before(() => {
+      getKeycloakToken(reader_name, reader_pw)
+        .then((token: string) => {
+          return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        })
+        .then((basicCompanyInfos) => {
+          expect(basicCompanyInfos).to.be.not.empty;
+          alphaCompanyIdAndName = {
+            companyId: basicCompanyInfos[0].companyId,
+            companyName: basicCompanyInfos[0].companyName,
+          };
+        });
+    });
+
+    beforeEach(() => {
+      cy.intercept('https://youtube.com/**', []);
+      cy.intercept('https://jnn-pa.googleapis.com/**', []);
+      cy.intercept('https://play.google.com/**', []);
+      cy.intercept('https://googleads.g.doubleclick.net/**', []);
+    });
 
     const assertTabVisibility = (tabName: string, isVisible: boolean): void => {
       cy.contains(tabName).should(isVisible ? 'be.visible' : 'not.exist');
@@ -37,9 +58,9 @@ describeIf(
       visitPagesAndCheckTabsVisibility(
         [
           '/companies',
-          // `/companies/${alphaCompanyIdAndName.companyId}`,
-          // `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
-          // `/companies/${alphaCompanyIdAndName.companyId}/documents`,
+          `/companies/${alphaCompanyIdAndName.companyId}`,
+          `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+          `/companies/${alphaCompanyIdAndName.companyId}/documents`,
         ],
         true
       );
@@ -50,11 +71,11 @@ describeIf(
       visitPagesAndCheckTabsVisibility(['/datasets'], true);
       cy.get('.p-button-label').click();
       assertHeaderTabsVisibility(true);
-      // cy.get('#company_search_bar_standard').type(alphaCompanyIdAndName.companyName);
-      // cy.get('[data-pc-section="list"]').contains(alphaCompanyIdAndName.companyName).click();
-      // assertHeaderTabsVisibility(true);
-      // cy.get('.p-button-label').contains('Create Dataset').click();
-      // assertHeaderTabsVisibility(true);
+      cy.get('#company_search_bar_standard').type(alphaCompanyIdAndName.companyName);
+      cy.get('[data-pc-section="list"]').contains(alphaCompanyIdAndName.companyName).click();
+      assertHeaderTabsVisibility(true);
+      cy.get('.p-button-label').contains('Create Dataset').click();
+      assertHeaderTabsVisibility(true);
     });
 
     it('shows tabs on portfolios pages', () => {
