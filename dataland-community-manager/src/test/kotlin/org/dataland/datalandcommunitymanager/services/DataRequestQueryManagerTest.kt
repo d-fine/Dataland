@@ -1,11 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -33,6 +35,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.io.File
 import java.time.Instant
 import java.util.Optional
 import java.util.UUID
@@ -49,6 +52,8 @@ class DataRequestQueryManagerTest {
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockDataRequestMasker = mock<DataRequestMasker>()
 
+    private val objectMapper = JsonUtils.defaultObjectMapper
+
     private val userId = "1234-221-1111elf"
 
     private val testCompanyIdAlpha = UUID.randomUUID().toString()
@@ -61,12 +66,8 @@ class DataRequestQueryManagerTest {
     private val companyCountryCodeAlpha = "DE"
 
     private val testCompanyInformationAlpha =
-        CompanyInformation(
-            companyName = companyNameAlpha,
-            headquarters = companyHeadquartersAlpha,
-            identifiers = emptyMap(),
-            countryCode = companyCountryCodeAlpha,
-            companyContactDetails = listOf("test@dummy.de"),
+        objectMapper.readValue<CompanyInformation>(
+            File("./src/test/resources/dataRequestQueryManager/testCompanyInformationAlpha.json"),
         )
 
     private val keycloakUserAlpha =
@@ -98,7 +99,7 @@ class DataRequestQueryManagerTest {
     private val testCompanyInformationBeta =
         CompanyInformation(
             companyName = "Fantasy company",
-            headquarters = "Wien",
+            headquarters = "Vienna",
             identifiers = emptyMap(),
             countryCode = "AT",
             companyContactDetails = listOf("test@fantasy.at"),
