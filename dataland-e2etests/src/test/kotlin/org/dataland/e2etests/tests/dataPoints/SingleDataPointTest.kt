@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.CommunityManager
@@ -27,10 +28,6 @@ class SingleDataPointTest {
     private val dummyDatapoint =
         """
         {"value": 0.5, "currency": "USD"}
-        """.trimIndent()
-    private val dataPointWithNumberLikeString =
-        """
-        {"value": "0.5", "currency": "USD", "dataSource": { "page": 3 } }
         """.trimIndent()
     private val dataPointWithEmptyString =
         """
@@ -93,6 +90,11 @@ class SingleDataPointTest {
     fun `ensure a data point with convertible type can be uploaded and downloaded with the correct type`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
+            val documentId = DocumentControllerApiAccessor().uploadSingleTestDocumentAndAssurePersistence()
+
+            val dataPointWithNumberLikeString =
+                """{"value": "0.5", "currency": "USD", "dataSource": { "page": 3, "fileReference": "$documentId" } }"""
+
             val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false, dataPointWithNumberLikeString).dataPointId
             val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             val dataPoint = jacksonObjectMapper().readTree(downloadedDataPoint.dataPoint)
