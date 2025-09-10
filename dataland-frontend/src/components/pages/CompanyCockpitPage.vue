@@ -70,7 +70,7 @@ import Button from 'primevue/button';
 import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { CompanyRole } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
@@ -79,6 +79,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 const props = defineProps<{ companyId: string }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
+  'companyRoleAssignments',
+  ref([])
+);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
@@ -109,7 +113,7 @@ const showSuccess = ref(false);
  * Handler for user changes in company roles.
  */
 async function handleUsersChanged(): Promise<void> {
-  await setUserRights();
+  await setUserRights(true);
   showSuccess.value = true;
   refreshAllCards.value++;
 }
@@ -118,11 +122,17 @@ async function handleUsersChanged(): Promise<void> {
  * Sets user rights and roles for the current company.
  * Updates isAnyCompanyOwnerExisting, isUserCompanyOwnerOrUploader, and isUserKeycloakUploader.
  */
-async function setUserRights(): Promise<void> {
+async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
-  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
-  const assignment = assignments.find((a) => a.companyId === props.companyId);
-  userRole.value = assignment ? assignment.companyRole : null;
+  if (refreshUserRole) {
+    const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+    const assignment = assignments.find((a) => a.companyId === props.companyId);
+    userRole.value = assignment ? assignment.companyRole : null;
+  } else {
+    userRole.value =
+      companyRoleAssignmentsRef.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ||
+      null;
+  }
   isUserCompanyOwnerOrUploader.value =
     userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
@@ -135,7 +145,7 @@ watch(
   () => props.companyId,
   async (newId, oldId) => {
     if (newId == oldId) return;
-    await setUserRights();
+    await setUserRights(false);
   }
 );
 
@@ -145,7 +155,7 @@ watch(activeTab, (val) => {
 });
 
 onMounted(async () => {
-  await setUserRights();
+  await setUserRights(false);
   const path = router.currentRoute.value.path;
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
