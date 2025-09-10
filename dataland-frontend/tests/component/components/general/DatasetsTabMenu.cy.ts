@@ -68,7 +68,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   /**
-   * Asserts if the 'Companies' tab is highlighted
+   * Asserts that the 'Portfolios' tab is highlighted
    */
   function assertPortfoliosTabIsHighlighted(): void {
     cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.MyPortfolios).should('exist');

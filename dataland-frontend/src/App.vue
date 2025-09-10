@@ -5,7 +5,7 @@
     :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
     <LandingPageHeader v-if="useLandingPageHeader" />
-    <TheHeader v-else :show-user-profile-dropdown="keycloakAuthenticated" />
+    <TheHeader v-else />
     <router-view />
   </component>
   <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
