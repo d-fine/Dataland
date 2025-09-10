@@ -142,20 +142,20 @@ class QueryDataRequestsTest {
     fun `query data requests with reporting period filter and assert that the expected results are being retrieved`() {
         val dataRequestsFor2021 =
             api
-                .getDataRequests(reportingPeriod = "2021", chunkSize = chunkSize)
+                .getDataRequests(reportingPeriods = setOf("2021"), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, dataRequestsFor2021.size)
 
         val dataRequestsFor2022 =
             api
-                .getDataRequests(reportingPeriod = "2022", chunkSize = chunkSize)
+                .getDataRequests(reportingPeriods = setOf("2022"), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, dataRequestsFor2022.size)
         assertEquals("2022", dataRequestsFor2022.first().reportingPeriod)
 
         val dataRequestsFor2023 =
             api
-                .getDataRequests(reportingPeriod = "2023", chunkSize = chunkSize)
+                .getDataRequests(reportingPeriods = setOf("2023"), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, dataRequestsFor2023.size)
         dataRequestsFor2023.forEach { assertEquals("2023", it.reportingPeriod) }
@@ -323,7 +323,7 @@ class QueryDataRequestsTest {
                     dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsVsme),
                     requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
                     accessStatus = setOf(AccessStatus.Pending),
-                    reportingPeriod = "2023",
+                    reportingPeriods = setOf("2023"),
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, combinedQueryResults.size)
