@@ -131,25 +131,22 @@ class SecurityUtilsService(
         userIdOfRoleToChange: String,
     ): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
-        var hasPermission = false
-        if (userId != null) {
-            val companyRoleBeforeModification =
-                companyRoleAssignmentRepository
-                    .getCompanyRoleAssignmentsByProvidedParameters(
-                        companyId = companyId.toString(), userId = userId, companyRole = null,
-                    ).firstOrNull()
-                    ?.companyRole
-            val userToModifyCompanyRole =
-                companyRoleAssignmentRepository
-                    .getCompanyRoleAssignmentsByProvidedParameters(
-                        companyId = companyId.toString(), userId = userIdOfRoleToChange, companyRole = null,
-                    ).firstOrNull()
-                    ?.companyRole
-            val allowedRoles = roleModificationPermissionsMap[companyRoleBeforeModification] ?: emptyList()
-            hasPermission = (companyRoleAfterModification == null || allowedRoles.contains(companyRoleAfterModification)) &&
-                (userToModifyCompanyRole == null || allowedRoles.contains(userToModifyCompanyRole))
-        }
-        return hasPermission
+        if (userId == null) return false
+        val userCompanyRole =
+            companyRoleAssignmentRepository
+                .getCompanyRoleAssignmentsByProvidedParameters(
+                    companyId = companyId.toString(), userId = userId, companyRole = null,
+                ).firstOrNull()
+                ?.companyRole
+        val companyRoleBeforeModification =
+            companyRoleAssignmentRepository
+                .getCompanyRoleAssignmentsByProvidedParameters(
+                    companyId = companyId.toString(), userId = userIdOfRoleToChange, companyRole = null,
+                ).firstOrNull()
+                ?.companyRole
+        val allowedRoles = roleModificationPermissionsMap[userCompanyRole] ?: emptyList()
+        return (companyRoleAfterModification == null || allowedRoles.contains(companyRoleAfterModification)) &&
+            (companyRoleBeforeModification == null || allowedRoles.contains(companyRoleBeforeModification))
     }
 
     /**
