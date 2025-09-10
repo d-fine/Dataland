@@ -145,10 +145,10 @@ class DataRequestQueryManagerTest {
 
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         `when`(
-            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithoutEmailAddress), anyOrNull(), anyOrNull()),
+            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithoutEmailAddress), anyOrNull(), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityAlpha, dataRequestEntityBeta))
         `when`(
-            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
+            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityBeta))
         `when`(
             mockDataRequestRepository.findByUserId(eq(dataRequestEntityAlpha.userId)),
