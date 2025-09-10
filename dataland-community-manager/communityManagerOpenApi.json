@@ -751,7 +751,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -908,14 +908,21 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
@@ -935,7 +942,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "chunkSize",
@@ -1158,14 +1165,21 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
@@ -1176,6 +1190,16 @@
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Strings to match company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Inc."
           }
         ],
         "responses": {
@@ -1254,7 +1278,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1864,7 +1888,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "resourceId": {
@@ -2038,7 +2062,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2189,7 +2213,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2257,7 +2281,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {

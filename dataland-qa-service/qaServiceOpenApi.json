@@ -1502,7 +1502,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1600,7 +1600,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -2119,7 +2119,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -6054,7 +6054,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "timestamp": {
@@ -6242,7 +6242,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "timestamp": {
