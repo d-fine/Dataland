@@ -37,7 +37,7 @@
     <Dialog v-model:visible="showSuccess" header="Success" :modal="true">
       <div style="text-align: center; padding: 8px 0">
         <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
-        <div style="margin-top: 8px">Changes saved.</div>
+        <div style="margin-top: 8px">Changes successfully saved.</div>
       </div>
       <template #footer>
         <Button label="OK" @click="showSuccess = false" />
@@ -67,20 +67,20 @@ import TabPanel from 'primevue/tabpanel';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 
-import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
+import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+import { CompanyRole } from '@clients/communitymanager';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const props = defineProps<{ companyId: string }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
-  'companyRoleAssignments',
-  ref([])
-);
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const router = useRouter();
 
@@ -108,7 +108,8 @@ const showSuccess = ref(false);
 /**
  * Handler for user changes in company roles.
  */
-function handleUsersChanged(): void {
+async function handleUsersChanged(): Promise<void> {
+  await setUserRights();
   showSuccess.value = true;
   refreshAllCards.value++;
 }
@@ -119,10 +120,9 @@ function handleUsersChanged(): void {
  */
 async function setUserRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
-
-  userRole.value =
-    companyRoleAssignmentsRef.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ||
-    null;
+  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+  const assignment = assignments.find((a) => a.companyId === props.companyId);
+  userRole.value = assignment ? assignment.companyRole : null;
   isUserCompanyOwnerOrUploader.value =
     userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);

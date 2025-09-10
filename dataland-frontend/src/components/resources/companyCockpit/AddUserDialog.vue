@@ -9,6 +9,7 @@
             placeholder="Enter email address"
             class="search-input"
             data-test="email-input-field"
+            @keydown.enter="selectUser"
           />
           <Button label="SELECT" @click="selectUser" data-test="select-user-button" />
           <Message
