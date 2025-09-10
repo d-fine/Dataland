@@ -101,4 +101,13 @@ data class CompanyInformation(
         example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
     val parentCompanyLei: String? = null,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIX_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIX_EXAMPLE,
+            ),
+    )
+    val emailSuffix: List<String>? = null,
 )

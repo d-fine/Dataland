@@ -163,4 +163,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val KEEP_VALUE_FIELDS_ONLY_DESCRIPTION =
         "If set to true, data is to be exported without additional information like comments on the data or the data's qa status."
+
+    const val EMAIL_SUFFIX_DESCRIPTION = "List of suggested email suffixes for company users (e.g. ['@company.com', '@subsidiary.com'])"
+    const val EMAIL_SUFFIX_EXAMPLE = "['@company.com', '@subsidiary.com']"
 }

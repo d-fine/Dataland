@@ -294,4 +294,44 @@ interface CompanyRolesApi {
         )
         @PathVariable("companyId") companyId: UUID,
     )
+
+    /**
+     * Get all users whose email matches the suffixes defined in the company's emailSuffix attribute.
+     * @param companyId the company to check
+     * @return list of users with emails matching the suffixes
+     */
+    @Operation(
+        summary = "Get users by company email suffixes.",
+        description = "Returns all users whose email address ends with any of the suffixes defined in the company's emailSuffix attribute.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved users with matching email suffixes.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to make this query.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified company does not exist or has no emailSuffix defined.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(
+        produces = ["application/json"],
+        value = ["/company-role-assignments/by-email-suffix/{companyId}"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "@SecurityUtilsService.isUserMemberOfTheCompany(#companyId)",
+    )
+    fun getUsersByCompanyEmailSuffix(
+        @CompanyIdParameterRequired
+        @PathVariable("companyId") companyId: UUID,
+    ): ResponseEntity<List<CompanyRoleAssignmentExtended>>
 }

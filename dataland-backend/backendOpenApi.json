@@ -5822,6 +5822,15 @@
             "description": "The LEI of the parent company if it exists.",
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
+          },
+          "emailSuffix": {
+            "type": "array",
+            "description": "List of suggested email suffixes for company users (e.g. [\u0027@company.com\u0027, \u0027@subsidiary.com\u0027])",
+            "nullable": true,
+            "example": "[\u0027@company.com\u0027, \u0027@subsidiary.com\u0027]",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
