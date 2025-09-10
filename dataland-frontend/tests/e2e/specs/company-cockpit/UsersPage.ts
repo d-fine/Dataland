@@ -26,7 +26,7 @@ describeIf(
       setupCommonInterceptions();
     });
 
-    it('When directing by url to the users page as a basic data reader who is only a company member that user should be redirected to the company cockpit page', () => {
+    it('When directing by url to the users page as a basic data reader who is only a company member of another company that user should be redirected to the company cockpit page', () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
