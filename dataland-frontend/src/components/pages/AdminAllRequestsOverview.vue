@@ -28,6 +28,20 @@
             />
           </IconField>
 
+          <IconField class="search-bar">
+            <InputIcon class="pi pi-search" />
+            <InputText
+              data-test="company-search-string-searchbar"
+              v-model="searchBarInputCompanySearchString"
+              placeholder="Search by Company Name or Identifier"
+              fluid
+              variant="filled"
+              :disabled="waitingForData"
+            />
+          </IconField>
+        </div>
+
+        <div class="search-container">
           <FrameworkDataSearchDropdownFilter
             :disabled="waitingForData"
             v-model="selectedFrameworks"
@@ -66,6 +80,19 @@
             class="search-filter"
             :max-selected-labels="1"
             selected-items-label="{0} request priorities"
+          />
+          <FrameworkDataSearchDropdownFilter
+            :disabled="waitingForData"
+            v-model="selectedReportingPeriod"
+            ref="frameworkFilter"
+            :available-items="availableReportingPeriod"
+            filter-name="Reporting Period"
+            data-test="reporting-period-picker"
+            id="framework-filter"
+            filter-placeholder="Search by Reporting Period"
+            class="search-filter"
+            :max-selected-labels="1"
+            selected-items-label="{0} reporting periods"
           />
           <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
           <PrimeButton
@@ -211,6 +238,7 @@ import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriority,
   retrieveAvailableRequestStatus,
+  retrieveAvailableReportingPeriod,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type { DataTypeEnum } from '@clients/backend';
@@ -268,18 +296,22 @@ export default defineComponent({
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       searchBarInputEmail: '',
       searchBarInputComment: '',
+      searchBarInputCompanySearchString: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
       availablePriority: [] as Array<SelectableItem>,
       selectedPriority: [] as Array<SelectableItem>,
+      availableReportingPeriod: [] as Array<SelectableItem>,
+      selectedReportingPeriod: [] as Array<SelectableItem>,
     };
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
     this.availablePriority = retrieveAvailablePriority();
+    this.availableReportingPeriod = retrieveAvailableReportingPeriod();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
   },
   computed: {
@@ -310,12 +342,20 @@ export default defineComponent({
       this.selectedPriority = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
+    selectedReportingPeriod(newSelected) {
+      this.selectedReportingPeriod = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
+    },
     searchBarInputEmail(newSearch: string) {
       this.searchBarInputEmail = newSearch;
       this.setChunkAndFirstRowIndexToZero();
     },
     searchBarInputComment(newSearch: string) {
       this.searchBarInputComment = newSearch;
+      this.setChunkAndFirstRowIndexToZero();
+    },
+    searchBarInputCompanySearchString(newSearch: string) {
+      this.searchBarInputCompanySearchString = newSearch;
       this.setChunkAndFirstRowIndexToZero();
     },
   },
@@ -339,10 +379,15 @@ export default defineComponent({
       const selectedPriorityAsSet = new Set<RequestPriority>(
         this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
       );
+      const selectedReportingPeriodAsSet = new Set<string>(
+        this.selectedReportingPeriod.map((selectableItem) => selectableItem.displayName)
+      );
       try {
         if (this.getKeycloakPromise) {
           const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
           const commentFilter = this.searchBarInputComment === '' ? undefined : this.searchBarInputComment;
+          const companySearchStringFilter =
+            this.searchBarInputCompanySearchString === '' ? undefined : this.searchBarInputCompanySearchString;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
@@ -353,9 +398,9 @@ export default defineComponent({
               selectedRequestStatusesAsSet,
               undefined,
               selectedPriorityAsSet,
+              selectedReportingPeriodAsSet,
               undefined,
-              undefined,
-              undefined,
+              companySearchStringFilter,
               this.datasetsPerPage,
               this.currentChunkIndex
             )
@@ -369,8 +414,9 @@ export default defineComponent({
               selectedRequestStatusesAsSet,
               undefined,
               selectedPriorityAsSet,
+              selectedReportingPeriodAsSet,
               undefined,
-              undefined
+              companySearchStringFilter
             )
           ).data;
         }
@@ -388,8 +434,10 @@ export default defineComponent({
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
       this.selectedPriority = [];
+      this.selectedReportingPeriod = [];
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
+      this.searchBarInputCompanySearchString = '';
       void this.getAllRequestsForFilters();
     },
 
@@ -426,6 +474,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style scoped>
 .search-container {
   margin: 0;
