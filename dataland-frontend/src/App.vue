@@ -8,7 +8,7 @@
     <TheHeader v-else :show-user-profile-dropdown="keycloakAuthenticated" />
     <router-view />
   </component>
-  <TheFooter />
+  <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
 </template>
 
 <script lang="ts">
