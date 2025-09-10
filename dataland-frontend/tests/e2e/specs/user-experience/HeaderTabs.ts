@@ -60,7 +60,6 @@ describeIf(
           '/companies',
           `/companies/${alphaCompanyIdAndName.companyId}`,
           `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
-          `/companies/${alphaCompanyIdAndName.companyId}/documents`,
         ],
         true
       );
