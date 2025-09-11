@@ -7,6 +7,18 @@
           <IconField class="search-bar">
             <InputIcon class="pi pi-search" />
             <InputText
+              data-test="company-search-string-searchbar"
+              v-model="searchBarInputCompanySearchString"
+              placeholder="Search by Company Name or Identifier"
+              fluid
+              variant="filled"
+              :disabled="waitingForData"
+            />
+          </IconField>
+
+          <IconField class="search-bar">
+            <InputIcon class="pi pi-search" />
+            <InputText
               data-test="email-searchbar"
               v-model="searchBarInputEmail"
               placeholder="Search by Requester"
@@ -22,18 +34,6 @@
               data-test="comment-searchbar"
               v-model="searchBarInputComment"
               placeholder="Search by Comment"
-              fluid
-              variant="filled"
-              :disabled="waitingForData"
-            />
-          </IconField>
-
-          <IconField class="search-bar">
-            <InputIcon class="pi pi-search" />
-            <InputText
-              data-test="company-search-string-searchbar"
-              v-model="searchBarInputCompanySearchString"
-              placeholder="Search by Company Name or Identifier"
               fluid
               variant="filled"
               :disabled="waitingForData"

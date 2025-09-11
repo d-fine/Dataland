@@ -299,7 +299,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept(
       `**/community/requests/numberOfRequests?requestPriority=${priorityToFilterFor}`,
       expectedNumberOfRequests.toString()
-    ).as('fetchFrameworkFilteredNumberOfRequests');
+    ).as('fetchPriorityFilteredNumberOfRequests');
 
     cy.get(`div[data-test="request-priority-picker"]`).click();
     cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
@@ -308,6 +308,31 @@ describe('Component test for the admin-requests-overview page', () => {
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
+  }
+
+  /**
+   * Validates if filtering via reporting period dropdown filter works as expected
+   */
+  function validateReportingPeriodFilter(): void {
+    const reportingPeriodToFilterFor = '2023';
+    const mockResponse = [mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchReportingPeriodFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?reportingPeriods=${reportingPeriodToFilterFor}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchReportingPeriodFilteredNumberOfRequests');
+
+    cy.get(`div[data-test="reporting-period-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
+    cy.get(`li[aria-label="${reportingPeriodToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
@@ -341,11 +366,11 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept(
       `**/community/requests?companySearchString=${companyNameSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
-    ).as('fetchCommentFilteredRequests');
+    ).as('fetchCompanySearchStringFilteredRequests');
     cy.intercept(
       `**/community/requests/numberOfRequests?companySearchString=${companyNameSearchTerm}`,
       expectedNumberOfRequests.toString()
-    ).as('fetchCommentFilteredNumberOfRequests');
+    ).as('fetchCompanySearchStringFilteredNumberOfRequests');
 
     cy.get(`input[data-test="company-search-string-searchbar"]`).type(companyNameSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -454,6 +479,11 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Filtering for request priority works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestPriorityFilter();
+  });
+
+  it('Filtering for reporting period works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateReportingPeriodFilter();
   });
 
   it('Filtering for an admin comment works as expected', () => {
