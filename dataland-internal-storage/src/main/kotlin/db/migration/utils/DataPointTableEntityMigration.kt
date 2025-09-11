@@ -63,3 +63,19 @@ fun migrateDataPointTableEntities(
         it.executeUpdateQuery(context!!)
     }
 }
+
+/**
+ * Returns all distinct data_point_type values from the data_point_items table
+ */
+fun getAllDataPointTypes(context: Context?): List<String> {
+    val connection = context!!.connection
+    val statement = connection.prepareStatement("SELECT DISTINCT data_point_type FROM public.data_point_items")
+    val rs = statement.executeQuery()
+    val dataPointTypes = mutableListOf<String>()
+    while (rs.next()) {
+        dataPointTypes.add(rs.getString("data_point_type"))
+    }
+    rs.close()
+    statement.close()
+    return dataPointTypes
+}
