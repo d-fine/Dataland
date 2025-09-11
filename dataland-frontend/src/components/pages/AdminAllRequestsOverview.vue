@@ -3,7 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initialTabIndex="6">
       <TheContent class="min-h-screen relative">
-        <div class="search-container">
+        <div class="search-container-first-line">
           <IconField class="search-bar">
             <InputIcon class="pi pi-search" />
             <InputText
@@ -41,7 +41,7 @@
           </IconField>
         </div>
 
-        <div class="search-container">
+        <div class="search-container-last-line">
           <FrameworkDataSearchDropdownFilter
             :disabled="waitingForData"
             v-model="selectedFrameworks"
@@ -475,18 +475,27 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.search-container {
+<style scoped lang="scss">
+%search-container-base {
   margin: 0;
   width: 100%;
-  padding: var(--spacing-lg);
   display: flex;
   gap: var(--spacing-lg);
   align-items: start;
+}
+
+.search-container-first-line {
+  @extend %search-container-base;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm) var(--spacing-lg);
 
   .search-bar {
     width: 20%;
   }
+}
+
+.search-container-last-line {
+  @extend %search-container-base;
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
 
   .search-filter {
     width: 10%;

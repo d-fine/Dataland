@@ -26,6 +26,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * @param accessStatus of the data request
    * @param adminComment of the data request
    * @param requestPriority of the data request
+   * @param companyName of the data request, will be chosen by faker if undefined
+   * @param reportingPeriod of the data request, will be chosen by faker if undefined
    * @returns the generated ExtendedStoredDataRequest
    */
   function generateExtendedStoredDataRequest(
@@ -34,7 +36,9 @@ describe('Component test for the admin-requests-overview page', () => {
     requestStatus: RequestStatus,
     accessStatus: AccessStatus,
     adminComment: string,
-    requestPriority: RequestPriority
+    requestPriority: RequestPriority,
+    companyName: string | undefined,
+    reportingPeriod: string | undefined
   ): ExtendedStoredDataRequest {
     return {
       dataRequestId: crypto.randomUUID(),
@@ -42,9 +46,10 @@ describe('Component test for the admin-requests-overview page', () => {
       userEmailAddress: userEmailAddress,
       creationTimestamp: Date.now(),
       dataType: framework,
-      reportingPeriod: faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
+      reportingPeriod:
+        reportingPeriod === undefined ? faker.helpers.arrayElement(['2020', '2021', '2022', '2023']) : reportingPeriod,
       datalandCompanyId: crypto.randomUUID(),
-      companyName: faker.company.name(),
+      companyName: companyName === undefined ? faker.company.name() : companyName,
       lastModifiedDate: Date.now(),
       requestStatus: requestStatus,
       accessStatus: accessStatus,
@@ -63,6 +68,15 @@ describe('Component test for the admin-requests-overview page', () => {
   const commentGamma = 'Another test comment';
   const commentDelta = 'The last test comment';
   const commentSearchTerm = commentBeta.substring(0, 3);
+  const companyNameAlpha = 'Fun company';
+  const companyNameBeta = 'Funny company';
+  const companyNameGamma = 'Serious company';
+  const companyNameDelta = 'Neutral company';
+  const companyNameSearchTerm = companyNameAlpha.substring(0, 3);
+  const reportingPeriodAlpha = '2020';
+  const reportingPeriodBeta = '2021';
+  const reportingPeriodGamma = '2022';
+  const reportingPeriodDelta = '2023';
 
   before(function () {
     mockRequests = [
@@ -72,15 +86,19 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Open,
         AccessStatus.Public,
         commentAlpha,
-        RequestPriority.Urgent
+        RequestPriority.Urgent,
+        companyNameAlpha,
+        reportingPeriodAlpha
       ),
       generateExtendedStoredDataRequest(
         mailBeta,
         DataTypeEnum.EutaxonomyFinancials,
         RequestStatus.Answered,
         AccessStatus.Declined,
-        commentGamma,
-        RequestPriority.High
+        commentBeta,
+        RequestPriority.High,
+        companyNameBeta,
+        reportingPeriodBeta
       ),
       generateExtendedStoredDataRequest(
         mailGamma,
@@ -88,7 +106,9 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Answered,
         AccessStatus.Declined,
         commentGamma,
-        RequestPriority.High
+        RequestPriority.High,
+        companyNameGamma,
+        reportingPeriodGamma
       ),
       generateExtendedStoredDataRequest(
         mailDelta,
@@ -96,7 +116,9 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Resolved,
         AccessStatus.Public,
         commentDelta,
-        RequestPriority.Low
+        RequestPriority.Low,
+        companyNameDelta,
+        reportingPeriodDelta
       ),
     ];
     mockRequestsLarge = [];
@@ -116,7 +138,16 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent,
       ]);
       mockRequestsLarge.push(
-        generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
+        generateExtendedStoredDataRequest(
+          email,
+          dataType,
+          requestStatus,
+          AccessStatus.Public,
+          comment,
+          requestPriority,
+          undefined,
+          undefined
+        )
       );
     }
   });
@@ -289,15 +320,38 @@ describe('Component test for the admin-requests-overview page', () => {
       `**/community/requests?adminComment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
     ).as('fetchCommentFilteredRequests');
-    cy.intercept(`**/community/requests/numberOfRequests?adminComment=last`, expectedNumberOfRequests.toString()).as(
-      'fetchCommentFilteredNumberOfRequests'
-    );
+    cy.intercept(
+      `**/community/requests/numberOfRequests?adminComment=${commentSearchTerm}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchCommentFilteredNumberOfRequests');
 
     cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
     assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
+  /**
+   * Validates if filtering via company search string works as expected
+   */
+  function validateCompanySearchStringFilter(): void {
+    const mockResponse = [mockRequests[0], mockRequests[1]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?companySearchString=${companyNameSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchCommentFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?companySearchString=${companyNameSearchTerm}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchCommentFilteredNumberOfRequests');
+
+    cy.get(`input[data-test="company-search-string-searchbar"]`).type(companyNameSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
@@ -397,7 +451,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateRequestStatusFilter();
   });
 
-  it('Filtering for request priority works as exprected', () => {
+  it('Filtering for request priority works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestPriorityFilter();
   });
@@ -405,6 +459,11 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Filtering for an admin comment works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateAdminCommentFilter();
+  });
+
+  it('Filtering for a company search string works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateCompanySearchStringFilter();
   });
 
   it('A combined filter works as expected and is also de-selectable', () => {
