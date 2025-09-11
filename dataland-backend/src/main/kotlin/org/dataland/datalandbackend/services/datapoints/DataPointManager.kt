@@ -69,7 +69,7 @@ class DataPointManager
                     companyId = uploadedDataPoint.companyId,
                     reportingPeriod = uploadedDataPoint.reportingPeriod,
                 )
-            logger.info("Storing '$uploadedDataPoint.dataPointType' data point with bypassQa set to: $bypassQa.")
+            logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 
             if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataPoint.companyId)) {

@@ -1,0 +1,6 @@
+{
+  "dataPoint": "{\"value\": 0.2, \"quality\": \"Estimated\", \"comment\": \"The rate of accidents for 2023 is directly provided as 1.0 per million hours worked in the text and table.\", \"dataSource\": {\"page\": \"47\", \"tagName\": \"\", \"fileName\": \"2023_Sustainability_Report\", \"fileReference\": \"b19abfb1d0ff20e28d178839b99e88c00340731551d45f662bf6625aa249b335\", \"publicationDate\": \"2024-04-04\"}}",
+  "dataPointType": "extendedDecimalRateOfAccidents",
+  "companyId": "6671fe2c-9680-4277-8846-7c7716f7f8cb",
+  "reportingPeriod": "2023"
+}
