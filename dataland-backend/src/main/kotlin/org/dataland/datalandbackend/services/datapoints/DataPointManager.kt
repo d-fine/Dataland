@@ -62,20 +62,23 @@ class DataPointManager
             val castedDataPointObject =
                 dataPointValidator
                     .validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
-            val dataPointType = getFieldOrFallback(castedDataPointObject, "dataPointType", uploadedDataPoint.dataPointType)
-            val companyId = getFieldOrFallback(castedDataPointObject, "companyId", uploadedDataPoint.companyId)
-            val reportingPeriod = getFieldOrFallback(castedDataPointObject, "reportingPeriod", uploadedDataPoint.reportingPeriod)
-            val uploadedDataPointCasted = buildUploadedDataPoint(castedDataPointObject, dataPointType, companyId, reportingPeriod)
-            logger.info("Storing '$dataPointType' data point with bypassQa set to: $bypassQa.")
+            val uploadedDataPointCasted =
+                UploadedDataPoint(
+                    dataPoint = objectMapper.writeValueAsString(castedDataPointObject),
+                    dataPointType = uploadedDataPoint.dataPointType,
+                    companyId = uploadedDataPoint.companyId,
+                    reportingPeriod = uploadedDataPoint.reportingPeriod,
+                )
+            logger.info("Storing '$uploadedDataPoint.dataPointType' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(companyId)) {
+            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataPoint.companyId)) {
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
 
             val companyInformation =
                 companyQueryManager
-                    .getCompanyById(companyId)
+                    .getCompanyById(uploadedDataPoint.companyId)
                     .toApiModel()
 
             val dataPointMetaInformation =
@@ -94,33 +97,6 @@ class DataPointManager
             )
             return dataPointMetaInformation
         }
-
-        private fun getFieldOrFallback(
-            obj: Any,
-            fieldName: String,
-            fallback: String,
-        ): String =
-            try {
-                val clazz = obj.javaClass
-                clazz.getDeclaredField(fieldName).apply { isAccessible = true }.get(obj) as String
-            } catch (error: NoSuchFieldException) {
-                fallback
-            } catch (error: IllegalAccessException) {
-                fallback
-            }
-
-        private fun buildUploadedDataPoint(
-            castedDataPointObject: Any,
-            dataPointType: String,
-            companyId: String,
-            reportingPeriod: String,
-        ): UploadedDataPoint =
-            UploadedDataPoint(
-                dataPoint = objectMapper.writeValueAsString(castedDataPointObject),
-                dataPointType = dataPointType,
-                companyId = companyId,
-                reportingPeriod = reportingPeriod,
-            )
 
         /**
          * Stores a single data point in the internal storage
