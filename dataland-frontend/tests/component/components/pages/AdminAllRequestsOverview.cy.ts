@@ -19,42 +19,40 @@ describe('Component test for the admin-requests-overview page', () => {
   const chunkSize = 100;
 
   /**
+   * A collection of fields of extended stored data requests that can be filtered by.
+   */
+  type FilterParameters = {
+    userEmailAddress: string;
+    framework: DataTypeEnum;
+    requestStatus: RequestStatus;
+    accessStatus: AccessStatus;
+    adminComment: string;
+    requestPriority: RequestPriority;
+    companyName: string | undefined;
+    reportingPeriod: string | undefined;
+  };
+
+  /**
    * Generates one ExtendedStoredDataRequest type object
-   * @param userEmailAddress of the requesting user
-   * @param framework for which data has been requested
-   * @param requestStatus of the data request
-   * @param accessStatus of the data request
-   * @param adminComment of the data request
-   * @param requestPriority of the data request
-   * @param companyName of the data request, will be chosen by faker if undefined
-   * @param reportingPeriod of the data request, will be chosen by faker if undefined
+   * @param filterParameters contains all parameters that can be set. If companyName and/or reportingPeriod
+   * is undefined, a random value will be chosen using faker
    * @returns the generated ExtendedStoredDataRequest
    */
-  function generateExtendedStoredDataRequest(
-    userEmailAddress: string,
-    framework: DataTypeEnum,
-    requestStatus: RequestStatus,
-    accessStatus: AccessStatus,
-    adminComment: string,
-    requestPriority: RequestPriority,
-    companyName: string | undefined,
-    reportingPeriod: string | undefined
-  ): ExtendedStoredDataRequest {
+  function generateExtendedStoredDataRequest(filterParameters: FilterParameters): ExtendedStoredDataRequest {
     return {
       dataRequestId: crypto.randomUUID(),
       userId: crypto.randomUUID(),
-      userEmailAddress: userEmailAddress,
+      userEmailAddress: filterParameters.userEmailAddress,
       creationTimestamp: Date.now(),
-      dataType: framework,
-      reportingPeriod:
-        reportingPeriod === undefined ? faker.helpers.arrayElement(['2020', '2021', '2022', '2023']) : reportingPeriod,
+      dataType: filterParameters.framework,
+      reportingPeriod: filterParameters.reportingPeriod ?? faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
       datalandCompanyId: crypto.randomUUID(),
-      companyName: companyName === undefined ? faker.company.name() : companyName,
+      companyName: filterParameters.companyName ?? faker.company.name(),
       lastModifiedDate: Date.now(),
-      requestStatus: requestStatus,
-      accessStatus: accessStatus,
-      adminComment: adminComment,
-      requestPriority: requestPriority,
+      requestStatus: filterParameters.requestStatus,
+      accessStatus: filterParameters.accessStatus,
+      adminComment: filterParameters.adminComment,
+      requestPriority: filterParameters.requestPriority,
     };
   }
 
@@ -80,46 +78,46 @@ describe('Component test for the admin-requests-overview page', () => {
 
   before(function () {
     mockRequests = [
-      generateExtendedStoredDataRequest(
-        mailAlpha,
-        DataTypeEnum.Lksg,
-        RequestStatus.Open,
-        AccessStatus.Public,
-        commentAlpha,
-        RequestPriority.Urgent,
-        companyNameAlpha,
-        reportingPeriodAlpha
-      ),
-      generateExtendedStoredDataRequest(
-        mailBeta,
-        DataTypeEnum.EutaxonomyFinancials,
-        RequestStatus.Answered,
-        AccessStatus.Declined,
-        commentBeta,
-        RequestPriority.High,
-        companyNameBeta,
-        reportingPeriodBeta
-      ),
-      generateExtendedStoredDataRequest(
-        mailGamma,
-        DataTypeEnum.Vsme,
-        RequestStatus.Answered,
-        AccessStatus.Declined,
-        commentGamma,
-        RequestPriority.High,
-        companyNameGamma,
-        reportingPeriodGamma
-      ),
-      generateExtendedStoredDataRequest(
-        mailDelta,
-        DataTypeEnum.Sfdr,
-        RequestStatus.Resolved,
-        AccessStatus.Public,
-        commentDelta,
-        RequestPriority.Low,
-        companyNameDelta,
-        reportingPeriodDelta
-      ),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailAlpha,
+        framework: DataTypeEnum.Lksg,
+        requestStatus: RequestStatus.Open,
+        accessStatus: AccessStatus.Public,
+        adminComment: commentAlpha,
+        requestPriority: RequestPriority.Urgent,
+        companyName: companyNameAlpha,
+        reportingPeriod: reportingPeriodAlpha,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailBeta,
+        framework: DataTypeEnum.EutaxonomyFinancials,
+        requestStatus: RequestStatus.Answered,
+        accessStatus: AccessStatus.Declined,
+        adminComment: commentBeta,
+        requestPriority: RequestPriority.High,
+        companyName: companyNameBeta,
+        reportingPeriod: reportingPeriodBeta,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailGamma,
+        framework: DataTypeEnum.Vsme,
+        requestStatus: RequestStatus.Answered,
+        accessStatus: AccessStatus.Declined,
+        adminComment: commentGamma,
+        requestPriority: RequestPriority.High,
+        companyName: companyNameGamma,
+        reportingPeriod: reportingPeriodGamma,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailDelta,
+        framework: DataTypeEnum.Sfdr,
+        requestStatus: RequestStatus.Resolved,
+        accessStatus: AccessStatus.Public,
+        adminComment: commentDelta,
+        requestPriority: RequestPriority.Low,
+        companyName: companyNameDelta,
+        reportingPeriod: reportingPeriodDelta,
+      }),
     ];
     mockRequestsLarge = [];
     for (let num = 1; num <= 104; num++) {
@@ -138,16 +136,16 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent,
       ]);
       mockRequestsLarge.push(
-        generateExtendedStoredDataRequest(
-          email,
-          dataType,
-          requestStatus,
-          AccessStatus.Public,
-          comment,
-          requestPriority,
-          undefined,
-          undefined
-        )
+        generateExtendedStoredDataRequest({
+          userEmailAddress: email,
+          framework: dataType,
+          requestStatus: requestStatus,
+          accessStatus: AccessStatus.Public,
+          adminComment: comment,
+          requestPriority: requestPriority,
+          companyName: undefined,
+          reportingPeriod: undefined,
+        })
       );
     }
   });
