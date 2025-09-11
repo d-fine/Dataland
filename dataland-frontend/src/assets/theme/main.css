@@ -57,6 +57,11 @@
   font-family: var(--font-family) sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -71,6 +76,7 @@ body {
   &.small {
     font-size: var(--font-size-xs);
   }
+
   &.normal {
     font-size: var(--font-size-base);
   }

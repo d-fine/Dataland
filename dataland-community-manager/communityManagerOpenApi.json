@@ -833,6 +833,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1090,6 +1091,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1270,6 +1272,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1670,6 +1673,7 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ]
           },
@@ -1797,6 +1801,7 @@
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
                 "lksg",
+                "pcaf",
                 "vsme"
               ]
             }
@@ -2276,6 +2281,7 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ]
           },
