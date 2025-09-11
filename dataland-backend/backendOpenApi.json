@@ -3451,7 +3451,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3514,7 +3514,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
