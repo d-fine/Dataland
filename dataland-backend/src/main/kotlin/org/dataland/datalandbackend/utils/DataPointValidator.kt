@@ -54,7 +54,7 @@ class DataPointValidator
             dataPointType: String,
             dataPoint: String,
             correlationId: String,
-        ): BaseDataPoint<*> {
+        ): Any {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
             val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
@@ -109,11 +109,11 @@ class DataPointValidator
             className: String,
             correlationId: String,
             constraints: List<String>? = null,
-        ): BaseDataPoint<*> {
+        ): Any {
             assertClassNameIsAuthorized(className, correlationId)
-            val dataPointObject = checkCastIntoClass(jsonData, className, correlationId) as BaseDataPoint<*>
+            val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
-            constraints?.let { validateConstraints(dataPointObject, constraints) }
+            constraints?.let { validateConstraints(dataPointObject as BaseDataPoint<*>, constraints) }
             return dataPointObject
         }
 
