@@ -7,33 +7,32 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoInteractions
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 import java.time.Duration
 import java.time.Instant
 import java.util.UUID
 
 class DataRequestTimeSchedulerTest {
-    private lateinit var mockDataRequestUpdateManager: DataRequestUpdateManager
-    private lateinit var mockDataRequestRepository: DataRequestRepository
+    private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
+    private val mockDataRequestRepository = mock<DataRequestRepository>()
     private lateinit var dataRequestTimeScheduler: DataRequestTimeScheduler
     private val dataRequestIdStaleAndAnswered = UUID.randomUUID().toString()
     private val dummyDataRequestId = "dummyDataRequestId"
     private val staleDaysThreshold: Long = 10
     private val staleLastModified = Instant.now().minus(Duration.ofDays(staleDaysThreshold + 1)).toEpochMilli()
-
-    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 
     private fun getDataRequestEntity(
         requestId: String,
@@ -71,16 +70,16 @@ class DataRequestTimeSchedulerTest {
 
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
+        reset(mockDataRequestRepository)
         TestUtils.mockSecurityContext()
-        mockDataRequestUpdateManager = mock(DataRequestUpdateManager::class.java)
-        `when`(
-            mockDataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+        doReturn(null)
+            .whenever(
+                mockDataRequestUpdateManager,
+            ).processExternalPatchRequestForDataRequest(
                 dataRequestIdStaleAndAnswered,
                 DataRequestPatch(requestStatus = RequestStatus.Closed),
                 UUID.randomUUID().toString(),
-            ),
-        ).thenReturn(null)
-        mockDataRequestRepository = mock(DataRequestRepository::class.java)
+            )
         dataRequestTimeScheduler =
             DataRequestTimeScheduler(
                 mockDataRequestUpdateManager,
@@ -91,12 +90,7 @@ class DataRequestTimeSchedulerTest {
 
     @Test
     fun `validate that two stale and answered data requests are patched`() {
-        `when`(
-            mockDataRequestRepository.searchDataRequestEntity(
-                any(DataRequestsFilter::class.java),
-                eq(100), eq(0),
-            ),
-        ).thenReturn(
+        doReturn(
             listOf(
                 getDataRequestEntity(
                     dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public,
@@ -107,7 +101,11 @@ class DataRequestTimeSchedulerTest {
                     staleLastModified,
                 ),
             ),
-        )
+        ).whenever(mockDataRequestRepository)
+            .searchDataRequestEntity(
+                any(), anyOrNull(),
+                eq(100), eq(0),
+            )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
         verify(mockDataRequestUpdateManager, times(2))
             .processExternalPatchRequestForDataRequest(
@@ -119,7 +117,6 @@ class DataRequestTimeSchedulerTest {
 
     @Test
     fun `validate that recently modified data request are not patched`() {
-        reset(mockDataRequestRepository)
         val dataRequestEntities = mutableListOf<DataRequestEntity>()
         for (status in RequestStatus.entries) {
             val dataRequestEntity =
@@ -129,14 +126,12 @@ class DataRequestTimeSchedulerTest {
                 )
             dataRequestEntities.add(dataRequestEntity)
         }
-        `when`(
-            mockDataRequestRepository.searchDataRequestEntity(
-                any(DataRequestsFilter::class.java),
+        doReturn(dataRequestEntities)
+            .whenever(mockDataRequestRepository)
+            .searchDataRequestEntity(
+                any(), any(),
                 eq(100), eq(0),
-            ),
-        ).thenReturn(
-            dataRequestEntities,
-        )
+            )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
 
         verifyNoInteractions(mockDataRequestUpdateManager)

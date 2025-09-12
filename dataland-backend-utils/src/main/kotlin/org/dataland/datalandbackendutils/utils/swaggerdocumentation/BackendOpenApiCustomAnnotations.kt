@@ -83,6 +83,16 @@ annotation class CompanyIdParameterNonRequired
 )
 annotation class ReportingPeriodParameterNonRequired
 
+/** ReportingPeriod annotation */
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+@Parameter(
+    description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
+    required = false,
+)
+annotation class ReportingPeriodsParameterNonRequired
+
 /** DataId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

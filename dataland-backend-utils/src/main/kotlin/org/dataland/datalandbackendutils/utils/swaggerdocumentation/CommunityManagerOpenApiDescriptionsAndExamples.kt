@@ -19,7 +19,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
         "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."
 
-    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
         "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
@@ -36,7 +36,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored data requests."
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to data requests that were rejected due to being duplicates."
@@ -45,7 +45,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored access requests."
     const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 

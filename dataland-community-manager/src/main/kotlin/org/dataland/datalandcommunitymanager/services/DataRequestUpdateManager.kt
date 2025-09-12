@@ -260,7 +260,7 @@ class DataRequestUpdateManager
                     DataRequestsFilter(
                         dataType = setOf(dataType),
                         datalandCompanyIds = subsidiariesIds.map { it.companyId }.toSet(),
-                        reportingPeriod = reportingPeriod,
+                        reportingPeriods = setOf(reportingPeriod),
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
                 )
@@ -316,7 +316,7 @@ class DataRequestUpdateManager
                     DataRequestsFilter(
                         dataType = setOf(dataMetaInformation.dataType),
                         datalandCompanyIds = setOf(parentCompanyId),
-                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        reportingPeriods = setOf(dataMetaInformation.reportingPeriod),
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
                 )
@@ -348,7 +348,7 @@ class DataRequestUpdateManager
                     DataRequestsFilter(
                         dataType = setOf(dataMetaInformation.dataType),
                         datalandCompanyIds = setOf(dataMetaInformation.companyId),
-                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        reportingPeriods = setOf(dataMetaInformation.reportingPeriod),
                         requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
@@ -403,7 +403,7 @@ class DataRequestUpdateManager
                     DataRequestsFilter(
                         dataType = setOf(sourceabilityInfo.dataType),
                         datalandCompanyIds = setOf(sourceabilityInfo.companyId),
-                        reportingPeriod = sourceabilityInfo.reportingPeriod,
+                        reportingPeriods = setOf(sourceabilityInfo.reportingPeriod),
                         requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
                     ),
                 )

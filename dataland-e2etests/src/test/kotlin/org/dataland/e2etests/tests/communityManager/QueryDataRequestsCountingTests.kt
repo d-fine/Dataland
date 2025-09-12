@@ -169,12 +169,12 @@ class QueryDataRequestsCountingTests {
 
     @Test
     fun `count requests with reporting period 2022 and request status filter`() {
-        assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdA, reportingPeriod = "2022"))
+        assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdA, reportingPeriods = setOf("2022")))
         assertEquals(
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
-                reportingPeriod = "2022",
+                reportingPeriods = setOf("2022"),
                 dataType = listOf(dataTypeGetNumberOfRequestsVsme),
             ),
         )
@@ -182,7 +182,7 @@ class QueryDataRequestsCountingTests {
             0,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
-                reportingPeriod = "2022",
+                reportingPeriods = setOf("2022"),
                 dataType = listOf(dataTypeGetNumberOfRequestsSfdr),
             ),
         )
@@ -190,12 +190,12 @@ class QueryDataRequestsCountingTests {
 
     @Test
     fun `count requests with reporting period 2023 and request status filter`() {
-        assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB, reportingPeriod = "2023"))
+        assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB, reportingPeriods = setOf("2023")))
         assertEquals(
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
-                reportingPeriod = "2023",
+                reportingPeriods = setOf("2023"),
                 requestStatus = setOf(RequestStatus.Open),
             ),
         )
@@ -203,7 +203,7 @@ class QueryDataRequestsCountingTests {
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
-                reportingPeriod = "2023",
+                reportingPeriods = setOf("2023"),
                 dataType = listOf(dataTypeGetNumberOfRequestsLksg),
                 requestStatus = setOf(RequestStatus.Open),
             ),

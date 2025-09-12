@@ -106,7 +106,7 @@ import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/gen
 import ToggleSwitch from 'primevue/toggleswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, DOWNLOADABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
@@ -133,7 +133,6 @@ const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
-const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
 const fileTypeSelectionOptions = computed(() => {
@@ -158,8 +157,8 @@ onMounted(() => {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
   if (!selectedFramework.value) {
@@ -195,13 +194,13 @@ function updateReportingPeriod(): void {
     ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
     : [];
 
-  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
-    value: reportingPeriods.includes(period.toString()),
+  allReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
+    value: reportingPeriods.includes(period),
   }));
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
 }

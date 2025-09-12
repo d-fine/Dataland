@@ -1,0 +1,17 @@
+{
+  "companyName": "Dummy Company",
+  "headquarters": "Berlin",
+  "identifiers": {},
+  "countryCode": "DE",
+  "companyAlternativeNames": null,
+  "companyContactDetails": [
+    "test@dummy.de"
+  ],
+  "companyLegalForm": null,
+  "headquartersPostalCode": null,
+  "sector": null,
+  "sectorCodeWz": null,
+  "isTeaserCompany": null,
+  "website": null,
+  "parentCompanyLei": null
+}
