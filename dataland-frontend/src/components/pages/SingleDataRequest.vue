@@ -251,7 +251,7 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import type { Content } from '@/types/ContentTypes.ts';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE, REQUESTABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants';
 import { openEmailClient } from '@/utils/Email';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -317,13 +317,12 @@ export default defineComponent({
       selectedFrameworkError: false,
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
-      reportingPeriodOptions: [
-        { name: '2024', value: false },
-        { name: '2023', value: false },
-        { name: '2022', value: false },
-        { name: '2021', value: false },
-        { name: '2020', value: false },
-      ],
+      reportingPeriodOptions: REQUESTABLE_DATA_REPORTING_PERIODS.map((period) => {
+        return {
+          name: period,
+          value: false,
+        };
+      }),
       submittingSucceeded: false,
       submitted: false,
       maxRequestReachedModalIsVisible: false,

@@ -1,6 +1,6 @@
 import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE, REQUESTABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
@@ -85,7 +85,7 @@ export function retrieveAvailablePriorities(): Array<SelectableItem> {
  * @returns array of SelectableItem
  */
 export function retrieveAvailableReportingPeriods(): Array<SelectableItem> {
-  return new Array<string>('2024', '2023', '2022', '2021', '2020').map((reportingPeriod) => {
+  return REQUESTABLE_DATA_REPORTING_PERIODS.map((reportingPeriod) => {
     return {
       displayName: reportingPeriod,
       disabled: false,

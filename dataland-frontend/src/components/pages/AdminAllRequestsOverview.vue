@@ -498,7 +498,7 @@ export default defineComponent({
   padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
 
   .search-filter {
-    width: 10%;
+    width: 20%;
     text-align: left;
   }
 
