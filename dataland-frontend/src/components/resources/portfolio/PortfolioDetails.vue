@@ -59,7 +59,22 @@
         style="width: 15%"
       >
         <template #body="portfolioEntry">
-          <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
+          <PrimeButton
+            :label="portfolioEntry.data.companyName"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+            data-test="viewCompanyButton"
+            @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
+            :pt="{
+              label: {
+                style: 'font-weight: normal;',
+              },
+              content: {
+                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              },
+            }"
+          />
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -115,11 +130,23 @@
         :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
-          <a
+          <PrimeButton
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
-          >
+            :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+            data-test="viewCompanyButton"
+            @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
+            :pt="{
+              label: {
+                style: 'font-weight: normal;',
+              },
+              content: {
+                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              },
+            }"
+          />
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
@@ -154,8 +181,8 @@ import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -175,6 +202,8 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
+import PrimeButton from 'primevue/button';
+import router from '@/router';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -544,21 +573,6 @@ label {
 
 .filter-checkbox {
   margin: 0.25em 0;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a:after {
-  content: '>';
-  margin: 0 0.5em;
-  font-weight: bold;
 }
 
 .button_bar {
