@@ -85,7 +85,7 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
-import { REQUESTABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants.ts';
+import { PORTFOLIO_MONITORING_REPORTING_PERIODS } from '@/utils/Constants.ts';
 
 type MonitoringOption = {
   value: string;
@@ -93,7 +93,7 @@ type MonitoringOption = {
   isActive: boolean;
 };
 
-const reportingPeriodsOptions = REQUESTABLE_DATA_REPORTING_PERIODS.map((yearString) => ({
+const reportingPeriodsOptions = PORTFOLIO_MONITORING_REPORTING_PERIODS.map((yearString) => ({
   label: yearString,
   value: +yearString,
 }));

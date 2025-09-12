@@ -188,7 +188,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { SuccessStatus } from '@/types/SuccessStatus.ts';
-import { FRAMEWORKS_WITH_VIEW_PAGE, REQUESTABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE, DATA_REQUESTS_REPORTING_PERIODS } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
@@ -243,7 +243,7 @@ export default defineComponent({
       selectedReportingPeriodsError: false,
       identifierError: false,
       selectedFrameworksError: false,
-      reportingPeriods: REQUESTABLE_DATA_REPORTING_PERIODS.map((period) => {
+      reportingPeriods: DATA_REQUESTS_REPORTING_PERIODS.map((period) => {
         return {
           name: period,
           value: false,
