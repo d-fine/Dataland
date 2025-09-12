@@ -213,7 +213,6 @@ async function handleAddUser(): Promise<void> {
     if (usersToAdd.value.length === 0) {
       return;
     }
-    console.log('Adding users to company role:', props.role, 'for company:', props.companyId);
     await Promise.all(
       usersToAdd.value.map((user) =>
         companyRolesControllerApi.assignCompanyRole(props.role, props.companyId, user.userId.toString())
