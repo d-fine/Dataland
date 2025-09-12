@@ -5,8 +5,7 @@ package org.dataland.datalandcommunitymanager.entities
  * on Dataland.
  * @param dataType contains the name of the framework for which the count is valid
  * @param reportingPeriod
- * @param datalandCompanyId contains the companyId stored on dataland
- * @param requestStatus contains the request status for which the count is valid
+ * @param datalandCompanyId contains the companyId stored on Dataland
  * @param priority contains the request priority for which the count is valid
  * @param requestStatus contains the request status for which the count is valid
  * @param count the count of existing data requests for this framework, identifierType and identifierValue
