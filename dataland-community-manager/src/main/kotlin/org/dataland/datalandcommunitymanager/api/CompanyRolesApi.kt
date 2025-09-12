@@ -63,7 +63,7 @@ interface CompanyRolesApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')" +
-            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole, #userId)",
     )
     fun assignCompanyRole(
         @CompanyRoleParameterRequired
@@ -162,7 +162,7 @@ interface CompanyRolesApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')" +
-            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole, #userId)",
     )
     fun removeCompanyRole(
         @Parameter(
