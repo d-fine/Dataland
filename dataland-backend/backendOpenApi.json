@@ -5823,7 +5823,7 @@
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
           },
-          "emailSuffix": {
+          "emailSuffixes": {
             "type": "array",
             "description": "List of suggested email suffixes for company users (e.g. [\u0027@company.com\u0027, \u0027@subsidiary.com\u0027])",
             "nullable": true,
@@ -16748,15 +16748,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

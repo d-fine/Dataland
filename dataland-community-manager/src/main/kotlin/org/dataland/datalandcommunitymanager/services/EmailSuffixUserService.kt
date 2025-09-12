@@ -1,13 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestClientException
 import java.util.UUID
 
 /**
@@ -27,36 +26,27 @@ class EmailSuffixUserService
          * @param companyId the company to check
          * @return list of users with emails matching the suffixes
          */
-        fun getUsersByCompanyEmailSuffix(companyId: UUID): List<CompanyRoleAssignmentExtended> {
-            val result: List<CompanyRoleAssignmentExtended>
+        fun getUsersByCompanyEmailSuffix(companyId: UUID): List<KeycloakUserInfo> {
+            val result: List<KeycloakUserInfo>
             val storedCompany =
                 try {
                     companyDataControllerApi.getCompanyById(companyId.toString())
-                } catch (ex: RestClientException) {
+                } catch (ex: ResourceNotFoundApiException) {
                     logger.warn("Company not found or error fetching company for $companyId", ex)
                     return emptyList()
                 }
-            val emailSuffixes: List<String> = storedCompany.companyInformation.emailSuffix?.filter { it.isNotBlank() } ?: emptyList()
+            val emailSuffixes: List<String> = storedCompany.companyInformation.emailSuffixes?.filter { it.isNotBlank() } ?: emptyList()
             if (emailSuffixes.isEmpty()) {
-                logger.info("No emailSuffix defined for company $companyId")
+                logger.info("No email suffix defined for company $companyId")
                 result = emptyList()
             } else {
                 val usersBySuffix =
                     emailSuffixes.flatMap { suffix ->
-                        keycloakUserService.searchUsers(suffix)
+                        keycloakUserService.searchUsersByEmailSuffix(suffix).filter {
+                            it.email?.endsWith("@$suffix") ?: false
+                        }
                     }
-                val uniqueUsers = usersBySuffix.distinctBy { it.userId }
-                result =
-                    uniqueUsers.map { user ->
-                        CompanyRoleAssignmentExtended(
-                            companyRole = CompanyRole.Member, // or null/default if needed
-                            companyId = companyId.toString(),
-                            userId = user.userId,
-                            email = user.email ?: "",
-                            firstName = user.firstName,
-                            lastName = user.lastName,
-                        )
-                    }
+                result = usersBySuffix.distinctBy { it.userId }
             }
             return result
         }

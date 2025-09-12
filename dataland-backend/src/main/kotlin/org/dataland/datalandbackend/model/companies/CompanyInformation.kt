@@ -23,6 +23,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
  * @param website the url under which the company website can be reached
  * @param parentCompanyLei the lei of the parent company
+ * @param emailSuffix the email suffixes associated with the company (e.g. dataland.com)
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
@@ -105,9 +106,9 @@ data class CompanyInformation(
         arraySchema =
             Schema(
                 type = "string",
-                description = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIX_DESCRIPTION,
-                example = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIX_EXAMPLE,
+                description = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIXES_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIXES_EXAMPLE,
             ),
     )
-    val emailSuffix: List<String>? = null,
+    val emailSuffixes: List<String>? = null,
 )

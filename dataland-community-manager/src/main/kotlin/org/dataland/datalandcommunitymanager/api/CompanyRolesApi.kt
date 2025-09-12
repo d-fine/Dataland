@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyRoleParameterRequired
@@ -328,10 +329,10 @@ interface CompanyRolesApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
-            "@SecurityUtilsService.isUserMemberOfTheCompany(#companyId)",
+            "@SecurityUtilsService.isUserOwnerOrMemberAdminOfTheCompany(#companyId)",
     )
     fun getUsersByCompanyEmailSuffix(
         @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: UUID,
-    ): ResponseEntity<List<CompanyRoleAssignmentExtended>>
+    ): ResponseEntity<List<KeycloakUserInfo>>
 }

@@ -89,6 +89,16 @@ class KeycloakUserService(
     }
 
     /**
+     * Search keycloak users by email suffix (the part of the email that comes after the @)
+     * @param emailSuffix the email suffix to search for
+     * @returns the list of keycloak user info matching the email suffix
+     */
+    fun searchUsersByEmailSuffix(emailSuffix: String): List<KeycloakUserInfo> {
+        val emailAddressSearchString = "%40$emailSuffix"
+        return searchUsers(emailAddressSearchString)
+    }
+
+    /**
      * Finds a Dataland user based on their email address. The specified email address must be
      * a precise match.
      * @param emailAddress the email address under which to find the user

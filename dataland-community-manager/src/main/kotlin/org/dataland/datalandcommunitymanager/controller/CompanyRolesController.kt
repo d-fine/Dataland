@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.controller
 
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.api.CompanyRolesApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
@@ -106,8 +107,6 @@ class CompanyRolesController(
         companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(companyId.toString())
     }
 
-    override fun getUsersByCompanyEmailSuffix(companyId: UUID): ResponseEntity<List<CompanyRoleAssignmentExtended>> {
-        val result = emailSuffixUserService.getUsersByCompanyEmailSuffix(companyId)
-        return ResponseEntity.ok(result)
-    }
+    override fun getUsersByCompanyEmailSuffix(companyId: UUID): ResponseEntity<List<KeycloakUserInfo>> =
+        ResponseEntity.ok(emailSuffixUserService.getUsersByCompanyEmailSuffix(companyId))
 }
