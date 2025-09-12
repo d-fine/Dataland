@@ -354,6 +354,7 @@ describe('Component test for CompanyRolesCard', () => {
         cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
         cy.get('[role="option"]').contains('Admins').click();
         cy.get('[data-test="change-role-button"]').click();
+        cy.get('[data-test="confirm-self-role-change-button"]').click();
         cy.wait('@assignRole');
         cy.wrap(wrapper.emitted()).should('have.property', 'users-changed');
       });

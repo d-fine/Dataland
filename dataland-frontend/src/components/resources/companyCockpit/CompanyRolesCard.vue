@@ -172,13 +172,14 @@
     <template #footer>
       <Button
         label="Cancel"
+        data-test="cancel-self-role-change-button"
         @click="
           showSelfRoleChangeModal = false;
           showChangeRoleDialog = false;
           showAddUserDialog = false;
         "
       />
-      <Button label="Confirm" @click="onConfirmSelfRoleChange" />
+      <Button label="Confirm" data-test="confirm-self-role-change-button" @click="onConfirmSelfRoleChange" />
     </template>
   </Dialog>
 </template>
@@ -405,7 +406,6 @@ function showInfoBox(): void {
  */
 async function getCompanyUserInformation(): Promise<void> {
   const keycloakPromise = await getKeycloakPromise();
-  await keycloakPromise.loadUserProfile();
   const userDetails = await keycloakPromise.loadUserProfile();
   currentUserId = userDetails.id;
   if (!props.companyId) return;
