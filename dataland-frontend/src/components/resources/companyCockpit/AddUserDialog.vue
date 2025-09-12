@@ -61,7 +61,7 @@
       :disabled="!hasSelectedUsers"
       icon="pi pi-plus"
       class="add-button"
-      @click="handleAddUser"
+      @click="confirmIfRequiredAddUser"
       data-test="save-changes-button"
     />
   </div>
@@ -87,15 +87,20 @@ const props = defineProps<{
   companyId: string;
   role: CompanyRole;
   existingUsers: Array<{ userId: string; email: string; firstName: string; lastName: string }>;
+  currentUserId: string | undefined;
 }>();
 
 const emit = defineEmits<{
   'users-added': [message?: string];
+  'confirm-is-required-for-add-users': [];
 }>();
+
+defineExpose({ handleAddUser });
 
 const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
 const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
+const usersToAdd = ref<User[]>([]);
 const searchQuery = ref('');
 const unknownUserError = ref('');
 const userCountText = computed(() => {
@@ -183,20 +188,34 @@ function handleRemoveUser(userId: string): void {
 }
 
 /**
+ * Checks if a confirmation is required for changing roles based on the selected user.
+ * If the selected user's ID matches the current user's ID, it triggers a modal for self-role change confirmation.
+ * Otherwise, it proceeds to confirm the role change asynchronously.
+ */
+async function confirmIfRequiredAddUser(): Promise<void> {
+  const originalUserIds = new Set(props.existingUsers.map((user) => user.userId));
+  usersToAdd.value = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
+  // Check if the current user is among the users to add
+  const isCurrentUserAffected = usersToAdd.value.some((user) => user.userId === props.currentUserId);
+  if (isCurrentUserAffected) {
+    emit('confirm-is-required-for-add-users');
+  } else {
+    await handleAddUser();
+  }
+}
+
+/**
  * Handles the addition of selected users to the company role.
  * It iterates over the selected users and assigns the specified role to each user.
  */
 async function handleAddUser(): Promise<void> {
   try {
-    const originalUserIds = new Set(props.existingUsers.map((user) => user.userId));
-    const usersToAdd = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
-
-    if (usersToAdd.length === 0) {
+    if (usersToAdd.value.length === 0) {
       return;
     }
-
+    console.log('Adding users to company role:', props.role, 'for company:', props.companyId);
     await Promise.all(
-      usersToAdd.map((user) =>
+      usersToAdd.value.map((user) =>
         companyRolesControllerApi.assignCompanyRole(props.role, props.companyId, user.userId.toString())
       )
     );

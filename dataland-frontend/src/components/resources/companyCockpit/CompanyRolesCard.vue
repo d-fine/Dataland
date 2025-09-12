@@ -81,6 +81,18 @@
     :modal="true"
     :closable="true"
   >
+    <Message
+      severity="info"
+      icon="pi pi-info-circle"
+      style="
+        margin-top: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-weight: var(--font-weight-medium);
+      "
+    >
+      Changing the role will remove the previous one.
+    </Message>
     <span>
       Change role for:
       <span style="font-weight: var(--font-weight-medium)">
@@ -114,7 +126,7 @@
       <Button
         label="Change Role"
         :disabled="selectedRole === null"
-        @click="confirmChangeRole"
+        @click="confirmIfRequiredChangeRole"
         data-test="change-role-button"
       />
     </template>
@@ -128,6 +140,8 @@
       <Button label="Remove User" @click="confirmRemoveUser" data-test="remove-user-button" />
     </template>
   </Dialog>
+
+  <!-- Add User Modal -->
   <Dialog
     v-model:visible="showAddUserDialog"
     :header="`Add ${group?.title}`"
@@ -135,7 +149,37 @@
     :closable="true"
     :style="{ backgroundColor: 'var(--p-surface-50)' }"
   >
-    <AddUserDialog :companyId="companyId" :role="role" :existingUsers="rowsForRole" @users-added="handleUsersAdded" />
+    <AddUserDialog
+      ref="addUserDialog"
+      :companyId="companyId"
+      :role="role"
+      :existingUsers="rowsForRole"
+      :currentUserId="currentUserId"
+      @users-added="handleUsersAdded"
+      @confirm-is-required-for-add-users="
+        showSelfRoleChangeModal = true;
+        typeOfConfirmDialog = ConfirmDialogType.AddUsers;
+      "
+    />
+  </Dialog>
+
+  <!-- Self Role Change Confirmation Modal -->
+  <Dialog v-model:visible="showSelfRoleChangeModal" header="Confirm Role Change" :modal="true" :closable="true">
+    <span>
+      You are about to change your own role. This will remove your old role and is not reversible.<br />
+      Are you sure you want to continue?
+    </span>
+    <template #footer>
+      <Button
+        label="Cancel"
+        @click="
+          showSelfRoleChangeModal = false;
+          showChangeRoleDialog = false;
+          showAddUserDialog = false;
+        "
+      />
+      <Button label="Confirm" @click="onConfirmSelfRoleChange" />
+    </template>
   </Dialog>
 </template>
 
@@ -197,9 +241,18 @@ const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
 const showAddUserDialog = ref(false);
+const showSelfRoleChangeModal = ref(false);
+const addUserDialog = ref<{ handleAddUser: () => Promise<void> } | null>(null);
+
+enum ConfirmDialogType {
+  ChangeRole = 'change-role',
+  AddUsers = 'add-users',
+}
+const typeOfConfirmDialog = ref<ConfirmDialogType | null>(null);
 
 const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
+let currentUserId: string | undefined = undefined;
 
 const isGlobalAdmin = ref(false);
 const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
@@ -351,6 +404,10 @@ function showInfoBox(): void {
  * Fetches the company user information for the current role and company.
  */
 async function getCompanyUserInformation(): Promise<void> {
+  const keycloakPromise = await getKeycloakPromise();
+  await keycloakPromise.loadUserProfile();
+  const userDetails = await keycloakPromise.loadUserProfile();
+  currentUserId = userDetails.id;
   if (!props.companyId) return;
   try {
     const api = apiClientProvider.apiClients.companyRolesController;
@@ -358,6 +415,20 @@ async function getCompanyUserInformation(): Promise<void> {
     companyUserInformation.value = res.data;
   } catch (error) {
     console.error('Failed to load company users:', error);
+  }
+}
+
+/**
+ * Checks if a confirmation is required for changing roles based on the selected user.
+ * If the selected user's ID matches the current user's ID, it triggers a modal for self-role change confirmation.
+ * Otherwise, it proceeds to confirm the role change asynchronously.
+ */
+async function confirmIfRequiredChangeRole(): Promise<void> {
+  if (selectedUser.value?.userId === currentUserId) {
+    showSelfRoleChangeModal.value = true;
+    typeOfConfirmDialog.value = ConfirmDialogType.ChangeRole;
+  } else {
+    await confirmChangeRole();
   }
 }
 
@@ -401,6 +472,20 @@ async function handleUsersAdded(message?: string): Promise<void> {
   showAddUserDialog.value = false;
   await getCompanyUserInformation();
   emit('users-changed', message || 'User(s) successfully added.');
+}
+
+/**
+ * Handles the confirm action in the self role change modal.
+ * Calls the appropriate function depending on the dialog type.
+ */
+async function onConfirmSelfRoleChange(): Promise<void> {
+  if (typeOfConfirmDialog.value === ConfirmDialogType.ChangeRole) {
+    await confirmChangeRole();
+  } else if (typeOfConfirmDialog.value === ConfirmDialogType.AddUsers) {
+    await addUserDialog.value?.handleAddUser();
+    showSelfRoleChangeModal.value = false;
+    showAddUserDialog.value = false;
+  }
 }
 
 watch([(): string => props.companyId, (): CompanyRole => props.role], async function () {
