@@ -42,7 +42,8 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
+import { inject, onMounted, ref, type Ref, computed, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 import router from '@/router';
 
 interface TabInfo {
@@ -52,29 +53,29 @@ interface TabInfo {
 }
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const currentTabIndex = ref<number>(0);
+const route = useRoute();
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
 const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments');
-const { initialTabIndex } = defineProps<{
-  initialTabIndex: number;
-}>();
 
 const tabs = ref<Array<TabInfo>>([
+  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'COMPANIES', route: '/companies', isVisible: true },
   { label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'QA', route: '/qualityassurance', isVisible: false },
   { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
   { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
 ]);
 
+const currentTabIndex = computed(() => {
+  return (route.meta.initialTabIndex as number) ?? -1;
+});
+
 onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
-  currentTabIndex.value = initialTabIndex ?? 0;
 });
 
 watchEffect(() => {

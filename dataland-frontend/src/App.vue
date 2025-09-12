@@ -1,6 +1,14 @@
 <template>
   <DynamicDialog />
-  <router-view />
+  <component
+    v-if="route.meta.requiresAuthentication !== undefined"
+    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+  >
+    <LandingPageHeader v-if="useLandingPageHeader" />
+    <TheHeader v-else />
+    <router-view />
+  </component>
+  <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
 </template>
 
 <script lang="ts">
@@ -19,6 +27,13 @@ import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { useRoute } from 'vue-router';
+
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -27,7 +42,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { DynamicDialog },
+  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {
@@ -40,6 +55,15 @@ export default defineComponent({
 
       companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
     };
+  },
+
+  setup() {
+    const route = useRoute();
+    const dialog = useDialog();
+    const useLandingPageHeader = computed(() => {
+      return route.meta.useLandingPageHeader ?? !route.meta.requiresAuthentication;
+    });
+    return { route, useLandingPageHeader, dialog };
   },
 
   computed: {
@@ -173,7 +197,7 @@ export default defineComponent({
      * Else the text changes and tells the user that the session was closed.
      */
     openSessionWarningModal(): void {
-      this.$dialog.open(SessionDialog, {
+      this.dialog.open(SessionDialog, {
         props: {
           modal: true,
           closable: false,

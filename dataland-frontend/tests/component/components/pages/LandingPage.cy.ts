@@ -3,8 +3,6 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
 import { type Page, type Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 
 describe('Component test for the landing page', () => {
   it('Check if essential elements are present', () => {
@@ -13,7 +11,6 @@ describe('Component test for the landing page', () => {
         authenticated: false,
       }),
     }).then(() => {
-      validateTheHeader();
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
@@ -26,22 +23,9 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('SFDR');
       cy.get('[data-test="join-campaign-button"]').should('exist');
       cy.get('[data-test="get-in-touch-button"]').should('exist');
-      checkFooter();
-
-      setMobileDeviceViewport();
-      validateTheHeader();
     });
   });
 });
-
-/**
- * Validates the elements of the top bar
- */
-function validateTheHeader(): void {
-  checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP');
-  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN');
-}
 
 /**
  * Validates the elements of the intro section

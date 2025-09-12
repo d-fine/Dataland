@@ -175,13 +175,6 @@ describeIf(
     }
 
     /**
-     * Clicks the back button on the page.
-     */
-    function clickBackButton(): void {
-      cy.get('[data-test="back-button"]').click();
-    }
-
-    /**
      * Validates if the container which displays a specific status of the current dataset is present and contains
      * the expected text.
      * It also validates if the corresponding button in that container contains the expected text.
@@ -384,7 +377,7 @@ describeIf(
       validateChosenFramework(DataTypeEnum.Lksg);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      clickBackButton();
+      cy.go('back');
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Sfdr);
@@ -410,7 +403,7 @@ describeIf(
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
 
-      clickBackButton();
+      cy.go('back');
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
@@ -440,7 +433,7 @@ describeIf(
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22', '2022-07-30']);
       cy.contains('This dataset is superseded').should('not.exist');
       getElementAndAssertExistence('datasetDisplayStatusContainer', 'not.exist');
-      clickBackButton();
+      cy.go('back');
 
       cy.url().should(
         'contain',
@@ -450,7 +443,7 @@ describeIf(
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
       validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL');
-      clickBackButton();
+      cy.go('back');
 
       cy.url().should(
         'contain',

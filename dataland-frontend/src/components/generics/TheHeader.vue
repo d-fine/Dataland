@@ -10,31 +10,27 @@
       <slot />
     </div>
 
-    <div class="col-4 flex justify-content-end" v-if="showUserProfileDropdown && authenticated">
+    <div class="col-4 flex justify-content-end" v-if="authenticated">
       <UserProfileDropDown />
     </div>
-    <div class="col-4 flex justify-content-end" v-if="!authenticated">
+    <div class="col-4 flex justify-content-end" v-else>
       <AuthSection :is-landing-page="false" />
     </div>
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
+  <DatasetsTabMenu />
 </template>
 
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'TheHeader',
-  components: { AuthSection, UserProfileDropDown },
-  props: {
-    showUserProfileDropdown: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  components: { AuthSection, UserProfileDropDown, DatasetsTabMenu },
   setup() {
     return {
       authenticated: inject<boolean>('authenticated'),

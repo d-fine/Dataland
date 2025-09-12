@@ -41,7 +41,7 @@ interface DatalandMountOptions {
  */
 export function getMountingFunction(additionalOptions: DatalandMountOptions = {}): typeof mount {
   /*
-    This file defines a alternative mounting function that also includes many creature comforts
+    This file defines an alternative mounting function that also includes many creature comforts
     (mounting of plugins, mocking router, mocking keycloak, ....)
     However, the underlying type definition of the mount function is very complex (> 100 LOC).
     Therefore, we decided to create this un-checked meta-function.
