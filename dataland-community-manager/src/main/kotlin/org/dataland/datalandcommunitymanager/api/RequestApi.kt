@@ -18,7 +18,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestI
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestUserEmailAddressParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodsParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
@@ -50,7 +49,8 @@ import java.util.UUID
 
 const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
 const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
-    "$COMPANY_SEARCH_STRING_DESCRIPTION Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
+    "${GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION} " +
+        "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -281,7 +281,11 @@ interface RequestApi {
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
         @RequestParam(required = false)
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Inc.")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = "Inc.",
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,
         @RequestParam(defaultValue = "100")
@@ -357,7 +361,11 @@ interface RequestApi {
         @CompanyIdParameterNonRequired
         datalandCompanyId: String?,
         @RequestParam(required = false)
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Inc.")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = "Inc.",
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,
     ): ResponseEntity<Int>

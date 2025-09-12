@@ -45,7 +45,7 @@ export function retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
  * Gets list with all available access status
  * @returns array of SelectableItem
  */
-export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
+export function retrieveAvailableAccessStatuses(): Array<SelectableItem> {
   return Object.values(AccessStatus).map((accessStatus) => {
     return {
       displayName: accessStatus,
@@ -58,7 +58,7 @@ export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
  * Gets list with all available request status
  * @returns array of SelectableItem
  */
-export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
+export function retrieveAvailableRequestStatuses(): Array<SelectableItem> {
   return Object.values(RequestStatus).map((requestStatus) => {
     return {
       displayName: requestStatus,
@@ -71,7 +71,7 @@ export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
  * Gets list with all available request priorities
  * @returns array of SelectableItem
  */
-export function retrieveAvailablePriority(): Array<SelectableItem> {
+export function retrieveAvailablePriorities(): Array<SelectableItem> {
   return Object.values(RequestPriority).map((priority) => {
     return {
       displayName: priority,
@@ -84,7 +84,7 @@ export function retrieveAvailablePriority(): Array<SelectableItem> {
  * Gets list with all available reporting periods
  * @returns array of SelectableItem
  */
-export function retrieveAvailableReportingPeriod(): Array<SelectableItem> {
+export function retrieveAvailableReportingPeriods(): Array<SelectableItem> {
   return new Array<string>('2024', '2023', '2022', '2021', '2020').map((reportingPeriod) => {
     return {
       displayName: reportingPeriod,

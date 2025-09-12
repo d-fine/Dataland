@@ -26,7 +26,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdPar
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CountryCodeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorParameterNonRequired
@@ -44,7 +43,8 @@ import org.springframework.web.bind.annotation.RequestParam
 
 const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
 const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
-    "$COMPANY_SEARCH_STRING_DESCRIPTION Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
+    "${GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION} " +
+        "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -115,7 +115,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = "Int",
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -170,7 +174,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getNumberOfCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = "Int",
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -205,7 +213,11 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = "Int",
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String,
         @RequestParam(defaultValue = "100") resultLimit: Int,
