@@ -59,7 +59,7 @@
         style="width: 15%"
       >
         <template #body="portfolioEntry">
-          <PrimeButton
+          <Button
             :label="portfolioEntry.data.companyName"
             iconPos="right"
             icon="pi pi-angle-right"
@@ -130,7 +130,7 @@
         :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
-          <PrimeButton
+          <Button
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
             iconPos="right"
@@ -202,7 +202,6 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
-import PrimeButton from 'primevue/button';
 import router from '@/router';
 
 /**
