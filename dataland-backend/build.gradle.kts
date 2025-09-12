@@ -105,10 +105,7 @@ tasks.getByName("processTestResources") {
     dependsOn("getTestData")
 }
 
-tasks.getByName("jar") {
-    dependsOn(":dataland-backend:generateOpenApiDocs")
-}
-tasks.getByName("bootJar") {
+tasks.matching { it.name in arrayOf("jar", "bootJar", "kaptTestKotlin") }.all {
     dependsOn(":dataland-backend:generateOpenApiDocs")
 }
 
