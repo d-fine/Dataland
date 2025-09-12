@@ -99,7 +99,7 @@ describeIf(
       });
     });
 
-    it('When adding yourself to another role the coonfirmation modal should pop up. Confirm should complete adding your role.', () => {
+    it('When adding yourself to another role the confirmation modal should pop up. Confirm should complete adding your role.', () => {
       setupUserPage(CompanyRole.CompanyOwner);
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('[data-test="add-user-button"]').click();
