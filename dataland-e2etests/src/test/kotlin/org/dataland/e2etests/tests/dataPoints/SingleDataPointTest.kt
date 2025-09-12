@@ -1,5 +1,9 @@
 package org.dataland.e2etests.tests.dataPoints
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.NullNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
@@ -7,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.CommunityManager
@@ -16,6 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.math.BigDecimal
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as QaStatusBackend
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaStatusQaService
@@ -26,6 +32,10 @@ class SingleDataPointTest {
     private val dummyDatapoint =
         """
         {"value": 0.5, "currency": "USD"}
+        """.trimIndent()
+    private val dataPointWithEmptyString =
+        """
+        {"value": "", "currency": "USD" }
         """.trimIndent()
     private val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)
@@ -70,13 +80,80 @@ class SingleDataPointTest {
         }
     }
 
+    private fun jsonNodesEqualIgnoringNulls(
+        a: JsonNode?,
+        b: JsonNode?,
+    ): Boolean =
+        when {
+            ((a ?: NullNode.getInstance()) == (b ?: NullNode.getInstance())) -> true
+            (a?.nodeType != b?.nodeType) -> false
+            a!!.isObject -> {
+                val fieldNames = (a.fieldNames().asSequence() + b!!.fieldNames().asSequence()).toSet()
+                fieldNames.all { field ->
+                    jsonNodesEqualIgnoringNulls(a.get(field), b?.get(field))
+                }
+            }
+            a.isArray -> {
+                if (a.size() != b!!.size()) {
+                    false
+                } else {
+                    a.zip(b).all { (ae, be) -> jsonNodesEqualIgnoringNulls(ae, be) }
+                }
+            }
+            else -> a == b
+        }
+
+    private fun assertJsonStringEqualityIgnoringNulls(
+        expected: String,
+        actual: String,
+    ) {
+        val objectMapper = ObjectMapper()
+        assert(
+            jsonNodesEqualIgnoringNulls(
+                objectMapper.readTree(expected),
+                objectMapper.readTree(actual),
+            ),
+        )
+    }
+
     @Test
-    fun `ensure a data point can be uploaded and downloaded without inconsistencies`() {
+    fun `ensure a data point with correct type can be uploaded and downloaded without inconsistencies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
             val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataPointId
             val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
-            assertEquals(dummyDatapoint, downloadedDataPoint.dataPoint)
+            assertJsonStringEqualityIgnoringNulls(dummyDatapoint, downloadedDataPoint.dataPoint)
+        }
+    }
+
+    @Test
+    fun `ensure a data point with convertible type can be uploaded and downloaded with the correct type`() {
+        withTechnicalUser(TechnicalUser.Admin) {
+            val companyId = createDummyCompany()
+            val documentId = DocumentControllerApiAccessor().uploadSingleTestDocumentAndAssurePersistence()
+
+            val dataPointWithNumberLikeString =
+                """{"value": "0.5", "currency": "USD", "dataSource": { "page": 3, "fileReference": "$documentId" } }"""
+
+            val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false, dataPointWithNumberLikeString).dataPointId
+            val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
+            val dataPoint = jacksonObjectMapper().readTree(downloadedDataPoint.dataPoint)
+
+            assertEquals(BigDecimal("0.5"), dataPoint["value"].decimalValue())
+            assert(dataPoint["dataSource"]["page"].isTextual)
+            assertEquals("3", dataPoint["dataSource"]["page"].asText())
+        }
+    }
+
+    @Test
+    fun `ensure a data point with empty string can be uploaded and downloaded as null value`() {
+        withTechnicalUser(TechnicalUser.Admin) {
+            val companyId = createDummyCompany()
+            val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false, dataPointWithEmptyString).dataPointId
+            val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
+            val dataPoint = jacksonObjectMapper().readTree(downloadedDataPoint.dataPoint)
+
+            assert(dataPoint["value"].isNull)
         }
     }
 
@@ -111,7 +188,7 @@ class SingleDataPointTest {
         allowedUsers.forEach { user ->
             withTechnicalUser(user) {
                 val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
-                assertEquals(dummyDatapoint, downloadedDataPoint.dataPoint)
+                assertJsonStringEqualityIgnoringNulls(dummyDatapoint, downloadedDataPoint.dataPoint)
             }
         }
     }
@@ -170,7 +247,8 @@ class SingleDataPointTest {
         withTechnicalUser(TechnicalUser.Reader) {
             val dataPointInstance = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
-            assertEquals(dummyDatapoint, dataPointInstance.dataPoint)
+
+            assertJsonStringEqualityIgnoringNulls(dummyDatapoint, dataPointInstance.dataPoint)
             assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
         }
     }

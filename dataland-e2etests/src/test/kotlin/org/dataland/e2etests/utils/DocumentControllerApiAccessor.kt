@@ -43,6 +43,12 @@ class DocumentControllerApiAccessor {
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
     }
 
+    fun uploadSingleTestDocumentAndAssurePersistence(): String {
+        val documentId = uploadDocumentAsUser(testFiles.first()).documentId
+        executeDocumentExistenceCheckWithRetries(documentId)
+        return documentId
+    }
+
     private fun executeDocumentExistenceCheckWithRetries(documentId: String) {
         for (attempt in 1..MAX_ATTEMPTS_TO_CHECK_DOCUMENT) {
             Thread.sleep(WAIT_TIME_IN_MS)

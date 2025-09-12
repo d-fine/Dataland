@@ -10,7 +10,7 @@ import org.json.JSONObject
 data class DataPointTableEntity(
     val dataPointId: String,
     val companyId: String,
-    val dataPoint: JSONObject,
+    var dataPoint: JSONObject,
     var dataPointType: String,
     val reportingPeriod: String,
 ) {

@@ -51,6 +51,8 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
+    implementation(project(":dataland-backend"))
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 openApi {
