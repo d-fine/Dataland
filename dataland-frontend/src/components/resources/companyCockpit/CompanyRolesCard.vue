@@ -126,7 +126,7 @@
       <Button
         label="Change Role"
         :disabled="selectedRole === null"
-        @click="confirmIfRequiredChangeRole"
+        @click="onChangeRoleClick"
         data-test="change-role-button"
       />
     </template>
@@ -156,7 +156,7 @@
       :existingUsers="rowsForRole"
       :currentUserId="currentUserId"
       @users-added="handleUsersAdded"
-      @confirm-is-required-for-add-users="
+      @confirmation-is-required-for-add-users="
         showSelfRoleChangeModal = true;
         typeOfConfirmDialog = ConfirmDialogType.AddUsers;
       "
@@ -419,12 +419,17 @@ async function getCompanyUserInformation(): Promise<void> {
 }
 
 /**
- * Checks if a confirmation is required for changing roles based on the selected user.
- * If the selected user's ID matches the current user's ID, it triggers a modal for self-role change confirmation.
- * Otherwise, it proceeds to confirm the role change asynchronously.
+ * Determines if the role of the currently selected user is being changed.
  */
-async function confirmIfRequiredChangeRole(): Promise<void> {
-  if (selectedUser.value?.userId === currentUserId) {
+function isRoleOfCurrentUserBeingChanged(): boolean {
+  return selectedUser.value?.userId === currentUserId;
+}
+
+/**
+ * Handles the event when the "Change Role" button is clicked.
+ */
+async function onChangeRoleClick(): Promise<void> {
+  if (isRoleOfCurrentUserBeingChanged()) {
     showSelfRoleChangeModal.value = true;
     typeOfConfirmDialog.value = ConfirmDialogType.ChangeRole;
   } else {

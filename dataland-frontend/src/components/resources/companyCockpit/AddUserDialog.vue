@@ -61,7 +61,7 @@
       :disabled="!hasSelectedUsers"
       icon="pi pi-plus"
       class="add-button"
-      @click="confirmIfRequiredAddUser"
+      @click="onAddSelectedUsersClick()"
       data-test="save-changes-button"
     />
   </div>
@@ -92,7 +92,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'users-added': [message?: string];
-  'confirm-is-required-for-add-users': [];
+  'confirmation-is-required-for-add-users': [];
 }>();
 
 defineExpose({ handleAddUser });
@@ -188,20 +188,23 @@ function handleRemoveUser(userId: string): void {
 }
 
 /**
- * Checks if a confirmation is required for changing roles based on the selected user.
- * If the selected user's ID matches the current user's ID, it triggers a modal for self-role change confirmation.
- * Otherwise, it proceeds to confirm the role change asynchronously.
+ * Handles the event when the "Add Selected Users" button is clicked.
  */
-async function confirmIfRequiredAddUser(): Promise<void> {
-  const originalUserIds = new Set(props.existingUsers.map((user) => user.userId));
-  usersToAdd.value = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
-  // Check if the current user is among the users to add
-  const isCurrentUserAffected = usersToAdd.value.some((user) => user.userId === props.currentUserId);
-  if (isCurrentUserAffected) {
-    emit('confirm-is-required-for-add-users');
+async function onAddSelectedUsersClick(): Promise<void> {
+  if (isCurrentUserBeingAdded()) {
+    emit('confirmation-is-required-for-add-users');
   } else {
     await handleAddUser();
   }
+}
+
+/**
+ * Confirms if the current user is among the users to be added.
+ */
+function isCurrentUserBeingAdded(): boolean {
+  const originalUserIds = new Set(props.existingUsers.map((user) => user.userId));
+  usersToAdd.value = selectedUsers.value.filter((user) => !originalUserIds.has(user.userId));
+  return usersToAdd.value.some((user) => user.userId === props.currentUserId);
 }
 
 /**
