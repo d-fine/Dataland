@@ -1,5 +1,9 @@
 package db.migration
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import db.migration.utils.DataPointTableEntity
 import db.migration.utils.getAllDataPointTypes
 import db.migration.utils.migrateDataPointTableEntities
@@ -11,8 +15,31 @@ import org.flywaydb.core.api.migration.Context
  */
 @Suppress("ClassName")
 class V29__CastInconsistentDatatypes : BaseJavaMigration() {
+    private val validationClassesSource = "/db/migration/V29/validationClasses.json"
+    private val objectMapper =
+        ObjectMapper()
+            .registerModule(JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+    private val validationClasses: Map<String, String> =
+        objectMapper.readValue(
+            javaClass.getResource(validationClassesSource).readText(),
+            Map::class.java,
+        ) as Map<String, String>
+
+    /**
+     * Migrates the JSON representation of a data point.
+     *
+     * The data point JSON is cast to the corresponding data class and back to a JSON string.
+     * @param dataPointTableEntity The entity whose dataPoint field will be cast and updated.
+     */
     fun castDataPoint(dataPointTableEntity: DataPointTableEntity) {
-        // TODO: Implement casting logic for inconsistent datatypes
+        val dataPointObject =
+            objectMapper.readValue(
+                dataPointTableEntity.dataPoint.getString("dataPoint"),
+                Class.forName(validationClasses[dataPointTableEntity.dataPointType]),
+            )
+        dataPointTableEntity.dataPoint.put("dataPoint", objectMapper.writeValueAsString(dataPointObject))
     }
 
     override fun migrate(context: Context?) {
