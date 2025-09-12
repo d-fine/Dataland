@@ -1314,7 +1314,7 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for company substring matching. Strings to match company names and identifiers. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
@@ -5267,7 +5267,7 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for company substring matching. Strings to match company names and identifiers. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
@@ -5371,7 +5371,7 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for company substring matching. Strings to match company names and identifiers. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
