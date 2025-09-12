@@ -108,6 +108,9 @@ tasks.getByName("processTestResources") {
 tasks.getByName("jar") {
     dependsOn(":dataland-backend:generateOpenApiDocs")
 }
+tasks.getByName("bootJar") {
+    dependsOn(":dataland-backend:generateOpenApiDocs")
+}
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-backend-utils:assemble")
