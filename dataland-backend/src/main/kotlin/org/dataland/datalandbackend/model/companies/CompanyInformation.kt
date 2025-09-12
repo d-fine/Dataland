@@ -23,7 +23,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
  * @param website the url under which the company website can be reached
  * @param parentCompanyLei the lei of the parent company
- * @param emailSuffix the email suffixes associated with the company (e.g. dataland.com)
+ * @param emailSuffixes the email suffixes associated with the company (e.g. dataland.com)
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
