@@ -2,8 +2,8 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
 
 WORKDIR /app
-COPY ./dataland-api-key-manager/ ./dataland-api-key-manager/
+COPY ./dataland-data-sourcing-service/ ./dataland-data-sourcing-service/
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
-RUN ./gradlew dataland-api-key-manager:bootJar --no-daemon --stacktrace
+RUN ./gradlew dataland-data-sourcing-service:bootJar --no-daemon --stacktrace
