@@ -22,9 +22,9 @@ import java.time.Instant
  */
 @Component("ApiKeyManager")
 class ApiKeyManager(
-    @Autowired private val apiKeyRepository: ApiKeyRepository,
-    @Autowired private val keycloakUserService: KeycloakUserService,
-    @Value("\${dataland.max-days-selectable-for-api-key-validity}")
+    @param:Autowired private val apiKeyRepository: ApiKeyRepository,
+    @param:Autowired private val keycloakUserService: KeycloakUserService,
+    @param:Value("\${dataland.max-days-selectable-for-api-key-validity}")
     private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
     companion object {
@@ -195,8 +195,7 @@ class ApiKeyManager(
 
         val keycloakUserId = getAuthentication().name!!
         val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
-        if (apiKeyEntityOptional.isEmpty
-        ) {
+        if (apiKeyEntityOptional.isEmpty) {
             revokementProcessSuccessful = false
             revokementProcessMessage = revokementMessageNonExistingApiKey
             logger.info("Revokement failed, no API key registered for the Keycloak user Id $keycloakUserId")

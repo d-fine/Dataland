@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service
 @Service("KeycloakUserService")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakUserService(
-    @Autowired private val objectMapper: ObjectMapper,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
+    @param:Autowired private val objectMapper: ObjectMapper,
+    @param:Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+    @param:Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
