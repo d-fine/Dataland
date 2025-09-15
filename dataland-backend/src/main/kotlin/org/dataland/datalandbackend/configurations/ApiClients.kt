@@ -29,7 +29,7 @@ class ApiClients(
     ): CompanyRolesControllerApi = CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the RequestControllerApi of the community manager
+     * Creates an auto-authenticated version of the DataAccessControllerApi of the community manager
      */
     @Bean
     fun getDataAccessControllerApi(
@@ -37,7 +37,7 @@ class ApiClients(
     ): DataAccessControllerApi = DataAccessControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the DataAccessControllerApi of the community manager
+     * Creates an auto-authenticated version of the RequestControllerApi of the community manager
      */
     @Bean
     fun getRequestsApi(
