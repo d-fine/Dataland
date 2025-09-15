@@ -152,10 +152,7 @@ sonar {
                 "custom/NuclearAndGasAlignedDenominatorComponent.kt," +
 
                 // qa service
-                "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt," +
-
-                // community manager
-                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt",
+                "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt",
         )
         property(
             "sonar.exclusions",
