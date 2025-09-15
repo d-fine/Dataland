@@ -122,7 +122,7 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
 
       // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] a`).first().click();
+      cy.get(`[data-test="view-company-button"]:visible`).find('.p-button-label').click();
       cy.url().should('include', '/companies/');
       cy.visit('/portfolios');
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);

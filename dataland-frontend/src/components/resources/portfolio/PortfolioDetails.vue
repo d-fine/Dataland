@@ -64,7 +64,7 @@
             iconPos="right"
             icon="pi pi-angle-right"
             variant="link"
-            data-test="viewCompanyButton"
+            data-test="view-company-button"
             @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
             :pt="{
               label: {
@@ -136,7 +136,7 @@
             iconPos="right"
             icon="pi pi-angle-right"
             variant="link"
-            data-test="viewCompanyButton"
+            data-test="view-company-button"
             @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
             :pt="{
               label: {
