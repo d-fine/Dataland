@@ -1319,7 +1319,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -5272,7 +5272,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -5376,7 +5376,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "resultLimit",
