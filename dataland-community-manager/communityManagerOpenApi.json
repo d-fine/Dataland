@@ -721,7 +721,7 @@
     "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
       "head": {
         "tags": [
-          "request-controller"
+          "data-access-controller"
         ],
         "summary": "This head request checks whether the logged-in user has access to dataset.",
         "description": "This head request checks whether the logged-in user has access to dataset.",

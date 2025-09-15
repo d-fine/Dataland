@@ -17,7 +17,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -30,10 +29,9 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 /**
- * Controller for the requests endpoint
+ * Controller for the data requests endpoints
  * @param bulkDataRequestManager service for all operations concerning the processing of data requests
  */
-
 @RestController
 @Suppress("LongParameterList")
 class RequestController
@@ -43,7 +41,6 @@ class RequestController
         private val singleDataRequestManager: SingleDataRequestManager,
         private val dataRequestQueryManager: DataRequestQueryManager,
         private val dataRequestUpdateManager: DataRequestUpdateManager,
-        private val dataAccessManager: DataAccessManager,
         private val companyRolesManager: CompanyRolesManager,
     ) : RequestApi {
         override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
@@ -156,15 +153,6 @@ class RequestController
                 )
 
             return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter, companySearchString))
-        }
-
-        override fun hasAccessToDataset(
-            companyId: UUID,
-            dataType: String,
-            reportingPeriod: String,
-            userId: UUID,
-        ) {
-            dataAccessManager.hasAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
         }
 
         override fun patchDataRequest(
