@@ -100,4 +100,13 @@ data class CompanyInformationPatch(
         example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
     val parentCompanyLei: String? = null,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIXES_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.EMAIL_SUFFIXES_EXAMPLE,
+            ),
+    )
+    val emailSuffixes: List<String>? = null,
 )
