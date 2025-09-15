@@ -12,7 +12,7 @@ class V29__CastInconsistentDatatypesTest {
             "extendedDecimalRateOfAccidents",
             "V29/originalExtendedDecimalWithStringRepresentation.json",
             "V29/expectedExtendedDecimalWithStringRepresentation.json",
-            V29__CastInconsistentDatatypes()::castDataPoint,
+            V29__CastInconsistentDatatypes()::castDataPointValue,
         )
     }
 
@@ -23,7 +23,7 @@ class V29__CastInconsistentDatatypesTest {
             "extendedDecimalScope1GhgEmissionsInTonnes",
             "V29/originalDataPointWithEmptyStringValue.json",
             "V29/expectedDataPointWithEmptyStringValue.json",
-            V29__CastInconsistentDatatypes()::castDataPoint,
+            V29__CastInconsistentDatatypes()::castDataPointValue,
         )
     }
 
@@ -34,7 +34,7 @@ class V29__CastInconsistentDatatypesTest {
             "extendedDecimalScope2GhgEmissionsInTonnes",
             "V29/originalDataPointWithIntegerPageNumber.json",
             "V29/expectedDataPointWithIntegerPageNumber.json",
-            V29__CastInconsistentDatatypes()::castDataPoint,
+            V29__CastInconsistentDatatypes()::castDataPointValue,
         )
     }
 }
