@@ -284,7 +284,7 @@ interface RequestApi {
         @Parameter(
             description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
             required = false,
-            example = "Inc.",
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
         )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,
@@ -364,7 +364,7 @@ interface RequestApi {
         @Parameter(
             description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
             required = false,
-            example = "Inc.",
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
         )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         companySearchString: String?,

@@ -41,4 +41,5 @@ object GeneralOpenApiDescriptionsAndExamples {
 
     const val COMPANY_SEARCH_STRING_DESCRIPTION =
         "Search string used for company substring matching. Matched against company names and identifiers."
+    const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
 }
