@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRES
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import kotlin.reflect.KClass
 
-const val VALIDATION_MESSAGE = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD"
+const val VALIDATION_MESSAGE = "${SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE}: ${SEARCHSTRING_TOO_SHORT_THRESHOLD}"
 
 /**
  * A custom validation annotation that checks the length of a string after trimming whitespace.

@@ -150,7 +150,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestStatus,
-  retrieveAvailableAccessStatus,
+  retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
@@ -214,7 +214,7 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableAccessStatus = retrieveAvailableAccessStatus();
+    this.availableAccessStatus = retrieveAvailableAccessStatuses();
     this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
   },
   watch: {
