@@ -502,7 +502,7 @@ export default defineComponent({
     text-align: left;
   }
 
-  :last-child {
+  &:last-child {
     margin-left: auto;
   }
 }
