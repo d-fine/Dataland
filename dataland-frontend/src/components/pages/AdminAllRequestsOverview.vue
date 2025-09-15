@@ -338,7 +338,7 @@ export default defineComponent({
       this.selectedRequestStatuses = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
-    selectedPriority(newSelected) {
+    selectedPriorities(newSelected) {
       this.selectedPriorities = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
