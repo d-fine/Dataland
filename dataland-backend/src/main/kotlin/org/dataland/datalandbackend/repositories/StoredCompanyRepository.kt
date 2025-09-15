@@ -172,6 +172,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun fetchCompanyContactDetails(storedCompany: StoredCompanyEntity): StoredCompanyEntity
 
     /**
+     * Used for pre-fetching the email suffixes field of a single stored company
+     */
+    @Query(
+        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN FETCH company.emailSuffixes WHERE company = :storedCompany",
+    )
+    fun fetchEmailSuffixes(storedCompany: StoredCompanyEntity): StoredCompanyEntity
+
+    /**
      * Used for pre-fetching the dataRegisteredByDataland field of a single stored company
      */
     @Query(
