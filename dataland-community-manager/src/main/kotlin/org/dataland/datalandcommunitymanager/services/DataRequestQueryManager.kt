@@ -27,7 +27,7 @@ import kotlin.jvm.optionals.getOrElse
 /**
  * Implementation of a request manager service for all request queries
  */
-@Service
+@Service("DataRequestQueryManager")
 class DataRequestQueryManager
     @Suppress("LongParameterList")
     @Autowired
@@ -126,7 +126,12 @@ class DataRequestQueryManager
             aggregatedPriority: AggregatedRequestPriority?,
         ): List<AggregatedDataRequestWithAggregatedPriority> {
             val aggregatedOpenDataRequestsAllCompanies =
-                getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
+                getAggregatedDataRequests(
+                    identifierValue = null,
+                    dataTypes,
+                    reportingPeriod,
+                    requestStatus = RequestStatus.Open,
+                )
             val aggregatedRequestsWithAggregatedPriority =
                 requestPriorityAggregator.aggregateRequestPriority(aggregatedOpenDataRequestsAllCompanies)
             val filteredAggregatedRequestsWithAggregatedPriority =
@@ -158,6 +163,17 @@ class DataRequestQueryManager
         }
 
         /**
+         * This function returns whether companyIdsFromBackend is non-null, indicating if filtering by companyId should be applied.
+         */
+        fun shouldFilterBySearchStringCompanyIds(companyIdsFromBackend: List<String>?) = companyIdsFromBackend != null
+
+        /**
+         * This function returns its parameter companyIdsFromBackend unless the parameter is null, in which case it returns an empty list.
+         * This is to ensure that the built, native SQL query for the filtering logic of the company search string is syntactically correct.
+         */
+        fun preparedSearchStringCompanyIds(companyIdsFromBackend: List<String>?) = companyIdsFromBackend ?: emptyList()
+
+        /**
          * Method to get all data requests based on filters.
          * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
@@ -169,6 +185,7 @@ class DataRequestQueryManager
         fun getDataRequests(
             ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
+            companySearchString: String?,
             chunkIndex: Int?,
             chunkSize: Int?,
         ): List<ExtendedStoredDataRequest>? {
@@ -176,10 +193,15 @@ class DataRequestQueryManager
 
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
 
+            val companyIdsMatchingSearchString = companyIdsMatchingSearchString(companySearchString)
+
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
-                        searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
+                        searchFilter = filter,
+                        companyIds = companyIdsMatchingSearchString,
+                        resultOffset = offset,
+                        resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
             val extendedStoredDataRequestsWithMails =
@@ -196,8 +218,24 @@ class DataRequestQueryManager
          * Returns the number of requests for a specific filter.
          */
         @Transactional
-        fun getNumberOfDataRequests(filter: DataRequestsFilter): Int {
+        fun getNumberOfDataRequests(
+            filter: DataRequestsFilter,
+            companySearchString: String?,
+        ): Int {
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
-            return dataRequestRepository.getNumberOfRequests(filter)
+            val companyIdsMatchingSearchString = companyIdsMatchingSearchString(companySearchString)
+            return dataRequestRepository.getNumberOfRequests(filter, companyIdsMatchingSearchString)
         }
+
+        private fun companyIdsMatchingSearchString(companySearchString: String?): List<String>? =
+            if (companySearchString != null) {
+                companyDataControllerApi
+                    .getCompanies(
+                        searchString = companySearchString,
+                        chunkIndex = 0,
+                        chunkSize = Int.MAX_VALUE,
+                    ).map { it.companyId }
+            } else {
+                null
+            }
     }

@@ -151,7 +151,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestStatus,
-  retrieveAvailableAccessStatus,
+  retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
@@ -198,7 +198,7 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableAccessStatus.value = retrieveAvailableAccessStatus();
+  availableAccessStatus.value = retrieveAvailableAccessStatuses();
   await getStoredRequestDataList();
 });
 
