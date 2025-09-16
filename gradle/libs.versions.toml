@@ -9,7 +9,7 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 org-sonarqube = { id = "org.sonarqube", version = "6.2.0.5505" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
-com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.2" }
+com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.3" }
 org-openapi-generator = { id = "org.openapi.generator", version = "7.14.0" }
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
@@ -33,7 +33,7 @@ tika = "3.2.2"
 poi = "5.4.1"
 jodconverter = "4.4.11"
 spring-boot = "3.5.5"
-spring-framework = "6.2.10"
+spring-framework = "6.2.11"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
 testcontainers = "1.21.3"
