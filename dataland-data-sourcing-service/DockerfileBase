@@ -3,7 +3,9 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 
 WORKDIR /app
 COPY ./dataland-data-sourcing-service/ ./dataland-data-sourcing-service/
+#TO-DO: Is the keycloak adapter necessary?
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-data-sourcing-service:bootJar --no-daemon --stacktrace

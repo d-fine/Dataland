@@ -121,7 +121,7 @@ services:
         networks:
           - internal
           - data-sourcing-service-db
-        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:aef45944e3d322596611cc4164bb2ab226407626}
         expose:
           - "8080"
         depends_on:
@@ -138,7 +138,7 @@ services:
         profiles: [ "production", "testing", "development" ]
         networks:
           - data-sourcing-service-db
-        image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+        image: ghcr.io/d-fine/dataland/dataland_postgres_v2:12f3c6d0f4a0aa5b33151971501c62de4ad1c911
         volumes:
           - data_sourcing_service_data:/var/lib/postgresql/data
         environment:
