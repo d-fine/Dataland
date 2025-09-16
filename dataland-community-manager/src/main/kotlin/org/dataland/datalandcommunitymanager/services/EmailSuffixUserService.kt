@@ -42,9 +42,7 @@ class EmailSuffixUserService
             } else {
                 val usersBySuffix =
                     emailSuffixes.flatMap { suffix ->
-                        keycloakUserService.searchUsersByEmailSuffix(suffix).filter {
-                            it.email?.endsWith("@$suffix") ?: false
-                        }
+                        keycloakUserService.searchUsersByEmailSuffix(suffix)
                     }
                 result = usersBySuffix.distinctBy { it.userId }
             }

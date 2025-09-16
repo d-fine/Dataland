@@ -5825,11 +5825,11 @@
           },
           "emailSuffixes": {
             "type": "array",
-            "description": "List of email suffixes (i.e., the parts of email addresses after the \u0027@\u0027 symbol) specific to the company. Used for registered Dataland user suggestions when adding company roles.",
+            "description": "List of email suffixes specific to the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
             "nullable": true,
             "example": [
-              "company.com",
-              "bank.de"
+              "my-company",
+              "hr.my-company"
             ],
             "items": {
               "type": "string"
@@ -16509,11 +16509,11 @@
           },
           "emailSuffixes": {
             "type": "array",
-            "description": "List of email suffixes (i.e., the parts of email addresses after the \u0027@\u0027 symbol) specific to the company. Used for registered Dataland user suggestions when adding company roles.",
+            "description": "List of email suffixes specific to the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
             "nullable": true,
             "example": [
-              "company.com",
-              "bank.de"
+              "my-company",
+              "hr.my-company"
             ],
             "items": {
               "type": "string"
@@ -16763,15 +16763,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

@@ -94,7 +94,7 @@ class KeycloakUserService(
      * @returns the list of keycloak user info matching the email suffix
      */
     fun searchUsersByEmailSuffix(emailSuffix: String): List<KeycloakUserInfo> {
-        val emailAddressSearchString = "%40$emailSuffix"
+        val emailAddressSearchString = "%40$emailSuffix."
         return searchUsers(emailAddressSearchString)
     }
 
