@@ -59,8 +59,7 @@ pg_isready -d qa_service -h "localhost" -p 5438
 pg_isready -d community_manager -h "localhost" -p 5439
 pg_isready -d email_service -h "localhost" -p 5440
 pg_isready -d user_service -h "localhost" -p 5441
-#TO-DO: Check whether you can continue port numbering here and in docker-compose.yml
-# pg_isready -d data_sourcing_service -h "localhost" -p 5442
+pg_isready -d data_sourcing_service -h "localhost" -p 5442
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
