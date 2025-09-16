@@ -131,8 +131,7 @@ describeIf(
       cy.get('[data-test="withdrawRequestButton"]').click();
       cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
-      cy.get('[data-test="back-button"]').scrollIntoView();
-      cy.get('[data-test="back-button"]').click();
+      cy.go('back');
       cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
     }
 

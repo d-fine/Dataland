@@ -309,7 +309,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1314,12 +1314,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -1901,7 +1901,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -2242,7 +2242,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -2425,7 +2425,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "array",
@@ -3124,7 +3124,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3187,7 +3187,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -3451,7 +3451,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3514,7 +3514,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -3778,7 +3778,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3841,7 +3841,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4105,7 +4105,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4168,7 +4168,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4432,7 +4432,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4495,7 +4495,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4759,7 +4759,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4822,7 +4822,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -5267,12 +5267,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -5371,12 +5371,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "resultLimit",
@@ -5876,7 +5876,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "currentlyActive": {
@@ -5947,7 +5947,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "isNonSourceable": {
@@ -5983,7 +5983,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "nullable": true,
             "example": "2023"
           },
@@ -6034,7 +6034,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -16223,7 +16223,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -16258,7 +16258,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "uploaderUserId": {
@@ -16565,7 +16565,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "qualityStatus": {
@@ -16606,7 +16606,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "isNonSourceable": {
@@ -16763,15 +16763,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which the company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
