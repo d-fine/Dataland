@@ -90,7 +90,7 @@ class SingleDataPointTest {
             a!!.isObject -> {
                 val fieldNames = (a.fieldNames().asSequence() + b!!.fieldNames().asSequence()).toSet()
                 fieldNames.all { field ->
-                    jsonNodesEqualIgnoringNulls(a.get(field), b?.get(field))
+                    jsonNodesEqualIgnoringNulls(a.get(field), b.get(field))
                 }
             }
             a.isArray -> {
