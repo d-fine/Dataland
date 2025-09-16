@@ -32,7 +32,9 @@ export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN
   ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
 );
 
-export const LATEST_PERIOD: number = 2024;
+export const DOWNLOADABLE_DATA_REPORTING_PERIODS = ['2025', '2024', '2023', '2022', '2021', '2020'];
+export const DATA_REQUESTS_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020'];
+export const PORTFOLIO_MONITORING_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020', '2019'];
 
 // - Keycloak and session management related settings
 

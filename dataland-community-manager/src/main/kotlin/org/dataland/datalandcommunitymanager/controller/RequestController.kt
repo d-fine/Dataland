@@ -17,7 +17,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -30,147 +29,141 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 /**
- * Controller for the requests endpoint
+ * Controller for the data requests endpoints
  * @param bulkDataRequestManager service for all operations concerning the processing of data requests
  */
-
 @RestController
 @Suppress("LongParameterList")
-class RequestController(
-    @Autowired private val bulkDataRequestManager: BulkDataRequestManager,
-    @Autowired private val singleDataRequestManager: SingleDataRequestManager,
-    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
-    @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
-    @Autowired private val dataAccessManager: DataAccessManager,
-    @Autowired private val companyRolesManager: CompanyRolesManager,
-) : RequestApi {
-    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
-        ResponseEntity.ok(
-            bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
-        )
-
-    override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
-        ResponseEntity.ok(
-            dataRequestQueryManager.getDataRequestsForRequestingUser(),
-        )
-
-    override fun getAggregatedOpenDataRequests(
-        dataTypes: Set<DataTypeEnum>?,
-        reportingPeriod: String?,
-        aggregatedPriority: AggregatedRequestPriority?,
-    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
-        ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
-                dataTypes = dataTypes,
-                reportingPeriod = reportingPeriod,
-                aggregatedPriority = aggregatedPriority,
-            ),
-        )
-
-    override fun postSingleDataRequest(
-        singleDataRequest: SingleDataRequest,
-        userId: String?,
-    ): ResponseEntity<SingleDataRequestResponse> {
-        val userAuthenticationTool = UserAuthenticationTool()
-        userAuthenticationTool.checkAuthenticationForUserImpersonationAttempt(userId)
-        return ResponseEntity.ok(
-            singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
-        )
-    }
-
-    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
-        ResponseEntity.ok(
-            dataRequestQueryManager.getDataRequestById(dataRequestId.toString()),
-        )
-
-    override fun getDataRequests(
-        dataType: Set<DataTypeEnum>?,
-        userId: String?,
-        emailAddress: String?,
-        adminComment: String?,
-        requestStatus: Set<RequestStatus>?,
-        accessStatus: Set<AccessStatus>?,
-        requestPriority: Set<RequestPriority>?,
-        reportingPeriod: String?,
-        datalandCompanyId: String?,
-        chunkSize: Int,
-        chunkIndex: Int,
-    ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val filter =
-            DataRequestsFilter(
-                dataType,
-                userId,
-                emailAddress,
-                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
-                reportingPeriod,
-                requestStatus,
-                accessStatus,
-                adminComment,
-                requestPriority,
+class RequestController
+    @Autowired
+    constructor(
+        private val bulkDataRequestManager: BulkDataRequestManager,
+        private val singleDataRequestManager: SingleDataRequestManager,
+        private val dataRequestQueryManager: DataRequestQueryManager,
+        private val dataRequestUpdateManager: DataRequestUpdateManager,
+        private val companyRolesManager: CompanyRolesManager,
+    ) : RequestApi {
+        override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
+            ResponseEntity.ok(
+                bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
             )
 
-        val authenticationContext = DatalandAuthentication.fromContext()
-
-        val ownedCompanyIdsByUser =
-            companyRolesManager
-                .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
-                .map { it.companyId }
-
-        return ResponseEntity.ok(
-            dataRequestQueryManager.getDataRequests(
-                ownedCompanyIdsByUser,
-                filter,
-                chunkIndex,
-                chunkSize,
-            ),
-        )
-    }
-
-    override fun getNumberOfRequests(
-        dataType: Set<DataTypeEnum>?,
-        userId: String?,
-        emailAddress: String?,
-        adminComment: String?,
-        requestStatus: Set<RequestStatus>?,
-        accessStatus: Set<AccessStatus>?,
-        requestPriority: Set<RequestPriority>?,
-        reportingPeriod: String?,
-        datalandCompanyId: String?,
-    ): ResponseEntity<Int> {
-        val filter =
-            DataRequestsFilter(
-                dataType,
-                userId,
-                emailAddress,
-                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
-                reportingPeriod,
-                requestStatus,
-                accessStatus,
-                adminComment,
-                requestPriority,
+        override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
+            ResponseEntity.ok(
+                dataRequestQueryManager.getDataRequestsForRequestingUser(),
             )
 
-        return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
-    }
+        override fun getAggregatedOpenDataRequests(
+            dataTypes: Set<DataTypeEnum>?,
+            reportingPeriod: String?,
+            aggregatedPriority: AggregatedRequestPriority?,
+        ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
+            ResponseEntity.ok(
+                dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                    dataTypes = dataTypes,
+                    reportingPeriod = reportingPeriod,
+                    aggregatedPriority = aggregatedPriority,
+                ),
+            )
 
-    override fun hasAccessToDataset(
-        companyId: UUID,
-        dataType: String,
-        reportingPeriod: String,
-        userId: UUID,
-    ) {
-        dataAccessManager.hasAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
-    }
+        override fun postSingleDataRequest(
+            singleDataRequest: SingleDataRequest,
+            userId: String?,
+        ): ResponseEntity<SingleDataRequestResponse> {
+            val userAuthenticationTool = UserAuthenticationTool()
+            userAuthenticationTool.checkAuthenticationForUserImpersonationAttempt(userId)
+            return ResponseEntity.ok(
+                singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
+            )
+        }
 
-    override fun patchDataRequest(
-        dataRequestId: UUID,
-        dataRequestPatch: DataRequestPatch,
-    ): ResponseEntity<StoredDataRequest> =
-        ResponseEntity.ok(
-            dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
-                dataRequestId = dataRequestId.toString(),
-                dataRequestPatch = dataRequestPatch,
-                correlationId = UUID.randomUUID().toString(),
-            ),
-        )
-}
+        override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
+            ResponseEntity.ok(
+                dataRequestQueryManager.getDataRequestById(dataRequestId.toString()),
+            )
+
+        override fun getDataRequests(
+            dataType: Set<DataTypeEnum>?,
+            userId: String?,
+            emailAddress: String?,
+            adminComment: String?,
+            requestStatus: Set<RequestStatus>?,
+            accessStatus: Set<AccessStatus>?,
+            requestPriority: Set<RequestPriority>?,
+            reportingPeriods: Set<String>?,
+            datalandCompanyId: String?,
+            companySearchString: String?,
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): ResponseEntity<List<ExtendedStoredDataRequest>> {
+            val filter =
+                DataRequestsFilter(
+                    dataType,
+                    userId,
+                    emailAddress,
+                    datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
+                    reportingPeriods,
+                    requestStatus,
+                    accessStatus,
+                    adminComment,
+                    requestPriority,
+                )
+
+            val authenticationContext = DatalandAuthentication.fromContext()
+
+            val ownedCompanyIdsByUser =
+                companyRolesManager
+                    .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
+                    .map { it.companyId }
+
+            return ResponseEntity.ok(
+                dataRequestQueryManager.getDataRequests(
+                    ownedCompanyIdsByUser,
+                    filter,
+                    companySearchString,
+                    chunkIndex,
+                    chunkSize,
+                ),
+            )
+        }
+
+        override fun getNumberOfRequests(
+            dataType: Set<DataTypeEnum>?,
+            userId: String?,
+            emailAddress: String?,
+            adminComment: String?,
+            requestStatus: Set<RequestStatus>?,
+            accessStatus: Set<AccessStatus>?,
+            requestPriority: Set<RequestPriority>?,
+            reportingPeriods: Set<String>?,
+            datalandCompanyId: String?,
+            companySearchString: String?,
+        ): ResponseEntity<Int> {
+            val filter =
+                DataRequestsFilter(
+                    dataType,
+                    userId,
+                    emailAddress,
+                    datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
+                    reportingPeriods,
+                    requestStatus,
+                    accessStatus,
+                    adminComment,
+                    requestPriority,
+                )
+
+            return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter, companySearchString))
+        }
+
+        override fun patchDataRequest(
+            dataRequestId: UUID,
+            dataRequestPatch: DataRequestPatch,
+        ): ResponseEntity<StoredDataRequest> =
+            ResponseEntity.ok(
+                dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
+                    dataRequestId = dataRequestId.toString(),
+                    dataRequestPatch = dataRequestPatch,
+                    correlationId = UUID.randomUUID().toString(),
+                ),
+            )
+    }

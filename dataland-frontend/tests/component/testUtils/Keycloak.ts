@@ -45,6 +45,9 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration = {}): Key
     init(initOptions: KeycloakInitOptions): Promise<boolean> {
       return Promise.resolve(true);
     },
+    loadUserProfile(): Promise<{ id: string }> {
+      return Promise.resolve({ id: config.userId ?? 'mock-user-id' });
+    },
   };
   return mock as Keycloak;
 }

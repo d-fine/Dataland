@@ -1,6 +1,5 @@
 <template>
   <div class="container" data-test="company-info-sheet">
-    <BackButton />
     <CompaniesOnlySearchBar
       v-if="!useMobileView"
       @select-company="router.push(`/companies/${$event.companyId}`)"
@@ -17,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import router from '@/router';
