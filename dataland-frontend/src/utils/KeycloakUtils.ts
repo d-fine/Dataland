@@ -60,12 +60,12 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
 }
 
 /**
- * Logs the user in and redirects her/him to the Dataland companies search page.
+ * Logs the user in and redirects her/him to the Dataland portfolio overview page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export async function loginAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
+export async function loginAndRedirectToPortfolioPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/portfolios` });
   location.assign(url);
 }
 

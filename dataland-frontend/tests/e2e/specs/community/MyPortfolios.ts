@@ -99,6 +99,7 @@ describeIf(
       addPortfolio(secondPortfolioName, permIdOfExistingCompany);
       cy.get(`[data-test="portfolio-${secondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.get(`[data-test="portfolio-${secondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 1);
 
       // Edit the second portfolio and verify it is displayed afterward
       cy.get(`[data-test="${secondPortfolioName}"]`).click();
@@ -120,9 +121,10 @@ describeIf(
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
       // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] a`).first().click();
+      cy.get(`[data-test="view-company-button"]:visible`).first().find('.p-button-label').click();
       cy.url().should('include', '/companies/');
       cy.visit('/portfolios');
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);

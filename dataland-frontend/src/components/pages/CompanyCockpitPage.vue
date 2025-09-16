@@ -1,5 +1,4 @@
 <template>
-  <TheHeader v-if="!useMobileView" />
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
@@ -44,7 +43,6 @@
       </template>
     </Dialog>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -52,9 +50,7 @@ import { ref, reactive, watch, onMounted, inject } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import CompanyDatasetsPane from '@/components/resources/companyCockpit/CompanyDatasetsPane.vue';
 import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
@@ -85,7 +81,6 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
 );
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users'>('datasets');

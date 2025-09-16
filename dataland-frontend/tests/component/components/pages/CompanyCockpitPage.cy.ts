@@ -50,14 +50,6 @@ describe('Component test for the company cockpit', () => {
   });
 
   /**
-   * Validates the existence of the back-button
-   */
-  function validateBackButtonExistence(): void {
-    const backButtonSelector = `[data-test="back-button"]`;
-    cy.get(backButtonSelector).should('exist');
-  }
-
-  /**
    * Validates the existence of the company search bar
    * @param isSearchBarExpected determines if the existence of the search bar is expected
    */
@@ -207,7 +199,6 @@ describe('Component test for the company cockpit', () => {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(false, false, []);
-    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -237,7 +228,6 @@ describe('Component test for the company cockpit', () => {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER], []);
-    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -255,7 +245,6 @@ describe('Component test for the company cockpit', () => {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], []);
-    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -273,7 +262,6 @@ describe('Component test for the company cockpit', () => {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
-    validateBackButtonExistence();
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -317,8 +305,6 @@ describe('Component test for the company cockpit', () => {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]);
-
-    validateBackButtonExistence();
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);

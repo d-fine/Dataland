@@ -55,6 +55,6 @@ describe('The page should behave well-defined when the user logs out in a differ
     });
     login();
     cy.get('button[name=refresh_session_button]', { timeout: 10000 }).click();
-    cy.url().should('contain', '/companies');
+    cy.url().should('contain', '/portfolios');
   });
 });
