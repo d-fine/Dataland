@@ -197,7 +197,19 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
+        ): UploadedDataPoint {
+            val uploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
+            return uploadedDataPoint.copy(
+                dataPoint =
+                    objectMapper.writeValueAsString(
+                        dataPointValidator.validateDataPoint(
+                            uploadedDataPoint.dataPointType,
+                            uploadedDataPoint.dataPoint,
+                            correlationId,
+                        ),
+                    ),
+            )
+        }
 
         /**
          * Retrieves the currently active data points for a list of specific data point dimensions
