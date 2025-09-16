@@ -1,6 +1,0 @@
-{
-  "dataPoint": "{\"value\":null,\"quality\":\"Incomplete\",\"comment\":\"The scope 1 emission of 1034 metric tons CO2e refers to carbon emissions estimared for entities not included in the baseline. The relevant document states that scope 1 + 2 emissions for Zurich Insurance Group AG in 2024 are 18.374  metric tons CO2e.\",\"dataSource\":{\"page\":\"179\",\"tagName\":\"\",\"fileName\":\"Annual_Report_2024\",\"fileReference\":\"4de572356b43a7bbba2fcff8db0146513d969a61b2e1485d401407d6bbe2ea3c\",\"publicationDate\":\"2025-03-05\"}}",
-  "dataPointType": "extendedDecimalScope1GhgEmissionsInTonnes",
-  "companyId": "e3503a65-feea-4a3c-9e62-62b4c29de2a2",
-  "reportingPeriod": "2024"
-}

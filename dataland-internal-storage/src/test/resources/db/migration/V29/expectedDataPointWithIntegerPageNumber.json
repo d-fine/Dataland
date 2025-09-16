@@ -1,6 +1,0 @@
-{
-  "dataPoint": "{\"value\":11326,\"quality\":\"Reported\",\"comment\":\"The location-based method was used for computing the Scope 2 GHG Emissions.\",\"dataSource\":{\"page\":\"107\",\"tagName\":null,\"fileName\":\"Wolters Kluwer N.V./Wolters-Kluwer-2023-Annual-Report.pdf\",\"fileReference\":\"b2e7820eecfc5f86c42811b4cad3076f33439568526e618eece9ff609c3ee2ac\",\"publicationDate\":null}}",
-  "dataPointType": "extendedDecimalScope2GhgEmissionsInTonnes",
-  "companyId": "d8f4ca16-9b71-4daa-a9ee-83b2f78134bb",
-  "reportingPeriod": "2023"
-}
