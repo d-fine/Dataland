@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.servers.Server
             title = "Dataland Data Sourcing Service API documentation",
             version = "1.0.0",
         ),
-    servers = [Server(url = "/api-keys")],
+    servers = [Server(url = "/data-sourcing")],
 )
 @SecurityScheme(
     name = "default-bearer-auth",

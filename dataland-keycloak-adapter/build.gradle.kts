@@ -73,10 +73,6 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     )
 }
 
-tasks.named("generateApiKeyManagerClient") {
-    dependsOn(":dataland-api-key-manager:generateOpenApiDocs")
-}
-
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
