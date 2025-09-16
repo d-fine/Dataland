@@ -37,7 +37,7 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-ratelimiter:2.3.0")
     implementation("io.github.resilience4j:resilience4j-retry:2.3.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.5")
 }
 
 tasks.test {
