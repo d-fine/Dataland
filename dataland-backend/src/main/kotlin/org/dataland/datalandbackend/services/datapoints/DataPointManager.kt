@@ -62,13 +62,6 @@ class DataPointManager
             val castedDataPointObject =
                 dataPointValidator
                     .validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
-            val uploadedDataPointCasted =
-                UploadedDataPoint(
-                    dataPoint = objectMapper.writeValueAsString(castedDataPointObject),
-                    dataPointType = uploadedDataPoint.dataPointType,
-                    companyId = uploadedDataPoint.companyId,
-                    reportingPeriod = uploadedDataPoint.reportingPeriod,
-                )
             logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 
@@ -83,7 +76,7 @@ class DataPointManager
 
             val dataPointMetaInformation =
                 storeDataPoint(
-                    uploadedDataPoint = uploadedDataPointCasted,
+                    uploadedDataPoint = uploadedDataPoint.copy(dataPoint = objectMapper.writeValueAsString(castedDataPointObject)),
                     dataPointId = dataPointId,
                     uploaderUserId = uploaderUserId,
                     correlationId = correlationId,

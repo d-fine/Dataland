@@ -99,7 +99,7 @@ class DataPointManagerTest {
         val dummyDataPoint = "{\"value\": \"0.5\", \"currency\": \"USD\"}"
         val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
         val dummyDataPointId = IdUtils.generateUUID()
-        val dummyCompanyId = "dummy dompany"
+        val dummyCompanyId = "dummy company"
         val dummyReportingPeriod = "2005"
         val dummyCorrelationId = "test-correlation-id"
 

@@ -1,13 +1,11 @@
 package org.dataland.e2etests.tests.dataPoints
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -80,49 +78,15 @@ class SingleDataPointTest {
         }
     }
 
-    private fun jsonNodesEqualIgnoringNulls(
-        a: JsonNode?,
-        b: JsonNode?,
-    ): Boolean =
-        when {
-            ((a ?: NullNode.getInstance()) == (b ?: NullNode.getInstance())) -> true
-            (a?.nodeType != b?.nodeType) -> false
-            a!!.isObject -> {
-                val fieldNames = (a.fieldNames().asSequence() + b!!.fieldNames().asSequence()).toSet()
-                fieldNames.all { field ->
-                    jsonNodesEqualIgnoringNulls(a.get(field), b.get(field))
-                }
-            }
-            a.isArray -> {
-                if (a.size() != b!!.size()) {
-                    false
-                } else {
-                    a.zip(b).all { (ae, be) -> jsonNodesEqualIgnoringNulls(ae, be) }
-                }
-            }
-            else -> a == b
-        }
-
-    private fun assertJsonStringEqualityIgnoringNulls(
-        expected: String,
-        actual: String,
-    ) {
-        val objectMapper = ObjectMapper()
-        assert(
-            jsonNodesEqualIgnoringNulls(
-                objectMapper.readTree(expected),
-                objectMapper.readTree(actual),
-            ),
-        )
-    }
-
     @Test
     fun `ensure a data point with correct type can be uploaded and downloaded without inconsistencies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
             val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataPointId
             val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
-            assertJsonStringEqualityIgnoringNulls(dummyDatapoint, downloadedDataPoint.dataPoint)
+
+            val jsonDiff = JsonComparator.compareJsonStrings(dummyDatapoint, downloadedDataPoint.dataPoint)
+            assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDiff)
         }
     }
 
@@ -139,6 +103,7 @@ class SingleDataPointTest {
             val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             val dataPoint = jacksonObjectMapper().readTree(downloadedDataPoint.dataPoint)
 
+            assert(dataPoint["value"].isNumber)
             assertEquals(BigDecimal("0.5"), dataPoint["value"].decimalValue())
             assert(dataPoint["dataSource"]["page"].isTextual)
             assertEquals("3", dataPoint["dataSource"]["page"].asText())
@@ -188,7 +153,9 @@ class SingleDataPointTest {
         allowedUsers.forEach { user ->
             withTechnicalUser(user) {
                 val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
-                assertJsonStringEqualityIgnoringNulls(dummyDatapoint, downloadedDataPoint.dataPoint)
+
+                val jsonDiff = JsonComparator.compareJsonStrings(dummyDatapoint, downloadedDataPoint.dataPoint)
+                assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDiff)
             }
         }
     }
@@ -248,7 +215,8 @@ class SingleDataPointTest {
             val dataPointInstance = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
 
-            assertJsonStringEqualityIgnoringNulls(dummyDatapoint, dataPointInstance.dataPoint)
+            val jsonDiff = JsonComparator.compareJsonStrings(dummyDatapoint, dataPointInstance.dataPoint)
+            assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDiff)
             assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
         }
     }
