@@ -52,7 +52,7 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').click();
       });
-      cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
+      cy.get('[data-test="email-input-field"]').should('be.visible').type('data.premium-user@example.com');
       cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
       cy.get('[data-test="select-user-button"]').click();
       cy.get('[data-test="save-changes-button"]').click();
