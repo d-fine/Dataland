@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.EmailAddress
-import org.dataland.datalandcommunitymanager.services.UserValidationService
+import org.dataland.datalandcommunitymanager.services.EmailAddressService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -15,7 +15,7 @@ import org.mockito.kotlin.verify
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserValidationControllerTest {
-    private val mockUserValidationService = mock<UserValidationService>()
+    private val mockEmailAddressService = mock<EmailAddressService>()
 
     private lateinit var userValidationController: UserValidationController
 
@@ -26,8 +26,8 @@ class UserValidationControllerTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockUserValidationService)
-        userValidationController = UserValidationController(mockUserValidationService)
+        reset(mockEmailAddressService)
+        userValidationController = UserValidationController(mockEmailAddressService)
     }
 
     @Test
@@ -43,6 +43,6 @@ class UserValidationControllerTest {
             userValidationController.postEmailAddressValidation(validEmailAddress)
         }
 
-        verify(mockUserValidationService, times(1)).validateEmailAddress(validEmail)
+        verify(mockEmailAddressService, times(1)).validateEmailAddress(validEmail)
     }
 }

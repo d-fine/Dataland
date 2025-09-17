@@ -1,12 +1,10 @@
 package org.dataland.datalandcommunitymanager.controller
 
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.api.CompanyRolesApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.EmailSuffixUserService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +20,6 @@ import java.util.UUID
 @RestController
 class CompanyRolesController(
     @Autowired private val companyRolesManager: CompanyRolesManager,
-    @Autowired private val emailSuffixUserService: EmailSuffixUserService,
 ) : CompanyRolesApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -106,7 +103,4 @@ class CompanyRolesController(
         logger.info("Received a request to check if $companyId has company owner(s)")
         companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(companyId.toString())
     }
-
-    override fun getUsersByCompanyEmailSuffix(companyId: UUID): ResponseEntity<List<KeycloakUserInfo>> =
-        ResponseEntity.ok(emailSuffixUserService.getUsersByCompanyEmailSuffix(companyId))
 }

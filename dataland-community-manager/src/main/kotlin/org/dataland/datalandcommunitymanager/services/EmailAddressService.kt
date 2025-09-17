@@ -10,16 +10,37 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * Service for retrieving users whose email addresses match the suffixes defined in a company's information.
+ * Service class for handling queries pertaining to email addresses.
  */
-@Service
-class EmailSuffixUserService
+@Service("EmailAddressService")
+class EmailAddressService
     @Autowired
     constructor(
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+
+        /**
+         * Checks if there is a registered Dataland user with the specified email address
+         * and, if so, returns basic information on that user gathered from Keycloak.
+         * @email the email address to validate
+         */
+        fun validateEmailAddress(email: String): KeycloakUserInfo {
+            val keycloakUserInfo = keycloakUserService.findUserByEmail(email)
+            if (keycloakUserInfo == null) {
+                throw ResourceNotFoundApiException(
+                    summary = "No user found with this email",
+                    message = "There is no registered Dataland user with this email address.",
+                )
+            }
+            return KeycloakUserInfo(
+                userId = keycloakUserInfo.userId,
+                email = keycloakUserInfo.email,
+                firstName = keycloakUserInfo.firstName,
+                lastName = keycloakUserInfo.lastName,
+            )
+        }
 
         /**
          * Returns all users whose email address ends with any of the suffixes defined in the company's emailSuffix attribute.

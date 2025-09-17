@@ -18,7 +18,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserValidationServiceTest {
     private val mockKeycloakUserService = mock<KeycloakUserService>()
-    private lateinit var userValidationService: UserValidationService
+    private lateinit var emailAddressService: EmailAddressService
 
     private val knownEmailAddress = "known@example.com"
     private val unknownEmailAddress = "unknown@example.com"
@@ -42,13 +42,13 @@ class UserValidationServiceTest {
         doReturn(null).whenever(mockKeycloakUserService).findUserByEmail(unknownEmailAddress)
         doReturn(keycloakUserInfo).whenever(mockKeycloakUserService).findUserByEmail(knownEmailAddress)
 
-        userValidationService = UserValidationService(mockKeycloakUserService)
+        emailAddressService = EmailAddressService(mockKeycloakUserService)
     }
 
     @Test
     fun `check that an unknown email address results in a ResourceNotFoundApiException`() {
         assertThrows<ResourceNotFoundApiException> {
-            userValidationService.validateEmailAddress(unknownEmailAddress)
+            emailAddressService.validateEmailAddress(unknownEmailAddress)
         }
     }
 
@@ -56,7 +56,7 @@ class UserValidationServiceTest {
     fun `check that a known email address is processed as expected`() {
         val returnedKeycloakUserInfo =
             assertDoesNotThrow {
-                userValidationService.validateEmailAddress(knownEmailAddress)
+                emailAddressService.validateEmailAddress(knownEmailAddress)
             }
 
         assertEquals(
