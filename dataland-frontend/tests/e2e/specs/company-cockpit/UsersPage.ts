@@ -119,7 +119,7 @@ describeIf(
       });
       cy.get('[data-test="email-input-field"]').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
-      cy.get('[data-test="save-changes-button"]').click();
+      cy.get('[data-test="save-changes-button"]').should('not.be.disabled').click();
       cy.get('[data-test="confirm-self-role-change-button"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td').contains('Reader').should('exist');
