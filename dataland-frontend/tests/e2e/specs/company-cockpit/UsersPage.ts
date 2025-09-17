@@ -68,14 +68,16 @@ describeIf(
     it('As a company admin you should be able to change the role of other members', () => {
       setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
 
-      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-        cy.get('td')
-          .contains('PremiumUser')
-          .parent()
-          .within(() => {
-            cy.get('[data-test="dialog-button"]').click();
-          });
-      });
+      cy.contains('[data-test="company-roles-card"]', 'Members')
+        .should('be.visible')
+        .within(() => {
+          cy.get('td')
+            .contains('PremiumUser')
+            .parent()
+            .within(() => {
+              cy.get('[data-test="dialog-button"]').should('be.visible').click();
+            });
+        });
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
 
       cy.get('[data-test="change-user-role-dialog"]').should('be.visible');
