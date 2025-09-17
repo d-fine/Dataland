@@ -125,7 +125,7 @@ class CompanyAlterationManager
                     isTeaserCompany = companyInformation.isTeaserCompany ?: false,
                     website = companyInformation.website,
                     parentCompanyLei = companyInformation.parentCompanyLei,
-                    emailSuffixes = companyInformation.emailSuffixes,
+                    associatedSubdomains = companyInformation.associatedSubdomains,
                 )
 
             return newCompanyEntity

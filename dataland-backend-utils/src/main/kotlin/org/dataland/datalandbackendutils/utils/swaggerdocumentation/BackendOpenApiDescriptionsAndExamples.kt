@@ -164,9 +164,9 @@ object BackendOpenApiDescriptionsAndExamples {
     const val KEEP_VALUE_FIELDS_ONLY_DESCRIPTION =
         "If set to true, data is to be exported without additional information like comments on the data or the data's qa status."
 
-    const val EMAIL_SUFFIXES_DESCRIPTION =
-        "List of email suffixes specific to the company. In the email address, they come between the '@' symbol and one of " +
-            "the subsequent periods and represent the domain registered by the company together with subdomains if applicable. " +
+    const val ASSOCIATED_SUBDOMAINS_DESCRIPTION =
+        "List of email subdomains associated with the company. In the email address, they come between the '@' symbol and one of " +
+            "the subsequent periods and represent the root domain registered by the company together with subdomains if applicable. " +
             "They are used for registered Dataland user suggestions when managing company roles."
-    const val EMAIL_SUFFIXES_EXAMPLE = "[\"my-company\",\"hr.my-company\"]"
+    const val ASSOCIATED_SUBDOMAINS_EXAMPLE = "[\"my-company\",\"hr.my-company\"]"
 }

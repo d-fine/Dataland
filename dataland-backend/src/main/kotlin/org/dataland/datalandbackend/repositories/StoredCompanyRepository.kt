@@ -176,9 +176,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.emailSuffixes WHERE company = :storedCompany",
+            "LEFT JOIN FETCH company.associatedSubdomains WHERE company = :storedCompany",
     )
-    fun fetchEmailSuffixes(storedCompany: StoredCompanyEntity): StoredCompanyEntity
+    fun fetchAssociatedSubdomains(storedCompany: StoredCompanyEntity): StoredCompanyEntity
 
     /**
      * Used for pre-fetching the dataRegisteredByDataland field of a single stored company

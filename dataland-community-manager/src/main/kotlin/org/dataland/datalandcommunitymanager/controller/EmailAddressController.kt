@@ -25,6 +25,6 @@ class EmailAddressController
             return ResponseEntity.ok(emailAddressService.validateEmailAddress(email))
         }
 
-        override fun getUsersByCompanyEmailSuffix(companyId: UUID): ResponseEntity<List<KeycloakUserInfo>> =
-            ResponseEntity.ok(emailAddressService.getUsersByCompanyEmailSuffix(companyId))
+        override fun getUsersByCompanyAssociatedSubdomains(companyId: UUID): ResponseEntity<List<KeycloakUserInfo>> =
+            ResponseEntity.ok(emailAddressService.getUsersByCompanyAssociatedSubdomains(companyId))
     }

@@ -162,7 +162,7 @@ class CompanyQueryManager
                 .let { fetchIsinIdentifiers(it) }
                 .let { companyRepository.fetchAlternativeNames(it) }
                 .let { companyRepository.fetchCompanyContactDetails(it) }
-                .let { companyRepository.fetchEmailSuffixes(it) }
+                .let { companyRepository.fetchAssociatedSubdomains(it) }
                 .let { companyRepository.fetchCompanyAssociatedByDataland(it) }
 
         private fun getCompanyByIdAndAssertExistence(companyId: String): StoredCompanyEntity {

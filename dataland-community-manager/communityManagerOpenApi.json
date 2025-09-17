@@ -1348,9 +1348,9 @@
         "tags": [
           "email-address-controller"
         ],
-        "summary": "Get users by company email suffixes.",
-        "description": "Returns all users whose email address ends with any of the suffixes defined in the company\u0027s emailSuffix attribute.",
-        "operationId": "getUsersByCompanyEmailSuffix",
+        "summary": "Get users by company-associated subdomains.",
+        "description": "Returns all users whose email address contains one of the subdomains listed in the associatedSubdomains field of the corresponding CompanyInformation object.",
+        "operationId": "getUsersByCompanyAssociatedSubdomains",
         "parameters": [
           {
             "name": "companyId",
@@ -1366,7 +1366,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved users with matching email suffixes.",
+            "description": "Successfully retrieved users with matching email subdomains.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1382,7 +1382,7 @@
             "description": "You do not have the right to make this query."
           },
           "404": {
-            "description": "The specified company does not exist or has no emailSuffix defined."
+            "description": "The specified company does not exist."
           },
           "default": {
             "description": "An error occurred",

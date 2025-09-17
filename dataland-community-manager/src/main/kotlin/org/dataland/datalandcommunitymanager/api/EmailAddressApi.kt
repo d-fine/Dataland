@@ -70,19 +70,22 @@ interface EmailAddressApi {
     ): ResponseEntity<KeycloakUserInfo>
 
     /**
-     * Get all users whose email matches the suffixes defined in the company's emailSuffix attribute.
+     * Get all users whose email matches one of the subdomains defined in the company's associatedSubdomains
+     * field.
      * @param companyId the company to check
-     * @return list of users with emails matching the suffixes
+     * @return list of users with emails matching the subdomains
      */
     @Operation(
-        summary = "Get users by company email suffixes.",
-        description = "Returns all users whose email address ends with any of the suffixes defined in the company's emailSuffix attribute.",
+        summary = "Get users by company-associated subdomains.",
+        description =
+            "Returns all users whose email address contains one of the subdomains listed in " +
+                "the associatedSubdomains field of the corresponding CompanyInformation object.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully retrieved users with matching email suffixes.",
+                description = "Successfully retrieved users with matching email subdomains.",
             ),
             ApiResponse(
                 responseCode = "403",
@@ -91,7 +94,7 @@ interface EmailAddressApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "The specified company does not exist or has no emailSuffix defined.",
+                description = "The specified company does not exist.",
                 content = [Content(array = ArraySchema())],
             ),
         ],
@@ -104,7 +107,7 @@ interface EmailAddressApi {
         "hasRole('ROLE_ADMIN') or " +
             "@SecurityUtilsService.isUserOwnerOrMemberAdminOfTheCompany(#companyId)",
     )
-    fun getUsersByCompanyEmailSuffix(
+    fun getUsersByCompanyAssociatedSubdomains(
         @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: UUID,
     ): ResponseEntity<List<KeycloakUserInfo>>

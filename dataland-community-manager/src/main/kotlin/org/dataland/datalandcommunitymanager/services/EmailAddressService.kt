@@ -43,11 +43,12 @@ class EmailAddressService
         }
 
         /**
-         * Returns all users whose email address ends with any of the suffixes defined in the company's emailSuffix attribute.
+         * Returns all users whose email address contains one of the subdomains defined in the field
+         * associatedSubdomains of the corresponding company information.
          * @param companyId the company to check
-         * @return list of users with emails matching the suffixes
+         * @return list of users with emails matching the subdomains
          */
-        fun getUsersByCompanyEmailSuffix(companyId: UUID): List<KeycloakUserInfo> {
+        fun getUsersByCompanyAssociatedSubdomains(companyId: UUID): List<KeycloakUserInfo> {
             val result: List<KeycloakUserInfo>
             val storedCompany =
                 try {
@@ -56,16 +57,17 @@ class EmailAddressService
                     logger.warn("Company not found or error fetching company for $companyId", ex)
                     return emptyList()
                 }
-            val emailSuffixes: List<String> = storedCompany.companyInformation.emailSuffixes?.filter { it.isNotBlank() } ?: emptyList()
-            if (emailSuffixes.isEmpty()) {
+            val associatedSubdomains: List<String> =
+                storedCompany.companyInformation.associatedSubdomains?.filter { it.isNotBlank() } ?: emptyList()
+            if (associatedSubdomains.isEmpty()) {
                 logger.info("No email suffix defined for company $companyId")
                 result = emptyList()
             } else {
-                val usersBySuffix =
-                    emailSuffixes.flatMap { suffix ->
-                        keycloakUserService.searchUsersByEmailSuffix(suffix)
+                val usersBySubdomain =
+                    associatedSubdomains.flatMap { suffix ->
+                        keycloakUserService.searchUsersByEmailSubdomain(suffix)
                     }
-                result = usersBySuffix.distinctBy { it.userId }
+                result = usersBySubdomain.distinctBy { it.userId }
             }
             return result
         }

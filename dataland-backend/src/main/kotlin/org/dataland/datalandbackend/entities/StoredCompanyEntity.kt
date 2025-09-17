@@ -59,9 +59,9 @@ data class StoredCompanyEntity(
     @Column(name = "website")
     var website: String?,
     @ElementCollection
-    @Column(name = "company_email_suffixes")
+    @Column(name = "company_associated_subdomains")
     @OrderBy("asc")
-    var emailSuffixes: List<String>?,
+    var associatedSubdomains: List<String>?,
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(): StoredCompany {
@@ -84,7 +84,7 @@ data class StoredCompanyEntity(
                     isTeaserCompany = isTeaserCompany,
                     website = website,
                     parentCompanyLei = parentCompanyLei,
-                    emailSuffixes = emailSuffixes,
+                    associatedSubdomains = associatedSubdomains,
                 ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList(),
         )
@@ -176,7 +176,7 @@ data class StoredCompanyEntity(
         updateIfNotNull(patch.website) { storedCompanyEntity.website = it }
         updateIfNotNull(patch.isTeaserCompany) { storedCompanyEntity.isTeaserCompany = it }
         updateIfNotNull(patch.parentCompanyLei) { storedCompanyEntity.parentCompanyLei = it }
-        updateIfNotNull(patch.emailSuffixes) { storedCompanyEntity.emailSuffixes = it }
+        updateIfNotNull(patch.associatedSubdomains) { storedCompanyEntity.associatedSubdomains = it }
 
         val patchedIdentifiers = patch.identifiers ?: emptyMap()
         this.removeIdentifiers(findNonIsinIdentifiersToRemove(patchedIdentifiers))

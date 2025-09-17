@@ -5823,9 +5823,9 @@
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
           },
-          "emailSuffixes": {
+          "associatedSubdomains": {
             "type": "array",
-            "description": "List of email suffixes specific to the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
+            "description": "List of email subdomains associated with the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the root domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
             "nullable": true,
             "example": [
               "my-company",
@@ -16507,9 +16507,9 @@
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
           },
-          "emailSuffixes": {
+          "associatedSubdomains": {
             "type": "array",
-            "description": "List of email suffixes specific to the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
+            "description": "List of email subdomains associated with the company. In the email address, they come between the \u0027@\u0027 symbol and one of the subsequent periods and represent the root domain registered by the company together with subdomains if applicable. They are used for registered Dataland user suggestions when managing company roles.",
             "nullable": true,
             "example": [
               "my-company",
