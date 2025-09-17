@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import java.util.Date
@@ -44,4 +45,6 @@ class DataSourcingEntity(
     val dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
+    @OneToMany(mappedBy = "dataSourcingEntity")
+    var associatedRequests: Set<RequestEntity>? = null,
 )
