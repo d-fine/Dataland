@@ -7,6 +7,6 @@ describe('As a user, I expect to find a backToPlatformLink when logged in and vi
       .url()
       .should('eq', getBaseUrl() + '/');
     cy.get("[data-test='backToPlatformLink']").should('exist').click();
-    cy.url().should('eq', getBaseUrl() + '/portfolios');
+    cy.url().should('eq', getBaseUrl() + '/companies');
   });
 });
