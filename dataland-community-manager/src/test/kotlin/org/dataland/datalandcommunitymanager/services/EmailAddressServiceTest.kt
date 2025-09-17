@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -17,6 +18,7 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EmailAddressServiceTest {
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private lateinit var emailAddressService: EmailAddressService
 
@@ -37,12 +39,19 @@ class EmailAddressServiceTest {
 
     @BeforeEach
     fun setUp() {
-        reset(mockKeycloakUserService)
+        reset(
+            mockCompanyDataControllerApi,
+            mockKeycloakUserService,
+        )
 
         doReturn(null).whenever(mockKeycloakUserService).findUserByEmail(unknownEmailAddress)
         doReturn(keycloakUserInfo).whenever(mockKeycloakUserService).findUserByEmail(knownEmailAddress)
 
-        emailAddressService = EmailAddressService(mockKeycloakUserService)
+        emailAddressService =
+            EmailAddressService(
+                mockCompanyDataControllerApi,
+                mockKeycloakUserService,
+            )
     }
 
     @Test
