@@ -34,8 +34,6 @@ class RequestEntity(
     val userId: UUID,
     @Column(name = "creation_time_stamp")
     val creationTimeStamp: Date,
-    @Column(name = "billable")
-    val billable: Boolean = true,
     @Column(name = "member_comment", length = 1000)
     val memberComment: String? = null,
     @Column(name = "admin_comment", length = 1000)
