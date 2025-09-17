@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -53,9 +54,12 @@ class EmailAddressService
             val storedCompany =
                 try {
                     companyDataControllerApi.getCompanyById(companyId.toString())
-                } catch (ex: ResourceNotFoundApiException) {
+                } catch (ex: ClientException) {
                     logger.warn("Company not found or error fetching company for $companyId", ex)
-                    return emptyList()
+                    throw ResourceNotFoundApiException(
+                        "Company not found",
+                        "Dataland does not know the company ID $companyId",
+                    )
                 }
             val associatedSubdomains: List<String> =
                 storedCompany.companyInformation.associatedSubdomains?.filter { it.isNotBlank() } ?: emptyList()
