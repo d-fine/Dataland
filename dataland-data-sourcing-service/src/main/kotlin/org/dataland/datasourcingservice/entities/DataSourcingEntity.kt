@@ -44,7 +44,7 @@ class DataSourcingEntity(
     @Column(name = "data_extractor")
     val dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
-    var adminComment: String? = null,
+    val adminComment: String? = null,
     @OneToMany(mappedBy = "dataSourcingEntity")
-    var associatedRequests: Set<RequestEntity>? = null,
+    val associatedRequests: Set<RequestEntity>? = null,
 )
