@@ -113,6 +113,7 @@ describeIf(
           cy.get('[data-test="portfolio-name-input"]:visible').type(editedSecondPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
+          cy.get('#existing-company-identifiers li').should('have.length', 2);
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,
           });
