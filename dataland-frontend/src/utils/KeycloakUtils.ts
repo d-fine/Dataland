@@ -65,7 +65,7 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
  */
 export async function loginAndRedirectToPortfolioPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/portfolios` });
+  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/platform-redirect` });
   location.assign(url);
 }
 
@@ -75,7 +75,7 @@ export async function loginAndRedirectToPortfolioPage(keycloak: Keycloak): Promi
  */
 export async function registerAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/platform-redirect` });
   location.assign(url);
 }
 

@@ -62,10 +62,10 @@ const login = (): void => {
 };
 
 /**
- * Sends the user to back to the platform
+ * Sends the user back to the platform
  */
 const backToPlatform = (): void => {
-  void router.push({ path: '/portfolios' });
+  void router.push({ path: '/platform-redirect' });
 };
 
 onMounted(() => {

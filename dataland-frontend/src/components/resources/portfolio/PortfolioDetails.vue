@@ -61,17 +61,15 @@
         <template #body="portfolioEntry">
           <Button
             :label="portfolioEntry.data.companyName"
-            iconPos="right"
-            icon="pi pi-angle-right"
             variant="link"
             data-test="view-company-button"
             @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
             :pt="{
               label: {
-                style: 'font-weight: normal;',
+                style: 'font-weight: normal; text-align: left;',
               },
-              content: {
-                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              root: {
+                style: 'padding-left: 0;',
               },
             }"
           />
@@ -133,17 +131,15 @@
           <Button
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-            iconPos="right"
-            icon="pi pi-angle-right"
             variant="link"
             data-test="view-company-button"
             @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
             :pt="{
               label: {
-                style: 'font-weight: normal;',
+                style: 'font-weight: normal; text-align: left;',
               },
-              content: {
-                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              root: {
+                style: 'padding-left: 0;',
               },
             }"
           />
