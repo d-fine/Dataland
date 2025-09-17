@@ -6,14 +6,12 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
-import org.springframework.boot.test.context.SpringBootTest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-@SpringBootTest
-@AutoConfigureWebTestClient
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RequestControllerTest {
     private val apiAccessor = ApiAccessor()
 
@@ -22,6 +20,7 @@ class RequestControllerTest {
         val timeBeforeUpload = OffsetDateTime.now(ZoneOffset.UTC)
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dummyRequest = DataRequest(companyId, "sfdr", "2023", "dummy request")
+
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
 
         val storedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)

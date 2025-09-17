@@ -83,8 +83,8 @@ interface RequestApi {
      * @return the modified data request
      */
     @Operation(
-        summary = "Updates a data request.",
-        description = "Updates a data request given the data request id.",
+        summary = "Updates the state of a given data request.",
+        description = "Updates the processing state of a data request given the data request id.",
     )
     @ApiResponses(
         value = [
