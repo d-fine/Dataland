@@ -47,58 +47,6 @@ describeIf(
       });
     });
 
-    // it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
-    //   setupUserPage(CompanyRole.MemberAdmin);
-    //   cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-    //     cy.get('[data-test="add-user-button"]').click();
-    //   });
-    //   cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
-    //   cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
-    //   cy.get('[data-test="select-user-button"]').click();
-    //   cy.get('[data-test="save-changes-button"]').click();
-    //   cy.get('.p-dialog').within(() => {
-    //     cy.contains('Success');
-    //     cy.contains('button', 'OK').click();
-    //   });
-    //   cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-    //     cy.get('td').contains('PremiumUser').should('exist');
-    //     cy.get('td')
-    //       .contains('PremiumUser')
-    //       .parent()
-    //       .within(() => {
-    //         cy.get('[data-test="dialog-button"]').click();
-    //       });
-    //   });
-    //   cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
-    //
-    //   cy.get('[data-test="change-user-role-dialog"]').should('be.visible');
-    //   cy.get('[data-test="change-user-role-dialog"]').contains('.p-listbox-option', 'Admins').click();
-    //   cy.get('[data-test="change-role-button"]').click();
-    //   cy.get('.p-dialog').within(() => {
-    //     cy.contains('Success');
-    //     cy.contains('button', 'OK').click();
-    //   });
-    //   cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
-    //   cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
-    //     cy.get('td').contains('PremiumUser').should('exist');
-    //     cy.get('td')
-    //       .contains('PremiumUser')
-    //       .parent()
-    //       .within(() => {
-    //         cy.get('[data-test="dialog-button"]').click();
-    //       });
-    //   });
-    //
-    //   cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
-    //
-    //   cy.get('[data-test="remove-user-button"]').should('be.visible');
-    //   cy.get('[data-test="remove-user-button"]').click();
-    //
-    //   cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
-    //     cy.get('td').contains('PremiumUser').should('not.exist');
-    //   });
-    // });
-
     it('As a company admin you should be able to add members', () => {
       setupUserPage(CompanyRole.MemberAdmin);
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
