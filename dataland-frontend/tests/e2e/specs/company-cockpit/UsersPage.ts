@@ -47,7 +47,59 @@ describeIf(
       });
     });
 
-    it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    // it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    //   setupUserPage(CompanyRole.MemberAdmin);
+    //   cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+    //     cy.get('[data-test="add-user-button"]').click();
+    //   });
+    //   cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
+    //   cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
+    //   cy.get('[data-test="select-user-button"]').click();
+    //   cy.get('[data-test="save-changes-button"]').click();
+    //   cy.get('.p-dialog').within(() => {
+    //     cy.contains('Success');
+    //     cy.contains('button', 'OK').click();
+    //   });
+    //   cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+    //     cy.get('td').contains('PremiumUser').should('exist');
+    //     cy.get('td')
+    //       .contains('PremiumUser')
+    //       .parent()
+    //       .within(() => {
+    //         cy.get('[data-test="dialog-button"]').click();
+    //       });
+    //   });
+    //   cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
+    //
+    //   cy.get('[data-test="change-user-role-dialog"]').should('be.visible');
+    //   cy.get('[data-test="change-user-role-dialog"]').contains('.p-listbox-option', 'Admins').click();
+    //   cy.get('[data-test="change-role-button"]').click();
+    //   cy.get('.p-dialog').within(() => {
+    //     cy.contains('Success');
+    //     cy.contains('button', 'OK').click();
+    //   });
+    //   cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
+    //   cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+    //     cy.get('td').contains('PremiumUser').should('exist');
+    //     cy.get('td')
+    //       .contains('PremiumUser')
+    //       .parent()
+    //       .within(() => {
+    //         cy.get('[data-test="dialog-button"]').click();
+    //       });
+    //   });
+    //
+    //   cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+    //
+    //   cy.get('[data-test="remove-user-button"]').should('be.visible');
+    //   cy.get('[data-test="remove-user-button"]').click();
+    //
+    //   cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+    //     cy.get('td').contains('PremiumUser').should('not.exist');
+    //   });
+    // });
+
+    it('As a company admin you should be able to add members', () => {
       setupUserPage(CompanyRole.MemberAdmin);
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').click();
@@ -62,6 +114,13 @@ describeIf(
       });
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
+      });
+    });
+
+    it('As a company admin you should be able to change the role of other members', () => {
+      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
+
+      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td')
           .contains('PremiumUser')
           .parent()
@@ -81,6 +140,12 @@ describeIf(
       cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
+      });
+    });
+
+    it('As a company admin you should be able to remove other members', () => {
+      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.MemberAdmin);
+      cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td')
           .contains('PremiumUser')
           .parent()
@@ -116,11 +181,16 @@ describeIf(
     /**
      * Sets up the test environment for user page testing.
      */
-    function setupUserPage(userRole: CompanyRole): void {
+    function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId))
+        .then((token) => {
+          void assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId);
+          if (premiumUserRole) {
+            void assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId);
+          }
+        })
         .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
       cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForAlpha'
