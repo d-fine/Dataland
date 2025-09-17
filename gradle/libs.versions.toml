@@ -10,7 +10,7 @@ org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring"
 org-sonarqube = { id = "org.sonarqube", version = "6.2.0.5505" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.2" }
-org-openapi-generator = { id = "org.openapi.generator", version = "7.14.0" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.15.0" }
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -28,7 +28,7 @@ jackson = "2.18.4"
 logback = "1.5.18"
 flyway = "11.11.2"
 cloudevents = "4.0.1"
-itext = "9.2.0"
+itext = "9.3.0"
 tika = "3.2.2"
 poi = "5.4.1"
 jodconverter = "4.4.11"
