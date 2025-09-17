@@ -89,7 +89,7 @@ class KeycloakUserService(
     }
 
     /**
-     * Search keycloak users by email suffix (the part of the email that comes after the @)
+     * Search keycloak users by email suffix
      * @param emailSuffix the email suffix to search for
      * @returns the list of keycloak user info matching the email suffix
      */

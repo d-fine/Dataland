@@ -1435,6 +1435,78 @@
         ]
       }
     },
+    "/company-role-assignments/by-email-suffix/{companyId}": {
+      "get": {
+        "tags": [
+          "company-roles-controller"
+        ],
+        "summary": "Get users by company email suffixes.",
+        "description": "Returns all users whose email address ends with any of the suffixes defined in the company\u0027s emailSuffix attribute.",
+        "operationId": "getUsersByCompanyEmailSuffix",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users with matching email suffixes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeycloakUserInfo"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
+          "404": {
+            "description": "The specified company does not exist or has no emailSuffix defined."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [

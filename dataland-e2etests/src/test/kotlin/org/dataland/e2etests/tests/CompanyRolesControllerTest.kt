@@ -3,6 +3,8 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
+import org.dataland.communitymanager.openApiClient.model.KeycloakUserInfo
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
 import org.dataland.e2etests.UPLOADER_EXTENDED_ROLES
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -365,5 +367,94 @@ class CompanyRolesControllerTest {
             ),
             currentAssignments.first(),
         )
+    }
+
+    private fun assignCompanyRoleAndEnsureEmailSuffixEndpointDoesNotThrow(
+        user: TechnicalUser,
+        companyId: UUID,
+        role: CompanyRole,
+    ): List<KeycloakUserInfo> {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        companyRolesTestUtils.assignCompanyRole(
+            role,
+            companyId,
+            UUID.fromString(user.technicalUserId),
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        return assertDoesNotThrow {
+            apiAccessor.companyRolesControllerApi.getUsersByCompanyEmailSuffix(companyId)
+        }
+    }
+
+    private fun assignCompanyRoleAndEnsureEmailSuffixEndpointThrows(
+        user: TechnicalUser,
+        companyId: UUID,
+        role: CompanyRole,
+    ) {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        companyRolesTestUtils.assignCompanyRole(
+            role,
+            companyId,
+            UUID.fromString(user.technicalUserId),
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        assertThrows<ClientException> {
+            apiAccessor.companyRolesControllerApi.getUsersByCompanyEmailSuffix(companyId)
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = TechnicalUser::class)
+    fun `ensure that only Dataland admins, company owners or member admins can query users by email suffix`(user: TechnicalUser) {
+        val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        when (user) {
+            TechnicalUser.Admin ->
+                assertDoesNotThrow {
+                    apiAccessor.companyRolesControllerApi.getUsersByCompanyEmailSuffix(companyId)
+                }
+            else ->
+                assertThrows<ClientException> {
+                    apiAccessor.companyRolesControllerApi.getUsersByCompanyEmailSuffix(companyId)
+                }
+        }
+
+        if (user == TechnicalUser.Admin) return
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId = companyId.toString(),
+            companyInformationPatch =
+                CompanyInformationPatch(
+                    emailSuffixes = listOf("example"),
+                ),
+        )
+
+        CompanyRole.entries.forEach { role ->
+            when (role) {
+                CompanyRole.CompanyOwner, CompanyRole.MemberAdmin -> {
+                    val keycloakUserInfos =
+                        assignCompanyRoleAndEnsureEmailSuffixEndpointDoesNotThrow(
+                            user, companyId, role,
+                        )
+                    assertEquals(TechnicalUser.entries.size, keycloakUserInfos.size)
+                    TechnicalUser.entries.forEach { technicalUser ->
+                        assert(
+                            keycloakUserInfos.any { userInfo ->
+                                userInfo.id == technicalUser.technicalUserId.toString()
+                            },
+                        )
+                    }
+                }
+                else -> {
+                    assignCompanyRoleAndEnsureEmailSuffixEndpointThrows(
+                        user, companyId, role,
+                    )
+                }
+            }
+        }
     }
 }
