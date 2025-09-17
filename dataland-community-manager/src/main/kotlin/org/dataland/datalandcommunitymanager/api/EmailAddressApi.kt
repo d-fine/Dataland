@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import java.util.UUID
 
 /**
- * Defines the community manager API regarding validation of user information
+ * Defines the community manager API regarding user email addresses.
  */
+@RequestMapping("/emails")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface UserValidationApi {
+interface EmailAddressApi {
     /**
      * Post an email address for validation. It will be checked whether the email address belongs to
      * some registered Dataland user and, if so, basic information on the user will be returned. Only
@@ -56,7 +58,7 @@ interface UserValidationApi {
         ],
     )
     @PostMapping(
-        value = ["/user-validation/email"],
+        value = ["/validation"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
@@ -96,7 +98,7 @@ interface UserValidationApi {
     )
     @GetMapping(
         produces = ["application/json"],
-        value = ["/company-role-assignments/by-email-suffix/{companyId}"],
+        value = ["/{companyId}/recommended-users"],
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +

@@ -14,10 +14,10 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserValidationControllerTest {
+class EmailAddressControllerTest {
     private val mockEmailAddressService = mock<EmailAddressService>()
 
-    private lateinit var userValidationController: UserValidationController
+    private lateinit var emailAddressController: EmailAddressController
 
     private val validEmail = "test@example.com"
     private val validEmailAddress = EmailAddress(validEmail)
@@ -27,20 +27,20 @@ class UserValidationControllerTest {
     @BeforeEach
     fun setup() {
         reset(mockEmailAddressService)
-        userValidationController = UserValidationController(mockEmailAddressService)
+        emailAddressController = EmailAddressController(mockEmailAddressService)
     }
 
     @Test
     fun `check that an invalid email address is rejected`() {
         assertThrows<InvalidInputApiException> {
-            userValidationController.postEmailAddressValidation(invalidEmailAddress)
+            emailAddressController.postEmailAddressValidation(invalidEmailAddress)
         }
     }
 
     @Test
     fun `check that a valid email address is forwarded to the service layer`() {
         assertDoesNotThrow {
-            userValidationController.postEmailAddressValidation(validEmailAddress)
+            emailAddressController.postEmailAddressValidation(validEmailAddress)
         }
 
         verify(mockEmailAddressService, times(1)).validateEmailAddress(validEmail)

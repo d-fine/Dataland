@@ -16,7 +16,7 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserValidationServiceTest {
+class EmailAddressServiceTest {
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private lateinit var emailAddressService: EmailAddressService
 
