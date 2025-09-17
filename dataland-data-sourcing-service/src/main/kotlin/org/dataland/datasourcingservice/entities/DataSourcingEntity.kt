@@ -9,6 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.hibernate.envers.Audited
 import java.util.Date
 import java.util.UUID
 
@@ -17,6 +18,7 @@ import java.util.UUID
  */
 @SuppressWarnings("LongParameterList")
 @Entity
+@Audited(withModifiedFlag = true)
 @Table(name = "data_sourcing")
 class DataSourcingEntity(
     @Id

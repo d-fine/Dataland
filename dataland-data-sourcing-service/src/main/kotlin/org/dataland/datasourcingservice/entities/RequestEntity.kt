@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.hibernate.envers.Audited
 import java.util.Date
 import java.util.UUID
 
@@ -19,6 +20,7 @@ import java.util.UUID
  */
 @SuppressWarnings("LongParameterList")
 @Entity
+@Audited(withModifiedFlag = true)
 @Table(name = "requests")
 class RequestEntity(
     @Id
@@ -27,6 +29,7 @@ class RequestEntity(
     val id: UUID,
     @Column(name = "company_id")
     val companyId: UUID,
+    @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "data_type")
     val dataType: String,

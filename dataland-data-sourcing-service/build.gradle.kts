@@ -47,6 +47,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
+    implementation("org.hibernate.orm:hibernate-envers")
 }
 
 openApi {
