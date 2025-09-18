@@ -34,14 +34,16 @@ class TemporaryTables private constructor() {
                 "OR status_table.request_status IN :#{#searchFilter.preparedRequestStatus} ) AND " +
                 "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
                 "OR status_table.access_status IN :#{#searchFilter.preparedAccessStatus}  ) AND " +
-                "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-                "OR d.reporting_period = :#{#searchFilter.preparedReportingPeriod}) AND " +
+                "(:#{#searchFilter.shouldFilterByReportingPeriods} = false " +
+                "OR d.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
                 "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
                 "OR d.dataland_company_id IN :#{#searchFilter.preparedDatalandCompanyIds}) AND " +
+                "(:#{@DataRequestQueryManager.shouldFilterBySearchStringCompanyIds(#companyIds)} = false " +
+                "OR d.dataland_company_id IN :#{@DataRequestQueryManager.preparedSearchStringCompanyIds(#companyIds)}) AND " +
                 "(:#{#searchFilter.shouldFilterByRequestPriority} = false " +
                 "OR d.request_priority IN :#{#searchFilter.preparedRequestPriority}) AND " +
                 "(:#{#searchFilter.shouldFilterByAdminComment} = false " +
-                "OR LOWER(d.admin_comment) LIKE LOWER(CONCAT('%', :#{#searchFilter.preparedAdminCommentMatchingSearchSubstring}, '%')))"
+                "OR LOWER(d.admin_comment) LIKE LOWER(CONCAT('%', :#{#searchFilter.preparedAdminCommentMatchingSearchSubstring}, '%'))) "
 
         // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
         const val TABLE_FILTERED_ORDER_AND_LIMIT =
