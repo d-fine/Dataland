@@ -50,7 +50,7 @@ describeIf(
     it('As a company admin you should be able to add members', () => {
       setupUserPage(CompanyRole.MemberAdmin);
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-        cy.get('[data-test="add-user-button"]').click();
+        cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
       cy.get('[data-test="email-input-field"]').should('be.visible').type('data.premium-user@example.com');
       cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
@@ -117,7 +117,7 @@ describeIf(
     it('When adding yourself to another role the confirmation modal should pop up. Confirm should complete adding your role.', () => {
       setupUserPage(CompanyRole.CompanyOwner);
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
-        cy.get('[data-test="add-user-button"]').click();
+        cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
       cy.get('[data-test="email-input-field"]').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
