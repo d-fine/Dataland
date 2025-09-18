@@ -36,7 +36,7 @@ import { inject, onMounted, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import { useRouter } from 'vue-router';
-import { loginAndRedirectToPortfolioPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import Button from 'primevue/button';
 
 const router = useRouter();
@@ -53,7 +53,7 @@ const login = (): void => {
     .then((keycloak) => {
       if (keycloak.authenticated) return;
       if (window.location.pathname == '/') {
-        void loginAndRedirectToPortfolioPage(keycloak);
+        void loginAndRedirectToRedirectPage(keycloak);
       } else {
         keycloak.login().catch((error) => console.error(error));
       }

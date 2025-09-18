@@ -132,7 +132,6 @@
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
             variant="link"
-            data-test="view-company-button"
             @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
             :pt="{
               label: {
