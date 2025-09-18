@@ -1,53 +1,49 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <TheContent class="paper-section relative">
-      <DatasetsTabMenu :initial-tab-index="1">
-        <div class="col-12 flex flex-row justify-content-between align-items-end">
-          <NewDatasetButton v-if="hasUserUploaderRights" />
-        </div>
-        <DatasetOverviewTable
-          data-test="datasetOverviewTable"
-          :dataset-table-infos="datasetTableInfos"
-          :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
-        />
-        <div v-if="waitingForData" class="inline-loading text-center">
-          <p class="font-medium text-xl">Loading datasets...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-        </div>
-        <div v-else-if="datasetTableInfos.length === 0">
-          <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
-        </div>
-      </DatasetsTabMenu>
-    </TheContent>
-    <TheFooter />
-  </AuthenticationWrapper>
+  <TheContent class="relative">
+    <div>
+      <PrimeButton
+        v-if="hasUserUploaderRights"
+        icon="pi pi-plus"
+        label="NEW DATASET"
+        data-test="newDatasetButton"
+        @click="linkToNewDataSet()"
+        :pt="{ root: { style: 'display: flex; margin:var(--spacing-sm)' } }"
+      />
+    </div>
+    <DatasetOverviewTable
+      data-test="datasetOverviewTable"
+      :dataset-table-infos="datasetTableInfos"
+      :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
+    />
+    <div v-if="waitingForData" class="inline-loading text-center">
+      <p class="font-medium text-xl">Loading datasets...</p>
+      <DatalandProgressSpinner />
+    </div>
+    <div v-else-if="datasetTableInfos.length === 0">
+      <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
+    </div>
+  </TheContent>
 </template>
 
 <script lang="ts">
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
 import { type DatasetTableInfo, getMyDatasetTableInfos } from '@/components/resources/datasetOverview/DatasetTableInfo';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
+import router from '@/router';
 
 export default defineComponent({
   name: 'DatasetOverview',
   components: {
-    NewDatasetButton,
-    DatasetsTabMenu,
-    AuthenticationWrapper,
-    TheHeader,
+    DatalandProgressSpinner,
+    PrimeButton,
     TheContent,
-    TheFooter,
     DatasetOverviewTable,
   },
   data() {
@@ -71,6 +67,12 @@ export default defineComponent({
     this.requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
   },
   methods: {
+    /**
+     * Links the current instance or context to a new dataset, establishing a connection or association with it.
+     */
+    linkToNewDataSet() {
+      void router.push('/companies/choose');
+    },
     /**
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */

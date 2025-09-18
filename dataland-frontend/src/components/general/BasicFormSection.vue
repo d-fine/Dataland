@@ -39,4 +39,12 @@ div.basic-form-section {
 .content {
   padding-block: inherit;
 }
+
+.radius-1 {
+  border-radius: var(--p-border-radius-xs);
+}
+
+.bg-white {
+  background-color: var(--default-neutral-white);
+}
 </style>

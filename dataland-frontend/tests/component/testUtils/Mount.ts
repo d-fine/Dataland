@@ -1,3 +1,4 @@
+import { DatalandPreset } from '@/assets/theme/dataland-theme.ts';
 import type Keycloak from 'keycloak-js';
 import type { Router } from 'vue-router';
 import { mount } from 'cypress/vue';
@@ -30,6 +31,7 @@ interface DatalandMountOptions {
     propsToPassToTheMountedComponent?: object;
   };
 }
+
 /**
  * A higher-order function that returns a
  * slightly modified version of the vue mount function that automatically initiates plugins used in dataland
@@ -39,7 +41,7 @@ interface DatalandMountOptions {
  */
 export function getMountingFunction(additionalOptions: DatalandMountOptions = {}): typeof mount {
   /*
-    This file defines a alternative mounting function that also includes many creature comforts
+    This file defines an alternative mounting function that also includes many creature comforts
     (mounting of plugins, mocking router, mocking keycloak, ....)
     However, the underlying type definition of the mount function is very complex (> 100 LOC).
     Therefore, we decided to create this un-checked meta-function.
@@ -51,7 +53,14 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];
     options.global.plugins.push(createPinia());
-    options.global.plugins.push(PrimeVue);
+    options.global.plugins.push([
+      PrimeVue,
+      {
+        theme: {
+          preset: DatalandPreset,
+        },
+      },
+    ]);
     options.global.plugins.push(DialogService);
     options.global.provide = options.global.provide ?? {};
 

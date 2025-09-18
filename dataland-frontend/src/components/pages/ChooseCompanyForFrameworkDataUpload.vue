@@ -1,65 +1,60 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
-      <TheContent>
-        <BackButton id="backButton" label="BACK" class="pl-2" />
-        <Card class="col-12 text-left page-wrapper-card">
-          <template #title>New Dataset - Company</template>
-          <template #content>
-            <div class="grid">
-              <div class="col-9">
-                <div id="option1Container" :class="['grid', { 'bottom-border-section': isAdmin }]">
-                  <div id="option1Label" class="col-3 p-3">
-                    <h4 v-if="isAdmin" id="option1Title">Option 01</h4>
-                    <h3>Select a company</h3>
-                    <p>Select the company for which you would like to add a new dataset.</p>
-                  </div>
-                  <div class="col-9 d-card">
-                    <CompaniesOnlySearchBar
-                      @select-company="pushToChooseFrameworkForDataUploadPageForItem"
-                      wrapper-class-additions="w-full"
-                    />
-                    <div v-if="isAdmin" class="mt-6">
-                      <span>Can't find the company? </span>
-                      <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
-                        >Add it.</a
-                      >
-                    </div>
-                  </div>
+  <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
+    <TheContent>
+      <div class="col-12 text-left"></div>
+      <Card class="col-12 text-left page-wrapper-card">
+        <template #title>New Dataset - Company</template>
+        <template #content>
+          <div class="grid">
+            <div class="col-9">
+              <div id="option1Container" :class="['grid', { 'bottom-border-section': isAdmin }]">
+                <div id="option1Label" class="col-3 p-3">
+                  <h4 v-if="isAdmin" id="option1Title">Option 01</h4>
+                  <h3>Select a company</h3>
+                  <p>Select the company for which you would like to add a new dataset.</p>
                 </div>
-
-                <div v-if="isAdmin" id="option2Container" ref="option2Container" class="grid">
-                  <div id="option2Label" class="col-3 p-3">
-                    <h4 id="option2Title">Option 02</h4>
-                    <h3>Add a new company</h3>
-                    <p>
-                      If you want to add a dataset for a new company, you first have to create the company. To create a
-                      new company, all mandatory * fields must be filled.
-                    </p>
-                  </div>
-                  <div id="createCompanyForm" class="col-9 d-card">
-                    <CreateCompany @companyCreated="handleCompanyCreated" />
+                <div class="col-9 d-card">
+                  <CompaniesOnlySearchBar
+                    @select-company="pushToChooseFrameworkForDataUploadPageForItem"
+                    wrapper-class-additions="w-full"
+                  />
+                  <div v-if="isAdmin">
+                    <span>Can't find the company? </span>
+                    <PrimeButton
+                      label="Add it."
+                      @click="autoScrollToCreateACompanyForm"
+                      variant="text"
+                      data-test="add-it-button"
+                    />
                   </div>
                 </div>
               </div>
+
+              <div v-if="isAdmin" id="option2Container" ref="option2Container" class="grid">
+                <div id="option2Label" class="col-3 p-3">
+                  <h4 id="option2Title">Option 02</h4>
+                  <h3>Add a new company</h3>
+                  <p>
+                    If you want to add a dataset for a new company, you first have to create the company. To create a
+                    new company, all mandatory * fields must be filled.
+                  </p>
+                </div>
+                <div id="createCompanyForm" class="col-9 d-card">
+                  <CreateCompany @companyCreated="handleCompanyCreated" />
+                </div>
+              </div>
             </div>
-          </template>
-        </Card>
-      </TheContent>
-    </AuthorizationWrapper>
-    <TheFooter />
-  </AuthenticationWrapper>
+          </div>
+        </template>
+      </Card>
+    </TheContent>
+  </AuthorizationWrapper>
 </template>
 
 <script lang="ts">
 import CreateCompany from '@/components/forms/CreateCompany.vue';
-import BackButton from '@/components/general/BackButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import router from '@/router';
 import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from '@/utils/Constants';
@@ -69,19 +64,17 @@ import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import Card from 'primevue/card';
 import { defineComponent, inject, ref } from 'vue';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'ChooseCompany',
   components: {
-    TheFooter,
     AuthorizationWrapper,
-    AuthenticationWrapper,
-    BackButton,
-    TheHeader,
     TheContent,
     CompaniesOnlySearchBar,
     CreateCompany,
     Card,
+    PrimeButton,
   },
   data() {
     return {
@@ -131,3 +124,14 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+
+.d-card {
+  background: var(--default-neutral-white);
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
+}
+</style>

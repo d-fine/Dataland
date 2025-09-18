@@ -2,10 +2,10 @@ import QualityAssurance from '@/components/pages/QualityAssurance.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import {
-  type CompanyAssociatedDataPathwaysToParisData,
+  type CompanyAssociatedDataLksgData,
   type DataMetaInformation,
   DataTypeEnum,
-  type PathwaysToParisData,
+  type LksgData,
 } from '@clients/backend';
 import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
@@ -16,13 +16,13 @@ import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResp
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
 describe('Component tests for the Quality Assurance page', () => {
-  let p2pFixture: FixtureData<PathwaysToParisData>;
+  let LksgFixture: FixtureData<LksgData>;
   let mockDataMetaInfoForActiveDataset: DataMetaInformation;
 
   before(function () {
-    cy.fixture('CompanyInformationWithP2pPreparedFixtures').then(function (jsonContent) {
-      const preparedP2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
-      p2pFixture = getPreparedFixture('P2p-date-2023-04-18', preparedP2pFixtures);
+    cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
+      const preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      LksgFixture = getPreparedFixture('LkSG-date-2023-04-18', preparedLksgFixtures);
       cy.fixture('MetaInfoDataMocksForOneCompany.json').then((metaInfos: Array<DataMetaInformation>) => {
         mockDataMetaInfoForActiveDataset = metaInfos[0];
       });
@@ -40,7 +40,7 @@ describe('Component tests for the Quality Assurance page', () => {
     dataIdAlpha,
     companyNameAlpha,
     companyIdAlpha,
-    DataTypeEnum.P2p,
+    DataTypeEnum.Lksg,
     '2022'
   );
 
@@ -115,7 +115,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
-    cy.contains('span', 'Showing results 1-2 of 2.');
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
 
   /**
@@ -135,7 +135,9 @@ describe('Component tests for the Quality Assurance page', () => {
      * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
      */
     function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
-      cy.contains('span', 'Please type at least 3 characters').should(isWarningExpectedToExist ? 'exist' : 'not.exist');
+      cy.get('[data-test="companySearchBarWithMessage"]')
+        .contains('Please type at least 3 characters')
+        .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
     }
 
     /**
@@ -192,8 +194,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@companyNameFilteredNumberFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
-    cy.contains('span', 'Showing results 1-1 of 1.');
-
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-1 of 1.');
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
     assertUnfilteredDatatableState();
@@ -202,12 +203,12 @@ describe('Component tests for the Quality Assurance page', () => {
   it('Check QA-overview-page for filtering on framework', () => {
     mountQaAssurancePageWithMocks();
 
-    const frameworkToFilterFor = DataTypeEnum.P2p;
+    const frameworkToFilterFor = DataTypeEnum.Lksg;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [
+    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.Lksg}&chunkSize=10&chunkIndex=0`, [
       reviewQueueElementAlpha,
     ]).as('frameworkFilteredFetch');
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.P2p}`, '1').as(
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.Lksg}`, '1').as(
       'frameworkFilteredNumberFetch'
     );
 
@@ -294,7 +295,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     cy.contains('p', 'There are no unreviewed datasets on Dataland matching your filters');
-    cy.contains('span', 'No results for this search.');
+    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('No results for this search.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
@@ -308,33 +309,35 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
-      dataId: 'p2pTestDataId',
+      dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
-      dataType: DataTypeEnum.P2p,
+      dataType: DataTypeEnum.Lksg,
       uploadTime: 1672531200,
       reportingPeriod: '2023',
       currentlyActive: false,
       qaStatus: QaStatus.Pending,
       ref: 'https://example.com',
     };
-    const mockCompanyAssociatedP2pData: CompanyAssociatedDataPathwaysToParisData = {
+    const mockCompanyAssociatedLksgData: CompanyAssociatedDataLksgData = {
       companyId: mockDataMetaInfo.companyId,
       reportingPeriod: mockDataMetaInfo.reportingPeriod,
-      data: p2pFixture.t,
+      data: LksgFixture.t,
     };
-    const mockP2pDataAndMetaInfo: DataAndMetaInformation<PathwaysToParisData> = buildDataAndMetaInformationMock(
+    const mockLksgDataAndMetaInfo: DataAndMetaInformation<LksgData> = buildDataAndMetaInformationMock(
       mockDataMetaInfo,
-      p2pFixture.t
+      LksgFixture.t
     );
 
     cy.intercept(`**/community/requests/user`, {});
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
-    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
+    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, LksgFixture.companyInformation);
     cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
-    cy.intercept(`**/api/data/${DataTypeEnum.P2p}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedP2pData).as(
-      'fetchP2pData'
+    cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedLksgData).as(
+      'fetchLksgData'
     );
-    cy.intercept(`**/api/data/${DataTypeEnum.P2p}/companies/${mockDataMetaInfo.companyId}*`, [mockP2pDataAndMetaInfo]);
+    cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/${mockDataMetaInfo.companyId}*`, [
+      mockLksgDataAndMetaInfo,
+    ]);
 
     getMountingFunction({
       keycloak: keycloakMockWithUploaderAndReviewerRoles,
@@ -342,16 +345,16 @@ describe('Component tests for the Quality Assurance page', () => {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
           companyId: mockDataMetaInfo.companyId,
-          dataType: DataTypeEnum.P2p,
+          dataType: DataTypeEnum.Lksg,
           dataId: mockDataMetaInfo.dataId,
         },
       },
     })(ViewFrameworkData);
-    cy.get('h1').contains(p2pFixture.companyInformation.companyName).should('be.visible');
+    cy.get('h1').contains(LksgFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
-    cy.get('[data-test="chooseFrameworkDropdown"').should('not.exist');
-    cy.get('a[data-test="gotoNewDatasetButton"]').should('not.exist');
+    cy.get('[data-test="chooseFrameworkDropdown"]').should('not.exist');
+    cy.get('a[data-test="goToNewDatasetButton"]').should('not.exist');
 
     cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains('This dataset is currently pending review');
 
@@ -361,7 +364,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('button[data-test="qaApproveButton"]').should('exist').click();
     cy.wait('@approveDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('.p-dialog-close-button').click();
 
     cy.intercept('POST', `**/qa/datasets/${mockDataMetaInfo.dataId}?qaStatus=${QaStatus.Rejected}`, (request) => {
       request.reply(200, {});
@@ -369,6 +372,6 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('button[data-test="qaRejectButton"]').should('exist').click();
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-    cy.get('.p-dialog-header-close').click();
+    cy.get('.p-dialog-close-button').click();
   });
 });

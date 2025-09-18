@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';
@@ -24,7 +23,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
-        .find('input.p-radiobutton')
+        .find('input[type="checkbox"]')
         .eq(1)
         .click()
         .find('button[data-test="files-to-upload-remove"]')
@@ -55,11 +54,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
           .should('have.length', 1);
       });
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('not.exist');
-      cy.get('[data-pc-name="multiselect"]')
-        .get('[data-pc-section="wrapper"]')
-        .get('[data-pc-section="list"]')
-        .find('li:contains("Albania")')
-        .click();
+      cy.get('[data-pc-name="multiselect"]').get('[data-pc-section="list"]').contains('Albania').click();
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('exist');
       cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
@@ -70,6 +65,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         });
         request.reply(200);
       }).as('send');
+      cy.get('.p-multiselect-overlay').invoke('hide');
       submitButton.clickButton();
       cy.wait('@send');
     });

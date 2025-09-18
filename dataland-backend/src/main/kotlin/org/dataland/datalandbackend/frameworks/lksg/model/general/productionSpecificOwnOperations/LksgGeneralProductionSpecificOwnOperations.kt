@@ -11,6 +11,7 @@ import kotlin.collections.List
 /**
  * The data-model for the ProductionSpecificOwnOperations section
  */
+@Suppress("MaxLineLength")
 data class LksgGeneralProductionSpecificOwnOperations(
     val mostImportantProducts: List<LksgProduct>? = null,
     @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)

@@ -21,6 +21,7 @@ import java.util.UUID
 class PortfolioService
     @Autowired
     constructor(
+        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
         private val portfolioRepository: PortfolioRepository,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
@@ -67,7 +68,7 @@ class PortfolioService
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             logger.info("Retrieve all portfolios for user with userId: $userId. CorrelationId: $correlationId.")
-            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
         }
 
         /**
@@ -106,7 +107,7 @@ class PortfolioService
                 "By order of admin with userId $adminId, retrieve all portfolios for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
-            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
         }
 
         /**
@@ -142,6 +143,9 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
+
+            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(portfolio)
+
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
 
@@ -158,12 +162,24 @@ class PortfolioService
                 "Replace portfolio with portfolioId: $portfolioId for user with userId: ${portfolio.userId}." +
                     " CorrelationId: $correlationId.",
             )
+
             val originalPortfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
-            return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
-                .toBasePortfolio()
+
+            val updatedPortfolioEntity =
+                portfolio.toPortfolioEntity(
+                    portfolioId,
+                    originalPortfolio.creationTimestamp,
+                    portfolio.lastUpdateTimestamp,
+                    portfolio.isMonitored,
+                    portfolio.startingMonitoringPeriod,
+                    portfolio.monitoredFrameworks,
+                )
+
+            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
+
+            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
 
         /**

@@ -10,14 +10,14 @@
         </a>
       </span>
     </div>
-    <span
+    <PrimeButton
       v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
-      class="link font-semibold underline mr-0 ml-auto"
+      label="Previous years reports"
+      variant="text"
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
       data-test="previousReportsLinkToModal"
-    >
-      Previous years reports
-    </span>
+      :pt="{ root: { style: 'margin-left: auto;' } }"
+    />
   </div>
 </template>
 
@@ -26,9 +26,13 @@ import { defineComponent, type PropType } from 'vue';
 import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
 import type { CompanyReport } from '@clients/backend';
 import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'ShowMultipleReportsBanner',
+  components: {
+    PrimeButton,
+  },
   data() {
     return {
       indexOfNewestReportingPeriod: -1 as number,
@@ -111,3 +115,38 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.link-in-list {
+  padding: 0 0.5rem;
+}
+
+.link-in-list:not(:last-child) {
+  border-right: 1px solid #858585;
+}
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+</style>

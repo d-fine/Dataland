@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import PrimeButton from 'primevue/button';
 import {
   isRefreshTokenExpiryTimestampInSharedStoreReached,
@@ -33,7 +33,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
-import { loginAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToPortfolioPage } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import router from '@/router';
 
@@ -117,7 +117,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            void loginAndRedirectToSearchPage(keycloak);
+            void loginAndRedirectToPortfolioPage(keycloak);
           }
         })
         .catch((error) => console.log(error));
@@ -175,3 +175,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-letters {
+  letter-spacing: 0.05em;
+}
+</style>

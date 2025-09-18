@@ -36,6 +36,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
+    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
@@ -61,7 +62,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
     }
 
     /**
@@ -95,7 +96,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolios for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         assertEquals(2, portfolioService.getAllPortfoliosForUser().size)
         assertEquals(
             listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
@@ -180,7 +181,7 @@ class PortfolioServiceTest {
     fun `verify that portfolios can be retrieved for a user by his or her ID`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
         val portfolioList = portfolioService.getAllPortfoliosForUserById(dummyUserId)
         assertEquals(2, portfolioList.size)
@@ -229,6 +230,7 @@ class PortfolioServiceTest {
 
         assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
         assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
     }
 
     @Test
@@ -250,7 +252,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolio names for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
         val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
         assertEquals(expectedPortfolioNames, portfolioNames)
@@ -263,13 +265,15 @@ class PortfolioServiceTest {
         portfolioId: String? = null,
         portfolioName: String,
         userId: String,
-        companyIds: MutableSet<String>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
+        companyIds = setOf(dummyCompanyId),
+        isMonitored = false,
+        startingMonitoringPeriod = null,
+        monitoredFrameworks = emptySet(),
     )
 }

@@ -4,13 +4,11 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
-import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import java.io.File
@@ -54,16 +52,6 @@ class FrameworkTestDataProvider<T>(
                     FrameworkTestDataConfiguration(
                         File("./build/resources/test/CompanyInformationWithVsmeData.json"),
                         File("./build/resources/test/CompanyInformationWithVsmePreparedFixtures.json"),
-                    ),
-                PathwaysToParisData::class.java to
-                    FrameworkTestDataConfiguration(
-                        File("./build/resources/test/CompanyInformationWithP2pData.json"),
-                        File("./build/resources/test/CompanyInformationWithP2pPreparedFixtures.json"),
-                    ),
-                AdditionalCompanyInformationData::class.java to
-                    FrameworkTestDataConfiguration(
-                        File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationData.json"),
-                        File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationPreparedFixtures.json"),
                     ),
             )
 
@@ -119,6 +107,7 @@ class FrameworkTestDataProvider<T>(
                     identifiers =
                         mapOf(
                             IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
+                            IdentifierType.Lei.value to listOf(UUID.randomUUID().toString()),
                         ),
                 )
             }

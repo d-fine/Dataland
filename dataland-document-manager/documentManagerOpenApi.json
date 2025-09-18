@@ -26,20 +26,23 @@
           "document-controller"
         ],
         "summary": "Search for document meta information.",
-        "description": "Search for document meta information by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
+        "description": "Search for document metainformation by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
         "operationId": "searchForDocumentMetaInformation",
         "parameters": [
           {
             "name": "companyId",
             "in": "query",
+            "description": "If specified, only returns meta information of documents associated with the company having this Dataland company ID.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
             "name": "documentCategories",
             "in": "query",
+            "description": "If specified, only returns meta information of documents belonging to one of these document categories.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -58,14 +61,17 @@
           {
             "name": "reportingPeriod",
             "in": "query",
+            "description": "If specified, only returns meta information of documents associated with this reportingperiod (e.g., fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 2024
           },
           {
             "name": "chunkSize",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -75,6 +81,7 @@
           {
             "name": "chunkIndex",
             "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -97,17 +104,7 @@
             }
           },
           "400": {
-            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0).",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                  }
-                }
-              }
-            }
+            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0)."
           },
           "default": {
             "description": "An error occurred",
@@ -143,8 +140,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Upload a document and metadata.",
-        "description": "Upload a document and meta information.",
+        "summary": "Upload a document and its metainformation.",
+        "description": "Upload a document and (optionally) its metainformation. When specifying the metainformation, the fields \u0027publicationDate\u0027 and \u0027reportingPeriod\u0027 are optional.",
         "operationId": "postDocument",
         "requestBody": {
           "content": {
@@ -221,10 +218,12 @@
           {
             "name": "documentId",
             "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           }
         ],
         "responses": {
@@ -325,10 +324,12 @@
           {
             "name": "documentId",
             "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           }
         ],
         "responses": {
@@ -372,17 +373,19 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Update the metadata info of a document.",
-        "description": "Update the metadata info of a document.",
+        "summary": "Update the metainformation of a document.",
+        "description": "Update the metainformation of a document. All fields are optional, and only mentioned fields will be overwritten.",
         "operationId": "patchDocumentMetaInfo",
         "parameters": [
           {
             "name": "documentId",
             "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           }
         ],
         "requestBody": {
@@ -397,7 +400,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully updated the document\u0027s meta information.",
+            "description": "Successfully updated the document\u0027s metainformation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -407,24 +410,10 @@
             }
           },
           "403": {
-            "description": "You do not have the right to update the document\u0027s meta information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
+            "description": "You do not have the right to update the document\u0027s metainformation."
           },
           "404": {
-            "description": "Document Id does not match any stored document.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
+            "description": "Document ID does not match any stored document."
           },
           "default": {
             "description": "An error occurred",
@@ -462,25 +451,29 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Extend the list of companyIds related to a document.",
-        "description": "Extend the list of companyIds related to a document by a single company id.",
+        "summary": "Extend the list of company IDs related to a document.",
+        "description": "Extend the list of company IDs related to a document by a single company id.",
         "operationId": "patchDocumentMetaInfoCompanyIds",
         "parameters": [
           {
             "name": "documentId",
             "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           },
           {
             "name": "companyId",
             "in": "path",
+            "description": "The unique identifier under which the company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         ],
         "responses": {
@@ -495,24 +488,10 @@
             }
           },
           "403": {
-            "description": "You do not have the right to update the companyIds field.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
+            "description": "You do not have the right to update the companyIds field."
           },
           "404": {
-            "description": "Document Id does not match any stored document.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
+            "description": "Document ID does not match any stored document."
           },
           "default": {
             "description": "An error occurred",
@@ -550,17 +529,19 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Receive meta information for a document.",
-        "description": "Receive meta information for a document by its ID from internal storage.",
+        "summary": "Receive metainformation for a document.",
+        "description": "Receive metainformation for a document by its ID from internal storage.",
         "operationId": "getDocumentMetaInformation",
         "parameters": [
           {
             "name": "documentId",
             "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           }
         ],
         "responses": {
@@ -575,14 +556,7 @@
             }
           },
           "404": {
-            "description": "Document meta information could not be retrieved.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
-                }
-              }
-            }
+            "description": "Document meta information could not be retrieved."
           },
           "default": {
             "description": "An error occurred",
@@ -851,10 +825,13 @@
         "type": "object",
         "properties": {
           "documentName": {
-            "type": "string"
+            "type": "string",
+            "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
+            "description": "The Dataland document category to which the document belongs.",
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -865,16 +842,25 @@
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
           },
           "publicationDate": {
             "type": "string",
-            "format": "date"
+            "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
+            "format": "date",
+            "example": "2024-02-13"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -886,13 +872,18 @@
         "type": "object",
         "properties": {
           "documentId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           },
           "documentName": {
-            "type": "string"
+            "type": "string",
+            "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
+            "description": "The Dataland document category to which the document belongs.",
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -903,19 +894,30 @@
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
           },
           "uploaderId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "publicationDate": {
             "type": "string",
-            "format": "date"
+            "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
+            "format": "date",
+            "example": "2024-02-13"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -923,10 +925,13 @@
         "type": "object",
         "properties": {
           "documentName": {
-            "type": "string"
+            "type": "string",
+            "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
+            "description": "The Dataland document category to which the document belongs.",
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -937,18 +942,28 @@
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
           },
           "publicationDate": {
             "type": "string",
-            "format": "date"
+            "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
+            "format": "date",
+            "example": "2024-02-13"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           }
-        }
+        },
+        "description": "A patch object for document metainformation."
       },
       "DocumentMetaInfoEntity": {
         "required": [
@@ -963,16 +978,21 @@
         "type": "object",
         "properties": {
           "documentId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
           },
           "documentType": {
             "$ref": "#/components/schemas/DocumentType"
           },
           "documentName": {
-            "type": "string"
+            "type": "string",
+            "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
+            "description": "The Dataland document category to which the document belongs.",
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -983,23 +1003,36 @@
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
           },
           "uploaderId": {
-            "type": "string"
+            "type": "string",
+            "description": "The Dataland user ID of the user who uploaded the document.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "publicationDate": {
             "type": "string",
-            "format": "date"
+            "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
+            "format": "date",
+            "example": "2024-02-13"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
@@ -1011,6 +1044,7 @@
       },
       "DocumentType": {
         "type": "string",
+        "description": "The file type of the document.",
         "enum": [
           "Pdf",
           "Xls",
@@ -1020,6 +1054,7 @@
       },
       "QaStatus": {
         "type": "string",
+        "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
         "enum": [
           "Pending",
           "Accepted",

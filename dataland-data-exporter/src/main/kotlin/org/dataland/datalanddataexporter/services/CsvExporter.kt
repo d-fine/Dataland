@@ -3,6 +3,7 @@ package org.dataland.datalanddataexporter.services
 import ApiRetryException
 import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -25,7 +26,6 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsiste
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfLegacyRulesAndTransformationRules
 import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentAndLegacyHeaders
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsv
 import org.slf4j.LoggerFactory
@@ -43,6 +43,7 @@ class CsvExporter(
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val sfdrDataControllerApi: SfdrDataControllerApi,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -123,7 +124,12 @@ class CsvExporter(
 
         validateConsistency(data, transformationRules, legacyRules, dataDimension)
 
-        val isinData = getLeiToIsinMapping(companyData.companyInformation)
+        val lei = companyData.companyInformation.identifiers[LEI_IDENTIFIER]?.firstOrNull()
+        val isinData = mutableListOf<Map<String, String>>()
+        if (lei != null) {
+            val isins = retryOnCommonApiErrors { isinLeiDataControllerApi.getIsinsByLei(lei) }
+            isinData += isins.map { isin -> mapOf(LEI_HEADER to lei, ISIN_HEADER to isin) }
+        }
         csvData += mapJsonToCsv(data, transformationRules)
         csvData += mapJsonToLegacyCsv(data, legacyRules)
         csvData += getCompanyRelatedData(companyAssociatedData, companyData)

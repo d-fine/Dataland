@@ -1,16 +1,19 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.utils.DataExportUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
@@ -27,7 +30,15 @@ class DataExportService
     constructor(
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val specificationApi: SpecificationControllerApi,
     ) {
+        companion object {
+            private const val HEADER_ROW_INDEX = 0
+            private const val COMPANY_NAME_POSITION = -3
+            private const val COMPANY_LEI_POSITION = -2
+            private const val REPORTING_PERIOD_POSITION = -1
+        }
+
         private val objectMapper = JsonUtils.defaultObjectMapper
 
         /**
@@ -44,144 +55,70 @@ class DataExportService
             exportFileType: ExportFileType,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): InputStreamResource {
             val jsonData = portfolioData.map { convertDataToJson(it) }
             if (jsonData.isEmpty()) {
                 throw DownloadDataNotFoundApiException()
             }
+
             return when (exportFileType) {
-                ExportFileType.CSV -> buildCsvStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly)
-                ExportFileType.EXCEL -> buildExcelStreamFromPortfolioAsJsonData(jsonData, dataType, keepValueFieldsOnly)
+                ExportFileType.CSV ->
+                    buildCsvStreamFromPortfolioAsJsonData(
+                        jsonData,
+                        dataType,
+                        keepValueFieldsOnly,
+                        includeAliases,
+                    )
+
+                ExportFileType.EXCEL ->
+                    buildExcelStreamFromPortfolioAsJsonData(
+                        jsonData,
+                        dataType,
+                        keepValueFieldsOnly,
+                        includeAliases,
+                    )
+
                 ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
             }
         }
 
         /**
-         * Return the template of an assembled framework or null if the passed name refers to an old style framework
-         *
-         * @param framework the framework for which the template shall be returned
-         */
-        private fun getFrameworkTemplate(framework: String): JsonNode? {
-            return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
-                val frameworkTemplate = objectMapper.readTree(it.schema)
-                referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
-                    frameworkTemplate,
-                    it.referencedReportJsonPath,
-                )
-                return frameworkTemplate
-            }
-        }
-
-        /**
          * Transform the data to an Excel file with human-readable headers.
-         * @param headerFields the header fields to be used (has to be consistent with the keys in the data map)
-         * @param data the data to be transformed (each entry in the list represents a row in the Excel file)
+         * @param csvDataWithReadableHeaders the data to be transformed (each entry in the list represents a row in the Excel file)
          * @param outputStream the output stream to write the data to
-         * @param readableHeaders a map of original header names to readable header names
          */
         fun transformDataToExcelWithReadableHeaders(
-            headerFields: List<String>,
-            data: List<Map<String, String>>,
+            csvDataWithReadableHeaders: List<Map<String, String?>>,
+            csvSchema: CsvSchema,
             outputStream: OutputStream,
-            readableHeaders: Map<String, String> = emptyMap(),
         ) {
-            val headerToBeUsed = listOf("companyName", "companyLei", "reportingPeriod") + headerFields.map { "data.$it" }
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Data")
-            val headerRow = sheet.createRow(0)
-            headerToBeUsed.forEachIndexed { index, headerField ->
-                val cell = headerRow.createCell(index)
-                cell.setCellValue(readableHeaders[headerField] ?: headerField)
+
+            // Step 1: Get the ordered columns from csvSchema
+            val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
+
+            // Step 2: Write the header row
+            val headerRow = sheet.createRow(HEADER_ROW_INDEX)
+            orderedColumns.forEachIndexed { colIndex, columnName ->
+                headerRow.createCell(colIndex).setCellValue(columnName)
             }
 
-            var rowIndex = 1
-            data.forEach { entry ->
-                val row = sheet.createRow(rowIndex++)
-                headerToBeUsed.forEachIndexed { index, headerField ->
-                    val cell = row.createCell(index)
-                    if (headerField in entry.keys) {
-                        cell.setCellValue(entry[headerField] ?: "")
-                    } else if ("$headerField.value" in entry.keys) {
-                        cell.setCellValue(entry["$headerField.value"] ?: "")
-                    } else {
-                        cell.setCellValue("")
-                    }
+            // Step 3: Write the data rows
+            csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
+                val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
+                orderedColumns.forEachIndexed { colIndex, columnName ->
+                    val cellValue = dataMap[columnName] ?: ""
+                    row.createCell(colIndex).setCellValue(cellValue)
                 }
             }
-
-            headerToBeUsed.forEachIndexed { index, _ ->
+            orderedColumns.forEachIndexed { index, _ ->
                 sheet.autoSizeColumn(index)
             }
-
             workbook.write(outputStream)
             workbook.close()
         }
-
-        /**
-         * Return true if the field contains REFERENCED_REPORTS_ID
-         */
-        private fun isReferencedReportsField(field: String): Boolean =
-            field.contains(JsonUtils.getPathSeparator() + ReferencedReportsUtilities.REFERENCED_REPORTS_ID + JsonUtils.getPathSeparator())
-
-        /**
-         * Return true if the provided field name (full path) specifies a meta data field.
-         */
-        private fun isMetaDataField(field: String): Boolean {
-            val separator = JsonUtils.getPathSeparator()
-            return field.endsWith(separator + "comment") ||
-                field.endsWith(separator + "quality") ||
-                field.contains(separator + "dataSource" + separator) ||
-                isReferencedReportsField(field)
-        }
-
-        /**
-         * Prepares the data structure for export formats (CSV and Excel)
-         * @param portfolioExportRows passed JSON objects to be exported
-         * @param dataType the datatype specifying the framework
-         * @param keepValueFieldsOnly if true, non value fields are stripped
-         * @return PreparedExportData containing:
-         *   - the CSV data as a list of maps
-         *   - the CSV schema
-         */
-        private fun prepareExportData(
-            portfolioExportRows: List<JsonNode>,
-            dataType: DataType,
-            keepValueFieldsOnly: Boolean,
-        ): PreparedExportData {
-            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-            val isAssembledDataset = (frameworkTemplate != null)
-            val (csvData, nonEmptyHeaderFields) = getCsvDataAndNonEmptyFields(portfolioExportRows, keepValueFieldsOnly)
-
-            val orderedHeaderFields =
-                if (isAssembledDataset) {
-                    JsonUtils.getLeafNodeFieldNames(
-                        getFrameworkTemplate(dataType.toString()) ?: portfolioExportRows.first(),
-                        keepEmptyFields = true,
-                        dropLastFieldName = true,
-                    )
-                } else {
-                    LinkedHashSet(
-                        nonEmptyHeaderFields.sortedWith(
-                            compareBy<String> {
-                                @Suppress("MagicNumber")
-                                when {
-                                    it.startsWith("companyName") -> -3
-                                    it.startsWith("companyLei") -> -2
-                                    it.startsWith("reportingPeriod") -> -1
-                                    else -> 0
-                                }
-                            }.then(naturalOrder()),
-                        ),
-                    )
-                }
-            val csvSchema = createCsvSchemaBuilder(nonEmptyHeaderFields, orderedHeaderFields, isAssembledDataset)
-            return PreparedExportData(csvData, csvSchema)
-        }
-
-        private data class PreparedExportData(
-            val csvData: List<Map<String, String>>,
-            val csvSchema: CsvSchema,
-        )
 
         /**
          * Create a ByteStream to be used for CSV export from a list of JSON objects.
@@ -195,20 +132,18 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): InputStreamResource {
-            val (csvData, csvSchema) =
+            val (aliasedCsvData, csvSchema) =
                 prepareExportData(
-                    portfolioExportRows,
-                    dataType,
-                    keepValueFieldsOnly,
+                    portfolioExportRows, dataType,
+                    keepValueFieldsOnly, includeAliases,
                 )
 
             val outputStream = ByteArrayOutputStream()
             val csvMapper = CsvMapper()
-            val csvWriter = csvMapper.writerFor(List::class.java).with(csvSchema)
-            val rawCsv = csvWriter.writeValueAsString(csvData)
 
-            outputStream.write(rawCsv.toByteArray())
+            csvMapper.writer(csvSchema).writeValues(outputStream).writeAll(aliasedCsvData)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -224,19 +159,22 @@ class DataExportService
             portfolioExportRows: List<JsonNode>,
             dataType: DataType,
             keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
         ): InputStreamResource {
             val (csvData, csvSchema) =
                 prepareExportData(
-                    portfolioExportRows,
-                    dataType,
-                    keepValueFieldsOnly,
+                    portfolioExportRows, dataType,
+                    keepValueFieldsOnly, includeAliases,
                 )
-            val excelHeaderFields =
-                csvSchema.columnNames
-                    .filter { it.startsWith("data.") }
-                    .map { it.substringAfter("data.") }
+
             val outputStream = ByteArrayOutputStream()
-            transformDataToExcelWithReadableHeaders(excelHeaderFields, csvData, outputStream)
+
+            transformDataToExcelWithReadableHeaders(
+                csvData,
+                csvSchema,
+                outputStream,
+            )
+
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -256,77 +194,6 @@ class DataExportService
         }
 
         /**
-         * Parse a list of JSON nodes into a list of (fieldName --> fieldValue)-mappings
-         * @param nodes the list of nodes to process
-         * @param keepValueFieldsOnly whether meta-information fields should be dropped or kept
-         * @return a pair of lists containing (fieldName --> fieldValue)-mappings and a set of all used field names
-         */
-        private fun getCsvDataAndNonEmptyFields(
-            nodes: List<JsonNode>,
-            keepValueFieldsOnly: Boolean,
-        ): Pair<List<Map<String, String>>, Set<String>> {
-            val csvData =
-                nodes.map { node ->
-                    val nonEmptyNodes =
-                        JsonUtils
-                            .getNonEmptyLeafNodesAsMapping(node)
-                            .filterKeys { !isReferencedReportsField(it) }
-                            .toMutableMap()
-
-                    if (keepValueFieldsOnly) {
-                        processQualityFields(nonEmptyNodes)
-                    } else {
-                        nonEmptyNodes
-                    }
-                }
-            val nonEmptyFields = csvData.map { it.keys }.fold(emptySet<String>()) { acc, next -> acc.plus(next) }
-
-            csvData.forEach { dataSet ->
-                nonEmptyFields.forEach { headerField ->
-                    dataSet.getOrPut(headerField) { "" }
-                }
-            }
-
-            return Pair(csvData, nonEmptyFields)
-        }
-
-        /**
-         * Process a map of nodes to keep value fields and convert quality fields to value fields
-         * when there is no corresponding value.
-         * @param nodes The map of nodes to process
-         * @return A filtered map containing only value fields (including converted quality fields)
-         */
-        private fun processQualityFields(nodes: MutableMap<String, String>): MutableMap<String, String> {
-            val filteredNodes = mutableMapOf<String, String>()
-            val separator = JsonUtils.getPathSeparator()
-
-            val keys = nodes.keys.toList()
-            for (field in keys) {
-                val value = nodes[field] ?: continue
-
-                when {
-                    field.endsWith("${separator}quality") -> {
-                        val basePath = field.removeSuffix("${separator}quality")
-                        val valuePath = "${basePath}${separator}value"
-                        if (valuePath !in nodes) {
-                            filteredNodes[valuePath] = value
-                        }
-                    }
-                    field.endsWith("${separator}value") -> {
-                        filteredNodes[field] = value
-                    }
-                    !isMetaDataField(field) -> {
-                        filteredNodes[field] = value
-                    }
-                }
-            }
-
-            nodes.clear()
-            nodes.putAll(filteredNodes)
-            return nodes
-        }
-
-        /**
          * Converts the data class into a JSON object.
          * @param singleCompanyExportData The company associated data
          * @return The JSON node representation of the data
@@ -337,41 +204,111 @@ class DataExportService
         }
 
         /**
-         * Creates the CSV schema based on the provided headers
-         * The first parameter determines which fields are used to create columns; the second parameter determines the
-         * order of the columns.
-         * @param usedHeaderFields a set of column names used as the headers in the CSV
-         * @param orderedHeaderFields a list of all existing header fields in the correct order
-         * @return the csv schema builder
+         * Return the template of an assembled framework or null if the passed name refers to an old style framework
+         *
+         * @param framework the framework for which the template shall be returned
          */
-        private fun createCsvSchemaBuilder(
-            usedHeaderFields: Set<String>,
-            orderedHeaderFields: Collection<String>,
-            isAssembledDataset: Boolean,
-        ): CsvSchema {
-            require(usedHeaderFields.isNotEmpty()) { "After filtering, CSV data is empty." }
-
-            val csvSchemaBuilder = CsvSchema.builder()
-
-            if (isAssembledDataset) {
-                usedHeaderFields
-                    .filter {
-                        !it.startsWith("data" + JsonUtils.getPathSeparator())
-                    }.forEach { csvSchemaBuilder.addColumn(it) }
-
-                orderedHeaderFields.forEach { orderedHeaderFieldsEntry ->
-                    usedHeaderFields
-                        .filter { usedHeaderField ->
-                            usedHeaderField.startsWith("data" + JsonUtils.getPathSeparator() + orderedHeaderFieldsEntry)
-                        }.forEach {
-                            csvSchemaBuilder.addColumn(it)
-                        }
-                }
-            } else {
-                orderedHeaderFields.forEach {
-                    csvSchemaBuilder.addColumn(it)
-                }
+        private fun getFrameworkTemplate(framework: String): JsonNode? {
+            return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
+                val frameworkTemplate = objectMapper.readTree(it.schema)
+                referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
+                    frameworkTemplate,
+                    it.referencedReportJsonPath,
+                )
+                return frameworkTemplate
             }
-            return csvSchemaBuilder.build().withHeader()
         }
+
+        private fun getResolvedSchemaNode(framework: String): JsonNode? {
+            val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
+            return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
+        }
+
+        /**
+         * Prepares the data structure for export formats (CSV and Excel)
+         * @param portfolioExportRows passed JSON objects to be exported
+         * @param dataType the datatype specifying the framework
+         * @param keepValueFieldsOnly if true, non value fields are stripped
+         * @param includeAliases if true, human-readable names are used if available
+         * @return PreparedExportData containing:
+         *   - the CSV data as a list of maps
+         *   - the CSV schema
+         *   - header fields with human-readable names
+         */
+        fun prepareExportData(
+            portfolioExportRows: List<JsonNode>,
+            dataType: DataType,
+            keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
+        ): DataExportUtils.Companion.PreparedExportData {
+            val frameworkTemplate = getFrameworkTemplate(dataType.toString())
+            val isAssembledDatasetParam = (frameworkTemplate != null)
+
+            val (csvData, nonEmptyHeaderFields) =
+                DataExportUtils.Companion.getCsvDataAndNonEmptyFields(
+                    portfolioExportRows,
+                    keepValueFieldsOnly,
+                )
+
+            val orderedHeaderFields =
+                if (isAssembledDatasetParam) {
+                    val resolvedSchemaNode = getResolvedSchemaNode(dataType.toString())
+                    JsonUtils.getLeafNodeFieldNames(
+                        resolvedSchemaNode ?: NullNode.instance,
+                        keepEmptyFields = true,
+                        dropLastFieldName = false,
+                    )
+                } else {
+                    getOrderedHeaderFieldsForNonAssembledDataset(nonEmptyHeaderFields)
+                }
+            val orderedHeaders =
+                DataExportUtils.Companion.getOrderedHeaders(
+                    nonEmptyHeaderFields,
+                    orderedHeaderFields,
+                    isAssembledDatasetParam,
+                )
+            val readableHeaders =
+                if (includeAliases) {
+                    DataExportUtils.Companion.applyAliasRenaming(
+                        orderedHeaders,
+                        frameworkTemplate ?: portfolioExportRows.first(),
+                    )
+                } else {
+                    orderedHeaders.associateWith { it }
+                }
+
+            val mappedCsvData = DataExportUtils.Companion.mapReadableHeadersToCsvData(csvData, readableHeaders)
+
+            val usedReadableHeaders =
+                mappedCsvData
+                    .flatMap { it.entries }
+                    .filterNot { it.value.isNullOrBlank() }
+                    .map { it.key }
+                    .toSet()
+
+            val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
+
+            val csvSchema =
+                DataExportUtils.Companion.createCsvSchemaBuilder(
+                    filteredReadableHeaders.values.toSet(),
+                    orderedHeaders.mapNotNull { filteredReadableHeaders[it] },
+                    isAssembledDatasetParam,
+                )
+
+            return DataExportUtils.Companion.PreparedExportData(mappedCsvData, csvSchema)
+        }
+
+        private fun getOrderedHeaderFieldsForNonAssembledDataset(nonEmptyHeaderFields: Set<String>): LinkedHashSet<String> =
+            LinkedHashSet(
+                nonEmptyHeaderFields.sortedWith(
+                    compareBy<String> {
+                        when {
+                            it.startsWith("companyName") -> COMPANY_NAME_POSITION
+                            it.startsWith("companyLei") -> COMPANY_LEI_POSITION
+                            it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
+                            else -> 0
+                        }
+                    }.then(naturalOrder()),
+                ),
+            )
     }

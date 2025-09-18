@@ -11,12 +11,10 @@ import {
 } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
+import { UserValidationControllerApi } from '@clients/communitymanager';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -33,6 +31,7 @@ interface ApiClients {
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
+  userValidationController: UserValidationControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -92,6 +91,7 @@ export class ApiClientProvider {
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
+      userValidationController: this.getClientFactory('/community')(UserValidationControllerApi),
     };
   }
 
@@ -109,17 +109,5 @@ export class ApiClientProvider {
     return (constructor) => {
       return new constructor(undefined, basePath, this.axiosInstance);
     };
-  }
-
-  /**
-   * This function returns a promise to an api controller adaption that is unified across frameworks to allow
-   * for creation of generic components that work framework-independent.
-   * @param framework The identified of the framework
-   * @returns the unified API client
-   */
-  getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
-    framework: K
-  ): PublicFrameworkDataApi<FrameworkDataTypes[K]['data']> {
-    return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }

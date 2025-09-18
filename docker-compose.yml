@@ -96,6 +96,7 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -190,6 +191,7 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   e2etests:
@@ -346,6 +348,7 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
@@ -499,6 +502,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
     environment:
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
+      GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
       GET_ALL_NORTHDATA_COMPANIES_FLAG_FILE: /config/perform_northdata_full_golden_copy_download_flag
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
@@ -544,6 +548,8 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
+    command:
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   specification-service:
@@ -641,7 +647,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:7062a2109c4b51f3c792c7ea01e83ed12ef9a980886e3b3d380a7d2e5f6ce3f5
+    image: postgres:alpine@sha256:d5f196a551b5cef1c70853c6dd588f456d16ca4ea733e3f31c75bc1ae2f65f3f
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data

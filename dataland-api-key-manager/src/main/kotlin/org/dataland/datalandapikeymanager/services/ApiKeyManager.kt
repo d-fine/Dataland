@@ -8,6 +8,7 @@ import org.dataland.datalandapikeymanager.repositories.ApiKeyRepository
 import org.dataland.datalandbackendutils.apikey.ApiKeyUtility
 import org.dataland.datalandbackendutils.apikey.ParsedApiKey
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -22,6 +23,7 @@ import java.time.Instant
 @Component("ApiKeyManager")
 class ApiKeyManager(
     @Autowired private val apiKeyRepository: ApiKeyRepository,
+    @Autowired private val keycloakUserService: KeycloakUserService,
     @Value("\${dataland.max-days-selectable-for-api-key-validity}")
     private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
@@ -132,7 +134,7 @@ class ApiKeyManager(
                     active = true,
                     keycloakUserId = keycloakUserId,
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
-                    keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles,
+                    keycloakRoles = keycloakUserService.getCompositeUserRoleNames(keycloakUserId),
                 )
             } else {
                 ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
@@ -171,10 +173,13 @@ class ApiKeyManager(
         val apiKeyMetaInfo =
             if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
                 ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-            } else if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
-                ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
             } else {
-                ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)
+                val userRolesNames = keycloakUserService.getCompositeUserRoleNames(apiKeyEntity.keycloakUserId)
+                if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
+                    ApiKeyMetaInfo(apiKeyEntity, userRolesNames, true, validationMessageSuccess)
+                } else {
+                    ApiKeyMetaInfo(apiKeyEntity, userRolesNames, false, validationMessageExpiredApiKey)
+                }
             }
         logger.info("Validated Api Key for user ${apiKeyEntity.keycloakUserId} as active=${apiKeyMetaInfo.active}")
         return apiKeyMetaInfo

@@ -2,14 +2,13 @@ package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
-import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
-import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationGeneral
-import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationGeneralFinancialInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrSocial
+import org.dataland.datalandbackend.openApiClient.model.SfdrSocialSocialAndEmployeeMatters
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.tests.dataPoints.AssembledDatasetTest.LinkedQaReportTestData
@@ -36,8 +35,8 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
-    private val linkedQaReportDataFile = File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
-    private val fakeFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(AdditionalCompanyInformationData::class.java)
+    private val linkedQaReportDataFile = File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
+    private val fakeFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java)
     private val apiAccessor = ApiAccessor()
     private val reportingPeriod = "2025"
 
@@ -82,12 +81,12 @@ class DataMigrationTest {
 
     @Test
     fun `ensure the data can be retrieved correctly after migration`() {
-        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
 
         val downloadedDataset =
-            Backend.additionalCompanyInformationDataControllerApi
-                .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInfo.dataId)
+            Backend.sfdrDataControllerApi
+                .getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
 
         assertEquals(
             linkedQaReportData.data.general
@@ -98,12 +97,12 @@ class DataMigrationTest {
                 ?.referencedReports,
         )
         assertEquals(
-            linkedQaReportData.data.general
-                ?.financialInformation
-                ?.evic,
-            downloadedDataset.data.general
-                ?.financialInformation
-                ?.evic
+            linkedQaReportData.data.social
+                ?.antiCorruptionAndAntiBribery
+                ?.totalAmountOfReportedFinesOfBriberyAndCorruption,
+            downloadedDataset.data.social
+                ?.antiCorruptionAndAntiBribery
+                ?.totalAmountOfReportedFinesOfBriberyAndCorruption
                 // Ignore publication date as it is modified during referenced report processing
                 ?.let { it.copy(dataSource = it.dataSource?.copy(publicationDate = null)) },
         )
@@ -111,22 +110,22 @@ class DataMigrationTest {
 
     @Test
     fun `ensure that nullish values get migrated correctly`() {
-        val fixture = fakeFixtureProvider.getByCompanyName("additional-company-information-dataset-with-nullish-fields").t
-        val dataMetaInfo = uploadGenericDummyDataset(fixture, DataTypeEnum.additionalMinusCompanyMinusInformation)
+        val fixture = fakeFixtureProvider.getByCompanyName("sfdr-a-lot-of-nulls").t
+        val dataMetaInfo = uploadGenericDummyDataset(fixture, DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val downloadedDataset =
-            Backend.additionalCompanyInformationDataControllerApi
-                .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInfo.dataId)
+            Backend.sfdrDataControllerApi
+                .getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
         assertEquals(
             null,
-            downloadedDataset.data.general
-                ?.financialInformation,
+            downloadedDataset.data.social
+                ?.antiCorruptionAndAntiBribery,
         )
     }
 
     @Test
     fun `ensure a dataset cannot be migrated twice`() {
-        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         assertThrows<ClientException> {
             Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
@@ -136,7 +135,7 @@ class DataMigrationTest {
     @ParameterizedTest
     @EnumSource(QaStatus::class, names = ["Accepted", "Rejected"])
     fun `ensure the data points keep the QA status of the dataset after migration`(qaStatus: QaStatus) {
-        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.sfdr)
         ApiAwait.waitForSuccess(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
             QaService.qaControllerApi.changeQaStatus(dataMetaInfo.dataId, qaStatus)
         }
@@ -168,7 +167,7 @@ class DataMigrationTest {
 
     @Test
     fun `ensure that qa reports get migrated`() {
-        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.sfdr)
         val qaReportInfo =
             QaService.assembledDataMigrationControllerApi.forceUploadStoredQaReport(
                 dataId = dataMetaInfo.dataId,
@@ -179,8 +178,8 @@ class DataMigrationTest {
             // When the API Call is faster than the migration, the QA Report might not be migrated yet, resulting
             // in a 500. This is expected.
             .waitForData(retryOnHttpErrors = setOf(HttpStatus.INTERNAL_SERVER_ERROR)) {
-                QaService.additionalCompanyInformationDataQaReportControllerApi
-                    .getAdditionalCompanyInformationDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
+                QaService.sfdrDataQaReportControllerApi
+                    .getSfdrDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
             }.let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
             }
@@ -260,23 +259,29 @@ class DataMigrationTest {
         )
     }
 
-    private val minimalDatasetDebt =
-        AdditionalCompanyInformationData(
-            general =
-                AdditionalCompanyInformationGeneral(
-                    financialInformation =
-                        AdditionalCompanyInformationGeneralFinancialInformation(
-                            debt = CurrencyDataPoint(BigDecimal.valueOf(1)),
+    private val minimalDatasetFemale =
+        SfdrData(
+            social =
+                SfdrSocial(
+                    socialAndEmployeeMatters =
+                        SfdrSocialSocialAndEmployeeMatters(
+                            averageGrossHourlyEarningsFemaleEmployees =
+                                CurrencyDataPoint(
+                                    BigDecimal
+                                        .valueOf(1),
+                                ),
                         ),
                 ),
         )
-    private val minimalDatasetEquity =
-        AdditionalCompanyInformationData(
-            general =
-                AdditionalCompanyInformationGeneral(
-                    financialInformation =
-                        AdditionalCompanyInformationGeneralFinancialInformation(
-                            equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
+
+    private val minimalDatasetMale =
+        SfdrData(
+            social =
+                SfdrSocial(
+                    socialAndEmployeeMatters =
+                        SfdrSocialSocialAndEmployeeMatters(
+                            averageGrossHourlyEarningsMaleEmployees =
+                                CurrencyDataPoint(BigDecimal.valueOf(1)),
                         ),
                 ),
         )
@@ -284,34 +289,34 @@ class DataMigrationTest {
     @Test
     fun `ensure that after the migration non overlapping accepted datasets result in the correct dynamic view`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        uploadGenericDummyDataset(minimalDatasetEquity, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
-        uploadGenericDummyDataset(minimalDatasetDebt, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
+        uploadGenericDummyDataset(minimalDatasetFemale, DataTypeEnum.sfdr, companyId = companyId)
+        uploadGenericDummyDataset(minimalDatasetMale, DataTypeEnum.sfdr, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
         ApiAwait
-            .waitForData(timeoutInSeconds = 30, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
-                Backend.additionalCompanyInformationDataControllerApi
-                    .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+            .waitForData(timeoutInSeconds = 60, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                Backend.sfdrDataControllerApi
+                    .getCompanyAssociatedSfdrDataByDimensions(
                         reportingPeriod = reportingPeriod, companyId = companyId,
                     )
             }.let {
                 assertEquals(
-                    it.data.general
-                        ?.financialInformation
-                        ?.equity
+                    it.data.social
+                        ?.socialAndEmployeeMatters
+                        ?.averageGrossHourlyEarningsFemaleEmployees
                         ?.value,
-                    minimalDatasetEquity.general
-                        ?.financialInformation
-                        ?.equity
+                    minimalDatasetFemale.social
+                        ?.socialAndEmployeeMatters
+                        ?.averageGrossHourlyEarningsFemaleEmployees
                         ?.value,
                 )
                 assertEquals(
-                    it.data.general
-                        ?.financialInformation
-                        ?.debt
+                    it.data.social
+                        ?.socialAndEmployeeMatters
+                        ?.averageGrossHourlyEarningsMaleEmployees
                         ?.value,
-                    minimalDatasetDebt.general
-                        ?.financialInformation
-                        ?.debt
+                    minimalDatasetMale.social
+                        ?.socialAndEmployeeMatters
+                        ?.averageGrossHourlyEarningsMaleEmployees
                         ?.value,
                 )
             }

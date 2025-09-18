@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
@@ -359,7 +360,17 @@ class AssembledDataManager
             val dataPointIds =
                 dataPointDimensions.entries
                     .associate { (dataDimension, dataPointDimensionList) ->
-                        dataDimension to dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                        val availableDataPointIds = dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
+                        dataDimension to
+                            if (availableDataPointIds.keys
+                                    .map { it.dataPointType }
+                                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+                                    .isNotEmpty()
+                            ) {
+                                availableDataPointIds.values.toList()
+                            } else {
+                                emptyList()
+                            }
                     }.filterNot { it.value.isEmpty() }
 
             return assembleDatasetsFromDataPointIds(dataPointIds, correlationId)

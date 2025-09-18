@@ -1,89 +1,70 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
-      <TheContent>
-        <MarginWrapper class="mb-2">
-          <BackButton id="backButton" label="BACK" />
-          <CompanyInformation :companyId="companyID" />
-        </MarginWrapper>
-        <Card class="col-12 text-left page-wrapper-card">
-          <template #title> New Dataset - Framework </template>
-          <template #content>
-            <div class="uploadFormWrapper grid">
-              <div id="euTaxonomyContainer" class="col-9 flex">
-                <div id="euTaxonomyLabel" class="col-3 p-3">
-                  <h3>EU Taxonomy</h3>
-                  <p>{{ buildSubtitle('EU Taxonomy') }}</p>
-                </div>
-                <div class="col-9 d-card">
-                  <div id="eutaxonomyDataSetsContainer">
-                    <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
-
-                    <MetaInfoPerCompanyAndFramework
-                      :data-type="DataTypeEnum.EutaxonomyNonFinancials"
-                      :companyId="companyID"
-                      :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
-                      class="bottom-border-section-dots"
-                    />
-
-                    <MetaInfoPerCompanyAndFramework
-                      :data-type="DataTypeEnum.EutaxonomyFinancials"
-                      :companyId="companyID"
-                      :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
-                    />
-                  </div>
-                </div>
+  <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
+    <TheContent>
+      <MarginWrapper class="mb-2">
+        <CompanyInformation :companyId="companyID" />
+      </MarginWrapper>
+      <Card class="col-12 text-left page-wrapper-card">
+        <template #title> New Dataset - Framework </template>
+        <template #content>
+          <div class="uploadFormWrapper grid">
+            <div id="euTaxonomyContainer" class="col-9 flex">
+              <div id="euTaxonomyLabel" class="col-3 p-3">
+                <h3>EU Taxonomy</h3>
+                <p>{{ buildSubtitle('EU Taxonomy') }}</p>
               </div>
+              <div class="col-9 d-card">
+                <div id="eutaxonomyDataSetsContainer">
+                  <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
-              <div
-                v-for="dataType in allFrameworksExceptEuTaxonomy"
-                :key="dataType"
-                class="col-9 flex top-border-section"
-                :id="dataType + 'Container'"
-              >
-                <div :id="dataType + 'Label'" class="col-3 p-3">
-                  <h3>{{ humanizeString(dataType) }}</h3>
-                  <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
-                  <p v-if="dataType === DataTypeEnum.P2p">
-                    Framework based on:
-                    <a
-                      href="https://pathwaystoparis.com/en/tool-box/transformation-perfomance/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {{ humanizeString(dataType) }}</a
-                    >
-                  </p>
-                </div>
-                <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
-                    :data-type="dataType"
+                    :data-type="DataTypeEnum.EutaxonomyNonFinancials"
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="getFrameworkMetaInfos(dataType)"
+                    :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
+                    class="bottom-border-section-dots"
+                  />
+
+                  <MetaInfoPerCompanyAndFramework
+                    :data-type="DataTypeEnum.EutaxonomyFinancials"
+                    :companyId="companyID"
+                    :isWaitingForData="waitingForData"
+                    :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
                   />
                 </div>
               </div>
             </div>
-          </template>
-        </Card>
-      </TheContent>
-    </AuthorizationWrapper>
-    <TheFooter />
-  </AuthenticationWrapper>
+
+            <div
+              v-for="dataType in allFrameworksExceptEuTaxonomy"
+              :key="dataType"
+              class="col-9 flex top-border-section"
+              :id="dataType + 'Container'"
+            >
+              <div :id="dataType + 'Label'" class="col-3 p-3">
+                <h3>{{ humanizeString(dataType) }}</h3>
+                <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
+              </div>
+              <div class="col-9 d-card">
+                <MetaInfoPerCompanyAndFramework
+                  :data-type="dataType"
+                  :companyId="companyID"
+                  :isWaitingForData="waitingForData"
+                  :listOfFrameworkData="getFrameworkMetaInfos(dataType)"
+                />
+              </div>
+            </div>
+          </div>
+        </template>
+      </Card>
+    </TheContent>
+  </AuthorizationWrapper>
 </template>
 
 <script lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
 import MetaInfoPerCompanyAndFramework from '@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -100,12 +81,8 @@ export default defineComponent({
   name: 'ChooseFramework',
   components: {
     MarginWrapper,
-    TheFooter,
     AuthorizationWrapper,
     CompanyInformation,
-    AuthenticationWrapper,
-    TheHeader,
-    BackButton,
     TheContent,
     Card,
     MetaInfoPerCompanyAndFramework,
@@ -261,3 +238,62 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.d-card {
+  background: var(--default-neutral-white);
+  padding: var(--spacing-md);
+  box-shadow: 0 0 3px 3px var(--shadow-color);
+}
+
+.top-border-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--input-separator);
+}
+
+.bottom-border-section-dots {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dotted var(--input-separator);
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+}
+</style>

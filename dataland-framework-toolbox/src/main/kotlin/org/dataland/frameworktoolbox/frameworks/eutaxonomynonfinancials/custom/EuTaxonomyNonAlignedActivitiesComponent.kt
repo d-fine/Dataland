@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_EU_TAXONOMY_NON_ALIGNED_ACTIVITIES_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
@@ -39,6 +40,10 @@ class EuTaxonomyNonAlignedActivitiesComponent(
                         false,
                     ),
                 ),
+            ),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_EU_TAXONOMY_NON_ALIGNED_ACTIVITIES_COMPONENT),
             ),
         )
     }
@@ -81,8 +86,10 @@ class EuTaxonomyNonAlignedActivitiesComponent(
             FrameworkDisplayValueLambda(
                 "formatNonAlignedActivitiesForDataTable(" +
                     "${this.getTypescriptFieldAccessor()}," +
-                    "\"${StringEscapeUtils.escapeEcmaScript(label)}\"," +
-                    ")",
+                    "\"${StringEscapeUtils.escapeEcmaScript(
+                        label,
+                    )
+                    }\", \"" + getTypescriptFieldAccessor().split(".")[1].dropLast(1) + "\")",
                 setOf(
                     TypeScriptImport(
                         "formatNonAlignedActivitiesForDataTable",

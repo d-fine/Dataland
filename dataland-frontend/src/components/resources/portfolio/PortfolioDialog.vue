@@ -1,66 +1,80 @@
 <template>
   <div class="portfolio-dialog-content">
-    <FormKit
-      v-model="portfolioName"
-      type="text"
-      label="Portfolio Name"
-      name="portfolioName"
-      :placeholder="portfolioName"
-    />
-    <label class="formkit-label" for="company-identifiers">Add Company Identifiers</label>
-    <FormKit
-      v-model="companyIdentifiersInput"
-      type="textarea"
-      name="company-identifiers"
-      placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
-      :disabled="isCompaniesLoading"
-    />
-    <PrimeButton
-      label="Add Companies"
-      icon="pi pi-plus"
-      :loading="isCompaniesLoading"
-      @click="addCompanies"
-      class="primary-button"
-      data-test="addCompanies"
-      style="margin-left: 1em; float: right"
-    />
-    <p class="gray-text font-italic text-xs m-0">
-      Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
-    </p>
-    <label class="formkit-label" for="existing-company-identifiers">Company Identifiers in Portfolio</label>
-    <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
-      <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
-        <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
-        {{ company.companyName }}
-      </li>
-    </ul>
-    <div data-test="error">
-      <p v-if="!isValidPortfolioUpload" class="formkit-message">
-        Please provide a portfolio name and at least one company.
-      </p>
-      <Message v-if="portfolioErrors" severity="error" class="m-0" :life="3000">
-        {{ portfolioErrors }}
-      </Message>
+    <div class="container">
+      <p class="header-styling">Portfolio Name</p>
+      <InputText v-model="portfolioName" data-test="portfolio-name-input" :placeholder="portfolioName" fluid />
     </div>
+    <div class="container">
+      <p class="header-styling">Add company identifiers</p>
+      <Textarea
+        v-model="companyIdentifiersInput"
+        data-test="company-identifiers-input"
+        :disabled="isCompaniesLoading"
+        placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
+        rows="5"
+        class="no-resize"
+        fluid
+        @focus="showIdentifierError = false"
+      />
+      <div v-if="showIdentifierError">
+        <Message severity="error" data-test="invalidIdentifierErrorMessage" variant="simple" size="small">
+          Identifiers left in the dialog couldn't be added to the portfolio.
+        </Message>
+      </div>
+      <div class="company-info-container">
+        <p class="dataland-info-text small">
+          Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
+        </p>
+        <div class="button-col">
+          <PrimeButton
+            label="ADD COMPANIES"
+            icon="pi pi-plus"
+            :loading="isCompaniesLoading"
+            @click="addCompanies"
+            data-test="portfolio-dialog-add-companies"
+            :pt="{ label: { style: { whiteSpace: 'nowrap' } } }"
+            fluid
+          />
+          <PrimeButton
+            label="REQUEST SUPPORT"
+            icon="pi pi-question"
+            @click="openHelpDialog"
+            fluid
+            :pt="{ label: { style: { whiteSpace: 'nowrap' } } }"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="header-styling">Company identifiers in portfolio</p>
+      <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
+        <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
+          <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
+          {{ company.companyName }}
+        </li>
+      </ul>
+    </div>
+    <Message v-if="!isValidPortfolioUpload" severity="error" variant="simple" size="small">
+      Please provide a portfolio name and at least one company.
+    </Message>
+    <Message v-if="portfolioErrors" severity="error" :life="3000" data-test="unknown-portfolio-error">
+      {{ portfolioErrors }}
+    </Message>
     <div class="buttonbar">
       <PrimeButton
         v-if="portfolioId"
-        label="Delete Portfolio"
+        label="DELETE PORTFOLIO"
         icon="pi pi-trash"
         @click="deletePortfolio"
-        class="primary-button deleteButton"
-        :data-test="'deleteButton'"
-        title="Delete the selected Portfolio"
-        style="width: 1em; padding: 1em"
+        data-test="portfolio-dialog-delete-button"
       />
       <PrimeButton
-        label="Save Portfolio"
+        label="SAVE PORTFOLIO"
         icon="pi pi-save"
         :disabled="!isValidPortfolioUpload"
         :loading="isPortfolioSaving"
         @click="savePortfolio()"
-        class="primary-button"
-        :data-test="'saveButton'"
+        data-test="portfolio-dialog-save-button"
       />
     </div>
   </div>
@@ -81,6 +95,10 @@ import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
+import { useDialog } from 'primevue/usedialog';
+import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 
 class CompanyIdAndName {
   companyId: string;
@@ -96,12 +114,14 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const companyIdentifiersInput = ref('');
+const showIdentifierError = ref(false);
 const isCompaniesLoading = ref(false);
 const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
   'eutaxonomy-financials',
@@ -114,6 +134,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const isValidPortfolioUpload = computed(
   () => portfolioName.value && portfolioFrameworks.value?.length > 0 && portfolioCompanies.value?.length > 0
 );
+const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
@@ -121,7 +142,8 @@ onMounted(() => {
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
-  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries);
+  enrichedPortfolio.value = portfolio;
+  portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
 });
 
 /**
@@ -144,6 +166,7 @@ async function addCompanies(): Promise<void> {
     const companyValidationResults = (
       await apiClientProvider.backendClients.companyDataController.postCompanyValidation(newIdentifiers)
     ).data;
+
     const validIdentifiers: CompanyIdAndName[] = companyValidationResults
       .filter((validationResult) => validationResult.companyInformation)
       .map((validEntry): CompanyIdAndName => {
@@ -156,14 +179,31 @@ async function addCompanies(): Promise<void> {
       .filter((validationResult) => !validationResult.companyInformation)
       .map((it) => it.identifier);
 
+    if (invalidIdentifiers.length > 0) {
+      showIdentifierError.value = true;
+    }
+
+    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
     portfolioCompanies.value = getUniqueSortedCompanies([...portfolioCompanies.value, ...validIdentifiers]);
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.log(error);
   } finally {
     isCompaniesLoading.value = false;
-    companyIdentifiersInput.value = invalidIdentifiers.join(', ') || '';
   }
+}
+
+/**
+ * Function to open the help dialog
+ */
+function openHelpDialog(): void {
+  dialog.open(GetHelpDialog, {
+    props: {
+      header: 'Request of Support',
+      modal: true,
+      style: { width: '22rem' },
+    },
+  });
 }
 
 /**
@@ -181,7 +221,12 @@ async function savePortfolio(): Promise<void> {
   try {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
+      // as unknown as Set<string> cast required to ensure proper json is created
       companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
+      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
+      // as unknown as Set<string> cast required to ensure proper json is created
+      monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
@@ -223,8 +268,7 @@ async function deletePortfolio(): Promise<void> {
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
     dialogRef?.value.close({
-      deleted: true,
-      portfolioId: portfolioId.value,
+      isDeleted: true,
     });
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
@@ -244,29 +288,47 @@ function processCompanyInputString(): string[] {
 }
 </script>
 
-<style scoped lang="scss">
-.portfolio-dialog-content {
-  width: 28em;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 1.5rem;
+<style scoped>
+.company-info-container {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
 }
 
-.deleteButton {
-  min-width: fit-content;
-  padding: 1em;
+.no-resize {
+  resize: none;
+}
+
+.container {
+  margin-bottom: var(--spacing-lg);
+}
+
+.header-styling {
+  font-weight: var(--font-weight-bold);
+}
+
+.portfolio-dialog-content {
+  width: 28em;
+  border-radius: var(--spacing-xxs);
+  background-color: white;
+  padding: var(--spacing-lg);
 }
 
 .buttonbar {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
   margin-top: 1em;
   margin-left: auto;
   justify-content: end;
 }
 
-label {
-  margin-top: 1.5em;
+.button-col {
+  margin-top: var(--spacing-lg);
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 ul {

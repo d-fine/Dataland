@@ -2,19 +2,14 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-09-28",
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2024-08-19",
+				"dataDate": "2024-06-25",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-07-26",
 				"referencedReports": {
-					"SustainabilityReport": {
+					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "SustainabilityReport",
-						"publicationDate": "2023-04-22"
-					},
-					"AnnualReport": {
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"fileName": "AnnualReport",
-						"publicationDate": "2024-01-01"
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-05-25"
 					}
 				}
 			}
@@ -22,16 +17,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 3701,
+					"value": 3312,
 					"dataSource": {
-						"page": "1167-1211",
-						"fileName": "SustainabilityReport",
+						"page": "526-1202",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
+						"tagName": "schemas",
 						"publicationDate": null
 					},
-					"comment": "copy mobile microchip",
-					"quality": "Reported"
+					"comment": "connect multi-byte array",
+					"quality": "NoDataFound"
 				}
 			}
 		},
@@ -40,26 +35,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "10",
-						"fileName": "AnnualReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "schemas",
+						"page": "1075",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
 						"publicationDate": null
 					},
-					"comment": "reboot multi-byte firewall",
-					"quality": "Estimated"
+					"comment": "navigate virtual bus",
+					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "515-1276",
-						"fileName": "AnnualReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "supply-chains",
+						"page": "996-1087",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
 						"publicationDate": null
 					},
-					"comment": "synthesize mobile interface",
-					"quality": "Incomplete"
+					"comment": "connect bluetooth array",
+					"quality": "Reported"
 				}
 			}
 		}

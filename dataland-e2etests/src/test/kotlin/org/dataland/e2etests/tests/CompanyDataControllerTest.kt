@@ -94,7 +94,8 @@ class CompanyDataControllerTest {
             CompanyInformationPatch(
                 identifiers =
                     mapOf(
-                        IdentifierType.Lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                        IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}"),
+                        IdentifierType.Isin.value to listOf("Test-ISIN${UUID.randomUUID()}"),
                         IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
                     ),
             )
@@ -102,17 +103,22 @@ class CompanyDataControllerTest {
             apiAccessor.companyDataControllerApi.patchCompanyById(uploadedCompany.companyId, patchObject)
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
+        val assertionMessage = "The update should work as expected"
         assertEquals(
-            oldIdentifiers[IdentifierType.Isin.value], newIdentifiers[IdentifierType.Isin.value],
+            oldIdentifiers[IdentifierType.PermId.value], newIdentifiers[IdentifierType.PermId.value],
             "Unpatched identifiers should remain the same",
         )
         assertEquals(
             patchObject.identifiers!![IdentifierType.Lei.value], newIdentifiers[IdentifierType.Lei.value],
-            "The update should work as expected",
+            assertionMessage,
+        )
+        assertEquals(
+            patchObject.identifiers[IdentifierType.Isin.value], newIdentifiers[IdentifierType.Isin.value],
+            assertionMessage,
         )
         assertEquals(
             patchObject.identifiers[IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
-            "The update should work as expected",
+            assertionMessage,
         )
     }
 
@@ -179,7 +185,7 @@ class CompanyDataControllerTest {
                 headquarters = "HQ",
                 identifiers =
                     mapOf(
-                        IdentifierType.Duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
+                        IdentifierType.Isin.value to listOf("Test-ISIN${UUID.randomUUID()}", "Test-ISIN2${UUID.randomUUID()}"),
                     ),
                 countryCode = "DE",
             )
@@ -190,17 +196,17 @@ class CompanyDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
-            put1CompanyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() ==
-                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() &&
+            put1CompanyInformation.identifiers[IdentifierType.Isin.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.Isin.value]!!.toSet() &&
                 updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.isEmpty(),
-            "The Duns identifiers should have been updated and the Lei identifiers should still be empty",
+            "The ISIN identifiers should have been updated and the Lei identifiers should still be empty",
         )
         updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put2CompanyInformation)
         assertTrue(
             put2CompanyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() ==
                 updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() &&
-                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.isEmpty(),
-            "The Lei identifiers should have been updated and the Duns identifiers should have been deleted",
+                updatedCompany.companyInformation.identifiers[IdentifierType.Isin.value]!!.isEmpty(),
+            "The Lei identifiers should have been updated and the ISIN identifiers should have been deleted",
         )
     }
 
@@ -368,10 +374,9 @@ class CompanyDataControllerTest {
         companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         val expectedNumberForFramework: Map<DataTypeEnum, Long> =
             mapOf(
-                DataTypeEnum.additionalMinusCompanyMinusInformation to 2,
-                DataTypeEnum.eutaxonomyMinusFinancials to 2,
+                DataTypeEnum.eutaxonomyMinusFinancials to 0,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
-                DataTypeEnum.sfdr to 2,
+                DataTypeEnum.sfdr to 0,
             )
         val expectedMap =
             DataTypeEnum.entries

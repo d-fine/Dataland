@@ -39,6 +39,7 @@ describeIf(
         });
       });
     }
+
     /**
      * Sets the status of a single data request from open to answered
      * @param companyId id of the company
@@ -55,6 +56,7 @@ describeIf(
         );
       });
     }
+
     before(() => {
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -91,13 +93,13 @@ describeIf(
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
       cy.get('[data-test="acceptConditionsCheckbox"]').should('be.visible');
       cy.get('[data-test="acceptConditionsCheckbox"]').click();
-      cy.get("button[type='submit']").click();
+      cy.get('button[type="submit"]').click();
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
       checkCompanyInfoSheet();
-      cy.get('[data-test=submittedDiv]').should('exist');
-      cy.get('[data-test=requestStatusText]').should('contain.text', 'Submitting your data request was successful.');
+      cy.get('[data-test="submittedDiv"]').should('exist');
+      cy.get('[data-test="requestStatusText"]').should('contain.text', 'Submitting your data request was successful.');
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should('contain', '/companies/');
       checkCompanyInfoSheet();
@@ -117,20 +119,19 @@ describeIf(
 
       verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
       cy.get('[data-test="notifyMeImmediatelyInput"]').click();
-      cy.reload(); // Check if the data was persisted in the backend
-      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-inputswitch-checked');
+      cy.reload();
+      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
     }
 
     /**
      * Withdraw the request and check that it succeeded.
      */
     function withDrawRequestAndCheckThatItsWithdrawn(): void {
-      cy.get('a:contains("Withdraw request")').scrollIntoView();
-      cy.get('a:contains("Withdraw request")').click();
+      cy.get('[data-test="withdrawRequestButton"]').scrollIntoView();
+      cy.get('[data-test="withdrawRequestButton"]').click();
       cy.get('[data-test="successModal"] button:contains("CLOSE")').click();
       cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
-      cy.get('[data-test="back-button"]').scrollIntoView();
-      cy.get('[data-test="back-button"]').click();
+      cy.go('back');
       cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
     }
 
@@ -161,23 +162,25 @@ describeIf(
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      cy.get("[data-test='datapoint-framework']").click();
+      cy.get('[data-test="datapoint-framework"]').click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
+        cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
       });
-      cy.get("[data-test='datapoint-framework']").click();
+      cy.get('[data-test="datapoint-framework"]').click();
     }
 
     /**
      * Checks basic validation
      */
     function checkValidation(): void {
-      cy.get("button[type='submit']").click();
-      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage']")
+      cy.get('button[type="submit"]').click();
+      cy.get('div[data-test="reportingPeriods"]')
+        .find('[data-test="reportingPeriodErrorMessage"]')
         .should('be.visible')
         .should('contain.text', 'Select at least one reporting period to submit your request');
 
-      cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
+      cy.get('div[data-test="frameworkErrorMessage"]')
+        .should('exist')
         .should('be.visible')
         .should('contain.text', 'Select a framework to submit your request');
     }
@@ -186,7 +189,7 @@ describeIf(
      * Checks if the information on the company banner is correct
      */
     function checkCompanyInfoSheet(): void {
-      cy.get("[data-test='companyNameTitle']").should('contain.text', testCompanyName);
+      cy.get('[data-test="companyNameTitle"]').should('contain.text', testCompanyName);
     }
   }
 );

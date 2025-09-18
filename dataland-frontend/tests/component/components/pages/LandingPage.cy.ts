@@ -1,11 +1,8 @@
-import { checkButton, checkImage, checkAnchorByContent } from '@ct/testUtils/ExistenceChecks';
 import LandingPage from '@/components/pages/LandingPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
 import { type Page, type Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 
 describe('Component test for the landing page', () => {
   it('Check if essential elements are present', () => {
@@ -14,35 +11,21 @@ describe('Component test for the landing page', () => {
         authenticated: false,
       }),
     }).then(() => {
-      validateTheHeader();
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
       validateQuotesSection();
       validateHowItWorksSection();
 
-      assertFrameworkPanelExists('Pathways to Paris');
+      assertFrameworkPanelExists('VSME');
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
-      cy.get('button.joincampaign__button').should('exist');
-      cy.get('button.getintouch__text-button').should('exist');
-      checkFooter();
-
-      setMobileDeviceViewport();
-      validateTheHeader();
+      cy.get('[data-test="join-campaign-button"]').should('exist');
+      cy.get('[data-test="get-in-touch-button"]').should('exist');
     });
   });
 });
-
-/**
- * Validates the elements of the top bar
- */
-function validateTheHeader(): void {
-  checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  checkButton('signup_dataland_button', 'Sign Up');
-  checkAnchorByContent('Login');
-}
 
 /**
  * Validates the elements of the intro section
@@ -62,11 +45,23 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
-  expect(images?.length).to.eq(32);
+  expect(images?.length).to.eq(33);
   images?.forEach((image, index) => {
     const filename = image.split('/').slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
   });
+}
+
+/**
+ * Checks if an image is present
+ * @param alternativeText the "alt" identifier of the image
+ * @param fileName the file the image is expected to display
+ */
+function checkImage(alternativeText: string, fileName: string): void {
+  cy.get(`img[alt="${alternativeText}"]`)
+    .should('be.visible')
+    .should('have.attr', 'src')
+    .should('match', new RegExp(`.*/${fileName}$`));
 }
 
 /**

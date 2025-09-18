@@ -91,6 +91,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
+        includeAlias: Boolean,
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(
@@ -98,6 +99,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 companyIds = companyIds,
                 fileFormat = ExportFileType.CSV,
                 keepValueFieldsOnly = keepValueFieldsOnly,
+                includeAliases = false,
             )
 
     override fun exportDataAsExcel(
@@ -109,6 +111,7 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                 reportingPeriods = reportingPeriods,
                 companyIds = companyIds,
                 fileFormat = ExportFileType.EXCEL,
+                includeAliases = false,
             )
 
     override fun retrieveData(companyId: String): Any =

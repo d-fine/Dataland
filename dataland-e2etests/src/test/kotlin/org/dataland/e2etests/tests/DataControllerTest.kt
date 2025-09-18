@@ -2,14 +2,18 @@ package org.dataland.e2etests.tests
 
 import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -152,6 +156,61 @@ class DataControllerTest {
                 apiAccessor.dataControllerApiForSfdrData.getAllCompanySfdrData(companyId),
             )
         }
+    }
+
+    @Test
+    fun `post a dummy company and a dataset and check that no other datasets are available`() {
+        val reportingPeriod = "2024"
+        val uploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOf(testCompanyInformation),
+                listOf(testDataEuTaxonomyNonFinancials),
+                apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+                reportingPeriod = reportingPeriod,
+            )
+        val companyId = uploadInfo[0].actualStoredCompany.companyId
+        val dataId = uploadInfo[0].actualStoredDataMetaInfo!!.dataId
+
+        ApiAwait.waitForData(
+            supplier = {
+                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                    .getAllCompanyEutaxonomyNonFinancialsData(
+                        companyId = companyId,
+                        showOnlyActive = false,
+                    ).size
+            },
+            condition = { it == 1 },
+        )
+
+        assertDoesNotThrow { apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId) }
+
+        assertThrows<ClientException> {
+            apiAccessor.dataControllerApiForLksgData.getCompanyAssociatedLksgData(dataId)
+        }.let { assertEquals(400, it.statusCode) }
+
+        listOf(
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials::getAllCompanyEutaxonomyFinancialsData,
+            apiAccessor.dataControllerApiForSfdrData::getAllCompanySfdrData,
+        ).forEach { getAllCompanyData -> assertEquals(0, getAllCompanyData(companyId, false, null).size) }
+
+        apiAccessor.dataControllerApiForEuTaxonomyFinancials
+            .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
+                companyIds = listOf(companyId),
+                reportingPeriods = listOf(reportingPeriod),
+                fileFormat = ExportFileType.CSV,
+                keepValueFieldsOnly = false,
+            ).let { assert(it.readBytes().isEmpty()) }
+
+        apiAccessor.companyDataControllerApi
+            .getAggregatedFrameworkDataSummary(
+                companyId = companyId,
+            ).forEach { framework, aggregatedFrameworkDataSummary ->
+                if (framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString()) {
+                    assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
+                } else {
+                    assertEquals(0, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
+                }
+            }
     }
 
     private fun uploadEuTaxoDataset(companyId: UUID) {

@@ -17,24 +17,23 @@
       class="table-cursor"
       id="search-result-framework-data"
       :rowHover="true"
+      :rowClass="() => 'cursor-pointer'"
     >
       <Column field="companyName" header="COMPANY" :sortable="false" class="d-bg-white w-3 d-datatable-column-left">
       </Column>
       <Column field="lei" :sortable="false" class="d-bg-white w-2">
         <template #header>
-          <span class="uppercase">LEI</span>
-          <i
-            class="material-icons pl-2"
-            aria-hidden="true"
-            title="LEI"
-            v-tooltip.top="{
-              value:
-                'The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ' +
-                'ISO 17442 standard developed by the International Organization for Standardization (ISO).',
-              class: 'd-tooltip',
-            }"
-            >info</i
-          >
+          <span class="lei-column-header">LEI</span>
+          <Tag
+            icon="pi pi-info-circle"
+            size="large"
+            severity="secondary"
+            class="transparent-badge cursor-pointer"
+            v-tooltip.top="
+              'The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO).'
+            "
+            data-test="lei-tooltip-tag"
+          />
         </template>
         <template #body="{ data }">
           {{ data.lei ? data.lei : 'Not available' }}
@@ -42,11 +41,18 @@
       </Column>
       <Column field="sector" header="SECTOR" :sortable="false" class="d-bg-white w-2" />
       <Column field="headquarters" header="LOCATION" :sortable="false" class="d-bg-white w-2">
-        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }} </template>
+        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }}</template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body>
-          <span class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span> </span>
+        <template #body="{ data }">
+          <PrimeButton
+            label="VIEW"
+            iconPos="right"
+            icon="pi pi-angle-right"
+            variant="link"
+            data-test="viewButton"
+            @click="goToCompanyCockpit({ data })"
+          />
         </template>
       </Column>
     </DataTable>
@@ -64,13 +70,15 @@
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Tooltip from 'primevue/tooltip';
+import Tag from 'primevue/tag';
 import { defineComponent, type PropType } from 'vue';
 import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'FrameworkDataSearchResults',
-  components: { DataTable, Column },
+  components: { DataTable, Column, Tag, PrimeButton },
   emits: ['page-update'],
   directives: {
     tooltip: Tooltip,
@@ -116,7 +124,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 #search-result-framework-data tr:hover {
   cursor: pointer;
 }
@@ -127,5 +135,17 @@ export default defineComponent({
 
 #search-result-framework-data .d-justify-content-end-inner > div {
   justify-content: end;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.lei-column-header {
+  font-weight: var(--p-datatable-column-title-font-weight);
 }
 </style>

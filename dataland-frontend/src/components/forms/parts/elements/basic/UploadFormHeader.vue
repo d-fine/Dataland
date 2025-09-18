@@ -41,3 +41,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.info-icon {
+  cursor: help;
+  align-self: center;
+}
+</style>

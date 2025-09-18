@@ -43,16 +43,16 @@ describeIf(
           cy.intercept(`**/api/data/lksg/${uploadIds.dataId}`).as('getPostedDataset');
           cy.contains(`${uploadIds.dataId}`).click();
           cy.wait('@getPostedDataset');
-          cy.get('[data-test="qaRejectButton"').click();
+          cy.get('[data-test="qaRejectButton"]').click();
           cy.intercept('**/api/users/**').as('getMyDatasets');
           cy.visit(`/datasets`);
           cy.wait('@getMyDatasets');
-          cy.get(`a[href="/companies/${uploadIds.companyId}/frameworks/lksg/${uploadIds.dataId}"]`)
+          cy.pause();
+          cy.get(`[data-test="view-dataset-button"]`)
             .parents('tr[role=row]')
-            .find('td[role=cell]')
-            .find("div[class='p-badge badge-red']")
+            .find('[data-test="qa-status"]')
             .should('exist')
-            .should('contain', 'REJECTED');
+            .should('contain', 'Rejected');
         });
       });
     });

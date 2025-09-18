@@ -39,10 +39,10 @@ class ProcessDataUpdates
         private val allNorthDataCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
         private val allGleifCompaniesIngestFlagFilePath: String?,
+        @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies-for-manual-update.flag-file:#{null}}")
+        private var allGleifCompaniesIngestManualUpdateFlagFilePath: String?,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
         private val allNorthDataCompaniesIngestFlagFilePath: String?,
-        @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
-        private val savedIsinMappingFile: File,
     ) {
         companion object {
             const val MS_PER_S = 1000L
@@ -70,12 +70,6 @@ class ProcessDataUpdates
             if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
                 logger.info("Found flag file or force ingest flag for GLEIF.")
                 logFlagFileFoundAndDelete(flagFileGleif)
-                if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
-                    throw FileSystemException(
-                        file = savedIsinMappingFile,
-                        reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
-                    )
-                }
 
                 waitForBackend()
                 logger.info("Retrieving all company data available via GLEIF.")
@@ -119,16 +113,38 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 3 * * SUN")
-        private fun processUpdates() {
-            logger.info("Running scheduled update of GLEIF data.")
-            waitForBackend()
-            gleifGoldenCopyIngestor.prepareGleifDeltaFile()
-            gleifGoldenCopyIngestor.processIsinMappingFile()
-            gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
+        @Scheduled(cron = "0 0 * * * *")
+        private fun processManualTrigger() {
+            val manualTrigger = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
+            if (manualTrigger?.exists() == true) {
+                logger.info("Found flag file for full update of Gleif data outside the regular update schedule. Initiating process.")
+                processUpdates()
+            }
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 0 3 ? * SUN")
+        private fun processUpdates() {
+            val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
+            val doFullUpdate = flagFileGleif?.exists() ?: false
+
+            logger.info("Running ${if (doFullUpdate) "full" else "scheduled"} update of GLEIF data")
+
+            waitForBackend()
+            gleifGoldenCopyIngestor.prepareGleifDeltaFile(doFullUpdate)
+            gleifGoldenCopyIngestor.processIsinMappingFile()
+            gleifGoldenCopyIngestor.processRelationshipFile(doFullUpdate)
+
+            if (flagFileGleif?.exists() ?: false) {
+                if (flagFileGleif.delete()) {
+                    logger.info("Flag file $flagFileGleif deleted successfully.")
+                } else {
+                    logger.error("Flag file $flagFileGleif could not be deleted.")
+                }
+            }
+        }
+
+        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 5 1-7 1,4,7,10 SUN")
         private fun processNorthDataUpdates() {
             logger.info("Running scheduled update of NorthData data.")
@@ -136,7 +152,7 @@ class ProcessDataUpdates
             northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 5 * * *")
         private fun processRequestPriorityUpdates() {
             logger.info("Running scheduled update of request priorities.")

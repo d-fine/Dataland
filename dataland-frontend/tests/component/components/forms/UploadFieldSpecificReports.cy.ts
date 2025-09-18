@@ -1,6 +1,4 @@
-// @ts-nocheck
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
-import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -11,28 +9,17 @@ import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 const createSfdrDataset = {
   fillRequiredFields(): void {
     this.fillDateFieldWithFutureDate('dataDate');
-    cy.get('div[data-test="fiscalYearDeviation"]').get('input[value="Deviation"]').click();
+    cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"][value="Deviation"]').click();
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
-    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-trigger').click();
+    cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
     cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
-    cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-    cy.get('div.p-datepicker').find('span:contains("11")').click();
+    cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+    cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },
 };
 
-const createP2pDataset = {
-  fillRequiredFields(): void {
-    createSfdrDataset.fillDateFieldWithFutureDate('dataDate');
-    this.selectSector('Automotive');
-  },
-  selectSector(sector: string): void {
-    cy.get('div[data-test="sectors"] div.p-multiselect').should('exist').click();
-    cy.contains('span', sector).should('exist').click();
-    cy.get('div[data-test="sectors"] div.p-multiselect').should('exist').click();
-  },
-};
 const createLksgDataset = {
   fillRequiredFields(): void {
     createSfdrDataset.fillDateFieldWithFutureDate('dataDate');
@@ -50,9 +37,13 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
    */
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
     new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
-    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).click();
+    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).within(
+      () => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      }
+    );
     selectItemFromDropdownByValue(
-      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] div[name='fileName']`),
+      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
       fileName
     );
   }
@@ -64,7 +55,8 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
    * @param fieldName name of the field under which the report should be added
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[id*="-option-yes"]').check();
+    cy.pause();
+    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[type="checkbox"][value="Yes"]').check();
     new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
@@ -90,9 +82,6 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     if (framework == 'sfdr') {
       dataType = DataTypeEnum.Sfdr;
       createDataset = CreateSfdrDataset;
-    } else if (framework == 'p2p') {
-      dataType = DataTypeEnum.P2p;
-      createDataset = CreateP2pDataset;
     } else {
       dataType = DataTypeEnum.Lksg;
       createDataset = CreateLksgDataset;
@@ -102,10 +91,10 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     cy.intercept('POST', `/api/data/${dataType}*`, {
       statusCode: 200,
     });
+    //@ts-ignore
     cy.mountWithPlugins(createDataset, {
       keycloak: minimalKeycloakMock({}),
 
-      // @ts-ignore
       props: {
         companyID: companyId,
       },
@@ -149,28 +138,6 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     uploadFieldSpecificDocuments('fourth', 3, 'grievanceHandlingMechanism');
     cy.wait(100);
     cy.get('div[data-test="BaseDataPointFormFieldgrievanceHandlingMechanism"] button .pi-times').click();
-    cy.wait(100);
-    submitButton.buttonAppearsEnabled();
-    submitButton.clickButton();
-
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
-      cy.wait(`@documentExists-${hash}`);
-    });
-    cy.wait(100);
-    cy.get('@documentExists').should('have.been.calledOnce');
-  });
-
-  it('Check if the document uploads in P2p upload page work', () => {
-    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithOneByteSize]);
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
-      interceptEachUpload(hash);
-    });
-    mountPluginAndInterceptUploads('p2p');
-    createP2pDataset.fillRequiredFields();
-    uploadFieldSpecificDocuments('first', 1, 'upstreamSupplierProcurementPolicy');
-    createP2pDataset.selectSector('Livestock Farming');
-    uploadFieldSpecificDocuments('second', 2, 'externalFeedCertification');
-    createP2pDataset.selectSector('Livestock Farming');
     cy.wait(100);
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();

@@ -1,12 +1,32 @@
 <template>
-  <div class="claim-panel">
-    <div class="next-to-each-other vertical-middle">
-      <h2 class="claim-panel-text" data-test="claimOwnershipPanelHeading">Responsible for {{ companyName }}?</h2>
-      <h2 class="link --underlined claim-panel-text" @click="openDialog" data-test="claimOwnershipPanelLink">
-        Claim company ownership.
-      </h2>
-    </div>
-  </div>
+  <Card
+    :pt="{
+      body: {
+        style: {
+          padding: 'var(--spacing-sm) var(--spacing-lg)',
+          gap: 'var(--spacing-none)',
+        },
+      },
+    }"
+  >
+    <template #title>
+      <span data-test="claimOwnershipPanelHeading">Responsible for {{ companyName }}?</span>
+      <PrimeButton
+        data-test="claimOwnershipPanelLink"
+        label="Claim company ownership."
+        variant="link"
+        @click="openDialog"
+        :pt="{
+          label: {
+            style: {
+              fontSize: 'var(--font-size-lg)',
+              fontWeight: 'var(--font-weight-bold)',
+            },
+          },
+        }"
+      />
+    </template>
+  </Card>
   <ClaimOwnershipDialog
     :dialog-is-open="dialogIsOpen"
     :company-name="companyName"
@@ -23,11 +43,15 @@ import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwn
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
+import Card from 'primevue/card';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
     ClaimOwnershipDialog,
+    Card,
+    PrimeButton,
   },
   inject: {
     injectedUseMobileView: {
@@ -118,21 +142,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped lang="scss">
-@use '@/assets/scss/variables';
-
-.claim-panel {
-  grid-column: 1 / -1;
-  background-color: var(--surface-card);
-  padding-left: variables.$spacing-md;
-  border-radius: variables.$radius-xxs;
-  text-align: left;
-  box-shadow: 0 0 12px var(--gray-300);
-}
-
-.claim-panel-text {
-  font-size: 18px;
-  font-weight: 600;
-}
-</style>

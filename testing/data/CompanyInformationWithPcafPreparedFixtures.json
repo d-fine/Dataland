@@ -1,0 +1,181 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "All-fields-defined-for-PCAF-Framework-Company",
+			"headquarters": "East Los Angeles",
+			"headquartersPostalCode": "62747-8883",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"LH6GP9bJBIkg82eQ6VVz"
+				],
+				"Isin": [
+					"WktvVLASAaeL"
+				],
+				"PermId": [
+					"w8rnKtFfAa"
+				],
+				"Ticker": [],
+				"Duns": [
+					"f01qm2V56"
+				],
+				"VatNumber": [
+					"4iA3Ej57I"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AM",
+			"companyContactDetails": [
+				"Darrell82@example.com",
+				"Casandra.McLaughlin22@example.com",
+				"Kennedi_Price@example.com",
+				"Favian.Harber25@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://mealy-catalyst.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": "Deviation",
+					"fiscalYearEnd": "2024-12-29"
+				},
+				"company": {
+					"mainPcafSector": {
+						"value": "Materials",
+						"dataSource": {
+							"page": "21-61",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "initiatives",
+							"publicationDate": null
+						},
+						"comment": "connect auxiliary matrix",
+						"quality": "Audited"
+					},
+					"companyExchangeStatus": {
+						"value": "Listed",
+						"dataSource": {
+							"page": "1016",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "hack auxiliary pixel",
+						"quality": "Reported"
+					}
+				}
+			},
+			"companyValue": {
+				"listedCompany": {
+					"marketCapitalizationInEUR": {
+						"value": 26851.18,
+						"dataSource": {
+							"page": "809",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "input primary bandwidth",
+						"quality": "Reported"
+					},
+					"bookValueOfDebtInEUR": {
+						"value": 76316.52,
+						"dataSource": {
+							"page": "1084",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},
+						"comment": "connect bluetooth system",
+						"quality": "Reported"
+					},
+					"minoritiesInterestInEUR": {
+						"value": 75919.29,
+						"dataSource": {
+							"page": "269",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "quantify open-source firewall",
+						"quality": "Reported"
+					}
+				},
+				"unlistedCompany": {
+					"totalEquityAndDebtInEUR": {
+						"value": 53803.42,
+						"dataSource": {
+							"page": "225",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "generate optical alarm",
+						"quality": "Reported"
+					}
+				}
+			},
+			"environmental": {
+				"greenhouseGasEmissions": {
+					"scope1GhgEmissionsInTonnes": {
+						"value": 25100.07,
+						"dataSource": {
+							"page": "1170",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "index 1080p capacitor",
+						"quality": "Estimated"
+					},
+					"scope2GhgEmissionsLocationBasedInTonnes": {
+						"value": 64272.87,
+						"dataSource": {
+							"page": "4",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "large language models",
+							"publicationDate": null
+						},
+						"comment": "generate digital array",
+						"quality": "Reported"
+					},
+					"scope2GhgEmissionsMarketBasedInTonnes": {
+						"value": 7165.34,
+						"dataSource": {
+							"page": "926-1002",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "metrics",
+							"publicationDate": null
+						},
+						"comment": "calculate primary alarm",
+						"quality": "Audited"
+					},
+					"scope3GhgEmissionsInTonnes": {
+						"value": 80787.67,
+						"dataSource": {
+							"page": "742",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "synthesize optical bandwidth",
+						"quality": "Incomplete"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	}
+]

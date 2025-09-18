@@ -16,9 +16,9 @@ describe('Check the portfolio dialog', function (): void {
     cy.mountWithPlugins(PortfolioDialog, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('[name="portfolioName"]').should('have.value', '');
-      cy.get('[name="company-identifiers"]').should('have.value', '');
-      cy.get('[data-test="saveButton"]').should('contain.text', 'Save').and('be.disabled');
+      cy.get('[data-test="portfolio-name-input"]').should('have.value', '');
+      cy.get('[data-test="company-identifiers-input"]').should('have.value', '');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('contain.text', 'SAVE PORTFOLIO').and('be.disabled');
     });
   });
 
@@ -38,11 +38,13 @@ describe('Check the portfolio dialog', function (): void {
         },
       },
     }).then(() => {
-      cy.get('[name="portfolioName"]').should('have.value', portfolioFixture.portfolioName);
+      cy.get('[data-test="portfolio-name-input"]').should('have.value', portfolioFixture.portfolioName);
       portfolioFixture.entries.forEach((entry) => {
-        cy.get('#existing-company-identifiers').should('contain', entry.companyName);
+        cy.get('[id="existing-company-identifiers"]').should('contain', entry.companyName);
       });
-      cy.get('[data-test="saveButton"]').should('contain.text', 'Save').and('not.be.disabled');
+      cy.get('[data-test="portfolio-dialog-save-button"]')
+        .should('contain.text', 'SAVE PORTFOLIO')
+        .and('not.be.disabled');
     });
   });
 
@@ -68,20 +70,21 @@ describe('Check the portfolio dialog', function (): void {
     cy.mountWithPlugins(PortfolioDialog, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('[data-test="saveButton"]').should('be.disabled');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
 
-      cy.get('[name="portfolioName"]').type('Test Portfolio');
-      cy.get('[data-test="saveButton"]').should('be.disabled');
+      cy.get('[data-test="portfolio-name-input"]').type('Test Portfolio');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
 
-      cy.get('[name="company-identifiers"]').type(`${validIdentifier}, ${invalidIdentifier}`);
-      cy.get('[data-test="addCompanies"]').click();
+      cy.get('[data-test="company-identifiers-input"]').type(`${validIdentifier}, ${invalidIdentifier}`);
+      cy.get('[data-test="portfolio-dialog-add-companies"]').click();
       cy.wait('@validateCompanies');
-      cy.get('#existing-company-identifiers').should('contain', portfolioFixture.entries[0].companyName);
-      cy.get('[name="company-identifiers"]').should('have.value', invalidIdentifier);
-      cy.get('[data-test="saveButton"]').should('not.be.disabled');
+      cy.get('[id="existing-company-identifiers"]').should('contain', portfolioFixture.entries[0].companyName);
+      cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
+      cy.get('[data-test="company-identifiers-input"]').should('have.value', invalidIdentifier);
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
 
-      cy.get('#existing-company-identifiers .pi-trash').click();
-      cy.get('[data-test="saveButton"]').should('be.disabled');
+      cy.get('[id="existing-company-identifiers"] .pi-trash').click();
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
     });
   });
 
@@ -95,11 +98,11 @@ describe('Check the portfolio dialog', function (): void {
     cy.mountWithPlugins(PortfolioDialog, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('[name="company-identifiers"]').type(portfolioFixture.entries[0].companyName);
-      cy.get('[data-test="addCompanies"]').click();
+      cy.get('[data-test="company-identifiers-input"]').type(portfolioFixture.entries[0].companyName);
+      cy.get('[data-test="portfolio-dialog-add-companies"]').click();
       cy.wait('@validateCompanies').then(() => {
         // Check if error message is displayed
-        cy.get('[data-test="error"]').should('be.visible').and('contain.text', 'fail');
+        cy.get('[data-test="unknown-portfolio-error"]').should('be.visible').and('contain.text', 'fail');
       });
     });
   });
@@ -128,8 +131,8 @@ describe('Check the portfolio dialog', function (): void {
         },
       },
     }).then(() => {
-      cy.get('[data-test="deleteButton"]').should('exist');
-      cy.get('[data-test="deleteButton"]').click();
+      cy.get('[data-test="portfolio-dialog-delete-button"]').should('exist');
+      cy.get('[data-test="portfolio-dialog-delete-button"]').click();
       cy.wait('@deletePortfolio').its('response.statusCode').should('eq', 200);
       cy.intercept('DELETE', '**/portfolios/**', (req) => {
         req.reply({

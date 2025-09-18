@@ -157,6 +157,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: DataRequestsFilter,
+        @Param("companyIds") companyIds: List<String>? = null,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>
@@ -173,6 +174,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun getNumberOfRequests(
         @Param("searchFilter") searchFilter: DataRequestsFilter,
+        @Param("companyIds") companyIds: List<String>?,
     ): Int
 
     /**

@@ -9,7 +9,7 @@ import {
   EutaxonomyFinancialsDataControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -21,7 +21,7 @@ before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
-      'lighweight-eu-taxo-financials-dataset',
+      'eutaxonomy-financials-dataset-with-no-null-fields',
       preparedFixturesEuTaxonomyFinancials
     );
   });
@@ -75,7 +75,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetApproved();
+                    isDatasetAccepted();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new EutaxonomyFinancialsDataControllerApi(new Configuration({ accessToken: token }))

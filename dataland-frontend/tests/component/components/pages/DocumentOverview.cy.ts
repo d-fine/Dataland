@@ -1,5 +1,5 @@
 import DocumentOverview from '@/components/pages/DocumentOverview.vue'; // Update this path
-import { type CompanyInformation, type HeimathafenData } from '@clients/backend';
+import { type CompanyInformation, type LksgData } from '@clients/backend';
 import type { FixtureData } from '@sharedUtils/Fixtures.ts';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
@@ -16,9 +16,9 @@ describe('Component test for the Document Overview', () => {
   const searchStringForApi = 'AnnualReport';
 
   before(function () {
-    cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent): void {
-      const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
-      companyInformationForTest = heimathafenFixtures[0].companyInformation;
+    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent): void {
+      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      companyInformationForTest = lksgFixtures[0].companyInformation;
     });
     cy.fixture('CompanyDocumentsMock').then(function (jsonContent) {
       mockFetchedDocuments = jsonContent as DocumentMetaInfoResponse[];
@@ -86,7 +86,7 @@ describe('Component test for the Document Overview', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
-    cy.get("[data-test='sheet']").should('exist').and('contain', companyInformationForTest.companyName);
+    cy.get("[data-test='company-info-sheet']").should('exist').and('contain', companyInformationForTest.companyName);
     cy.get("[data-test='documents-overview-table']").should('exist');
     cy.get("[data-test='documents-overview-table'] tbody tr")
       .should('have.length', Object.keys(mockFetchedDocuments).length)
@@ -117,12 +117,12 @@ describe('Component test for the Document Overview', () => {
     const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
 
     cy.get("[data-test='document-type-picker']").should('exist').click();
-    cy.get('.d-framework-data-search-dropdown')
+    cy.get('#document-type-filter_list')
       .should('exist')
-      .within(() => {
-        cy.get('ul').children().should('have.length', numOfAllMultiSelectOptions);
-        cy.contains('li', stringInMultiSelect).should('exist').click();
-      });
+      .children()
+      .should('have.length', numOfAllMultiSelectOptions)
+      .invoke('attr', 'style', 'position: relative; z-index: 1'); //fixing an apparent cypress bug
+    cy.contains('li', stringInMultiSelect).should('exist').click();
 
     cy.get("[data-test='documents-overview-table']")
       .should('exist')
