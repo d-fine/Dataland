@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.repositories
 
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -38,6 +40,55 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         dataType: String,
         reportingPeriod: String,
     ): List<DataRequestEntity>?
+
+
+    @Query(
+        "SELECT d FROM DataRequestEntity d " +
+                "JOIN d.dataRequestStatusHistory s " +
+                "WHERE s.creationTimestamp = (" +
+                "   SELECT MAX(s2.creationTimestamp) " +
+                "   FROM d.dataRequestStatusHistory s2" +
+                ") " +
+                "AND s.requestStatus = :targetStatus " +
+                "AND (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :dataDimensions"
+    )
+    fun findByLastStatus(
+        @Param("targetStatus") targetStatus: List<RequestStatus>,
+        @Param("dataDimensions") dataDimensions: List<BasicDataDimensions>
+    ): List<DataRequestEntity>
+
+    @Query(
+        nativeQuery = true,
+        value = """
+        SELECT d.* 
+        FROM data_requests d
+        WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN (
+            SELECT t.company_id, t.data_type, t.reporting_period
+            FROM (VALUES (:triples)) AS t(company_id, data_type, reporting_period)
+        )
+        AND d.data_request_id IN (
+            SELECT s.request_id
+            FROM status_table s
+            WHERE s.request_status IN (:statuses)
+        )
+    """
+    )
+    fun findByTriplesAndStatusesNative(
+        @Param("triples") triples: List<Triple<String, String, String>>,
+        @Param("statuses") statuses: List<String>
+    ): List<DataRequestEntity>
+
+
+
+    @Query(
+        "SELECT d FROM DataRequestEntity d " +
+                "WHERE (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :triples " +
+                "AND d.dataRequestStatusHistory IN :statuses"
+    )
+    fun findByTriplesAndStatuses(
+        @Param("triples") triples: List<Triple<String, String, String>>,
+        @Param("statuses") statuses: List<RequestStatus>
+    ): List<DataRequestEntity>
 
     /** This method looks for data requests with the provided params already exist in the database.
      * @param userId to check for

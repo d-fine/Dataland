@@ -18,5 +18,5 @@ data class BasicDataDimensions(
      * @param dataPointType the type of the data point
      * @return the basic data point dimensions
      */
-    fun toBasicDataPointDimensions(dataPointType: String) = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
+    fun toBasicDataPointDimensions(dataPointType: String = dataType) = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
 }
