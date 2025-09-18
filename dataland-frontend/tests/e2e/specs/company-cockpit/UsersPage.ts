@@ -42,6 +42,7 @@ describeIf(
 
     it('As a basic company member you should not be able to add members, change the role of other members or remove them', () => {
       setupUserPage(CompanyRole.Member);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').should('not.exist');
       });
@@ -49,6 +50,7 @@ describeIf(
 
     it('As a company admin you should be able to add members', () => {
       setupUserPage(CompanyRole.MemberAdmin);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
@@ -67,6 +69,7 @@ describeIf(
 
     it('As a company admin you should be able to change the role of other members', () => {
       setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members')
         .should('be.visible')
         .within(() => {
@@ -94,6 +97,7 @@ describeIf(
 
     it('As a company admin you should be able to remove other members', () => {
       setupUserPage(CompanyRole.MemberAdmin, CompanyRole.MemberAdmin);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td')
           .contains('PremiumUser')
@@ -115,6 +119,7 @@ describeIf(
 
     it('When adding yourself to another role the confirmation modal should pop up. Confirm should complete adding your role.', () => {
       setupUserPage(CompanyRole.CompanyOwner);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
