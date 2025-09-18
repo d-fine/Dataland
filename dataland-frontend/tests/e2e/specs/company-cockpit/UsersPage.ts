@@ -67,7 +67,6 @@ describeIf(
 
     it('As a company admin you should be able to change the role of other members', () => {
       setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
-
       cy.contains('[data-test="company-roles-card"]', 'Members')
         .should('be.visible')
         .within(() => {
@@ -119,7 +118,7 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
-      cy.get('[data-test="email-input-field"]').type('data.reader@example.com');
+      cy.get('[data-test="email-input-field"]').should('be.visible').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
       cy.get('[data-test="save-changes-button"]').should('not.be.disabled').click();
       cy.get('[data-test="confirm-self-role-change-button"]').click();
