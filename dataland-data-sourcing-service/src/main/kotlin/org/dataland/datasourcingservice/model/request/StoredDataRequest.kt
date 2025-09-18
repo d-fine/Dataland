@@ -10,18 +10,18 @@ import java.util.UUID
  * DTO for creating and transferring request data.
  */
 data class StoredDataRequest(
-    val id: UUID,
-    val companyId: UUID,
+    val id: String,
+    val companyId: String,
     val reportingPeriod: String,
     val dataType: String,
-    val userId: UUID,
+    val userId: String,
     val creationTimeStamp: Date,
     val memberComment: String? = null,
     val adminComment: String? = null,
     val lastModifiedDate: Date,
     val requestPriority: RequestPriority,
     val state: RequestState,
-    val dataSourcingEntityId: UUID? = null,
+    val dataSourcingEntityId: String? = null,
 ) {
     companion object {
         /**
@@ -32,18 +32,18 @@ data class StoredDataRequest(
          */
         fun fromRequestEntity(entity: RequestEntity): StoredDataRequest =
             StoredDataRequest(
-                id = entity.id,
-                companyId = entity.companyId,
+                id = entity.id.toString(),
+                companyId = entity.companyId.toString(),
                 reportingPeriod = entity.reportingPeriod,
                 dataType = entity.dataType,
-                userId = entity.userId,
+                userId = entity.userId.toString(),
                 creationTimeStamp = entity.creationTimeStamp,
                 memberComment = entity.memberComment,
                 adminComment = entity.adminComment,
                 lastModifiedDate = entity.lastModifiedDate,
                 requestPriority = entity.requestPriority,
                 state = entity.state,
-                dataSourcingEntityId = entity.dataSourcingEntity?.id,
+                dataSourcingEntityId = entity.dataSourcingEntity?.id.toString(),
             )
     }
 
@@ -54,11 +54,11 @@ data class StoredDataRequest(
      */
     fun toRequestEntity(): RequestEntity =
         RequestEntity(
-            id = this.id,
-            companyId = this.companyId,
+            id = UUID.fromString(this.id),
+            companyId = UUID.fromString(this.companyId),
             reportingPeriod = this.reportingPeriod,
             dataType = this.dataType,
-            userId = this.userId,
+            userId = UUID.fromString(this.userId),
             creationTimeStamp = this.creationTimeStamp,
             memberComment = this.memberComment,
             adminComment = this.adminComment,

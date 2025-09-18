@@ -2,6 +2,8 @@ package org.dataland.e2etests.utils
 
 import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
@@ -35,7 +37,6 @@ import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataController
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
-import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 
 class ApiAccessor {
     companion object {
@@ -51,7 +52,7 @@ class ApiAccessor {
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    // val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+    val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
 
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)

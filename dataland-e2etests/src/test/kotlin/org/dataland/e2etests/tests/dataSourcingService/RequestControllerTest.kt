@@ -1,3 +1,4 @@
+package org.dataland.e2etests.tests.dataSourcingService
 
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DataRequest
@@ -52,7 +53,7 @@ class RequestControllerTest {
     }
 
     @Test
-    fun `patch a request and verify that the changes are saved`() {
+    fun `patch a request's state and verify that the changes are saved`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId

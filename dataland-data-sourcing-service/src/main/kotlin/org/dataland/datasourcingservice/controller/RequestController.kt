@@ -1,30 +1,26 @@
 package org.dataland.datasourcingservice.controller
 
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.DataRequest
 import org.dataland.datasourcingservice.model.request.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the requests endpoint
  */
 @RestController
 class RequestController : RequestApi {
-    override fun createRequest(request: DataRequest): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.noContent().build() // todo: not yet implemented
-    }
+    override fun createRequest(request: DataRequest): ResponseEntity<StoredDataRequest> =
+        throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
 
-    override fun getRequest(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.noContent().build() // todo: not yet implemented
-    }
+    override fun getRequest(dataRequestId: String): ResponseEntity<StoredDataRequest> =
+        throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
 
     override fun patchDataRequestState(
-        dataRequestId: UUID,
+        dataRequestId: String,
         requestState: RequestState,
-    ): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.noContent().build() // todo: not yet implemented
-    }
+    ): ResponseEntity<StoredDataRequest> = throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
 }

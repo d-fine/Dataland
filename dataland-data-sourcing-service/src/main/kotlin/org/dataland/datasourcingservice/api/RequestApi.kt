@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.UUID
 
 /**
  * API interface for handling data requests.
@@ -73,7 +72,7 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getRequest(
-        @Valid @PathVariable dataRequestId: UUID,
+        @Valid @PathVariable dataRequestId: String,
     ): ResponseEntity<StoredDataRequest>
 
     /**
@@ -99,7 +98,7 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataRequestState(
         @DataRequestIdParameterRequired
-        @PathVariable("dataRequestId") dataRequestId: UUID,
+        @PathVariable("dataRequestId") dataRequestId: String,
         @Valid
         @RequestParam(
             name = "requestState",
