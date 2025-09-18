@@ -1,7 +1,9 @@
 
+import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DataRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.e2etests.auth.GlobalAuth
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -17,8 +19,11 @@ class RequestControllerTest {
 
     @Test
     fun `post a request and verify that it can be retrieved`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val timeBeforeUpload = OffsetDateTime.now(ZoneOffset.UTC)
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyId = GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        }
         val dummyRequest = DataRequest(companyId, "sfdr", "2023", "dummy request")
 
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
@@ -38,15 +43,20 @@ class RequestControllerTest {
 
     @Test
     fun `post a request with invalid company ID and verify that it is rejected`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val invalidRequest = DataRequest("invalidCompanyId", "sfdr", "2023", "dummy request")
-        assertThrows<ResourceNotFoundApiException> {
+        val exception = assertThrows<ClientException> {
             apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
         }
+        assertEquals("Client error : 404 ", exception.message)
     }
 
     @Test
     fun `patch a request and verify that the changes are saved`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
         val dummyRequest = DataRequest(companyId, "sfdr", "2023", "dummy request")
         val initialRequest = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest)
 

@@ -3,8 +3,6 @@ package org.dataland.datasourcingservice.entities
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -20,12 +18,11 @@ import java.util.UUID
  */
 @SuppressWarnings("LongParameterList")
 @Entity
-@Audited(withModifiedFlag = true)
+@Audited
 @Table(name = "requests")
 class RequestEntity(
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID,
     @Column(name = "company_id")
     val companyId: UUID,
@@ -40,14 +37,14 @@ class RequestEntity(
     @Column(name = "member_comment", length = 1000)
     val memberComment: String? = null,
     @Column(name = "admin_comment", length = 1000)
-    val adminComment: String? = null,
+    var adminComment: String? = null,
     @Column(name = "last_modified_date")
-    val lastModifiedDate: Date,
+    var lastModifiedDate: Date,
     @Column(name = "request_prioriry")
-    val requestPriority: RequestPriority,
+    var requestPriority: RequestPriority,
     @Column(name = "state")
-    val state: RequestState,
+    var state: RequestState,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_sourcing_id")
-    val dataSourcingEntity: DataSourcingEntity? = null,
+    var dataSourcingEntity: DataSourcingEntity? = null,
 )
