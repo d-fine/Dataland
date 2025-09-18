@@ -20,7 +20,7 @@ import java.util.UUID
  */
 @SuppressWarnings("LongParameterList")
 @Entity
-@Audited(withModifiedFlag = true)
+@Audited
 @Table(name = "requests")
 class RequestEntity(
     @Id

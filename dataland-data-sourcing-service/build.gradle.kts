@@ -47,7 +47,9 @@ dependencies {
     testImplementation(Spring.boot.test)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
-    implementation("org.hibernate.orm:hibernate-envers")
+    implementation("org.hibernate:hibernate-envers:6.6.26.Final")
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
 }
 
 openApi {
