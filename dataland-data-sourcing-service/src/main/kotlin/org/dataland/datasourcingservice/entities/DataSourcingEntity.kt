@@ -32,7 +32,7 @@ class DataSourcingEntity(
     var state: DataSourcingState,
     @ElementCollection
     @Column(name = "document_id")
-    var documentIds: Set<UUID>? = null,
+    var documentIds: Set<String>? = null,
     @ElementCollection
     @Column(name = "expected_publication_date_of_documents")
     var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument>? = null,
