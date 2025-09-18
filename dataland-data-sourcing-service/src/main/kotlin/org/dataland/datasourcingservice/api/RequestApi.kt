@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
 /**
@@ -93,13 +94,17 @@ interface RequestApi {
     )
     @PatchMapping(
         value = ["/{dataRequestId}/state"],
-        consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataRequestState(
         @DataRequestIdParameterRequired
         @PathVariable("dataRequestId") dataRequestId: UUID,
-        @Valid requestState: RequestState,
+        @Valid
+        @RequestParam(
+            name = "requestState",
+            required = true,
+        )
+        requestState: RequestState,
     ): ResponseEntity<StoredDataRequest>
 }
