@@ -1,0 +1,45 @@
+package org.dataland.datasourcingservice.model.request
+
+import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+
+/**
+ * --- API model ---
+ * Contains all necessary info that a user has to provide in order to perform a single data request on Dataland.
+ * @param companyIdentifier the company identifier for which the user wants to request framework data
+ * @param dataType the name of the framework for which the user wants to request framework data
+ * @param reportingPeriod a reporting periods for which the user wants to request framework data
+ * @param comment a free text comment provided by the user
+ */
+data class DataRequest(
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        type = "string",
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE,
+    )
+    val companyIdentifier: String,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        type = "string",
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+    )
+    val dataType: String,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        type = "string",
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
+    val reportingPeriod: String,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        type = "string",
+        description = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
+    )
+    val comment: String?,
+)
