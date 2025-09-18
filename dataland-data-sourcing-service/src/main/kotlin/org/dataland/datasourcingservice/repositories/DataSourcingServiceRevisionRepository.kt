@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
- * A JPA Repository for managing RequestEntity instances.
+ * A Repository for managing historized data
  */
 
 @Repository
@@ -17,6 +17,12 @@ class DataSourcingServiceRevisionRepository(
     @PersistenceContext
     val entityManager: EntityManager,
 ) {
+    /**
+     * List all revisions of an entity by its id.
+     * @param id the id of the entity
+     * @param classType the class type of the entity
+     * @return a list of arrays containing the entity and its revision information
+     */
     fun listDataSourcingRevisionsById(
         id: UUID?,
         classType: Class<*>,

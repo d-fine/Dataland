@@ -77,7 +77,6 @@ class DataSourcingEntityAuditTests {
             adminComment = updatedAdminComment2
         }
         dataSourcingRepository.saveAndFlush(entity)
-        // Step 5: Verify historization using AuditReader
 
         val entityRevisionList =
             dataSourcingRevisionRepository
