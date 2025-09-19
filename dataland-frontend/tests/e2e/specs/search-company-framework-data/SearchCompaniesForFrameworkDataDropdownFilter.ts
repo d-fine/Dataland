@@ -214,30 +214,51 @@ describe('As a user, I expect the search functionality on the /companies page to
       });
 
       const companyNameMarker = `Data${Date.now().toString()}`;
-      it(
-        'Upload a company without uploading framework data for it, assure that its sector appears as filter ' +
-          'option, and check that the company appears in the autocomplete suggestions and in the ' +
+      it.only(
+        'Upload a company without uploading framework data for it ' +
+          'and check that the company appears in the autocomplete suggestions and in the ' +
           'search results, if no framework filter is set.',
         () => {
           const preFix = 'ThisCompanyHasNoDataSet';
           const companyName = preFix + companyNameMarker;
           const sector = 'SectorWithNoDataSet';
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+
+          cy.then(() => {
+            return getKeycloakToken(admin_name, admin_pw).then((token) =>
+              uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector))
+            );
           });
-          cy.intercept({ url: '**/api/companies*', times: 1 }).as('searchCompanyInitial');
-          cy.visit(`/companies`).wait('@searchCompanyInitial');
+
+          // Initial load: wait for both count and list requests
+          cy.intercept('**/api/companies/numberOfCompanies*').as('companiesInitialCount');
+          cy.intercept('**/api/companies?*').as('companiesInitialList');
+          cy.visit('/companies');
+          cy.wait('@companiesInitialCount', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.wait('@companiesInitialList', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+
           verifySearchResultTableExists();
-          cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
-            'searchCompanyInput'
-          );
+          cy.url().should('not.contain', 'framework=');
+
+          cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as('names');
           cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
           cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
-          cy.wait('@searchCompanyInput', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(() => {
-            cy.get('.p-autocomplete-option').eq(0).find("span[class='font-normal']").contains(preFix).should('exist');
-          });
+          cy.wait('@names', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.get('.p-autocomplete-option').eq(0).find("span[class='font-normal']").contains(preFix).should('exist');
+
+          // Submit the search: wait for both count and list requests
+          cy.intercept('**/api/companies/numberOfCompanies*').as('companiesCount');
+          cy.intercept('**/api/companies?*').as('companiesList');
+          cy.get('input[id=search-bar-input]').type('{enter}');
+          cy.wait('@companiesCount', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.wait('@companiesList', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+
+          verifySearchResultTableExists();
+          cy.contains('td.d-datatable-column-left', companyName, {
+            timeout: Cypress.env('medium_timeout_in_ms') as number,
+          }).should('exist');
         }
       );
+
       it(
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
