@@ -52,7 +52,7 @@ describeIf(
       });
 
       cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, 'base64').then((base64String) => {
-        const fileBuffer = Buffer.from(base64String, 'base64');
+        const fileBuffer = Buffer.from(base64String, 'base64').buffer;
         getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
           documentMetaInfoResponse = await uploadDocumentViaApi(token, fileBuffer, documentName);
           return documentMetaInfoResponse;
