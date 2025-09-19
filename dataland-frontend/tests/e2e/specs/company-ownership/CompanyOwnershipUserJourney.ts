@@ -31,8 +31,6 @@ describeIf(
      * Upload a company and set reader as companyOwner
      */
     before(() => {
-      cy.intercept('**/company-role-assignments/**').as('postCompanyOwner');
-
       const uniqueCompanyMarker = Date.now().toString();
       testCompanyName = 'Company-Created-In-Company-Owner-Test-' + uniqueCompanyMarker;
 
