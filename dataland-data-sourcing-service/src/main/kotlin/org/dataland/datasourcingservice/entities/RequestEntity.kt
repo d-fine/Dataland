@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.StoredDataRequest
 import org.hibernate.envers.Audited
 import java.util.Date
 import java.util.UUID
@@ -20,7 +21,7 @@ import java.util.UUID
 @Entity
 @Audited
 @Table(name = "requests")
-class RequestEntity(
+data class RequestEntity(
     @Id
     @Column(name = "id")
     val id: UUID,
@@ -47,4 +48,23 @@ class RequestEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_sourcing_id")
     var dataSourcingEntity: DataSourcingEntity? = null,
-)
+) {
+    /**
+     * Converts this RequestEntity to a StoredDataRequest.
+     */
+    fun toStoredDataRequest(): StoredDataRequest =
+        StoredDataRequest(
+            id = id,
+            companyId = companyId,
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            userId = userId,
+            creationTimeStamp = creationTimeStamp,
+            memberComment = memberComment,
+            adminComment = adminComment,
+            lastModifiedDate = lastModifiedDate,
+            requestPriority = requestPriority,
+            state = state,
+            dataSourcingEntityId = dataSourcingEntity?.id,
+        )
+}

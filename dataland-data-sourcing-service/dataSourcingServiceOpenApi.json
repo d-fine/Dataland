@@ -401,12 +401,12 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "comment": {

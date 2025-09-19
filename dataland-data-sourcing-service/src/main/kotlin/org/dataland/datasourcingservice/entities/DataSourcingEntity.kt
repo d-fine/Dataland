@@ -1,11 +1,14 @@
 package org.dataland.datasourcingservice.entities
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
+import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.hibernate.envers.Audited
 import java.util.Date
@@ -17,8 +20,13 @@ import java.util.UUID
 @SuppressWarnings("LongParameterList")
 @Entity
 @Audited
-@Table(name = "data_sourcing")
-class DataSourcingEntity(
+@Table(
+    name = "data_sourcing",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["companyId", "reportingPeriod", "dataType"]),
+    ],
+)
+data class DataSourcingEntity(
     @Id
     @Column(name = "id")
     val id: UUID,
@@ -45,5 +53,25 @@ class DataSourcingEntity(
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
     @OneToMany(mappedBy = "dataSourcingEntity")
+    @JsonManagedReference
     var associatedRequests: Set<RequestEntity>? = null,
-)
+) {
+    /**
+     * Converts this DataSourcingEntity to a StoredDataSourcing.
+     */
+    fun toStoredDataSourcing(): StoredDataSourcing =
+        StoredDataSourcing(
+            id = id,
+            companyId = companyId,
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            state = state,
+            documentIds = documentIds,
+            expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
+            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
+            documentCollector = documentCollector,
+            dataExtractor = dataExtractor,
+            adminComment = adminComment,
+            associatedRequests = associatedRequests?.map { it.toStoredDataRequest() }?.toSet(),
+        )
+}

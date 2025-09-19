@@ -27,7 +27,9 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-message-queue-utils"))
     implementation(libs.springdoc.openapi.ui)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -37,6 +39,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
+    implementation(Spring.boot.amqp)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
     implementation(Spring.boot.security)
@@ -82,5 +85,47 @@ gitProperties {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
     dependsOn(":dataland-keycloak-adapter:assemble")
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/backend")
+            .get()
+            .toString(),
+    )
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
+tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
+    dependsOn("generateBackendClient")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }

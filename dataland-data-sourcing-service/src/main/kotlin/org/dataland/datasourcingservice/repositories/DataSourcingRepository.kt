@@ -15,5 +15,5 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
         companyId: UUID,
         dataType: String,
         reportingPeriod: String,
-    ): List<DataSourcingEntity?>
+    ): DataSourcingEntity?
 }

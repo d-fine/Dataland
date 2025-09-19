@@ -7,14 +7,14 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
     const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
 
-    const val REPORTING_PERIOD_DESCRIPTION = "The reporting period the document belongs to (e.g. a fiscal year)."
+    const val REPORTING_PERIOD_DESCRIPTION = "The associated reporting period (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
 
     const val UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
     const val UPLOAD_TIME_EXAMPLE = GENERAL_TIMESTAMP_EXAMPLE
 
     const val QA_STATUS_DESCRIPTION =
-        "The status of the document with regard to Dataland's quality assurance process."
+        "The status with regard to Dataland's quality assurance process."
 
     const val CHUNK_SIZE_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
@@ -31,7 +31,7 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_DESCRIPTION = "The official name of the company."
     const val COMPANY_NAME_EXAMPLE = "ABC Corporation"
 
-    const val DATA_TYPE_DESCRIPTION = "The framework of the dataset on Dataland."
+    const val DATA_TYPE_DESCRIPTION = "The associated reporting framework."
     const val DATA_TYPE_EXAMPLE = "sfdr"
 
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
