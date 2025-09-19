@@ -214,7 +214,7 @@ describe('As a user, I expect the search functionality on the /companies page to
       });
 
       const companyNameMarker = `Data${Date.now().toString()}`;
-      it.only(
+      it(
         'Upload a company without uploading framework data for it ' +
           'and check that the company appears in the autocomplete suggestions and in the ' +
           'search results, if no framework filter is set.',
