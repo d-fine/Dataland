@@ -121,7 +121,7 @@ class SecurityUtilsService(
      * Returns true if the user is owner or member admin of the company
      * @param companyId Dataland company ID
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isUserOwnerOrMemberAdminOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false

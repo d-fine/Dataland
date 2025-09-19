@@ -175,7 +175,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully validated the posted email address.",
+            "description": "Successfully validated the posted email address and returned user information.",
             "content": {
               "application/json": {
                 "schema": {

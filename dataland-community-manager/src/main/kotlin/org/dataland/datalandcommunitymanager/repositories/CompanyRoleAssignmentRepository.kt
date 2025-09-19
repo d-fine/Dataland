@@ -16,7 +16,7 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
      * @param companyRole to check for
      * @param companyId to check for
      * @param userId to check for
-     * @returns a list of the matching company role assignments
+     * @return a list of the matching company role assignments
      */
     @Query(
         "SELECT roleAssignment FROM CompanyRoleAssignmentEntity roleAssignment " +
@@ -36,7 +36,7 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
      * @param companyId to check for
      * @param userId to check for
      * @param companyRoles to check for
-     * @returns the matching company role assignment or null if none found
+     * @return the matching company role assignment or null if none found
      */
     fun findByCompanyIdAndUserIdAndCompanyRoleIsIn(
         companyId: String,

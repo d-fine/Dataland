@@ -25,7 +25,7 @@ class EmailAddressService
         /**
          * Checks if there is a registered Dataland user with the specified email address
          * and, if so, returns basic information on that user gathered from Keycloak.
-         * @email the email address to validate
+         * @param email the email address to validate
          */
         fun validateEmailAddress(email: String): KeycloakUserInfo {
             val keycloakUserInfo = keycloakUserService.findUserByEmail(email)
@@ -68,8 +68,8 @@ class EmailAddressService
                 result = emptyList()
             } else {
                 val usersBySubdomain =
-                    associatedSubdomains.flatMap { suffix ->
-                        keycloakUserService.searchUsersByEmailSubdomain(suffix)
+                    associatedSubdomains.flatMap { subdomain ->
+                        keycloakUserService.searchUsersByEmailSubdomain(subdomain)
                     }
                 result = usersBySubdomain.distinctBy { it.userId }
             }

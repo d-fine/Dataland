@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.controller
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.InvalidEmailFormatApiException
 import org.dataland.datalandcommunitymanager.model.EmailAddress
 import org.dataland.datalandcommunitymanager.services.EmailAddressService
 import org.junit.jupiter.api.BeforeEach
@@ -32,7 +32,7 @@ class EmailAddressControllerTest {
 
     @Test
     fun `check that an invalid email address is rejected`() {
-        assertThrows<InvalidInputApiException> {
+        assertThrows<InvalidEmailFormatApiException> {
             emailAddressController.postEmailAddressValidation(invalidEmailAddress)
         }
     }

@@ -63,7 +63,7 @@ class EmailAddressControllerTest {
 
     @ParameterizedTest
     @EnumSource(value = TechnicalUser::class)
-    fun `ensure that only Dataland admins or company owners or member admins can query users by email suffix`(user: TechnicalUser) {
+    fun `ensure that only Dataland admins or company owners or member admins can query users by email subdomain`(user: TechnicalUser) {
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
 

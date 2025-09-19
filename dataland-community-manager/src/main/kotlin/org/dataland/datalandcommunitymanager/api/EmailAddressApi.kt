@@ -39,7 +39,10 @@ interface EmailAddressApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully validated the posted email address."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully validated the posted email address and returned user information.",
+            ),
             ApiResponse(
                 responseCode = "400",
                 description = "The posted string does not have the format of an email address.",

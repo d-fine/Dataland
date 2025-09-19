@@ -165,7 +165,9 @@ data class StoredCompanyEntity(
         patch: CompanyInformationPatch,
     ) {
         updateIfNotNull(patch.companyName) { storedCompanyEntity.companyName = it }
-        updateIfNotNull(patch.companyAlternativeNames) { storedCompanyEntity.companyAlternativeNames = it.toMutableList() }
+        updateIfNotNull(patch.companyAlternativeNames) {
+            storedCompanyEntity.companyAlternativeNames = it.toMutableList()
+        }
         updateIfNotNull(patch.companyContactDetails) { storedCompanyEntity.companyContactDetails = it.toMutableList() }
         updateIfNotNull(patch.companyLegalForm) { storedCompanyEntity.companyLegalForm = it }
         updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
