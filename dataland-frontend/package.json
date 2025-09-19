@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "3.14.6",
-    "@faker-js/faker": "9.9.0",
+    "@faker-js/faker": "10.0.0",
     "@tsconfig/node20": "20.1.6",
     "@types/markdown-it": "14.1.2",
     "@types/node": "24.3.3",
