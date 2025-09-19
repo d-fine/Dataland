@@ -27,23 +27,30 @@ describeIf(
       });
     }
 
-    /*
-     * Upload a company and set reader as companyOwner
+    /**
+     * Helper to create a company and assign the company owner role to the reader user.
      */
+    function setupCompanyAndAssignRole(
+      companyName: string
+    ): Cypress.Chainable<{ token: string; company: StoredCompany }> {
+      return cy.wrap(null).then(() => {
+        return getKeycloakToken(admin_name, admin_pw).then((token) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
+            return assignCompanyRole(token, CompanyRole.CompanyOwner, company.companyId, reader_userId).then(() => ({
+              token,
+              company,
+            }));
+          });
+        });
+      });
+    }
+
     before(() => {
       const uniqueCompanyMarker = Date.now().toString();
       testCompanyName = 'Company-Created-In-Company-Owner-Test-' + uniqueCompanyMarker;
 
-      cy.then(() => {
-        return getKeycloakToken(admin_name, admin_pw).then((token) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((company) => {
-            storedCompany = company;
-            return assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId).then(
-              () => token
-            );
-          });
-        });
-      }).then((token) => {
+      setupCompanyAndAssignRole(testCompanyName).then(({ token, company }) => {
+        storedCompany = company;
         cy.request({
           method: 'GET',
           url: `/community/company-role-assignments?role=${CompanyRole.CompanyOwner}&companyId=${storedCompany.companyId}&userId=${reader_userId}`,
