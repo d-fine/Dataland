@@ -7,6 +7,7 @@ include(
     "dataland-backend-utils",
     "dataland-backend",
     "dataland-api-key-manager",
+    "dataland-data-sourcing-service",
     "dataland-internal-storage",
     "dataland-e2etests",
     "dataland-frontend",

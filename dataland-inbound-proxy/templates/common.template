@@ -12,6 +12,12 @@ location /api-keys/ {
   include utils/errorsAsJson.conf;
 }
 
+location /data-sourcing/ {
+  proxy_pass http://data-sourcing-service:8080/data-sourcing/;
+  include utils/proxy.conf;
+  include utils/errorsAsJson.conf;
+}
+
 location /api/internal/ {
   return 301 https://${PROXY_PRIMARY_URL}/nocontent;
 }
