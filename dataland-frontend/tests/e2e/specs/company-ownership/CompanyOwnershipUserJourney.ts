@@ -38,13 +38,28 @@ describeIf(
       getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
         storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         await assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
+
+        cy.request({
+          method: 'GET',
+          url: `/community/company-role-assignments?role=${CompanyRole.CompanyOwner}&companyId=${storedCompany.companyId}&userId=${reader_userId}`,
+          headers: { Authorization: `Bearer ${token}` },
+          failOnStatusCode: false,
+        })
+          .its('body')
+          .should((body) => {
+            expect(
+              Array.isArray(body) &&
+                body.some((companyRoleAssignment) => companyRoleAssignment.companyRole === CompanyRole.CompanyOwner)
+            ).to.be.true;
+          });
       });
-      cy.wait('@postCompanyOwner', { timeout: Cypress.env('medium_timeout_in_ms') as number });
     });
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
       ensureLoggedIn(reader_name, reader_pw);
+      cy.intercept('GET', '**/community/company-role-assignments**').as('getCompanyRoles');
       cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
+      cy.wait('@getCompanyRoles');
       cy.get('h1').should('contain', testCompanyName);
       cy.get('[data-test=toggleShowAll]').scrollIntoView();
       cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
