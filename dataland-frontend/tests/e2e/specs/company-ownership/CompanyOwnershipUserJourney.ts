@@ -35,10 +35,17 @@ describeIf(
 
       const uniqueCompanyMarker = Date.now().toString();
       testCompanyName = 'Company-Created-In-Company-Owner-Test-' + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
-        storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
-        await assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
 
+      cy.then(() => {
+        return getKeycloakToken(admin_name, admin_pw).then((token) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((company) => {
+            storedCompany = company;
+            return assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId).then(
+              () => token
+            );
+          });
+        });
+      }).then((token) => {
         cy.request({
           method: 'GET',
           url: `/community/company-role-assignments?role=${CompanyRole.CompanyOwner}&companyId=${storedCompany.companyId}&userId=${reader_userId}`,
