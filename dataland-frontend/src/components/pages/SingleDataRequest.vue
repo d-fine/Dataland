@@ -244,7 +244,7 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import type { Content } from '@/types/ContentTypes.ts';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import { FRAMEWORKS_WITH_VIEW_PAGE, DATA_REQUESTS_REPORTING_PERIODS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE, FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS } from '@/utils/Constants';
 import { openEmailClient } from '@/utils/Email';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -307,7 +307,7 @@ export default defineComponent({
       selectedFrameworkError: false,
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
-      reportingPeriodOptions: DATA_REQUESTS_REPORTING_PERIODS.map((period) => {
+      reportingPeriodOptions: FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS.map((period) => {
         return {
           name: period,
           value: false,
