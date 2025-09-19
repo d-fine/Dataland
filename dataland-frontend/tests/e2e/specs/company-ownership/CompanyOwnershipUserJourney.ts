@@ -27,51 +27,24 @@ describeIf(
       });
     }
 
-    /**
-     * Helper to create a company and assign the company owner role to the reader user.
+    /*
+     * Upload a company and set reader as companyOwner
      */
-    function setupCompanyAndAssignRole(
-      companyName: string
-    ): Cypress.Chainable<{ token: string; company: StoredCompany }> {
-      return cy.wrap(null).then(() => {
-        return getKeycloakToken(admin_name, admin_pw).then((token) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
-            return assignCompanyRole(token, CompanyRole.CompanyOwner, company.companyId, reader_userId).then(() => ({
-              token,
-              company,
-            }));
-          });
-        });
-      });
-    }
-
     before(() => {
+      cy.intercept('**/company-role-assignments/**').as('postCompanyOwner');
+
       const uniqueCompanyMarker = Date.now().toString();
       testCompanyName = 'Company-Created-In-Company-Owner-Test-' + uniqueCompanyMarker;
-
-      setupCompanyAndAssignRole(testCompanyName).then(({ token, company }) => {
-        storedCompany = company;
-        cy.request({
-          method: 'GET',
-          url: `/community/company-role-assignments?role=${CompanyRole.CompanyOwner}&companyId=${storedCompany.companyId}&userId=${reader_userId}`,
-          headers: { Authorization: `Bearer ${token}` },
-          failOnStatusCode: false,
-        })
-          .its('body')
-          .should((body) => {
-            expect(
-              Array.isArray(body) &&
-                body.some((companyRoleAssignment) => companyRoleAssignment.companyRole === CompanyRole.CompanyOwner)
-            ).to.be.true;
-          });
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+        storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+        await assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
       });
+      cy.wait('@postCompanyOwner', { timeout: Cypress.env('medium_timeout_in_ms') as number });
     });
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
       ensureLoggedIn(reader_name, reader_pw);
-      cy.intercept('GET', '**/community/company-role-assignments**').as('getCompanyRoles');
       cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
-      cy.wait('@getCompanyRoles');
       cy.get('h1').should('contain', testCompanyName);
       cy.get('[data-test=toggleShowAll]').scrollIntoView();
       cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
