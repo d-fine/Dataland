@@ -47,7 +47,7 @@ class KeycloakUserService(
      * get user information for given keycloak user id
      * if no user can be found, return KeycloakUserInfo object with input userId
      * @param userId the userId of the user in question
-     * @returns the User Object
+     * @return the User Object
      */
     fun getUser(userId: String): KeycloakUserInfo {
         val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId"
@@ -69,7 +69,7 @@ class KeycloakUserService(
     /**
      * get list of user information by keycloak role
      * @param role the keycloak role for which user information should be fetched
-     * @returns the list of keycloak user info for the corresponding role
+     * @return the list of keycloak user info for the corresponding role
      */
     fun getUsersByRole(role: String): List<KeycloakUserInfo> {
         val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/roles/$role/users/"
@@ -80,7 +80,7 @@ class KeycloakUserService(
     /**
      * Search keycloak users by email address or parts thereof
      * @param emailAddressSearchString the email address string to search for
-     * @returns the list of keycloak user info matching the email search string
+     * @return the list of keycloak user info matching the email search string
      */
     fun searchUsers(emailAddressSearchString: String): List<KeycloakUserInfo> {
         val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailAddressSearchString"
@@ -89,10 +89,20 @@ class KeycloakUserService(
     }
 
     /**
+     * Search keycloak users by email subdomain
+     * @param emailSubdomain the email subdomain to search for
+     * @return the list of keycloak user info matching the email subdomain
+     */
+    fun searchUsersByEmailSubdomain(emailSubdomain: String): List<KeycloakUserInfo> {
+        val emailAddressSearchString = "%40$emailSubdomain."
+        return searchUsers(emailAddressSearchString)
+    }
+
+    /**
      * Finds a Dataland user based on their email address. The specified email address must be
      * a precise match.
      * @param emailAddress the email address under which to find the user
-     * @returns the corresponding keycloak user info, or null if no Dataland user with that email address exists
+     * @return the corresponding keycloak user info, or null if no Dataland user with that email address exists
      */
     fun findUserByEmail(emailAddress: String): KeycloakUserInfo? {
         val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailAddress&exact=true"

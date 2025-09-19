@@ -172,6 +172,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun fetchCompanyContactDetails(storedCompany: StoredCompanyEntity): StoredCompanyEntity
 
     /**
+     * Used for pre-fetching the associated subdomains field of a single stored company
+     */
+    @Query(
+        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN FETCH company.associatedSubdomains WHERE company = :storedCompany",
+    )
+    fun fetchAssociatedSubdomains(storedCompany: StoredCompanyEntity): StoredCompanyEntity
+
+    /**
      * Used for pre-fetching the dataRegisteredByDataland field of a single stored company
      */
     @Query(

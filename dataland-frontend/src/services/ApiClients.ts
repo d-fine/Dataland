@@ -14,7 +14,7 @@ import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTim
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
-import { UserValidationControllerApi } from '@clients/communitymanager';
+import { EmailAddressControllerApi } from '@clients/communitymanager';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -31,7 +31,7 @@ interface ApiClients {
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
-  userValidationController: UserValidationControllerApi;
+  emailAddressController: EmailAddressControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -91,7 +91,7 @@ export class ApiClientProvider {
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
-      userValidationController: this.getClientFactory('/community')(UserValidationControllerApi),
+      emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
     };
   }
 

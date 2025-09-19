@@ -25,7 +25,7 @@ describe('AddMemberDialog Component Tests', function () {
       },
     });
 
-    cy.intercept('POST', '**/user-validation/email', (req) => {
+    cy.intercept('POST', '**/emails/validation', (req) => {
       const testUsers: Record<string, { statusCode: number; body: unknown }> = {
         'invalid@test.com': {
           statusCode: 400,

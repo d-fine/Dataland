@@ -138,8 +138,8 @@ async function validateAndAddUser(email: string): Promise<void> {
   unknownUserError.value = '';
 
   try {
-    const userValidationControllerApi = apiClientProvider.apiClients.userValidationController;
-    const response = await userValidationControllerApi.postEmailAddressValidation({ email });
+    const emailAddressControllerApi = apiClientProvider.apiClients.emailAddressController;
+    const response = await emailAddressControllerApi.postEmailAddressValidation({ email });
 
     const user = {
       email,

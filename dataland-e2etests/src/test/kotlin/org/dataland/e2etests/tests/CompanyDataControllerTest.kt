@@ -230,6 +230,7 @@ class CompanyDataControllerTest {
                                 expectedStoredCompany
                                     .companyInformation.companyContactDetails
                                     ?.sorted(),
+                            associatedSubdomains = emptyList(),
                         ),
             ),
             apiAccessor.companyDataControllerApi.getCompanyById(uploadInfo.actualStoredCompany.companyId),
@@ -408,6 +409,7 @@ class CompanyDataControllerTest {
                     expectedCompanyInformation
                         .companyContactDetails
                         ?.sorted(),
+                associatedSubdomains = emptyList(),
             ),
             apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
             "Dataland does not contain the posted company.",
