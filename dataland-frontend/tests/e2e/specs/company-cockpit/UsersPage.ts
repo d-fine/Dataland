@@ -6,6 +6,19 @@ import { assignCompanyRole, removeAllCompanyRoles } from '@e2e/utils/CompanyRole
 import { CompanyRole } from '@clients/communitymanager';
 import { setupCommonInterceptions, fetchTestCompanies } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils';
 
+/**
+ * Removes all roles associated with a specific user for a given company.
+ * Uses an admin token to perform the operation.
+ *
+ * @param companyId - The ID of the company whose roles are being removed.
+ * @param userId - The ID of the user whose roles are being removed.
+ */
+function removeCompanyRoles(companyId: string, userId: string): void {
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+    return removeAllCompanyRoles(token, companyId, userId);
+  });
+}
+
 describeIf(
   'As a user, I want the users page to behave as expected',
   {
@@ -150,19 +163,6 @@ describeIf(
         'fetchAggregatedFrameworkSummaryForAlpha'
       );
       cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
-    }
-
-    /**
-     * Removes all roles associated with a specific user for a given company.
-     * Uses an admin token to perform the operation.
-     *
-     * @param companyId - The ID of the company whose roles are being removed.
-     * @param userId - The ID of the user whose roles are being removed.
-     */
-    function removeCompanyRoles(companyId: string, userId: string): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return removeAllCompanyRoles(token, companyId, userId);
-      });
     }
   }
 );
