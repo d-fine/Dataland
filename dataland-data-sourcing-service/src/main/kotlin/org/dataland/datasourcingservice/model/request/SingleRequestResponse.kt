@@ -9,17 +9,11 @@ import java.util.UUID
 
 data class SingleRequestResponse(
     @field:JsonProperty(required = true)
-    @Schema(
+    @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.POST_MESSAGE_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.POST_MESSAGE_EXAMPLE,
     )
     val message: String,
-    @field:JsonProperty(required = true)
-    @Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_IDS_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_IDS_EXAMPLE,
-    )
-    val requestIds: List<UUID>,
     @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema =
@@ -34,10 +28,30 @@ data class SingleRequestResponse(
     @field:ArraySchema(
         arraySchema =
             Schema(
+                implementation = UUID::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_IDS_DESCRIPTION,
+                example = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_IDS_EXAMPLE,
+            ),
+    )
+    val idsOfStoredRequests: List<UUID>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
                 type = "string",
                 description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION,
                 example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE,
             ),
     )
     val reportingPeriodsOfDuplicateRequests: List<String>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = UUID::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.DUPLICATE_REQUEST_IDS_DESCRIPTION,
+                example = DataSourcingOpenApiDescriptionsAndExamples.DUPLICATE_REQUEST_IDS_EXAMPLE,
+            ),
+    )
+    val idsOfDuplicateRequests: List<UUID>,
 )

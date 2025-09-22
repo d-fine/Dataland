@@ -73,31 +73,6 @@ class DataSourcingServiceDataRequestProcessingUtils
             return foundRequests
         }
 
-        /**
-         * Checks whether a request already exists on Dataland in a non-final state (i.e. in state "Open" or "Processing")
-         * @param companyId the company ID of the data request
-         * @param framework the framework of the data request
-         * @param reportingPeriod the reporting period of the data request
-         * @param userId the user ID of the data request
-         * @return true if the data request already exists for the current user, false otherwise
-         */
-        fun existsDataRequestWithNonFinalState(
-            companyId: String,
-            framework: String,
-            reportingPeriod: String,
-            userId: UUID,
-        ): Boolean {
-            val openDataRequests =
-                findAlreadyExistingDataRequestsForUser(
-                    userId, companyId, framework, reportingPeriod, RequestState.Open,
-                )
-            val dataRequestsInProcess =
-                findAlreadyExistingDataRequestsForUser(
-                    userId, companyId, framework, reportingPeriod, RequestState.Processing,
-                )
-            return !(openDataRequests.isEmpty() && dataRequestsInProcess.isEmpty())
-        }
-
         fun getExistingDataRequestsWithNonFinalState(
             companyId: String,
             framework: String,

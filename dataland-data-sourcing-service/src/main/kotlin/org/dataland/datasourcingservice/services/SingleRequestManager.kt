@@ -143,9 +143,10 @@ class SingleRequestManager
                     totalNumberOfReportingPeriods = dataRequest.reportingPeriods.size,
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsAndNullIdsOfDuplicateDataRequests.size,
                 ),
-                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second },
                 reportingPeriodsAndIdsOfStoredDataRequests.map { it.first },
+                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second },
                 reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.first },
+                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second },
             )
 
         @Transactional

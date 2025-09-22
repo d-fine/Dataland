@@ -944,10 +944,11 @@
       },
       "SingleRequestResponse": {
         "required": [
+          "idsOfDuplicateRequests",
+          "idsOfStoredRequests",
           "message",
           "reportingPeriodsOfDuplicateRequests",
-          "reportingPeriodsOfStoredRequests",
-          "requestIds"
+          "reportingPeriodsOfStoredRequests"
         ],
         "type": "object",
         "properties": {
@@ -955,18 +956,6 @@
             "type": "string",
             "description": "A text about the result of Dataland processing the data request.",
             "example": "Your data request was stored successfully."
-          },
-          "requestIds": {
-            "type": "array",
-            "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
-            "example": [
-              "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
-            ],
-            "items": {
-              "type": "string",
-              "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
-              "format": "uuid"
-            }
           },
           "reportingPeriodsOfStoredRequests": {
             "type": "array",
@@ -979,6 +968,17 @@
               "type": "string"
             }
           },
+          "idsOfStoredRequests": {
+            "type": "array",
+            "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
+            "example": [
+              "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
+            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           "reportingPeriodsOfDuplicateRequests": {
             "type": "array",
             "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
@@ -987,6 +987,17 @@
             ],
             "items": {
               "type": "string"
+            }
+          },
+          "idsOfDuplicateRequests": {
+            "type": "array",
+            "description": "The list of Dataland IDs of the data requests that were identified as duplicates and hence not created. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfDuplicateRequests.",
+            "example": [
+              "821d400c-059f-4ce0-96d0-668679d744ca"
+            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         }
