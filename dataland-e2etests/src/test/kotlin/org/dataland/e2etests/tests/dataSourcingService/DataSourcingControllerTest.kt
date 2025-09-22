@@ -46,9 +46,13 @@ class DataSourcingControllerTest {
     ): String {
         val request =
             org.dataland.dataSourcingService.openApiClient.model
-                .DataRequest(companyId, dataType, reportingPeriod, comment)
+                .SingleRequest(companyId, dataType, setOf(reportingPeriod), false, comment)
         return GlobalAuth.withTechnicalUser(user) {
-            apiAccessor.dataSourcingRequestControllerApi.createRequest(request).id
+            apiAccessor.dataSourcingRequestControllerApi
+                .createRequest(request)
+                .idsOfStoredRequests
+                .first()
+                .toString()
         }
     }
 

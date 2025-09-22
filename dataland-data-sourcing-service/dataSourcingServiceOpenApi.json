@@ -420,6 +420,83 @@
         ]
       }
     },
+    "/requests/{id}/history": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get full history of a requests by ID",
+        "description": "Retrieve the history of a Request object by its unique identifier.",
+        "operationId": "getDataSourcingHistoryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the Request object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved Request history.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "request object not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/{dataRequestId}": {
       "get": {
         "tags": [
@@ -558,7 +635,7 @@
         ],
         "summary": "Get full history of DataSourcing history by ID",
         "description": "Retrieve the history of a DataSourcing object by its unique identifier.",
-        "operationId": "getDataSourcingHistoryById",
+        "operationId": "getDataSourcingHistoryById_1",
         "parameters": [
           {
             "name": "id",
