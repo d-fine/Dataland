@@ -15,10 +15,10 @@ export function createPortfolio(): void {
 
     const dummyPortfolioUpload = {
       portfolioName: 'Dummy Portfolio ' + Date.now(),
-      companyIds: [companyId],
+      companyIds: [companyId] as unknown as Set<string>,
       isMonitored: false,
       startingMonitoringPeriod: '',
-      monitoredFrameworks: [],
+      monitoredFrameworks: [] as unknown as Set<string>,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
   });
