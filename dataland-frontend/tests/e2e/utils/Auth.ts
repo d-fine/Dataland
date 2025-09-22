@@ -43,18 +43,20 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .click();
   }
-  let doesUserHavePortfolios = false;
-  getKeycloakToken(username, password).then(async (token) => {
-    const allUserPortfolios = await new PortfolioControllerApi(
-      new Configuration({ accessToken: token })
-    ).getAllPortfolioNamesForCurrentUser();
-    doesUserHavePortfolios = allUserPortfolios.data.length > 0;
-  });
-
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
-    'eq',
-    getBaseUrl() + (doesUserHavePortfolios ? '/portfolios' : '/companies')
-  );
+  let urlToRedirectTo = getBaseUrl() + '/companies';
+  if (!otpGenerator) {
+    let doesUserHavePortfolios = false;
+    getKeycloakToken(username, password).then(async (token) => {
+      const allUserPortfolios = await new PortfolioControllerApi(
+        new Configuration({ accessToken: token })
+      ).getAllPortfolioNamesForCurrentUser();
+      doesUserHavePortfolios = allUserPortfolios.data.length > 0;
+    });
+    if (doesUserHavePortfolios) {
+      urlToRedirectTo = getBaseUrl() + '/portfolios';
+    }
+  }
+  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
   cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
     globalJwt = interception.request.headers['authorization'] as string;
   });
