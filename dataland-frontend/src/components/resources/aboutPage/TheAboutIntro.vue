@@ -17,7 +17,7 @@ import type { Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
-import { loginAndRedirectToRedirectPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils.ts';
+import { loginAndRedirectToRedirectPage, registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils.ts';
 
 const props = defineProps<{ sections?: Section[] }>();
 
@@ -34,7 +34,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        void registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToRedirectPage(keycloak);
       } else {
         void loginAndRedirectToRedirectPage(keycloak);
       }

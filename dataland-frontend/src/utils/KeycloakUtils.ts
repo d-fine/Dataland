@@ -73,7 +73,7 @@ export async function loginAndRedirectToRedirectPage(keycloak: Keycloak): Promis
  * Registers and logs the user in and redirects her/him to the Dataland redirect search page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export async function registerAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
+export async function registerAndRedirectToRedirectPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
   const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/platform-redirect` });
   location.assign(url);

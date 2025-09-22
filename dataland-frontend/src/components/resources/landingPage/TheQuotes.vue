@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { loginAndRedirectToRedirectPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
 import SlideShow from '@/components/general/SlideShow.vue';
@@ -208,7 +208,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        void registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToRedirectPage(keycloak);
       } else {
         void loginAndRedirectToRedirectPage(keycloak);
       }
