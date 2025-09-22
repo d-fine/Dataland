@@ -1,0 +1,135 @@
+package org.dataland.datasourcingservice.utils
+
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
+import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.time.Instant
+import java.util.Date
+import java.util.UUID
+
+@Service
+class DataSourcingServiceDataRequestProcessingUtils
+    @Autowired
+    constructor(
+        private val companyDataControllerApi: CompanyDataControllerApi,
+        private val requestLogger: RequestLogger,
+        private val requestRepository: RequestRepository,
+    ) {
+        /**
+         * Validates provided company identifiers by querying the backend.
+         * @param identifiers the identifiers to validate
+         * @return a pair of a map of valid identifiers to company ID and name and a list of invalid identifiers
+         */
+        fun performIdentifierValidation(identifiers: List<String>): Pair<Map<String, CompanyIdAndName>, List<String>> {
+            val validationResults = companyDataControllerApi.postCompanyValidation(identifiers)
+            val validIdentifiers = mutableMapOf<String, CompanyIdAndName>()
+            val invalidIdentifiers = validationResults.filter { it.companyInformation == null }.map { it.identifier }
+            validationResults.filter { it.companyInformation != null }.forEach {
+                validIdentifiers[it.identifier] =
+                    CompanyIdAndName(
+                        companyName = it.companyInformation?.companyName ?: "",
+                        companyId = it.companyInformation?.companyId ?: "",
+                    )
+            }
+
+            return Pair(validIdentifiers, invalidIdentifiers)
+        }
+
+        /**
+         * Retrieves the data requests already existing on Dataland for the provided specifications and the current user
+         * @param companyId the company ID of the data requests
+         * @param framework the framework of the data requests
+         * @param reportingPeriod the reporting period of the data requests
+         * @param requestState the state of the data request
+         * @return a list of the found data requests, or null if none was found
+         */
+        fun findAlreadyExistingDataRequestForUser(
+            userId: UUID,
+            companyId: String,
+            framework: String,
+            reportingPeriod: String,
+            requestState: RequestState,
+        ): List<RequestEntity>? {
+            val foundRequests =
+                requestRepository
+                    .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
+                        userId, companyId, framework, reportingPeriod,
+                    ).filter {
+                        it.state == requestState
+                    }
+            if (!foundRequests.isEmpty()) {
+                requestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
+                    userId,
+                    companyId,
+                    framework,
+                    reportingPeriod,
+                    requestState,
+                )
+            }
+            return foundRequests
+        }
+
+        /**
+         * Checks whether a request already exists on Dataland in a non-final state (i.e. in state "Open" or "Processing")
+         * @param companyId the company ID of the data request
+         * @param framework the framework of the data request
+         * @param reportingPeriod the reporting period of the data request
+         * @param userId the user ID of the data request
+         * @return true if the data request already exists for the current user, false otherwise
+         */
+        fun existsDataRequestWithNonFinalState(
+            companyId: String,
+            framework: String,
+            reportingPeriod: String,
+            userId: UUID,
+        ): Boolean {
+            val openDataRequests =
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestState.Open,
+                )
+            val dataRequestsInProcess =
+                findAlreadyExistingDataRequestForUser(
+                    userId, companyId, framework, reportingPeriod, RequestState.Processing,
+                )
+            return !(openDataRequests.isNullOrEmpty() && dataRequestsInProcess.isNullOrEmpty())
+        }
+
+        /**
+         * Stores a DataRequestEntity from all necessary parameters
+         * @param userId the userID in Dataland
+         * @param companyId the companyID in Dataland
+         * @param dataType the framework name string corresponding to the data request
+         * @param reportingPeriod the reporting period
+         * @param notifyMeImmediately whether the user should be notified immediately on updates
+         * @return the stored DataRequestEntity
+         */
+        fun storeRequestEntityAsOpen(
+            userId: UUID,
+            companyId: String,
+            dataType: String,
+            reportingPeriod: String,
+            notifyMeImmediately: Boolean,
+        ): RequestEntity {
+            val creationTimestamp = Date.from(Instant.now())
+
+            val dataRequestEntity =
+                RequestEntity(
+                    userId,
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    notifyMeImmediately,
+                    creationTimestamp,
+                )
+
+            requestRepository.save(dataRequestEntity)
+
+            requestLogger.logMessageForStoringDataRequest(dataRequestEntity.id)
+
+            return dataRequestEntity
+        }
+    }

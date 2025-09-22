@@ -25,7 +25,7 @@ import java.time.Instant
  * Class holding utility functions used by the both the bulk and the single data request manager
  */
 @Service
-class DataRequestProcessingUtils
+class CommunityManagerDataRequestProcessingUtils
     @Suppress("LongParameterList")
     @Autowired
     constructor(
@@ -36,16 +36,6 @@ class DataRequestProcessingUtils
         private val companyApi: CompanyDataControllerApi,
         private val metaDataApi: MetaDataControllerApi,
     ) {
-        /**
-         * We want to avoid users from using other authentication methods than jwt-authentication, such as
-         * api-key-authentication.
-         */
-        fun throwExceptionIfNotJwtAuth() {
-            if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-                throw AuthenticationMethodNotSupportedException()
-            }
-        }
-
         /**
          * Validates provided company identifiers by querying the backend.
          * @param identifiers the identifiers to validate
@@ -175,10 +165,10 @@ class DataRequestProcessingUtils
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                         userId, companyId, framework.value, reportingPeriod,
-                    )?.filter {
+                    ).filter {
                         it.requestStatus == requestStatus
                     }
-            if (!foundRequests.isNullOrEmpty()) {
+            if (!foundRequests.isEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     userId,
                     companyId,

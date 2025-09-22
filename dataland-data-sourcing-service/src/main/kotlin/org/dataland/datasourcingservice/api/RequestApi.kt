@@ -7,8 +7,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.DataRequest
-import org.dataland.datasourcingservice.model.request.StoredDataRequest
+import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.dataland.datasourcingservice.model.request.SingleRequestResponse
+import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * API interface for handling data requests.
@@ -29,7 +31,7 @@ interface RequestApi {
     /**
      * A method to post a data request to Dataland.
      *
-     * @param request includes necessary info for the data request
+     * @param singleRequest includes necessary info for the data request
      * @return response after posting a data request to Dataland
      */
     @Operation(
@@ -48,8 +50,9 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun createRequest(
-        @Valid @RequestBody request: DataRequest,
-    ): ResponseEntity<StoredDataRequest>
+        @Valid @RequestBody singleRequest: SingleRequest,
+        @RequestParam(required = false) userId: UUID? = null,
+    ): ResponseEntity<SingleRequestResponse>
 
     /**
      * A method for users to retrieve information about a single data request
@@ -73,7 +76,7 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getRequest(
         @Valid @PathVariable dataRequestId: String,
-    ): ResponseEntity<StoredDataRequest>
+    ): ResponseEntity<StoredRequest>
 
     /**
      * A method to patch the request state of a data request
@@ -105,5 +108,5 @@ interface RequestApi {
             required = true,
         )
         requestState: RequestState,
-    ): ResponseEntity<StoredDataRequest>
+    ): ResponseEntity<StoredRequest>
 }

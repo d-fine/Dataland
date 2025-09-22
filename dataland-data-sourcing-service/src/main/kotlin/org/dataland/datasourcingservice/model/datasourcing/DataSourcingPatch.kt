@@ -2,7 +2,7 @@ package org.dataland.datasourcingservice.model.datasourcing
 
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.model.request.StoredDataRequest
+import org.dataland.datasourcingservice.model.request.StoredRequest
 import java.util.Date
 import java.util.UUID
 
@@ -17,5 +17,5 @@ data class DataSourcingPatch(
     val documentCollector: UUID? = null,
     val dataExtractor: UUID? = null,
     val adminComment: String? = null,
-    val associatedRequests: Set<StoredDataRequest>? = null,
+    val associatedRequests: Set<StoredRequest>? = null,
 )
