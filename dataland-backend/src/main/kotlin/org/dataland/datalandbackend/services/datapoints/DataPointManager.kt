@@ -59,7 +59,9 @@ class DataPointManager
             bypassQa: Boolean,
             correlationId: String,
         ): DataPointMetaInformation {
-            dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
+            val castedDataPointObject =
+                dataPointValidator
+                    .validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
             logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 
@@ -74,7 +76,7 @@ class DataPointManager
 
             val dataPointMetaInformation =
                 storeDataPoint(
-                    uploadedDataPoint = uploadedDataPoint,
+                    uploadedDataPoint = uploadedDataPoint.copy(dataPoint = objectMapper.writeValueAsString(castedDataPointObject)),
                     dataPointId = dataPointId,
                     uploaderUserId = uploaderUserId,
                     correlationId = correlationId,
@@ -188,7 +190,19 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
+        ): UploadedDataPoint {
+            val uploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
+            return uploadedDataPoint.copy(
+                dataPoint =
+                    objectMapper.writeValueAsString(
+                        dataPointValidator.validateDataPoint(
+                            uploadedDataPoint.dataPointType,
+                            uploadedDataPoint.dataPoint,
+                            correlationId,
+                        ),
+                    ),
+            )
+        }
 
         /**
          * Retrieves the currently active data points for a list of specific data point dimensions
