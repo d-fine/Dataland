@@ -36,4 +36,8 @@ class RequestController(
     ): ResponseEntity<StoredRequest> {
         return ResponseEntity.noContent().build() // todo: not yet implemented
     }
+
+    override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<StoredRequest>> =
+        ResponseEntity
+            .ok(singleRequestManager.retrieveRequestHistory(id))
 }

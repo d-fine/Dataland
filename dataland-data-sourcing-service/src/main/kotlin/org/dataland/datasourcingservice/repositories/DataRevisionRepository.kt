@@ -2,9 +2,11 @@ package org.dataland.datasourcingservice.repositories
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
+import jakarta.transaction.Transactional
+import org.dataland.datasourcingservice.entities.DataSourcingEntity
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.hibernate.envers.AuditReaderFactory
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -13,7 +15,7 @@ import java.util.UUID
 
 @Repository
 @Transactional
-class DataSourcingServiceRevisionRepository(
+class DataRevisionRepository(
     @PersistenceContext
     val entityManager: EntityManager,
 ) {
@@ -23,16 +25,23 @@ class DataSourcingServiceRevisionRepository(
      * @param classType the class type of the entity
      * @return a list of arrays containing the entity and its revision information
      */
-    fun listDataSourcingRevisionsById(
+    private fun listDataRevisionsById(
         id: UUID?,
         classType: Class<*>,
-    ): List<Array<*>> {
+    ): List<Any> {
         val auditReader = AuditReaderFactory.get(entityManager)
 
         val revisions = auditReader.getRevisions(classType, id)
         val entityList = revisions.map { revision -> auditReader.find(classType, id, revision) }
 
-        @Suppress("UNCHECKED_CAST")
-        return entityList as List<Array<*>>
+        return entityList
     }
+
+    @Suppress("UNCHECKED_CAST")
+    fun listDataSourcingRevisionsById(id: UUID?): List<DataSourcingEntity> =
+        listDataRevisionsById(id, DataSourcingEntity::class.java) as List<DataSourcingEntity>
+
+    @Suppress("UNCHECKED_CAST")
+    fun listDataRequestRevisionsById(id: UUID?): List<RequestEntity> =
+        listDataRevisionsById(id, RequestEntity::class.java) as List<RequestEntity>
 }

@@ -5,8 +5,8 @@ package org.dataland.datasourcingservice
 import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.repositories.DataSourcingServiceRevisionRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -35,7 +35,7 @@ class DataSourcingEntityAuditTests {
     private lateinit var dataSourcingRepository: DataSourcingRepository
 
     @Autowired
-    private lateinit var dataSourcingRevisionRepository: DataSourcingServiceRevisionRepository
+    private lateinit var dataSourcingRevisionRepository: DataRevisionRepository
 
     @Test
     fun `test audit historization of DataSourcingEntity with updated states`() {
@@ -80,14 +80,14 @@ class DataSourcingEntityAuditTests {
 
         val entityRevisionList =
             dataSourcingRevisionRepository
-                .listDataSourcingRevisionsById(dataSourcingEntityId, DataSourcingEntity::class.java)
+                .listDataSourcingRevisionsById(dataSourcingEntityId)
 
         assertThat(entityRevisionList).hasSize(3) // Create, Update 1, Update 2
-        assertThat((entityRevisionList[0] as DataSourcingEntity).state).isEqualTo(initialState)
-        assertThat((entityRevisionList[0] as DataSourcingEntity).adminComment).isEqualTo(initialAdminComment)
-        assertThat((entityRevisionList[1] as DataSourcingEntity).state).isEqualTo(DataSourcingState.DocumentSourcing)
-        assertThat((entityRevisionList[1] as DataSourcingEntity).adminComment).isEqualTo(updatedAdminComment1)
-        assertThat((entityRevisionList[2] as DataSourcingEntity).state).isEqualTo(DataSourcingState.DataVerification)
-        assertThat((entityRevisionList[2] as DataSourcingEntity).adminComment).isEqualTo(updatedAdminComment2)
+        assertThat(entityRevisionList[0].state).isEqualTo(initialState)
+        assertThat(entityRevisionList[0].adminComment).isEqualTo(initialAdminComment)
+        assertThat(entityRevisionList[1].state).isEqualTo(DataSourcingState.DocumentSourcing)
+        assertThat(entityRevisionList[1].adminComment).isEqualTo(updatedAdminComment1)
+        assertThat(entityRevisionList[2].state).isEqualTo(DataSourcingState.DataVerification)
+        assertThat(entityRevisionList[2].adminComment).isEqualTo(updatedAdminComment2)
     }
 }

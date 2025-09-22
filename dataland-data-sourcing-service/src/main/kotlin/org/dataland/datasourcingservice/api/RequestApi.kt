@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -109,4 +110,21 @@ interface RequestApi {
         )
         requestState: RequestState,
     ): ResponseEntity<StoredRequest>
+
+    @Operation(
+        summary = "Get full history of a requests by ID",
+        description = "Retrieve the history of a Request object by its unique identifier.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved Request history."),
+            ApiResponse(responseCode = "404", description = "request object not found."),
+        ],
+    )
+    @GetMapping("/{id}/history", produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDataSourcingHistoryById(
+        @Parameter(description = "ID of the Request object.")
+        @PathVariable id: String,
+    ): ResponseEntity<List<StoredRequest>>
 }

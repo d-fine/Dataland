@@ -9,6 +9,8 @@ import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.DataSourcingServiceDataRequestProcessingUtils
 import org.dataland.datasourcingservice.utils.RequestLogger
@@ -35,6 +37,7 @@ class SingleRequestManager
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataSourcingServiceDataRequestProcessingUtils: DataSourcingServiceDataRequestProcessingUtils,
         private val requestRepository: RequestRepository,
+        private val dataRevisionRepository: DataRevisionRepository,
         private val securityUtilsService: SecurityUtilsService,
         private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}")
@@ -173,5 +176,20 @@ class SingleRequestManager
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
             )
+        }
+
+        fun retrieveRequestHistory(id: String): List<StoredRequest> {
+            val uuid =
+                try {
+                    UUID.fromString(id)
+                } catch (e: IllegalArgumentException) {
+                    throw InvalidInputApiException(
+                        "Invalid UUID format for id: $id",
+                        message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
+                    )
+                }
+            return dataRevisionRepository
+                .listDataRequestRevisionsById(uuid)
+                .map { it.toStoredDataRequest() }
         }
     }
