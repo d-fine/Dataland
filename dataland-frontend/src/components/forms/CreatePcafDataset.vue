@@ -146,7 +146,6 @@ import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import { computed, inject, onMounted, provide, ref } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
-import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const props = defineProps({
@@ -282,11 +281,11 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
       );
       const documents = response.data;
 
-      documents.forEach((doc: DocumentMetaInfoResponse) => {
+      for (const doc of documents) {
         if (doc.documentName && doc.documentId) {
           documentsObject[doc.documentName] = doc.documentId;
         }
-      });
+      }
 
       namesAndReferencesOfAllCompanyReportsForTheDataset.value = documentsObject;
 
