@@ -28,11 +28,22 @@
         "summary": "Send a data request",
         "description": "A data request for specific frameworks and companies is being sent.",
         "operationId": "createRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataRequest"
+                "$ref": "#/components/schemas/SingleRequest"
               }
             }
           },
@@ -44,7 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/SingleRequestResponse"
                 }
               }
             }
@@ -114,7 +125,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/StoredRequest"
                 }
               }
             }
@@ -409,6 +420,83 @@
         ]
       }
     },
+    "/requests/{id}/history": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get full history of a requests by ID",
+        "description": "Retrieve the history of a Request object by its unique identifier.",
+        "operationId": "getDataSourcingHistoryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the Request object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved Request history.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "request object not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/{dataRequestId}": {
       "get": {
         "tags": [
@@ -433,7 +521,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/StoredRequest"
                 }
               }
             }
@@ -547,7 +635,7 @@
         ],
         "summary": "Get full history of DataSourcing history by ID",
         "description": "Retrieve the history of a DataSourcing object by its unique identifier.",
-        "operationId": "getDataSourcingHistoryById",
+        "operationId": "getDataSourcingHistoryById_1",
         "parameters": [
           {
             "name": "id",
@@ -889,11 +977,12 @@
   },
   "components": {
     "schemas": {
-      "DataRequest": {
+      "SingleRequest": {
         "required": [
           "companyIdentifier",
           "dataType",
-          "reportingPeriod"
+          "notifyMeImmediately",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -907,10 +996,21 @@
             "description": "The associated reporting framework.",
             "example": "sfdr"
           },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
-            "example": "2023"
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The associated reporting periods (e.g. fiscal years).",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "notifyMeImmediately": {
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           },
           "comment": {
             "type": "string",
@@ -919,14 +1019,41 @@
           }
         }
       },
-      "RequestPriority": {
-        "type": "string",
-        "enum": [
-          "Low",
-          "Baseline",
-          "High",
-          "Urgent"
-        ]
+      "SingleRequestResponse": {
+        "required": [
+          "message",
+          "reportingPeriodsOfDuplicateRequests",
+          "reportingPeriodsOfStoredRequests"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
+          },
+          "reportingPeriodsOfStoredRequests": {
+            "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored data requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfDuplicateRequests": {
+            "type": "array",
+            "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
+            "example": [
+              "2022"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "RequestState": {
         "type": "string",
@@ -937,7 +1064,16 @@
           "Processed"
         ]
       },
-      "StoredDataRequest": {
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "StoredRequest": {
         "required": [
           "companyId",
           "creationTimeStamp",

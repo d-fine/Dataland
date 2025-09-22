@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.dataSourcingService
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DataRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -22,9 +23,10 @@ class RequestControllerTest {
     fun `post a request and verify that it can be retrieved`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val timeBeforeUpload = OffsetDateTime.now(ZoneOffset.UTC)
-        val companyId = GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        }
+        val companyId =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+            }
         val dummyRequest = DataRequest(companyId, "sfdr", "2023", "dummy request")
 
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
@@ -45,10 +47,11 @@ class RequestControllerTest {
     @Test
     fun `post a request with invalid company ID and verify that it is rejected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val invalidRequest = DataRequest("invalidCompanyId", "sfdr", "2023", "dummy request")
-        val exception = assertThrows<ClientException> {
-            apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
-        }
+        val invalidRequest = SingleRequest("invalidCompanyId", "sfdr", setOf("2023"), false, "dummy request")
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
+            }
         assertEquals("Client error : 404 ", exception.message)
     }
 
@@ -70,5 +73,22 @@ class RequestControllerTest {
             initialRequest.copy(state = RequestState.Processing, lastModifiedDate = patchedRequest.lastModifiedDate),
             patchedRequest,
         )
+    }
+
+    @Test
+    fun `verify that historization works for data requests`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val companyId =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+            }
+        val dummyRequest = DataRequest(companyId, "sfdr", "2023", "dummy request")
+
+        val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
+
+        val requestHistory = apiAccessor.dataSourcingRequestControllerApi.getDataSourcingHistoryById(requestId)
+
+        assertEquals(1, requestHistory.size)
+        assertEquals(RequestState.Open, requestHistory[0].state)
     }
 }
