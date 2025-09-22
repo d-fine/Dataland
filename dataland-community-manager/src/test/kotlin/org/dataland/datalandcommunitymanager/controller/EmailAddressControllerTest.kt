@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.controller
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.InvalidEmailFormatApiException
 import org.dataland.datalandcommunitymanager.model.EmailAddress
-import org.dataland.datalandcommunitymanager.services.UserValidationService
+import org.dataland.datalandcommunitymanager.services.EmailAddressService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -14,10 +14,10 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserValidationControllerTest {
-    private val mockUserValidationService = mock<UserValidationService>()
+class EmailAddressControllerTest {
+    private val mockEmailAddressService = mock<EmailAddressService>()
 
-    private lateinit var userValidationController: UserValidationController
+    private lateinit var emailAddressController: EmailAddressController
 
     private val validEmail = "test@example.com"
     private val validEmailAddress = EmailAddress(validEmail)
@@ -26,23 +26,23 @@ class UserValidationControllerTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockUserValidationService)
-        userValidationController = UserValidationController(mockUserValidationService)
+        reset(mockEmailAddressService)
+        emailAddressController = EmailAddressController(mockEmailAddressService)
     }
 
     @Test
     fun `check that an invalid email address is rejected`() {
-        assertThrows<InvalidInputApiException> {
-            userValidationController.postEmailAddressValidation(invalidEmailAddress)
+        assertThrows<InvalidEmailFormatApiException> {
+            emailAddressController.postEmailAddressValidation(invalidEmailAddress)
         }
     }
 
     @Test
     fun `check that a valid email address is forwarded to the service layer`() {
         assertDoesNotThrow {
-            userValidationController.postEmailAddressValidation(validEmailAddress)
+            emailAddressController.postEmailAddressValidation(validEmailAddress)
         }
 
-        verify(mockUserValidationService, times(1)).validateEmailAddress(validEmail)
+        verify(mockEmailAddressService, times(1)).validateEmailAddress(validEmail)
     }
 }
