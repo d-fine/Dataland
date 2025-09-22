@@ -1,4 +1,6 @@
 import { getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { PortfolioControllerApi } from '@clients/userservice';
+import { Configuration } from '@clients/backend';
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
@@ -41,7 +43,18 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .click();
   }
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/portfolios');
+  let doesUserHavePortfolios = false;
+  getKeycloakToken(username, password).then(async (token) => {
+    const allUserPortfolios = await new PortfolioControllerApi(
+      new Configuration({ accessToken: token })
+    ).getAllPortfolioNamesForCurrentUser();
+    doesUserHavePortfolios = allUserPortfolios.data.length > 0;
+  });
+
+  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+    'eq',
+    getBaseUrl() + (doesUserHavePortfolios ? '/portfolios' : '/companies')
+  );
   cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
     globalJwt = interception.request.headers['authorization'] as string;
   });
