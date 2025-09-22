@@ -4,7 +4,6 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.CommonDataRequestProcessingUtils
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
@@ -39,7 +38,6 @@ class SingleRequestManager
         private val requestRepository: RequestRepository,
         private val dataRevisionRepository: DataRevisionRepository,
         private val securityUtilsService: SecurityUtilsService,
-        private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}")
         private val maxRequestsForUser: Int,
     ) {
@@ -114,36 +112,44 @@ class SingleRequestManager
         private fun processReportingPeriod(
             reportingPeriod: String,
             preprocessedRequest: PreprocessedRequest,
-        ): Map<String, String> =
-            if (dataSourcingServiceDataRequestProcessingUtils.existsDataRequestWithNonFinalState(
+        ): Map<String, Pair<String, UUID>> {
+            val existingDataRequestsWithNonFinalState =
+                dataSourcingServiceDataRequestProcessingUtils.getExistingDataRequestsWithNonFinalState(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
-            ) {
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS to reportingPeriod)
-            } else {
-                dataSourcingServiceDataRequestProcessingUtils.storeRequestEntityAsOpen(
-                    userId = preprocessedRequest.userId,
-                    companyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType,
-                    notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
-                    reportingPeriod = reportingPeriod,
+            return if (existingDataRequestsWithNonFinalState.isNotEmpty()) {
+                mutableMapOf(
+                    ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS to
+                        Pair(reportingPeriod, existingDataRequestsWithNonFinalState.first().id),
                 )
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
+            } else {
+                val requestEntity =
+                    dataSourcingServiceDataRequestProcessingUtils.storeRequestEntityAsOpen(
+                        userId = preprocessedRequest.userId,
+                        companyId = preprocessedRequest.companyId,
+                        dataType = preprocessedRequest.dataType,
+                        notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
+                        reportingPeriod = reportingPeriod,
+                    )
+                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to Pair(reportingPeriod, requestEntity.id))
             }
+        }
 
         private fun buildResponseForSingleDataRequest(
             dataRequest: SingleRequest,
-            reportingPeriodsOfStoredDataRequests: List<String>,
-            reportingPeriodsOfDuplicateDataRequests: List<String>,
+            reportingPeriodsAndIdsOfStoredDataRequests: List<Pair<String, UUID>>,
+            reportingPeriodsAndNullIdsOfDuplicateDataRequests: List<Pair<String, UUID>>,
         ): SingleRequestResponse =
             SingleRequestResponse(
                 commonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
                     totalNumberOfReportingPeriods = dataRequest.reportingPeriods.size,
-                    numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsOfDuplicateDataRequests.size,
+                    numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsAndNullIdsOfDuplicateDataRequests.size,
                 ),
-                reportingPeriodsOfStoredDataRequests,
-                reportingPeriodsOfDuplicateDataRequests,
+                reportingPeriodsAndIdsOfStoredDataRequests.map { it.first },
+                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second },
+                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.first },
+                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second },
             )
 
         @Transactional
@@ -159,7 +165,7 @@ class SingleRequestManager
                 preprocessedRequest,
             )
 
-            val reportingPeriodsMap = mutableMapOf<String, MutableList<String>>()
+            val reportingPeriodsAndIdsMap = mutableMapOf<String, MutableList<Pair<String, UUID>>>()
 
             singleRequest.reportingPeriods.forEach { reportingPeriod ->
                 val processedReportingPeriod =
@@ -167,14 +173,14 @@ class SingleRequestManager
                         reportingPeriod, preprocessedRequest,
                     )
                 processedReportingPeriod.forEach { (key, value) ->
-                    reportingPeriodsMap.getOrPut(key) { mutableListOf() }.add(value)
+                    reportingPeriodsAndIdsMap.getOrPut(key) { mutableListOf() }.add(value)
                 }
             }
 
             return buildResponseForSingleDataRequest(
                 singleRequest,
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
+                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
+                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
             )
         }
 

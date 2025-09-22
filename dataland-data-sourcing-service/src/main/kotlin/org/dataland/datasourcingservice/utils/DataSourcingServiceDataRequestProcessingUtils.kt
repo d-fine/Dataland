@@ -47,13 +47,13 @@ class DataSourcingServiceDataRequestProcessingUtils
          * @param requestState the state of the data request
          * @return a list of the found data requests, or null if none was found
          */
-        fun findAlreadyExistingDataRequestForUser(
+        fun findAlreadyExistingDataRequestsForUser(
             userId: UUID,
             companyId: String,
             framework: String,
             reportingPeriod: String,
             requestState: RequestState,
-        ): List<RequestEntity>? {
+        ): List<RequestEntity> {
             val foundRequests =
                 requestRepository
                     .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
@@ -73,29 +73,21 @@ class DataSourcingServiceDataRequestProcessingUtils
             return foundRequests
         }
 
-        /**
-         * Checks whether a request already exists on Dataland in a non-final state (i.e. in state "Open" or "Processing")
-         * @param companyId the company ID of the data request
-         * @param framework the framework of the data request
-         * @param reportingPeriod the reporting period of the data request
-         * @param userId the user ID of the data request
-         * @return true if the data request already exists for the current user, false otherwise
-         */
-        fun existsDataRequestWithNonFinalState(
+        fun getExistingDataRequestsWithNonFinalState(
             companyId: String,
             framework: String,
             reportingPeriod: String,
             userId: UUID,
-        ): Boolean {
+        ): List<RequestEntity> {
             val openDataRequests =
-                findAlreadyExistingDataRequestForUser(
+                findAlreadyExistingDataRequestsForUser(
                     userId, companyId, framework, reportingPeriod, RequestState.Open,
                 )
             val dataRequestsInProcess =
-                findAlreadyExistingDataRequestForUser(
+                findAlreadyExistingDataRequestsForUser(
                     userId, companyId, framework, reportingPeriod, RequestState.Processing,
                 )
-            return !(openDataRequests.isNullOrEmpty() && dataRequestsInProcess.isNullOrEmpty())
+            return openDataRequests + dataRequestsInProcess
         }
 
         /**
