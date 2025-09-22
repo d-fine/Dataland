@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services.dataPoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
@@ -11,16 +12,22 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+import java.math.BigDecimal
 
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -85,5 +92,50 @@ class DataPointManagerTest {
         assert(result.dataPointType == uploadedDataPoint.dataPointType)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)
         assert(result.dataPointId == dataId)
+    }
+
+    @Test
+    fun `test that a datapoint is casted to the correct class on retrieval`() {
+        val dummyDataPoint = "{\"value\": \"0.5\", \"currency\": \"USD\"}"
+        val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
+        val dummyDataPointId = IdUtils.generateUUID()
+        val dummyCompanyId = "dummy company"
+        val dummyReportingPeriod = "2005"
+        val dummyCorrelationId = "test-correlation-id"
+
+        doReturn(
+            listOf(
+                DataPointMetaInformationEntity(
+                    dataPointId = dummyDataPointId,
+                    dataPointType = dummyDataPointType,
+                    uploaderUserId = "uploaderUserId",
+                    companyId = dummyCompanyId,
+                    reportingPeriod = dummyReportingPeriod,
+                    uploadTime = 0,
+                    currentlyActive = true,
+                    qaStatus = QaStatus.Accepted,
+                ),
+            ),
+        ).whenever(metaDataManager).getDataPointMetaInformationByIds(listOf(dummyDataPointId))
+
+        doReturn(
+            mapOf(
+                dummyDataPointId to StorableDataPoint(dummyDataPoint, dummyDataPointType, dummyCompanyId, dummyReportingPeriod),
+            ),
+        ).whenever(storageClient).selectBatchDataPointsByIds(dummyCorrelationId, listOf(dummyDataPointId))
+
+        doReturn(
+            ExtendedCurrencyDataPoint(
+                value = BigDecimal("0.5"),
+                currency = "USD",
+            ),
+        ).whenever(dataPointValidator).validateDataPoint(dummyDataPointType, dummyDataPoint, dummyCorrelationId)
+
+        val result = dataPointManager.retrieveDataPoint(dummyDataPointId, dummyCorrelationId)
+        val expectation =
+            defaultObjectMapper.writeValueAsString(
+                defaultObjectMapper.readValue(dummyDataPoint, ExtendedCurrencyDataPoint::class.java),
+            )
+        Assertions.assertEquals(expectation, result.dataPoint)
     }
 }

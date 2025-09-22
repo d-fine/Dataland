@@ -127,6 +127,7 @@ class DataRetrievalViaApiKeyTest {
                                 expectedStoredCompany
                                     .companyInformation.companyContactDetails
                                     ?.sorted(),
+                            associatedSubdomains = emptyList(),
                         ),
             ),
             downloadedStoredCompany,
@@ -186,6 +187,7 @@ class DataRetrievalViaApiKeyTest {
                                 expectedStoredCompany
                                     .companyInformation.companyContactDetails
                                     ?.sorted(),
+                            associatedSubdomains = emptyList(),
                         ),
             ),
             downloadedStoredCompany,

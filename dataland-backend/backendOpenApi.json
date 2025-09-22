@@ -5822,6 +5822,18 @@
             "description": "The LEI of the parent company if it exists.",
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
+          },
+          "associatedSubdomains": {
+            "type": "array",
+            "description": "List of email subdomains associated with the company. Subdomain labels immediately follow the \u0027@\u0027 and end immediately before one of the subsequent periods \u0027.\u0027. They represent the root domain registered by the company together with subdomains if applicable. They are used to suggest registered Dataland users when managing company roles.",
+            "nullable": true,
+            "example": [
+              "my-company",
+              "hr.my-company"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -16494,6 +16506,18 @@
             "description": "The LEI of the parent company if it exists.",
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
+          },
+          "associatedSubdomains": {
+            "type": "array",
+            "description": "List of email subdomains associated with the company. Subdomain labels immediately follow the \u0027@\u0027 and end immediately before one of the subsequent periods \u0027.\u0027. They represent the root domain registered by the company together with subdomains if applicable. They are used to suggest registered Dataland users when managing company roles.",
+            "nullable": true,
+            "example": [
+              "my-company",
+              "hr.my-company"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
