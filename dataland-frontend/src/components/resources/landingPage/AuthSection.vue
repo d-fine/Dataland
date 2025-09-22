@@ -52,7 +52,7 @@ const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == '/') {
+      if (globalThis.location.pathname == '/') {
         void loginAndRedirectToRedirectPage(keycloak);
       } else {
         keycloak.login().catch((error) => console.error(error));
@@ -83,7 +83,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == '/') {
+      if (globalThis.location.pathname == '/') {
         void registerAndRedirectToRedirectPage(keycloak);
       } else {
         keycloak.register().catch((error) => console.error(error));

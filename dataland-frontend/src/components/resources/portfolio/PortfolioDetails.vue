@@ -224,7 +224,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+    for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -232,7 +232,7 @@ class PortfolioEntryPrepared {
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
-    });
+    }
 
     this.sfdrAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
@@ -300,7 +300,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
@@ -311,7 +311,7 @@ watch([enrichedPortfolio], () => {
         )
       ).sort()
     );
-  });
+  }
 });
 
 /**
@@ -381,8 +381,8 @@ function loadPortfolio(): void {
       reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
       isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
-    .catch((reason) => {
-      console.error(reason);
+    .catch((error) => {
+      console.error(error);
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));

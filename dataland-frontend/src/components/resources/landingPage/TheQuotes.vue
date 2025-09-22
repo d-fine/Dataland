@@ -77,6 +77,7 @@ interface YouTubeEvent {
   };
 }
 declare global {
+  var onYouTubeIframeAPIReady: () => void;
   interface Window {
     Cookiebot?: {
       renew: () => void;
@@ -133,9 +134,9 @@ const renewCookieConsent = (): void => {
 };
 
 const pauseAllVideos = (): void => {
-  ytPlayers.value.forEach((player) => {
+  for (const player of ytPlayers.value.values()) {
     player.pauseVideo();
-  });
+  }
 };
 
 const toggleThumbnailAndPlayVideo = (slideIndex: number, videoId?: string): void => {
@@ -161,11 +162,11 @@ watch(
 );
 
 const updateSlideWidth = (): void => {
-  slideWidth.value = window.innerWidth > 768 ? 640 : 323;
+  slideWidth.value = globalThis.innerWidth > 768 ? 640 : 323;
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateSlideWidth);
+  globalThis.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
   const firstScriptTag = document.querySelector('script');
   if (firstScriptTag?.parentNode) {
@@ -173,9 +174,9 @@ onMounted(() => {
     tag.src = 'https://www.youtube.com/iframe_api';
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
-  window.onYouTubeIframeAPIReady = (): void => {
-    cards.value.forEach((card) => {
-      if (!card.icon) return;
+  globalThis.onYouTubeIframeAPIReady = (): void => {
+    for (const card of cards.value) {
+      if (!card.icon) continue;
 
       const player = new window.YT.Player(`video-${card.icon}`, {
         videoId: card.icon,
@@ -189,15 +190,15 @@ onMounted(() => {
         },
       });
       ytPlayers.value.set(card.icon, player);
-    });
+    }
   };
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateSlideWidth);
-  ytPlayers.value.forEach((player) => {
+  for (const player of ytPlayers.value.values()) {
     player.destroy();
-  });
+  }
 });
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
