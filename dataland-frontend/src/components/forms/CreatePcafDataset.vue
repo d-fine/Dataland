@@ -82,7 +82,7 @@
 
       <div class="sidebar">
         <PrimeButton
-          type="submit"
+          type="button"
           data-test="submitButton"
           label="ADD DATA"
           :disabled="isJustClicked"
