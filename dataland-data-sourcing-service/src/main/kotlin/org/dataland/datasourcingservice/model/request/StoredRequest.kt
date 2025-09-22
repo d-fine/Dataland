@@ -9,7 +9,7 @@ import java.util.UUID
 /**
  * DTO for creating and transferring request data.
  */
-data class StoredDataRequest(
+data class StoredRequest(
     val id: String,
     val companyId: String,
     val reportingPeriod: String,
@@ -30,14 +30,14 @@ data class StoredDataRequest(
          * @param entity The RequestEntity to convert.
          * @return The corresponding StoredDataRequest.
          */
-        fun fromRequestEntity(entity: RequestEntity): StoredDataRequest =
-            StoredDataRequest(
+        fun fromRequestEntity(entity: RequestEntity): StoredRequest =
+            StoredRequest(
                 id = entity.id.toString(),
                 companyId = entity.companyId.toString(),
                 reportingPeriod = entity.reportingPeriod,
                 dataType = entity.dataType,
                 userId = entity.userId.toString(),
-                creationTimeStamp = entity.creationTimeStamp,
+                creationTimeStamp = entity.creationTimestamp,
                 memberComment = entity.memberComment,
                 adminComment = entity.adminComment,
                 lastModifiedDate = entity.lastModifiedDate,
@@ -55,11 +55,11 @@ data class StoredDataRequest(
     fun toRequestEntity(): RequestEntity =
         RequestEntity(
             id = UUID.fromString(this.id),
-            companyId = UUID.fromString(this.companyId),
+            companyId = this.companyId,
             reportingPeriod = this.reportingPeriod,
             dataType = this.dataType,
             userId = UUID.fromString(this.userId),
-            creationTimeStamp = this.creationTimeStamp,
+            creationTimestamp = this.creationTimeStamp,
             memberComment = this.memberComment,
             adminComment = this.adminComment,
             lastModifiedDate = this.lastModifiedDate,

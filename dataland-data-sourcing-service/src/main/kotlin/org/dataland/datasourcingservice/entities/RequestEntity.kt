@@ -9,7 +9,9 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.StoredDataRequest
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.envers.Audited
 import java.util.Date
 import java.util.UUID
@@ -26,7 +28,7 @@ data class RequestEntity(
     @Column(name = "id")
     val id: UUID,
     @Column(name = "company_id")
-    val companyId: UUID,
+    val companyId: String,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "data_type")
@@ -34,7 +36,7 @@ data class RequestEntity(
     @Column(name = "user_id")
     val userId: UUID,
     @Column(name = "creation_time_stamp")
-    val creationTimeStamp: Date,
+    val creationTimestamp: Date,
     @Column(name = "member_comment", length = 1000)
     val memberComment: String? = null,
     @Column(name = "admin_comment", length = 1000)
@@ -52,19 +54,43 @@ data class RequestEntity(
     /**
      * Converts this RequestEntity to a StoredDataRequest.
      */
-    fun toStoredDataRequest(): StoredDataRequest =
-        StoredDataRequest(
-            id = id,
-            companyId = companyId,
+    fun toStoredDataRequest(): StoredRequest =
+        StoredRequest(
+            id = id.toString(),
+            companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
             dataType = dataType,
-            userId = userId,
-            creationTimeStamp = creationTimeStamp,
+            userId = userId.toString(),
+            creationTimeStamp = creationTimestamp,
             memberComment = memberComment,
             adminComment = adminComment,
             lastModifiedDate = lastModifiedDate,
             requestPriority = requestPriority,
             state = state,
-            dataSourcingEntityId = dataSourcingEntity?.id,
+            dataSourcingEntityId = dataSourcingEntity?.id.toString(),
         )
+
+    constructor(
+        userId: UUID,
+        companyId: String,
+        dataType: String,
+        reportingPeriod: String,
+        notifyMeImmediately: Boolean,
+        creationTimestamp: Date,
+    ) : this(
+        id = UUID.randomUUID(),
+        companyId = companyId,
+        reportingPeriod = reportingPeriod,
+        dataType = dataType,
+        userId = userId,
+        creationTimestamp = creationTimestamp,
+        lastModifiedDate = creationTimestamp,
+        requestPriority =
+            if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+                RequestPriority.High
+            } else {
+                RequestPriority.Low
+            },
+        state = RequestState.Open,
+    )
 }

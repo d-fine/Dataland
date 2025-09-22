@@ -103,6 +103,7 @@ class DataSourcingServiceListener
                 }
 
                 QaStatus.Pending -> {
+                    if (storedDataSourcing.state == DataSourcingState.Answered) return
                     dataSourcingManager.patchDataSourcingEntity(
                         storedDataSourcing.id,
                         DataSourcingPatch(state = DataSourcingState.DataVerification),

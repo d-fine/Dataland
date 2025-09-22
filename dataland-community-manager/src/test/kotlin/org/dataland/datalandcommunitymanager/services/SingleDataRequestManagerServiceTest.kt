@@ -10,9 +10,9 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -43,7 +43,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 @Transactional
 class SingleDataRequestManagerServiceTest(
     @Autowired val dataRequestLogger: DataRequestLogger,
-    @Autowired val dataRequestProcessingUtils: DataRequestProcessingUtils,
+    @Autowired val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
     @Autowired val accessRequestEmailBuilder: AccessRequestEmailBuilder,
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val securityUtilsService: SecurityUtilsService,
@@ -62,7 +62,7 @@ class SingleDataRequestManagerServiceTest(
     private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private lateinit var singleDataRequestManager: SingleDataRequestManager
-    private lateinit var spyDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var spyCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
 
     private val mockSecurityContext = mock<SecurityContext>()
     private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
@@ -83,7 +83,7 @@ class SingleDataRequestManagerServiceTest(
 
     @BeforeEach
     fun setUp() {
-        spyDataRequestProcessingUtils = spy(dataRequestProcessingUtils)
+        spyCommunityManagerDataRequestProcessingUtils = spy(communityManagerDataRequestProcessingUtils)
 
         reset(
             mockCompanyInfoService,
@@ -95,7 +95,7 @@ class SingleDataRequestManagerServiceTest(
 
         // The following method is only used to check for existing datasets in the context of
         // access requests.
-        doReturn(false).whenever(spyDataRequestProcessingUtils).matchingDatasetExists(
+        doReturn(false).whenever(spyCommunityManagerDataRequestProcessingUtils).matchingDatasetExists(
             anyString(), anyString(), any(),
         )
         doReturn(false).whenever(mockDataAccessManager).hasAccessToPrivateDataset(
@@ -111,7 +111,7 @@ class SingleDataRequestManagerServiceTest(
             .whenever(mockKeycloakUserService)
             .getUserRoleNames(eq(dummyUserId))
         doReturn(Pair(mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)), emptyList<String>()))
-            .whenever(spyDataRequestProcessingUtils)
+            .whenever(spyCommunityManagerDataRequestProcessingUtils)
             .performIdentifierValidation(anyList())
 
         singleDataRequestManager =
@@ -119,7 +119,7 @@ class SingleDataRequestManagerServiceTest(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                dataRequestProcessingUtils = spyDataRequestProcessingUtils,
+                communityManagerDataRequestProcessingUtils = spyCommunityManagerDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = accessRequestEmailBuilder,
                 securityUtilsService = securityUtilsService,

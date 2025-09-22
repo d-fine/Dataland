@@ -11,9 +11,9 @@ import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiEx
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -40,7 +40,7 @@ class DataRequestQueryManagerTest {
     private lateinit var dataRequestQueryManager: DataRequestQueryManager
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
     private lateinit var mockKeycloakUserService: KeycloakUserService
     private lateinit var mockDataRequestMasker: DataRequestMasker
     private val userId = "1234-221-1111elf"
@@ -137,7 +137,7 @@ class DataRequestQueryManagerTest {
     }
 
     private fun setupMocks() {
-        mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
+        mockCommunityManagerDataRequestProcessingUtils = mock(CommunityManagerDataRequestProcessingUtils::class.java)
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         `when`(mockCompanyDataControllerApi.getCompanyInfo(testCompanyId))
@@ -184,7 +184,7 @@ class DataRequestQueryManagerTest {
         ).thenReturn(listOf(keycloakUserBeta))
 
         `when`(
-            mockDataRequestProcessingUtils.getDataTypeEnumForFrameworkName("sfdr"),
+            mockCommunityManagerDataRequestProcessingUtils.getDataTypeEnumForFrameworkName("sfdr"),
         ).thenReturn(DataTypeEnum.sfdr)
     }
 
@@ -199,7 +199,7 @@ class DataRequestQueryManagerTest {
                 dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = dataRequestLogger,
                 companyDataControllerApi = mockCompanyDataControllerApi,
-                processingUtils = mockDataRequestProcessingUtils,
+                processingUtils = mockCommunityManagerDataRequestProcessingUtils,
                 keycloakUserControllerApiService = mockKeycloakUserService,
                 dataRequestMasker = mockDataRequestMasker,
                 requestPriorityAggregator = RequestPriorityAggregator(),

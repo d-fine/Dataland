@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.model.request.StoredDataRequest
+import org.dataland.datasourcingservice.model.request.StoredRequest
 import java.util.Date
 import java.util.UUID
 
@@ -78,9 +78,9 @@ data class StoredDataSourcing(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = StoredDataRequest::class,
+                implementation = StoredRequest::class,
                 description = DataSourcingOpenApiDescriptionsAndExamples.ASSOCIATED_REQUESTS_DESCRIPTION,
             ),
     )
-    val associatedRequests: Set<StoredDataRequest>? = null,
+    val associatedRequests: Set<StoredRequest>? = null,
 )

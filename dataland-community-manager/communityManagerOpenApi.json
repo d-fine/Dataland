@@ -741,7 +741,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": true,
             "schema": {
               "type": "string"
@@ -751,7 +751,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -820,7 +820,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -911,7 +911,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1061,7 +1061,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1152,7 +1152,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1225,7 +1225,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1247,7 +1247,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1632,7 +1632,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1668,12 +1668,12 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1854,12 +1854,12 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "resourceId": {
@@ -1939,8 +1939,8 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -2028,12 +2028,12 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2179,12 +2179,12 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2240,7 +2240,7 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -2253,7 +2253,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {

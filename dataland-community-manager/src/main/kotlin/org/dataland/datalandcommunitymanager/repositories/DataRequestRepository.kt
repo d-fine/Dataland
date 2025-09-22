@@ -51,7 +51,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         datalandCompanyId: String,
         dataType: String,
         reportingPeriod: String,
-    ): List<DataRequestEntity>?
+    ): List<DataRequestEntity>
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.

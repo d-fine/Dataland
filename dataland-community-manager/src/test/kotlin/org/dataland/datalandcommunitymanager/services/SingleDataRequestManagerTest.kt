@@ -12,9 +12,9 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -43,7 +43,7 @@ import java.util.UUID
 class SingleDataRequestManagerTest {
     private val mockDataRequestRepository = mock<DataRequestRepository>()
     private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
-    private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
+    private val mockCommunityManagerDataRequestProcessingUtils = mock<CommunityManagerDataRequestProcessingUtils>()
     private val mockSecurityUtilsService = mock<SecurityUtilsService>()
     private val mockCompanyInfoService = mock<CompanyInfoService>()
     private val mockAccessRequestEmailBuilder = mock<AccessRequestEmailBuilder>()
@@ -71,7 +71,7 @@ class SingleDataRequestManagerTest {
         reset(
             mockDataRequestRepository,
             mockSingleDataRequestEmailMessageBuilder,
-            mockDataRequestProcessingUtils,
+            mockCommunityManagerDataRequestProcessingUtils,
             mockSecurityUtilsService,
             mockCompanyInfoService,
             mockAccessRequestEmailBuilder,
@@ -93,13 +93,13 @@ class SingleDataRequestManagerTest {
                 ),
                 emptyList<String>(),
             )
-        }.whenever(mockDataRequestProcessingUtils).performIdentifierValidation(anyList())
+        }.whenever(mockCommunityManagerDataRequestProcessingUtils).performIdentifierValidation(anyList())
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
+                communityManagerDataRequestProcessingUtils = mockCommunityManagerDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
                 accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,
@@ -228,7 +228,7 @@ class SingleDataRequestManagerTest {
         )
 
         `when`(
-            mockDataRequestProcessingUtils.matchingDatasetExists(
+            mockCommunityManagerDataRequestProcessingUtils.matchingDatasetExists(
                 companyIdRegexSafeCompanyId,
                 reportingPeriod,
                 DataTypeEnum.vsme,
@@ -260,7 +260,7 @@ class SingleDataRequestManagerTest {
 
         verifyNoInteractions(mockSingleDataRequestEmailMessageBuilder)
 
-        verify(mockDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(
+        verify(mockCommunityManagerDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(
             userId = any(),
             datalandCompanyId = any(),
             dataType = any(),

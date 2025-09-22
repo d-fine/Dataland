@@ -4,26 +4,24 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.services.CommonDataRequestProcessingUtils
+import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
-import java.time.ZoneId
 import java.util.UUID
 
 /**
@@ -37,12 +35,13 @@ class SingleDataRequestManager
         private val dataRequestLogger: DataRequestLogger,
         private val dataRequestRepository: DataRequestRepository,
         private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
-        private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+        private val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
+        private val commonDataRequestProcessingUtils: CommonDataRequestProcessingUtils,
+        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataAccessManager: DataAccessManager,
         private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         private val securityUtilsService: SecurityUtilsService,
         private val companyRolesManager: CompanyRolesManager,
-        private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         /**
@@ -99,7 +98,7 @@ class SingleDataRequestManager
             return buildResponseForSingleDataRequest(
                 singleDataRequest,
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
+                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS]?.toList() ?: listOf(),
             )
         }
@@ -113,10 +112,10 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userIdToUse: String,
         ): PreprocessedRequest {
-            dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
+            keycloakAdapterRequestProcessingUtils.throwExceptionIfNotJwtAuth()
 
             val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
-                dataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
+                communityManagerDataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
             if (rejectedIdentifiers.isNotEmpty()) {
                 throw ResourceNotFoundApiException(
                     "The company identifier is unknown.",
@@ -158,7 +157,7 @@ class SingleDataRequestManager
                     contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
+            } else if (communityManagerDataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
@@ -167,9 +166,9 @@ class SingleDataRequestManager
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
             ) {
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
+                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
-                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
+                communityManagerDataRequestProcessingUtils.storeDataRequestEntityAsOpen(
                     userId = preprocessedRequest.userId,
                     datalandCompanyId = preprocessedRequest.companyId,
                     dataType = preprocessedRequest.dataType,
@@ -188,7 +187,7 @@ class SingleDataRequestManager
             userId: String,
         ): Boolean {
             val matchingDatasetExists =
-                dataRequestProcessingUtils.matchingDatasetExists(
+                communityManagerDataRequestProcessingUtils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
                     dataType = dataType,
                 )
@@ -210,28 +209,17 @@ class SingleDataRequestManager
             )
         }
 
-        private fun requestIsForPremiumUser(userId: String): Boolean {
-            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
-            return if (userId == authenticationOfLoggedInUser.userId) {
-                authenticationOfLoggedInUser.roles.contains(
-                    DatalandRealmRole.ROLE_PREMIUM_USER,
-                )
-            } else {
-                keycloakUserService.getUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
-            }
-        }
-
         private fun performQuotaCheckForNonPremiumUser(
             userId: String,
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            if (!requestIsForPremiumUser(userId) &&
+            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId) &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userId, getEpochTimeStartOfDay(),
+                        userId, commonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
                     )
 
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
@@ -243,14 +231,6 @@ class SingleDataRequestManager
                     )
                 }
             }
-        }
-
-        private fun getEpochTimeStartOfDay(): Long {
-            val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
-            val zoneId = ZoneId.of("Europe/Berlin")
-            val instantNowZoned = instantNow.atZone(zoneId)
-            val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-            return startOfDay.toInstant().toEpochMilli()
         }
 
         private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
@@ -331,7 +311,7 @@ class SingleDataRequestManager
             reportingPeriodOfStoredAccessRequests: List<String>,
         ): SingleDataRequestResponse =
             SingleDataRequestResponse(
-                buildResponseMessageForSingleDataRequest(
+                commonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
                     totalNumberOfReportingPeriods = singleDataRequest.reportingPeriods.size,
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsOfDuplicateDataRequests.size,
                 ),
@@ -339,31 +319,4 @@ class SingleDataRequestManager
                 reportingPeriodsOfDuplicateDataRequests,
                 reportingPeriodOfStoredAccessRequests,
             )
-
-        private fun buildResponseMessageForSingleDataRequest(
-            totalNumberOfReportingPeriods: Int,
-            numberOfReportingPeriodsCorrespondingToDuplicates: Int,
-        ): String =
-            if (totalNumberOfReportingPeriods == 1) {
-                when (numberOfReportingPeriodsCorrespondingToDuplicates) {
-                    1 -> "Your data request was not stored, as it was already created by you before and exists on Dataland."
-                    else -> "Your data request was stored successfully."
-                }
-            } else {
-                when (numberOfReportingPeriodsCorrespondingToDuplicates) {
-                    0 -> "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored."
-                    1 ->
-                        "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
-                            "it was already created by you before and exists on Dataland."
-
-                    totalNumberOfReportingPeriods ->
-                        "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
-                            "already created by you before and exist on Dataland."
-
-                    else ->
-                        "The data requests for $numberOfReportingPeriodsCorrespondingToDuplicates of your " +
-                            "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
-                            "created by you before and exist on Dataland."
-                }
-            }
     }

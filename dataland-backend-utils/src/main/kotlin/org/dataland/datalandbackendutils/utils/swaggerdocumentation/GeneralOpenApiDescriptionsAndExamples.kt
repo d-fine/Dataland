@@ -5,7 +5,20 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_EMAIL_EXAMPLE = "test@example.com"
     const val GENERAL_TIMESTAMP_EXAMPLE = "1751291891271"
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
+
+    const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
+    const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
+
+    const val GENERAL_REPORTING_PERIODS_LIST_DESCRIPTION = "The associated reporting periods (e.g. fiscal years)."
     const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
+
+    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
+        "Reporting periods corresponding to the accepted and stored data requests."
+    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+
+    const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
+        "Reporting periods corresponding to data requests that were rejected due to being duplicates."
+    const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE = "[\"2022\"]"
 
     const val REPORTING_PERIOD_DESCRIPTION = "The associated reporting period (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
@@ -36,4 +49,9 @@ object GeneralOpenApiDescriptionsAndExamples {
 
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE
+
+    const val SINGLE_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
+        "Boolean indicating whether an immediate notification email shall be " +
+            "sent whenever there is an update concerning the request. " +
+            "If set to false, these updates are listed in the weekly summary email."
 }

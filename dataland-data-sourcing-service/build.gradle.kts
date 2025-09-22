@@ -28,6 +28,7 @@ plugins {
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.moshi.kotlin)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.okhttp)
@@ -119,13 +120,47 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
+    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    input =
+        project
+            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/community-manager")
+            .get()
+            .toString(),
+    )
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateBackendClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
 }
