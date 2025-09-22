@@ -27,6 +27,7 @@ plugins {
 }
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.springdoc.openapi.ui)

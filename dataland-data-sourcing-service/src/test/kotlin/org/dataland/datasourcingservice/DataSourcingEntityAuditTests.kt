@@ -1,8 +1,7 @@
-@file:Suppress("ktlint:standard:no-wildcard-imports")
-
 package org.dataland.datasourcingservice
 
 import org.assertj.core.api.Assertions.assertThat
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
@@ -10,27 +9,13 @@ import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 @SpringBootTest
 @Testcontainers
-class DataSourcingEntityAuditTests {
-    companion object {
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            TestPostgresContainer.configureProperties(registry)
-        }
-    }
-
+class DataSourcingEntityAuditTests : BaseIntegrationTest() {
     @Autowired
     private lateinit var dataSourcingRepository: DataSourcingRepository
 
