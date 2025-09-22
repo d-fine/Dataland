@@ -21,7 +21,7 @@ import java.util.Base64
 /**
  * Class to manage the token retrieval from keycloak via service account
  */
-@Service
+@Service("KeycloakTokenManager")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakTokenManager(
     @param:Autowired private val objectMapper: ObjectMapper,

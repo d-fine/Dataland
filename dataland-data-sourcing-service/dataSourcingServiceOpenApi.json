@@ -98,7 +98,7 @@
         ],
         "summary": "Updates the state of a given data request.",
         "description": "Updates the processing state of a data request given the data request id.",
-        "operationId": "patchDataRequestState",
+        "operationId": "patchRequestState",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -106,7 +106,8 @@
             "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
@@ -426,7 +427,7 @@
           "request-controller"
         ],
         "summary": "Get all information associated with the specified data request.",
-        "description": "Gets all the stored data of a particular dara request.",
+        "description": "Gets all the stored data of a particular data request.",
         "operationId": "getRequest",
         "parameters": [
           {
@@ -434,7 +435,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],

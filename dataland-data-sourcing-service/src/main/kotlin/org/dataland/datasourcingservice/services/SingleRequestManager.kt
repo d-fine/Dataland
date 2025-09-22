@@ -5,9 +5,14 @@ import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.CommonDataRequestProcessingUtils
 import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
+import org.dataland.datasourcingservice.entities.DataSourcingEntity
+import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
+import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.DataSourcingServiceDataRequestProcessingUtils
 import org.dataland.datasourcingservice.utils.RequestLogger
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.collections.component1
 import kotlin.collections.component2
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
@@ -34,6 +40,7 @@ class SingleRequestManager
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataSourcingServiceDataRequestProcessingUtils: DataSourcingServiceDataRequestProcessingUtils,
         private val requestRepository: RequestRepository,
+        private val dataSourcingRepository: DataSourcingRepository,
         private val securityUtilsService: SecurityUtilsService,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}")
         private val maxRequestsForUser: Int,
@@ -129,7 +136,13 @@ class SingleRequestManager
                         notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
                         reportingPeriod = reportingPeriod,
                     )
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to Pair(reportingPeriod, requestEntity.id))
+                mutableMapOf(
+                    ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to
+                        Pair(
+                            reportingPeriod,
+                            requestEntity.id,
+                        ),
+                )
             }
         }
 
@@ -176,8 +189,56 @@ class SingleRequestManager
 
             return buildResponseForSingleDataRequest(
                 singleRequest,
-                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
-                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
+                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList()
+                    ?: listOf(),
+                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList()
+                    ?: listOf(),
             )
+        }
+
+        @Transactional(readOnly = true)
+        fun getRequest(dataRequestId: UUID): StoredRequest =
+            requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
+                ?: throw RequestNotFoundApiException(
+                    dataRequestId,
+                )
+
+        @Transactional
+        fun patchRequestState(
+            dataRequestId: UUID,
+            newRequestState: RequestState,
+        ): StoredRequest {
+            val requestEntity =
+                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
+                    dataRequestId,
+                )
+            val oldRequestState = requestEntity.state
+            requestEntity.state = newRequestState
+
+            if (oldRequestState != RequestState.Open || newRequestState != RequestState.Processing) {
+                return requestEntity.toStoredDataRequest()
+            }
+            val companyId = requestEntity.companyId
+            val dataType = requestEntity.dataType
+            val reportingPeriod = requestEntity.reportingPeriod
+            val dataSourcingEntity =
+                dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                )
+            if (dataSourcingEntity == null) {
+                val newDataSourcingEntity =
+                    DataSourcingEntity(
+                        companyId = companyId,
+                        reportingPeriod = reportingPeriod,
+                        dataType = dataType,
+                    )
+                newDataSourcingEntity.associatedRequests.add(requestEntity)
+                dataSourcingRepository.save(newDataSourcingEntity)
+            } else {
+                dataSourcingEntity.associatedRequests.add(requestEntity)
+            }
+            return requestEntity.toStoredDataRequest()
         }
     }

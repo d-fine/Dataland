@@ -26,14 +26,14 @@ class RequestController(
             singleRequestManager.createRequest(singleRequest, userId),
         )
 
-    override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> {
-        return ResponseEntity.noContent().build() // todo: not yet implemented
-    }
+    override fun getRequest(dataRequestId: UUID): ResponseEntity<StoredRequest> =
+        ResponseEntity.ok(singleRequestManager.getRequest(dataRequestId))
 
-    override fun patchDataRequestState(
-        dataRequestId: String,
+    override fun patchRequestState(
+        dataRequestId: UUID,
         requestState: RequestState,
-    ): ResponseEntity<StoredRequest> {
-        return ResponseEntity.noContent().build() // todo: not yet implemented
-    }
+    ): ResponseEntity<StoredRequest> =
+        ResponseEntity.ok(
+            singleRequestManager.patchRequestState(dataRequestId, requestState),
+        )
 }

@@ -62,7 +62,7 @@ interface RequestApi {
      */
     @Operation(
         summary = "Get all information associated with the specified data request.",
-        description = "Gets all the stored data of a particular dara request.",
+        description = "Gets all the stored data of a particular data request.",
     )
     @ApiResponses(
         value = [
@@ -75,14 +75,14 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getRequest(
-        @Valid @PathVariable dataRequestId: String,
+        @Valid @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredRequest>
 
     /**
      * A method to patch the request state of a data request
      *
      * @param dataRequestId The request id of the data request to patch
-     * @param dataRequestPatch The data with which the request is updated
+     * @param requestState The new request state after patch
      * @return the modified data request
      */
     @Operation(
@@ -99,9 +99,9 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchDataRequestState(
+    fun patchRequestState(
         @DataRequestIdParameterRequired
-        @PathVariable("dataRequestId") dataRequestId: String,
+        @PathVariable("dataRequestId") dataRequestId: UUID,
         @Valid
         @RequestParam(
             name = "requestState",

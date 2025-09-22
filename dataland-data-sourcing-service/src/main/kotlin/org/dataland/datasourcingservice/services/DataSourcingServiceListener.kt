@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * Listener class for all RabbitMQ messages that are relevant to the data sourcing service.
@@ -81,7 +80,7 @@ class DataSourcingServiceListener
             try {
                 storedDataSourcing =
                     dataSourcingManager.getStoredDataSourcing(
-                        UUID.fromString(companyId),
+                        companyId,
                         reportingPeriod,
                         dataType.toString(),
                     )

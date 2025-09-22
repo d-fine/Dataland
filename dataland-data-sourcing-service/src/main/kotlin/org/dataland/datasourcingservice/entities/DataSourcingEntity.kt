@@ -31,7 +31,7 @@ data class DataSourcingEntity(
     @Column(name = "id")
     val id: UUID,
     @Column(name = "company_id")
-    val companyId: UUID,
+    val companyId: String,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "data_type")
@@ -40,10 +40,10 @@ data class DataSourcingEntity(
     var state: DataSourcingState,
     @ElementCollection
     @Column(name = "document_id")
-    var documentIds: Set<String>? = null,
+    var documentIds: Set<String> = emptySet(),
     @ElementCollection
     @Column(name = "expected_publication_date_of_documents")
-    var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument>? = null,
+    var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
     @Column(name = "date_document_sourcing_attempt")
     var dateDocumentSourcingAttempt: Date? = null,
     @Column(name = "document_collector")
@@ -54,8 +54,20 @@ data class DataSourcingEntity(
     var adminComment: String? = null,
     @OneToMany(mappedBy = "dataSourcingEntity")
     @JsonManagedReference
-    var associatedRequests: Set<RequestEntity>? = null,
+    var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
 ) {
+    constructor(
+        companyId: String,
+        reportingPeriod: String,
+        dataType: String,
+    ) : this(
+        id = UUID.randomUUID(),
+        companyId = companyId,
+        reportingPeriod = reportingPeriod,
+        dataType = dataType,
+        state = DataSourcingState.Initialized,
+    )
+
     /**
      * Converts this DataSourcingEntity to a StoredDataSourcing.
      */
@@ -72,6 +84,6 @@ data class DataSourcingEntity(
             documentCollector = documentCollector,
             dataExtractor = dataExtractor,
             adminComment = adminComment,
-            associatedRequests = associatedRequests?.map { it.toStoredDataRequest() }?.toSet(),
+            associatedRequests = associatedRequests.map { it.toStoredDataRequest() }.toMutableSet(),
         )
 }

@@ -13,7 +13,7 @@ class DataSourcingNotFoundApiException : ResourceNotFoundApiException {
     )
 
     constructor(
-        companyId: UUID,
+        companyId: String,
         reportingPeriod: String,
         dataType: String,
     ) : super(

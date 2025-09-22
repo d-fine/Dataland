@@ -24,7 +24,7 @@ data class StoredDataSourcing(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    val companyId: UUID,
+    val companyId: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,

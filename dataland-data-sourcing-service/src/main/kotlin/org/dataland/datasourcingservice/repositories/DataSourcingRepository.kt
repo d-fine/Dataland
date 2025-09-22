@@ -12,7 +12,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * Find a DataSourcingEntity by the triple companyId, dataType and reportingPeriod.
      */
     fun findByCompanyIdAndDataTypeAndReportingPeriod(
-        companyId: UUID,
+        companyId: String,
         dataType: String,
         reportingPeriod: String,
     ): DataSourcingEntity?
