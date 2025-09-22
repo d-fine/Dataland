@@ -47,13 +47,13 @@ class DataSourcingServiceDataRequestProcessingUtils
          * @param requestState the state of the data request
          * @return a list of the found data requests, or null if none was found
          */
-        fun findAlreadyExistingDataRequestForUser(
+        fun findAlreadyExistingDataRequestsForUser(
             userId: UUID,
             companyId: String,
             framework: String,
             reportingPeriod: String,
             requestState: RequestState,
-        ): List<RequestEntity>? {
+        ): List<RequestEntity> {
             val foundRequests =
                 requestRepository
                     .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
@@ -88,14 +88,31 @@ class DataSourcingServiceDataRequestProcessingUtils
             userId: UUID,
         ): Boolean {
             val openDataRequests =
-                findAlreadyExistingDataRequestForUser(
+                findAlreadyExistingDataRequestsForUser(
                     userId, companyId, framework, reportingPeriod, RequestState.Open,
                 )
             val dataRequestsInProcess =
-                findAlreadyExistingDataRequestForUser(
+                findAlreadyExistingDataRequestsForUser(
                     userId, companyId, framework, reportingPeriod, RequestState.Processing,
                 )
-            return !(openDataRequests.isNullOrEmpty() && dataRequestsInProcess.isNullOrEmpty())
+            return !(openDataRequests.isEmpty() && dataRequestsInProcess.isEmpty())
+        }
+
+        fun getExistingDataRequestsWithNonFinalState(
+            companyId: String,
+            framework: String,
+            reportingPeriod: String,
+            userId: UUID,
+        ): List<RequestEntity> {
+            val openDataRequests =
+                findAlreadyExistingDataRequestsForUser(
+                    userId, companyId, framework, reportingPeriod, RequestState.Open,
+                )
+            val dataRequestsInProcess =
+                findAlreadyExistingDataRequestsForUser(
+                    userId, companyId, framework, reportingPeriod, RequestState.Processing,
+                )
+            return openDataRequests + dataRequestsInProcess
         }
 
         /**

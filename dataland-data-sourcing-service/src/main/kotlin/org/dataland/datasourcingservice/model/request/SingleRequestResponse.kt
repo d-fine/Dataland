@@ -3,7 +3,9 @@ package org.dataland.datasourcingservice.model.request
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import java.util.UUID
 
 data class SingleRequestResponse(
     @field:JsonProperty(required = true)
@@ -12,6 +14,12 @@ data class SingleRequestResponse(
         example = GeneralOpenApiDescriptionsAndExamples.POST_MESSAGE_EXAMPLE,
     )
     val message: String,
+    @field:JsonProperty(required = true)
+    @Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_IDS_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_IDS_EXAMPLE,
+    )
+    val requestIds: List<UUID>,
     @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema =

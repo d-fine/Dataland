@@ -32,4 +32,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val COMMENT_DESCRIPTION = "A comment that accompanies the data sourcing request."
     const val COMMENT_EXAMPLE = "The previously provided data is lacking scope 3 emissions, but they should be available."
+
+    const val REQUEST_IDS_DESCRIPTION =
+        "The list of Dataland IDs of the created data requests. The position of an ID in this " +
+            "list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests."
+    const val REQUEST_IDS_EXAMPLE = "[\"40c84975-529a-41d2-b5dc-dbb4c803d2bc\"]"
 }

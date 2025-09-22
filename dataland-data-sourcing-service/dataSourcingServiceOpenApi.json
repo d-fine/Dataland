@@ -28,11 +28,22 @@
         "summary": "Send a data request",
         "description": "A data request for specific frameworks and companies is being sent.",
         "operationId": "createRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataRequest"
+                "$ref": "#/components/schemas/SingleRequest"
               }
             }
           },
@@ -44,7 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/SingleRequestResponse"
                 }
               }
             }
@@ -114,7 +125,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/StoredRequest"
                 }
               }
             }
@@ -433,7 +444,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "$ref": "#/components/schemas/StoredRequest"
                 }
               }
             }
@@ -889,11 +900,12 @@
   },
   "components": {
     "schemas": {
-      "DataRequest": {
+      "SingleRequest": {
         "required": [
           "companyIdentifier",
           "dataType",
-          "reportingPeriod"
+          "notifyMeImmediately",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -907,10 +919,21 @@
             "description": "The associated reporting framework.",
             "example": "sfdr"
           },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
-            "example": "2023"
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The associated reporting periods (e.g. fiscal years).",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "notifyMeImmediately": {
+            "type": "boolean",
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           },
           "comment": {
             "type": "string",
@@ -919,14 +942,54 @@
           }
         }
       },
-      "RequestPriority": {
-        "type": "string",
-        "enum": [
-          "Low",
-          "Baseline",
-          "High",
-          "Urgent"
-        ]
+      "SingleRequestResponse": {
+        "required": [
+          "message",
+          "reportingPeriodsOfDuplicateRequests",
+          "reportingPeriodsOfStoredRequests",
+          "requestIds"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A text about the result of Dataland processing the data request.",
+            "example": "Your data request was stored successfully."
+          },
+          "requestIds": {
+            "type": "array",
+            "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
+            "example": [
+              "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
+            ],
+            "items": {
+              "type": "string",
+              "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
+              "format": "uuid"
+            }
+          },
+          "reportingPeriodsOfStoredRequests": {
+            "type": "array",
+            "description": "Reporting periods corresponding to the accepted and stored data requests.",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfDuplicateRequests": {
+            "type": "array",
+            "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
+            "example": [
+              "2022"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "RequestState": {
         "type": "string",
@@ -937,7 +1000,16 @@
           "Processed"
         ]
       },
-      "StoredDataRequest": {
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "StoredRequest": {
         "required": [
           "companyId",
           "creationTimeStamp",
