@@ -1,5 +1,8 @@
 <template>
   <div class="col-12 text-left">
+    <!-- Local anchor to scroll into view instead of scrolling the whole window -->
+    <div ref="resultsTop"></div>
+
     <DataTable
       v-if="data && data.length > 0"
       ref="dataTable"
@@ -56,6 +59,7 @@
         </template>
       </Column>
     </DataTable>
+
     <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
       <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
@@ -103,22 +107,27 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Updates the current Page in the parent component
-     * @param event DataTablePageEvent
+     * Updates the current Page in the parent component (user-triggered)
+     * and scrolls the results area into view (not the whole window).
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
       this.$emit('page-update', event.page);
+      void this.$nextTick(() => {
+        // Scroll local anchor into view to avoid window-level scroll jumps
+        (this.$refs.resultsTop as HTMLElement | undefined)?.scrollIntoView({
+          block: 'start',
+          behavior: 'auto',
+        });
+      });
     },
     /**
-     * Navigates to the company cockpit page on a click on the row of the company
-     * @param event the row click event
-     * @param event.data the company the user clicked on
-     * @returns the promise of the router push action
+     * Navigates to the company cockpit page for the clicked row (fire-and-forget).
+     * @param {{ data: BasicCompanyInformation }} event - Row click event with company data.
+     * @returns {void}
      */
-    goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
+    goToCompanyCockpit(event: { data: BasicCompanyInformation }): void {
       const companyIdOfClickedRow = event.data.companyId;
-      return router.push(`/companies/${companyIdOfClickedRow}`);
+      void router.push(`/companies/${companyIdOfClickedRow}`);
     },
   },
 });

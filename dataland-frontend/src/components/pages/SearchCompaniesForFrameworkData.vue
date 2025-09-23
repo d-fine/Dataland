@@ -78,7 +78,7 @@ import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backen
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { type RouteLocationNormalizedLoaded } from 'vue-router';
 
 export default defineComponent({
   setup() {
@@ -98,18 +98,23 @@ export default defineComponent({
     FrameworkDataSearchResults,
     PrimeButton,
   },
-  created() {
-    window.addEventListener('scroll', this.windowScrollHandler);
+  /**
+   * Lifecycle hook that attaches the scroll listener, resolves user roles, and
+   * initializes query param-driven state and collapsed state on first paint.
+   * @returns {void}
+   */
+  mounted() {
+    window.addEventListener('scroll', this.windowScrollHandler, { passive: true });
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
-    this.scanQueryParams(this.route);
+    this.scanQueryParams(this.$route);
+    this.handleScroll();
   },
   data() {
     return {
-      route: useRoute(),
       resultsArray: [] as Array<BasicCompanyInformation>,
       currentSearchBarInput: '',
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
@@ -122,34 +127,60 @@ export default defineComponent({
         countryCodeFilter: [],
       } as FrameworkDataSearchFilterInterface,
       isSearchBarContainerCollapsed: false,
+      shouldResetPagination: false,
       rowsPerPage: 100,
       currentPage: 0,
       totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
+      /**
+       * RequestAnimationFrame throttle flag to avoid handling multiple scroll events per frame.
+       */
+      isTicking: false,
+      /**
+       * Bound scroll handler reference for add/removeEventListener.
+       * @returns {void}
+       */
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
       hasUserUploaderRights: null as null | boolean,
     };
   },
+  /**
+   * Updates component state when route changes (query params).
+   * @param {RouteLocationNormalizedLoaded} to Next route location.
+   * @returns {void}
+   */
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
     this.scanQueryParams(to);
   },
   watch: {
     currentFilteredFrameworks: {
+      /**
+       * Triggers combined filter recomputation when frameworks change.
+       * @returns {void}
+       */
       handler() {
         this.updateCombinedFilterIfRequired();
       },
       deep: true,
     },
     currentFilteredCountryCodes: {
+      /**
+       * Triggers combined filter recomputation when country codes change.
+       * @returns {void}
+       */
       handler() {
         this.updateCombinedFilterIfRequired();
       },
       deep: true,
     },
     currentFilteredSectors: {
+      /**
+       * Triggers combined filter recomputation when sectors change.
+       * @returns {void}
+       */
       handler() {
         this.updateCombinedFilterIfRequired();
       },
@@ -157,6 +188,10 @@ export default defineComponent({
     },
   },
   computed: {
+    /**
+     * Human-readable string that indicates the currently visible slice of results.
+     * @returns {string}
+     */
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
       if (!this.waitingForDataToDisplay) {
@@ -177,97 +212,104 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Redirect to the bulk data request page
+     * Navigates to the bulk data request page.
+     * @returns {void}
      */
     routeToBulkDataRequest() {
       void router.push('/bulkdatarequest');
     },
     /**
-     * Redirects to the new dataset page
+     * Navigates to the new dataset page.
+     * @returns {void}
      */
     linkToNewDatasetPage() {
       void router.push('/companies/choose');
     },
     /**
-     * Updates the current page.
-     * An update of the currentPage automatically triggers a data Update
-     * @param pageNumber the new page index
+     * Updates the pagination state when the page changes.
+     * @param {number} pageNumber Zero-based page index to display.
+     * @returns {void}
      */
     handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
+      if (pageNumber !== this.currentPage) {
         this.waitingForDataToDisplay = true;
         this.currentPage = pageNumber;
         this.previousRecords = this.currentPage * this.rowsPerPage;
       }
     },
     /**
-     * Called when the window is scrolled.
-     * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
+     * Handles window scroll with hysteresis and rAF throttling.
+     * Collapses the header after a threshold and expands below another threshold.
+     * @returns {void}
      */
     handleScroll() {
-      document
-        .getElementById('searchBarAndFiltersContainer')
-        ?.classList.toggle('collapsed-search-container', document.documentElement.scrollTop >= 64);
-      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-      this.frameworkDataSearchBar?.closeOverlay();
-      this.isSearchBarContainerCollapsed = document.documentElement.scrollTop >= 64;
-    },
+      if (this.isTicking) return;
+      this.isTicking = true;
 
+      requestAnimationFrame(() => {
+        const y = window.scrollY || document.documentElement.scrollTop;
+        const collapseAt = 120;
+        const expandAt = 32;
+        const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
+
+        if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
+          this.isSearchBarContainerCollapsed = shouldCollapse;
+          document
+            .getElementById('searchBarAndFiltersContainer')
+            ?.classList.toggle('collapsed-search-container', shouldCollapse);
+
+          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+          this.frameworkDataSearchBar?.closeOverlay();
+        }
+
+        this.isTicking = false;
+      });
+    },
     /**
-     * Parses the framework filter query parameters.
-     * @param route the current route
-     * @returns an array of framework filters from the URL or an empty array if no filter is defined
+     * Parses framework filters from route query.
+     * @param {RouteLocationNormalizedLoaded} route Current route.
+     * @returns {Array<DataTypeEnum>} Allowed framework values.
      */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
       if (queryFrameworks) {
-        const allowedDataTypeEnumValues = FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
-        return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
-          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
-        ) as Array<DataTypeEnum>;
+        const allowed = FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
+        return parseQueryParamArray(queryFrameworks).filter((f) => allowed.includes(f)) as Array<DataTypeEnum>;
       } else {
         return [];
       }
     },
     /**
-     * Parses the country-code query parameters.
-     * @param route the current route
-     * @returns an array of country codes to filter by or an empty array of no filter is present
+     * Parses country codes from route query.
+     * @param {RouteLocationNormalizedLoaded} route Current route.
+     * @returns {Array<string>} Country codes.
      */
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
       const queryCountryCodes = route.query.countryCode;
-      if (queryCountryCodes) {
-        return parseQueryParamArray(queryCountryCodes);
-      }
-      return [];
+      return queryCountryCodes ? parseQueryParamArray(queryCountryCodes) : [];
     },
     /**
-     * Parses the sector-filter query parameters.
-     * @param route the current route
-     * @returns an array of sectors to filter by or an empty array of no filter is present
+     * Parses sectors from route query.
+     * @param {RouteLocationNormalizedLoaded} route Current route.
+     * @returns {Array<string>} Sector values.
      */
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
       const querySectors = route.query.sector;
-      if (querySectors) {
-        return parseQueryParamArray(querySectors);
-      }
-      return [];
+      return querySectors ? parseQueryParamArray(querySectors) : [];
     },
     /**
-     * Parses the search term query parameter
-     * @param route the current route
-     * @returns the parsed search term query parameter or an empty string if non-existent
+     * Parses the search input from route query.
+     * @param {RouteLocationNormalizedLoaded} route Current route.
+     * @returns {string} Search input or empty string.
      */
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
       const queryInput = route.query.input as string;
-      if (queryInput) {
-        return queryInput;
-      }
-      return '';
+      return queryInput || '';
     },
     /**
-     * Updates the combined filter object if any of the local filters no longer match the combined filter object.
-     * An update of the combined filter object automatically triggers a new search.
+     * Rebuilds the combined filter when any constituent filter changes.
+     * Triggers a new search via v-model binding.
+     * @returns {void}
      */
     updateCombinedFilterIfRequired() {
       if (
@@ -283,12 +325,13 @@ export default defineComponent({
           companyNameFilter: this.currentSearchBarInput,
           countryCodeFilter: this.currentFilteredCountryCodes,
         };
+        this.shouldResetPagination = true;
       }
     },
     /**
-     * Reads the query parameters of the framework-, country-code-, sector- and name- filters and
-     * udpates the corresponding local variables accordingly
-     * @param route the current vue route
+     * Reads query params and synchronizes the local filter state.
+     * @param {RouteLocationNormalizedLoaded} route Route to read params from.
+     * @returns {void}
      */
     scanQueryParams(route: RouteLocationNormalizedLoaded) {
       const queryFrameworks = this.getQueryFrameworks(route);
@@ -305,15 +348,16 @@ export default defineComponent({
         this.currentFilteredCountryCodes = queryCountryCodes;
         this.currentFilteredSectors = querySectors;
         this.currentSearchBarInput = queryInput;
+        this.shouldResetPagination = true;
       }
     },
     /**
-     * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
-     * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     * @param companiesReceived the received chunk of companies
-     * @param chunkIndex the index of the chunk
-     * @param totalNumberOfCompanies the total number of companies
-     * @returns the promise of the router push with the new query parameters
+     * Receives result chunks, updates the data table and URL (first chunk only),
+     * and conditionally resets pagination for a genuine new search.
+     * @param {Array<BasicCompanyInformation>} companiesReceived Current chunk of companies.
+     * @param {number} chunkIndex Zero-based chunk index.
+     * @param {number} totalNumberOfCompanies Total matching records.
+     * @returns {Promise<void | import('vue-router').NavigationFailure | undefined>}
      */
     handleCompanyQuery(
       companiesReceived: Array<BasicCompanyInformation>,
@@ -323,38 +367,49 @@ export default defineComponent({
       this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
 
-      if (chunkIndex == 0) this.handlePageUpdate(0);
+      if (this.shouldResetPagination && chunkIndex === 0) {
+        if (this.currentPage !== 0) this.handlePageUpdate(0);
+        this.shouldResetPagination = false;
+      }
       this.waitingForDataToDisplay = false;
 
-      const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
+      if (chunkIndex === 0) {
+        const queryInput = this.currentSearchBarInput === '' ? undefined : this.currentSearchBarInput;
+        const queryFrameworks =
+          this.currentFilteredFrameworks.length === 0 ? undefined : this.currentFilteredFrameworks;
+        const queryCountryCodes =
+          this.currentFilteredCountryCodes.length === 0 ? undefined : this.currentFilteredCountryCodes;
+        const querySectors = this.currentFilteredSectors.length === 0 ? undefined : this.currentFilteredSectors;
 
-      const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
+        return router.replace({
+          name: 'Search Companies for Framework Data',
+          query: {
+            input: queryInput,
+            framework: queryFrameworks,
+            countryCode: queryCountryCodes,
+            sector: querySectors,
+          },
+        });
+      }
 
-      const queryCountryCodes =
-        this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
-
-      const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
-      return router.push({
-        name: 'Search Companies for Framework Data',
-        query: {
-          input: queryInput,
-          framework: queryFrameworks,
-          countryCode: queryCountryCodes,
-          sector: querySectors,
-        },
-      });
+      return Promise.resolve();
     },
     /**
-     * Called when the user performed a company search. Updates the search bar contents and
-     * displays the waiting indicator
-     * @param companyNameFilter the new search filter
+     * Handles explicit search confirmations from the search bar.
+     * @param {string} companyNameFilter New company name filter.
+     * @returns {void}
      */
     handleSearchConfirmed(companyNameFilter: string) {
       this.waitingForDataToDisplay = true;
       this.currentSearchBarInput = companyNameFilter;
+      this.shouldResetPagination = true;
     },
   },
-  unmounted() {
+  /**
+   * Lifecycle hook that detaches the scroll listener.
+   * @returns {void}
+   */
+  beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler);
   },
 });
@@ -376,16 +431,31 @@ export default defineComponent({
   background-color: white;
 }
 
+/* Match prod: expanded state with padding; sticky below app header */
 .search-bar-and-filters-container {
   margin: 0;
   width: 100%;
   padding-left: var(--spacing-lg);
   padding-top: var(--spacing-lg);
-  z-index: 100;
+  padding-bottom: var(--spacing-xs);
+  background-color: var(--p-surface-0);
+  position: sticky;
+  top: var(--app-header-offset, 4rem);
+  z-index: 50;
+}
+.search-bar-and-filters-container #frameworkDataSearchBar {
+  width: 70%;
+}
 
-  #frameworkDataSearchBar {
-    width: 70%;
-  }
+/* Collapsed: reduce top padding and align horizontally */
+.collapsed-search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  padding-top: 0;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--p-surface-200);
 }
 
 .button-container {
@@ -394,19 +464,5 @@ export default defineComponent({
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
-}
-
-.collapsed-search-container {
-  display: flex;
-  flex-direction: row;
-  position: sticky;
-  top: 4rem;
-  z-index: 50;
-  background-color: var(--p-surface-0);
-  justify-content: space-between;
-  align-items: end;
-  padding-top: 0;
-  padding-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>
