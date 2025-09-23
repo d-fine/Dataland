@@ -130,7 +130,7 @@ const currentCardInfo = computed(() => {
 });
 
 const renewCookieConsent = (): void => {
-  window.Cookiebot?.renew();
+  globalThis.Cookiebot?.renew();
 };
 
 const pauseAllVideos = (): void => {
@@ -178,7 +178,7 @@ onMounted(() => {
     for (const card of cards.value) {
       if (!card.icon) continue;
 
-      const player = new window.YT.Player(`video-${card.icon}`, {
+      const player = new globalThis.YT.Player(`video-${card.icon}`, {
         videoId: card.icon,
         playerVars: {
           rel: 0,
@@ -208,10 +208,10 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
-        void registerAndRedirectToRedirectPage(keycloak);
-      } else {
+      if (keycloak.authenticated) {
         void loginAndRedirectToRedirectPage(keycloak);
+      } else {
+        void registerAndRedirectToRedirectPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
