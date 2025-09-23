@@ -261,4 +261,132 @@ export const pcafDataModel = [
       },
     ],
   },
+  {
+    name: 'companyValueEstimation',
+    label: 'Company Value Estimation',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'listedCompany',
+        label: 'Listed company',
+        fields: [
+          {
+            name: 'marketCapitalizationInEUR',
+            label: 'Market capitalization',
+            description: 'Estimation of Market capitalization in EUR calculated as: number of shares * price per share',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'bookValueOfDebtInEUR',
+            label: 'Book value of debt',
+            description:
+              'Estimation of Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'minoritiesInterestInEUR',
+            label: 'Minorities interest',
+            description:
+              'Estimation of Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+        ],
+      },
+      {
+        name: 'unlistedCompany',
+        label: 'Unlisted company',
+        fields: [
+          {
+            name: 'totalEquityAndDebtInEUR',
+            label: 'Total equity and debt',
+            description: 'Estimation of Sum of total equity and total debt in EUR as listed on the balance sheet',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'environmentalEstimation',
+    label: 'Environmental Estimation',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'greenhouseGasEmissions',
+        label: 'Greenhouse gas emissions',
+        fields: [
+          {
+            name: 'scope1GhgEmissionsInTonnes',
+            label: 'Scope 1 GHG emissions',
+            description:
+              'Estimation of Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'scope2GhgEmissionsLocationBasedInTonnes',
+            label: 'Scope 2 GHG emissions (location-based)',
+            description:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'scope2GhgEmissionsMarketBasedInTonnes',
+            label: 'Scope 2 GHG emissions (market-based)',
+            description:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'scope3GhgEmissionsInTonnes',
+            label: 'Scope 3 GHG emissions',
+            description:
+              'Estimation of Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+        ],
+      },
+    ],
+  },
 ] as Category[];

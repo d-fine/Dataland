@@ -270,4 +270,171 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
       },
     ],
   },
+  {
+    type: 'section',
+    label: 'Company Value Estimation',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'section',
+        label: 'Listed company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Market capitalization',
+            explanation: 'Estimation of Market capitalization in EUR calculated as: number of shares * price per share',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR?.value,
+                  'EUR'
+                ),
+                'Market capitalization',
+                dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Book value of debt',
+            explanation:
+              'Estimation of Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR?.value,
+                  'EUR'
+                ),
+                'Book value of debt',
+                dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Minorities interest',
+            explanation:
+              'Estimation of Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR?.value,
+                  'EUR'
+                ),
+                'Minorities interest',
+                dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Unlisted company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Total equity and debt',
+            explanation: 'Estimation of Sum of total equity and total debt in EUR as listed on the balance sheet',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR?.value,
+                  'EUR'
+                ),
+                'Total equity and debt',
+                dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'section',
+    label: 'Environmental Estimation',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'section',
+        label: 'Greenhouse gas emissions',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Scope 1 GHG emissions',
+            explanation:
+              'Estimation of Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 1 GHG emissions',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Scope 2 GHG emissions (location-based)',
+            explanation:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
+                    ?.value,
+                  'Tonnes'
+                ),
+                'Scope 2 GHG emissions (location-based)',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Scope 2 GHG emissions (market-based)',
+            explanation:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 2 GHG emissions (market-based)',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Scope 3 GHG emissions',
+            explanation:
+              'Estimation of Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 3 GHG emissions',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
+              ),
+          },
+        ],
+      },
+    ],
+  },
 ];

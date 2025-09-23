@@ -9049,6 +9049,27 @@
           }
         }
       },
+      "PcafCompanyValueEstimation": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
       "PcafCompanyvalueListedCompany": {
         "type": "object",
         "properties": {
@@ -9091,6 +9112,48 @@
           }
         }
       },
+      "PcafCompanyvalueestimationListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyvalueestimationUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -9117,6 +9180,22 @@
                 "$ref": "#/components/schemas/PcafEnvironmental"
               }
             ]
+          },
+          "companyValueEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyValueEstimation"
+              }
+            ]
+          },
+          "environmentalEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
+              }
+            ]
           }
         }
       },
@@ -9133,7 +9212,57 @@
           }
         }
       },
+      "PcafEnvironmentalEstimation": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
+              }
+            ]
+          }
+        }
+      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
           "scope1GhgEmissionsInTonnes": {
@@ -16763,15 +16892,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
