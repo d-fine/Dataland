@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
-import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataSourcingControllerTest {
@@ -73,6 +72,22 @@ class DataSourcingControllerTest {
         assertEquals(expectedDocuments, updatedDataSourcingObject.documentIds)
     }
 
+    private fun changeSourcingStatusAndVerifyRequestsStatuses(newSourcingStatus: DataSourcingState, expectedRequestState: RequestState) {
+        createRequest(dataSourcingObject.companyId, user = TechnicalUser.PremiumUser)
+        createRequest(dataSourcingObject.companyId, user = TechnicalUser.Admin)
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, newSourcingStatus)
+        }
+
+        val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
+        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
+        updatedSourcingObject.associatedRequestIds.forEach {
+            val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(it)
+            assertEquals(expectedRequestState, request.state)
+        }
+    }
+
     /**
      * Initialize a data sourcing object by creating a request and setting its state to 'Processing'.
      *
@@ -91,7 +106,7 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
         }
 
-        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(UUID.fromString(requestId), RequestState.Processing)
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         dataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
 
         assertEquals(DataSourcingState.Initialized, DataSourcingState.valueOf(dataSourcingObject.state))
@@ -105,7 +120,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `post a request for data dimensions with existing sourcing object and verify the request is appended to the sourcing object`() {
+    fun `verify that a request is appended to the corresponding sourcing object only when set to 'Processing'`() {
         val newRequest =
             GlobalAuth.withTechnicalUser(TechnicalUser.PremiumUser) {
                 createRequest(
@@ -116,7 +131,11 @@ class DataSourcingControllerTest {
                 )
             }
 
-        val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
+        var updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
+        assertEquals(dataSourcingObject.associatedRequestIds, updatedSourcingObject.associatedRequestIds)
+
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(newRequest, RequestState.Processing)
+        updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
         assertEquals(dataSourcingObject.associatedRequestIds.plus(newRequest), updatedSourcingObject.associatedRequestIds)
     }
 
@@ -148,26 +167,21 @@ class DataSourcingControllerTest {
         }
         uploadDummyDataForDataSourcingObject()
         sleep(2000)
+        val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
         assertEquals(
-            DataSourcingState.Answered.toString(),
-            apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id).state,
+            DataSourcingState.Answered,
+            DataSourcingState.valueOf(updatedDataSourcingObject.state),
         )
     }
 
     @Test
-    fun `mark a sourcing process as 'Answered' and verify that all associated requests are now 'Processed'`() {
-        createRequest(dataSourcingObject.companyId, user = TechnicalUser.PremiumUser)
-        createRequest(dataSourcingObject.companyId, user = TechnicalUser.Admin)
-
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.Answered)
-        }
-
-        val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
-        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
-        updatedSourcingObject.associatedRequestIds.forEach {
-            val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(UUID.fromString(it))
-            assertEquals(RequestState.Processed, request.state)
+    fun `verify that only marking a sourcing process as 'Answered' or 'NonSourceable' will patch requests to 'Processed'`() {
+        for (state in DataSourcingState.entries) {
+            changeSourcingStatusAndVerifyRequestsStatuses(
+                state,
+                if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) RequestState.Processed
+                else RequestState.Processing,
+            )
         }
     }
 
@@ -177,17 +191,17 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.Answered)
         }
 
-        val requestId = UUID.fromString(dataSourcingObject.associatedRequestIds.first())
+        val requestId = dataSourcingObject.associatedRequestIds.first()
         val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
         assertEquals(RequestState.Processed, request.state)
 
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Open)
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
-        assertEquals(DataSourcingState.Initialized.toString(), updatedDataSourcingObject.state)
+        assertEquals(DataSourcingState.Initialized, DataSourcingState.valueOf(updatedDataSourcingObject.state))
     }
 
     @Test
-    fun `verify that a data collector can patch a state to 'DocumentSourcingDone' but no other state`() {
+    fun `verify that a data collector can only patch a state from 'DocumentSourcing' to 'DocumentSourcingDone'`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         DataSourcingState.entries.forEach { initialState ->
             DataSourcingState.entries.forEach { finalState ->
@@ -212,7 +226,7 @@ class DataSourcingControllerTest {
 
     @Test
     fun `verify that historization works for repeated data sourcing workflows for the same data dimensions`() {
-        assert(false, { "Not yet implemented" })
+        assert(false) { "Not yet implemented" }
     }
 
     @Test
@@ -256,6 +270,6 @@ class DataSourcingControllerTest {
 
     @Test
     fun `verify that data sourcing attempt dates can be uploaded and lead to a historization`() {
-        assert(false, { "Not yet implemented" })
+        assert(false) { "Not yet implemented" }
     }
 }
