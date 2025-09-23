@@ -5,7 +5,7 @@ import {
   type DocumentMetaInfoPatch,
   type DocumentMetaInfoResponse,
 } from '@clients/documentmanager';
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 import { type AxiosError } from 'axios';
 
 /**

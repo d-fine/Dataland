@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync } from 'fs';
-import { createHash } from 'crypto';
+import { readFileSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
 
 const possibleDocuments = ['Certification', 'Policy'];
