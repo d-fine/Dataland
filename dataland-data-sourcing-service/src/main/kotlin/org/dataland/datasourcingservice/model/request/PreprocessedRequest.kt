@@ -6,6 +6,5 @@ data class PreprocessedRequest(
     val companyId: String,
     val userId: UUID,
     val dataType: String,
-    val notifyMeImmediately: Boolean,
     val correlationId: String,
 )

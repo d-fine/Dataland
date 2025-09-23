@@ -96,7 +96,6 @@ class DataSourcingServiceDataRequestProcessingUtils
          * @param companyId the companyID in Dataland
          * @param dataType the framework name string corresponding to the data request
          * @param reportingPeriod the reporting period
-         * @param notifyMeImmediately whether the user should be notified immediately on updates
          * @return the stored DataRequestEntity
          */
         fun storeRequestEntityAsOpen(
@@ -104,7 +103,6 @@ class DataSourcingServiceDataRequestProcessingUtils
             companyId: String,
             dataType: String,
             reportingPeriod: String,
-            notifyMeImmediately: Boolean,
         ): RequestEntity {
             val creationTimestamp = Date.from(Instant.now())
 
@@ -114,7 +112,6 @@ class DataSourcingServiceDataRequestProcessingUtils
                     companyId,
                     dataType,
                     reportingPeriod,
-                    notifyMeImmediately,
                     creationTimestamp,
                 )
 

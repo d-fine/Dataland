@@ -3,7 +3,7 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.CommonDataRequestProcessingUtils
+import org.dataland.datalandbackendutils.utils.CommonDataRequestProcessingUtils
 import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
@@ -37,7 +37,6 @@ class SingleRequestManager
     @Autowired
     constructor(
         private val requestLogger: RequestLogger,
-        private val commonDataRequestProcessingUtils: CommonDataRequestProcessingUtils,
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataSourcingServiceDataRequestProcessingUtils: DataSourcingServiceDataRequestProcessingUtils,
         private val requestRepository: RequestRepository,
@@ -66,7 +65,7 @@ class SingleRequestManager
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     requestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userId, commonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
+                        userId, CommonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
                     )
 
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
@@ -110,7 +109,6 @@ class SingleRequestManager
                 companyId = companyId,
                 userId = userIdToUse,
                 dataType = singleRequest.dataType,
-                notifyMeImmediately = singleRequest.notifyMeImmediately,
                 correlationId = UUID.randomUUID().toString(),
             )
         }
@@ -135,7 +133,6 @@ class SingleRequestManager
                         userId = preprocessedRequest.userId,
                         companyId = preprocessedRequest.companyId,
                         dataType = preprocessedRequest.dataType,
-                        notifyMeImmediately = preprocessedRequest.notifyMeImmediately,
                         reportingPeriod = reportingPeriod,
                     )
                 mutableMapOf(
@@ -154,7 +151,7 @@ class SingleRequestManager
             reportingPeriodsAndNullIdsOfDuplicateDataRequests: List<Pair<String, UUID>>,
         ): SingleRequestResponse =
             SingleRequestResponse(
-                commonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
+                CommonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
                     totalNumberOfReportingPeriods = dataRequest.reportingPeriods.size,
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsAndNullIdsOfDuplicateDataRequests.size,
                 ),

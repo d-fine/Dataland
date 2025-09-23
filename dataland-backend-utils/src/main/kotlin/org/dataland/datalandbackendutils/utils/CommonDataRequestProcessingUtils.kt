@@ -1,11 +1,15 @@
-package org.dataland.datalandbackendutils.services
+package org.dataland.datalandbackendutils.utils
 
-import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.ZoneId
 
-@Service("CommonDataRequestProcessingUtils")
-class CommonDataRequestProcessingUtils {
+/**
+ * Utility functions for common data request processing.
+ */
+object CommonDataRequestProcessingUtils {
+    /**
+     * Returns the epoch time in milliseconds for the start of the current day in the "Europe/Berlin" timezone.
+     */
     fun getEpochTimeStartOfDay(): Long {
         val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
         val zoneId = ZoneId.of("Europe/Berlin")
@@ -14,6 +18,14 @@ class CommonDataRequestProcessingUtils {
         return startOfDay.toInstant().toEpochMilli()
     }
 
+/**
+     * Builds a response message for a single data request based on the total number of reporting periods
+     * and the number of reporting periods corresponding to duplicate requests.
+     *
+     * @param totalNumberOfReportingPeriods The total number of reporting periods in the request.
+     * @param numberOfReportingPeriodsCorrespondingToDuplicates The number of reporting periods that correspond to duplicate requests.
+     * @return A response message as a String.
+     */
     fun buildResponseMessageForSingleDataRequest(
         totalNumberOfReportingPeriods: Int,
         numberOfReportingPeriodsCorrespondingToDuplicates: Int,

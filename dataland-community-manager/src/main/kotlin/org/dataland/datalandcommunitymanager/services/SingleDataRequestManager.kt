@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.CommonDataRequestProcessingUtils
+import org.dataland.datalandbackendutils.utils.CommonDataRequestProcessingUtils
 import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -36,7 +36,6 @@ class SingleDataRequestManager
         private val dataRequestRepository: DataRequestRepository,
         private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
         private val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
-        private val commonDataRequestProcessingUtils: CommonDataRequestProcessingUtils,
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataAccessManager: DataAccessManager,
         private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
@@ -219,7 +218,7 @@ class SingleDataRequestManager
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userId, commonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
+                        userId, CommonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
                     )
 
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
@@ -311,7 +310,7 @@ class SingleDataRequestManager
             reportingPeriodOfStoredAccessRequests: List<String>,
         ): SingleDataRequestResponse =
             SingleDataRequestResponse(
-                commonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
+                CommonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
                     totalNumberOfReportingPeriods = singleDataRequest.reportingPeriods.size,
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsOfDuplicateDataRequests.size,
                 ),

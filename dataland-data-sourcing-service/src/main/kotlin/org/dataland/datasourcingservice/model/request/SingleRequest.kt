@@ -39,11 +39,6 @@ data class SingleRequest(
             ),
     )
     val reportingPeriods: Set<String>,
-    @field:Schema(
-        type = "boolean",
-        description = GeneralOpenApiDescriptionsAndExamples.SINGLE_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
-    )
-    val notifyMeImmediately: Boolean,
     @field:JsonProperty(required = false)
     @field:Schema(
         type = "string",
