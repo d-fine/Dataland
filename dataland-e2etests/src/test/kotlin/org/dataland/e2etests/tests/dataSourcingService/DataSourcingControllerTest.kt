@@ -53,7 +53,6 @@ class DataSourcingControllerTest {
                 .createRequest(request)
                 .idsOfStoredRequests
                 .first()
-                .toString()
         }
     }
 
@@ -233,7 +232,18 @@ class DataSourcingControllerTest {
 
     @Test
     fun `verify that historization works for repeated data sourcing workflows for the same data dimensions`() {
-        assert(false) { "Not yet implemented" }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.Answered)
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.Initialized)
+        }
+        apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.DocumentSourcing)
+
+        val dataSourcingHistory = apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(dataSourcingObject.id)
+        assertEquals(4, dataSourcingHistory.size)
+        assertEquals(DataSourcingState.Initialized, DataSourcingState.valueOf(dataSourcingHistory[0].state))
+        assertEquals(DataSourcingState.Answered, DataSourcingState.valueOf(dataSourcingHistory[1].state))
+        assertEquals(DataSourcingState.Initialized, DataSourcingState.valueOf(dataSourcingHistory[2].state))
+        assertEquals(DataSourcingState.DocumentSourcing, DataSourcingState.valueOf(dataSourcingHistory[3].state))
     }
 
     @Test
