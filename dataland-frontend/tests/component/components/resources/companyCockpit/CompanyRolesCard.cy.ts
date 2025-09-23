@@ -4,6 +4,52 @@ import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/commun
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
+/**
+ * Mocks API requests for company role assignments
+ * @param roleAssignments the role assignments to return
+ */
+function mockCompanyRoleAssignments(roleAssignments: CompanyRoleAssignmentExtended[]): void {
+  cy.intercept('GET', '**/community/company-role-assignments*', {
+    statusCode: 200,
+    body: roleAssignments,
+  }).as('getRoleAssignments');
+
+  cy.intercept('POST', '**/company-role-assignments/*/*/*', {
+    statusCode: 200,
+  }).as('assignRole');
+
+  cy.intercept('DELETE', '**/company-role-assignments/*/*/*', {
+    statusCode: 200,
+  }).as('removeRole');
+}
+
+/**
+ * Validates that the card displays the correct role information
+ * @param expectedTitle the expected card title
+ * @param expectedIcon the expected icon class
+ */
+function validateCardHeader(expectedTitle: string, expectedIcon: string): void {
+  cy.get('[data-test="company-roles-card"]').should('exist');
+  cy.get('[data-test="company-roles-card"]').should('contain', expectedTitle);
+  cy.get(`i.${expectedIcon.replace(' ', '.')}`).should('exist');
+}
+
+/**
+ * Validates the info message functionality
+ * @param expectedInfoText the expected info text content
+ */
+function validateInfoMessage(expectedInfoText: string): void {
+  cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+
+  cy.get('[data-test="info-message"]').first().find('button').click();
+  cy.get('[data-test="info-message"]').should('not.exist');
+
+  cy.get('[data-test="info-icon"]').should('be.visible');
+
+  cy.get('[data-test="info-icon"]').click();
+  cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+}
+
 describe('Component test for CompanyRolesCard', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const dummyUserId = 'mock-user-id';
@@ -41,25 +87,6 @@ describe('Component test for CompanyRolesCard', () => {
       lastName,
       email,
     };
-  }
-
-  /**
-   * Mocks API requests for company role assignments
-   * @param roleAssignments the role assignments to return
-   */
-  function mockCompanyRoleAssignments(roleAssignments: CompanyRoleAssignmentExtended[]): void {
-    cy.intercept('GET', '**/community/company-role-assignments*', {
-      statusCode: 200,
-      body: roleAssignments,
-    }).as('getRoleAssignments');
-
-    cy.intercept('POST', '**/company-role-assignments/*/*/*', {
-      statusCode: 200,
-    }).as('assignRole');
-
-    cy.intercept('DELETE', '**/company-role-assignments/*/*/*', {
-      statusCode: 200,
-    }).as('removeRole');
   }
 
   /**
@@ -108,33 +135,6 @@ describe('Component test for CompanyRolesCard', () => {
     mockCompanyRoleAssignments(roleAssignments);
     mountCompanyRolesCard(roleOfCard, userRole);
     cy.wait('@getRoleAssignments');
-  }
-
-  /**
-   * Validates that the card displays the correct role information
-   * @param expectedTitle the expected card title
-   * @param expectedIcon the expected icon class
-   */
-  function validateCardHeader(expectedTitle: string, expectedIcon: string): void {
-    cy.get('[data-test="company-roles-card"]').should('exist');
-    cy.get('[data-test="company-roles-card"]').should('contain', expectedTitle);
-    cy.get(`i.${expectedIcon.replace(' ', '.')}`).should('exist');
-  }
-
-  /**
-   * Validates the info message functionality
-   * @param expectedInfoText the expected info text content
-   */
-  function validateInfoMessage(expectedInfoText: string): void {
-    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
-
-    cy.get('[data-test="info-message"]').first().find('button').click();
-    cy.get('[data-test="info-message"]').should('not.exist');
-
-    cy.get('[data-test="info-icon"]').should('be.visible');
-
-    cy.get('[data-test="info-icon"]').click();
-    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
   }
 
   /**

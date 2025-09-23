@@ -1,6 +1,29 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddMemberDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
+/**
+ * Helper to add a user by email
+ * @param email - Email of the user to add
+ */
+function addUser(email: string): void {
+  cy.get('.search-input').clear().type(email);
+  cy.get('[data-test="select-user-button"]').click();
+}
+
+/**
+ * Helper to remove the first user in the list
+ */
+function removeUser(): void {
+  cy.get('[data-test="remove-user-button"]').first().click();
+}
+
+/**
+ * Helper to save changes
+ */
+function saveChanges(): void {
+  cy.get('[data-test="save-changes-button"]').click();
+}
+
 describe('AddMemberDialog Component Tests', function () {
   const existingUsers = [{ userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' }];
 
@@ -68,29 +91,6 @@ describe('AddMemberDialog Component Tests', function () {
 
     cy.intercept('POST', '**/company-role-assignments/*/*/*', { statusCode: 200 }).as('assignRole');
   });
-
-  /**
-   * Helper to add a user by email
-   * @param email - Email of the user to add
-   */
-  function addUser(email: string): void {
-    cy.get('.search-input').clear().type(email);
-    cy.get('[data-test="select-user-button"]').click();
-  }
-
-  /**
-   * Helper to remove the first user in the list
-   */
-  function removeUser(): void {
-    cy.get('[data-test="remove-user-button"]').first().click();
-  }
-
-  /**
-   * Helper to save changes
-   */
-  function saveChanges(): void {
-    cy.get('[data-test="save-changes-button"]').click();
-  }
 
   describe('Initial State and Basic Functionality', function () {
     it('renders empty state and handles basic user operations', function () {

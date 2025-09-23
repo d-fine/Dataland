@@ -18,6 +18,45 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 
+/**
+ * Defines intercepts and submits data on the lksg upload for the lksg blanket test
+ * @param storedCompany stored company information
+ * @param dataMetaInformation meta data information
+ * @param testCompanyName name of the company
+ */
+function interceptsAndSubmitsDataset(
+  storedCompany: StoredCompany,
+  dataMetaInformation: DataMetaInformation,
+  testCompanyName: string
+): void {
+  cy.intercept('**/api/companies/' + storedCompany.companyId + '/info').as('getCompanyInformation');
+  cy.visitAndCheckAppMount(
+    '/companies/' +
+      storedCompany.companyId +
+      '/frameworks/' +
+      DataTypeEnum.Lksg +
+      '/upload?templateDataId=' +
+      dataMetaInformation.dataId
+  );
+  cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.get('h1').should('contain', testCompanyName);
+  cy.intercept({
+    url: `**/api/data/${DataTypeEnum.Lksg}*`,
+    times: 1,
+  }).as('postCompanyAssociatedData');
+  submitButton.clickButton();
+}
+
+/**
+ * Sorts the riskPositions Array by converting the
+ * elements into strings and explicitly defining a compare function
+ * @param riskPositions an array of risk positions
+ * @returns sorted riskPositions
+ */
+function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
+  return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
+}
+
 describeIf(
   'As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed ' +
     'correctly in the frontend',
@@ -96,45 +135,6 @@ describeIf(
         });
       }
     );
-
-    /**
-     * Defines intercepts and submits data on the lksg upload for the lksg blanket test
-     * @param storedCompany stored company information
-     * @param dataMetaInformation meta data information
-     * @param testCompanyName name of the company
-     */
-    function interceptsAndSubmitsDataset(
-      storedCompany: StoredCompany,
-      dataMetaInformation: DataMetaInformation,
-      testCompanyName: string
-    ): void {
-      cy.intercept('**/api/companies/' + storedCompany.companyId + '/info').as('getCompanyInformation');
-      cy.visitAndCheckAppMount(
-        '/companies/' +
-          storedCompany.companyId +
-          '/frameworks/' +
-          DataTypeEnum.Lksg +
-          '/upload?templateDataId=' +
-          dataMetaInformation.dataId
-      );
-      cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-      cy.get('h1').should('contain', testCompanyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Lksg}*`,
-        times: 1,
-      }).as('postCompanyAssociatedData');
-      submitButton.clickButton();
-    }
-
-    /**
-     * Sorts the riskPositions Array by converting the
-     * elements into strings and explicitly defining a compare function
-     * @param riskPositions an array of risk positions
-     * @returns sorted riskPositions
-     */
-    function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
-      return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
-    }
 
     /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object

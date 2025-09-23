@@ -26,80 +26,78 @@ const createLksgDataset = {
   },
 };
 
+/**
+ * Adds a dummy file to the referenced reports on the SFDR upload page
+ * @param fileName name of the file to be referenced
+ * @param contentSize number of bytes in dummy file
+ */
+function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
+  new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
+  cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).within(() => {
+    cy.get('#dataPointIsAvailableSwitch').click();
+  });
+  selectItemFromDropdownByValue(
+    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
+    fileName
+  );
+}
+
+/**
+ * Adds a dummy file under a given yes no field
+ * @param fileName name to give to the dummy file
+ * @param contentSize bytes for dummy data
+ * @param fieldName name of the field under which the report should be added
+ */
+function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
+  cy.pause();
+  cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[type="checkbox"][value="Yes"]').check();
+  new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
+}
+
+/**
+ * Intercepts the upload of a report with given hash
+ * @param hash hash of the report to be uploaded
+ */
+function interceptEachUpload(hash: string): void {
+  console.log(hash, 'XAA');
+  cy.intercept('HEAD', '**/documents/' + hash, (request) => {
+    request.reply(200, {});
+  }).as(`documentExists-${hash}`);
+}
+
+/**
+ * Mounts the upload page and intercept report upload information
+ * @param framework the framework to be mounted
+ */
+function mountPluginAndInterceptUploads(framework: string): void {
+  const companyId = 'company-id';
+  let createDataset;
+  let dataType: DataTypeEnum;
+  if (framework == 'sfdr') {
+    dataType = DataTypeEnum.Sfdr;
+    createDataset = CreateSfdrDataset;
+  } else {
+    dataType = DataTypeEnum.Lksg;
+    createDataset = CreateLksgDataset;
+  }
+
+  cy.intercept(`**/documents/*`, cy.spy().as('documentExists'));
+  cy.intercept('POST', `/api/data/${dataType}*`, {
+    statusCode: 200,
+  });
+  //@ts-ignore
+  cy.mountWithPlugins(createDataset, {
+    keycloak: minimalKeycloakMock({}),
+
+    props: {
+      companyID: companyId,
+    },
+  });
+}
+
 describe('Component tests for the CreateSfdrDataset that test report uploading', () => {
   const hashForFileWithOneByteSize = '6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d';
   const hashForFileWithTwoBytesSize = '96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7';
-
-  /**
-   * Adds a dummy file to the referenced reports on the SFDR upload page
-   * @param fileName name of the file to be referenced
-   * @param contentSize number of bytes in dummy file
-   */
-  function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
-    new UploadDocuments('referencedReports').selectDummyFile(fileName, contentSize);
-    cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']`).within(
-      () => {
-        cy.get('#dataPointIsAvailableSwitch').click();
-      }
-    );
-    selectItemFromDropdownByValue(
-      cy.get(`div[data-test='scope${contentSize}GhgEmissionsInTonnes'] [data-test='dataReport']`),
-      fileName
-    );
-  }
-
-  /**
-   * Adds a dummy file under a given yes no field
-   * @param fileName name to give to the dummy file
-   * @param contentSize bytes for dummy data
-   * @param fieldName name of the field under which the report should be added
-   */
-  function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-    cy.pause();
-    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[type="checkbox"][value="Yes"]').check();
-    new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
-  }
-
-  /**
-   * Intercepts the upload of a report with given hash
-   * @param hash hash of the report to be uploaded
-   */
-  function interceptEachUpload(hash: string): void {
-    console.log(hash, 'XAA');
-    cy.intercept('HEAD', '**/documents/' + hash, (request) => {
-      request.reply(200, {});
-    }).as(`documentExists-${hash}`);
-  }
-
-  /**
-   * Mounts the upload page and intercept report upload information
-   * @param framework the framework to be mounted
-   */
-  function mountPluginAndInterceptUploads(framework: string): void {
-    const companyId = 'company-id';
-    let createDataset;
-    let dataType: DataTypeEnum;
-    if (framework == 'sfdr') {
-      dataType = DataTypeEnum.Sfdr;
-      createDataset = CreateSfdrDataset;
-    } else {
-      dataType = DataTypeEnum.Lksg;
-      createDataset = CreateLksgDataset;
-    }
-
-    cy.intercept(`**/documents/*`, cy.spy().as('documentExists'));
-    cy.intercept('POST', `/api/data/${dataType}*`, {
-      statusCode: 200,
-    });
-    //@ts-ignore
-    cy.mountWithPlugins(createDataset, {
-      keycloak: minimalKeycloakMock({}),
-
-      props: {
-        companyID: companyId,
-      },
-    });
-  }
 
   it('Check if the document uploads in Sfdr upload page do not interfere', () => {
     const setOfHashesThatShouldBeCheckedForExistence = new Set([

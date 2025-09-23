@@ -13,6 +13,22 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
+/**
+ * Asserts the number of rows with actual data the result table has
+ * @param expectedNumber represents the expectation
+ */
+function assertNumberOfSearchResults(expectedNumber: number): void {
+  cy.get('tr[data-pc-section="bodyrow"]').should('have.length', expectedNumber);
+}
+
+/**
+ * Asserts that there is a search result with the expected email address as requester email address
+ * @param emailAddress is the expected email address
+ */
+function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
+  cy.contains('td', emailAddress);
+}
+
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
   let mockRequestsLarge: ExtendedStoredDataRequest[];
@@ -196,22 +212,6 @@ describe('Component test for the admin-requests-overview page', () => {
       }),
     })(AdminAllRequestsOverview);
     assertNumberOfSearchResults(chunkSize);
-  }
-
-  /**
-   * Asserts the number of rows with actual data the result table has
-   * @param expectedNumber represents the expectation
-   */
-  function assertNumberOfSearchResults(expectedNumber: number): void {
-    cy.get('tr[data-pc-section="bodyrow"]').should('have.length', expectedNumber);
-  }
-
-  /**
-   * Asserts that there is a search result with the expected email address as requester email address
-   * @param emailAddress is the expected email address
-   */
-  function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
-    cy.contains('td', emailAddress);
   }
 
   /**

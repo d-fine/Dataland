@@ -10,6 +10,156 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils';
 
+/**
+ * this method fills and validates the assurance report page number in the general section
+ * it also makes sure invalid page numbers cannot be uploaded
+ */
+function fillAndValidateAssuranceReportPageNumber(): void {
+  const invalidPageNumberInputs = ['abc', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
+  for (const invalidPageNumberInput of invalidPageNumberInputs) {
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(invalidPageNumberInput);
+    cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
+    cy.get('[data-message-type="validation"]').should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
+    submitButton.buttonAppearsDisabled();
+  }
+  const validPageNumberInputs = ['3', '10-11'];
+  for (const validPageNumberInput of validPageNumberInputs) {
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
+    cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
+    submitButton.buttonAppearsEnabled();
+  }
+}
+
+/**
+ * Types a value into a data point in the "Revenue" segment of the upload form
+ * @param value to type
+ * @param dataTestMarker marks the specific input field to type into
+ */
+function insertValueIntoRevenueDataPoint(value: string, dataTestMarker: string): void {
+  cy.get(`div[label="Revenue"] div[data-test="${dataTestMarker}"] input[name="value"]`).clear().type(value);
+}
+
+/**
+ * Toggles a data point in the "Revenue" segment of the upload form
+ * @param dataTestMarker identifies the specific data point to toggle
+ */
+function toggleDataPoint(dataTestMarker: string): void {
+  cy.get(
+    `div[label="Revenue"] div[data-test="${dataTestMarker}"] 
+        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
+  ).within(() => {
+    cy.get('#dataPointIsAvailableSwitch').click();
+  });
+}
+
+/**
+ * Toggles a data point inside a sub-segment of the segment "Revenue" of the upload form
+ * @param dataTestMarkerOfSubSegment identifies the sub-segment
+ * @param dataTestMarkerOfDataPoint identifies the data point itself
+ */
+function toggleDataPointInSubSegmentOfRevenue(
+  dataTestMarkerOfSubSegment: string,
+  dataTestMarkerOfDataPoint: string
+): void {
+  cy.get(
+    `div[label="Revenue"] div[data-test=${dataTestMarkerOfSubSegment}] div[data-test="${dataTestMarkerOfDataPoint}"] 
+        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
+  ).within(() => {
+    cy.get('#dataPointIsAvailableSwitch').click();
+  });
+}
+
+/**
+ * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
+ * @returns the dataset
+ */
+function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociatedDataEutaxonomyNonFinancialsData {
+  return {
+    companyId: 'abc',
+    reportingPeriod: '2020',
+    data: {
+      capex: {
+        totalAmount: {
+          quality: 'Estimated',
+          dataSource: {
+            fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            page: '12',
+          },
+          comment: 'test',
+          value: 12000000,
+          currency: 'EUR',
+        },
+      },
+      opex: {
+        totalAmount: {
+          quality: 'Estimated',
+          dataSource: {
+            fileName: 'None...',
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            page: '12',
+          },
+          comment: 'test',
+          value: 10000000,
+          currency: 'EUR',
+        },
+      },
+      revenue: {
+        totalAmount: {
+          quality: 'Estimated',
+          dataSource: {
+            fileName: 'None...',
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            page: '12-14',
+          },
+          comment: 'test',
+          value: 40000000,
+          currency: 'EUR',
+        },
+      },
+      general: {
+        fiscalYearDeviation: {
+          value: 'Deviation',
+        },
+        fiscalYearEnd: {
+          value: '2023-09-11',
+        },
+        scopeOfEntities: {
+          value: 'Yes',
+        },
+        nfrdMandatory: {
+          value: 'Yes',
+        },
+        euTaxonomyActivityLevelReporting: {
+          value: 'Yes',
+        },
+        assurance: {
+          value: 'None',
+          provider: 'Assurance Provider',
+          dataSource: {
+            fileName: TEST_PDF_FILE_NAME,
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            page: '1',
+          },
+        },
+        numberOfEmployees: {
+          value: 333,
+        },
+        referencedReports: {
+          [`${TEST_PDF_FILE_NAME}FileCopy`]: {
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            publicationDate: '2023-07-12',
+          },
+          [TEST_PDF_FILE_NAME]: {
+            fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+            publicationDate: '2023-07-12',
+          },
+        },
+      },
+    },
+  };
+}
+
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');
 
@@ -98,31 +248,6 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   }
 
   /**
-   * this method fills and validates the assurance report page number in the general section
-   * it also makes sure invalid page numbers cannot be uploaded
-   */
-  function fillAndValidateAssuranceReportPageNumber(): void {
-    const invalidPageNumberInputs = ['abc', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
-    for (const invalidPageNumberInput of invalidPageNumberInputs) {
-      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])')
-        .last()
-        .clear()
-        .type(invalidPageNumberInput);
-      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
-      cy.get('[data-message-type="validation"]')
-        .should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE)
-        .should('exist');
-      submitButton.buttonAppearsDisabled();
-    }
-    const validPageNumberInputs = ['3', '10-11'];
-    for (const validPageNumberInput of validPageNumberInputs) {
-      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
-      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
-      submitButton.buttonAppearsEnabled();
-    }
-  }
-
-  /**
    * this method fills and checks the general section
    * @param reports the name of the reports that are uploaded
    */
@@ -146,45 +271,6 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
       .find('[data-test="dataReport"]')
       .each((reportField) => selectItemFromDropdownByValue(cy.wrap(reportField), reports[0]));
     fillAndValidateAssuranceReportPageNumber();
-  }
-
-  /**
-   * Types a value into a data point in the "Revenue" segment of the upload form
-   * @param value to type
-   * @param dataTestMarker marks the specific input field to type into
-   */
-  function insertValueIntoRevenueDataPoint(value: string, dataTestMarker: string): void {
-    cy.get(`div[label="Revenue"] div[data-test="${dataTestMarker}"] input[name="value"]`).clear().type(value);
-  }
-
-  /**
-   * Toggles a data point in the "Revenue" segment of the upload form
-   * @param dataTestMarker identifies the specific data point to toggle
-   */
-  function toggleDataPoint(dataTestMarker: string): void {
-    cy.get(
-      `div[label="Revenue"] div[data-test="${dataTestMarker}"] 
-        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    ).within(() => {
-      cy.get('#dataPointIsAvailableSwitch').click();
-    });
-  }
-
-  /**
-   * Toggles a data point inside a sub-segment of the segment "Revenue" of the upload form
-   * @param dataTestMarkerOfSubSegment identifies the sub-segment
-   * @param dataTestMarkerOfDataPoint identifies the data point itself
-   */
-  function toggleDataPointInSubSegmentOfRevenue(
-    dataTestMarkerOfSubSegment: string,
-    dataTestMarkerOfDataPoint: string
-  ): void {
-    cy.get(
-      `div[label="Revenue"] div[data-test=${dataTestMarkerOfSubSegment}] div[data-test="${dataTestMarkerOfDataPoint}"] 
-        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
-    ).within(() => {
-      cy.get('#dataPointIsAvailableSwitch').click();
-    });
   }
 
   /**
@@ -276,97 +362,6 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     insertValueIntoRevenueDataPoint('12', 'enablingShareInPercent');
     toggleDataPoint('transitionalShareInPercent');
     insertValueIntoRevenueDataPoint('12', 'transitionalShareInPercent');
-  }
-
-  /**
-   * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
-   * @returns the dataset
-   */
-  function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociatedDataEutaxonomyNonFinancialsData {
-    return {
-      companyId: 'abc',
-      reportingPeriod: '2020',
-      data: {
-        capex: {
-          totalAmount: {
-            quality: 'Estimated',
-            dataSource: {
-              fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: '12',
-            },
-            comment: 'test',
-            value: 12000000,
-            currency: 'EUR',
-          },
-        },
-        opex: {
-          totalAmount: {
-            quality: 'Estimated',
-            dataSource: {
-              fileName: 'None...',
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: '12',
-            },
-            comment: 'test',
-            value: 10000000,
-            currency: 'EUR',
-          },
-        },
-        revenue: {
-          totalAmount: {
-            quality: 'Estimated',
-            dataSource: {
-              fileName: 'None...',
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: '12-14',
-            },
-            comment: 'test',
-            value: 40000000,
-            currency: 'EUR',
-          },
-        },
-        general: {
-          fiscalYearDeviation: {
-            value: 'Deviation',
-          },
-          fiscalYearEnd: {
-            value: '2023-09-11',
-          },
-          scopeOfEntities: {
-            value: 'Yes',
-          },
-          nfrdMandatory: {
-            value: 'Yes',
-          },
-          euTaxonomyActivityLevelReporting: {
-            value: 'Yes',
-          },
-          assurance: {
-            value: 'None',
-            provider: 'Assurance Provider',
-            dataSource: {
-              fileName: TEST_PDF_FILE_NAME,
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: '1',
-            },
-          },
-          numberOfEmployees: {
-            value: 333,
-          },
-          referencedReports: {
-            [`${TEST_PDF_FILE_NAME}FileCopy`]: {
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              publicationDate: '2023-07-12',
-            },
-            [TEST_PDF_FILE_NAME]: {
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              publicationDate: '2023-07-12',
-            },
-          },
-        },
-      },
-    };
   }
 
   const companyAssociatedDataEutaxoNonFinancials = createMockCompanyAssociatedDataEutaxoNonFinancials();

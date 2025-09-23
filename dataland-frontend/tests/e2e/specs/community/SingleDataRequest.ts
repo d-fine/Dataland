@@ -13,6 +13,33 @@ import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
+/**
+ * Checks if all expected human-readable labels are visible in the dropdown options
+ */
+function checkDropdownLabels(): void {
+  cy.get('[data-test="datapoint-framework"]').click();
+  FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+    cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
+  });
+  cy.get('[data-test="datapoint-framework"]').click();
+}
+
+/**
+ * Checks basic validation
+ */
+function checkValidation(): void {
+  cy.get('button[type="submit"]').click();
+  cy.get('div[data-test="reportingPeriods"]')
+    .find('[data-test="reportingPeriodErrorMessage"]')
+    .should('be.visible')
+    .should('contain.text', 'Select at least one reporting period to submit your request');
+
+  cy.get('div[data-test="frameworkErrorMessage"]')
+    .should('exist')
+    .should('be.visible')
+    .should('contain.text', 'Select a framework to submit your request');
+}
+
 describeIf(
   'As a premium user, I want to be able to navigate to the single data request page and submit a request',
   {
@@ -156,33 +183,6 @@ describeIf(
         };
         expect(requestBody).to.deep.equal(expectedRequest);
       }
-    }
-
-    /**
-     * Checks if all expected human-readable labels are visible in the dropdown options
-     */
-    function checkDropdownLabels(): void {
-      cy.get('[data-test="datapoint-framework"]').click();
-      FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
-      });
-      cy.get('[data-test="datapoint-framework"]').click();
-    }
-
-    /**
-     * Checks basic validation
-     */
-    function checkValidation(): void {
-      cy.get('button[type="submit"]').click();
-      cy.get('div[data-test="reportingPeriods"]')
-        .find('[data-test="reportingPeriodErrorMessage"]')
-        .should('be.visible')
-        .should('contain.text', 'Select at least one reporting period to submit your request');
-
-      cy.get('div[data-test="frameworkErrorMessage"]')
-        .should('exist')
-        .should('be.visible')
-        .should('contain.text', 'Select a framework to submit your request');
     }
 
     /**

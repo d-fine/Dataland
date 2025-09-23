@@ -6,6 +6,57 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { uploadVsmeFrameworkData } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 
+/**
+ * Selects the row with the provided reporting period in the table to send an access request for it.
+ * @param reportingPeriod defines which row will be selected to request data access
+ */
+function selectRowInRequestableReportingPeriodsTable(reportingPeriod: string): void {
+  cy.contains('td', reportingPeriod).siblings('td[data-p-selection-column="true"]').click();
+}
+
+/**
+ * Validates that the button to submit access requests is enabled or disabled.
+ * @param isExpectedToBeEnabled sets if the button is expected to be enabled or not
+ * @returns the submit button
+ */
+function validateSubmitButton(isExpectedToBeEnabled: boolean): Cypress.Chainable {
+  const check = isExpectedToBeEnabled ? 'be.enabled' : 'be.disabled';
+  return cy.get('button[data-test="requestAccessButton"]').should(check);
+}
+
+/**
+ * Clicks on the button in the access request table in specific row to grant or decline a request
+ * @param reportingPeriod the reporting period to decline or grant
+ * @param buttonText the text of the button that should be clicked
+ */
+function clickButtonInAccessRequestTableForReportingPeriod(reportingPeriod: string, buttonText: string): void {
+  cy.get('tbody.p-datatable-tbody')
+    .find('tr')
+    .contains('td', reportingPeriod)
+    .parent()
+    .contains('button', buttonText)
+    .click();
+}
+
+/**
+ * Checks that a specific row in the access request table has a certain badge with a give class and text.
+ * @param reportingPeriod the reporting period to identify the row
+ * @param badgeClass the badge class that should exist
+ * @param badgeText the text the badge should have
+ */
+function validateAccessRequestForReportingPeriodTableHasBadgeWithText(
+  reportingPeriod: string,
+  badgeClass: string,
+  badgeText: string
+): void {
+  cy.get('tbody.p-datatable-tbody')
+    .find('tr')
+    .contains('td', reportingPeriod)
+    .parent()
+    .find('div.' + badgeClass)
+    .should('have.text', badgeText);
+}
+
 describeIf(
   'As a user, I expect to request access to private datasets or grant or decline access to my private datasets ',
   {
@@ -61,24 +112,6 @@ describeIf(
     });
 
     /**
-     * Selects the row with the provided reporting period in the table to send an access request for it.
-     * @param reportingPeriod defines which row will be selected to request data access
-     */
-    function selectRowInRequestableReportingPeriodsTable(reportingPeriod: string): void {
-      cy.contains('td', reportingPeriod).siblings('td[data-p-selection-column="true"]').click();
-    }
-
-    /**
-     * Validates that the button to submit access requests is enabled or disabled.
-     * @param isExpectedToBeEnabled sets if the button is expected to be enabled or not
-     * @returns the submit button
-     */
-    function validateSubmitButton(isExpectedToBeEnabled: boolean): Cypress.Chainable {
-      const check = isExpectedToBeEnabled ? 'be.enabled' : 'be.disabled';
-      return cy.get('button[data-test="requestAccessButton"]').should(check);
-    }
-
-    /**
      * Clicks the button to submit data access requests.
      */
     function clickSubmitButton(): void {
@@ -107,39 +140,6 @@ describeIf(
             cy.get('td').eq(2).should('have.text', reportingPeriodToBeDeclined);
           });
       });
-    }
-
-    /**
-     * Clicks on the button in the access request table in specific row to grant or decline a request
-     * @param reportingPeriod the reporting period to decline or grant
-     * @param buttonText the text of the button that should be clicked
-     */
-    function clickButtonInAccessRequestTableForReportingPeriod(reportingPeriod: string, buttonText: string): void {
-      cy.get('tbody.p-datatable-tbody')
-        .find('tr')
-        .contains('td', reportingPeriod)
-        .parent()
-        .contains('button', buttonText)
-        .click();
-    }
-
-    /**
-     * Checks that a specific row in the access request table has a certain badge with a give class and text.
-     * @param reportingPeriod the reporting period to identify the row
-     * @param badgeClass the badge class that should exist
-     * @param badgeText the text the badge should have
-     */
-    function validateAccessRequestForReportingPeriodTableHasBadgeWithText(
-      reportingPeriod: string,
-      badgeClass: string,
-      badgeText: string
-    ): void {
-      cy.get('tbody.p-datatable-tbody')
-        .find('tr')
-        .contains('td', reportingPeriod)
-        .parent()
-        .find('div.' + badgeClass)
-        .should('have.text', badgeText);
     }
 
     /**

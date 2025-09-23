@@ -6,6 +6,25 @@ import { DataTypeEnum } from '@clients/backend';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import router from '@/router';
 
+/**
+ * Mounts the DatasetOverviewTable with all dataset table entries passed to it
+ * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
+ */
+function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
+  const keycloakMock = minimalKeycloakMock({
+    userId: 'Mock-User-Id',
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
+  });
+  //@ts-ignore
+  cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
+    keycloak: keycloakMock,
+  }).then((mocked) => {
+    void mocked.wrapper.setProps({
+      datasetTableInfos: mockDatasetTableInfos,
+    });
+  });
+}
+
 describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyAlpha = 'Imaginary-Corporate';
   const dataTypeOfDatasetForAlpha = DataTypeEnum.Lksg;
@@ -31,25 +50,6 @@ describe('Component test for DatasetOverviewTable', () => {
       status: ExtendedQaStatus.Accepted,
       uploadTimeInMs: 1672527600000, // 1.1.2023 00:00:00:0000
     };
-  }
-
-  /**
-   * Mounts the DatasetOverviewTable with all dataset table entries passed to it
-   * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
-   */
-  function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
-    const keycloakMock = minimalKeycloakMock({
-      userId: 'Mock-User-Id',
-      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
-    });
-    //@ts-ignore
-    cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
-      keycloak: keycloakMock,
-    }).then((mocked) => {
-      void mocked.wrapper.setProps({
-        datasetTableInfos: mockDatasetTableInfos,
-      });
-    });
   }
 
   it('Check if the table rows look as expected', () => {
