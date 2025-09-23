@@ -62,7 +62,7 @@ interface DataSourcingApi {
         @Parameter(description = "Company ID.") @RequestParam companyId: String,
         @Parameter(description = "Data type.") @RequestParam dataType: String,
         @Parameter(description = "Reporting period.") @RequestParam reportingPeriod: String,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Retrieve the history of a DataSourcing object by its ID.
