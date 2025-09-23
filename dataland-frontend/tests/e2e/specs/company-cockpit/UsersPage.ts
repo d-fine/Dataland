@@ -6,6 +6,19 @@ import { assignCompanyRole, removeAllCompanyRoles } from '@e2e/utils/CompanyRole
 import { CompanyRole } from '@clients/communitymanager';
 import { setupCommonInterceptions, fetchTestCompanies } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils';
 
+/**
+ * Removes all roles associated with a specific user for a given company.
+ * Uses an admin token to perform the operation.
+ *
+ * @param companyId - The ID of the company whose roles are being removed.
+ * @param userId - The ID of the user whose roles are being removed.
+ */
+function removeCompanyRoles(companyId: string, userId: string): void {
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+    return removeAllCompanyRoles(token, companyId, userId);
+  });
+}
+
 describeIf(
   'As a user, I want the users page to behave as expected',
   {
@@ -42,17 +55,19 @@ describeIf(
 
     it('As a basic company member you should not be able to add members, change the role of other members or remove them', () => {
       setupUserPage(CompanyRole.Member);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('[data-test="add-user-button"]').should('not.exist');
       });
     });
 
-    it('As a company admin you should be able to add members, change the role of other members or remove them', () => {
+    it('As a company admin you should be able to add members', () => {
       setupUserPage(CompanyRole.MemberAdmin);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
-        cy.get('[data-test="add-user-button"]').click();
+        cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
-      cy.get('[data-test="email-input-field"]').type('data.premium-user@example.com');
+      cy.get('[data-test="email-input-field"]').should('be.visible').type('data.premium-user@example.com');
       cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
       cy.get('[data-test="select-user-button"]').click();
       cy.get('[data-test="save-changes-button"]').click();
@@ -62,13 +77,22 @@ describeIf(
       });
       cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
-        cy.get('td')
-          .contains('PremiumUser')
-          .parent()
-          .within(() => {
-            cy.get('[data-test="dialog-button"]').click();
-          });
       });
+    });
+
+    it('As a company admin you should be able to change the role of other members', () => {
+      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
+      cy.contains('[data-test="company-roles-card"]', 'Members')
+        .should('be.visible')
+        .within(() => {
+          cy.get('td')
+            .contains('PremiumUser')
+            .parent()
+            .within(() => {
+              cy.get('[data-test="dialog-button"]').should('be.visible').click();
+            });
+        });
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
 
       cy.get('[data-test="change-user-role-dialog"]').should('be.visible');
@@ -81,6 +105,13 @@ describeIf(
       cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
+      });
+    });
+
+    it('As a company admin you should be able to remove other members', () => {
+      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.MemberAdmin);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
+      cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td')
           .contains('PremiumUser')
           .parent()
@@ -101,12 +132,13 @@ describeIf(
 
     it('When adding yourself to another role the confirmation modal should pop up. Confirm should complete adding your role.', () => {
       setupUserPage(CompanyRole.CompanyOwner);
+      cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
-        cy.get('[data-test="add-user-button"]').click();
+        cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
-      cy.get('[data-test="email-input-field"]').type('data.reader@example.com');
+      cy.get('[data-test="email-input-field"]').should('be.visible').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
-      cy.get('[data-test="save-changes-button"]').click();
+      cy.get('[data-test="save-changes-button"]').should('not.be.disabled').click();
       cy.get('[data-test="confirm-self-role-change-button"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td').contains('Reader').should('exist');
@@ -116,29 +148,21 @@ describeIf(
     /**
      * Sets up the test environment for user page testing.
      */
-    function setupUserPage(userRole: CompanyRole): void {
+    function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId))
+        .then((token) => {
+          void assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId);
+          if (premiumUserRole) {
+            void assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId);
+          }
+        })
         .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
       cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForAlpha'
       );
       cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
-    }
-
-    /**
-     * Removes all roles associated with a specific user for a given company.
-     * Uses an admin token to perform the operation.
-     *
-     * @param companyId - The ID of the company whose roles are being removed.
-     * @param userId - The ID of the user whose roles are being removed.
-     */
-    function removeCompanyRoles(companyId: string, userId: string): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return removeAllCompanyRoles(token, companyId, userId);
-      });
     }
   }
 );
