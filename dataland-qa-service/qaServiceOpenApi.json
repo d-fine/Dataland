@@ -3610,10 +3610,10 @@
               "Industrials",
               "Industry",
               "InformationTechnology",
-              "Machinery",
               "Materials",
               "RealEstate",
-              "Sovereign"
+              "Sovereign",
+              "Utilities"
             ]
           },
           "quality": {

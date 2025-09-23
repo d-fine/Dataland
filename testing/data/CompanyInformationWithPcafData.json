@@ -2103,7 +2103,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Sovereign",
+						"value": "Utilities",
 						"dataSource": {
 							"page": "355",
 							"fileName": "IntegratedReport",
@@ -4923,7 +4923,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Sovereign",
 						"dataSource": {
 							"page": "802-1178",
 							"fileName": "AnnualReport",
@@ -5157,7 +5157,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Sovereign",
 						"dataSource": {
 							"page": "1161-1166",
 							"fileName": "ESEFReport",
@@ -9244,7 +9244,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Materials",
+						"value": "RealEstate",
 						"dataSource": {
 							"page": "200",
 							"fileName": "SustainabilityReport",
@@ -10432,7 +10432,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Materials",
+						"value": "RealEstate",
 						"dataSource": {
 							"page": "937",
 							"fileName": "IntegratedReport",
@@ -16517,7 +16517,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Machinery",
+						"value": "Materials",
 						"dataSource": {
 							"page": "515-738",
 							"fileName": "IntegratedReport",
@@ -17239,7 +17239,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Machinery",
+						"value": "Materials",
 						"dataSource": {
 							"page": "536-859",
 							"fileName": "SustainabilityReport",
@@ -17891,7 +17891,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Materials",
+						"value": "RealEstate",
 						"dataSource": {
 							"page": "134-531",
 							"fileName": "IntegratedReport",
@@ -20497,7 +20497,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Sovereign",
+						"value": "Utilities",
 						"dataSource": {
 							"page": "945",
 							"fileName": "IntegratedReport",
@@ -21837,7 +21837,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Sovereign",
+						"value": "Utilities",
 						"dataSource": {
 							"page": "474-1019",
 							"fileName": "AnnualReport",
@@ -22294,7 +22294,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Machinery",
+						"value": "Materials",
 						"dataSource": {
 							"page": "146",
 							"fileName": "ESEFReport",
@@ -22989,7 +22989,7 @@
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Sovereign",
 						"dataSource": {
 							"page": "637",
 							"fileName": "SustainabilityReport",

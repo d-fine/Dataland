@@ -69,7 +69,7 @@ class DataPointQaReportManager(
             val exceptionToThrow =
                 if (ex.statusCode == HttpStatus.BAD_REQUEST.value()) {
                     InvalidInputApiException(
-                        "Provided data point verdict does not conform to data point specification",
+                        "Provided 'correctedData' does not conform to data point specification",
                         "The provided data point verdict does not conform to the data point specification for " +
                             "'${dataPointMetaInfo.dataPointType}'",
                         ex,

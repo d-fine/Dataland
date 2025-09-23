@@ -81,7 +81,7 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
       },
     }).then(() => {
       cy.get('[data-test="reporting-period-picker"]').should('be.visible');
-      cy.get('[data-test="marketCapitalizationInEUR"]').should('exist');
+      cy.get('[data-test="marketCapitalizationInEUR"]').eq(0).should('exist');
       cy.wait('@fetchDocumentMetadata');
 
       cy.get('[data-test="reporting-period-picker"]').click();
@@ -89,7 +89,7 @@ describe('As a user i want to upload a PCAF Dataset with documents', () => {
       cy.get('.p-datepicker-year').contains('2024').click();
       cy.get('.p-select-label').first().click();
       cy.get('.p-select-option').contains('Energy').should('contain.text', 'Energy').click();
-      cy.get('[data-test="marketCapitalizationInEUR"]').within(() => {
+      cy.get('[data-test="marketCapitalizationInEUR"]').eq(0).within(() => {
         cy.get('[data-test="dataPointToggleButton"]').click();
         cy.get('.formkit-outer.col-4 input[type="text"]').clear().type('1000');
       });

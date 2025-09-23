@@ -50,7 +50,7 @@ export const pcafDataModel = [
             name: 'mainPcafSector',
             label: 'Main PCAF sector',
             description:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Machinery"; "Materials"; "Real estate"; "Sovereign"; "Utilities"',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
             options: [
               {
                 label: 'Communication Services',
@@ -89,10 +89,6 @@ export const pcafDataModel = [
                 value: 'InformationTechnology',
               },
               {
-                label: 'Machinery',
-                value: 'Machinery',
-              },
-              {
                 label: 'Materials',
                 value: 'Materials',
               },
@@ -103,6 +99,10 @@ export const pcafDataModel = [
               {
                 label: 'Sovereign',
                 value: 'Sovereign',
+              },
+              {
+                label: 'Utilities',
+                value: 'Utilities',
               },
             ],
 

@@ -57,7 +57,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Main PCAF sector',
             explanation:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Machinery"; "Materials"; "Real estate"; "Sovereign"; "Utilities"',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -72,10 +72,10 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                     Industrials: 'Industrials',
                     Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
-                    Machinery: 'Machinery',
                     Materials: 'Materials',
                     RealEstate: 'Real Estate',
                     Sovereign: 'Sovereign',
+                    Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(
                     dataset.general?.company?.mainPcafSector?.value
