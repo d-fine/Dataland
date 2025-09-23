@@ -11,6 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 import java.util.Date
 import java.util.UUID
 
@@ -52,6 +53,7 @@ data class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
+    @NotAudited
     @OneToMany(mappedBy = "dataSourcingEntity")
     @JsonManagedReference
     var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
