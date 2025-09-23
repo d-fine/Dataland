@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -15,8 +14,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -24,7 +21,7 @@ import java.time.Instant
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
  */
-@Service
+@Service("CommunityManagerDataRequestProcessingUtils")
 class CommunityManagerDataRequestProcessingUtils
     @Suppress("LongParameterList")
     @Autowired
@@ -202,32 +199,6 @@ class CommunityManagerDataRequestProcessingUtils
                     userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
                 )
             return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
-        }
-
-        /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
-         * and returns the request id
-         * @param companyId the company ID of the data request
-         * @param framework the framework of the data request
-         * @param reportingPeriod the reporting period of the data request
-         * @return the requestId if a request in non-final status exists, else null
-         */
-        fun getRequestIdForDataRequestWithNonFinalStatus(
-            companyId: String,
-            framework: DataTypeEnum,
-            reportingPeriod: String,
-        ): String? {
-            val foundRequests = mutableListOf<DataRequestEntity>()
-            val userId = DatalandAuthentication.fromContext().userId
-            findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Open,
-            )?.forEach { foundRequests.add(it) }
-
-            findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
-            )?.forEach { foundRequests.add(it) }
-
-            return foundRequests.firstOrNull()?.dataRequestId
         }
 
         /**

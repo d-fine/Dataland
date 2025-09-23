@@ -11,7 +11,7 @@ import java.time.Instant
 import java.util.Date
 import java.util.UUID
 
-@Service
+@Service("DataSourcingServiceDataRequestProcessingUtils")
 class DataSourcingServiceDataRequestProcessingUtils
     @Autowired
     constructor(
