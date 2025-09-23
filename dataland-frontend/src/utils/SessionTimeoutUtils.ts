@@ -31,8 +31,6 @@ export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
       useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
     }
   }
-
-  return;
 }
 
 /**
