@@ -13,7 +13,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
         "The expected publication dates of future documents relevant for this data sourcing object."
 
     const val DATE_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION =
-        "The latest date of attempting to source documents for this data sourcing object. It may be in the past or future."
+        "The date of the next planned attempt to source documents for this data sourcing object."
 
     const val DOCUMENT_COLLECTOR_DESCRIPTION =
         "The Dataland company ID of the company which is responsible for the collection of documents concerning " +

@@ -7,7 +7,6 @@ import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.util.SortedSet
 
 /**
  *
@@ -39,6 +38,6 @@ class DataSourcingController : DataSourcingApi {
 
     override fun patchDateDocumentSourcingAttempt(
         id: String,
-        request: SortedSet<LocalDate>,
+        date: LocalDate,
     ): ResponseEntity<StoredDataSourcing> = throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
 }

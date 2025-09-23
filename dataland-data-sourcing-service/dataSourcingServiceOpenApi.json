@@ -338,8 +338,8 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch dateDocumentSourcingAttempt",
-        "description": "Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.",
+        "summary": "Patch the date of the next planned document sourcing attempt",
+        "description": "Patch the date of the next planned document sourcing attemp of a DataSourcing object for a given ID.",
         "operationId": "patchDateDocumentSourcingAttempt",
         "parameters": [
           {
@@ -350,23 +350,17 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "uniqueItems": true,
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Successfully patched dateDocumentSourcingAttempt.",
@@ -1216,7 +1210,7 @@
           },
           "dateDocumentSourcingAttempt": {
             "type": "string",
-            "description": "The latest date of attempting to source documents for this data sourcing object. It may be in the past or future.",
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date"
           },
           "documentCollector": {
