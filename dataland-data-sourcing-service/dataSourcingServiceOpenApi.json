@@ -34,8 +34,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -106,8 +105,7 @@
             "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             },
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
@@ -512,8 +510,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
