@@ -23,6 +23,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
  * @param website the url under which the company website can be reached
  * @param parentCompanyLei the lei of the parent company
+ * @param associatedSubdomains the email subdomains associated with the company (e.g. dataland, hr.mycompany)
  */
 data class CompanyInformationPatch(
     @field:Schema(
@@ -100,4 +101,13 @@ data class CompanyInformationPatch(
         example = BackendOpenApiDescriptionsAndExamples.PARENT_COMPANY_LEI_EXAMPLE,
     )
     val parentCompanyLei: String? = null,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = BackendOpenApiDescriptionsAndExamples.ASSOCIATED_SUBDOMAINS_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.ASSOCIATED_SUBDOMAINS_EXAMPLE,
+            ),
+    )
+    val associatedSubdomains: List<String>? = null,
 )
