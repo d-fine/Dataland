@@ -85,12 +85,6 @@ gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
-    dependsOn(":dataland-keycloak-adapter:assemble")
-}
-
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     description = "Task to generate clients for the backend service."
     group = "clients"
@@ -158,6 +152,17 @@ tasks.register("generateClients") {
     group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateCommunityManagerClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
+    dependsOn(":dataland-keycloak-adapter:assemble")
+}
+
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
 }
 
 sourceSets {

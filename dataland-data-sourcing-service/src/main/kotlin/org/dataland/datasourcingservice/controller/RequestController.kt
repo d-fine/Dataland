@@ -20,21 +20,21 @@ class RequestController(
 ) : RequestApi {
     override fun createRequest(
         singleRequest: SingleRequest,
-        userId: UUID?,
+        userId: String?,
     ): ResponseEntity<SingleRequestResponse> =
         ResponseEntity.ok(
-            singleRequestManager.createRequest(singleRequest, userId),
+            singleRequestManager.createRequest(singleRequest, UUID.fromString(userId)),
         )
 
-    override fun getRequest(dataRequestId: UUID): ResponseEntity<StoredRequest> =
-        ResponseEntity.ok(singleRequestManager.getRequest(dataRequestId))
+    override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
+        ResponseEntity.ok(singleRequestManager.getRequest(UUID.fromString(dataRequestId)))
 
     override fun patchRequestState(
-        dataRequestId: UUID,
+        dataRequestId: String,
         requestState: RequestState,
     ): ResponseEntity<StoredRequest> =
         ResponseEntity.ok(
-            singleRequestManager.patchRequestState(dataRequestId, requestState),
+            singleRequestManager.patchRequestState(UUID.fromString(dataRequestId), requestState),
         )
 
     override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<StoredRequest>> =
