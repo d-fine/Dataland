@@ -1,14 +1,11 @@
 package org.dataland.datalandbackendutils.services
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.ZoneId
 
 @Service("CommonDataRequestProcessingUtils")
-class CommonDataRequestProcessingUtils(
-    @Autowired private val keycloakUserService: KeycloakUserService,
-) {
+class CommonDataRequestProcessingUtils {
     fun getEpochTimeStartOfDay(): Long {
         val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
         val zoneId = ZoneId.of("Europe/Berlin")
