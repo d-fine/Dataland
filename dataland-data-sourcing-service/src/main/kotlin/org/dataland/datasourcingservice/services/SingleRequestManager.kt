@@ -32,6 +32,7 @@ import kotlin.jvm.optionals.getOrNull
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
  */
+@Suppress("LongParameterList")
 @Service("SingleRequestManager")
 class SingleRequestManager
     @Autowired
@@ -161,6 +162,17 @@ class SingleRequestManager
                 reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second.toString() },
             )
 
+        /**
+         * Creates a new data request based on the provided SingleRequest object.
+         * In case a request for the same company, data type, reporting period, and user already exists
+         * with a non-final state (i.e., Open or Processing), it will not create a new request for that reporting period.
+         * @param singleRequest The SingleRequest object containing the details of the data request.
+         * @param userId The UUID of the user making the request. If null, it will be extracted from the security context.
+         * @return A SingleRequestResponse object containing details about the created request.
+         * @throws InvalidInputApiException If the input data is invalid.
+         * @throws QuotaExceededException If the user has exceeded their quota for requests.
+         * @throws ResourceNotFoundApiException If the specified company identifier does not exist.
+         */
         @Transactional
         fun createRequest(
             singleRequest: SingleRequest,
@@ -195,6 +207,12 @@ class SingleRequestManager
             )
         }
 
+        /**
+         Retrieves a stored data request by its ID.
+         * @param dataRequestId The UUID of the data request to retrieve.
+         * @return The StoredRequest object corresponding to the given ID.
+         * @throws RequestNotFoundApiException If no data request with the given ID exists.
+         */
         @Transactional(readOnly = true)
         fun getRequest(dataRequestId: UUID): StoredRequest =
             requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
@@ -202,6 +220,14 @@ class SingleRequestManager
                     dataRequestId,
                 )
 
+        /**
+         * Updates the state of a data request identified by its ID.
+         * If the state is changed from Open to Processing, it ensures that a corresponding DataSourcingEntity exists.
+         * @param dataRequestId The UUID of the data request to update.
+         * @param newRequestState The new state to set for the data request.
+         * @return The updated StoredRequest object.
+         * @throws RequestNotFoundApiException If no data request with the given ID exists.
+         */
         @Transactional
         fun patchRequestState(
             dataRequestId: UUID,
@@ -241,6 +267,13 @@ class SingleRequestManager
             return requestEntity.toStoredDataRequest()
         }
 
+        /**
+         * Retrieves the history of revisions for a specific data request identified by its ID.
+         * @param id The UUID string of the data request whose history is to be retrieved.
+         * @return A list of StoredRequest objects representing the revision history of the specified data request.
+         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
+         */
+        @Transactional(readOnly = true)
         fun retrieveRequestHistory(id: String): List<StoredRequest> {
             val uuid =
                 try {

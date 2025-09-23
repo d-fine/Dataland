@@ -37,10 +37,20 @@ class DataRevisionRepository(
         return entityList
     }
 
+    /**
+     * List all revisions of DataSourcingEntity by its id.
+     * @param id the id of the DataSourcingEntity
+     * @return a list of DataSourcingEntity containing all revisions
+     */
     @Suppress("UNCHECKED_CAST")
     fun listDataSourcingRevisionsById(id: UUID?): List<DataSourcingEntity> =
         listDataRevisionsById(id, DataSourcingEntity::class.java) as List<DataSourcingEntity>
 
+    /**
+     * List all revisions of RequestEntity by its id.
+     * @param id the id of the RequestEntity
+     * @return a list of RequestEntity containing all revisions
+     */
     @Suppress("UNCHECKED_CAST")
     fun listDataRequestRevisionsById(id: UUID?): List<RequestEntity> =
         listDataRevisionsById(id, RequestEntity::class.java) as List<RequestEntity>

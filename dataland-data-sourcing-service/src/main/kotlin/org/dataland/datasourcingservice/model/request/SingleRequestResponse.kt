@@ -6,6 +6,15 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
+/**
+ * --- API model ---
+ * Contains all information a user receives regarding a single data request he performed on Dataland.
+ * @param message a message that informs the user about the result of his data request
+ * @param reportingPeriodsOfStoredRequests a list of reporting periods for which data requests were stored
+ * @param idsOfStoredRequests a list of ids of the stored data requests
+ * @param reportingPeriodsOfDuplicateRequests a list of reporting periods for which duplicate data requests were found
+ * @param idsOfDuplicateRequests a list of ids of the duplicate data requests
+ */
 data class SingleRequestResponse(
     @field:JsonProperty(required = true)
     @field:Schema(

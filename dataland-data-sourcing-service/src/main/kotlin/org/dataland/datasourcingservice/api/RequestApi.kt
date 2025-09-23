@@ -110,6 +110,9 @@ interface RequestApi {
         requestState: RequestState,
     ): ResponseEntity<StoredRequest>
 
+    /**
+     * Retrieve the history of a Request object by its ID.
+     */
     @Operation(
         summary = "Get full history of a requests by ID",
         description = "Retrieve the history of a Request object by its unique identifier.",

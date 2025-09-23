@@ -11,6 +11,9 @@ import java.time.Instant
 import java.util.Date
 import java.util.UUID
 
+/**
+ * Utility service class for processing data requests in the Data Sourcing Service.
+ */
 @Service("DataSourcingServiceDataRequestProcessingUtils")
 class DataSourcingServiceDataRequestProcessingUtils
     @Autowired
@@ -73,6 +76,14 @@ class DataSourcingServiceDataRequestProcessingUtils
             return foundRequests
         }
 
+        /**
+         * Retrieves the data requests already existing on Dataland for the provided specifications and the current user
+         * that are not in a final state (i.e. Open or Processing)
+         * @param companyId the company ID of the data requests
+         * @param framework the framework of the data requests
+         * @param reportingPeriod the reporting period of the data requests
+         * @return a list of the found data requests, or null if none was found
+         */
         fun getExistingDataRequestsWithNonFinalState(
             companyId: String,
             framework: String,
