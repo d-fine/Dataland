@@ -21,8 +21,7 @@ class DataSourcingController : DataSourcingApi {
         companyId: String,
         dataType: String,
         reportingPeriod: String,
-        state: String?,
-    ): ResponseEntity<StoredDataSourcing> = throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
+    ): ResponseEntity<DataSourcingResponse> = throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
 
     override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<StoredDataSourcing>> =
         throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")

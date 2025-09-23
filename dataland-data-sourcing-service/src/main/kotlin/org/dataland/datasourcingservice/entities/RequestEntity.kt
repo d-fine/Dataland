@@ -77,7 +77,6 @@ data class RequestEntity(
         companyId: UUID,
         dataType: String,
         reportingPeriod: String,
-        notifyMeImmediately: Boolean,
         creationTimestamp: Date,
     ) : this(
         id = UUID.randomUUID(),

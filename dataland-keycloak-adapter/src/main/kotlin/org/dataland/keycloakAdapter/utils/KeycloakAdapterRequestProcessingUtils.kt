@@ -8,6 +8,9 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+/**
+ * Utility service class for processing requests in services using Keycloak for authentication.
+ */
 @Service("KeycloakAdapterRequestProcessingUtils")
 class KeycloakAdapterRequestProcessingUtils(
     @Autowired private val keycloakUserService: KeycloakUserService,
@@ -22,6 +25,13 @@ class KeycloakAdapterRequestProcessingUtils(
         }
     }
 
+    /**
+     * Check if the user with the given userId has the role of a premium user.
+     * If the userId belongs to the currently authenticated user, check the roles from the authentication context.
+     * Otherwise, retrieve the roles from Keycloak using the KeycloakUserService.
+     * @param userId the userId of the user in question
+     * @return true if the user has the role of a premium user, false otherwise
+     */
     fun userIsPremiumUser(userId: String): Boolean {
         val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
         return if (userId == authenticationOfLoggedInUser.userId) {

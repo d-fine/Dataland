@@ -43,7 +43,6 @@ class DataSourcingServiceListener
          * Listener method that processes messages from the QA service indicating a QA status change of a dataset.
          * @param payload the message payload as a string
          * @param type the message type from the header
-         * @param correlationId the correlation ID from the header
          */
         @RabbitListener(
             bindings = [
@@ -65,7 +64,6 @@ class DataSourcingServiceListener
         fun processHandleDatasetUploadEvent(
             @Payload payload: String,
             @Header(MessageHeaderKey.TYPE) type: String,
-            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
             val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)

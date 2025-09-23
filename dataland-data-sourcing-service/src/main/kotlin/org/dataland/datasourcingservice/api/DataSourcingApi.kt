@@ -45,7 +45,6 @@ interface DataSourcingApi {
 
     /**
      * Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.
-     * Todo: What the point of specifying state here? There can't be multiple entries with same reportingPeriod, dataType, companyId.
      */
     @Operation(
         summary = "Get DataSourcing by parameters",
@@ -63,8 +62,7 @@ interface DataSourcingApi {
         @Parameter(description = "Company ID.") @RequestParam companyId: String,
         @Parameter(description = "Data type.") @RequestParam dataType: String,
         @Parameter(description = "Reporting period.") @RequestParam reportingPeriod: String,
-        @Parameter(description = "State (optional).") @RequestParam(required = false) state: String?,
-    ): ResponseEntity<StoredDataSourcing>
+    ): ResponseEntity<DataSourcingResponse>
 
     /**
      * Retrieve the history of a DataSourcing object by its ID.
@@ -126,7 +124,6 @@ interface DataSourcingApi {
 
     /**
      * Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.
-     * Todo: What is the purpose of this endpoint? The entity has a single date field, but this accepts a list of dates.
      */
     @Operation(
         summary = "Patch dateDocumentSourcingAttempt",

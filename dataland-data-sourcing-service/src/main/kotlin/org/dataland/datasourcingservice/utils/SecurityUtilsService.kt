@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
+/**
+ * Utility service class for security-related operations.
+ */
 @Service
 class SecurityUtilsService(
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,

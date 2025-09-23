@@ -980,7 +980,6 @@
         "required": [
           "companyIdentifier",
           "dataType",
-          "notifyMeImmediately",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1006,10 +1005,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "notifyMeImmediately": {
-            "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           },
           "comment": {
             "type": "string",
