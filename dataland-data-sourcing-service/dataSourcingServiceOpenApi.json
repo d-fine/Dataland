@@ -360,7 +360,7 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "format": "date-time"
+                  "format": "date"
                 }
               }
             }
@@ -426,7 +426,7 @@
         ],
         "summary": "Get full history of a requests by ID",
         "description": "Retrieve the history of a Request object by its unique identifier.",
-        "operationId": "getDataSourcingHistoryById",
+        "operationId": "getRequestHistoryById",
         "parameters": [
           {
             "name": "id",
@@ -634,7 +634,7 @@
         ],
         "summary": "Get full history of DataSourcing history by ID",
         "description": "Retrieve the history of a DataSourcing object by its unique identifier.",
-        "operationId": "getDataSourcingHistoryById_1",
+        "operationId": "getDataSourcingHistoryById",
         "parameters": [
           {
             "name": "id",
@@ -1215,7 +1215,7 @@
           "dateDocumentSourcingAttempt": {
             "type": "string",
             "description": "Date of document sourcing attempt.",
-            "format": "date-time"
+            "format": "date"
           },
           "documentCollector": {
             "type": "string",

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
+import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataSourcingControllerTest {
@@ -72,7 +73,10 @@ class DataSourcingControllerTest {
         assertEquals(expectedDocuments, updatedDataSourcingObject.documentIds)
     }
 
-    private fun changeSourcingStatusAndVerifyRequestsStatuses(newSourcingStatus: DataSourcingState, expectedRequestState: RequestState) {
+    private fun changeSourcingStatusAndVerifyRequestsStatuses(
+        newSourcingStatus: DataSourcingState,
+        expectedRequestState: RequestState,
+    ) {
         createRequest(dataSourcingObject.companyId, user = TechnicalUser.PremiumUser)
         createRequest(dataSourcingObject.companyId, user = TechnicalUser.Admin)
 
@@ -179,8 +183,11 @@ class DataSourcingControllerTest {
         for (state in DataSourcingState.entries) {
             changeSourcingStatusAndVerifyRequestsStatuses(
                 state,
-                if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) RequestState.Processed
-                else RequestState.Processing,
+                if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) {
+                    RequestState.Processed
+                } else {
+                    RequestState.Processing
+                },
             )
         }
     }
@@ -270,6 +277,27 @@ class DataSourcingControllerTest {
 
     @Test
     fun `verify that data sourcing attempt dates can be uploaded and lead to a historization`() {
-        assert(false) { "Not yet implemented" }
+        val firstDate = LocalDate.of(2024, 1, 1)
+        val secondDate = LocalDate.of(2024, 6, 1)
+        val thirdDate = LocalDate.of(2023, 3, 3)
+        val fouthDate = LocalDate.of(2027, 1, 1)
+
+        apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
+            dataSourcingObject.id,
+            setOf(firstDate, secondDate),
+        )
+        val dataSourcingHistory = apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(dataSourcingObject.id)
+        assertEquals(3, dataSourcingHistory.size)
+        assertEquals(null, dataSourcingHistory[0].dateDocumentSourcingAttempt)
+        assertEquals(firstDate, dataSourcingHistory[1].dateDocumentSourcingAttempt)
+        assertEquals(secondDate, dataSourcingHistory[2].dateDocumentSourcingAttempt)
+
+        apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
+            dataSourcingObject.id,
+            setOf(thirdDate, fouthDate),
+        )
+        assertEquals(5, dataSourcingHistory.size)
+        assertEquals(thirdDate, dataSourcingHistory[3].dateDocumentSourcingAttempt)
+        assertEquals(fouthDate, dataSourcingHistory[4].dateDocumentSourcingAttempt)
     }
 }

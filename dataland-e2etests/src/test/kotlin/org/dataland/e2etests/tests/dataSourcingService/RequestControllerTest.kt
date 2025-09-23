@@ -94,10 +94,12 @@ class RequestControllerTest {
                 .createRequest(dummyRequest)
                 .idsOfStoredRequests
                 .first()
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
 
-        val requestHistory = apiAccessor.dataSourcingRequestControllerApi.getDataSourcingHistoryById(requestId.toString())
+        val requestHistory = apiAccessor.dataSourcingRequestControllerApi.getRequestHistoryById(requestId)
 
-        assertEquals(1, requestHistory.size)
+        assertEquals(2, requestHistory.size)
         assertEquals(RequestState.Open, requestHistory[0].state)
+        assertEquals(RequestState.Processing, requestHistory[1].state)
     }
 }

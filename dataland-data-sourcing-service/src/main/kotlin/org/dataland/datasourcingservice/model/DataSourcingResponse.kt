@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.model
 
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDate
 import java.util.Date
 
 /**
@@ -36,7 +37,7 @@ data class DataSourcingResponse(
     @field:Schema(description = "Expected publication dates of documents.")
     val expectedPublicationDatesOfDocuments: Set<Date>,
     @field:Schema(description = "Date of document sourcing attempt.")
-    val dateDocumentSourcingAttempt: Date?,
+    val dateDocumentSourcingAttempt: LocalDate?,
     @field:Schema(description = "Document collector's ID.")
     val documentCollector: String?,
     @field:Schema(description = "Data extractor's ID.")

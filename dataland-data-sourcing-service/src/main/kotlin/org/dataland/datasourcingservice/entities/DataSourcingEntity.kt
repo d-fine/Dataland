@@ -12,7 +12,7 @@ import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
-import java.util.Date
+import java.time.LocalDate
 import java.util.UUID
 
 /**
@@ -46,7 +46,7 @@ data class DataSourcingEntity(
     @Column(name = "expected_publication_date_of_documents")
     var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
     @Column(name = "date_document_sourcing_attempt")
-    var dateDocumentSourcingAttempt: Date? = null,
+    var dateDocumentSourcingAttempt: LocalDate? = null,
     @Column(name = "document_collector")
     var documentCollector: UUID? = null,
     @Column(name = "data_extractor")

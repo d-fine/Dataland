@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.Date
+import java.time.LocalDate
 import java.util.SortedSet
 
 /**
@@ -142,6 +142,6 @@ interface DataSourcingApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
-        @Valid @RequestBody request: SortedSet<Date>,
+        @Valid @RequestBody request: SortedSet<LocalDate>,
     ): ResponseEntity<DataSourcingResponse>
 }

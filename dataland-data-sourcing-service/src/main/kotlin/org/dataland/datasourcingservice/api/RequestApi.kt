@@ -122,7 +122,7 @@ interface RequestApi {
     )
     @GetMapping("/{id}/history", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getDataSourcingHistoryById(
+    fun getRequestHistoryById(
         @Parameter(description = "ID of the Request object.")
         @PathVariable id: String,
     ): ResponseEntity<List<StoredRequest>>

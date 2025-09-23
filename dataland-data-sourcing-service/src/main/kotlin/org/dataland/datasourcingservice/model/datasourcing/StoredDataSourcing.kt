@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.request.StoredRequest
-import java.util.Date
+import java.time.LocalDate
 import java.util.UUID
 
 /**
@@ -59,7 +59,7 @@ data class StoredDataSourcing(
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATE_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
     )
-    val dateDocumentSourcingAttempt: Date? = null,
+    val dateDocumentSourcingAttempt: LocalDate? = null,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,
