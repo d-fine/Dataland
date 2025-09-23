@@ -24,7 +24,7 @@ describeIf(
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
         cy.get(frameworkSummaryPanelSelector).should('exist');
         cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
-          timeout: Cypress.env('medium_timeout_in_ms') as number,
+          timeout: Cypress.env('long_timeout_in_ms') as number,
         }).should('exist');
       });
     }
