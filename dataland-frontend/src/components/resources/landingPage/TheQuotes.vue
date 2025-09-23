@@ -76,32 +76,30 @@ interface YouTubeEvent {
     pauseVideo: () => void;
   };
 }
+
+type YTPlayer = {
+  playVideo: () => void;
+  pauseVideo: () => void;
+  destroy: () => void;
+};
+
 declare global {
+  var Cookiebot: { renew: () => void } | undefined;
+
+  var YT:
+    | {
+        Player: new (
+          elementId: string,
+          opts: {
+            videoId: string;
+            playerVars?: { rel: number };
+            events: { onReady: (event: YouTubeEvent) => void };
+          }
+        ) => YTPlayer;
+      }
+    | undefined;
+
   var onYouTubeIframeAPIReady: () => void;
-  interface Window {
-    Cookiebot?: {
-      renew: () => void;
-    };
-    YT: {
-      Player: new (
-        elementId: string,
-        opts: {
-          videoId: string;
-          playerVars?: {
-            rel: number;
-          };
-          events: {
-            onReady: (event: YouTubeEvent) => void;
-          };
-        }
-      ) => {
-        playVideo: () => void;
-        pauseVideo: () => void;
-        destroy: () => void;
-      };
-    };
-    onYouTubeIframeAPIReady: () => void;
-  }
 }
 
 const ytPlayers = ref<Map<string, { playVideo: () => void; pauseVideo: () => void; destroy: () => void }>>(new Map());
@@ -176,15 +174,14 @@ onMounted(() => {
   }
   globalThis.onYouTubeIframeAPIReady = (): void => {
     for (const card of cards.value) {
-      if (!card.icon) continue;
-
+      if (!card.icon || !globalThis.YT) continue;
       const player = new globalThis.YT.Player(`video-${card.icon}`, {
         videoId: card.icon,
         playerVars: {
           rel: 0,
         },
         events: {
-          onReady: (event): void => {
+          onReady: (event: YouTubeEvent): void => {
             event.target?.pauseVideo();
           },
         },
@@ -195,7 +192,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSlideWidth);
+  globalThis.removeEventListener('resize', updateSlideWidth);
   for (const player of ytPlayers.value.values()) {
     player.destroy();
   }
