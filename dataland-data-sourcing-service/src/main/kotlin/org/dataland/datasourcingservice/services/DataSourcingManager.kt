@@ -27,7 +27,7 @@ class DataSourcingManager(
      */
     @Transactional(readOnly = true)
     fun getStoredDataSourcing(
-        companyId: String,
+        companyId: UUID,
         reportingPeriod: String,
         dataType: String,
     ): StoredDataSourcing =
@@ -35,7 +35,7 @@ class DataSourcingManager(
             ?: throw DataSourcingNotFoundApiException(companyId, reportingPeriod, dataType)
 
     private fun getDataSourcingEntityByDataDimension(
-        companyId: String,
+        companyId: UUID,
         reportingPeriod: String,
         dataType: String,
     ): DataSourcingEntity? = dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(companyId, dataType, reportingPeriod)

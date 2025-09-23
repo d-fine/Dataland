@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
 
@@ -25,8 +27,8 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
     @Test
     fun `test audit historization of DataSourcingEntity with updated states`() {
         val dataSourcingEntityId = UUID.randomUUID()
-        val companyId = "example_company_id"
-        val initialDate = Date()
+        val companyId = UUID.randomUUID()
+        val initialDate = Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         val initialAdminComment = "Initialized data sourcing"
         val initialState = DataSourcingState.Initialized
 

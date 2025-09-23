@@ -29,7 +29,7 @@ data class RequestEntity(
     @Column(name = "id")
     val id: UUID,
     @Column(name = "company_id")
-    val companyId: String,
+    val companyId: UUID,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "data_type")
@@ -74,7 +74,7 @@ data class RequestEntity(
 
     constructor(
         userId: UUID,
-        companyId: String,
+        companyId: UUID,
         dataType: String,
         reportingPeriod: String,
         notifyMeImmediately: Boolean,

@@ -32,7 +32,7 @@ data class DataSourcingEntity(
     @Column(name = "id")
     val id: UUID,
     @Column(name = "company_id")
-    val companyId: String,
+    val companyId: UUID,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "data_type")
@@ -59,7 +59,7 @@ data class DataSourcingEntity(
     var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
 ) {
     constructor(
-        companyId: String,
+        companyId: UUID,
         reportingPeriod: String,
         dataType: String,
     ) : this(
@@ -75,17 +75,17 @@ data class DataSourcingEntity(
      */
     fun toStoredDataSourcing(): StoredDataSourcing =
         StoredDataSourcing(
-            id = id,
-            companyId = companyId,
+            id = id.toString(),
+            companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
             dataType = dataType,
             state = state,
             documentIds = documentIds,
             expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
             dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
-            documentCollector = documentCollector,
-            dataExtractor = dataExtractor,
+            documentCollector = documentCollector.toString(),
+            dataExtractor = dataExtractor.toString(),
             adminComment = adminComment,
-            associatedRequests = associatedRequests.map { it.toStoredDataRequest() }.toMutableSet(),
+            associatedRequestIds = associatedRequests.map { it.id.toString() }.toMutableSet(),
         )
 }

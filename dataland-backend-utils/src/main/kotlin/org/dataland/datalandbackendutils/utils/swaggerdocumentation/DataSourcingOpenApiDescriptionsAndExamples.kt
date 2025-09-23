@@ -28,7 +28,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val ADMIN_COMMENT_DESCRIPTION = "A comment that can be set by Dataland admins to provide additional information."
     const val ADMIN_COMMENT_EXAMPLE = "The data sourcing process is delayed due to unforeseen circumstances."
 
-    const val ASSOCIATED_REQUESTS_DESCRIPTION = "The stored data requests associated with this data sourcing object."
+    const val ASSOCIATED_REQUEST_IDS_DESCRIPTION = "The IDs of stored data requests associated with this data sourcing object."
 
     const val COMMENT_DESCRIPTION = "A comment that accompanies the data sourcing request."
     const val COMMENT_EXAMPLE = "The previously provided data is lacking scope 3 emissions, but they should be available."

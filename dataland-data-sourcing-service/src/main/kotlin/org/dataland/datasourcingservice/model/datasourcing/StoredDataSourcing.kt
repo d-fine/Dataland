@@ -6,9 +6,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.model.request.StoredRequest
 import java.time.LocalDate
-import java.util.UUID
 
 /**
  * DTO for transferring stored data sourcing information. In contrast to DataSourcingEntity,
@@ -19,7 +17,7 @@ data class StoredDataSourcing(
         description = DataSourcingOpenApiDescriptionsAndExamples.ID_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.ID_EXAMPLE,
     )
-    val id: UUID,
+    val id: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
@@ -64,12 +62,12 @@ data class StoredDataSourcing(
         description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,
     )
-    val documentCollector: UUID? = null,
+    val documentCollector: String? = null,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_EXAMPLE,
     )
-    val dataExtractor: UUID? = null,
+    val dataExtractor: String? = null,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
@@ -78,9 +76,9 @@ data class StoredDataSourcing(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = StoredRequest::class,
-                description = DataSourcingOpenApiDescriptionsAndExamples.ASSOCIATED_REQUESTS_DESCRIPTION,
+                type = "string",
+                description = DataSourcingOpenApiDescriptionsAndExamples.ASSOCIATED_REQUEST_IDS_DESCRIPTION,
             ),
     )
-    val associatedRequests: Set<StoredRequest>? = null,
+    val associatedRequestIds: Set<String>? = null,
 )

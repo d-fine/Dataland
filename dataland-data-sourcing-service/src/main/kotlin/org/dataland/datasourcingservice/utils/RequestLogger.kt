@@ -70,7 +70,7 @@ class RequestLogger {
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
         userId: UUID,
-        companyId: String,
+        companyId: UUID,
         framework: String,
         reportingPeriod: String,
         requestState: RequestState,

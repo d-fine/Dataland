@@ -49,7 +49,7 @@ class DataSourcingServiceDataRequestProcessingUtils
          */
         fun findAlreadyExistingDataRequestsForUser(
             userId: UUID,
-            companyId: String,
+            companyId: UUID,
             framework: String,
             reportingPeriod: String,
             requestState: RequestState,
@@ -74,7 +74,7 @@ class DataSourcingServiceDataRequestProcessingUtils
         }
 
         fun getExistingDataRequestsWithNonFinalState(
-            companyId: String,
+            companyId: UUID,
             framework: String,
             reportingPeriod: String,
             userId: UUID,
@@ -101,7 +101,7 @@ class DataSourcingServiceDataRequestProcessingUtils
          */
         fun storeRequestEntityAsOpen(
             userId: UUID,
-            companyId: String,
+            companyId: UUID,
             dataType: String,
             reportingPeriod: String,
             notifyMeImmediately: Boolean,

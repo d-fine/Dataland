@@ -23,7 +23,7 @@ class RequestController(
         userId: String?,
     ): ResponseEntity<SingleRequestResponse> =
         ResponseEntity.ok(
-            singleRequestManager.createRequest(singleRequest, UUID.fromString(userId)),
+            singleRequestManager.createRequest(singleRequest, userId?.let { UUID.fromString(it) }),
         )
 
     override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =

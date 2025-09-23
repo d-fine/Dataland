@@ -13,7 +13,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      * Find a Request by the triple companyId, dataType and reportingPeriod.
      */
     fun findByCompanyIdAndDataTypeAndReportingPeriod(
-        companyId: String,
+        companyId: UUID,
         dataType: String,
         reportingPeriod: String,
     ): List<RequestEntity>
@@ -23,7 +23,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     fun findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
         userId: UUID,
-        companyId: String,
+        companyId: UUID,
         dataType: String,
         reportingPeriod: String,
     ): List<RequestEntity>

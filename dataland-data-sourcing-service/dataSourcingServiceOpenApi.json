@@ -193,7 +193,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -203,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -287,7 +287,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -297,7 +297,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -373,7 +373,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -383,7 +383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -581,7 +581,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -591,7 +591,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -654,7 +654,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataSourcingResponse"
+                    "$ref": "#/components/schemas/StoredDataSourcing"
                   }
                 }
               }
@@ -667,7 +667,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataSourcingResponse"
+                    "$ref": "#/components/schemas/StoredDataSourcing"
                   }
                 }
               }
@@ -756,7 +756,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -766,7 +766,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataSourcingResponse"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -1160,13 +1160,26 @@
           "Answered"
         ]
       },
-      "DataSourcingResponse": {
+      "ExpectedPublicationDateOfDocument": {
         "required": [
-          "associatedRequestIds",
+          "documentCategory",
+          "expectedPublicationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "documentCategory": {
+            "type": "string"
+          },
+          "expectedPublicationDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "StoredDataSourcing": {
+        "required": [
           "companyId",
           "dataType",
-          "documentIds",
-          "expectedPublicationDatesOfDocuments",
           "id",
           "reportingPeriod",
           "state"
@@ -1175,71 +1188,75 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Unique identifier of the data sourcing object."
+            "description": "The unique identifier of the data sourcing object.",
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           "companyId": {
             "type": "string",
-            "description": "Company ID associated with the data sourcing object."
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "Reporting period."
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "dataType": {
             "type": "string",
-            "description": "Type of data being sourced."
+            "description": "The associated reporting framework.",
+            "example": "sfdr"
           },
           "state": {
-            "type": "string",
-            "description": "Current state of the data sourcing object."
+            "$ref": "#/components/schemas/DataSourcingState"
           },
           "documentIds": {
             "uniqueItems": true,
             "type": "array",
-            "description": "Document IDs associated with the data sourcing object.",
+            "description": "The documents from which the data for this data sourcing object are extracted.",
+            "example": [
+              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
+            ],
             "items": {
-              "type": "string",
-              "description": "Document IDs associated with the data sourcing object."
+              "type": "string"
             }
           },
           "expectedPublicationDatesOfDocuments": {
             "uniqueItems": true,
             "type": "array",
-            "description": "Expected publication dates of documents.",
+            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
             "items": {
-              "type": "string",
-              "description": "Expected publication dates of documents.",
-              "format": "date-time"
+              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
             }
           },
           "dateDocumentSourcingAttempt": {
             "type": "string",
-            "description": "Date of document sourcing attempt.",
+            "description": "The latest date of attempting to source documents for this data sourcing object. It may be in the past or future.",
             "format": "date"
           },
           "documentCollector": {
             "type": "string",
-            "description": "Document collector\u0027s ID."
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
           },
           "dataExtractor": {
             "type": "string",
-            "description": "Data extractor\u0027s ID."
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           },
           "adminComment": {
             "type": "string",
-            "description": "Admin comment."
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "associatedRequestIds": {
             "uniqueItems": true,
             "type": "array",
-            "description": "Associated request IDs.",
+            "description": "The IDs of stored data requests associated with this data sourcing object.",
             "items": {
-              "type": "string",
-              "description": "Associated request IDs."
+              "type": "string"
             }
           }
-        },
-        "description": "Data transfer object for DataSourcingEntity."
+        }
       },
       "Link": {
         "type": "object",

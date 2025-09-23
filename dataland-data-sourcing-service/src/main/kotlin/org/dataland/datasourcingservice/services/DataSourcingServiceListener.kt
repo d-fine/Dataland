@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * Listener class for all RabbitMQ messages that are relevant to the data sourcing service.
@@ -71,7 +72,7 @@ class DataSourcingServiceListener
             val dataId = dataUploadedPayload.dataId
             val updatedQaStatus = dataUploadedPayload.updatedQaStatus
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
-            val companyId = dataMetaInformation.companyId
+            val companyId = UUID.fromString(dataMetaInformation.companyId)
             val reportingPeriod = dataMetaInformation.reportingPeriod
             val dataType = dataMetaInformation.dataType
 
@@ -96,7 +97,7 @@ class DataSourcingServiceListener
             when (updatedQaStatus) {
                 QaStatus.Accepted -> {
                     dataSourcingManager.patchDataSourcingEntity(
-                        storedDataSourcing.id,
+                        UUID.fromString(storedDataSourcing.id),
                         DataSourcingPatch(state = DataSourcingState.Answered),
                     )
                 }
@@ -104,7 +105,7 @@ class DataSourcingServiceListener
                 QaStatus.Pending -> {
                     if (storedDataSourcing.state == DataSourcingState.Answered) return
                     dataSourcingManager.patchDataSourcingEntity(
-                        storedDataSourcing.id,
+                        UUID.fromString(storedDataSourcing.id),
                         DataSourcingPatch(state = DataSourcingState.DataVerification),
                     )
                 }

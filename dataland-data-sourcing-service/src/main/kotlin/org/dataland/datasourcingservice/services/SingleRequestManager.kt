@@ -59,10 +59,10 @@ class SingleRequestManager
         private fun performQuotaCheckForNonPremiumUser(
             userId: String,
             numberOfReportingPeriods: Int,
-            companyId: String,
+            companyId: UUID,
         ) {
             if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId) &&
-                !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
+                !securityUtilsService.isUserMemberOfTheCompany(companyId)
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     requestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
@@ -97,7 +97,10 @@ class SingleRequestManager
                     "No company is associated to the identifier ${rejectedIdentifiers.first()}.",
                 )
             }
-            val companyId = acceptedIdentifiersToCompanyIdAndName.getValue(singleRequest.companyIdentifier).companyId
+            val companyId =
+                UUID.fromString(
+                    acceptedIdentifiersToCompanyIdAndName.getValue(singleRequest.companyIdentifier).companyId,
+                )
 
             validateSingleDataRequestContent(singleRequest)
             performQuotaCheckForNonPremiumUser(

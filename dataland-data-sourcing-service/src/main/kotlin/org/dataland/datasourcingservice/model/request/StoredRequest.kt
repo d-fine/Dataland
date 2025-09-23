@@ -55,7 +55,7 @@ data class StoredRequest(
     fun toRequestEntity(): RequestEntity =
         RequestEntity(
             id = UUID.fromString(this.id),
-            companyId = this.companyId,
+            companyId = UUID.fromString(this.companyId),
             reportingPeriod = this.reportingPeriod,
             dataType = this.dataType,
             userId = UUID.fromString(this.userId),

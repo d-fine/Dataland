@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datasourcingservice.model.DataSourcingResponse
+import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -41,7 +41,7 @@ interface DataSourcingApi {
     fun getDataSourcingById(
         @Parameter(description = "ID of the DataSourcing object.")
         @PathVariable id: String,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.
@@ -64,7 +64,7 @@ interface DataSourcingApi {
         @Parameter(description = "Data type.") @RequestParam dataType: String,
         @Parameter(description = "Reporting period.") @RequestParam reportingPeriod: String,
         @Parameter(description = "State (optional).") @RequestParam(required = false) state: String?,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Retrieve the history of a DataSourcing object by its ID.
@@ -84,7 +84,7 @@ interface DataSourcingApi {
     fun getDataSourcingHistoryById(
         @Parameter(description = "ID of the DataSourcing object.")
         @PathVariable id: String,
-    ): ResponseEntity<List<DataSourcingResponse>>
+    ): ResponseEntity<List<StoredDataSourcing>>
 
     /**
      * Patch the state of a DataSourcing object specified by ID.
@@ -101,7 +101,7 @@ interface DataSourcingApi {
     fun patchDataSourcingState(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestParam state: DataSourcingState,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Patch the associated document IDs of a DataSourcing object. Use appendDocuments to append or overwrite.
@@ -122,7 +122,7 @@ interface DataSourcingApi {
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
         @Valid @RequestBody documentIds: Set<String>,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.
@@ -143,5 +143,5 @@ interface DataSourcingApi {
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestBody request: SortedSet<LocalDate>,
-    ): ResponseEntity<DataSourcingResponse>
+    ): ResponseEntity<StoredDataSourcing>
 }
