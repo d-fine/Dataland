@@ -159,9 +159,9 @@ class SingleRequestManager
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsAndNullIdsOfDuplicateDataRequests.size,
                 ),
                 reportingPeriodsAndIdsOfStoredDataRequests.map { it.first },
-                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second },
+                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second.toString() },
                 reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.first },
-                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second },
+                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second.toString() },
             )
 
         @Transactional
@@ -248,7 +248,7 @@ class SingleRequestManager
             val uuid =
                 try {
                     UUID.fromString(id)
-                } catch (e: IllegalArgumentException) {
+                } catch (_: IllegalArgumentException) {
                     throw InvalidInputApiException(
                         "Invalid UUID format for id: $id",
                         message = "Invalid UUID format for id: $id, please provide a valid UUID string.",

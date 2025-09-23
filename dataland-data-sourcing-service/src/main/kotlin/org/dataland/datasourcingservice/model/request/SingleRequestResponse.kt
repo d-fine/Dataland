@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import java.util.UUID
 
 data class SingleRequestResponse(
     @field:JsonProperty(required = true)
@@ -28,12 +27,12 @@ data class SingleRequestResponse(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = UUID::class,
+                type = "string",
                 description = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_IDS_DESCRIPTION,
                 example = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_IDS_EXAMPLE,
             ),
     )
-    val idsOfStoredRequests: List<UUID>,
+    val idsOfStoredRequests: List<String>,
     @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema =
@@ -48,10 +47,10 @@ data class SingleRequestResponse(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = UUID::class,
+                type = "string",
                 description = DataSourcingOpenApiDescriptionsAndExamples.DUPLICATE_REQUEST_IDS_DESCRIPTION,
                 example = DataSourcingOpenApiDescriptionsAndExamples.DUPLICATE_REQUEST_IDS_EXAMPLE,
             ),
     )
-    val idsOfDuplicateRequests: List<UUID>,
+    val idsOfDuplicateRequests: List<String>,
 )

@@ -1051,8 +1051,7 @@
               "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
             ],
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           "reportingPeriodsOfDuplicateRequests": {
@@ -1072,8 +1071,7 @@
               "821d400c-059f-4ce0-96d0-668679d744ca"
             ],
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         }
