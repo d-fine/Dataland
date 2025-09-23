@@ -26,7 +26,7 @@ class RequestControllerTest {
             GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
                 apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
             }
-        dummyRequest = SingleRequest(companyId, "sfdr", setOf("2023"), false, "dummy request")
+        dummyRequest = SingleRequest(companyId, "sfdr", setOf("2023"), "dummy request")
     }
 
     @Test
@@ -55,7 +55,7 @@ class RequestControllerTest {
     @Test
     fun `post a request with invalid company ID and verify that it is rejected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val invalidRequest = SingleRequest("invalidCompanyId", "sfdr", setOf("2023"), false, "dummy request")
+        val invalidRequest = SingleRequest("invalidCompanyId", "sfdr", setOf("2023"), "dummy request")
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
