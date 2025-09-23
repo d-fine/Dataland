@@ -19,8 +19,8 @@ enum class PcafGeneralCompanyMainPcafSectorOptions {
     Industrials,
     Industry,
     InformationTechnology,
-    Machinery,
     Materials,
     RealEstate,
     Sovereign,
+    Utilities,
 }

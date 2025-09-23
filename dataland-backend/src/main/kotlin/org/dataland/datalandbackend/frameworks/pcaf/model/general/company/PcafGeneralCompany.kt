@@ -14,7 +14,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 data class PcafGeneralCompany(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Machinery"; "Materials"; "Real estate"; "Sovereign"; "Utilities"""",
+        description = """One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";""",
         example = """{
       "value" :  "Option 1" , 
       "quality" : "Reported",
