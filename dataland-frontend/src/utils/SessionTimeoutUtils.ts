@@ -32,7 +32,7 @@ export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
     }
   }
 
-  return Promise.resolve();
+  return;
 }
 
 /**
