@@ -126,7 +126,7 @@ export default defineComponent({
           ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
       } else {
-        this.expiryTimeDays = parseInt(event.value);
+        this.expiryTimeDays = Number.parseInt(event.value);
       }
       this.isExpiryDateValid = true;
     },

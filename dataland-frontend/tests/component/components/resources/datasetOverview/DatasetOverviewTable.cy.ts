@@ -69,7 +69,7 @@ describe('Component test for DatasetOverviewTable', () => {
       if (index < expectedRowContents.length) {
         expect(element.text()).to.equal(expectedRowContents[index]);
       } else if (index == 4) {
-        expect(Date.parse(element.text()).toString()).not.to.equal(NaN.toString());
+        expect(Date.parse(element.text()).toString()).not.to.equal(Number.NaN.toString());
       } else if (index == 5) {
         expect(element.text()).to.contain('VIEW');
       }
