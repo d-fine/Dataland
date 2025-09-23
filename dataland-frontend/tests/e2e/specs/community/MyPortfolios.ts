@@ -5,6 +5,50 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
+/**
+ * Adds a portfolio via the UI.
+ * @param name - The name of the portfolio to add.
+ * @param companyId - The company identifier to add.
+ */
+function addPortfolio(name: string, companyId: string): void {
+  cy.get('button[data-test="add-portfolio"]').click({
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  });
+  cy.get('.p-dialog').within(() => {
+    cy.get('.p-dialog-header').contains('Add Portfolio');
+    cy.get('.portfolio-dialog-content').should('exist');
+    cy.get('[data-test="portfolio-name-input"]:visible').type(name);
+    cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
+    cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
+    cy.get('[data-test="company-identifiers-input"]:visible').type(companyId);
+    cy.get('[data-test="invalidIdentifierErrorMessage"]:visible').should('not.exist');
+    cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+    cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
+    cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
+    cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
+    cy.get('[data-test="portfolio-dialog-save-button"]').click({
+      timeout: Cypress.env('medium_timeout_in_ms') as number,
+    });
+  });
+  cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+  cy.get(`[data-test="${name}"]`).should('exist');
+}
+
+/**
+ * Deletes a portfolio via the UI.
+ * @param name - The name of the portfolio to delete.
+ */
+function deletePortfolio(name: string): void {
+  cy.get(`[data-test="${name}"]`).should('exist').click();
+  cy.get(`[data-test="portfolio-${name}"] [data-test="edit-portfolio"]`).click({
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  });
+  cy.get('[data-test="portfolio-dialog-delete-button"]').click({
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  });
+  cy.get(`[data-test="${name}"]`).should('not.exist');
+}
+
 describeIf(
   'As a user I want to be able to create, edit, and delete my portfolios',
   {
@@ -49,50 +93,6 @@ describeIf(
       });
     });
 
-    /**
-     * Adds a portfolio via the UI.
-     * @param name - The name of the portfolio to add.
-     * @param companyId - The company identifier to add.
-     */
-    function addPortfolio(name: string, companyId: string): void {
-      cy.get('button[data-test="add-portfolio"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.get('.p-dialog').within(() => {
-        cy.get('.p-dialog-header').contains('Add Portfolio');
-        cy.get('.portfolio-dialog-content').should('exist');
-        cy.get('[data-test="portfolio-name-input"]:visible').type(name);
-        cy.get('[data-test="portfolio-dialog-save-button"]').should('be.disabled');
-        cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        cy.get('[data-test="company-identifiers-input"]:visible').type(companyId);
-        cy.get('[data-test="invalidIdentifierErrorMessage"]:visible').should('not.exist');
-        cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-        cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
-        cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
-        cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
-        cy.get('[data-test="portfolio-dialog-save-button"]').click({
-          timeout: Cypress.env('medium_timeout_in_ms') as number,
-        });
-      });
-      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
-      cy.get(`[data-test="${name}"]`).should('exist');
-    }
-
-    /**
-     * Deletes a portfolio via the UI.
-     * @param name - The name of the portfolio to delete.
-     */
-    function deletePortfolio(name: string): void {
-      cy.get(`[data-test="${name}"]`).should('exist').click();
-      cy.get(`[data-test="portfolio-${name}"] [data-test="edit-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.get('[data-test="portfolio-dialog-delete-button"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-      cy.get(`[data-test="${name}"]`).should('not.exist');
-    }
-
     it('Creates, edits and deletes two portfolios, verifying correct display and deletion', () => {
       // Create two portfolios and verify correct display
       addPortfolio(portfolioName, permIdOfExistingCompany);
@@ -113,6 +113,7 @@ describeIf(
           cy.get('[data-test="portfolio-name-input"]:visible').type(editedSecondPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
+          cy.get('#existing-company-identifiers li').should('have.length', 2);
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,
           });
