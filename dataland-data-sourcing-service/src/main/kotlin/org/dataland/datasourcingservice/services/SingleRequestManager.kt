@@ -13,6 +13,8 @@ import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.DataSourcingServiceDataRequestProcessingUtils
 import org.dataland.datasourcingservice.utils.RequestLogger
@@ -240,5 +242,20 @@ class SingleRequestManager
                 dataSourcingEntity.associatedRequests.add(requestEntity)
             }
             return requestEntity.toStoredDataRequest()
+        }
+
+        fun retrieveRequestHistory(id: String): List<StoredRequest> {
+            val uuid =
+                try {
+                    UUID.fromString(id)
+                } catch (e: IllegalArgumentException) {
+                    throw InvalidInputApiException(
+                        "Invalid UUID format for id: $id",
+                        message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
+                    )
+                }
+            return dataRevisionRepository
+                .listDataRequestRevisionsById(uuid)
+                .map { it.toStoredDataRequest() }
         }
     }

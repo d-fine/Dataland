@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.jackson.module.kotlin)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
 }
 
 tasks.test {
@@ -59,4 +61,19 @@ tasks.bootJar {
 
 jacoco {
     toolVersion = jacocoVersion
+}
+
+val testArtifacts by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+}
+
+val testJar by tasks.registering(Jar::class) {
+    dependsOn(tasks.testClasses)
+    archiveClassifier.set("tests")
+    from(sourceSets["test"].output)
+}
+
+artifacts {
+    add("testArtifacts", testJar)
 }

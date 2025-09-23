@@ -1,41 +1,26 @@
-@file:Suppress("ktlint:standard:no-wildcard-imports")
-
 package org.dataland.datasourcingservice
 
 import org.assertj.core.api.Assertions.assertThat
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.repositories.DataSourcingServiceRevisionRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 @SpringBootTest
 @Testcontainers
-class DataSourcingEntityAuditTests {
-    companion object {
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            TestPostgresContainer.configureProperties(registry)
-        }
-    }
-
+class DataSourcingEntityAuditTests : BaseIntegrationTest() {
     @Autowired
     private lateinit var dataSourcingRepository: DataSourcingRepository
 
     @Autowired
-    private lateinit var dataSourcingRevisionRepository: DataSourcingServiceRevisionRepository
+    private lateinit var dataSourcingRevisionRepository: DataRevisionRepository
 
     @Test
     fun `test audit historization of DataSourcingEntity with updated states`() {
@@ -80,14 +65,14 @@ class DataSourcingEntityAuditTests {
 
         val entityRevisionList =
             dataSourcingRevisionRepository
-                .listDataSourcingRevisionsById(dataSourcingEntityId, DataSourcingEntity::class.java)
+                .listDataSourcingRevisionsById(dataSourcingEntityId)
 
         assertThat(entityRevisionList).hasSize(3) // Create, Update 1, Update 2
-        assertThat((entityRevisionList[0] as DataSourcingEntity).state).isEqualTo(initialState)
-        assertThat((entityRevisionList[0] as DataSourcingEntity).adminComment).isEqualTo(initialAdminComment)
-        assertThat((entityRevisionList[1] as DataSourcingEntity).state).isEqualTo(DataSourcingState.DocumentSourcing)
-        assertThat((entityRevisionList[1] as DataSourcingEntity).adminComment).isEqualTo(updatedAdminComment1)
-        assertThat((entityRevisionList[2] as DataSourcingEntity).state).isEqualTo(DataSourcingState.DataVerification)
-        assertThat((entityRevisionList[2] as DataSourcingEntity).adminComment).isEqualTo(updatedAdminComment2)
+        assertThat(entityRevisionList[0].state).isEqualTo(initialState)
+        assertThat(entityRevisionList[0].adminComment).isEqualTo(initialAdminComment)
+        assertThat(entityRevisionList[1].state).isEqualTo(DataSourcingState.DocumentSourcing)
+        assertThat(entityRevisionList[1].adminComment).isEqualTo(updatedAdminComment1)
+        assertThat(entityRevisionList[2].state).isEqualTo(DataSourcingState.DataVerification)
+        assertThat(entityRevisionList[2].adminComment).isEqualTo(updatedAdminComment2)
     }
 }
