@@ -12,9 +12,8 @@ import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
-import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.DataSourcingServiceDataRequestProcessingUtils
 import org.dataland.datasourcingservice.utils.RequestLogger
@@ -43,6 +42,7 @@ class SingleRequestManager
         private val dataSourcingServiceDataRequestProcessingUtils: DataSourcingServiceDataRequestProcessingUtils,
         private val requestRepository: RequestRepository,
         private val dataSourcingRepository: DataSourcingRepository,
+        private val dataRevisionRepository: DataRevisionRepository,
         private val securityUtilsService: SecurityUtilsService,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}")
         private val maxRequestsForUser: Int,

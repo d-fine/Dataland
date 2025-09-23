@@ -25,7 +25,7 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
     @Test
     fun `test audit historization of DataSourcingEntity with updated states`() {
         val dataSourcingEntityId = UUID.randomUUID()
-        val companyId = UUID.randomUUID()
+        val companyId = "example_company_id"
         val initialDate = Date()
         val initialAdminComment = "Initialized data sourcing"
         val initialState = DataSourcingState.Initialized
@@ -37,13 +37,13 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
                 reportingPeriod = "Q1-2023",
                 dataType = "SFDR",
                 state = initialState,
-                documentIds = null,
-                expectedPublicationDatesOfDocuments = null,
+                documentIds = setOf(),
+                expectedPublicationDatesOfDocuments = setOf(),
                 dateDocumentSourcingAttempt = initialDate,
                 documentCollector = UUID.randomUUID(),
                 dataExtractor = UUID.randomUUID(),
                 adminComment = initialAdminComment,
-                associatedRequests = null,
+                associatedRequests = mutableSetOf(),
             )
         dataSourcingRepository.saveAndFlush(entity)
 

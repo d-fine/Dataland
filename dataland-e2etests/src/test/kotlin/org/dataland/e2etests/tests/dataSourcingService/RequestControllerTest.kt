@@ -14,6 +14,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RequestControllerTest {
@@ -39,7 +40,7 @@ class RequestControllerTest {
                 .idsOfStoredRequests
                 .first()
 
-        val storedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId.toString())
+        val storedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
 
         assertEquals(dummyRequest.companyIdentifier, storedRequest.companyId)
         assertEquals(dummyRequest.dataType, storedRequest.dataType)
@@ -72,10 +73,10 @@ class RequestControllerTest {
                 .createRequest(dummyRequest)
                 .idsOfStoredRequests
                 .first()
-        val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId.toString())
+        val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
 
-        apiAccessor.dataSourcingRequestControllerApi.patchDataRequestState(initialRequest.id, RequestState.Processing)
-        val patchedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequest.id)
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(UUID.fromString(initialRequest.id), RequestState.Processing)
+        val patchedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(UUID.fromString(initialRequest.id))
 
         assertTrue(patchedRequest.lastModifiedDate > initialRequest.lastModifiedDate)
         assertEquals(RequestState.Processing, patchedRequest.state)

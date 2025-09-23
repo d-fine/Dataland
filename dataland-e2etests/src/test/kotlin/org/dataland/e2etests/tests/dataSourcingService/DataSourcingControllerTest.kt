@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataSourcingControllerTest {
@@ -90,7 +91,7 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
         }
 
-        apiAccessor.dataSourcingRequestControllerApi.patchDataRequestState(requestId, RequestState.Processing)
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(UUID.fromString(requestId), RequestState.Processing)
         dataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
 
         assertEquals(DataSourcingState.Initialized, DataSourcingState.valueOf(dataSourcingObject.state))
@@ -116,7 +117,7 @@ class DataSourcingControllerTest {
             }
 
         val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
-        assertEquals(dataSourcingObject.associatedRequestIds?.plus(newRequest), updatedSourcingObject.associatedRequestIds)
+        assertEquals(dataSourcingObject.associatedRequestIds.plus(newRequest), updatedSourcingObject.associatedRequestIds)
     }
 
     @Test
@@ -148,8 +149,8 @@ class DataSourcingControllerTest {
         uploadDummyDataForDataSourcingObject()
         sleep(2000)
         assertEquals(
-            DataSourcingState.Answered,
-            apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id),
+            DataSourcingState.Answered.toString(),
+            apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id).state,
         )
     }
 
@@ -163,9 +164,9 @@ class DataSourcingControllerTest {
         }
 
         val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
-        assertEquals(3, updatedSourcingObject.associatedRequestIds?.size)
+        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
         updatedSourcingObject.associatedRequestIds.forEach {
-            val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(it)
+            val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(UUID.fromString(it))
             assertEquals(RequestState.Processed, request.state)
         }
     }
@@ -176,13 +177,13 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(dataSourcingObject.id, DataSourcingState.Answered)
         }
 
-        val requestId = dataSourcingObject.associatedRequestIds.first()
+        val requestId = UUID.fromString(dataSourcingObject.associatedRequestIds.first())
         val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
         assertEquals(RequestState.Processed, request.state)
 
-        apiAccessor.dataSourcingRequestControllerApi.patchDataRequestState(requestId, RequestState.Open)
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Open)
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObject.id)
-        assertEquals(DataSourcingState.Initialized, updatedDataSourcingObject.state)
+        assertEquals(DataSourcingState.Initialized.toString(), updatedDataSourcingObject.state)
     }
 
     @Test
