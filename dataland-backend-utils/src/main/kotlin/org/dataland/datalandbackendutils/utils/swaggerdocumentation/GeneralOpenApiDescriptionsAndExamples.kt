@@ -9,7 +9,6 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
 
-    const val GENERAL_REPORTING_PERIODS_LIST_DESCRIPTION = "The associated reporting periods (e.g. fiscal years)."
     const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
 
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
@@ -44,8 +43,9 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val COMPANY_NAME_DESCRIPTION = "The official name of the company."
     const val COMPANY_NAME_EXAMPLE = "ABC Corporation"
 
-    const val DATA_TYPE_DESCRIPTION = "The associated reporting framework."
-    const val DATA_TYPE_EXAMPLE = "sfdr"
+    const val DATA_TYPE_DESCRIPTION = "The associated reporting framework or data point type (as applicable)."
+    const val DATA_TYPE_FRAMEWORK_EXAMPLE = "sfdr"
+    const val DATA_TYPE_DATA_POINT_TYPE_EXAMPLE = "extendedDateFiscalYearEnd"
 
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE

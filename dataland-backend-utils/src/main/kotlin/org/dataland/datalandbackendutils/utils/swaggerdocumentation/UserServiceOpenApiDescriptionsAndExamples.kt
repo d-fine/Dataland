@@ -27,20 +27,20 @@ object UserServiceOpenApiDescriptionsAndExamples {
 
     const val PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION =
         "A list of frameworks for which the companies in the portfolio are actively monitored."
-    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"]"
+    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"]"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":\"2024, 2023, 2022\"}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":\"2024, 2023, 2022\"}"
 
     const val COMPANY_COCKPIT_REF_DESCRIPTION = "The link to the company cockpit page."
     const val COMPANY_COCKPIT_REF_EXAMPLE = "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}"
 
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_DESCRIPTION = "The links to the data pages per framework."
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":" +
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":" +
             "\"https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
-            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"}"
+            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"}"
 
     const val HELP_REQUEST_TOPIC = "The topic of the request for help."
     const val HELP_REQUEST_TOPIC_EXAMPLE = "Find company identifiers."

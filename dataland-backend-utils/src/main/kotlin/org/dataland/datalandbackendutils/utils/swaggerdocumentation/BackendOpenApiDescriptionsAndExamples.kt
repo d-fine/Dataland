@@ -1,7 +1,8 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object BackendOpenApiDescriptionsAndExamples {
-    const val COMPANY_ALTERNATIVE_NAMES_DESCRIPTION = "Any alternative names or abbreviations the company might be known by."
+    const val COMPANY_ALTERNATIVE_NAMES_DESCRIPTION =
+        "Any alternative names or abbreviations the company might be known by."
     const val COMPANY_ALTERNATIVE_NAMES_EXAMPLE = "[\"ABC Corp.\"]"
 
     const val COMPANY_CONTACT_DETAILS_DESCRIPTION = "The email addresses of the company."
@@ -53,7 +54,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION = "The amount of available reporting periods per framework."
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":2}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":2}"
 
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
     const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
@@ -74,7 +75,8 @@ object BackendOpenApiDescriptionsAndExamples {
     const val CREATION_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was created."
     const val CREATION_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
-    const val ALL_UPLOADER_USER_IDS_DESCRIPTION = "A list of Dataland user IDs corresponding to the users who uploaded the data."
+    const val ALL_UPLOADER_USER_IDS_DESCRIPTION =
+        "A list of Dataland user IDs corresponding to the users who uploaded the data."
     const val ALL_UPLOADER_USER_IDS_EXAMPLE = "[\"$UPLOADER_USER_ID_EXAMPLE\"]"
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION =
@@ -111,7 +113,8 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
-    const val QA_REPORT_UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the QA report was uploaded."
+    const val QA_REPORT_UPLOAD_TIME_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the QA report was uploaded."
     const val QA_REPORT_UPLOAD_TIME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
@@ -124,9 +127,11 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_COMMENT_DESCRIPTION = "A comment explaining the verdict."
     const val QA_REPORT_COMMENT_EXAMPLE = "The data point is correct and hence accepted."
 
-    const val QA_REPORT_SHOW_INACTIVE_DESCRIPTION = "Boolean flag to indicate if inactive QA reports should be included in the response."
+    const val QA_REPORT_SHOW_INACTIVE_DESCRIPTION =
+        "Boolean flag to indicate if inactive QA reports should be included in the response."
 
-    const val QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION = "Boolean flag. If true, only active QA reports are included in the response."
+    const val QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION =
+        "Boolean flag. If true, only active QA reports are included in the response."
 
     const val QA_REPORT_MIN_UPLOAD_DATE_DESCRIPTION =
         "If set, only metadata of reports that were uploaded after the minUploadDate are returned."
@@ -137,8 +142,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
-        "Either the framework of the wanted dataset or the dataPointType of the wanted data point."
-    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
+        "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
+    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =
+        "[\"" +
+            "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
+            "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +
+            "\"]"
 
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
@@ -150,7 +159,8 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_LIST_DESCRIPTION =
         "The reporting periods for which the data export is requested."
-    const val REPORTING_PERIODS_LIST_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+    const val REPORTING_PERIODS_LIST_EXAMPLE =
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
 
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."

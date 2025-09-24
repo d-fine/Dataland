@@ -59,6 +59,16 @@
               }
             }
           },
+          "400": {
+            "description": "The request contains invalid data or is a duplicate.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleRequestResponse"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -965,7 +975,7 @@
         "required": [
           "companyIdentifier",
           "dataType",
-          "reportingPeriods"
+          "reportingPeriod"
         ],
         "type": "object",
         "properties": {
@@ -976,20 +986,13 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
-          "reportingPeriods": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The associated reporting periods (e.g. fiscal years).",
-            "example": [
-              "2023",
-              "2024"
-            ],
-            "items": {
-              "type": "string"
-            }
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "comment": {
             "type": "string",
@@ -1000,59 +1003,14 @@
       },
       "SingleRequestResponse": {
         "required": [
-          "idsOfDuplicateRequests",
-          "idsOfStoredRequests",
-          "message",
-          "reportingPeriodsOfDuplicateRequests",
-          "reportingPeriodsOfStoredRequests"
+          "id"
         ],
         "type": "object",
         "properties": {
-          "message": {
+          "id": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
-          },
-          "reportingPeriodsOfStoredRequests": {
-            "type": "array",
-            "description": "Reporting periods corresponding to the accepted and stored data requests.",
-            "example": [
-              "2023",
-              "2024"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "idsOfStoredRequests": {
-            "type": "array",
-            "description": "The list of Dataland IDs of the created data requests. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfStoredRequests.",
-            "example": [
-              "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "reportingPeriodsOfDuplicateRequests": {
-            "type": "array",
-            "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
-            "example": [
-              "2022"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "idsOfDuplicateRequests": {
-            "type": "array",
-            "description": "The list of Dataland IDs of the data requests that were identified as duplicates and hence not created. The position of an ID in this list corresponds to the position of the associated reporting period in the field reportingPeriodsOfDuplicateRequests.",
-            "example": [
-              "821d400c-059f-4ce0-96d0-668679d744ca"
-            ],
-            "items": {
-              "type": "string"
-            }
+            "description": "The unique identifier of the stored request.",
+            "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
           }
         }
       },
@@ -1104,8 +1062,8 @@
             "type": "string"
           },
           "creationTimeStamp": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64"
           },
           "memberComment": {
             "type": "string"
@@ -1114,8 +1072,8 @@
             "type": "string"
           },
           "lastModifiedDate": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64"
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -1140,7 +1098,7 @@
           "Answered"
         ]
       },
-      "ExpectedPublicationDateOfDocument": {
+      "ExpectedPublicationDateDocument": {
         "required": [
           "documentCategory",
           "expectedPublicationDate"
@@ -1152,7 +1110,7 @@
           },
           "expectedPublicationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           }
         }
       },
@@ -1186,7 +1144,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "state": {
@@ -1208,7 +1166,7 @@
             "type": "array",
             "description": "The expected publication dates of future documents relevant for this data sourcing object.",
             "items": {
-              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
+              "$ref": "#/components/schemas/ExpectedPublicationDateDocument"
             }
           },
           "dateDocumentSourcingAttempt": {
