@@ -17,8 +17,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class])
+@Transactional
 class CompanyAlterationManagerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var companyAlterationManager: CompanyAlterationManager
