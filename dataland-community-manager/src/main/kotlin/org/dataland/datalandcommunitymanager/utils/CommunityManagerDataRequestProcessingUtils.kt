@@ -165,7 +165,7 @@ class CommunityManagerDataRequestProcessingUtils
                     ).filter {
                         it.requestStatus == requestStatus
                     }
-            if (!foundRequests.isEmpty()) {
+            if (foundRequests.isNotEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     userId,
                     companyId,

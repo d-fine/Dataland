@@ -3,7 +3,6 @@ package org.dataland.e2etests.utils
 import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
-import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
@@ -37,6 +36,7 @@ import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataController
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 
 class ApiAccessor {
     companion object {
@@ -197,17 +197,29 @@ class ApiAccessor {
                 frameworkData: T,
                 reportingPeriod: String,
             ) -> DataMetaInformation,
-        ) = uploadSingleFrameworkDataset(companyId, testDataProvider.getTData(1)[0], reportingPeriod, frameworkDataUploaderFunction)
+        ) = uploadSingleFrameworkDataset(
+            companyId,
+            testDataProvider.getTData(1)[0],
+            reportingPeriod,
+            frameworkDataUploaderFunction,
+        )
 
         return when (dataType) {
             DataTypeEnum.lksg ->
                 uploadDataset(testDataProviderForLksgData, this::lksgUploaderFunction)
+
             DataTypeEnum.sfdr ->
                 uploadDataset(testDataProviderForSfdrData, this::sfdrUploaderFunction)
+
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
-                uploadDataset(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
+                uploadDataset(
+                    testDataProviderForEuTaxonomyDataForNonFinancials,
+                    this::euTaxonomyNonFinancialsUploaderFunction,
+                )
+
             DataTypeEnum.eutaxonomyMinusFinancials ->
                 uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
+
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
@@ -241,12 +253,22 @@ class ApiAccessor {
         return when (dataType) {
             DataTypeEnum.lksg ->
                 uploadCompaniesAndDatasets(testDataProviderForLksgData, this::lksgUploaderFunction)
+
             DataTypeEnum.sfdr ->
                 uploadCompaniesAndDatasets(testDataProviderForSfdrData, this::sfdrUploaderFunction)
+
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
-                uploadCompaniesAndDatasets(testDataProviderForEuTaxonomyDataForNonFinancials, this::euTaxonomyNonFinancialsUploaderFunction)
+                uploadCompaniesAndDatasets(
+                    testDataProviderForEuTaxonomyDataForNonFinancials,
+                    this::euTaxonomyNonFinancialsUploaderFunction,
+                )
+
             DataTypeEnum.eutaxonomyMinusFinancials ->
-                uploadCompaniesAndDatasets(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
+                uploadCompaniesAndDatasets(
+                    testDataProviderEuTaxonomyForFinancials,
+                    this::euTaxonomyFinancialsUploaderFunction,
+                )
+
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
