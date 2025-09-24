@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
@@ -36,8 +35,8 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
             DataSourcingEntity(
                 id = dataSourcingEntityId,
                 companyId = companyId,
-                reportingPeriod = "Q1-2023",
-                dataType = "SFDR",
+                reportingPeriod = "2023",
+                dataType = "sfdr",
                 state = initialState,
                 documentIds = setOf(),
                 expectedPublicationDatesOfDocuments = setOf(),

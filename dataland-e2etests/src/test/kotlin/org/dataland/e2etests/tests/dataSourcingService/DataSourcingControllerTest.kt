@@ -287,27 +287,38 @@ class DataSourcingControllerTest {
 
     @Test
     fun `verify that data sourcing attempt dates can be uploaded and lead to a historization`() {
-        val firstDate = LocalDate.of(2024, 1, 1)
-        val secondDate = LocalDate.of(2024, 6, 1)
-        val thirdDate = LocalDate.of(2023, 3, 3)
-        val fouthDate = LocalDate.of(2027, 1, 1)
+        val firstDate = LocalDate.now()
+        val secondDate = firstDate.plusMonths(6)
+        val thirdDate = secondDate.minusMonths(2)
+        val fourthDate = thirdDate.plusYears(4)
 
-        apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
-            storedDataSourcing.id,
-            setOf(firstDate, secondDate),
-        )
-        val dataSourcingHistory = apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.id)
-        assertEquals(3, dataSourcingHistory.size)
-        assertEquals(null, dataSourcingHistory[0].dateDocumentSourcingAttempt)
-        assertEquals(firstDate, dataSourcingHistory[1].dateDocumentSourcingAttempt)
-        assertEquals(secondDate, dataSourcingHistory[2].dateDocumentSourcingAttempt)
+        for (date in listOf(firstDate, secondDate)) {
+            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(storedDataSourcing.id, date)
+        }
+        apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.id).let {
+            assertEquals(3, it.size)
+            assertEquals(null, it[0].dateDocumentSourcingAttempt)
+            assertEquals(firstDate, it[1].dateDocumentSourcingAttempt)
+            assertEquals(secondDate, it[2].dateDocumentSourcingAttempt)
+        }
 
-        apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
-            storedDataSourcing.id,
-            setOf(thirdDate, fouthDate),
-        )
-        assertEquals(5, dataSourcingHistory.size)
-        assertEquals(thirdDate, dataSourcingHistory[3].dateDocumentSourcingAttempt)
-        assertEquals(fouthDate, dataSourcingHistory[4].dateDocumentSourcingAttempt)
+        for (date in listOf(thirdDate, fourthDate)) {
+            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(storedDataSourcing.id, date)
+        }
+        apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.id).let {
+            assertEquals(5, it.size)
+            assertEquals(thirdDate, it[3].dateDocumentSourcingAttempt)
+            assertEquals(fourthDate, it[4].dateDocumentSourcingAttempt)
+        }
+    }
+
+    @Test
+    fun `verify that data sourcing attempts can not be specified in the past`() {
+        assertThrows<ClientException> {
+            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
+                storedDataSourcing.id,
+                LocalDate.now().minusDays(1),
+            )
+        }
     }
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDate
-import java.util.SortedSet
 
 /**
  * API interface for handling data-sourcing operations.
@@ -118,16 +117,16 @@ interface DataSourcingApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingDocuments(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
-        @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
         @Valid @RequestBody documentIds: Set<String>,
+        @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
     ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.
      */
     @Operation(
-        summary = "Patch dateDocumentSourcingAttempt",
-        description = "Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.",
+        summary = "Patch the date of the next planned document sourcing attempt",
+        description = "Patch the date of the next planned document sourcing attemp of a DataSourcing object for a given ID.",
     )
     @ApiResponses(
         value = [
@@ -139,6 +138,6 @@ interface DataSourcingApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
-        @Valid @RequestBody request: SortedSet<LocalDate>,
+        @Valid @RequestParam date: LocalDate,
     ): ResponseEntity<StoredDataSourcing>
 }

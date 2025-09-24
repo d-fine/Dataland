@@ -57,7 +57,7 @@ interface RequestApi {
     /**
      * A method for users to retrieve information about a single data request
      *
-     * @param dataRequestId the ID specifiying the data request
+     * @param dataRequestId the ID specifying the data request
      * @return all information associated with the specified request
      */
     @Operation(

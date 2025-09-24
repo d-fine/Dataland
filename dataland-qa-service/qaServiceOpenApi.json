@@ -113,7 +113,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -986,7 +986,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1693,7 +1693,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1715,7 +1715,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1792,7 +1792,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1814,7 +1814,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1838,7 +1838,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2015,7 +2015,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2390,7 +2390,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "required": false,
             "schema": {
               "type": "string"
@@ -2399,7 +2399,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -2409,7 +2409,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -3529,7 +3529,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "qaReportId": {
@@ -6553,12 +6553,12 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework.",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "timestamp": {
@@ -6762,7 +6762,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "timestamp": {
