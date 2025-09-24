@@ -126,7 +126,7 @@ export default defineComponent({
      */
     goToCompanyCockpit(event: { data: BasicCompanyInformation }): void {
       const companyIdOfClickedRow = event.data.companyId;
-      void router.push(`/companies/${companyIdOfClickedRow}`);
+      return router.push(`/companies/${companyIdOfClickedRow}`);
     },
   },
 });

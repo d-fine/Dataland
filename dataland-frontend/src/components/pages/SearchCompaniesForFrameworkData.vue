@@ -241,6 +241,7 @@ export default defineComponent({
     /**
      * Handles window scroll with hysteresis and rAF throttling.
      * Collapses the header after a threshold and expands below another threshold.
+     * Also closes overlays on every scroll (as in original behavior).
      * @returns {void}
      */
     handleScroll() {
@@ -258,10 +259,10 @@ export default defineComponent({
           document
             .getElementById('searchBarAndFiltersContainer')
             ?.classList.toggle('collapsed-search-container', shouldCollapse);
-
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-          this.frameworkDataSearchBar?.closeOverlay();
         }
+
+        this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+        this.frameworkDataSearchBar?.closeOverlay();
 
         this.isTicking = false;
       });
@@ -353,11 +354,11 @@ export default defineComponent({
       }
     },
     /**
-     * Receives result chunks, updates the data table and URL (first chunk only),
-     * and conditionally resets pagination for a genuine new search.
-     * @param {Array<BasicCompanyInformation>} companiesReceived Current chunk of companies.
-     * @param {number} chunkIndex Zero-based chunk index.
-     * @param {number} totalNumberOfCompanies Total matching records.
+     * Receives result chunks, updates the data table and URL (like the original: push).
+     * Disables the waiting indicator, resets pagination and updates the datatable.
+     * @param {Array<BasicCompanyInformation>} companiesReceived Current chunk of companies
+     * @param {number} chunkIndex Zero-based chunk index
+     * @param {number} totalNumberOfCompanies Total matching records
      * @returns {Promise<void | import('vue-router').NavigationFailure | undefined>}
      */
     handleCompanyQuery(
@@ -368,32 +369,24 @@ export default defineComponent({
       this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
 
-      if (this.shouldResetPagination && chunkIndex === 0) {
-        if (this.currentPage !== 0) this.handlePageUpdate(0);
-        this.shouldResetPagination = false;
-      }
+      if (chunkIndex == 0) this.handlePageUpdate(0);
       this.waitingForDataToDisplay = false;
 
-      if (chunkIndex === 0) {
-        const queryInput = this.currentSearchBarInput === '' ? undefined : this.currentSearchBarInput;
-        const queryFrameworks =
-          this.currentFilteredFrameworks.length === 0 ? undefined : this.currentFilteredFrameworks;
-        const queryCountryCodes =
-          this.currentFilteredCountryCodes.length === 0 ? undefined : this.currentFilteredCountryCodes;
-        const querySectors = this.currentFilteredSectors.length === 0 ? undefined : this.currentFilteredSectors;
+      const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
+      const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
+      const queryCountryCodes =
+        this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
+      const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
 
-        return router.replace({
-          name: 'Search Companies for Framework Data',
-          query: {
-            input: queryInput,
-            framework: queryFrameworks,
-            countryCode: queryCountryCodes,
-            sector: querySectors,
-          },
-        });
-      }
-
-      return Promise.resolve();
+      return router.push({
+        name: 'Search Companies for Framework Data',
+        query: {
+          input: queryInput,
+          framework: queryFrameworks,
+          countryCode: queryCountryCodes,
+          sector: querySectors,
+        },
+      });
     },
     /**
      * Handles explicit search confirmations from the search bar.
@@ -432,7 +425,6 @@ export default defineComponent({
   background-color: white;
 }
 
-/* Base header: sticky below app header */
 .search-bar-and-filters-container {
   margin: 0;
   width: 100%;
@@ -448,7 +440,6 @@ export default defineComponent({
   width: 70%;
 }
 
-/* Collapsed: reduce top padding and align horizontally */
 .collapsed-search-container {
   display: flex;
   flex-direction: row;
