@@ -104,9 +104,9 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
       hashForFileWithOneByteSize,
       hashForFileWithTwoBytesSize,
     ]);
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+    for (const hash of setOfHashesThatShouldBeCheckedForExistence) {
       interceptEachUpload(hash);
-    });
+    }
     mountPluginAndInterceptUploads('sfdr');
     createSfdrDataset.fillRequiredFields();
     uploadAndReferenceSfdrReferencedReport('Sfdr1', 1);
@@ -115,18 +115,18 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();
 
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+    for (const hash of setOfHashesThatShouldBeCheckedForExistence) {
       cy.wait(`@documentExists-${hash}`);
-    });
+    }
     cy.wait(100);
     cy.get('@documentExists').should('have.been.calledTwice');
   });
 
   it('Check if the document uploads in Lksg upload page still work properly if some document got removed or replaced', () => {
     const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithTwoBytesSize]);
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+    for (const hash of setOfHashesThatShouldBeCheckedForExistence) {
       interceptEachUpload(hash);
-    });
+    }
     mountPluginAndInterceptUploads('lksg');
     createLksgDataset.fillRequiredFields();
     uploadFieldSpecificDocuments('first', 1, 'riskManagementSystem');
@@ -140,9 +140,9 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();
 
-    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+    for (const hash of setOfHashesThatShouldBeCheckedForExistence) {
       cy.wait(`@documentExists-${hash}`);
-    });
+    }
     cy.wait(100);
     cy.get('@documentExists').should('have.been.calledOnce');
   });

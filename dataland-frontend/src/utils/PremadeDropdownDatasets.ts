@@ -48,7 +48,9 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
  */
 export function getDatasetAsMap(datasetIdentifier: DropdownDatasetIdentifier): { [p: string]: string } {
   const mapOfDropdownOptions = new Map<string, string>();
-  getDataset(datasetIdentifier).forEach((element) => mapOfDropdownOptions.set(element.value, element.label));
+  for (const element of getDataset(datasetIdentifier)) {
+    mapOfDropdownOptions.set(element.value, element.label);
+  }
   return Object.fromEntries(mapOfDropdownOptions);
 }
 
@@ -58,12 +60,12 @@ export function getDatasetAsMap(datasetIdentifier: DropdownDatasetIdentifier): {
  */
 function getRiskPositionDropdownDataset(): DropdownDataset {
   const riskPositionDataset: DropdownDataset = [];
-  Object.keys(RiskPositionType).forEach((it) => {
+  for (const it of Object.keys(RiskPositionType)) {
     riskPositionDataset.push({
       label: humanizeStringOrNumber(it),
       value: it,
     });
-  });
+  }
   return riskPositionDataset;
 }
 
@@ -73,12 +75,12 @@ function getRiskPositionDropdownDataset(): DropdownDataset {
  */
 function getCurrencyCodeDropdownDataset(): DropdownDataset {
   const currencyCodeDataset: DropdownDataset = [];
-  currencyCodeData.forEach((it) => {
+  for (const it of currencyCodeData) {
     currencyCodeDataset.push({
       label: `${it.currency} (${it.code})`,
       value: it.code,
     });
-  });
+  }
   return currencyCodeDataset;
 }
 
@@ -89,12 +91,12 @@ function getCurrencyCodeDropdownDataset(): DropdownDataset {
 function getCountryCodeDropdownDataset(): DropdownDataset {
   const datasetAsMap = getAllCountryNamesWithCodes();
   const countryCodeDataset: DropdownDataset = [];
-  Object.keys(datasetAsMap).forEach((it) => {
+  for (const it of Object.keys(datasetAsMap)) {
     countryCodeDataset.push({
       label: `${datasetAsMap[it]} (${it})`,
       value: it,
     });
-  });
+  }
   return countryCodeDataset;
 }
 
@@ -116,12 +118,12 @@ export interface ReportingPeriodTableEntry {
  */
 function getReleaseMediumDropdownDataset(): DropdownDataset {
   const releaseMediumDataset: DropdownDataset = [];
-  Object.keys(ReleaseMedium).forEach((it) => {
+  for (const it of Object.keys(ReleaseMedium)) {
     releaseMediumDataset.push({
       label: humanizeStringOrNumber(it),
       value: it,
     });
-  });
+  }
   return releaseMediumDataset;
 }
 
@@ -131,12 +133,12 @@ function getReleaseMediumDropdownDataset(): DropdownDataset {
  */
 function getWasteClassificationsDropdownDataset(): DropdownDataset {
   const WasteClassificationDataset: DropdownDataset = [];
-  Object.keys(WasteClassifications).forEach((it) => {
+  for (const it of Object.keys(WasteClassifications)) {
     WasteClassificationDataset.push({
       label: humanizeStringOrNumber(it),
       value: it,
     });
-  });
+  }
   return WasteClassificationDataset;
 }
 /**
@@ -145,11 +147,11 @@ function getWasteClassificationsDropdownDataset(): DropdownDataset {
  */
 function getAdjointnessDropdownDataset(): DropdownDataset {
   const adjointnessDataset: DropdownDataset = [];
-  Object.keys(AreaAdjointness).forEach((it) => {
+  for (const it of Object.keys(AreaAdjointness)) {
     adjointnessDataset.push({
       label: humanizeStringOrNumber(it),
       value: it,
     });
-  });
+  }
   return adjointnessDataset;
 }

@@ -5,8 +5,8 @@
  * @returns true iff the two arrays contain the same unique values
  */
 export function arraySetEquals<T>(a: Array<T>, b: Array<T>): boolean {
-  const aSet = new Set([...a]);
-  const bSet = new Set([...b]);
+  const aSet = new Set(a);
+  const bSet = new Set(b);
   if (aSet.size !== bSet.size) return false;
   return [...aSet].every((element) => bSet.has(element));
 }
@@ -31,13 +31,13 @@ export function range(numElements: number): number[] {
  */
 export function groupBy<T, K>(items: Iterable<T>, callbackFn: (item: T) => K): Map<K, T[]> {
   const returnValue = new Map<K, T[]>();
-  Array.from(items).forEach((item) => {
+  for (const item of Array.from(items)) {
     const key = callbackFn(item);
     if (returnValue.has(key)) {
       returnValue.get(key)!.push(item);
     } else {
       returnValue.set(key, [item]);
     }
-  });
+  }
   return returnValue;
 }

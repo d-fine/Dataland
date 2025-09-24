@@ -188,11 +188,11 @@ describe('Component test for the admin-requests-overview page', () => {
     })(AdminAllRequestsOverview);
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
-    mockRequests.forEach((extendedStoredDataRequest) => {
+    for (const extendedStoredDataRequest of mockRequests) {
       if (extendedStoredDataRequest.userEmailAddress) {
         assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
       }
-    });
+    }
     return mountedComponent;
   }
 

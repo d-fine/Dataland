@@ -126,9 +126,9 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
+for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
   latestDocuments[`latest${category}`] = [];
-});
+}
 const chunkSize = 3;
 
 const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {

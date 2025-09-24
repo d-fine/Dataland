@@ -96,7 +96,7 @@ describe('Component test for the company cockpit', () => {
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
-    frameworksToTest.forEach((frameworkName: DataTypeEnum) => {
+    for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
       const frameworkDataSummary = new Map(Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary)).get(
         frameworkName
@@ -117,7 +117,7 @@ describe('Component test for the company cockpit', () => {
       }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
-        return;
+        continue;
       }
       if (isProvideDataButtonExpected) {
         if (frameworkName != 'lksg') {
@@ -128,7 +128,7 @@ describe('Component test for the company cockpit', () => {
           'not.exist'
         );
       }
-    });
+    }
   }
 
   /**
@@ -168,9 +168,9 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(false, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
-    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach(() => {
+    for (let i = 0; i < Object.keys(DocumentMetaInfoDocumentCategoryEnum).length; i++) {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-    });
+    }
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
       cy.get('[data-test="' + category + '"]')
         .should('exist')
@@ -280,7 +280,7 @@ describe('Component test for the company cockpit', () => {
     validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
 
-  KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+  for (const keycloakRole of KEYCLOAK_ROLES) {
     it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
       const hasCompanyAtLeastOneOwner = true;
       mockRequestsOnMounted(
@@ -292,7 +292,7 @@ describe('Component test for the company cockpit', () => {
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
       validateVsmeFrameworkSummaryPanel(false);
     });
-  });
+  }
 
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;

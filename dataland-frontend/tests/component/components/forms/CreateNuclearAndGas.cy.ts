@@ -33,7 +33,7 @@ function fillAndValidateOtherSections(): void {
     cy.get('#dataPointIsAvailableSwitch').click();
   });
 
-  subsections.forEach((subsection) => {
+  for (const subsection of subsections) {
     cy.get(
       `div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="taxonomyAlignedShareDenominator${subsection}"] input[name="mitigationAndAdaptation"]`
     )
@@ -49,20 +49,20 @@ function fillAndValidateOtherSections(): void {
     )
       .clear()
       .type('8');
-  });
+  }
 
   cy.get(
     `div[data-test="nuclearAndGasTaxonomyNonEligibleRevenue"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
   ).within(() => {
     cy.get('#dataPointIsAvailableSwitch').click();
   });
-  subsections.forEach((subsection) => {
+  for (const subsection of subsections) {
     cy.get(
       `div[data-test="nuclearAndGasTaxonomyNonEligibleRevenue"] div[data-test="taxonomyNonEligibleShare${subsection}"] input[name="taxonomyNonEligibleShare${subsection}"]`
     )
       .clear()
       .type('15');
-  });
+  }
 }
 
 describe('Component tests for the Nuclear and Gas that test dependent fields', () => {

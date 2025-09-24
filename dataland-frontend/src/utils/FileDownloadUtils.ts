@@ -49,26 +49,28 @@ export function groupAllReportingPeriodsByFrameworkForPortfolio(
 ): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
-  enrichedPortfolio?.entries.forEach((entry) => {
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
-      const frameworkPeriods = entry.availableReportingPeriods[framework];
-      if (!frameworkPeriods) return;
+  if (enrichedPortfolio?.entries) {
+    for (const entry of enrichedPortfolio.entries) {
+      for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
+        const frameworkPeriods = entry.availableReportingPeriods[framework];
+        if (!frameworkPeriods) continue;
 
-      const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
+        const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
 
-      if (!map.has(framework)) {
-        map.set(framework, []);
-      }
+        if (!map.has(framework)) {
+          map.set(framework, []);
+        }
 
-      const periods = map.get(framework)!;
+        const periods = map.get(framework)!;
 
-      for (const period of frameworkPeriodsCleaned) {
-        if (period && !periods.includes(period)) {
-          periods.push(period);
+        for (const period of frameworkPeriodsCleaned) {
+          if (period && !periods.includes(period)) {
+            periods.push(period);
+          }
         }
       }
-    });
-  });
+    }
+  }
 
   return map;
 }
@@ -81,7 +83,7 @@ export function groupReportingPeriodsPerFrameworkForCompany(
 ): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
-  data.forEach((item) => {
+  for (const item of data) {
     const framework = item.metaInfo.dataType;
     const period = item.metaInfo.reportingPeriod;
 
@@ -93,7 +95,7 @@ export function groupReportingPeriodsPerFrameworkForCompany(
     if (!periods.includes(period)) {
       periods.push(period);
     }
-  });
+  }
 
   return map;
 }

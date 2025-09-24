@@ -159,7 +159,9 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
-      if (!this.waitingForDataToDisplay) {
+      if (this.waitingForDataToDisplay) {
+        return 'loading...';
+      } else {
         if (totalSearchResults === 0) {
           return 'No results';
         } else {
@@ -170,8 +172,6 @@ export default defineComponent({
               : startIndex + (this.rowsPerPage - 1);
           return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
         }
-      } else {
-        return 'loading...';
       }
     },
   },
