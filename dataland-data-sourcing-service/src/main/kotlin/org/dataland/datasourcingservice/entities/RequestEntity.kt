@@ -13,7 +13,6 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.envers.Audited
-import org.hibernate.envers.NotAudited
 import java.util.Date
 import java.util.UUID
 
@@ -48,7 +47,6 @@ data class RequestEntity(
     var requestPriority: RequestPriority,
     @Column(name = "state")
     var state: RequestState,
-    @NotAudited
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_sourcing_id")
     var dataSourcingEntity: DataSourcingEntity? = null,
