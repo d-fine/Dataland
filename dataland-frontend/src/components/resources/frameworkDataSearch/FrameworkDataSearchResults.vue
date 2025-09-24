@@ -113,7 +113,6 @@ export default defineComponent({
     onPage(event: DataTablePageEvent) {
       this.$emit('page-update', event.page);
       void this.$nextTick(() => {
-        // Scroll local anchor into view to avoid window-level scroll jumps
         (this.$refs.resultsTop as HTMLElement | undefined)?.scrollIntoView({
           block: 'start',
           behavior: 'auto',

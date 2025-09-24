@@ -78,7 +78,7 @@ import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backen
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
-import { type RouteLocationNormalizedLoaded } from 'vue-router';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
 export default defineComponent({
   setup() {
@@ -110,11 +110,12 @@ export default defineComponent({
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
-    this.scanQueryParams(this.$route);
+    this.scanQueryParams(this.route);
     this.handleScroll();
   },
   data() {
     return {
+      route: useRoute(),
       resultsArray: [] as Array<BasicCompanyInformation>,
       currentSearchBarInput: '',
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
@@ -431,6 +432,7 @@ export default defineComponent({
   background-color: white;
 }
 
+/* Base header: sticky below app header */
 .search-bar-and-filters-container {
   margin: 0;
   width: 100%;
@@ -446,6 +448,7 @@ export default defineComponent({
   width: 70%;
 }
 
+/* Collapsed: reduce top padding and align horizontally */
 .collapsed-search-container {
   display: flex;
   flex-direction: row;

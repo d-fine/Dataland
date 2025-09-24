@@ -308,14 +308,11 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      // Back/forward navigation: restore previous scroll
       return savedPosition;
     }
     if (to.path !== from.path) {
-      // Only scroll to top when the actual route path changes
       return { left: 0, top: 0 };
     }
-    // Query-only changes: keep current scroll position
     return false;
   },
 });
