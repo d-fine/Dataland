@@ -1,6 +1,10 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
+    <div
+      id="searchBarAndFiltersContainer"
+      class="search-bar-and-filters-container"
+      :class="{ 'collapsed-search-container': isSearchBarContainerCollapsed }"
+    >
       <FrameworkDataSearchBar
         id="frameworkDataSearchBar"
         ref="frameworkDataSearchBar"
@@ -101,7 +105,7 @@ export default defineComponent({
   /**
    * Lifecycle hook that attaches the scroll listener, resolves user roles, and
    * initializes query param-driven state and collapsed state on first paint.
-   * @returns {void}
+   * @return {void}
    */
   mounted() {
     window.addEventListener('scroll', this.windowScrollHandler, { passive: true });
@@ -140,7 +144,7 @@ export default defineComponent({
       isTicking: false,
       /**
        * Bound scroll handler reference for add/removeEventListener.
-       * @returns {void}
+       * @return {void}
        */
       windowScrollHandler: (): void => {
         this.handleScroll();
@@ -151,7 +155,7 @@ export default defineComponent({
   /**
    * Updates component state when route changes (query params).
    * @param {RouteLocationNormalizedLoaded} to Next route location.
-   * @returns {void}
+   * @return {void}
    */
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
     this.scanQueryParams(to);
@@ -160,7 +164,7 @@ export default defineComponent({
     currentFilteredFrameworks: {
       /**
        * Triggers combined filter recomputation when frameworks change.
-       * @returns {void}
+       * @return {void}
        */
       handler() {
         this.updateCombinedFilterIfRequired();
@@ -170,7 +174,7 @@ export default defineComponent({
     currentFilteredCountryCodes: {
       /**
        * Triggers combined filter recomputation when country codes change.
-       * @returns {void}
+       * @return {void}
        */
       handler() {
         this.updateCombinedFilterIfRequired();
@@ -180,7 +184,7 @@ export default defineComponent({
     currentFilteredSectors: {
       /**
        * Triggers combined filter recomputation when sectors change.
-       * @returns {void}
+       * @return {void}
        */
       handler() {
         this.updateCombinedFilterIfRequired();
@@ -191,7 +195,7 @@ export default defineComponent({
   computed: {
     /**
      * Human-readable string that indicates the currently visible slice of results.
-     * @returns {string}
+     * @return {string}
      */
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
@@ -214,14 +218,14 @@ export default defineComponent({
   methods: {
     /**
      * Navigates to the bulk data request page.
-     * @returns {void}
+     * @return {void}
      */
     routeToBulkDataRequest() {
       void router.push('/bulkdatarequest');
     },
     /**
      * Navigates to the new dataset page.
-     * @returns {void}
+     * @return {void}
      */
     linkToNewDatasetPage() {
       void router.push('/companies/choose');
@@ -229,7 +233,7 @@ export default defineComponent({
     /**
      * Updates the pagination state when the page changes.
      * @param {number} pageNumber Zero-based page index to display.
-     * @returns {void}
+     * @return {void}
      */
     handlePageUpdate(pageNumber: number) {
       if (pageNumber !== this.currentPage) {
@@ -241,8 +245,8 @@ export default defineComponent({
     /**
      * Handles window scroll with hysteresis and rAF throttling.
      * Collapses the header after a threshold and expands below another threshold.
-     * Also closes overlays on every scroll (as in original behavior).
-     * @returns {void}
+     * Only closes overlays when the collapsed state actually changes.
+     * @return {void}
      */
     handleScroll() {
       if (this.isTicking) return;
@@ -250,19 +254,17 @@ export default defineComponent({
 
       requestAnimationFrame(() => {
         const y = window.scrollY || document.documentElement.scrollTop;
-        const collapseAt = 120;
-        const expandAt = 32;
+        const collapseAt = 160; // widen hysteresis for stability
+        const expandAt = 20;
         const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
 
         if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
           this.isSearchBarContainerCollapsed = shouldCollapse;
-          document
-            .getElementById('searchBarAndFiltersContainer')
-            ?.classList.toggle('collapsed-search-container', shouldCollapse);
-        }
 
-        this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        this.frameworkDataSearchBar?.closeOverlay();
+          // Only close overlays when the visible layout actually changes.
+          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+          this.frameworkDataSearchBar?.closeOverlay();
+        }
 
         this.isTicking = false;
       });
@@ -270,7 +272,7 @@ export default defineComponent({
     /**
      * Parses framework filters from route query.
      * @param {RouteLocationNormalizedLoaded} route Current route.
-     * @returns {Array<DataTypeEnum>} Allowed framework values.
+     * @return {Array<DataTypeEnum>} Allowed framework values.
      */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
@@ -284,7 +286,7 @@ export default defineComponent({
     /**
      * Parses country codes from route query.
      * @param {RouteLocationNormalizedLoaded} route Current route.
-     * @returns {Array<string>} Country codes.
+     * @return {Array<string>} Country codes.
      */
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
       const queryCountryCodes = route.query.countryCode;
@@ -293,7 +295,7 @@ export default defineComponent({
     /**
      * Parses sectors from route query.
      * @param {RouteLocationNormalizedLoaded} route Current route.
-     * @returns {Array<string>} Sector values.
+     * @return {Array<string>} Sector values.
      */
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
       const querySectors = route.query.sector;
@@ -302,7 +304,7 @@ export default defineComponent({
     /**
      * Parses the search input from route query.
      * @param {RouteLocationNormalizedLoaded} route Current route.
-     * @returns {string} Search input or empty string.
+     * @return {string} Search input or empty string.
      */
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
       const queryInput = route.query.input as string;
@@ -311,7 +313,7 @@ export default defineComponent({
     /**
      * Rebuilds the combined filter when any constituent filter changes.
      * Triggers a new search via v-model binding.
-     * @returns {void}
+     * @return {void}
      */
     updateCombinedFilterIfRequired() {
       if (
@@ -333,7 +335,7 @@ export default defineComponent({
     /**
      * Reads query params and synchronizes the local filter state.
      * @param {RouteLocationNormalizedLoaded} route Route to read params from.
-     * @returns {void}
+     * @return {void}
      */
     scanQueryParams(route: RouteLocationNormalizedLoaded) {
       const queryFrameworks = this.getQueryFrameworks(route);
@@ -359,7 +361,7 @@ export default defineComponent({
      * @param {Array<BasicCompanyInformation>} companiesReceived Current chunk of companies
      * @param {number} chunkIndex Zero-based chunk index
      * @param {number} totalNumberOfCompanies Total matching records
-     * @returns {Promise<void | import('vue-router').NavigationFailure | undefined>}
+     * @return {Promise<void | import('vue-router').NavigationFailure | undefined>}
      */
     handleCompanyQuery(
       companiesReceived: Array<BasicCompanyInformation>,
@@ -391,7 +393,7 @@ export default defineComponent({
     /**
      * Handles explicit search confirmations from the search bar.
      * @param {string} companyNameFilter New company name filter.
-     * @returns {void}
+     * @return {void}
      */
     handleSearchConfirmed(companyNameFilter: string) {
       this.waitingForDataToDisplay = true;
@@ -401,7 +403,7 @@ export default defineComponent({
   },
   /**
    * Lifecycle hook that detaches the scroll listener.
-   * @returns {void}
+   * @return {void}
    */
   beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler);
@@ -426,6 +428,10 @@ export default defineComponent({
 }
 
 .search-bar-and-filters-container {
+  display: flex; /* keep display stable */
+  flex-direction: column; /* default layout */
+  justify-content: space-between;
+  align-items: stretch;
   margin: 0;
   width: 100%;
   padding-left: var(--spacing-lg);
@@ -434,14 +440,17 @@ export default defineComponent({
   background-color: var(--p-surface-0);
   position: sticky;
   top: var(--app-header-offset, 4rem);
-  z-index: 50;
+  z-index: 10; /* ensure header/underline can be above this */
+  contain: paint; /* isolate painting to reduce flicker */
+  will-change: padding-top; /* hint that padding may change on collapse */
 }
+
 .search-bar-and-filters-container #frameworkDataSearchBar {
   width: 70%;
 }
 
 .collapsed-search-container {
-  display: flex;
+  /* keep display: flex from base */
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
