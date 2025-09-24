@@ -386,8 +386,8 @@ function loadPortfolio(): void {
       reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
       isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
-    .catch((reason) => {
-      console.error(reason);
+    .catch((error) => {
+      console.error(error);
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));

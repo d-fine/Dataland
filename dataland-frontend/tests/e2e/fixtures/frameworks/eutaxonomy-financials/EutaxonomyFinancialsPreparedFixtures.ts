@@ -42,7 +42,7 @@ function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFin
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
       fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
-    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+    throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
   return newFixture;
 }
@@ -57,7 +57,7 @@ function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancia
   if (newFixture.t.general?.general?.referencedReports) {
     newFixture.t.general.general.referencedReports = null;
   } else {
-    throw Error('Could not set referenced reports to null due to missing parent-object.');
+    throw new Error('Could not set referenced reports to null due to missing parent-object.');
   }
   return newFixture;
 }
@@ -77,14 +77,14 @@ function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureDat
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
       fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
-    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+    throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
 
   if (newFixture.t.creditInstitution?.turnoverBasedGreenAssetRatioStock) {
     newFixture.t.creditInstitution.turnoverBasedGreenAssetRatioStock.substantialContributionToClimateChangeAdaptationInPercentEligible =
       fullDataSet.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
   } else {
-    throw Error(
+    throw new Error(
       'Could not set substantialContributionToClimateChangeAdaptationInPercentEligible due to missing parent-object.'
     );
   }

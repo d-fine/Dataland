@@ -46,7 +46,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): number {
   const functionIdOfSetInterval = window.setInterval(() => {
-    const currentTimestampInMs = new Date().getTime();
+    const currentTimestampInMs = Date.now();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, '');
@@ -64,14 +64,14 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
  * @returns a boolean to express if the timestamp has already been reached or not
  */
 export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
-  const currentTimestamp = new Date().getTime();
+  const currentTimestamp = Date.now();
   const refreshTokenExpiryTimestampInMs = useSharedSessionStateStore().refreshTokenExpiryTimestampInMs;
   if (refreshTokenExpiryTimestampInMs) {
     return (
       currentTimestamp + minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck > refreshTokenExpiryTimestampInMs
     );
   } else {
-    throw Error(
+    throw new Error(
       'No expiry timestamp for the current refresh token could be found in the store. ' +
         'This is not acceptable for running Dataland.'
     );

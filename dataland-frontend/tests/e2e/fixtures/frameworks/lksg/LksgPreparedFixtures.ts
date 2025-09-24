@@ -94,7 +94,7 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
   newFixture.companyInformation.companyName = 'lksg-with-procurement-categories';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
-    throw Error(
+    throw new Error(
       'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }
@@ -115,7 +115,7 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
     GB: ['B'],
   };
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
-    throw Error(
+    throw new Error(
       'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }

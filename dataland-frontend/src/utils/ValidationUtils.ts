@@ -71,7 +71,7 @@ export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
 export function validatePageNumber(node: FormKitNode): boolean {
   const pageNumber = node.value;
   if (typeof pageNumber == 'string') {
-    const match = RegExp(regexPageNumber).exec(pageNumber);
+    const match = new RegExp(regexPageNumber).exec(pageNumber);
     if (match === null) {
       return false;
     }

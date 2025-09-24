@@ -38,7 +38,7 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
     case DropdownDatasetIdentifier.Adjointness:
       return getAdjointnessDropdownDataset();
   }
-  throw Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
+  throw new Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
 }
 
 /**

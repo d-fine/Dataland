@@ -17,7 +17,7 @@ export function arraySetEquals<T>(a: Array<T>, b: Array<T>): boolean {
  * @returns the generated array
  */
 export function range(numElements: number): number[] {
-  return Array.from(Array(numElements).keys());
+  return Array.from(new Array(numElements).keys());
 }
 
 /**

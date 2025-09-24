@@ -47,7 +47,7 @@ describe('The page should behave well-defined when the user logs out in a differ
       } else {
         req.continue((res) => {
           const body = res.body as TokenResponse;
-          const newExpTime = (new Date().getTime() + 30000) / 1000;
+          const newExpTime = (Date.now() + 30000) / 1000;
           body.refresh_token = setJwtExpiryTime(body.refresh_token, newExpTime);
           cachedTokenResponse = body;
         });
