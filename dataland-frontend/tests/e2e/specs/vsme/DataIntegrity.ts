@@ -107,6 +107,25 @@ function uploadDocument(): void {
 }
 
 /**
+ * Verify that the downloaded file is identical to the expected one
+ */
+function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
+  cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  })
+    .then((expectedFileBinary) => cy.task('calculateHash', expectedFileBinary))
+    .then((expectedFileHash) => {
+      cy.readFile(expectedPathToDownloadedReport, 'binary', {
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      })
+        .then((receivedFileBinary) => cy.task('calculateHash', receivedFileBinary))
+        .should('eq', expectedFileHash);
+
+      cy.task('deleteFolder', Cypress.config('downloadsFolder'));
+    });
+}
+
+/**
  * Check that data can be viewed and documents downloaded
  */
 function verifyDocumentDownloadAndDataIsViewable(): void {
@@ -134,18 +153,7 @@ function verifyDocumentDownloadAndDataIsViewable(): void {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       cy.wait('@documentDownload');
-      cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      }).then((expectedFileBinary) => {
-        cy.task('calculateHash', expectedFileBinary).then((expectedFileHash) => {
-          cy.readFile(expectedPathToDownloadedReport, 'binary', {
-            timeout: Cypress.env('medium_timeout_in_ms') as number,
-          }).then((receivedFileHash) => {
-            cy.task('calculateHash', receivedFileHash).should('eq', expectedFileHash);
-          });
-          cy.task('deleteFolder', Cypress.config('downloadsFolder'));
-        });
-      });
+      verifyDownloadedFile(expectedPathToDownloadedReport);
     }
   );
 }

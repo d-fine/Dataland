@@ -42,6 +42,23 @@ export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPar
 }
 
 /**
+ * Helper function to add reporting periods to the map for a given framework
+ */
+function addFrameworkPeriods(map: Map<string, string[]>, framework: string, frameworkPeriodsCleaned: string[]): void {
+  if (!map.has(framework)) {
+    map.set(framework, []);
+  }
+
+  const periods = map.get(framework)!;
+
+  for (const period of frameworkPeriodsCleaned) {
+    if (period && !periods.includes(period)) {
+      periods.push(period);
+    }
+  }
+}
+
+/**
  * Map reporting periods to frameworks for download for portfolio
  */
 export function groupAllReportingPeriodsByFrameworkForPortfolio(
@@ -57,17 +74,7 @@ export function groupAllReportingPeriodsByFrameworkForPortfolio(
 
         const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
 
-        if (!map.has(framework)) {
-          map.set(framework, []);
-        }
-
-        const periods = map.get(framework)!;
-
-        for (const period of frameworkPeriodsCleaned) {
-          if (period && !periods.includes(period)) {
-            periods.push(period);
-          }
-        }
+        addFrameworkPeriods(map, framework, frameworkPeriodsCleaned);
       }
     }
   }
