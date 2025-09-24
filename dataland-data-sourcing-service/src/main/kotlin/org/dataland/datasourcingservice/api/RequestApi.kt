@@ -41,6 +41,7 @@ interface RequestApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully processed the data request."),
+            ApiResponse(responseCode = "400", description = "The request contains invalid data or is a duplicate."),
         ],
     )
     @PostMapping(
@@ -48,7 +49,7 @@ interface RequestApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("(hasRole('ROLE_USER') && (#userId == authentication.userId || #userId == null)) || hasRole('ROLE_ADMIN')")
     fun createRequest(
         @Valid @RequestBody singleRequest: SingleRequest,
         @RequestParam(required = false) userId: String? = null,

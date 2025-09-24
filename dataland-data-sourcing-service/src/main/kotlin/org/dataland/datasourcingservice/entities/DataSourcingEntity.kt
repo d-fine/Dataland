@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.entities
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -52,7 +53,7 @@ data class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
-    @OneToMany(mappedBy = "dataSourcingEntity")
+    @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST])
     @JsonManagedReference
     var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
 ) {
@@ -67,6 +68,15 @@ data class DataSourcingEntity(
         dataType = dataType,
         state = DataSourcingState.Initialized,
     )
+
+    /**
+     * Add an associated request to this data sourcing entity.
+     * Make sure the data sourcing entity is also added to the request.
+     */
+    fun addAssociatedRequest(request: RequestEntity) {
+        associatedRequests.add(request)
+        request.dataSourcingEntity = this
+    }
 
     /**
      * Converts this DataSourcingEntity to a StoredDataSourcing.

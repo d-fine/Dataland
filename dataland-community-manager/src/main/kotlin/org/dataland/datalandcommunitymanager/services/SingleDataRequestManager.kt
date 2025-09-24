@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.CommonDataRequestProcessingUtils
 import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -22,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 
 /**
@@ -218,9 +219,8 @@ class SingleDataRequestManager
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userId, CommonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
+                        userId, getEpochTimeStartOfDay(),
                     )
-
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
                     > maxRequestsForUser
                 ) {
@@ -230,6 +230,14 @@ class SingleDataRequestManager
                     )
                 }
             }
+        }
+
+        private fun getEpochTimeStartOfDay(): Long {
+            val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
+            val zoneId = ZoneId.of("Europe/Berlin")
+            val instantNowZoned = instantNow.atZone(zoneId)
+            val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
+            return startOfDay.toInstant().toEpochMilli()
         }
 
         private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
@@ -310,7 +318,7 @@ class SingleDataRequestManager
             reportingPeriodOfStoredAccessRequests: List<String>,
         ): SingleDataRequestResponse =
             SingleDataRequestResponse(
-                CommonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
+                buildResponseMessageForSingleDataRequest(
                     totalNumberOfReportingPeriods = singleDataRequest.reportingPeriods.size,
                     numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsOfDuplicateDataRequests.size,
                 ),
@@ -318,4 +326,39 @@ class SingleDataRequestManager
                 reportingPeriodsOfDuplicateDataRequests,
                 reportingPeriodOfStoredAccessRequests,
             )
+
+        /**
+         * Builds a response message for a single data request based on the total number of reporting periods
+         * and the number of reporting periods corresponding to duplicate requests.
+         *
+         * @param totalNumberOfReportingPeriods The total number of reporting periods in the request.
+         * @param numberOfReportingPeriodsCorrespondingToDuplicates The number of reporting periods that correspond to duplicate requests.
+         * @return A response message as a String.
+         */
+        private fun buildResponseMessageForSingleDataRequest(
+            totalNumberOfReportingPeriods: Int,
+            numberOfReportingPeriodsCorrespondingToDuplicates: Int,
+        ): String =
+            if (totalNumberOfReportingPeriods == 1) {
+                when (numberOfReportingPeriodsCorrespondingToDuplicates) {
+                    1 -> "Your data request was not stored, as it was already created by you before and exists on Dataland."
+                    else -> "Your data request was stored successfully."
+                }
+            } else {
+                when (numberOfReportingPeriodsCorrespondingToDuplicates) {
+                    0 -> "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored."
+                    1 ->
+                        "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
+                            "it was already created by you before and exists on Dataland."
+
+                    totalNumberOfReportingPeriods ->
+                        "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
+                            "already created by you before and exist on Dataland."
+
+                    else ->
+                        "The data requests for $numberOfReportingPeriodsCorrespondingToDuplicates of your " +
+                            "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
+                            "created by you before and exist on Dataland."
+                }
+            }
     }
