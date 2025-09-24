@@ -168,9 +168,9 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(false, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
-    for (let i = 0; i < Object.keys(DocumentMetaInfoDocumentCategoryEnum).length; i++) {
+    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach(() => {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-    }
+    });
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
       cy.get('[data-test="' + category + '"]')
         .should('exist')

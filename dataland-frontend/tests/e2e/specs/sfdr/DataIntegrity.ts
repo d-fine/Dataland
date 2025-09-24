@@ -119,6 +119,16 @@ function setQualityInSfdrUploadForm(): void {
   );
 }
 
+/**
+ * Set reference to all uploaded reports while pushing a new one as well
+ * @param referencedReports all reports already uploaded
+ */
+function setReferenceToAllUploadedReports(referencedReports: string[]): void {
+  for (const [index, it] of referencedReports.entries()) {
+    selectHighImpactClimateSectorAndReport(index, it);
+  }
+}
+
 describeIf(
   'As a user, I expect that the upload form works correctly when editing and uploading a new SFDR dataset',
   {
@@ -128,16 +138,6 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
-
-    /**
-     * Set reference to all uploaded reports while pushing a new one as well
-     * @param referencedReports all reports already uploaded
-     */
-    function setReferenceToAllUploadedReports(referencedReports: string[]): void {
-      for (const [index, it] of referencedReports.entries()) {
-        selectHighImpactClimateSectorAndReport(index, it);
-      }
-    }
 
     it('Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form', () => {
       const uniqueCompanyMarker = Date.now().toString();

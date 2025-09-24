@@ -150,6 +150,36 @@ function verifyDocumentDownloadAndDataIsViewable(): void {
   );
 }
 
+/**
+ * Fill out the vsme subsidiary section
+ */
+function fillOutSubsidiarySection(): void {
+  cy.get('[data-test="addNewSubsidiaryButton"]').click();
+  cy.get('[data-test="subsidiarySection"]').should('exist');
+  cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type('Test-Subsidiary');
+  fillOutAdressFormField('subsidiarySection', 'AddressFormField');
+}
+
+/**
+ * Fill out the vsme site and area section
+ */
+function fillOutSiteAndAreaSection(): void {
+  cy.get('[data-test="SiteAndAreaSection"]').should('exist');
+  cy.get('[data-test="SiteAndAreaSection"]').get('[name="siteName"]').type('Test-Site-Name');
+  fillOutAdressFormField('SiteAndAreaSection', 'AddressFormFieldSite');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLongitudeval"]').type('12345');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLatitude"]').type('12345');
+  cy.get('[data-test="SiteAndAreaSection"]')
+    .get('[name="biodiversitySensitiveArea"]')
+    .type('Test-Site-Biodiversity-Area');
+  fillOutAdressFormField('SiteAndAreaSection', 'AddressFormFieldArea');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaInHectare"]').type('12345');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLatitude"]').type('12345');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLongitude"]').type('12345');
+  cy.get('[data-test="SiteAndAreaSection"]').find('[data-test="specificationOfAdjointness"]').click();
+  cy.get('ul.p-select-list li').contains(`In`).click();
+}
+
 describeIf(
   'As a user, I expect to be able to edit and submit Vsme data via the upload form',
   {
@@ -177,36 +207,6 @@ describeIf(
           );
         });
     });
-
-    /**
-     * Fill out the vsme subsidiary section
-     */
-    function fillOutSubsidiarySection(): void {
-      cy.get('[data-test="addNewSubsidiaryButton"]').click();
-      cy.get('[data-test="subsidiarySection"]').should('exist');
-      cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type('Test-Subsidiary');
-      fillOutAdressFormField('subsidiarySection', 'AddressFormField');
-    }
-
-    /**
-     * Fill out the vsme site and area section
-     */
-    function fillOutSiteAndAreaSection(): void {
-      cy.get('[data-test="SiteAndAreaSection"]').should('exist');
-      cy.get('[data-test="SiteAndAreaSection"]').get('[name="siteName"]').type('Test-Site-Name');
-      fillOutAdressFormField('SiteAndAreaSection', 'AddressFormFieldSite');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLongitudeval"]').type('12345');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLatitude"]').type('12345');
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .get('[name="biodiversitySensitiveArea"]')
-        .type('Test-Site-Biodiversity-Area');
-      fillOutAdressFormField('SiteAndAreaSection', 'AddressFormFieldArea');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaInHectare"]').type('12345');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLatitude"]').type('12345');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLongitude"]').type('12345');
-      cy.get('[data-test="SiteAndAreaSection"]').find('[data-test="specificationOfAdjointness"]').click();
-      cy.get('ul.p-select-list li').contains(`In`).click();
-    }
 
     it('Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one', () => {
       cy.ensureLoggedIn(admin_name, admin_pw);

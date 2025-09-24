@@ -161,17 +161,15 @@ export default defineComponent({
       const totalSearchResults = this.totalRecords;
       if (this.waitingForDataToDisplay) {
         return 'loading...';
+      } else if (totalSearchResults === 0) {
+        return 'No results';
       } else {
-        if (totalSearchResults === 0) {
-          return 'No results';
-        } else {
-          const startIndex = this.currentPage * this.rowsPerPage;
-          const endIndex =
-            startIndex + (this.rowsPerPage - 1) >= totalSearchResults
-              ? totalSearchResults - 1
-              : startIndex + (this.rowsPerPage - 1);
-          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
-        }
+        const startIndex = this.currentPage * this.rowsPerPage;
+        const endIndex =
+          startIndex + (this.rowsPerPage - 1) >= totalSearchResults
+            ? totalSearchResults - 1
+            : startIndex + (this.rowsPerPage - 1);
+        return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
       }
     },
   },

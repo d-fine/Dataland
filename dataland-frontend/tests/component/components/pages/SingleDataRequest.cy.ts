@@ -39,6 +39,24 @@ function typeContacts(contacts: string): void {
   cy.get("[data-test='contactEmail']").should('exist').type(contacts);
 }
 
+/**
+ * checks that the provided contacts are not valid
+ * @param contacts the contacts to write as a sting
+ */
+function checkContactsNotValid(contacts: string): void {
+  typeContacts(contacts);
+  verifyMessageboxAndCheckboxNotAccessible();
+}
+
+/**
+ * checks that the provided contacts are valid
+ * @param contacts the contacts to write as a sting
+ */
+function checkContactsValid(contacts: string): void {
+  typeContacts(contacts);
+  verifyMessageboxAndCheckboxAccessible();
+}
+
 describe('Component tests for the single data request page', function (): void {
   it('check submitting with message', function () {
     cy.mountWithPlugins(SingleDataRequestComponent, {
@@ -173,22 +191,4 @@ describe('Component tests for the single data request page', function (): void {
       cy.get("[data-test='quotaReachedModal']").should('not.exist');
     });
   });
-
-  /**
-   * checks that the provided contacts are not valid
-   * @param contacts the contacts to write as a sting
-   */
-  function checkContactsNotValid(contacts: string): void {
-    typeContacts(contacts);
-    verifyMessageboxAndCheckboxNotAccessible();
-  }
-
-  /**
-   * checks that the provided contacts are valid
-   * @param contacts the contacts to write as a sting
-   */
-  function checkContactsValid(contacts: string): void {
-    typeContacts(contacts);
-    verifyMessageboxAndCheckboxAccessible();
-  }
 });

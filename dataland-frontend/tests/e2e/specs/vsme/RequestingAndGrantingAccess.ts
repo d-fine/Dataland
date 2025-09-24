@@ -57,6 +57,13 @@ function validateAccessRequestForReportingPeriodTableHasBadgeWithText(
     .should('have.text', badgeText);
 }
 
+/**
+ * Clicks the button to submit data access requests.
+ */
+function clickSubmitButton(): void {
+  validateSubmitButton(true).click();
+}
+
 describeIf(
   'As a user, I expect to request access to private datasets or grant or decline access to my private datasets ',
   {
@@ -110,13 +117,6 @@ describeIf(
           );
       });
     });
-
-    /**
-     * Clicks the button to submit data access requests.
-     */
-    function clickSubmitButton(): void {
-      validateSubmitButton(true).click();
-    }
 
     /**
      * Validates that there are two access requests.

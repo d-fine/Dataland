@@ -101,6 +101,18 @@ function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): 
   }
 }
 
+/**
+ * Checks if none of the currently three possible error-blocks on the view-page are rendered.
+ *
+ */
+function validateNoErrorMessagesAreShown(): void {
+  getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
+}
+
 describeIf(
   'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
     'and to navigate between those pages as well as the available datasets for one specific company',
@@ -191,18 +203,6 @@ describeIf(
         expect(expectedDropdownOptions.size).to.equal(optionsCounter);
       });
       cy.get(dropdownLabelSelector).click({ force: true });
-    }
-
-    /**
-     * Checks if none of the currently three possible error-blocks on the view-page are rendered.
-     *
-     */
-    function validateNoErrorMessagesAreShown(): void {
-      getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
     }
 
     /**
