@@ -86,9 +86,9 @@ describe('Component test for DatasetOverviewTable', () => {
   it('Validates the layout of the table header', () => {
     prepareSimpleDatasetOverviewTable([]);
     const expectedHeaders = ['COMPANY', 'DATA FRAMEWORK', 'SUBMISSION DATE', 'REPORTING PERIOD', 'STATUS'];
-    expectedHeaders.forEach((value) => {
+    for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
-    });
+    }
     cy.get('th').each((element) => {
       if (!expectedHeaders.includes(element.text())) {
         expect(element.html()).to.contain('<input');

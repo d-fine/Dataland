@@ -110,7 +110,9 @@ describe('AddMemberDialog Component Tests', function () {
     it('handles multiple users and clears input after addition', function () {
       const emails = ['john@doe.com', 'jane@doe.com'];
 
-      emails.forEach(addUser);
+      for (const email of emails) {
+        addUser(email);
+      }
 
       cy.contains('John Doe').should('be.visible');
       cy.contains('Jane Doe').should('be.visible');
@@ -153,12 +155,12 @@ describe('AddMemberDialog Component Tests', function () {
       { email: 'emptynames@test.com', expected: 'E', description: 'email when names are empty strings' },
     ];
 
-    initialTests.forEach(({ email, expected, description }) => {
+    for (const { email, expected, description } of initialTests) {
       it(`generates initials from ${description}`, function () {
         addUser(email);
         cy.get('.user-row').find('[class*="p-tag"]').first().should('contain', expected);
       });
-    });
+    }
   });
 
   describe('Save Operations and API Integration', function () {

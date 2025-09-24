@@ -88,9 +88,9 @@ function testPatchMonitoring(
 
   cy.get('@companyRequestRows').filter(`:contains("${frameworkTitle}")`).should('have.length.at.least', 1);
 
-  frameworkSubtitles.forEach((subtitle) => {
+  for (const subtitle of frameworkSubtitles) {
     cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
-  });
+  }
 
   // Cleanup: delete portfolio
   cy.visitAndCheckAppMount('/portfolios');

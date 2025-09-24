@@ -26,11 +26,11 @@ function uploadAllDocumentsFromFolder(token: string, documentDirectory: string):
   cy.task('readdir', documentDirectory).then((fileNames) => {
     const allFileNames = fileNames as string[];
     const pdfFileNames = allFileNames.filter((name: string) => name.endsWith('.pdf'));
-    pdfFileNames.forEach((name: string) => {
+    for (const name of pdfFileNames) {
       cy.task<{ [type: string]: ArrayBuffer }>('readFile', documentDirectory + name).then((bufferObject) =>
         uploadDocumentViaApi(token, bufferObject.data, name)
       );
-    });
+    }
   });
 }
 

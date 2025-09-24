@@ -17,13 +17,13 @@ function checkCommonHeaders(response: Cypress.Response<unknown>): void {
  */
 function checkCommonCspHeaders(expectedHeader: string): void {
   const urlsToCheck = [`${getBaseUrl()}/`, `${getBaseUrl()}/keycloak/realms/datalandsecurity`];
-  urlsToCheck.forEach((url): void => {
+  for (const url of urlsToCheck) {
     it(`Check for local CSP headers in ${url}`, (): void => {
       cy.request('GET', url).then((response): void => {
         expect(response.headers).to.have.property('content-security-policy', expectedHeader);
       });
     });
-  });
+  }
 }
 
 describe('As a developer, I want to ensure that security relevant headers are set.', () => {

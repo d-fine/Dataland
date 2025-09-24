@@ -11,12 +11,12 @@ import {
  * @returns the prepared fixtures
  */
 export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureData<EutaxonomyFinancialsData>> {
-  const preparedFixtures = [];
-  preparedFixtures.push(generateFixtureWithNoNullFields());
-  preparedFixtures.push(generateLightweightEuTaxoFinancialsFixture());
-  preparedFixtures.push(generateEmptyReferencedReportsFixture());
-  preparedFixtures.push(generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest());
-  return preparedFixtures;
+  return [
+    generateFixtureWithNoNullFields(),
+    generateLightweightEuTaxoFinancialsFixture(),
+    generateEmptyReferencedReportsFixture(),
+    generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(),
+  ];
 }
 
 /**

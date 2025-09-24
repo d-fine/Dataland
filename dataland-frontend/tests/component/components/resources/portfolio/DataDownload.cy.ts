@@ -49,9 +49,9 @@ describe('Check the Portfolio Download view', function (): void {
     it('Check reporting period type selection', function (): void {
       cy.get('[data-test="listOfReportingPeriods"]').should('exist');
       const reportingYears = ['2024', '2023', '2022'];
-      reportingYears.forEach((year) => {
+      for (const year of reportingYears) {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      });
+      }
     });
 
     it('Check error message visibility when no reporting period selected', function (): void {
@@ -93,18 +93,18 @@ describe('Check the Portfolio Download view', function (): void {
     it('Change framework and check that only 2021 is selectable for eu-taxonomy-financials framework', function (): void {
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
-      ['2024', '2023', '2022'].forEach((year) => {
+      for (const year of ['2024', '2023', '2022']) {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      });
+      }
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Financials').click();
       cy.get('[data-test="listOfReportingPeriods"]').should('exist');
-      ['2025', '2024', '2023', '2022', '2020'].forEach((year) => {
+      for (const year of ['2025', '2024', '2023', '2022', '2020']) {
         cy.get('[data-test="listOfReportingPeriods"]')
           .contains(year)
           .parents('[data-test="toggle-chip"]')
           .should('have.class', 'disabled');
-      });
+      }
       cy.get('[data-test="listOfReportingPeriods"]').contains('2021').should('be.visible').click();
     });
   });

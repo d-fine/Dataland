@@ -134,9 +134,9 @@ describeIf(
      * @param referencedReports all reports already uploaded
      */
     function setReferenceToAllUploadedReports(referencedReports: string[]): void {
-      referencedReports.forEach((it, index) => {
+      for (const [index, it] of referencedReports.entries()) {
         selectHighImpactClimateSectorAndReport(index, it);
-      });
+      }
     }
 
     it('Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form', () => {
