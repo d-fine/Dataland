@@ -15,7 +15,7 @@ export interface StringSplitSearchMatch {
 export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
   if (searchString == '') return [{ text: rawText, highlight: false }];
   const ret = [];
-  const escapedSearchString = searchString.replace(/[-\/\\^$*+?.()|[\]{}]/g, String.raw`\$&`);
+  const escapedSearchString = searchString.replace(/[-/\\^$*+?.()|[\]{}]/g, String.raw`\$&`);
   const regex = new RegExp(escapedSearchString, 'gi');
   let match;
   let lastIndex = 0;
