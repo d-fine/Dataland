@@ -741,7 +741,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "type": "string"
@@ -820,7 +820,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1061,7 +1061,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1225,7 +1225,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1632,7 +1632,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1854,7 +1854,7 @@
           },
           "framework": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2028,7 +2028,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2179,7 +2179,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2240,7 +2240,7 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",

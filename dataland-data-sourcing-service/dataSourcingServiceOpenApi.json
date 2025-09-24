@@ -50,7 +50,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully processed the data request.",
+            "description": "Successfully processed the request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -60,14 +60,10 @@
             }
           },
           "400": {
-            "description": "The request contains invalid data or is a duplicate.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SingleRequestResponse"
-                }
-              }
-            }
+            "description": "The request contains invalid data or is a duplicate."
+          },
+          "403": {
+            "description": "You were trying to impersonate another Dataland user. Only admins the right to do so. To make a request for yourself, leave the userId parameter empty."
           },
           "default": {
             "description": "An error occurred",
@@ -130,7 +126,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully patched data request.",
+            "description": "Successfully patched request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -138,6 +134,12 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to patch requests."
+          },
+          "404": {
+            "description": "The specified request ID does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -208,15 +210,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch states of data sourcing objects."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -302,15 +300,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -349,7 +343,7 @@
           "data-sourcing-controller"
         ],
         "summary": "Patch the date of the next planned document sourcing attempt",
-        "description": "Patch the date of the next planned document sourcing attemp of a DataSourcing object for a given ID.",
+        "description": "Patch the date of the next planned document sourcing attempt of a DataSourcing object for a given ID.",
         "operationId": "patchDateDocumentSourcingAttempt",
         "parameters": [
           {
@@ -382,15 +376,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -523,7 +513,7 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get full history of a requests by ID",
+        "summary": "Get full history of requests by ID",
         "description": "Retrieve the history of a Request object by its unique identifier.",
         "operationId": "getRequestHistoryById",
         "parameters": [
@@ -539,7 +529,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved Request history.",
+            "description": "Successfully retrieved request history.",
             "content": {
               "application/json": {
                 "schema": {
@@ -551,18 +541,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland admins have the right to query request history."
+          },
           "404": {
-            "description": "request object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
-                  }
-                }
-              }
-            }
+            "description": "The specified request ID does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -615,7 +598,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data request.",
+            "description": "Successfully retrieved request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -623,6 +606,12 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "The entered request ID does not belong to any of your requests. Only Dataland admins have the right to query other users\u0027 requests."
+          },
+          "404": {
+            "description": "The specified request ID does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -685,15 +674,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only admins are allowed to query data sourcing objects."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -759,18 +744,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only admins are allowed to query data sourcing history."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredDataSourcing"
-                  }
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -851,15 +829,11 @@
               }
             }
           },
+          "403": {
+            "description": "Only admins are allowed to query DataSourcing objects."
+          },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -1081,7 +1055,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -1239,7 +1213,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "state": {

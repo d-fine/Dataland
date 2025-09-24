@@ -1693,7 +1693,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1792,7 +1792,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -2390,7 +2390,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3529,7 +3529,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "qaReportId": {
@@ -6553,7 +6553,7 @@
           },
           "framework": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {

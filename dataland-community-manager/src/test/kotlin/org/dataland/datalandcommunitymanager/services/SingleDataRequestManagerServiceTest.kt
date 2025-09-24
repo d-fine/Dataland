@@ -16,6 +16,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -41,151 +42,166 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-class SingleDataRequestManagerServiceTest(
-    @Autowired val dataRequestLogger: DataRequestLogger,
-    @Autowired val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
-    @Autowired val accessRequestEmailBuilder: AccessRequestEmailBuilder,
-    @Autowired val dataRequestRepository: DataRequestRepository,
-    @Autowired val securityUtilsService: SecurityUtilsService,
-    @Autowired val companyRolesManager: CompanyRolesManager,
-) {
-    @MockitoBean
-    private val mockCompanyInfoService = mock<CompanyInfoService>()
+class SingleDataRequestManagerServiceTest
+    @Autowired
+    constructor(
+        val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
+        val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
+        val accessRequestEmailBuilder: AccessRequestEmailBuilder,
+        val dataRequestRepository: DataRequestRepository,
+        val securityUtilsService: SecurityUtilsService,
+        val companyRolesManager: CompanyRolesManager,
+    ) {
+        @MockitoBean
+        private val mockCompanyInfoService = mock<CompanyInfoService>()
 
-    @MockitoBean
-    private val mockDataAccessManager = mock<DataAccessManager>()
+        @MockitoBean
+        private val mockDataAccessManager = mock<DataAccessManager>()
 
-    @MockitoBean
-    private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
+        @MockitoBean
+        private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
 
-    @MockitoBean
-    private val mockKeycloakUserService = mock<KeycloakUserService>()
+        @MockitoBean
+        private val mockKeycloakUserService = mock<KeycloakUserService>()
 
-    private lateinit var singleDataRequestManager: SingleDataRequestManager
-    private lateinit var spyCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
+        @MockitoBean
+        private val mockDataRequestLogger = mock<DataRequestLogger>()
 
-    private val mockSecurityContext = mock<SecurityContext>()
-    private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
-    private val sampleDataType = DataTypeEnum.eutaxonomyMinusFinancials
-    private val sampleReportingPeriod = "2023"
-    private val sampleReportingPeriods = setOf(sampleReportingPeriod)
-    private val dummySingleDataRequest =
-        SingleDataRequest(
-            companyIdentifier = dummyCompanyId,
-            dataType = sampleDataType,
-            reportingPeriods = sampleReportingPeriods,
-            contacts = null,
-            message = null,
-        )
-    private val dummyUserId = "user-id"
-    private val adminUserId = "admin-user-id"
-    private val adminUserName = "data_admin"
+        private lateinit var singleDataRequestManager: SingleDataRequestManager
+        private lateinit var spyCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
+        private lateinit var spyKeycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils
 
-    @BeforeEach
-    fun setUp() {
-        spyCommunityManagerDataRequestProcessingUtils = spy(communityManagerDataRequestProcessingUtils)
-
-        reset(
-            mockCompanyInfoService,
-            mockDataAccessManager,
-            mockSingleDataRequestEmailMessageBuilder,
-            mockSecurityContext,
-            mockKeycloakUserService,
-        )
-
-        // The following method is only used to check for existing datasets in the context of
-        // access requests.
-        doReturn(false).whenever(spyCommunityManagerDataRequestProcessingUtils).matchingDatasetExists(
-            anyString(), anyString(), any(),
-        )
-        doReturn(false).whenever(mockDataAccessManager).hasAccessToPrivateDataset(
-            anyString(), anyString(), anyOrNull(), anyString(),
-        )
-        doReturn(false).whenever(mockDataAccessManager).existsAccessRequestWithNonPendingStatus(
-            anyString(), anyOrNull(), anyString(), anyString(),
-        )
-        doReturn(listOf("ROLE_ADMIN", "ROLE_PREMIUM_USER"))
-            .whenever(mockKeycloakUserService)
-            .getUserRoleNames(eq(adminUserId))
-        doReturn(listOf("ROLE_USER"))
-            .whenever(mockKeycloakUserService)
-            .getUserRoleNames(eq(dummyUserId))
-        doReturn(Pair(mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)), emptyList<String>()))
-            .whenever(spyCommunityManagerDataRequestProcessingUtils)
-            .performIdentifierValidation(anyList())
-
-        singleDataRequestManager =
-            SingleDataRequestManager(
-                dataRequestLogger = dataRequestLogger,
-                dataRequestRepository = dataRequestRepository,
-                singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
-                communityManagerDataRequestProcessingUtils = spyCommunityManagerDataRequestProcessingUtils,
-                dataAccessManager = mockDataAccessManager,
-                accessRequestEmailBuilder = accessRequestEmailBuilder,
-                securityUtilsService = securityUtilsService,
-                companyRolesManager = companyRolesManager,
-                keycloakUserService = mockKeycloakUserService,
-                maxRequestsForUser = 10,
+        private val mockSecurityContext = mock<SecurityContext>()
+        private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
+        private val sampleDataType = DataTypeEnum.eutaxonomyMinusFinancials
+        private val sampleReportingPeriod = "2023"
+        private val sampleReportingPeriods = setOf(sampleReportingPeriod)
+        private val dummySingleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = dummyCompanyId,
+                dataType = sampleDataType,
+                reportingPeriods = sampleReportingPeriods,
+                contacts = null,
+                message = null,
             )
+        private val dummyUserId = "user-id"
+        private val adminUserId = "admin-user-id"
+        private val adminUserName = "data_admin"
 
-        TestUtils.mockSecurityContext(
-            username = adminUserName,
-            userId = adminUserId,
-            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
-        )
-    }
-
-    @Test
-    fun `check that an impersonated request is saved correctly in the database`() {
-        singleDataRequestManager.processSingleDataRequest(
-            dummySingleDataRequest,
-            dummyUserId,
-        )
-
-        val searchResults = dataRequestRepository.findByUserId(dummyUserId)
-
-        assertEquals(searchResults.size, 1)
-
-        val savedEntity = searchResults[0]
-
-        assertEquals(savedEntity.userId, dummyUserId)
-        assertEquals(savedEntity.dataType, sampleDataType.toString())
-        assertEquals(savedEntity.reportingPeriod, sampleReportingPeriod)
-        assertEquals(savedEntity.datalandCompanyId, dummyCompanyId)
-    }
-
-    @Test
-    fun `check that admins can create impersonation requests after posting their own request for a dataset`() {
-        singleDataRequestManager.processSingleDataRequest(dummySingleDataRequest)
-
-        singleDataRequestManager.processSingleDataRequest(
-            dummySingleDataRequest,
-            dummyUserId,
-        )
-
-        val searchFilter =
-            DataRequestsFilter(
-                dataType = setOf(sampleDataType),
-                datalandCompanyIds = setOf(dummyCompanyId),
-                reportingPeriod = sampleReportingPeriod,
+        private fun setUpStubs() {
+            // The following method is only used to check for existing datasets in the context of
+            // access requests.
+            doReturn(false).whenever(spyCommunityManagerDataRequestProcessingUtils).matchingDatasetExists(
+                anyString(), anyString(), any(),
             )
-
-        val searchResults = dataRequestRepository.searchDataRequestEntity(searchFilter)
-
-        assertEquals(searchResults.size, 2)
-
-        val expectedAdminRequest: DataRequestEntity
-        val expectedImpersonatedRequest: DataRequestEntity
-
-        if (searchResults[0].userId == dummyUserId) {
-            expectedImpersonatedRequest = searchResults[0]
-            expectedAdminRequest = searchResults[1]
-        } else {
-            expectedAdminRequest = searchResults[0]
-            expectedImpersonatedRequest = searchResults[1]
+            doReturn(false).whenever(mockDataAccessManager).hasAccessToPrivateDataset(
+                anyString(), anyString(), anyOrNull(), anyString(),
+            )
+            doReturn(false).whenever(mockDataAccessManager).existsAccessRequestWithNonPendingStatus(
+                anyString(), anyOrNull(), anyString(), anyString(),
+            )
+            doReturn(listOf("ROLE_ADMIN", "ROLE_PREMIUM_USER"))
+                .whenever(mockKeycloakUserService)
+                .getUserRoleNames(eq(adminUserId))
+            doReturn(listOf("ROLE_USER"))
+                .whenever(mockKeycloakUserService)
+                .getUserRoleNames(eq(dummyUserId))
+            doReturn(
+                Pair(
+                    mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)),
+                    emptyList<String>(),
+                ),
+            ).whenever(spyCommunityManagerDataRequestProcessingUtils)
+                .performIdentifierValidation(anyList())
         }
 
-        assertEquals(expectedAdminRequest.userId, adminUserId)
-        assertEquals(expectedImpersonatedRequest.userId, dummyUserId)
+        @BeforeEach
+        fun setUp() {
+            spyCommunityManagerDataRequestProcessingUtils = spy(communityManagerDataRequestProcessingUtils)
+            spyKeycloakAdapterRequestProcessingUtils = spy(keycloakAdapterRequestProcessingUtils)
+
+            reset(
+                mockCompanyInfoService,
+                mockDataAccessManager,
+                mockSingleDataRequestEmailMessageBuilder,
+                mockSecurityContext,
+                mockKeycloakUserService,
+            )
+
+            setUpStubs()
+
+            singleDataRequestManager =
+                SingleDataRequestManager(
+                    dataRequestLogger = mockDataRequestLogger,
+                    dataRequestRepository = dataRequestRepository,
+                    singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
+                    communityManagerDataRequestProcessingUtils = spyCommunityManagerDataRequestProcessingUtils,
+                    keycloakAdapterRequestProcessingUtils = spyKeycloakAdapterRequestProcessingUtils,
+                    dataAccessManager = mockDataAccessManager,
+                    accessRequestEmailBuilder = accessRequestEmailBuilder,
+                    securityUtilsService = securityUtilsService,
+                    companyRolesManager = companyRolesManager,
+                    maxRequestsForUser = 10,
+                )
+
+            TestUtils.mockSecurityContext(
+                username = adminUserName,
+                userId = adminUserId,
+                roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),
+            )
+        }
+
+        @Test
+        fun `check that an impersonated request is saved correctly in the database`() {
+            singleDataRequestManager.processSingleDataRequest(
+                dummySingleDataRequest,
+                dummyUserId,
+            )
+
+            val searchResults = dataRequestRepository.findByUserId(dummyUserId)
+
+            assertEquals(searchResults.size, 1)
+
+            val savedEntity = searchResults[0]
+
+            assertEquals(savedEntity.userId, dummyUserId)
+            assertEquals(savedEntity.dataType, sampleDataType.toString())
+            assertEquals(savedEntity.reportingPeriod, sampleReportingPeriod)
+            assertEquals(savedEntity.datalandCompanyId, dummyCompanyId)
+        }
+
+        @Test
+        fun `check that admins can create impersonation requests after posting their own request for a dataset`() {
+            singleDataRequestManager.processSingleDataRequest(dummySingleDataRequest)
+
+            singleDataRequestManager.processSingleDataRequest(
+                dummySingleDataRequest,
+                dummyUserId,
+            )
+
+            val searchFilter =
+                DataRequestsFilter(
+                    dataType = setOf(sampleDataType),
+                    datalandCompanyIds = setOf(dummyCompanyId),
+                    reportingPeriod = sampleReportingPeriod,
+                )
+
+            val searchResults = dataRequestRepository.searchDataRequestEntity(searchFilter)
+
+            assertEquals(searchResults.size, 2)
+
+            val expectedAdminRequest: DataRequestEntity
+            val expectedImpersonatedRequest: DataRequestEntity
+
+            if (searchResults[0].userId == dummyUserId) {
+                expectedImpersonatedRequest = searchResults[0]
+                expectedAdminRequest = searchResults[1]
+            } else {
+                expectedAdminRequest = searchResults[0]
+                expectedImpersonatedRequest = searchResults[1]
+            }
+
+            assertEquals(expectedAdminRequest.userId, adminUserId)
+            assertEquals(expectedImpersonatedRequest.userId, dummyUserId)
+        }
     }
-}

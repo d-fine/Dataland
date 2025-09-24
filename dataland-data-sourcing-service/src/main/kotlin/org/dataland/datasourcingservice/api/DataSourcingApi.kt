@@ -2,6 +2,9 @@ package org.dataland.datasourcingservice.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -28,15 +31,27 @@ interface DataSourcingApi {
     /**
      * Retrieve a DataSourcing object by its ID.
      */
-    @Operation(summary = "Get DataSourcing by ID", description = "Retrieve a DataSourcing object by its unique identifier.")
+    @Operation(
+        summary = "Get DataSourcing by ID",
+        description = "Retrieve a DataSourcing object by its unique identifier.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only admins are allowed to query data sourcing objects.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @GetMapping("/{id}", produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingById(
         @Parameter(description = "ID of the DataSourcing object.")
         @PathVariable id: String,
@@ -52,11 +67,20 @@ interface DataSourcingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only admins are allowed to query DataSourcing objects.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @GetMapping("/search", produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingByDimensions(
         @Parameter(description = "Company ID.") @RequestParam companyId: String,
         @Parameter(description = "Data type.") @RequestParam dataType: String,
@@ -73,7 +97,16 @@ interface DataSourcingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing history."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only admins are allowed to query data sourcing history.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(array = ArraySchema())],
+            ),
         ],
     )
     @GetMapping("/{id}/history", produces = ["application/json"])
@@ -86,11 +119,23 @@ interface DataSourcingApi {
     /**
      * Patch the state of a DataSourcing object specified by ID.
      */
-    @Operation(summary = "Patch DataSourcing state", description = "Patch the state of a DataSourcing object specified by ID.")
+    @Operation(
+        summary = "Patch DataSourcing state",
+        description = "Patch the state of a DataSourcing object specified by ID.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully patched state."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland Uploaders have the right to patch states of data sourcing objects.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping("/{id}/state", consumes = ["application/json"], produces = ["application/json"])
@@ -134,7 +179,16 @@ interface DataSourcingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully patched document IDs."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping("/{id}/documents", consumes = ["application/json"], produces = ["application/json"])
@@ -150,16 +204,25 @@ interface DataSourcingApi {
      */
     @Operation(
         summary = "Patch the date of the next planned document sourcing attempt",
-        description = "Patch the date of the next planned document sourcing attemp of a DataSourcing object for a given ID.",
+        description = "Patch the date of the next planned document sourcing attempt of a DataSourcing object for a given ID.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully patched dateDocumentSourcingAttempt."),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping("/{id}/document-sourcing-attempt", consumes = ["application/json"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestParam date: LocalDate,

@@ -46,12 +46,9 @@ class DataSourcingControllerTest {
         comment: String = "test request",
         user: TechnicalUser = TechnicalUser.Reader,
     ): String {
-        val request =
-            SingleRequest(companyId, dataType, reportingPeriod, comment)
+        val request = SingleRequest(companyId, dataType, reportingPeriod, comment)
         return GlobalAuth.withTechnicalUser(user) {
-            apiAccessor.dataSourcingRequestControllerApi
-                .createRequest(request)
-                .id
+            apiAccessor.dataSourcingRequestControllerApi.createRequest(request).id
         }
     }
 
@@ -83,8 +80,8 @@ class DataSourcingControllerTest {
         }
 
         val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-        assertEquals(3, updatedSourcingObject.associatedRequestIds?.size ?: 0)
-        updatedSourcingObject.associatedRequestIds?.forEach {
+        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
+        updatedSourcingObject.associatedRequestIds.forEach {
             val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(it)
             assertEquals(expectedRequestState, request.state)
         }
@@ -122,7 +119,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that a request is appended to the corresponding sourcing object only when set to 'Processing'`() {
+    fun `verify that a request is appended to the corresponding sourcing object only when set to Processing`() {
         val newRequest =
             GlobalAuth.withTechnicalUser(TechnicalUser.PremiumUser) {
                 createRequest(
@@ -138,11 +135,11 @@ class DataSourcingControllerTest {
 
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(newRequest, RequestState.Processing)
         updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-        assertEquals(storedDataSourcing.associatedRequestIds?.plus(newRequest), updatedSourcingObject.associatedRequestIds)
+        assertEquals(storedDataSourcing.associatedRequestIds.plus(newRequest), updatedSourcingObject.associatedRequestIds)
     }
 
     @Test
-    fun `upload a dataset and verify that the corresponding data sourcing object's state is set to 'DataVerification'`() {
+    fun `upload a dataset and verify that the state of the corresponding data sourcing object is set to DataVerification`() {
         uploadDummyDataForDataSourcingObject()
 
         ApiAwait.waitForData(
@@ -152,7 +149,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `accept a dataset and verify that the corresponding data sourcing object's state is set to 'Answered'`() {
+    fun `accept a dataset and verify that the state of the corresponding data sourcing object is set to Answered`() {
         val dataSetId = uploadDummyDataForDataSourcingObject()
 
         ApiAwait.waitForData { apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted) }
@@ -163,7 +160,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that a data sourcing object's state 'Answered' can not be changed by data uploads`() {
+    fun `verify that the state Answered of a data sourcing object cannot be changed by data uploads`() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, DataSourcingState.Answered)
         }
@@ -177,7 +174,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that only marking a sourcing process as 'Answered' or 'NonSourceable' will patch requests to 'Processed'`() {
+    fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`() {
         for (state in DataSourcingState.entries) {
             changeSourcingStatusAndVerifyRequestsStatuses(
                 state,
@@ -196,7 +193,7 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, DataSourcingState.Answered)
         }
 
-        val requestId = storedDataSourcing.associatedRequestIds?.first() ?: ""
+        val requestId = storedDataSourcing.associatedRequestIds.first()
         val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
         assertEquals(RequestState.Processed, request.state)
 
@@ -244,7 +241,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that a data collector can only patch a state from 'DocumentSourcing' to 'DocumentSourcingDone'`() {
+    fun `verify that a data collector can only patch a state from DocumentSourcing to DocumentSourcingDone`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         DataSourcingState.entries.forEach { initialState ->
             DataSourcingState.entries.forEach { finalState ->
@@ -284,7 +281,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that a non-existing document ID can not be added to a data sourcing object`() {
+    fun `verify that a nonexisting document ID can not be added to a data sourcing object`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistingDocumentId = "nonExistingDocumentId"
         apiAccessor.dataSourcingControllerApi.patchDataSourcingDocuments(
@@ -350,7 +347,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that data sourcing attempts can not be specified in the past`() {
+    fun `verify that data sourcing attempts cannot be specified in the past`() {
         assertThrows<ClientException> {
             apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
                 storedDataSourcing.id,

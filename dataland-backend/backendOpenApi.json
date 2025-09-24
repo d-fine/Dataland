@@ -300,7 +300,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -1324,7 +1324,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1892,7 +1892,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2223,7 +2223,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2412,7 +2412,7 @@
           {
             "name": "frameworksOrDataPointTypes",
             "in": "query",
-            "description": "Either the framework of the wanted dataset or the dataPointType of the wanted data point.",
+            "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
             "required": false,
             "schema": {
               "type": "array",
@@ -2420,7 +2420,10 @@
                 "type": "string"
               }
             },
-            "example": "sfdr"
+            "example": [
+              "sfdr",
+              "extendedDateFiscalYearEnd"
+            ]
           },
           {
             "name": "reportingPeriods",
@@ -5277,7 +5280,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -6017,7 +6020,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The associated reporting framework.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
