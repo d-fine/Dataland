@@ -5,13 +5,11 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
  * Utility service class for logging messages related to data requests.
  */
-@Service("RequestLogger")
 class RequestLogger {
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleRequestManager::class.java)
     private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkRequestManager::class.java)

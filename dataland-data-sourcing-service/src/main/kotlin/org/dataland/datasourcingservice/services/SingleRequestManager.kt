@@ -24,7 +24,6 @@ import kotlin.jvm.optionals.getOrNull
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
  */
-@Suppress("LongParameterList")
 @Service("SingleRequestManager")
 class SingleRequestManager
     @Autowired
