@@ -101,6 +101,30 @@ interface DataSourcingApi {
     ): ResponseEntity<StoredDataSourcing>
 
     /**
+     * Patch the state of a DataSourcing object specified by ID.
+     */
+    @Operation(
+        summary = "Patch document collector and/or data extractor. ",
+        description =
+            "Patch the document collector and/or data extractor of a DataSourcing object specified by ID." +
+                " Null values are ignored. Optionally: Provide an admin comment.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched document collector and/or data extractor."),
+            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+        ],
+    )
+    @PatchMapping("/{id}/assign", consumes = ["application/json"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDocumentCollectorAndDataExtractor(
+        @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
+        @Valid @RequestParam documentCollector: String?,
+        @Valid @RequestParam dataExtractor: String?,
+        @Valid @RequestParam adminComment: String?,
+    ): ResponseEntity<StoredDataSourcing>
+
+    /**
      * Patch the associated document IDs of a DataSourcing object. Use appendDocuments to append or overwrite.
      */
     @Operation(

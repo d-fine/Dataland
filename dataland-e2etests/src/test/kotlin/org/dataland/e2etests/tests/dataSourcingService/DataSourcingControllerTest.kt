@@ -47,12 +47,11 @@ class DataSourcingControllerTest {
         user: TechnicalUser = TechnicalUser.Reader,
     ): String {
         val request =
-            SingleRequest(companyId, dataType, setOf(reportingPeriod), comment)
+            SingleRequest(companyId, dataType, reportingPeriod, comment)
         return GlobalAuth.withTechnicalUser(user) {
             apiAccessor.dataSourcingRequestControllerApi
                 .createRequest(request)
-                .idsOfStoredRequests
-                .first()
+                .id
         }
     }
 
@@ -204,6 +203,44 @@ class DataSourcingControllerTest {
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Open)
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
         assertEquals(DataSourcingState.Initialized, updatedDataSourcingObject.state)
+    }
+
+    @Test
+    fun `verify that an admin can assign a document collector and a data extractor`() {
+        val companyIdCollector =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+            }
+        val companyIdExtractor =
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+            }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
+                storedDataSourcing.id,
+                DataSourcingState.DocumentSourcing,
+            )
+            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                storedDataSourcing.id,
+                companyIdCollector,
+            )
+        }
+        val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
+        assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
+        assertEquals(null, updatedDataSourcingObject.dataExtractor)
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
+                storedDataSourcing.id,
+                DataSourcingState.DataExtraction,
+            )
+            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                storedDataSourcing.id,
+                null,
+                companyIdExtractor,
+            )
+        }
+        assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
+        assertEquals(companyIdExtractor, updatedDataSourcingObject.dataExtractor)
     }
 
     @Test

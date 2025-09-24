@@ -216,4 +216,32 @@ class DataSourcingManager
             dataSourcingObject.addAssociatedRequest(requestEntity)
             return dataSourcingObject
         }
+
+        /**
+         * Patches the document collector and/or data extractor of the data sourcing entity with the given ID.
+         * Throws a DataSourcingNotFoundApiException if no such data sourcing entity exists.
+         * @param dataSourcingEntityId the id of the data sourcing entity to patch
+         * @param documentCollector the ID of the new document collector, or null if no update should be performed
+         * @param dataExtractor the ID of the new data extractor, or null if no update should be performed
+         * @param adminComment an optional admin comment to add to the data sourcing entity
+         * @return the StoredDataSourcing object corresponding to the patched entity
+         */
+        @Transactional
+        fun patchDocumentCollectorAndDataExtractor(
+            dataSourcingEntityId: UUID,
+            documentCollector: String?,
+            dataExtractor: String?,
+            adminComment: String?,
+        ): StoredDataSourcing {
+            val dataSourcingEntity =
+                getDataSourcingEntityById(dataSourcingEntityId)
+            return handlePatchOfDataSourcingEntity(
+                dataSourcingEntity,
+                DataSourcingPatch(
+                    documentCollector = UUID.fromString(documentCollector),
+                    dataExtractor = UUID.fromString(dataExtractor),
+                    adminComment = adminComment,
+                ),
+            )
+        }
     }
