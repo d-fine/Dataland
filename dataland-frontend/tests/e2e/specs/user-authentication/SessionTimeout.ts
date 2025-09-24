@@ -55,6 +55,20 @@ describe('The page should behave well-defined when the user logs out in a differ
     });
     login();
     cy.get('button[name=refresh_session_button]', { timeout: 10000 }).click();
-    cy.url().should('contain', '/portfolios');
+    cy.url().should('contain', '/companies');
   });
 });
+
+/**
+ * Modifies the given JWT to have the new expiry time. Does NOT update the signature
+ * @param jwt the jwt to modify
+ * @param newExpiryTime the new expiry time
+ * @returns the modified jwt
+ */
+function setJwtExpiryTime(jwt: string, newExpiryTime: number): string {
+  const split = jwt.split('.');
+  const decodedBody = JSON.parse(Buffer.from(split[1], 'base64').toString('binary')) as { exp: number };
+  decodedBody.exp = newExpiryTime;
+  split[1] = Buffer.from(JSON.stringify(decodedBody), 'binary').toString('base64');
+  return split.join('.');
+}

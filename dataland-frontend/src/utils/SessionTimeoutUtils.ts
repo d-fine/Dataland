@@ -1,5 +1,5 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
-import { loginAndRedirectToPortfolioPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 
@@ -45,7 +45,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): number {
-  const functionIdOfSetInterval = window.setInterval(() => {
+  const functionIdOfSetInterval = globalThis.setInterval(() => {
     const currentTimestampInMs = Date.now();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
@@ -92,7 +92,7 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   After the grace time, you will be redirected to the usual Keycloak login page.
    */
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-    void loginAndRedirectToPortfolioPage(keycloak);
+    void loginAndRedirectToRedirectPage(keycloak);
   } else {
     void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }

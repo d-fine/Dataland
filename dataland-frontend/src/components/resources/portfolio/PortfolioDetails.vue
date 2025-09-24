@@ -61,17 +61,15 @@
         <template #body="portfolioEntry">
           <Button
             :label="portfolioEntry.data.companyName"
-            iconPos="right"
-            icon="pi pi-angle-right"
             variant="link"
             data-test="view-company-button"
             @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
             :pt="{
               label: {
-                style: 'font-weight: normal;',
+                style: 'font-weight: normal; text-align: left;',
               },
-              content: {
-                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              root: {
+                style: 'padding-left: 0;',
               },
             }"
           />
@@ -133,17 +131,14 @@
           <Button
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
             :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-            iconPos="right"
-            icon="pi pi-angle-right"
             variant="link"
-            data-test="view-company-button"
             @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
             :pt="{
               label: {
-                style: 'font-weight: normal;',
+                style: 'font-weight: normal; text-align: left;',
               },
-              content: {
-                style: 'margin-left: auto; margin-right: auto; align-items: left;',
+              root: {
+                style: 'padding-left: 0;',
               },
             }"
           />
@@ -229,7 +224,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+    for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -237,7 +232,7 @@ class PortfolioEntryPrepared {
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
-    });
+    }
 
     this.sfdrAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
@@ -305,7 +300,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
@@ -316,7 +311,7 @@ watch([enrichedPortfolio], () => {
         )
       ).sort()
     );
-  });
+  }
 });
 
 /**
