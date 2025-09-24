@@ -88,7 +88,7 @@ class RequestControllerTest {
     }
 
     @Test
-    fun `patch a request's state and verify that the changes are saved`() {
+    fun `patch the state of a request and verify that the changes are saved`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id

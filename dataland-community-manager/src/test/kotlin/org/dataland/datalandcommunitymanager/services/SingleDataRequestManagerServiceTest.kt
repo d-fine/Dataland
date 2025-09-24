@@ -88,19 +88,7 @@ class SingleDataRequestManagerServiceTest
         private val adminUserId = "admin-user-id"
         private val adminUserName = "data_admin"
 
-        @BeforeEach
-        fun setUp() {
-            spyCommunityManagerDataRequestProcessingUtils = spy(communityManagerDataRequestProcessingUtils)
-            spyKeycloakAdapterRequestProcessingUtils = spy(keycloakAdapterRequestProcessingUtils)
-
-            reset(
-                mockCompanyInfoService,
-                mockDataAccessManager,
-                mockSingleDataRequestEmailMessageBuilder,
-                mockSecurityContext,
-                mockKeycloakUserService,
-            )
-
+        private fun setUpStubs() {
             // The following method is only used to check for existing datasets in the context of
             // access requests.
             doReturn(false).whenever(spyCommunityManagerDataRequestProcessingUtils).matchingDatasetExists(
@@ -125,6 +113,22 @@ class SingleDataRequestManagerServiceTest
                 ),
             ).whenever(spyCommunityManagerDataRequestProcessingUtils)
                 .performIdentifierValidation(anyList())
+        }
+
+        @BeforeEach
+        fun setUp() {
+            spyCommunityManagerDataRequestProcessingUtils = spy(communityManagerDataRequestProcessingUtils)
+            spyKeycloakAdapterRequestProcessingUtils = spy(keycloakAdapterRequestProcessingUtils)
+
+            reset(
+                mockCompanyInfoService,
+                mockDataAccessManager,
+                mockSingleDataRequestEmailMessageBuilder,
+                mockSecurityContext,
+                mockKeycloakUserService,
+            )
+
+            setUpStubs()
 
             singleDataRequestManager =
                 SingleDataRequestManager(

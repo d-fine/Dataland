@@ -118,7 +118,7 @@ class DataAccessManager(
                     userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
                     reportingPeriod = reportingPeriod,
                 )
-        if (!existingRequestsOfUser.isEmpty()) {
+        if (existingRequestsOfUser.isNotEmpty()) {
             val dataRequestEntity = existingRequestsOfUser[0]
 
             val modificationTime = Instant.now().toEpochMilli()
