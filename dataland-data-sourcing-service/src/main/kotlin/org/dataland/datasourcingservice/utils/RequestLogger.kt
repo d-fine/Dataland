@@ -2,17 +2,14 @@ package org.dataland.datasourcingservice.utils
 
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
  * Utility service class for logging messages related to data requests.
  */
-@Service("RequestLogger")
 class RequestLogger {
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleRequestManager::class.java)
     private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkRequestManager::class.java)
@@ -20,11 +17,15 @@ class RequestLogger {
     /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForReceivingSingleDataRequest(preprocessedRequest: PreprocessedRequest) {
+    fun logMessageForReceivingSingleDataRequest(
+        companyId: UUID,
+        userId: UUID,
+        correlationId: UUID,
+    ) {
         singleDataRequestLogger.info(
-            "Received a single data request with Identifier ${preprocessedRequest.companyId}" +
-                " for user ${preprocessedRequest.userId}. -> Processing it. " +
-                "(correlationId: ${preprocessedRequest.correlationId})",
+            "Received a single data request with Identifier $companyId" +
+                " for user $userId. -> Processing it. " +
+                "(correlationId: $correlationId)",
         )
     }
 

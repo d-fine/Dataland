@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.model.request
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import java.util.Date
 import java.util.UUID
 
 /**
@@ -15,10 +14,10 @@ data class StoredRequest(
     val reportingPeriod: String,
     val dataType: String,
     val userId: String,
-    val creationTimeStamp: Date,
+    val creationTimeStamp: Long,
     val memberComment: String? = null,
     val adminComment: String? = null,
-    val lastModifiedDate: Date,
+    val lastModifiedDate: Long,
     val requestPriority: RequestPriority,
     val state: RequestState,
     val dataSourcingEntityId: String? = null,

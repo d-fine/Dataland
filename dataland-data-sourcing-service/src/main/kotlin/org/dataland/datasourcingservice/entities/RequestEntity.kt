@@ -13,7 +13,6 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.envers.Audited
-import java.util.Date
 import java.util.UUID
 
 /**
@@ -36,13 +35,13 @@ data class RequestEntity(
     @Column(name = "user_id")
     val userId: UUID,
     @Column(name = "creation_time_stamp")
-    val creationTimestamp: Date,
+    val creationTimestamp: Long,
     @Column(name = "member_comment", length = 1000)
     val memberComment: String? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
     @Column(name = "last_modified_date")
-    var lastModifiedDate: Date,
+    var lastModifiedDate: Long,
     @Column(name = "request_prioriry")
     var requestPriority: RequestPriority,
     @Column(name = "state")
@@ -75,7 +74,7 @@ data class RequestEntity(
         companyId: UUID,
         dataType: String,
         reportingPeriod: String,
-        creationTimestamp: Date,
+        creationTimestamp: Long,
     ) : this(
         id = UUID.randomUUID(),
         companyId = companyId,

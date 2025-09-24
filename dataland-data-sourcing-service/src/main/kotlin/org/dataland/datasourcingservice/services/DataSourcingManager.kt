@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -189,5 +190,30 @@ class DataSourcingManager
             val dataSourcingEntity =
                 getDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(dataSourcingEntity, DataSourcingPatch(dateDocumentSourcingAttempt = date))
+        }
+
+        /**
+         * Resets an existing DataSourcingEntity to the Initialized state or creates a new one if none exists.
+         *
+         * Associates the given RequestEntity with the DataSourcingEntity and stores it in the database. This will also
+         * cascade the save operation to the associated RequestEntity automatically.
+         *
+         * @param requestEntity the RequestEntity to associate with the DataSourcingEntity
+         * @return the reset or newly created DataSourcingEntity
+         */
+        fun resetOrCreateDataSourcingObjectAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
+            val dataSourcingObject =
+                dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
+                    requestEntity.companyId,
+                    requestEntity.dataType,
+                    requestEntity.reportingPeriod,
+                ) ?: DataSourcingEntity(
+                    companyId = requestEntity.companyId,
+                    reportingPeriod = requestEntity.reportingPeriod,
+                    dataType = requestEntity.dataType,
+                )
+            dataSourcingObject.state = DataSourcingState.Initialized
+            dataSourcingObject.addAssociatedRequest(requestEntity)
+            return dataSourcingObject
         }
     }

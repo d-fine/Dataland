@@ -53,6 +53,30 @@ class RequestControllerTest {
     }
 
     @Test
+    fun `post a request in the name of another user as admin and verify that it can be retrieved`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val timeBeforeUpload = OffsetDateTime.now(ZoneOffset.UTC)
+        val requestId =
+            apiAccessor.dataSourcingRequestControllerApi
+                .createRequest(dummyRequest, TechnicalUser.Reader.technicalUserId)
+                .idsOfStoredRequests
+                .first()
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val storedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
+
+        assertEquals(dummyRequest.companyIdentifier, storedRequest.companyId)
+        assertEquals(dummyRequest.dataType, storedRequest.dataType)
+        assertEquals(dummyRequest.reportingPeriods.first(), storedRequest.reportingPeriod)
+        assertEquals(dummyRequest.comment, storedRequest.memberComment)
+
+        assertTrue(timeBeforeUpload < storedRequest.creationTimeStamp)
+        assertTrue(storedRequest.creationTimeStamp < OffsetDateTime.now(ZoneOffset.UTC))
+        assertEquals(storedRequest.creationTimeStamp, storedRequest.lastModifiedDate)
+        assertEquals(RequestState.Open, storedRequest.state)
+    }
+
+    @Test
     fun `post a request with invalid company ID and verify that it is rejected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val invalidRequest = SingleRequest("invalidCompanyId", "sfdr", setOf("2023"), "dummy request")
@@ -61,6 +85,17 @@ class RequestControllerTest {
                 apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
             }
         assertEquals("Client error : 404 ", exception.message)
+    }
+
+    @Test
+    fun `post a request in the name of another user as reader and verify that it is forbidden`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.dataSourcingRequestControllerApi
+                    .createRequest(dummyRequest, TechnicalUser.Reviewer.technicalUserId)
+            }
+        assertEquals("Client error : 403 ", exception.message)
     }
 
     @Test

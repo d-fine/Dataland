@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.entities
 
 import jakarta.persistence.Embeddable
-import java.util.Date
+import java.time.LocalDate
 
 /**
  * Represents the expected publication date of a document for a specific document category.
@@ -12,5 +12,5 @@ import java.util.Date
 @Embeddable
 data class ExpectedPublicationDateDocument(
     val documentCategory: String,
-    val expectedPublicationDate: Date,
+    val expectedPublicationDate: LocalDate,
 )

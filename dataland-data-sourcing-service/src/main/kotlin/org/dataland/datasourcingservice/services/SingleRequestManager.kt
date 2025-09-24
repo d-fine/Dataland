@@ -1,169 +1,94 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.CommonDataRequestProcessingUtils
-import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
-import org.dataland.datasourcingservice.entities.DataSourcingEntity
+import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.exceptions.DuplicateRequestException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.PreprocessedRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
-import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
-import org.dataland.datasourcingservice.utils.DataSourcingServiceDataRequestProcessingUtils
 import org.dataland.datasourcingservice.utils.RequestLogger
-import org.dataland.datasourcingservice.utils.SecurityUtilsService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 import java.util.UUID
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.jvm.optionals.getOrNull
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
  */
-@Suppress("LongParameterList")
 @Service("SingleRequestManager")
 class SingleRequestManager
     @Autowired
     constructor(
-        private val requestLogger: RequestLogger,
-        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
-        private val dataSourcingServiceDataRequestProcessingUtils: DataSourcingServiceDataRequestProcessingUtils,
+        private val companyDataControllerApi: CompanyDataControllerApi,
         private val requestRepository: RequestRepository,
-        private val dataSourcingRepository: DataSourcingRepository,
+        private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val securityUtilsService: SecurityUtilsService,
-        @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}")
-        private val maxRequestsForUser: Int,
     ) {
-        private fun validateSingleDataRequestContent(singleRequest: SingleRequest) {
-            if (singleRequest.reportingPeriods.isEmpty()) {
-                throw InvalidInputApiException(
-                    "The list of reporting periods must not be empty.",
-                    "At least one reporting period must be provided. Without, no meaningful request can be created.",
-                )
-            }
+        private val requestLogger = RequestLogger()
+
+        private fun getCompanyIdForIdentifier(identifier: String): UUID {
+            val companyInformation =
+                companyDataControllerApi.postCompanyValidation(listOf(identifier)).firstOrNull()?.companyInformation
+                    ?: throw ResourceNotFoundApiException(
+                        "The company identifier is unknown.",
+                        "No company is associated to the identifier $identifier.",
+                    )
+            return UUID.fromString(companyInformation.companyId)
         }
 
-        private fun performQuotaCheckForNonPremiumUser(
-            userId: String,
-            numberOfReportingPeriods: Int,
+        private fun storeRequest(
+            userId: UUID,
             companyId: UUID,
-        ) {
-            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId) &&
-                !securityUtilsService.isUserMemberOfTheCompany(companyId)
-            ) {
-                val numberOfDataRequestsPerformedByUserFromTimestamp =
-                    requestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userId, CommonDataRequestProcessingUtils.getEpochTimeStartOfDay(),
-                    )
-
-                if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
-                    > maxRequestsForUser
-                ) {
-                    throw QuotaExceededException(
-                        "Quota has been reached.",
-                        "The daily quota capacity has been reached.",
-                    )
-                }
-            }
-        }
-
-        private fun preprocessDataRequest(
-            singleRequest: SingleRequest,
-            userIdToUse: UUID,
-        ): PreprocessedRequest {
-            keycloakAdapterRequestProcessingUtils.throwExceptionIfNotJwtAuth()
-
-            val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
-                dataSourcingServiceDataRequestProcessingUtils
-                    .performIdentifierValidation(
-                        listOf(singleRequest.companyIdentifier),
-                    )
-            if (rejectedIdentifiers.isNotEmpty()) {
-                throw ResourceNotFoundApiException(
-                    "The company identifier is unknown.",
-                    "No company is associated to the identifier ${rejectedIdentifiers.first()}.",
-                )
-            }
-            val companyId =
-                UUID.fromString(
-                    acceptedIdentifiersToCompanyIdAndName.getValue(singleRequest.companyIdentifier).companyId,
-                )
-
-            validateSingleDataRequestContent(singleRequest)
-            performQuotaCheckForNonPremiumUser(
-                userIdToUse.toString(),
-                singleRequest.reportingPeriods.size,
-                companyId,
-            )
-
-            return PreprocessedRequest(
-                companyId = companyId,
-                userId = userIdToUse,
-                dataType = singleRequest.dataType,
-                correlationId = UUID.randomUUID().toString(),
-            )
-        }
-
-        private fun processReportingPeriod(
+            dataType: String,
             reportingPeriod: String,
-            preprocessedRequest: PreprocessedRequest,
-        ): Map<String, Pair<String, UUID>> {
-            val existingDataRequestsWithNonFinalState =
-                dataSourcingServiceDataRequestProcessingUtils.getExistingDataRequestsWithNonFinalState(
-                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
+        ): UUID {
+            val dataRequestEntity =
+                RequestEntity(
+                    userId,
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    Instant.now().toEpochMilli(),
                 )
-            return if (existingDataRequestsWithNonFinalState.isNotEmpty()) {
-                mutableMapOf(
-                    ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS to
-                        Pair(reportingPeriod, existingDataRequestsWithNonFinalState.first().id),
-                )
-            } else {
-                val requestEntity =
-                    dataSourcingServiceDataRequestProcessingUtils.storeRequestEntityAsOpen(
-                        userId = preprocessedRequest.userId,
-                        companyId = preprocessedRequest.companyId,
-                        dataType = preprocessedRequest.dataType,
-                        reportingPeriod = reportingPeriod,
-                    )
-                mutableMapOf(
-                    ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to
-                        Pair(
-                            reportingPeriod,
-                            requestEntity.id,
-                        ),
+
+            return requestRepository
+                .save(dataRequestEntity)
+                .also {
+                    requestLogger.logMessageForStoringDataRequest(it.id)
+                }.id
+        }
+
+        private fun assertNoConflictingRequestExists(
+            userId: UUID,
+            companyId: UUID,
+            dataType: String,
+            reportingPeriod: String,
+        ) {
+            val duplicateRequests =
+                requestRepository
+                    .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
+                        userId, companyId, dataType, reportingPeriod,
+                    ).filter { it.state == RequestState.Open || it.state == RequestState.Processing }
+
+            if (duplicateRequests.isNotEmpty()) {
+                val duplicate = duplicateRequests.first()
+                throw DuplicateRequestException(
+                    duplicate.id,
+                    duplicate.reportingPeriod,
+                    duplicate.companyId,
+                    duplicate.dataType,
                 )
             }
         }
-
-        private fun buildResponseForSingleDataRequest(
-            dataRequest: SingleRequest,
-            reportingPeriodsAndIdsOfStoredDataRequests: List<Pair<String, UUID>>,
-            reportingPeriodsAndNullIdsOfDuplicateDataRequests: List<Pair<String, UUID>>,
-        ): SingleRequestResponse =
-            SingleRequestResponse(
-                CommonDataRequestProcessingUtils.buildResponseMessageForSingleDataRequest(
-                    totalNumberOfReportingPeriods = dataRequest.reportingPeriods.size,
-                    numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsAndNullIdsOfDuplicateDataRequests.size,
-                ),
-                reportingPeriodsAndIdsOfStoredDataRequests.map { it.first },
-                reportingPeriodsAndIdsOfStoredDataRequests.map { it.second.toString() },
-                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.first },
-                reportingPeriodsAndNullIdsOfDuplicateDataRequests.map { it.second.toString() },
-            )
 
         /**
          * Creates a new data request based on the provided SingleRequest object.
@@ -172,8 +97,6 @@ class SingleRequestManager
          * @param singleRequest The SingleRequest object containing the details of the data request.
          * @param userId The UUID of the user making the request. If null, it will be extracted from the security context.
          * @return A SingleRequestResponse object containing details about the created request.
-         * @throws InvalidInputApiException If the input data is invalid.
-         * @throws QuotaExceededException If the user has exceeded their quota for requests.
          * @throws ResourceNotFoundApiException If the specified company identifier does not exist.
          */
         @Transactional
@@ -183,30 +106,12 @@ class SingleRequestManager
         ): SingleRequestResponse {
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
 
-            val preprocessedRequest = preprocessDataRequest(singleRequest, userIdToUse)
+            val companyId = getCompanyIdForIdentifier(singleRequest.companyIdentifier)
 
-            requestLogger.logMessageForReceivingSingleDataRequest(
-                preprocessedRequest,
-            )
-
-            val reportingPeriodsAndIdsMap = mutableMapOf<String, MutableList<Pair<String, UUID>>>()
-
-            singleRequest.reportingPeriods.forEach { reportingPeriod ->
-                val processedReportingPeriod =
-                    processReportingPeriod(
-                        reportingPeriod, preprocessedRequest,
-                    )
-                processedReportingPeriod.forEach { (key, value) ->
-                    reportingPeriodsAndIdsMap.getOrPut(key) { mutableListOf() }.add(value)
-                }
-            }
-
-            return buildResponseForSingleDataRequest(
-                singleRequest,
-                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList()
-                    ?: listOf(),
-                reportingPeriodsAndIdsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList()
-                    ?: listOf(),
+            requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
+            assertNoConflictingRequestExists(userIdToUse, companyId, singleRequest.dataType, singleRequest.reportingPeriod)
+            return SingleRequestResponse(
+                storeRequest(userIdToUse, companyId, singleRequest.dataType, singleRequest.reportingPeriod).toString(),
             )
         }
 
@@ -243,29 +148,10 @@ class SingleRequestManager
             val oldRequestState = requestEntity.state
             requestEntity.state = newRequestState
 
-            if (oldRequestState != RequestState.Open || newRequestState != RequestState.Processing) {
-                return requestEntity.toStoredDataRequest()
-            }
-            val companyId = requestEntity.companyId
-            val dataType = requestEntity.dataType
-            val reportingPeriod = requestEntity.reportingPeriod
-            val dataSourcingEntity =
-                dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
-                    companyId = companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                )
-            if (dataSourcingEntity == null) {
-                val newDataSourcingEntity =
-                    DataSourcingEntity(
-                        companyId = companyId,
-                        reportingPeriod = reportingPeriod,
-                        dataType = dataType,
-                    )
-                newDataSourcingEntity.associatedRequests.add(requestEntity)
-                dataSourcingRepository.save(newDataSourcingEntity)
+            if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
+                dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
-                dataSourcingEntity.associatedRequests.add(requestEntity)
+                requestRepository.save(requestEntity)
             }
             return requestEntity.toStoredDataRequest()
         }
