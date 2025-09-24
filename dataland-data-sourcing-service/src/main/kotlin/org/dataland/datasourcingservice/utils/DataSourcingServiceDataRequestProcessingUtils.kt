@@ -64,7 +64,7 @@ class DataSourcingServiceDataRequestProcessingUtils
                     ).filter {
                         it.state == requestState
                     }
-            if (!foundRequests.isEmpty()) {
+            if (foundRequests.isNotEmpty()) {
                 requestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     userId,
                     companyId,

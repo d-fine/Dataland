@@ -48,7 +48,7 @@ interface RequestApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and #userId == null)")
     fun createRequest(
         @Valid @RequestBody singleRequest: SingleRequest,
         @RequestParam(required = false) userId: String? = null,

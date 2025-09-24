@@ -18,7 +18,7 @@ object CommonDataRequestProcessingUtils {
         return startOfDay.toInstant().toEpochMilli()
     }
 
-/**
+    /**
      * Builds a response message for a single data request based on the total number of reporting periods
      * and the number of reporting periods corresponding to duplicate requests.
      *

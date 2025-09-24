@@ -45,7 +45,7 @@ class DataAccessManager(
                 .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                     userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
                     reportingPeriod = reportingPeriod,
-                )?.any { it.accessStatus == AccessStatus.Granted } ?: false
+                ).any { it.accessStatus == AccessStatus.Granted }
 
         if (hasAccess) {
             logger.info(
@@ -118,7 +118,7 @@ class DataAccessManager(
                     userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
                     reportingPeriod = reportingPeriod,
                 )
-        if (!existingRequestsOfUser.isNullOrEmpty()) {
+        if (!existingRequestsOfUser.isEmpty()) {
             val dataRequestEntity = existingRequestsOfUser[0]
 
             val modificationTime = Instant.now().toEpochMilli()
@@ -230,7 +230,7 @@ class DataAccessManager(
             dataRequestRepository
                 .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                     requestingUserId, companyId, framework.name, reportingPeriod,
-                )?.filter {
+                ).filter {
                     it.accessStatus == accessStatus
                 }
         return foundRequests
