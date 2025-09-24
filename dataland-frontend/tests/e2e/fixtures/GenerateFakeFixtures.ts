@@ -1,6 +1,6 @@
 import { exportCustomMocks } from '@e2e/fixtures/custom_mocks';
-import { exit } from 'node:process';
-import { readdir } from 'node:fs/promises';
+import { exit } from 'process';
+import { readdir } from 'fs/promises';
 import { setupDeterministicFakerEnvironmentForFramework } from '@e2e/fixtures/ReproducibilityConfiguration';
 
 export const FAKE_FIXTURES_PER_FRAMEWORK = 100;
