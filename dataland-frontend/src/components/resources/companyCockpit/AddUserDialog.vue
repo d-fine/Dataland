@@ -29,6 +29,7 @@
         </div>
 
         <Listbox
+          v-if="suggestedUsers.length > 0"
           :options="suggestedUsers"
           data-test="suggestion-listbox"
           style="margin-top: var(--spacing-sm); min-height: 4rem; max-height: 18rem; overflow: hidden"
@@ -41,7 +42,7 @@
           }"
         >
           <template #option="{ option }">
-            <div class="user-row">
+            <div class="user-row" data-test="suggested-user-row">
               <Tag :value="option.initials" />
               <div class="user-info">
                 <b>{{ option.name }}</b>
@@ -78,15 +79,18 @@
         <div v-if="hasSelectedUsers">
           <Listbox
             :options="selectedUsers"
+            data-test="selected-users-listbox"
+            style="overflow: hidden"
+            :highlightOnSelect="false"
             :pt="{
               option: {
-                style: 'background-color: var(--p-surface-50); cursor: default; color: var(--p-text-color);',
+                style: 'cursor: default;',
               },
-              listContainer: { style: 'max-height: 13rem; overflow:auto' },
+              listContainer: { style: 'overflow:auto' },
             }"
           >
             <template #option="{ option }">
-              <div class="user-row">
+              <div class="user-row" data-test="selected-user-row">
                 <Tag :value="option.initials" />
                 <div class="user-info">
                   <b>{{ option.name }}</b>
@@ -97,7 +101,7 @@
                   variant="text"
                   @click="handleRemoveUser(option.userId)"
                   rounded
-                  data-test="remove-user-button"
+                  data-test="remove-selected-user-button"
                 />
               </div>
             </template>
@@ -395,6 +399,6 @@ async function getSuggestedUsers(): Promise<User[]> {
 }
 
 .select-container {
-  width: 4rem;
+  width: 5rem;
 }
 </style>
