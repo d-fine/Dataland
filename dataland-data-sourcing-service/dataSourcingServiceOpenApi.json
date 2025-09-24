@@ -1158,8 +1158,11 @@
       },
       "StoredDataSourcing": {
         "required": [
+          "associatedRequestIds",
           "companyId",
           "dataType",
+          "documentIds",
+          "expectedPublicationDatesOfDocuments",
           "id",
           "reportingPeriod",
           "state"

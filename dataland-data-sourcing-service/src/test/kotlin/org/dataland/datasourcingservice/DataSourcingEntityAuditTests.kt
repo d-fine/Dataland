@@ -35,8 +35,8 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
             DataSourcingEntity(
                 id = dataSourcingEntityId,
                 companyId = companyId,
-                reportingPeriod = "Q1-2023",
-                dataType = "SFDR",
+                reportingPeriod = "2023",
+                dataType = "sfdr",
                 state = initialState,
                 documentIds = setOf(),
                 expectedPublicationDatesOfDocuments = setOf(),

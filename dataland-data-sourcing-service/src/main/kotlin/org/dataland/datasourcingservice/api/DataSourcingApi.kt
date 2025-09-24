@@ -117,8 +117,8 @@ interface DataSourcingApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingDocuments(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
-        @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
         @Valid @RequestBody documentIds: Set<String>,
+        @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
     ): ResponseEntity<StoredDataSourcing>
 
     /**

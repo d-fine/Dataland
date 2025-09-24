@@ -45,7 +45,7 @@ data class StoredDataSourcing(
                 example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
             ),
     )
-    val documentIds: Set<String>? = null,
+    val documentIds: Set<String> = emptySet(),
     @field:ArraySchema(
         arraySchema =
             Schema(
@@ -53,7 +53,7 @@ data class StoredDataSourcing(
                 description = DataSourcingOpenApiDescriptionsAndExamples.EXPECTED_PUBLICATION_DATES_DESCRIPTION,
             ),
     )
-    val expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument>? = null,
+    val expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATE_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
     )
@@ -80,5 +80,5 @@ data class StoredDataSourcing(
                 description = DataSourcingOpenApiDescriptionsAndExamples.ASSOCIATED_REQUEST_IDS_DESCRIPTION,
             ),
     )
-    val associatedRequestIds: Set<String>? = null,
+    val associatedRequestIds: Set<String> = emptySet(),
 )
