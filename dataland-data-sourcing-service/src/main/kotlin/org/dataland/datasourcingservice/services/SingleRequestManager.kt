@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DuplicateRequestException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
@@ -151,9 +150,7 @@ class SingleRequestManager
             requestEntity.state = newRequestState
 
             if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
-                val sourcingObject: DataSourcingEntity = dataSourcingManager.getOrCreateDataSourcingObject(requestEntity)
-                sourcingObject.addAssociatedRequest(requestEntity)
-                dataSourcingManager.saveDataSourcingObject(sourcingObject)
+                dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
             }
