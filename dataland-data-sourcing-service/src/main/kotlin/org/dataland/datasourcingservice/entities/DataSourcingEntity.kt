@@ -43,7 +43,7 @@ data class DataSourcingEntity(
     var documentIds: Set<String> = emptySet(),
     @ElementCollection
     @Column(name = "expected_publication_date_documents")
-    var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
+    var expectedPublicationDatesDocuments: Set<ExpectedPublicationDateDocument> = emptySet(),
     @Column(name = "date_document_sourcing_attempt")
     var dateDocumentSourcingAttempt: LocalDate? = null,
     @Column(name = "document_collector")
@@ -79,7 +79,7 @@ data class DataSourcingEntity(
             dataType = dataType,
             state = state,
             documentIds = documentIds,
-            expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
+            expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
             dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
             documentCollector = documentCollector.toString(),
             dataExtractor = dataExtractor.toString(),

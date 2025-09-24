@@ -108,7 +108,7 @@ class DataSourcingManager
             performStatePatch(dataSourcingEntity, dataSourcingPatch.state)
             updateIfNotNull(dataSourcingPatch.documentIds) { dataSourcingEntity.documentIds = it }
             updateIfNotNull(dataSourcingPatch.expectedPublicationDatesOfDocuments) {
-                dataSourcingEntity.expectedPublicationDatesOfDocuments = it
+                dataSourcingEntity.expectedPublicationDatesDocuments = it
             }
             updateIfNotNull(dataSourcingPatch.dateDocumentSourcingAttempt) {
                 dataSourcingEntity.dateDocumentSourcingAttempt = it

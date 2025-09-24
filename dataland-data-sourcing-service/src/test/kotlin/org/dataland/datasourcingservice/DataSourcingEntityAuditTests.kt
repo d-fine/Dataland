@@ -37,7 +37,7 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
                 dataType = "sfdr",
                 state = initialState,
                 documentIds = setOf(),
-                expectedPublicationDatesOfDocuments = setOf(),
+                expectedPublicationDatesDocuments = setOf(),
                 dateDocumentSourcingAttempt = initialDate,
                 documentCollector = UUID.randomUUID(),
                 dataExtractor = UUID.randomUUID(),

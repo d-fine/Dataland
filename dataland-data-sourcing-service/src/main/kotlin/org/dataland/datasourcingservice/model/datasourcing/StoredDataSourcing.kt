@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
+import org.dataland.datasourcingservice.entities.ExpectedPublicationDateDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import java.time.LocalDate
 
@@ -49,11 +49,11 @@ data class StoredDataSourcing(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = ExpectedPublicationDateOfDocument::class,
+                implementation = ExpectedPublicationDateDocument::class,
                 description = DataSourcingOpenApiDescriptionsAndExamples.EXPECTED_PUBLICATION_DATES_DESCRIPTION,
             ),
     )
-    val expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
+    val expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateDocument> = emptySet(),
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATE_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
     )
