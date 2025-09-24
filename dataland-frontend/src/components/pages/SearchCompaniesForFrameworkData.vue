@@ -431,7 +431,6 @@ export default defineComponent({
   background-color: white;
 }
 
-/* Match prod: expanded state with padding; sticky below app header */
 .search-bar-and-filters-container {
   margin: 0;
   width: 100%;
@@ -447,7 +446,6 @@ export default defineComponent({
   width: 70%;
 }
 
-/* Collapsed: reduce top padding and align horizontally */
 .collapsed-search-container {
   display: flex;
   flex-direction: row;
