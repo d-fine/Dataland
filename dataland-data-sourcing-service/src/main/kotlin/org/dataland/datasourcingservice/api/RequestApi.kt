@@ -2,6 +2,9 @@ package org.dataland.datasourcingservice.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -40,8 +43,19 @@ interface RequestApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully processed the data request."),
-            ApiResponse(responseCode = "400", description = "The request contains invalid data or is a duplicate."),
+            ApiResponse(responseCode = "200", description = "Successfully processed the request."),
+            ApiResponse(
+                responseCode = "400",
+                description = "The request contains invalid data or is a duplicate.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "You were trying to impersonate another Dataland user. Only admins the right to do so. " +
+                        "To make a request for yourself, leave the userId parameter empty.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PostMapping(
@@ -49,7 +63,7 @@ interface RequestApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("(hasRole('ROLE_USER') && (#userId == authentication.userId || #userId == null)) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (#userId == authentication.userId or #userId == null))")
     fun createRequest(
         @Valid @RequestBody singleRequest: SingleRequest,
         @RequestParam(required = false) userId: String? = null,
@@ -67,14 +81,26 @@ interface RequestApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data request."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved request."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "The entered request ID does not belong to any of your requests. Only Dataland admins " +
+                        "have the right to query other users' requests.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @GetMapping(
         value = ["/{dataRequestId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
     fun getRequest(
         @Valid @PathVariable dataRequestId: String,
     ): ResponseEntity<StoredRequest>
@@ -92,7 +118,17 @@ interface RequestApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched data request."),
+            ApiResponse(responseCode = "200", description = "Successfully patched request."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to patch requests.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping(
@@ -115,13 +151,22 @@ interface RequestApi {
      * Retrieve the history of a Request object by its ID.
      */
     @Operation(
-        summary = "Get full history of a requests by ID",
+        summary = "Get full history of requests by ID",
         description = "Retrieve the history of a Request object by its unique identifier.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved Request history."),
-            ApiResponse(responseCode = "404", description = "request object not found."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved request history."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to query request history.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(array = ArraySchema())],
+            ),
         ],
     )
     @GetMapping("/{id}/history", produces = ["application/json"])
