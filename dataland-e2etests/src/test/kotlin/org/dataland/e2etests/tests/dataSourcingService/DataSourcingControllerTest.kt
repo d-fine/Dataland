@@ -46,13 +46,9 @@ class DataSourcingControllerTest {
         comment: String = "test request",
         user: TechnicalUser = TechnicalUser.Reader,
     ): String {
-        val request =
-            SingleRequest(companyId, dataType, setOf(reportingPeriod), comment)
+        val request = SingleRequest(companyId, dataType, reportingPeriod, comment)
         return GlobalAuth.withTechnicalUser(user) {
-            apiAccessor.dataSourcingRequestControllerApi
-                .createRequest(request)
-                .idsOfStoredRequests
-                .first()
+            apiAccessor.dataSourcingRequestControllerApi.createRequest(request).id
         }
     }
 
@@ -84,8 +80,8 @@ class DataSourcingControllerTest {
         }
 
         val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-        assertEquals(3, updatedSourcingObject.associatedRequestIds?.size ?: 0)
-        updatedSourcingObject.associatedRequestIds?.forEach {
+        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
+        updatedSourcingObject.associatedRequestIds.forEach {
             val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(it)
             assertEquals(expectedRequestState, request.state)
         }
@@ -139,7 +135,7 @@ class DataSourcingControllerTest {
 
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(newRequest, RequestState.Processing)
         updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-        assertEquals(storedDataSourcing.associatedRequestIds?.plus(newRequest), updatedSourcingObject.associatedRequestIds)
+        assertEquals(storedDataSourcing.associatedRequestIds.plus(newRequest), updatedSourcingObject.associatedRequestIds)
     }
 
     @Test
@@ -197,7 +193,7 @@ class DataSourcingControllerTest {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, DataSourcingState.Answered)
         }
 
-        val requestId = storedDataSourcing.associatedRequestIds?.first() ?: ""
+        val requestId = storedDataSourcing.associatedRequestIds.first()
         val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
         assertEquals(RequestState.Processed, request.state)
 
