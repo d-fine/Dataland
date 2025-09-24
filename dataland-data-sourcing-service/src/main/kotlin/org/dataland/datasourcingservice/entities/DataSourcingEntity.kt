@@ -42,7 +42,7 @@ data class DataSourcingEntity(
     @Column(name = "document_id")
     var documentIds: Set<String> = emptySet(),
     @ElementCollection
-    @Column(name = "expected_publication_date_of_documents")
+    @Column(name = "expected_publication_date_documents")
     var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
     @Column(name = "date_document_sourcing_attempt")
     var dateDocumentSourcingAttempt: LocalDate? = null,
