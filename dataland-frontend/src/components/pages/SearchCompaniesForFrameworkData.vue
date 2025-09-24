@@ -99,7 +99,7 @@ export default defineComponent({
     PrimeButton,
   },
   created() {
-    window.addEventListener('scroll', this.windowScrollHandler);
+    globalThis.addEventListener('scroll', this.windowScrollHandler);
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -353,7 +353,7 @@ export default defineComponent({
     },
   },
   unmounted() {
-    window.removeEventListener('scroll', this.windowScrollHandler);
+    globalThis.removeEventListener('scroll', this.windowScrollHandler);
   },
 });
 </script>

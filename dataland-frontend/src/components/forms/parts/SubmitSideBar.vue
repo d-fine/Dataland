@@ -17,7 +17,7 @@ export default defineComponent({
       if (this.elementPosition == 0) {
         this.elementPosition = submitSideBar.getBoundingClientRect().top;
       }
-      if (window.scrollY > this.elementPosition) {
+      if (globalThis.scrollY > this.elementPosition) {
         submitSideBar.style.position = 'fixed';
         submitSideBar.style.top = '60px';
       } else {
@@ -26,10 +26,10 @@ export default defineComponent({
       }
       return null;
     };
-    window.addEventListener('scroll', this.scrollListener);
+    globalThis.addEventListener('scroll', this.scrollListener);
   },
   unmounted() {
-    window.removeEventListener('scroll', this.scrollListener);
+    globalThis.removeEventListener('scroll', this.scrollListener);
   },
 });
 </script>

@@ -18,7 +18,7 @@ function verifyCreatingApiKeyAndCopyingIt(): void {
         command: 'Browser.grantPermissions',
         params: {
           permissions: ['clipboardReadWrite', 'clipboardSanitizedWrite'],
-          origin: window.location.origin,
+          origin: globalThis.location.origin,
         },
       })
     );

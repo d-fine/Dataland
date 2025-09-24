@@ -70,7 +70,7 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="fileTypeError"]').should('contain', 'Please select a file type.');
     });
     it('Check download button functionality', function (): void {
-      cy.stub(window, 'XMLHttpRequest').callsFake(function () {
+      cy.stub(globalThis, 'XMLHttpRequest').callsFake(function () {
         return {
           open: cy.stub(),
           send: cy.stub(),

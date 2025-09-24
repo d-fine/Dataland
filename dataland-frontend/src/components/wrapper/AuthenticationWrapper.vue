@@ -30,7 +30,7 @@ export default defineComponent({
   },
   computed: {
     isUserOnMobileDevice(): boolean {
-      const userAgent = window.navigator.userAgent.toLowerCase();
+      const userAgent = globalThis.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
     },
   },

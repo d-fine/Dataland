@@ -31,14 +31,14 @@ export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPar
     blob = new Blob([content], { type: mimeType });
   }
 
-  const url = window.URL.createObjectURL(blob);
+  const url = globalThis.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', filename);
   document.body.appendChild(link);
   link.click();
   link.remove();
-  window.URL.revokeObjectURL(url);
+  globalThis.URL.revokeObjectURL(url);
 }
 
 /**
