@@ -33,6 +33,7 @@ const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/component
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 
 const routes = [
   {
@@ -292,6 +293,14 @@ const routes = [
     component: NoContentFound,
     meta: {
       requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/platform-redirect',
+    name: 'Platform Redirect',
+    component: PlatformRedirect,
+    meta: {
+      requiresAuthentication: true,
     },
   },
   {
