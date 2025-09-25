@@ -8,7 +8,6 @@ import org.dataland.dataSourcingService.openApiClient.model.StoredDataSourcing
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.GlobalAuth
-import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -273,7 +272,7 @@ class DataSourcingControllerTest {
     }
 
     @Test
-    fun `verify that a document collector or data extractor can see all data sourcing objects assigned to themv`() {
+    fun `verify that a document collector or data extractor can see all data sourcing objects assigned to them`() {
         val companyIdDocumentCollectorOrDataExtractor =
             createNewCompanyAndReturnId()
         val companyId1 =
@@ -331,30 +330,34 @@ class DataSourcingControllerTest {
         )
     }
 
-    @Test
-    fun `verify that a data collector can only patch a state from DocumentSourcing to DocumentSourcingDone`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        DataSourcingState.entries.forEach { initialState ->
-            DataSourcingState.entries.forEach { finalState ->
-                if (initialState == finalState) {
-                    return@forEach
-                }
-                GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                    apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, initialState)
-                }
-                if (initialState == DataSourcingState.DocumentSourcing && finalState == DataSourcingState.DocumentSourcingDone) {
-                    apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
-                    val updatedDataSourcingObject =
-                        apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-                    assertEquals(finalState, updatedDataSourcingObject.state)
-                } else {
-                    assertThrows<ClientException> {
-                        apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
-                    }
-                }
-            }
-        }
-    }
+    // This test will only become relevant after DALA-6296
+
+    /**
+     @Test
+     fun `verify that a data collector can only patch a state from DocumentSourcing to DocumentSourcingDone`() {
+     jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+     DataSourcingState.entries.forEach { initialState ->
+     DataSourcingState.entries.forEach { finalState ->
+     if (initialState == finalState) {
+     return@forEach
+     }
+     GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, initialState)
+     }
+     if (initialState == DataSourcingState.DocumentSourcing && finalState == DataSourcingState.DocumentSourcingDone) {
+     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
+     val updatedDataSourcingObject =
+     apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
+     assertEquals(finalState, updatedDataSourcingObject.state)
+     } else {
+     assertThrows<ClientException> {
+     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
+     }
+     }
+     }
+     }
+     }
+     **/
 
     @Test
     fun `verify that historization works for repeated data sourcing workflows for the same data dimensions`() {

@@ -137,7 +137,7 @@ class DataSourcingManager
         }
 
         /**
-         * Performs the state patch on the given data sourcing entity, of which the associtedRequests
+         * Performs the state patch on the given data sourcing entity, of which the associated Requests
          * field must already have been fetched.
          */
         private fun performStatePatch(
