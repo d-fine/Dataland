@@ -22,7 +22,7 @@ import java.util.UUID
 @Entity
 @Audited
 @Table(name = "requests")
-data class RequestEntity(
+class RequestEntity(
     @Id
     @Column(name = "id")
     val id: UUID,

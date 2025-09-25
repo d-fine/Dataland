@@ -28,7 +28,7 @@ import java.util.UUID
         UniqueConstraint(columnNames = ["companyId", "reportingPeriod", "dataType"]),
     ],
 )
-data class DataSourcingEntity(
+class DataSourcingEntity(
     @Id
     @Column(name = "id")
     val id: UUID,

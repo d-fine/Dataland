@@ -112,8 +112,10 @@ class DataSourcingManager
             updateIfNotNull(dataSourcingPatch.associatedRequests) { associatedRequest ->
                 dataSourcingEntity.associatedRequests =
                     associatedRequest
-                        .map {
-                            it.toRequestEntity().copy(dataSourcingEntity = dataSourcingEntity)
+                        .map { request ->
+                            val requestEntity = request.toRequestEntity()
+                            requestEntity.dataSourcingEntity = dataSourcingEntity
+                            requestEntity
                         }.toMutableSet()
             }
 
