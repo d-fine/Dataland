@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.springframework.http.ResponseEntity
@@ -56,6 +57,35 @@ interface DataSourcingApi {
         @Parameter(description = "ID of the DataSourcing object.")
         @PathVariable id: String,
     ): ResponseEntity<StoredDataSourcing>
+
+    /**
+     * Retrieve a DataSourcing object by its ID.
+     */
+    @Operation(
+        summary = "Get DataSourcing by ID",
+        description = "Retrieve DataSourcing objects assigned to your company.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing objects."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only uploaders are allowed to use this endpoint.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
+        ],
+    )
+    @GetMapping("/{companyId}", produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun getDataSourcingForCompanyId(
+        @Parameter(description = "ID of the document collector or data extractor.")
+        @PathVariable companyId: String,
+    ): ResponseEntity<List<StoredDataSourcing>>
 
     /**
      * Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.
@@ -167,7 +197,7 @@ interface DataSourcingApi {
         @Valid @RequestParam documentCollector: String?,
         @Valid @RequestParam dataExtractor: String?,
         @Valid @RequestParam adminComment: String?,
-    ): ResponseEntity<StoredDataSourcing>
+    ): ResponseEntity<ReducedDataSourcing>
 
     /**
      * Patch the associated document IDs of a DataSourcing object. Use appendDocuments to append or overwrite.

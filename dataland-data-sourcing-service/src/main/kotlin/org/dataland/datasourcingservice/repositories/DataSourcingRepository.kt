@@ -26,4 +26,14 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
             "LEFT JOIN FETCH dataSourcing.associatedRequests WHERE dataSourcing = :dataSourcingEntity",
     )
     fun fetchAssociatedRequests(dataSourcingEntity: DataSourcingEntity): DataSourcingEntity
+
+    /**
+     * Find all DataSourcingEntity instances by companyId of document collector.
+     */
+    fun findAllByDocumentCollector(companyId: UUID): List<DataSourcingEntity>
+
+    /**
+     * Find all DataSourcingEntity instances by companyId of data extractor.
+     */
+    fun findAllByDataExtractor(companyId: UUID): List<DataSourcingEntity>
 }

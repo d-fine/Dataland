@@ -9,6 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.hibernate.envers.Audited
@@ -95,5 +96,20 @@ data class DataSourcingEntity(
             dataExtractor = dataExtractor.toString(),
             adminComment = adminComment,
             associatedRequestIds = associatedRequests.map { it.id.toString() }.toMutableSet(),
+        )
+
+    /**
+     * Converts this DataSourcingEntity to a ReducedDataSourcing dto.
+     */
+    fun toReducedDataSourcing(): ReducedDataSourcing =
+        ReducedDataSourcing(
+            id = id.toString(),
+            companyId = companyId.toString(),
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            state = state,
+            documentIds = documentIds,
+            expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
+            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
         )
 }

@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.controller
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.api.DataSourcingApi
+import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.services.DataSourcingManager
@@ -21,6 +21,9 @@ class DataSourcingController(
     override fun getDataSourcingById(id: String): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(id)))
 
+    override fun getDataSourcingForCompanyId(companyId: String): ResponseEntity<List<StoredDataSourcing>> =
+        ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(companyId)))
+
     override fun getDataSourcingByDimensions(
         companyId: String,
         dataType: String,
@@ -35,7 +38,7 @@ class DataSourcingController(
         )
 
     override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<StoredDataSourcing>> =
-        throw ResourceNotFoundApiException("Not yet implemented", "Not yet implemented")
+        ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(id))
 
     override fun patchDataSourcingState(
         id: String,
@@ -47,7 +50,7 @@ class DataSourcingController(
         documentCollector: String?,
         dataExtractor: String?,
         adminComment: String?,
-    ): ResponseEntity<StoredDataSourcing> =
+    ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity.ok(
             dataSourcingManager.patchDocumentCollectorAndDataExtractor(
                 UUID.fromString(id),
