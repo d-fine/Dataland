@@ -13,6 +13,7 @@ import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 import java.time.LocalDate
 import java.util.UUID
 
@@ -40,9 +41,11 @@ class DataSourcingEntity(
     val dataType: String,
     @Column(name = "state")
     var state: DataSourcingState,
+    @NotAudited
     @ElementCollection
     @Column(name = "document_id")
     var documentIds: Set<String> = emptySet(),
+    @NotAudited
     @ElementCollection
     @Column(name = "expected_publication_date_documents")
     var expectedPublicationDatesDocuments: Set<ExpectedPublicationDateDocument> = emptySet(),
@@ -54,6 +57,7 @@ class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
+    @NotAudited
     @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JsonManagedReference
     var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
