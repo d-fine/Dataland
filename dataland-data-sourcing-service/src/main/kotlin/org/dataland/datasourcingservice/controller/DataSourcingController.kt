@@ -21,7 +21,7 @@ class DataSourcingController(
     override fun getDataSourcingById(id: String): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(id)))
 
-    override fun getDataSourcingForCompanyId(companyId: String): ResponseEntity<List<StoredDataSourcing>> =
+    override fun getDataSourcingForCompanyId(companyId: String): ResponseEntity<List<ReducedDataSourcing>> =
         ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(companyId)))
 
     override fun getDataSourcingByDimensions(
@@ -50,7 +50,7 @@ class DataSourcingController(
         documentCollector: String?,
         dataExtractor: String?,
         adminComment: String?,
-    ): ResponseEntity<ReducedDataSourcing> =
+    ): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(
             dataSourcingManager.patchDocumentCollectorAndDataExtractor(
                 UUID.fromString(id),

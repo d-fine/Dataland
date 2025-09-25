@@ -85,7 +85,7 @@ interface DataSourcingApi {
     fun getDataSourcingForCompanyId(
         @Parameter(description = "ID of the document collector or data extractor.")
         @PathVariable companyId: String,
-    ): ResponseEntity<List<StoredDataSourcing>>
+    ): ResponseEntity<List<ReducedDataSourcing>>
 
     /**
      * Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.
@@ -197,7 +197,7 @@ interface DataSourcingApi {
         @Valid @RequestParam documentCollector: String?,
         @Valid @RequestParam dataExtractor: String?,
         @Valid @RequestParam adminComment: String?,
-    ): ResponseEntity<ReducedDataSourcing>
+    ): ResponseEntity<StoredDataSourcing>
 
     /**
      * Patch the associated document IDs of a DataSourcing object. Use appendDocuments to append or overwrite.
