@@ -225,7 +225,7 @@ interface RequestApi {
         ],
     )
     @GetMapping("/{id}/history", produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (#userId == authentication.userId or #userId == null))")
     fun getRequestHistoryById(
         @Parameter(description = "ID of the Request object.")
         @PathVariable id: String,
