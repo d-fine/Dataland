@@ -54,7 +54,7 @@ data class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
-    @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST])
+    @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JsonManagedReference
     var associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
 ) {

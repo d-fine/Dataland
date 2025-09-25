@@ -85,7 +85,7 @@ class DataSourcingManager
             dataSourcingPatch: DataSourcingPatch,
         ): StoredDataSourcing {
             val dataSourcingEntity = getDataSourcingEntityById(dataSourcingEntityId)
-            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
+            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch)
         }
 
         /**
@@ -97,7 +97,7 @@ class DataSourcingManager
         private fun handlePatchOfDataSourcingEntity(
             dataSourcingEntity: DataSourcingEntity,
             dataSourcingPatch: DataSourcingPatch,
-        ): DataSourcingEntity {
+        ): StoredDataSourcing {
             performStatePatch(dataSourcingEntity, dataSourcingPatch.state)
             updateIfNotNull(dataSourcingPatch.documentIds) { dataSourcingEntity.documentIds = it }
             updateIfNotNull(dataSourcingPatch.expectedPublicationDatesOfDocuments) {
@@ -117,7 +117,7 @@ class DataSourcingManager
                         }.toMutableSet()
             }
 
-            return dataSourcingEntity
+            return dataSourcingEntity.toStoredDataSourcing()
         }
 
         private fun performStatePatch(
@@ -149,7 +149,7 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(state = state),
-            ).toStoredDataSourcing()
+            )
         }
 
         /**
@@ -171,7 +171,7 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(documentIds = newDocumentsIds),
-            ).toStoredDataSourcing()
+            )
         }
 
         /**
@@ -190,7 +190,7 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(dateDocumentSourcingAttempt = date),
-            ).toStoredDataSourcing()
+            )
         }
 
         /**
@@ -233,7 +233,7 @@ class DataSourcingManager
             documentCollector: String?,
             dataExtractor: String?,
             adminComment: String?,
-        ): ReducedDataSourcing {
+        ): StoredDataSourcing {
             val dataSourcingEntity =
                 getDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(
@@ -243,7 +243,7 @@ class DataSourcingManager
                     dataExtractor = UUID.fromString(dataExtractor),
                     adminComment = adminComment,
                 ),
-            ).toReducedDataSourcing()
+            )
         }
 
         /**
@@ -253,12 +253,12 @@ class DataSourcingManager
          * @return A list of StoredDataSourcing objects associated with the specified company ID, or null if none exist.
          */
 
-        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<StoredDataSourcing>? {
+        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing>? {
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollector(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing() }
+            return dataSourcingEntities.map { entity -> entity.toReducedDataSourcing() }
         }
 
         /**
