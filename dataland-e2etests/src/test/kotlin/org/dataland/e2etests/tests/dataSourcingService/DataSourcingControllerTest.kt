@@ -31,6 +31,14 @@ class DataSourcingControllerTest {
 
     private lateinit var storedDataSourcing: StoredDataSourcing
 
+    private fun assertForbiddenException(function: () -> Unit) {
+        val exception =
+            assertThrows<ClientException> {
+                function()
+            }
+        assertEquals("Client error : 403 ", exception.message)
+    }
+
     private fun assertResourceNotFoundException(function: () -> Unit) {
         val exception =
             assertThrows<ClientException> {
@@ -95,18 +103,26 @@ class DataSourcingControllerTest {
     @BeforeEach
     fun initializeDataSourcing() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
         val companyId =
             GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
                 apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
             }
 
         val requestId = createRequest(companyId)
-        assertResourceNotFoundException {
+
+        assertForbiddenException {
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
         }
 
-        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
-        storedDataSourcing = apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            assertResourceNotFoundException {
+                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
+            }
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
+            storedDataSourcing =
+                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId, testDataType, testReportingPeriod)
+        }
 
         assertEquals(DataSourcingState.Initialized, storedDataSourcing.state)
         assertEquals(setOf(requestId), storedDataSourcing.associatedRequestIds)
