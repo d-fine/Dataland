@@ -81,7 +81,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping("/{companyId}", produces = ["application/json"])
+    @GetMapping("/company/{companyId}", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun getDataSourcingForCompanyId(
         @Parameter(description = "ID of the document collector or data extractor.")
