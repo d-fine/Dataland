@@ -462,7 +462,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
+                  "$ref": "#/components/schemas/ReducedDataSourcing"
                 }
               }
             }
@@ -472,7 +472,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
+                  "$ref": "#/components/schemas/ReducedDataSourcing"
                 }
               }
             }
@@ -746,6 +746,76 @@
           },
           "403": {
             "description": "Only admins are allowed to query data sourcing history."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-sourcing/{companyId}": {
+      "get": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Get DataSourcing by ID",
+        "description": "Retrieve DataSourcing objects assigned to your company.",
+        "operationId": "getDataSourcingForCompanyId",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "ID of the document collector or data extractor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved DataSourcing objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataSourcing"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only uploaders are allowed to use this endpoint."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -1063,7 +1133,7 @@
             "description": "The associated reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
-          "comment": {
+          "memberComment": {
             "type": "string",
             "description": "A comment that accompanies the data sourcing request.",
             "example": "The previously provided data is lacking scope 3 emissions, but they should be available."
@@ -1265,6 +1335,67 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ReducedDataSourcing": {
+        "required": [
+          "companyId",
+          "dataType",
+          "documentIds",
+          "expectedPublicationDatesOfDocuments",
+          "id",
+          "reportingPeriod",
+          "state"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which the company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
+          },
+          "state": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "documentIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The documents from which the data for this data sourcing object are extracted.",
+            "example": [
+              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "expectedPublicationDatesOfDocuments": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
+            "items": {
+              "$ref": "#/components/schemas/ExpectedPublicationDateDocument"
+            }
+          },
+          "dateDocumentSourcingAttempt": {
+            "type": "string",
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
+            "format": "date"
           }
         }
       },

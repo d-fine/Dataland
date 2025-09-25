@@ -74,6 +74,7 @@ data class RequestEntity(
         companyId: UUID,
         dataType: String,
         reportingPeriod: String,
+        memberComment: String?,
         creationTimestamp: Long,
     ) : this(
         id = UUID.randomUUID(),
@@ -82,6 +83,7 @@ data class RequestEntity(
         dataType = dataType,
         userId = userId,
         creationTimestamp = creationTimestamp,
+        memberComment = memberComment,
         lastModifiedDate = creationTimestamp,
         requestPriority =
             if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {

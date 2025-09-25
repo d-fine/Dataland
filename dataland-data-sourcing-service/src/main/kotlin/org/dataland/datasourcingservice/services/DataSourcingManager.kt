@@ -203,7 +203,7 @@ class DataSourcingManager
          * @return the reset or newly created DataSourcingEntity
          */
         fun resetOrCreateDataSourcingObjectAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
-            val dataSourcingObject =
+            val dataSourcingEntity =
                 dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
                     requestEntity.companyId,
                     requestEntity.dataType,
@@ -213,9 +213,9 @@ class DataSourcingManager
                     reportingPeriod = requestEntity.reportingPeriod,
                     dataType = requestEntity.dataType,
                 )
-            dataSourcingObject.state = DataSourcingState.Initialized
-            dataSourcingObject.addAssociatedRequest(requestEntity)
-            return dataSourcingObject
+            dataSourcingEntity.state = DataSourcingState.Initialized
+            dataSourcingEntity.addAssociatedRequest(requestEntity)
+            return dataSourcingRepository.save(dataSourcingEntity)
         }
 
         /**

@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param companyIdentifier the company identifier for which the user wants to request framework data
  * @param dataType the name of the framework for which the user wants to request framework data
  * @param reportingPeriod a reporting periods for which the user wants to request framework data
- * @param comment a free text comment provided by the user
+ * @param memberComment a free text comment provided by the user
  */
 data class SingleRequest(
     @field:JsonProperty(required = true)
@@ -41,5 +41,5 @@ data class SingleRequest(
         description = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
     )
-    val comment: String?,
+    val memberComment: String?,
 )

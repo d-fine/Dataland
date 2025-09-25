@@ -43,7 +43,7 @@ class RequestControllerTest {
         assertEquals(request.companyIdentifier, storedRequest.companyId)
         assertEquals(request.dataType, storedRequest.dataType)
         assertEquals(request.reportingPeriod, storedRequest.reportingPeriod)
-        assertEquals(request.comment, storedRequest.memberComment)
+        assertEquals(request.memberComment, storedRequest.memberComment)
 
         assertTrue(timeBeforeUpload < storedRequest.creationTimeStamp)
         assertTrue(storedRequest.creationTimeStamp < Instant.now().toEpochMilli())
@@ -61,7 +61,7 @@ class RequestControllerTest {
     @Test
     fun `post a request in the name of another user as admin and verify that it can be retrieved`() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            postRequestForUserAndVerifyRetrieval(dummyRequest, TechnicalUser.Uploader)
+            postRequestForUserAndVerifyRetrieval(dummyRequest, TechnicalUser.Reader)
         }
     }
 

@@ -50,18 +50,20 @@ class SingleRequestManager
             companyId: UUID,
             dataType: String,
             reportingPeriod: String,
+            memberComment: String?,
         ): UUID {
             val dataRequestEntity =
                 RequestEntity(
-                    userId,
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                    Instant.now().toEpochMilli(),
+                    userId = userId,
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    memberComment = memberComment,
+                    creationTimestamp = Instant.now().toEpochMilli(),
                 )
 
             return requestRepository
-                .save(dataRequestEntity)
+                .saveAndFlush(dataRequestEntity)
                 .also {
                     requestLogger.logMessageForStoringDataRequest(it.id)
                 }.id
@@ -111,7 +113,13 @@ class SingleRequestManager
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
             assertNoConflictingRequestExists(userIdToUse, companyId, singleRequest.dataType, singleRequest.reportingPeriod)
             return SingleRequestResponse(
-                storeRequest(userIdToUse, companyId, singleRequest.dataType, singleRequest.reportingPeriod).toString(),
+                storeRequest(
+                    userId = userIdToUse,
+                    companyId = companyId,
+                    dataType = singleRequest.dataType,
+                    reportingPeriod = singleRequest.reportingPeriod,
+                    memberComment = singleRequest.memberComment,
+                ).toString(),
             )
         }
 
