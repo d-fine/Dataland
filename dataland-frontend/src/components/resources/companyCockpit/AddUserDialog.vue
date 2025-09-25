@@ -10,9 +10,9 @@
               placeholder="Enter email address"
               class="search-input"
               data-test="email-input-field"
-              @keydown.enter="selectUser(searchQuery)"
+              @keydown.enter="selectUser(searchQuery, true)"
             />
-            <Button label="SELECT" @click="selectUser(searchQuery)" data-test="select-user-button" />
+            <Button label="SELECT" @click="selectUser(searchQuery, true)" data-test="select-user-button" />
           </div>
           <Message
             v-if="unknownUserError"
@@ -20,7 +20,10 @@
             data-test="unknown-user-error"
             :pt="{
               root: {
-                style: 'margin-top: var(--spacing-xxs); word-wrap: break-word;',
+                style: 'margin-top: var(--spacing-xxs); max-width:30rem',
+              },
+              text: {
+                style: 'white-space: normal; overflow-wrap: anywhere; word-break: break-word;',
               },
             }"
           >
@@ -32,13 +35,13 @@
           v-if="suggestedUsers.length > 0"
           :options="suggestedUsers"
           data-test="suggestion-listbox"
-          style="margin-top: var(--spacing-sm); min-height: 4rem; max-height: 18rem; overflow: hidden"
+          style="margin-top: var(--spacing-sm); min-height: 4rem; max-height: 20rem; overflow: hidden"
           :highlightOnSelect="false"
           :pt="{
             option: {
-              style: 'cursor: default;',
+              style: 'cursor: default; height: 4rem;',
             },
-            listContainer: { style: 'overflow:auto' },
+            listContainer: { style: 'overflow:auto; width: 100%; max-height: 20rem;' },
           }"
         >
           <template #option="{ option }">
@@ -50,7 +53,7 @@
               </div>
               <div class="select-container">
                 <Tag
-                  v-if="selectedUsers.some((u) => u.userId === option.userId)"
+                  v-if="selectedUsers.some((user) => user.userId === option.userId)"
                   value="Selected"
                   severity="secondary"
                   data-test="selected-tag"
@@ -59,7 +62,7 @@
                   v-else
                   label="Select"
                   variant="text"
-                  @click.stop="selectUser(option.email)"
+                  @click.stop="selectUser(option.email, false)"
                   rounded
                   data-test="select-suggested-user-button"
                 />
@@ -80,13 +83,13 @@
           <Listbox
             :options="selectedUsers"
             data-test="selected-users-listbox"
-            style="overflow: hidden"
+            style="min-height: 4rem; margin-top: 21px"
             :highlightOnSelect="false"
             :pt="{
               option: {
-                style: 'cursor: default;',
+                style: 'cursor: default; height: 4rem;',
               },
-              listContainer: { style: 'overflow:auto' },
+              listContainer: { style: 'overflow:auto; max-height: 20rem;' },
             }"
           >
             <template #option="{ option }">
@@ -159,7 +162,7 @@ const emit = defineEmits<{
 defineExpose({ handleAddUser });
 
 const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
-const emailAddressController = apiClientProvider.apiClients.emailAddressController;
+const emailAddressControllerApi = apiClientProvider.apiClients.emailAddressController;
 const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const usersToAdd = ref<User[]>([]);
@@ -198,9 +201,8 @@ function generateInitials(name: string): string {
 
 /**
  * Validates the email address and adds the user to the selected users list if valid.
- * @param email - The email address to validate and add
  */
-async function validateAndAddUser(email: string): Promise<void> {
+async function validateAndAddUser(email: string, byInputText: boolean): Promise<void> {
   if (!email) return;
   unknownUserError.value = '';
 
@@ -226,7 +228,9 @@ async function validateAndAddUser(email: string): Promise<void> {
     }
 
     selectedUsers.value.push(user);
-    searchQuery.value = '';
+    if (byInputText) {
+      searchQuery.value = '';
+    }
   } catch (error) {
     if (error instanceof AxiosError) {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
@@ -241,8 +245,8 @@ async function validateAndAddUser(email: string): Promise<void> {
  * Handles the selection of a user based on the search query.
  * It validates the email and adds the user to the selected users list.
  */
-async function selectUser(userEmail: string): Promise<void> {
-  await validateAndAddUser(userEmail.trim());
+async function selectUser(userEmail: string, byInputText: boolean): Promise<void> {
+  await validateAndAddUser(userEmail.trim(), byInputText);
 }
 
 /**
@@ -305,7 +309,7 @@ async function handleAddUser(): Promise<void> {
  * @return {Promise<User[]>} A promise that resolves to an array of `User` objects representing the suggested users.
  */
 async function getSuggestedUsers(): Promise<User[]> {
-  const suggestedUsersResponse = await emailAddressController.getUsersByCompanyAssociatedSubdomains(props.companyId);
+  const suggestedUsersResponse = await emailAddressControllerApi.getUsersByCompanyAssociatedSubdomains(props.companyId);
   const suggestedKeyCloakUsers = suggestedUsersResponse.data;
   const suggestedUsers: User[] = [];
   for (const keycloakUser of suggestedKeyCloakUsers) {
@@ -399,6 +403,6 @@ async function getSuggestedUsers(): Promise<User[]> {
 }
 
 .select-container {
-  width: 5rem;
+  width: 6rem;
 }
 </style>

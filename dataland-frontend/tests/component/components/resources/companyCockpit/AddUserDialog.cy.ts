@@ -2,7 +2,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddMemberDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
 describe('AddMemberDialog Component Tests', function () {
-  const existingUsers = [{ userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' }];
+  const existingUsers = [{ userId: '1', email: 'existing@test.com', firstName: 'Existing', lastName: 'User' }];
 
   beforeEach(function () {
     cy.intercept('POST', '**/emails/validation', (req) => {
