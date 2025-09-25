@@ -33,4 +33,8 @@ data class BasicDataDimensions(
      * @return the basic data point dimensions
      */
     fun toBasicDataPointDimensions(dataPointType: String = dataType) = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
+
+    fun toBasicDataSetDimensions(framework: String = dataType) = BasicDataSetDimensions(companyId, framework, reportingPeriod)
+
+    fun toBaseDimensions(): BasicBaseDimensions = BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod)
 }

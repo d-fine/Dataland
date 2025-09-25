@@ -150,20 +150,4 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         @Param("dataTypes") dataTypes: List<String>?,
         @Param("reportingPeriods") reportingPeriods: List<String>?,
     ): List<DataMetaInformationEntity>
-
-    /**
-     * Finds all DataMetaInformationEntities matching one of the provided dimension triples.
-     * Each triple contains (companyId, dataType, reportingPeriod).
-     * @param dimensionTriples List of triples representing the dimensions to search for.
-     * @return List of DataMetaInformationEntity matching the provided dimensions.
-     */
-    @Query(
-    nativeQuery = true,
-        value = "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
-        "WHERE (dataMetaInformation.company.companyId ,dataMetaInformation.dataType ,dataMetaInformation.reportingPeriod) IN (:dimensionTriples) " +
-        "AND dataMetaInformation.currentlyActive = true"
-    )
-    fun findByDataDimensionsTriples(
-        @Param("dimensionTriples") dimensionTriples: List<Triple<String, String, String>>,
-    ): List<DataMetaInformationEntity>
 }

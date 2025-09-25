@@ -12,16 +12,17 @@ import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInform
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
-import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -53,6 +54,7 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
+        private val dataDeliveryService: DataDeliveryService,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -353,28 +355,9 @@ class AssembledDataManager
 
         @Transactional(readOnly = true)
         override fun getDatasetData(
-            dataDimensionList: Set<BasicDataDimensions>,
+            dataDimensions: Set<BasicDataSetDimensions>,
             correlationId: String,
-        ): Map<BasicDataDimensions, String> {
-            val dataPointDimensions = dataPointUtils.getBasicDataPointDimensionsForDataDimensions(dataDimensionList, correlationId)
-            val dataPointIds =
-                dataPointDimensions.entries
-                    .associate { (dataDimension, dataPointDimensionList) ->
-                        val availableDataPointIds = dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
-                        dataDimension to
-                            if (availableDataPointIds.keys
-                                    .map { it.dataPointType }
-                                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
-                                    .isNotEmpty()
-                            ) {
-                                availableDataPointIds.values.toList()
-                            } else {
-                                emptyList()
-                            }
-                    }.filterNot { it.value.isEmpty() }
-
-            return assembleDatasetsFromDataPointIds(dataPointIds, correlationId)
-        }
+        ): Map<BasicDataSetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensions, correlationId)
 
         @Transactional(readOnly = true)
         override fun getAllDatasetsAndMetaInformation(

@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -262,13 +263,13 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionsSet: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDataSetDimensions>,
             correlationId: String,
-        ): Map<BasicDataDimensions, String> =
+        ): Map<BasicDataSetDimensions, String> =
             dataDimensionsSet
                 .associateWith {
                     metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
-                        getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
+                        getPublicDataset(dataId, DataType.valueOf(it.framework), correlationId).data
                     } ?: ""
                 }.filterNot { it.value.isEmpty() }
 

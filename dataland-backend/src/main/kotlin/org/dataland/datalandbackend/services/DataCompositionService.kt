@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -48,6 +52,7 @@ class DataCompositionService
             initializeSpecificationCache()
         }
 
+        // ToDo: move this into a backend utils class and look into making the start up dependent
         private fun waitUntilSpecificationServiceReady() {
             Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
             for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
@@ -99,6 +104,8 @@ class DataCompositionService
          */
         fun isNonAssembledFramework(framework: String): Boolean = nonAssembledFrameworks.contains(framework)
 
+        fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
+
         /**
          * Checks if the given string is indeed a valid data point type
          * @param dataPointType the string to be checked
@@ -133,12 +140,29 @@ class DataCompositionService
             }
 
         /**
-         * Retrieves all relevant data point types for a given framework
-         * @param framework the name of the framework
+         * Retrieves all relevant data point types for a given data type
+         * @param dataType the name of the data type (either a framework or a data point)
          * @return a set of all relevant data point types
-         * @throws InvalidInputApiException if the framework is not found
+         * @throws InvalidInputApiException if the data type is not known
          */
-        fun getRelevantDataPointTypes(framework: String): Collection<String> {
+        fun getRelevantDataPointTypes(dataType: String): Collection<String> =
+            when {
+                isDataPointType(dataType) -> setOf(dataType)
+                isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType)
+                else -> {
+                    throw InvalidInputApiException(
+                        "DataType $dataType not found.",
+                        "The specified dataType $dataType is not known to the specification service.",
+                    )
+                }
+            }
+
+        /**
+         * Retrieves all data point types contained in an assembled framework
+         * @param framework the name of the framework for which the data point type composition is requested
+         * @return a set of all relevant data point types
+         */
+        private fun getContainedDataPointTypes(framework: String): Collection<String> {
             val frameworkSpecification = getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
@@ -152,4 +176,29 @@ class DataCompositionService
             val consistingDataPoints = datasetDatapointRepository.findById(datasetId).getOrNull()
             return consistingDataPoints?.dataPoints?.keys ?: emptyList()
         }
+
+        /**
+         * figure out if a data type is actually a known data typy
+         */
+        fun isDataType(input: String): Boolean = isDataPointType(input) || isFramework(input)
+
+        /**
+         * Filters out invalid data dimensions by checking if the company ID, data type, and reporting period are correctly formatted.
+         * @param dataDimensions the list of data dimensions to filter
+         * @return the list of all properly formatted data dimensions from the original list
+         */
+        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataSetDimensions>) =
+            dataDimensions.filter { dimensions ->
+                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isFramework(dimensions.framework)
+            }
+
+        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataPointDimensions>) =
+            dataDimensions.filter { dimensions ->
+                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataPointType(dimensions.dataPointType)
+            }
+
+        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
+            dataDimensions.filter { dimensions ->
+                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataType(dimensions.dataType)
+            }
     }

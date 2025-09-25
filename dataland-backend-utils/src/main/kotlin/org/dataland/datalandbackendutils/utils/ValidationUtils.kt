@@ -1,5 +1,6 @@
 package org.dataland.datalandbackendutils.utils
 
+import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
@@ -30,4 +31,7 @@ object ValidationUtils {
             return false
         }
     }
+
+    fun isBaseDimensions(baseDimensions: BaseDimensions) =
+        isCompanyId(baseDimensions.companyId) && isReportingPeriod(baseDimensions.reportingPeriod)
 }

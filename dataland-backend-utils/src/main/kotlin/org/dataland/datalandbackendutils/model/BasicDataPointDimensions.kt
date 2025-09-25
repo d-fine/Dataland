@@ -12,4 +12,6 @@ data class BasicDataPointDimensions(
     override val companyId: String,
     override val dataPointType: String,
     override val reportingPeriod: String,
-) : DataPointDimensions
+) : DataPointDimensions {
+    fun toBaseDimensions(): BasicBaseDimensions = BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod)
+}

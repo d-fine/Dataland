@@ -41,20 +41,19 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         reportingPeriod: String,
     ): List<DataRequestEntity>?
 
-
     @Query(
         "SELECT d FROM DataRequestEntity d " +
-                "JOIN d.dataRequestStatusHistory s " +
-                "WHERE s.creationTimestamp = (" +
-                "   SELECT MAX(s2.creationTimestamp) " +
-                "   FROM d.dataRequestStatusHistory s2" +
-                ") " +
-                "AND s.requestStatus = :targetStatus " +
-                "AND (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :dataDimensions"
+            "JOIN d.dataRequestStatusHistory s " +
+            "WHERE s.creationTimestamp = (" +
+            "   SELECT MAX(s2.creationTimestamp) " +
+            "   FROM d.dataRequestStatusHistory s2" +
+            ") " +
+            "AND s.requestStatus = :targetStatus " +
+            "AND (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :dataDimensions",
     )
     fun findByLastStatus(
         @Param("targetStatus") targetStatus: List<RequestStatus>,
-        @Param("dataDimensions") dataDimensions: List<BasicDataDimensions>
+        @Param("dataDimensions") dataDimensions: List<BasicDataDimensions>,
     ): List<DataRequestEntity>
 
     @Query(
@@ -71,23 +70,21 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             FROM status_table s
             WHERE s.request_status IN (:statuses)
         )
-    """
+    """,
     )
     fun findByTriplesAndStatusesNative(
         @Param("triples") triples: List<Triple<String, String, String>>,
-        @Param("statuses") statuses: List<String>
+        @Param("statuses") statuses: List<String>,
     ): List<DataRequestEntity>
-
-
 
     @Query(
         "SELECT d FROM DataRequestEntity d " +
-                "WHERE (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :triples " +
-                "AND d.dataRequestStatusHistory IN :statuses"
+            "WHERE (d.datalandCompanyId, d.dataType, d.reportingPeriod) IN :triples " +
+            "AND d.dataRequestStatusHistory IN :statuses",
     )
     fun findByTriplesAndStatuses(
         @Param("triples") triples: List<Triple<String, String, String>>,
-        @Param("statuses") statuses: List<RequestStatus>
+        @Param("statuses") statuses: List<RequestStatus>,
     ): List<DataRequestEntity>
 
     /** This method looks for data requests with the provided params already exist in the database.
