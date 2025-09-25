@@ -43,7 +43,7 @@ class DataSourcingController(
     override fun patchDataSourcingState(
         id: String,
         state: DataSourcingState,
-    ): ResponseEntity<StoredDataSourcing> = ResponseEntity.ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(id), state))
+    ): ResponseEntity<ReducedDataSourcing> = ResponseEntity.ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(id), state))
 
     override fun patchDocumentCollectorAndDataExtractor(
         id: String,
@@ -64,7 +64,7 @@ class DataSourcingController(
         id: String,
         documentIds: Set<String>,
         appendDocuments: Boolean,
-    ): ResponseEntity<StoredDataSourcing> =
+    ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity.ok(
             dataSourcingManager.patchDataSourcingDocument(
                 UUID.fromString(id),
@@ -76,7 +76,7 @@ class DataSourcingController(
     override fun patchDateDocumentSourcingAttempt(
         id: String,
         date: LocalDate,
-    ): ResponseEntity<StoredDataSourcing> =
+    ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity
             .ok(dataSourcingManager.patchDateDocumentSourcingAttempt(UUID.fromString(id), date))
 }

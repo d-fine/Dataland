@@ -173,7 +173,7 @@ interface DataSourcingApi {
     fun patchDataSourcingState(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestParam state: DataSourcingState,
-    ): ResponseEntity<StoredDataSourcing>
+    ): ResponseEntity<ReducedDataSourcing>
 
     /**
      * Patch the state of a DataSourcing object specified by ID.
@@ -227,7 +227,7 @@ interface DataSourcingApi {
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestBody documentIds: Set<String>,
         @Valid @RequestParam(name = "appendDocuments", defaultValue = "true") appendDocuments: Boolean = true,
-    ): ResponseEntity<StoredDataSourcing>
+    ): ResponseEntity<ReducedDataSourcing>
 
     /**
      * Patch the dateDocumentSourcingAttempt field of a DataSourcing object for a given ID. Accepts a list of dates.
@@ -256,5 +256,5 @@ interface DataSourcingApi {
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
         @Valid @RequestParam date: LocalDate,
-    ): ResponseEntity<StoredDataSourcing>
+    ): ResponseEntity<ReducedDataSourcing>
 }
