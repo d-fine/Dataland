@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.dataSourcingService
 
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
+import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.e2etests.auth.GlobalAuth
@@ -103,6 +104,25 @@ class RequestControllerTest {
             initialRequest.copy(state = RequestState.Processing, lastModifiedDate = patchedRequest.lastModifiedDate),
             patchedRequest,
         )
+    }
+
+    @Test
+    fun `patch the priority of a request and verify that the changes are saved`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
+        val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
+        val comment = "Changing priority to urgent"
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestPriority(
+            initialRequest.id,
+            RequestPriority.Urgent,
+            comment,
+        )
+        val patchedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequest.id)
+
+        assertTrue(patchedRequest.lastModifiedDate > initialRequest.lastModifiedDate)
+        assertEquals(RequestPriority.Urgent, patchedRequest.requestPriority)
+        assertEquals(comment, patchedRequest.adminComment)
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DuplicateRequestException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
+import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
@@ -140,7 +141,8 @@ class SingleRequestManager
          * Updates the state of a data request identified by its ID.
          * If the state is changed from Open to Processing, it ensures that a corresponding DataSourcingEntity exists.
          * @param dataRequestId The UUID of the data request to update.
-         * @param newRequestState The new state to set for the data request.
+         * @param newRequestState The new state to set for the data request.#
+         * @param adminComment Optional comment from the admin regarding the state change.
          * @return The updated StoredRequest object.
          * @throws RequestNotFoundApiException If no data request with the given ID exists.
          */
@@ -148,6 +150,7 @@ class SingleRequestManager
         fun patchRequestState(
             dataRequestId: UUID,
             newRequestState: RequestState,
+            adminComment: String?,
         ): StoredRequest {
             val requestEntity =
                 requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
@@ -155,12 +158,41 @@ class SingleRequestManager
                 )
             val oldRequestState = requestEntity.state
             requestEntity.state = newRequestState
+            if (adminComment != null) {
+                requestEntity.adminComment = adminComment
+            }
 
             if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
             }
+            return requestEntity.toStoredDataRequest()
+        }
+
+        /**
+         * Updates the priority of a data request identified by its ID.
+         * @param dataRequestId The UUID of the data request to update.
+         * @param newRequestPriority The new priority to set for the data request.
+         * @param adminComment Optional comment from the admin regarding the priority change.
+         * @return The updated StoredRequest object.
+         * @throws RequestNotFoundApiException If no data request with the given ID exists.
+         */
+        @Transactional
+        fun patchRequestPriority(
+            dataRequestId: UUID,
+            newRequestPriority: RequestPriority,
+            adminComment: String?,
+        ): StoredRequest {
+            val requestEntity =
+                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
+                    dataRequestId,
+                )
+            requestEntity.requestPriority = newRequestPriority
+            if (adminComment != null) {
+                requestEntity.adminComment = adminComment
+            }
+
             return requestEntity.toStoredDataRequest()
         }
 

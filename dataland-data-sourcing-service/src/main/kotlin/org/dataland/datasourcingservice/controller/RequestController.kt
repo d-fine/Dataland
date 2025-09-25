@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.controller
 
 import org.dataland.datasourcingservice.api.RequestApi
+import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
@@ -32,9 +33,19 @@ class RequestController(
     override fun patchRequestState(
         dataRequestId: String,
         requestState: RequestState,
+        adminComment: String?,
     ): ResponseEntity<StoredRequest> =
         ResponseEntity.ok(
-            singleRequestManager.patchRequestState(UUID.fromString(dataRequestId), requestState),
+            singleRequestManager.patchRequestState(UUID.fromString(dataRequestId), requestState, adminComment),
+        )
+
+    override fun patchRequestPriority(
+        dataRequestId: String,
+        requestPriority: RequestPriority,
+        adminComment: String?,
+    ): ResponseEntity<StoredRequest> =
+        ResponseEntity.ok(
+            singleRequestManager.patchRequestPriority(UUID.fromString(dataRequestId), requestPriority, adminComment),
         )
 
     override fun getRequestHistoryById(id: String): ResponseEntity<List<StoredRequest>> =

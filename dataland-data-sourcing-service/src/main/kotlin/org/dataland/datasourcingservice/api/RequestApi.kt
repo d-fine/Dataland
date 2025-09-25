@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
+import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
@@ -145,6 +146,60 @@ interface RequestApi {
             required = true,
         )
         requestState: RequestState,
+        @Valid
+        @RequestParam(
+            name = "adminComment",
+            required = false,
+        )
+        adminComment: String? = null,
+    ): ResponseEntity<StoredRequest>
+
+    /**
+     * A method to patch the request state of a data request
+     *
+     * @param dataRequestId The request id of the data request to patch
+     * @param requestState The new request state after patch
+     * @return the modified data request
+     */
+    @Operation(
+        summary = "Updates the priority of a given data request.",
+        description = "Updates the priority of a data request given the data request id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched request."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to patch requests.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(schema = Schema())],
+            ),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{dataRequestId}/priority"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchRequestPriority(
+        @DataRequestIdParameterRequired
+        @PathVariable("dataRequestId") dataRequestId: String,
+        @Valid
+        @RequestParam(
+            name = "requestPriority",
+            required = true,
+        )
+        requestPriority: RequestPriority,
+        @Valid
+        @RequestParam(
+            name = "adminComment",
+            required = false,
+        )
+        adminComment: String? = null,
     ): ResponseEntity<StoredRequest>
 
     /**

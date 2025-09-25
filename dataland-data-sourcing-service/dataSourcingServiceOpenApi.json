@@ -122,6 +122,98 @@
             "schema": {
               "$ref": "#/components/schemas/RequestState"
             }
+          },
+          {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredRequest"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to patch requests."
+          },
+          "404": {
+            "description": "The specified request ID does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}/priority": {
+      "patch": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Updates the priority of a given data request.",
+        "description": "Updates the priority of a data request given the data request id.",
+        "operationId": "patchRequestPriority",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
+          },
+          {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
