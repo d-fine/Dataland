@@ -111,6 +111,7 @@ export default defineComponent({
      * and scrolls the results area into view (not the whole window).
      */
     onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
       this.$emit('page-update', event.page);
       void this.$nextTick(() => {
         (this.$refs.resultsTop as HTMLElement | undefined)?.scrollIntoView({

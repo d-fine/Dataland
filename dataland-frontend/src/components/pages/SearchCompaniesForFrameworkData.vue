@@ -262,10 +262,10 @@ export default defineComponent({
           this.isSearchBarContainerCollapsed = shouldCollapse;
 
           // Only close overlays when the visible layout actually changes.
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+
           this.frameworkDataSearchBar?.closeOverlay();
         }
-
+        this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         this.isTicking = false;
       });
     },
