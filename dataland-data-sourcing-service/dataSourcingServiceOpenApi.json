@@ -462,7 +462,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -472,7 +472,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                  "$ref": "#/components/schemas/StoredDataSourcing"
                 }
               }
             }
@@ -808,7 +808,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredDataSourcing"
+                    "$ref": "#/components/schemas/ReducedDataSourcing"
                   }
                 }
               }
