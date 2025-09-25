@@ -132,14 +132,7 @@ export default defineComponent({
       totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
-      /**
-       * RequestAnimationFrame throttle flag to avoid handling multiple scroll events per frame.
-       */
       isTicking: false,
-      /**
-       * Bound scroll handler reference for add/removeEventListener.
-       * @return {void}
-       */
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -223,14 +216,12 @@ export default defineComponent({
 
       requestAnimationFrame(() => {
         const y = window.scrollY || document.documentElement.scrollTop;
-        const collapseAt = 160; // widen hysteresis for stability
+        const collapseAt = 160;
         const expandAt = 20;
         const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
 
         if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
           this.isSearchBarContainerCollapsed = shouldCollapse;
-
-          // Only close overlays when the visible layout actually changes.
 
           this.frameworkDataSearchBar?.closeOverlay();
         }
@@ -238,7 +229,6 @@ export default defineComponent({
         this.isTicking = false;
       });
     },
-
     /**
      * Parses the framework filter query parameters.
      * @param route the current route
@@ -392,8 +382,8 @@ export default defineComponent({
 }
 
 .search-bar-and-filters-container {
-  display: flex; /* keep display stable */
-  flex-direction: column; /* default layout */
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
   margin: 0;
@@ -404,9 +394,9 @@ export default defineComponent({
   background-color: var(--p-surface-0);
   position: sticky;
   top: var(--app-header-offset, 4rem);
-  z-index: 10; /* ensure header/underline can be above this */
-  contain: paint; /* isolate painting to reduce flicker */
-  will-change: padding-top; /* hint that padding may change on collapse */
+  z-index: 10;
+  contain: paint;
+  will-change: padding-top;
 }
 
 .search-bar-and-filters-container #frameworkDataSearchBar {
@@ -414,7 +404,6 @@ export default defineComponent({
 }
 
 .collapsed-search-container {
-  /* keep display: flex from base */
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
