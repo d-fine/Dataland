@@ -178,17 +178,24 @@ class ApiAccessor {
             companyId: String,
             frameworkData: T,
             reportingPeriod: String,
+            bypassQa: Boolean,
         ) -> DataMetaInformation,
+        bypassQa: Boolean = true,
     ): DataMetaInformation {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod)
-        return qaApiAccessor.ensureQaIsPassed(listOf(dataMetaInformation), metaDataControllerApi)[0]
+        val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod, bypassQa)
+        return if (bypassQa) {
+            qaApiAccessor.ensureQaIsPassed(listOf(dataMetaInformation), metaDataControllerApi)[0]
+        } else {
+            dataMetaInformation
+        }
     }
 
     fun uploadDummyFrameworkDataset(
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
+        bypassQa: Boolean = true,
     ): DataMetaInformation {
         fun <T> uploadDataset(
             testDataProvider: FrameworkTestDataProvider<T>,
@@ -196,29 +203,33 @@ class ApiAccessor {
                 companyId: String,
                 frameworkData: T,
                 reportingPeriod: String,
+                bypassQa: Boolean,
             ) -> DataMetaInformation,
+            byPassQa: Boolean = true,
         ) = uploadSingleFrameworkDataset(
             companyId,
             testDataProvider.getTData(1)[0],
             reportingPeriod,
             frameworkDataUploaderFunction,
+            byPassQa,
         )
 
         return when (dataType) {
             DataTypeEnum.lksg ->
-                uploadDataset(testDataProviderForLksgData, this::lksgUploaderFunction)
+                uploadDataset(testDataProviderForLksgData, this::lksgUploaderFunction, bypassQa)
 
             DataTypeEnum.sfdr ->
-                uploadDataset(testDataProviderForSfdrData, this::sfdrUploaderFunction)
+                uploadDataset(testDataProviderForSfdrData, this::sfdrUploaderFunction, bypassQa)
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
                 uploadDataset(
                     testDataProviderForEuTaxonomyDataForNonFinancials,
                     this::euTaxonomyNonFinancialsUploaderFunction,
+                    bypassQa,
                 )
 
             DataTypeEnum.eutaxonomyMinusFinancials ->
-                uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction)
+                uploadDataset(testDataProviderEuTaxonomyForFinancials, this::euTaxonomyFinancialsUploaderFunction, bypassQa)
 
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
@@ -403,7 +414,7 @@ class ApiAccessor {
         companyId: String,
         frameworkData: T,
         reportingPeriod: String,
-        uploadFunction: (String, T, String) -> DataMetaInformation,
+        uploadFunction: (String, T, String, Boolean) -> DataMetaInformation,
     ): DataMetaInformation {
         val waitTime = 1L
         val uploadedMetaData =
