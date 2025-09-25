@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -144,7 +145,7 @@ interface DataSourcingApi {
     fun getDataSourcingHistoryById(
         @Parameter(description = "ID of the DataSourcing object.")
         @PathVariable id: String,
-    ): ResponseEntity<List<StoredDataSourcing>>
+    ): ResponseEntity<List<DataSourcingWithoutReferences>>
 
     /**
      * Patch the state of a DataSourcing object specified by ID.
