@@ -13,6 +13,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,6 +30,8 @@ class DataSourcingManager
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
     ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         private fun getFullyFetchedDataSourcingEntityById(dataSourcingEntityId: UUID): DataSourcingEntity =
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
@@ -50,7 +53,9 @@ class DataSourcingManager
          */
         @Transactional(readOnly = true)
         fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
-            getFullyFetchedDataSourcingEntityById(dataSourcingEntityId).toStoredDataSourcing()
+            getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+                .toStoredDataSourcing()
+                .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
 
         /**
          * Returns the unique StoredDataSourcing object for the given company ID, reporting period and
@@ -68,6 +73,13 @@ class DataSourcingManager
         ): StoredDataSourcing =
             getFullyFetchedDataSourcingEntityByDataDimension(companyId, dataType, reportingPeriod)
                 .toStoredDataSourcing()
+                .also {
+                    logger
+                        .info(
+                            "Get data sourcing entity with companyId: $companyId, reportingPeriod: $reportingPeriod," +
+                                " dataType: $dataType",
+                        )
+                }
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
@@ -82,6 +94,7 @@ class DataSourcingManager
             dataSourcingPatch: DataSourcingPatch,
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger.info("Patch data sourcing entity with id: $dataSourcingEntityId.")
             return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
         }
 
@@ -152,6 +165,11 @@ class DataSourcingManager
             state: DataSourcingState,
         ): ReducedDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger
+                .info(
+                    "Patch state of data sourcing entity with id: $dataSourcingEntityId " +
+                        "from state ${dataSourcingEntity.state} to state $state.",
+                )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(state = state),
@@ -173,6 +191,10 @@ class DataSourcingManager
         ): ReducedDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             val newDocumentsIds = if (!appendDocuments) documentIds else dataSourcingEntity.documentIds + documentIds
+            logger.info(
+                "Patch documents with ids $documentIds of data sourcing entity with id: $dataSourcingEntityId with " +
+                    "appendDocuments = $appendDocuments.",
+            )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(documentIds = newDocumentsIds),
@@ -191,6 +213,10 @@ class DataSourcingManager
             date: LocalDate,
         ): ReducedDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger.info(
+                "Patch dateDocumentSourcingAttempt of data sourcing entity with id: $dataSourcingEntityId with" +
+                    " dateDocumentSourcingAttempt: $date.",
+            )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(dateDocumentSourcingAttempt = date),
@@ -217,7 +243,9 @@ class DataSourcingManager
                     reportingPeriod = requestEntity.reportingPeriod,
                     dataType = requestEntity.dataType,
                 )
-
+            logger.info(
+                "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.id}.",
+            )
             dataSourcingEntity.state = DataSourcingState.Initialized
             dataSourcingEntity.addAssociatedRequest(requestEntity)
             return dataSourcingRepository.save(dataSourcingEntity)
@@ -240,6 +268,10 @@ class DataSourcingManager
             adminComment: String?,
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger.info(
+                "Patch documentCollector: $documentCollector, data extractor: $dataExtractor " +
+                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.id}.",
+            )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
@@ -256,8 +288,12 @@ class DataSourcingManager
          * @param companyId The UUID of the company whose data sourcing objects are to be retrieved.
          * @return A list of StoredDataSourcing objects associated with the specified company ID, or null if none exist.
          */
-
+        @Transactional(readOnly = true)
         fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing>? {
+            logger.info(
+                "Find all assigned data sourcing objects (either as document collector or data extractor for " +
+                    "company with id: $companyId.",
+            )
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
@@ -283,6 +319,7 @@ class DataSourcingManager
                         message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
                     )
                 }
+            logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(uuid)
                 .map { it.toDataSourcingWithoutReferences() }

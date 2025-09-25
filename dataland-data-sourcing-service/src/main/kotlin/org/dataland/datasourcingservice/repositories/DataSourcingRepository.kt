@@ -55,5 +55,11 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     /**
      * Find all DataSourcingEntity instances by companyId of data extractor.
      */
+    @Query(
+        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+            "LEFT JOIN FETCH dataSourcing.documentIds " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "WHERE dataSourcing.dataExtractor = :companyId ",
+    )
     fun findAllByDataExtractor(companyId: UUID): List<DataSourcingEntity>
 }
