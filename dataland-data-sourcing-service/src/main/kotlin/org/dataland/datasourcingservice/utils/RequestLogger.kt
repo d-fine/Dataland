@@ -2,7 +2,6 @@ package org.dataland.datasourcingservice.utils
 
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.slf4j.LoggerFactory
 import java.util.UUID
@@ -12,7 +11,6 @@ import java.util.UUID
  */
 class RequestLogger {
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleRequestManager::class.java)
-    private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkRequestManager::class.java)
 
     /**
      * Logs an appropriate message when a single data request has happened.
@@ -30,10 +28,24 @@ class RequestLogger {
     }
 
     /**
+     * Logs an appropriate message when a single data request has happened.
+     */
+    fun logMessageForGettingSingleDataRequest(
+        dataRequestId: UUID,
+        correlationId: UUID,
+    ) {
+        singleDataRequestLogger.info(
+            "Received get request for a single data request with id $dataRequestId" +
+                " -> Processing it. " +
+                "(correlationId: $correlationId)",
+        )
+    }
+
+    /**
      * Logs an appropriate message when the state of a data request is updated
      */
     fun logMessageForPatchingRequestState(
-        dataRequestId: String,
+        dataRequestId: UUID,
         requestState: RequestState,
     ) {
         singleDataRequestLogger.info(
@@ -46,7 +58,7 @@ class RequestLogger {
      * Logs an appropriate message when the data request priority is updated
      */
     fun logMessageForPatchingRequestPriority(
-        dataRequestId: String,
+        dataRequestId: UUID,
         requestPriority: RequestPriority,
     ) {
         singleDataRequestLogger.info(
@@ -59,7 +71,7 @@ class RequestLogger {
      * Logs an appropriate message when the admin comment of the request priority is updated
      */
     fun logMessageForPatchingAdminComment(
-        dataRequestId: String,
+        dataRequestId: UUID,
         adminComment: String,
     ) {
         singleDataRequestLogger.info(
@@ -79,7 +91,7 @@ class RequestLogger {
         reportingPeriod: String,
         requestState: RequestState,
     ) {
-        bulkDataRequestLogger.info(
+        singleDataRequestLogger.error(
             "The following data request already exists for user with id $userId and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestState)",
@@ -90,6 +102,6 @@ class RequestLogger {
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logMessageForStoringDataRequest(dataRequestId: UUID) {
-        bulkDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId.")
+        singleDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId.")
     }
 }

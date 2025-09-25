@@ -84,6 +84,13 @@ class SingleRequestManager
 
             if (duplicateRequests.isNotEmpty()) {
                 val duplicate = duplicateRequests.first()
+                requestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
+                    userId,
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    duplicate.state,
+                )
                 throw DuplicateRequestException(
                     duplicate.id,
                     duplicate.reportingPeriod,
@@ -135,7 +142,7 @@ class SingleRequestManager
             requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
                 ?: throw RequestNotFoundApiException(
                     dataRequestId,
-                )
+                ).also { requestLogger.logMessageForGettingSingleDataRequest(dataRequestId, UUID.randomUUID()) }
 
         /**
          * Updates the state of a data request identified by its ID.
@@ -152,6 +159,7 @@ class SingleRequestManager
             newRequestState: RequestState,
             adminComment: String?,
         ): StoredRequest {
+            requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
             val requestEntity =
                 requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
                     dataRequestId,
@@ -159,6 +167,7 @@ class SingleRequestManager
             val oldRequestState = requestEntity.state
             requestEntity.state = newRequestState
             if (adminComment != null) {
+                requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
             }
 
@@ -184,12 +193,15 @@ class SingleRequestManager
             newRequestPriority: RequestPriority,
             adminComment: String?,
         ): StoredRequest {
+            requestLogger.logMessageForPatchingRequestPriority(dataRequestId, newRequestPriority)
+
             val requestEntity =
                 requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 )
             requestEntity.requestPriority = newRequestPriority
             if (adminComment != null) {
+                requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
             }
 
