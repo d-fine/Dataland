@@ -17,6 +17,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.lang.Thread.sleep
 import java.time.LocalDate
 
@@ -72,18 +74,23 @@ class DataSourcingControllerTest {
         dataSourcingObjectId: String,
         expectedDocuments: Set<String>,
     ) {
-        val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObjectId)
-        assertEquals(expectedDocuments, updatedDataSourcingObject.documentIds)
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(dataSourcingObjectId)
+            assertEquals(expectedDocuments, updatedDataSourcingObject.documentIds)
+        }
     }
 
     private fun changeSourcingStatusAndVerifyRequestsStatuses(
         newSourcingStatus: DataSourcingState,
         expectedRequestState: RequestState,
     ) {
-        createRequest(storedDataSourcing.companyId, user = TechnicalUser.PremiumUser)
-        createRequest(storedDataSourcing.companyId, user = TechnicalUser.Admin)
+        val requestId1 = createRequest(storedDataSourcing.companyId, user = TechnicalUser.PremiumUser)
+        val requestId2 = createRequest(storedDataSourcing.companyId, user = TechnicalUser.Admin)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            // requests are only linked to data sourcing objects after having been validated by the QUARG Team and set to Processing
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId1, RequestState.Processing)
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId2, RequestState.Processing)
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, newSourcingStatus)
         }
 
@@ -205,18 +212,19 @@ class DataSourcingControllerTest {
         )
     }
 
-    @Test
-    fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`() {
-        for (state in DataSourcingState.entries) {
-            changeSourcingStatusAndVerifyRequestsStatuses(
-                state,
-                if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) {
-                    RequestState.Processed
-                } else {
-                    RequestState.Processing
-                },
-            )
-        }
+    @ParameterizedTest
+    @EnumSource(DataSourcingState::class)
+    fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`(
+        state: DataSourcingState,
+    ) {
+        val expectedStatus =
+            if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) {
+                RequestState.Processed
+            } else {
+                RequestState.Processing
+            }
+
+        changeSourcingStatusAndVerifyRequestsStatuses(state, expectedStatus)
     }
 
     @Test
@@ -233,6 +241,7 @@ class DataSourcingControllerTest {
         assertEquals(RequestState.Processed, request.state)
 
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Open)
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
         assertEquals(DataSourcingState.Initialized, updatedDataSourcingObject.state)
     }

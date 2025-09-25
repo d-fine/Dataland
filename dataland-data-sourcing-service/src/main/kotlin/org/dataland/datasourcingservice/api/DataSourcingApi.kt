@@ -169,7 +169,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping("/{id}/state", consumes = ["application/json"], produces = ["application/json"])
+    @PatchMapping("/{id}/state", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingState(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
@@ -191,7 +191,7 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
         ],
     )
-    @PatchMapping("/{id}/assign", consumes = ["application/json"], produces = ["application/json"])
+    @PatchMapping("/{id}/assign", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDocumentCollectorAndDataExtractor(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,
@@ -252,7 +252,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping("/{id}/document-sourcing-attempt", consumes = ["application/json"], produces = ["application/json"])
+    @PatchMapping("/{id}/document-sourcing-attempt", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDateDocumentSourcingAttempt(
         @Parameter(description = "ID of the DataSourcing object.") @PathVariable id: String,

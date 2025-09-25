@@ -275,8 +275,8 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
-                    documentCollector = UUID.fromString(documentCollector),
-                    dataExtractor = UUID.fromString(dataExtractor),
+                    documentCollector = if (documentCollector != null) UUID.fromString(documentCollector) else null,
+                    dataExtractor = if (dataExtractor != null) UUID.fromString(dataExtractor) else null,
                     adminComment = adminComment,
                 ),
             ).toStoredDataSourcing()

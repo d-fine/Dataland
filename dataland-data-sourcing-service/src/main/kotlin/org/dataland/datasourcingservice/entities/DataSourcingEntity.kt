@@ -97,8 +97,8 @@ class DataSourcingEntity(
             documentIds = documentIds,
             expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
             dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
-            documentCollector = documentCollector.toString(),
-            dataExtractor = dataExtractor.toString(),
+            documentCollector = if (documentCollector != null) documentCollector.toString() else null,
+            dataExtractor = if (dataExtractor != null) dataExtractor.toString() else null,
             adminComment = adminComment,
             associatedRequestIds = associatedRequests.map { it.id.toString() }.toMutableSet(),
         )
