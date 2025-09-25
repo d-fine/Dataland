@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 
 /**

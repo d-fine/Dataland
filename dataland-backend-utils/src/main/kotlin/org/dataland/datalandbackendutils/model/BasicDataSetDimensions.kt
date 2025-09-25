@@ -23,5 +23,6 @@ data class BasicDataSetDimensions(
         dataPointTypes.map { BasicDataPointDimensions(companyId, it, reportingPeriod) }
 
     fun toBasicDataDimensions() = BasicDataDimensions(companyId, framework, reportingPeriod)
+
     fun toBaseDimensions(): BasicBaseDimensions = BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod)
 }

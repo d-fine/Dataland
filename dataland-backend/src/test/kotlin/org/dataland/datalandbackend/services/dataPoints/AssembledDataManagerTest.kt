@@ -9,20 +9,24 @@ import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
+import org.dataland.datalandbackend.services.DataCompositionService
+import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
+import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -58,6 +62,9 @@ class AssembledDataManagerTest {
     private val logMessageBuilder = mock<LogMessageBuilder>()
     private val specificationClient = mock<SpecificationControllerApi>()
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
+    private val dataCompositionService = mock<DataCompositionService>()
+    private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
+    private val datasetAssembler = mock<DatasetAssembler>()
 
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
@@ -76,12 +83,14 @@ class AssembledDataManagerTest {
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
 
+    private val dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
+
     private val assembledDataManager =
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
             referencedReportsUtilities,
-            companyQueryManager, dataPointUtils,
+            companyQueryManager, dataPointUtils, dataDeliveryService,
         )
 
     private val correlationId = "test-correlation-id"
@@ -94,7 +103,7 @@ class AssembledDataManagerTest {
     private val frameworkSpecification =
         TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
     private val framework = "sfdr"
-    private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
+    private val dataDimensions = BasicDataSetDimensions(companyId, framework, reportingPeriod)
 
     @BeforeEach
     fun resetMocks() {

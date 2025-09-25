@@ -288,9 +288,9 @@ class DataManager
             val mapOfDataDimensionsWithDataAsString =
                 getDatasetData(
                     metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
-                        BasicDataDimensions(
+                        BasicDataSetDimensions(
                             companyId = searchFilter.companyId,
-                            dataType = it.dataType,
+                            framework = it.dataType,
                             reportingPeriod = it.reportingPeriod,
                         )
                     },
@@ -301,7 +301,7 @@ class DataManager
             }
 
             return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
-                metaInfos[dataDimension]?.let { metaInfo ->
+                metaInfos[dataDimension.toBasicDataDimensions()]?.let { metaInfo ->
                     PlainDataAndMetaInformation(
                         metaInfo = metaInfo.toApiModel(),
                         data = dataString,

@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.springframework.beans.factory.annotation.Autowired

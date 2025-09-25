@@ -376,7 +376,7 @@ class AssembledDataManager
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return getDatasetData(
-                reportingPeriods.mapTo(mutableSetOf()) { BasicDataDimensions(companyId, framework, it) },
+                reportingPeriods.mapTo(mutableSetOf()) { BasicDataSetDimensions(companyId, framework, it) },
                 correlationId,
             ).map { (dataDimensions, dataString) ->
                 PlainDataAndMetaInformation(
@@ -387,7 +387,7 @@ class AssembledDataManager
                             dataType = searchFilter.dataType,
                             reportingPeriod = dataDimensions.reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions),
+                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions.toBasicDataDimensions()),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = dataString,

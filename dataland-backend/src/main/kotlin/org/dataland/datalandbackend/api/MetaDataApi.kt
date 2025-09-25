@@ -363,27 +363,6 @@ interface MetaDataApi {
      * @param dataDimensions a list of data dimensions to search for
      */
     @Operation(
-        summary = "Checks if any active datasets are available applying the provided data dimensions.",
-        description = "Checks if any data is available using the given filters and returns the corresponding meta data.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset meta data."),
-        ],
-    )
-    @GetMapping(
-        value = ["/active-datasets"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun getMetaDataOfActiveDatasets(
-        @RequestParam dataDimensions: List<BasicDataDimensions>,
-    ): ResponseEntity<List<DataMetaInformation>>
-
-    /**
-     * A method to retrieve all meta data for active datasets matching the provided data dimensions.
-     * @param dataDimensions a list of data dimensions to search for
-     */
-    @Operation(
         summary = "Checks if active datasets are available.",
         description =
             "Checks if any active datasets are available applying the provided data dimensions " +

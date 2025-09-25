@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * A utility class for working with data point specifications and data point metadata
+ * A utility class for assembling datasets from data points
  */
 
-@Service("DataPointUtils")
+@Service("DatasetAssembler")
 class DatasetAssembler
     @Autowired
     constructor(

@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.TestPostgresContainer
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -54,10 +55,13 @@ class DataAvailabilityCheckerTest {
     private lateinit var dataMetaInformationRepository: DataMetaInformationRepository
 
     @Autowired
+    private lateinit var dataCompositionService: DataCompositionService
+
+    @Autowired
     private lateinit var storedCompanyRepository: StoredCompanyRepository
     private lateinit var dataAvailabilityChecker: DataAvailabilityChecker
 
-    private val baseDimension = BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = REPORTING_PERIOD)
+    private val baseDimension = BasicDataSetDimensions(companyId = COMPANY_ID, framework = DATA_TYPE, reportingPeriod = REPORTING_PERIOD)
 
     private val dummyCompany =
         StoredCompanyEntity(
@@ -81,7 +85,7 @@ class DataAvailabilityCheckerTest {
 
     @BeforeEach
     fun setUp() {
-        dataAvailabilityChecker = DataAvailabilityChecker(entityManager)
+        dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService)
         storedCompanyRepository.saveAndFlush(dummyCompany)
     }
 
@@ -100,9 +104,9 @@ class DataAvailabilityCheckerTest {
         val results =
             dataAvailabilityChecker.getMetaDataOfActiveDatasets(
                 listOf(
-                    BasicDataDimensions(
+                    BasicDataSetDimensions(
                         companyId = companyId,
-                        dataType = dataType,
+                        framework = dataType,
                         reportingPeriod = reportingPeriod,
                     ),
                 ),
@@ -133,21 +137,21 @@ class DataAvailabilityCheckerTest {
         val expectedDimensions =
             listOf(
                 baseDimension,
-                BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = year),
-                BasicDataDimensions(companyId = COMPANY_ID, dataType = framework, reportingPeriod = REPORTING_PERIOD),
+                BasicDataSetDimensions(companyId = COMPANY_ID, framework = DATA_TYPE, reportingPeriod = year),
+                BasicDataSetDimensions(companyId = COMPANY_ID, framework = framework, reportingPeriod = REPORTING_PERIOD),
             )
 
         val unexpectedDimensions =
             listOf(
-                BasicDataDimensions(companyId = COMPANY_ID, dataType = framework, reportingPeriod = year),
-                BasicDataDimensions(companyId = UUID.randomUUID().toString(), dataType = DATA_TYPE, reportingPeriod = REPORTING_PERIOD),
-                BasicDataDimensions(companyId = COMPANY_ID, dataType = DATA_TYPE, reportingPeriod = "2020"),
+                BasicDataSetDimensions(companyId = COMPANY_ID, framework = framework, reportingPeriod = year),
+                BasicDataSetDimensions(companyId = UUID.randomUUID().toString(), framework = DATA_TYPE, reportingPeriod = REPORTING_PERIOD),
+                BasicDataSetDimensions(companyId = COMPANY_ID, framework = DATA_TYPE, reportingPeriod = "2020"),
             )
 
         val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(expectedDimensions + unexpectedDimensions)
 
         assert(results.size == expectedDimensions.size) { "Incorrect number of datasets found." }
-        val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
+        val resultingDimensions = results.map { BasicDataSetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
         assert(expectedDimensions.containsAll(resultingDimensions))
     }
 

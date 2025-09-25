@@ -5,7 +5,6 @@ import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
@@ -21,7 +20,6 @@ class DataAvailabilityChecker
     @Autowired
     constructor(
         @PersistenceContext private val entityManager: EntityManager,
-        private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
         private val dataCompositionService: DataCompositionService,
     ) {
         private val ignoredFields = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields()
@@ -32,7 +30,7 @@ class DataAvailabilityChecker
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
         fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDataSetDimensions>): List<DataMetaInformation> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDimensions(dataDimensions)
+            val dimensionsToProcess = dataCompositionService.filterOutInvalidDataSetDimensions(dataDimensions)
             val formattedTuples =
                 dimensionsToProcess.joinToString(", ") {
                     "('${it.companyId}', '${it.framework}', '${it.reportingPeriod}')"
@@ -54,7 +52,7 @@ class DataAvailabilityChecker
         }
 
         fun getMetaDataOfDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDimensions(dataDimensions)
+            val dimensionsToProcess = dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions)
             val formattedTuples =
                 dimensionsToProcess.joinToString(", ") {
                     "('${it.companyId}', '${it.dataPointType}', '${it.reportingPeriod}')"

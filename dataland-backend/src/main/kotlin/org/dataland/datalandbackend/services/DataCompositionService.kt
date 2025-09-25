@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -187,18 +186,18 @@ class DataCompositionService
          * @param dataDimensions the list of data dimensions to filter
          * @return the list of all properly formatted data dimensions from the original list
          */
-        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataSetDimensions>) =
-            dataDimensions.filter { dimensions ->
+        fun filterOutInvalidDataSetDimensions(dataSetDimensions: List<BasicDataSetDimensions>) =
+            dataSetDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isFramework(dimensions.framework)
             }
 
-        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataPointDimensions>) =
+        fun filterOutInvalidDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>) =
             dataDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataPointType(dimensions.dataPointType)
             }
 
-        fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
+        /*fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
             dataDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataType(dimensions.dataType)
-            }
+            }*/
     }
