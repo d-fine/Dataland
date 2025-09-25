@@ -105,9 +105,7 @@ class DataSourcingControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         val companyId =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
+            createNewCompanyAndReturnId()
 
         val requestId = createRequest(companyId)
 
@@ -221,13 +219,9 @@ class DataSourcingControllerTest {
     @Test
     fun `verify that an admin can assign a document collector and a data extractor`() {
         val companyIdCollector =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
+            createNewCompanyAndReturnId()
         val companyIdExtractor =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
+            createNewCompanyAndReturnId()
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcing.id,
@@ -254,6 +248,57 @@ class DataSourcingControllerTest {
         }
         assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
         assertEquals(companyIdExtractor, updatedDataSourcingObject.dataExtractor)
+    }
+
+    @Test
+    fun `verify that a document collector or data extractor can see all data sourcing objects assigned to themv`() {
+        val companyIdDocumentCollectorOrDataExtractor =
+            createNewCompanyAndReturnId()
+        val companyId1 =
+            createNewCompanyAndReturnId()
+        val companyId2 =
+            createNewCompanyAndReturnId()
+
+        val requestId1 = createRequest(companyId1)
+        val requestId2 = createRequest(companyId2)
+
+        var storedDataSourcing1: StoredDataSourcing? = null
+        var storedDataSourcing2: StoredDataSourcing? = null
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId1, RequestState.Processing)
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId2, RequestState.Processing)
+            storedDataSourcing1 =
+                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId1, testDataType, testReportingPeriod)
+            storedDataSourcing2 =
+                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(companyId2, testDataType, testReportingPeriod)
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
+                storedDataSourcing1.id,
+                DataSourcingState.DocumentSourcing,
+            )
+            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                storedDataSourcing1.id,
+                companyIdDocumentCollectorOrDataExtractor,
+            )
+            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
+                storedDataSourcing2.id,
+                DataSourcingState.DataExtraction,
+            )
+            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                storedDataSourcing2.id,
+                null,
+                companyIdDocumentCollectorOrDataExtractor,
+            )
+        }
+
+        val updatedDataSourcingObjects =
+            apiAccessor.dataSourcingControllerApi
+                .getDataSourcingForCompanyId(companyIdDocumentCollectorOrDataExtractor)
+        assertEquals(2, updatedDataSourcingObjects.size)
+        assertEquals(
+            setOf(storedDataSourcing1?.id, storedDataSourcing2?.id),
+            updatedDataSourcingObjects.map { it.id }.toSet(),
+        )
     }
 
     @Test
@@ -371,4 +416,9 @@ class DataSourcingControllerTest {
             )
         }
     }
+
+    private fun createNewCompanyAndReturnId(): String =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        }
 }
