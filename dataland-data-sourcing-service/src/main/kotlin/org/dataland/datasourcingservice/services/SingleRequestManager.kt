@@ -155,6 +155,7 @@ class SingleRequestManager
                 )
             val oldRequestState = requestEntity.state
             requestEntity.state = newRequestState
+            requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
 
             if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
