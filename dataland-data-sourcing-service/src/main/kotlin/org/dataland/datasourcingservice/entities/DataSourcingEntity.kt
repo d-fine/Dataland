@@ -9,6 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -115,5 +116,21 @@ class DataSourcingEntity(
             documentIds = documentIds,
             expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
             dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
+        )
+
+    /**
+     * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
+     */
+    fun toDataSourcingWithoutReferences(): DataSourcingWithoutReferences =
+        DataSourcingWithoutReferences(
+            id = id.toString(),
+            companyId = companyId.toString(),
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            state = state,
+            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
+            documentCollector = documentCollector.toString(),
+            dataExtractor = dataExtractor.toString(),
+            adminComment = adminComment,
         )
 }

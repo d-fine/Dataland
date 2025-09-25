@@ -10,27 +10,47 @@ import java.util.UUID
  */
 interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     /**
-     * Find a DataSourcingEntity by the triple companyId, dataType and reportingPeriod.
+     * Find a DataSourcingEntity by its id and fetch all lazily loaded fields.
+     * Return null if no entity with the given id exists.
      */
-    fun findByCompanyIdAndDataTypeAndReportingPeriod(
+    @Query(
+        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+            "LEFT JOIN FETCH dataSourcing.documentIds " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.associatedRequests " +
+            "WHERE dataSourcing.id = :id",
+    )
+    fun findByIdAndFetchAllStoredFields(id: UUID): DataSourcingEntity?
+
+    /**
+     * Find a DataSourcingEntity by the triple companyId, dataType and reportingPeriod and fetch
+     * all lazily loaded fields.
+     */
+    @Query(
+        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+            "LEFT JOIN FETCH dataSourcing.documentIds " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.associatedRequests " +
+            "WHERE dataSourcing.companyId = :companyId " +
+            "AND dataSourcing.dataType = :dataType " +
+            "AND dataSourcing.reportingPeriod = :reportingPeriod",
+    )
+    fun findByDataDimensionAndFetchAllStoredFields(
         companyId: UUID,
         dataType: String,
         reportingPeriod: String,
     ): DataSourcingEntity?
 
     /**
-     * Used for pre-fetching the associated requests field of a single data sourcing entity
-     */
-    @Query(
-        "SELECT DISTINCT dataSourcing FROM DataSourcingEntity dataSourcing " +
-            "LEFT JOIN FETCH dataSourcing.associatedRequests WHERE dataSourcing = :dataSourcingEntity",
-    )
-    fun fetchAssociatedRequests(dataSourcingEntity: DataSourcingEntity): DataSourcingEntity
-
-    /**
      * Find all DataSourcingEntity instances by companyId of document collector.
      */
-    fun findAllByDocumentCollector(companyId: UUID): List<DataSourcingEntity>
+    @Query(
+        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+            "LEFT JOIN FETCH dataSourcing.documentIds " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "WHERE dataSourcing.documentCollector = :companyId ",
+    )
+    fun findAllByDocumentCollectorAndFetchNonRequestFields(companyId: UUID): List<DataSourcingEntity>
 
     /**
      * Find all DataSourcingEntity instances by companyId of data extractor.

@@ -4,6 +4,7 @@ import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientExcep
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
+import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -94,14 +95,18 @@ class RequestControllerTest {
 
         val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
         val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
-
+        Thread.sleep(1)
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(initialRequest.id, RequestState.Processing)
         val patchedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequest.id)
 
         assertTrue(patchedRequest.lastModifiedDate > initialRequest.lastModifiedDate)
         assertEquals(RequestState.Processing, patchedRequest.state)
         assertEquals(
-            initialRequest.copy(state = RequestState.Processing, lastModifiedDate = patchedRequest.lastModifiedDate),
+            initialRequest.copy(
+                state = RequestState.Processing,
+                lastModifiedDate = patchedRequest.lastModifiedDate,
+                dataSourcingEntityId = patchedRequest.dataSourcingEntityId,
+            ),
             patchedRequest,
         )
     }
@@ -128,11 +133,14 @@ class RequestControllerTest {
     @Test
     fun `verify that historization works for data requests`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
-        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
 
-        val requestHistory = apiAccessor.dataSourcingRequestControllerApi.getRequestHistoryById(requestId)
+        lateinit var requestHistory: List<StoredRequest>
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
+            requestHistory = apiAccessor.dataSourcingRequestControllerApi.getRequestHistoryById(requestId)
+        }
 
         assertEquals(2, requestHistory.size)
         assertEquals(RequestState.Open, requestHistory[0].state)

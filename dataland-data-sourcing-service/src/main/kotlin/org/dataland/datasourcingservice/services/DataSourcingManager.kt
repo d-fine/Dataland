@@ -5,6 +5,7 @@ import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.util.UUID
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Service class that manages all operations related to data sourcing entities.
@@ -29,19 +29,28 @@ class DataSourcingManager
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
     ) {
+        private fun getFullyFetchedDataSourcingEntityById(dataSourcingEntityId: UUID): DataSourcingEntity =
+            dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
+                ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
+
+        private fun getFullyFetchedDataSourcingEntityByDataDimension(
+            companyId: UUID,
+            dataType: String,
+            reportingPeriod: String,
+        ): DataSourcingEntity =
+            dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(companyId, dataType, reportingPeriod)
+                ?: throw DataSourcingNotFoundApiException(
+                    companyId, reportingPeriod, dataType,
+                )
+
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
          * @param dataSourcingEntityId the ID of the data sourcing entity to retrieve
          * @return the associated StoredDataSourcing object
          */
         @Transactional(readOnly = true)
-        fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing {
-            val entityWithoutFetchedRequests =
-                dataSourcingRepository.findById(dataSourcingEntityId).getOrNull() ?: throw DataSourcingNotFoundApiException(
-                    dataSourcingEntityId,
-                )
-            return dataSourcingRepository.fetchAssociatedRequests(entityWithoutFetchedRequests).toStoredDataSourcing()
-        }
+        fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
+            getFullyFetchedDataSourcingEntityById(dataSourcingEntityId).toStoredDataSourcing()
 
         /**
          * Returns the unique StoredDataSourcing object for the given company ID, reporting period and
@@ -56,21 +65,9 @@ class DataSourcingManager
             companyId: UUID,
             reportingPeriod: String,
             dataType: String,
-        ): StoredDataSourcing {
-            val entityWithoutFetchedRequests =
-                dataSourcingRepository
-                    .findByCompanyIdAndDataTypeAndReportingPeriod(companyId, dataType, reportingPeriod)
-                    ?: throw DataSourcingNotFoundApiException(companyId, reportingPeriod, dataType)
-            return entityWithoutFetchedRequests.toStoredDataSourcing()
-        }
-
-        private fun getDataSourcingEntityById(dataSourcingEntityId: UUID): DataSourcingEntity {
-            val entityWithoutFetchedRequests =
-                dataSourcingRepository.findById(dataSourcingEntityId).getOrNull() ?: throw DataSourcingNotFoundApiException(
-                    dataSourcingEntityId,
-                )
-            return dataSourcingRepository.fetchAssociatedRequests(entityWithoutFetchedRequests)
-        }
+        ): StoredDataSourcing =
+            getFullyFetchedDataSourcingEntityByDataDimension(companyId, dataType, reportingPeriod)
+                .toStoredDataSourcing()
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
@@ -84,52 +81,60 @@ class DataSourcingManager
             dataSourcingEntityId: UUID,
             dataSourcingPatch: DataSourcingPatch,
         ): StoredDataSourcing {
-            val dataSourcingEntity = getDataSourcingEntityById(dataSourcingEntityId)
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
         }
 
         /**
-         * Patches the data sourcing entity according to the given patch object.
-         * @param dataSourcingEntity the data sourcing entity to patch
+         * Patches the data sourcing entity according to the given patch object. To prevent
+         * runtime errors, all lazily fetched fields in the entity should already be fetched
+         * at the beginning.
+         * @param fullyFetchedDataSourcingEntity the data sourcing entity to patch
          * @param dataSourcingPatch the patch object containing the new values
          * @return the StoredDataSourcing object corresponding to the patched entity
          */
         private fun handlePatchOfDataSourcingEntity(
-            dataSourcingEntity: DataSourcingEntity,
+            fullyFetchedDataSourcingEntity: DataSourcingEntity,
             dataSourcingPatch: DataSourcingPatch,
         ): DataSourcingEntity {
-            performStatePatch(dataSourcingEntity, dataSourcingPatch.state)
-            updateIfNotNull(dataSourcingPatch.documentIds) { dataSourcingEntity.documentIds = it }
+            performStatePatch(fullyFetchedDataSourcingEntity, dataSourcingPatch.state)
+            updateIfNotNull(dataSourcingPatch.documentIds) { fullyFetchedDataSourcingEntity.documentIds = it }
             updateIfNotNull(dataSourcingPatch.expectedPublicationDatesOfDocuments) {
-                dataSourcingEntity.expectedPublicationDatesDocuments = it
+                fullyFetchedDataSourcingEntity.expectedPublicationDatesDocuments = it
             }
             updateIfNotNull(dataSourcingPatch.dateDocumentSourcingAttempt) {
-                dataSourcingEntity.dateDocumentSourcingAttempt = it
+                fullyFetchedDataSourcingEntity.dateDocumentSourcingAttempt = it
             }
-            updateIfNotNull(dataSourcingPatch.documentCollector) { dataSourcingEntity.documentCollector = it }
-            updateIfNotNull(dataSourcingPatch.dataExtractor) { dataSourcingEntity.dataExtractor = it }
-            updateIfNotNull(dataSourcingPatch.adminComment) { dataSourcingEntity.adminComment = it }
+            updateIfNotNull(dataSourcingPatch.documentCollector) {
+                fullyFetchedDataSourcingEntity.documentCollector = it
+            }
+            updateIfNotNull(dataSourcingPatch.dataExtractor) { fullyFetchedDataSourcingEntity.dataExtractor = it }
+            updateIfNotNull(dataSourcingPatch.adminComment) { fullyFetchedDataSourcingEntity.adminComment = it }
             updateIfNotNull(dataSourcingPatch.associatedRequests) { associatedRequest ->
-                dataSourcingEntity.associatedRequests =
+                fullyFetchedDataSourcingEntity.associatedRequests =
                     associatedRequest
                         .map { request ->
                             val requestEntity = request.toRequestEntity()
-                            requestEntity.dataSourcingEntity = dataSourcingEntity
+                            requestEntity.dataSourcingEntity = fullyFetchedDataSourcingEntity
                             requestEntity
                         }.toMutableSet()
             }
 
-            return dataSourcingEntity
+            return dataSourcingRepository.save(fullyFetchedDataSourcingEntity)
         }
 
+        /**
+         * Performs the state patch on the given data sourcing entity, of which the associtedRequests
+         * field must already have been fetched.
+         */
         private fun performStatePatch(
-            dataSourcingEntity: DataSourcingEntity,
+            dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
             state: DataSourcingState?,
         ) {
             if (state == null) return
-            dataSourcingEntity.state = state
+            dataSourcingEntityWithFetchedRequests.state = state
             if (state in setOf(DataSourcingState.Answered, DataSourcingState.NonSourceable)) {
-                dataSourcingRepository.fetchAssociatedRequests(dataSourcingEntity).associatedRequests.forEach {
+                dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
             }
@@ -146,8 +151,7 @@ class DataSourcingManager
             dataSourcingEntityId: UUID,
             state: DataSourcingState,
         ): ReducedDataSourcing {
-            val dataSourcingEntity =
-                getDataSourcingEntityById(dataSourcingEntityId)
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(state = state),
@@ -167,8 +171,7 @@ class DataSourcingManager
             documentIds: Set<String>,
             appendDocuments: Boolean,
         ): ReducedDataSourcing {
-            val dataSourcingEntity =
-                getDataSourcingEntityById(dataSourcingEntityId)
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             val newDocumentsIds = if (!appendDocuments) documentIds else dataSourcingEntity.documentIds + documentIds
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
@@ -187,8 +190,7 @@ class DataSourcingManager
             dataSourcingEntityId: UUID,
             date: LocalDate,
         ): ReducedDataSourcing {
-            val dataSourcingEntity =
-                getDataSourcingEntityById(dataSourcingEntityId)
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(dateDocumentSourcingAttempt = date),
@@ -206,7 +208,7 @@ class DataSourcingManager
          */
         fun resetOrCreateDataSourcingObjectAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
             val dataSourcingEntity =
-                dataSourcingRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
+                dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(
                     requestEntity.companyId,
                     requestEntity.dataType,
                     requestEntity.reportingPeriod,
@@ -215,6 +217,7 @@ class DataSourcingManager
                     reportingPeriod = requestEntity.reportingPeriod,
                     dataType = requestEntity.dataType,
                 )
+
             dataSourcingEntity.state = DataSourcingState.Initialized
             dataSourcingEntity.addAssociatedRequest(requestEntity)
             return dataSourcingRepository.save(dataSourcingEntity)
@@ -236,8 +239,7 @@ class DataSourcingManager
             dataExtractor: String?,
             adminComment: String?,
         ): StoredDataSourcing {
-            val dataSourcingEntity =
-                getDataSourcingEntityById(dataSourcingEntityId)
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
@@ -258,19 +260,20 @@ class DataSourcingManager
         fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing>? {
             val dataSourcingEntities =
                 dataSourcingRepository
-                    .findAllByDocumentCollector(companyId)
+                    .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
             return dataSourcingEntities.map { entity -> entity.toReducedDataSourcing() }
         }
 
         /**
          * Retrieves the history of revisions for a specific data sourcing object identified by its ID.
+         * The returned DTOs do not include lazily fetched references to avoid runtime errors.
          * @param id The UUID string of the data sourcing object whose history is to be retrieved.
          * @return A list of StoredDataSourcing objects representing the revision history.
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveDataSourcingHistory(id: String): List<StoredDataSourcing> {
+        fun retrieveDataSourcingHistory(id: String): List<DataSourcingWithoutReferences> {
             val uuid =
                 try {
                     UUID.fromString(id)
@@ -282,6 +285,6 @@ class DataSourcingManager
                 }
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(uuid)
-                .map { it.toStoredDataSourcing() }
+                .map { it.toDataSourcingWithoutReferences() }
         }
     }

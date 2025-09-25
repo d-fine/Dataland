@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.controller
 
 import org.dataland.datasourcingservice.api.DataSourcingApi
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -37,7 +38,7 @@ class DataSourcingController(
             ),
         )
 
-    override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<StoredDataSourcing>> =
+    override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
         ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(id))
 
     override fun patchDataSourcingState(

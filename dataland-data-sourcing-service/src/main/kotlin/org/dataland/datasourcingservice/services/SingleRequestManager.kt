@@ -166,6 +166,8 @@ class SingleRequestManager
                 )
             val oldRequestState = requestEntity.state
             requestEntity.state = newRequestState
+            requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
+
             if (adminComment != null) {
                 requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
@@ -200,6 +202,8 @@ class SingleRequestManager
                     dataRequestId,
                 )
             requestEntity.requestPriority = newRequestPriority
+            requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
+
             if (adminComment != null) {
                 requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
