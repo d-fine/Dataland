@@ -2,6 +2,25 @@ import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.
 import { type BasePortfolio } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
+/**
+ * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
+ * using Cypress and the default mocked authentication context.
+ *
+ * @param {object} dialogRef - The mock dialog reference to inject into the component.
+ * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
+ *
+ * @returns {void}
+ */
+function mountComponent(dialogRef: object): void {
+  // @ts-ignore
+  cy.mountWithPlugins(AddCompanyToPortfolios, {
+    keycloak: minimalKeycloakMock({}),
+    global: {
+      provide: { dialogRef },
+    },
+  });
+}
+
 describe('Tests for AddCompanyToPortfolios Component', () => {
   const companyId = 'COMP-123';
   const mockPortfolios: BasePortfolio[] = [
@@ -70,25 +89,6 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       close: closeStub ?? cy.stub(),
     },
   });
-
-  /**
-   * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
-   * using Cypress and the default mocked authentication context.
-   *
-   * @param {object} dialogRef - The mock dialog reference to inject into the component.
-   * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
-   *
-   * @returns {void}
-   */
-  function mountComponent(dialogRef: object): void {
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfolios, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: { dialogRef },
-      },
-    });
-  }
 
   it('shows empty selection state for a new portfolio', () => {
     mountComponent(getMockDialogRef());

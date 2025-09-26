@@ -280,9 +280,7 @@ async function deletePortfolio(): Promise<void> {
  * with commas, then splits and filters the input into a unique list of non-empty identifiers.
  */
 function processCompanyInputString(): string[] {
-  const uniqueIdentifiers = new Set<string>([
-    ...companyIdentifiersInput.value.replace(/(\r\n|\n|\r|;| )/gm, ',').split(','),
-  ]);
+  const uniqueIdentifiers = new Set(companyIdentifiersInput.value.replace(/(\r\n|\n|\r|;| )/gm, ',').split(','));
   uniqueIdentifiers.delete('');
   return Array.from(uniqueIdentifiers);
 }

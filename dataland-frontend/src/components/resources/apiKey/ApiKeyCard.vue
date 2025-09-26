@@ -91,7 +91,7 @@ export default defineComponent({
      * @returns whether the api key is expired
      */
     isKeyExpired() {
-      return !(this.expiryDateInMilliseconds >= new Date().getTime() || this.expiryDateInMilliseconds == null);
+      return !(this.expiryDateInMilliseconds >= Date.now() || this.expiryDateInMilliseconds == null);
     },
   },
 });

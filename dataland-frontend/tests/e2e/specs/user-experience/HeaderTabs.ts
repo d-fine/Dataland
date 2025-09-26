@@ -20,14 +20,16 @@ describeIf(
     };
 
     const assertHeaderTabsVisibility = (isVisible: boolean): void => {
-      tabNames.forEach((tab) => assertTabVisibility(tab, isVisible));
+      for (const tab of tabNames) {
+        assertTabVisibility(tab, isVisible);
+      }
     };
 
     const visitPagesAndCheckTabsVisibility = (urls: string[], isVisible: boolean): void => {
-      urls.forEach((url) => {
+      for (const url of urls) {
         cy.visitAndCheckAppMount(url);
         assertHeaderTabsVisibility(isVisible);
-      });
+      }
     };
 
     it('shows no tabs when not logged in', () => {

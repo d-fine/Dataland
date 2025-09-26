@@ -183,7 +183,7 @@ export default defineComponent({
           });
         } else if (
           existingFileNamesCollector.has(fileName) ||
-          Object.keys(this.namesAndReferencesOfStoredReports).indexOf(fileName) !== -1
+          Object.keys(this.namesAndReferencesOfStoredReports).includes(fileName)
         ) {
           nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,

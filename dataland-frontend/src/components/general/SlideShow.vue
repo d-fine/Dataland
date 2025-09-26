@@ -94,7 +94,7 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  if (scrollScreenWidthLimit?.value && window.innerWidth > scrollScreenWidthLimit.value) {
+  if (scrollScreenWidthLimit?.value && globalThis.innerWidth > scrollScreenWidthLimit.value) {
     return;
   }
   state.isDragging = true;

@@ -31,14 +31,31 @@ export function forceFileDownload(content: string | ArrayBuffer | Blob | BlobPar
     blob = new Blob([content], { type: mimeType });
   }
 
-  const url = window.URL.createObjectURL(blob);
+  const url = globalThis.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', filename);
   document.body.appendChild(link);
   link.click();
   link.remove();
-  window.URL.revokeObjectURL(url);
+  globalThis.URL.revokeObjectURL(url);
+}
+
+/**
+ * Helper function to add reporting periods to the map for a given framework
+ */
+function addFrameworkPeriods(map: Map<string, string[]>, framework: string, frameworkPeriodsCleaned: string[]): void {
+  if (!map.has(framework)) {
+    map.set(framework, []);
+  }
+
+  const periods = map.get(framework)!;
+
+  for (const period of frameworkPeriodsCleaned) {
+    if (period && !periods.includes(period)) {
+      periods.push(period);
+    }
+  }
 }
 
 /**
@@ -49,26 +66,18 @@ export function groupAllReportingPeriodsByFrameworkForPortfolio(
 ): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
-  enrichedPortfolio?.entries.forEach((entry) => {
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
-      const frameworkPeriods = entry.availableReportingPeriods[framework];
-      if (!frameworkPeriods) return;
+  if (enrichedPortfolio?.entries) {
+    for (const entry of enrichedPortfolio.entries) {
+      for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
+        const frameworkPeriods = entry.availableReportingPeriods[framework];
+        if (!frameworkPeriods) continue;
 
-      const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
+        const frameworkPeriodsCleaned = frameworkPeriods.split(',').map((p) => p.trim());
 
-      if (!map.has(framework)) {
-        map.set(framework, []);
+        addFrameworkPeriods(map, framework, frameworkPeriodsCleaned);
       }
-
-      const periods = map.get(framework)!;
-
-      for (const period of frameworkPeriodsCleaned) {
-        if (period && !periods.includes(period)) {
-          periods.push(period);
-        }
-      }
-    });
-  });
+    }
+  }
 
   return map;
 }
@@ -81,7 +90,7 @@ export function groupReportingPeriodsPerFrameworkForCompany(
 ): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
-  data.forEach((item) => {
+  for (const item of data) {
     const framework = item.metaInfo.dataType;
     const period = item.metaInfo.reportingPeriod;
 
@@ -93,7 +102,7 @@ export function groupReportingPeriodsPerFrameworkForCompany(
     if (!periods.includes(period)) {
       periods.push(period);
     }
-  });
+  }
 
   return map;
 }
