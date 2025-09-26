@@ -1,8 +1,8 @@
 import {
-  Configuration,
-  CompanyRolesControllerApi,
-  type CompanyRoleAssignment,
   CompanyRole,
+  type CompanyRoleAssignment,
+  CompanyRolesControllerApi,
+  Configuration,
 } from '@clients/communitymanager';
 import { admin_userId } from '@e2e/utils/Cypress';
 import { type AxiosError, type HttpStatusCode, isAxiosError } from 'axios';
@@ -70,13 +70,14 @@ export async function assignCompanyOwnershipToDatalandAdmin(
   token: string,
   companyId: string
 ): Promise<CompanyRoleAssignment> {
-  const apiResponse = await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  return apiResponse;
+  return await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
 }
 
 /**
  * Checks that the QA status of the uploaded dataset is automatically set to Accepted
  */
 export function isDatasetAccepted(): void {
-  cy.get('[data-test="qa-status"]').first().should('have.text', 'Accepted');
+  cy.get('[data-test="qa-status"]', { timeout: Cypress.env('medium_timeout_in_ms') as number })
+    .first()
+    .should('have.text', 'Accepted');
 }

@@ -45,7 +45,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
     const val REF_EXAMPLE =
         "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/" +
-            "frameworks/eutaxonomy-non-financials/$DATA_ID_EXAMPLE"
+            "frameworks/sfdr/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
     const val LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
@@ -160,7 +160,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REPORTING_PERIODS_LIST_DESCRIPTION =
         "The reporting periods for which the data export is requested."
     const val REPORTING_PERIODS_LIST_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."
@@ -173,4 +173,10 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val KEEP_VALUE_FIELDS_ONLY_DESCRIPTION =
         "If set to true, data is to be exported without additional information like comments on the data or the data's qa status."
+
+    const val ASSOCIATED_SUBDOMAINS_DESCRIPTION =
+        "List of email subdomains associated with the company. Subdomain labels immediately follow the '@' and end immediately before " +
+            "one of the subsequent periods '.'. They represent the root domain registered by the company together with subdomains " +
+            "if applicable. They are used to suggest registered Dataland users when managing company roles."
+    const val ASSOCIATED_SUBDOMAINS_EXAMPLE = "[\"my-company\",\"hr.my-company\"]"
 }

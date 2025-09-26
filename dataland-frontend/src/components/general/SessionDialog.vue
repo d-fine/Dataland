@@ -33,7 +33,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
-import { loginAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import router from '@/router';
 
@@ -117,7 +117,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            void loginAndRedirectToSearchPage(keycloak);
+            void loginAndRedirectToRedirectPage(keycloak);
           }
         })
         .catch((error) => console.log(error));

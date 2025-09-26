@@ -3,8 +3,6 @@ package org.dataland.datalandbackend.frameworks.pcaf.model.general.company
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyCompanyExchangeStatusOptions
-import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyMainPcafSectorOptions
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
 /**
@@ -14,7 +12,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 data class PcafGeneralCompany(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Machinery"; "Materials"; "Real estate"; "Sovereign"; "Utilities"""",
+        description = """One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";""",
         example = """{
       "value" :  "Option 1" , 
       "quality" : "Reported",

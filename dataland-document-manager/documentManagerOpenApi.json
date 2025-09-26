@@ -859,7 +859,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -916,7 +916,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -959,7 +959,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         },
@@ -1031,7 +1031,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "qaStatus": {

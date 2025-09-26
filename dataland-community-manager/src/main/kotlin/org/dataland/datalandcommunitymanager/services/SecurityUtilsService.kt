@@ -105,7 +105,7 @@ class SecurityUtilsService(
 
     /**
      * Returns true if the user is member of the company
-     * @param companyId dataland companyId
+     * @param companyId Dataland company ID
      */
     @Transactional(readOnly = true)
     fun isUserMemberOfTheCompany(companyId: UUID?): Boolean {
@@ -118,23 +118,50 @@ class SecurityUtilsService(
     }
 
     /**
+     * Returns true if the user is owner or member admin of the company
+     * @param companyId Dataland company ID
+     */
+    @Transactional(readOnly = true)
+    fun isUserOwnerOrMemberAdminOfTheCompany(companyId: UUID?): Boolean {
+        val userId = SecurityContextHolder.getContext().authentication.name
+        if (companyId == null || userId == null) return false
+        return companyRoleAssignmentRepository.findByCompanyIdAndUserIdAndCompanyRoleIsIn(
+            companyId = companyId.toString(),
+            userId = userId,
+            companyRoles = listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin),
+        ) != null
+    }
+
+    /**
      * Returns true if the user has the rights to add/remove the companyRole
+     * Uses only the roleModificationPermissionsMap for all logic, no hardcoded role checks.
      * @param companyId dataland companyId
-     * @param companyRoleToModify the companyRole to add/remove
+     * @param companyRoleAfterModification the companyRole to add/remove
+     * @param userIdOfRoleToChange the userId of the user that should be checked for the permissions
      */
     @Transactional
     fun hasUserPermissionToModifyTheCompanyRole(
         companyId: UUID,
-        companyRoleToModify: CompanyRole,
+        companyRoleAfterModification: CompanyRole?,
+        userIdOfRoleToChange: String,
     ): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
-        val userCompanyRoles =
-            companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
-                companyId = companyId.toString(), userId = userId, companyRole = null,
-            )
-        return userCompanyRoles.any {
-            roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
-        }
+        val userId = SecurityContextHolder.getContext().authentication.name
+        if (userId == null) return false
+        val userCompanyRole =
+            companyRoleAssignmentRepository
+                .getCompanyRoleAssignmentsByProvidedParameters(
+                    companyId = companyId.toString(), userId = userId, companyRole = null,
+                ).firstOrNull()
+                ?.companyRole
+        val companyRoleBeforeModification =
+            companyRoleAssignmentRepository
+                .getCompanyRoleAssignmentsByProvidedParameters(
+                    companyId = companyId.toString(), userId = userIdOfRoleToChange, companyRole = null,
+                ).firstOrNull()
+                ?.companyRole
+        val allowedRoles = roleModificationPermissionsMap[userCompanyRole] ?: emptyList()
+        return (companyRoleAfterModification == null || allowedRoles.contains(companyRoleAfterModification)) &&
+            (companyRoleBeforeModification == null || allowedRoles.contains(companyRoleBeforeModification))
     }
 
     /**
@@ -176,8 +203,8 @@ class SecurityUtilsService(
     fun areAllParametersUnset(vararg parameters: Any?): Boolean =
         parameters.all {
             when (it) {
-                is String -> it.isNullOrBlank()
-                is Collection<*> -> it.isNullOrEmpty()
+                is String -> it.isBlank()
+                is Collection<*> -> it.isEmpty()
                 else -> it == null
             }
         }

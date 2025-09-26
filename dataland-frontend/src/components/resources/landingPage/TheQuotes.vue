@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, watch, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import type { Section } from '@/types/ContentTypes';
 import SlideShow from '@/components/general/SlideShow.vue';
@@ -76,31 +76,30 @@ interface YouTubeEvent {
     pauseVideo: () => void;
   };
 }
+
+type YTPlayer = {
+  playVideo: () => void;
+  pauseVideo: () => void;
+  destroy: () => void;
+};
+
 declare global {
-  interface Window {
-    Cookiebot?: {
-      renew: () => void;
-    };
-    YT: {
-      Player: new (
-        elementId: string,
-        opts: {
-          videoId: string;
-          playerVars?: {
-            rel: number;
-          };
-          events: {
-            onReady: (event: YouTubeEvent) => void;
-          };
-        }
-      ) => {
-        playVideo: () => void;
-        pauseVideo: () => void;
-        destroy: () => void;
-      };
-    };
-    onYouTubeIframeAPIReady: () => void;
-  }
+  var Cookiebot: { renew: () => void } | undefined;
+
+  var YT:
+    | {
+        Player: new (
+          elementId: string,
+          opts: {
+            videoId: string;
+            playerVars?: { rel: number };
+            events: { onReady: (event: YouTubeEvent) => void };
+          }
+        ) => YTPlayer;
+      }
+    | undefined;
+
+  var onYouTubeIframeAPIReady: () => void;
 }
 
 const ytPlayers = ref<Map<string, { playVideo: () => void; pauseVideo: () => void; destroy: () => void }>>(new Map());
@@ -129,13 +128,13 @@ const currentCardInfo = computed(() => {
 });
 
 const renewCookieConsent = (): void => {
-  window.Cookiebot?.renew();
+  globalThis.Cookiebot?.renew();
 };
 
 const pauseAllVideos = (): void => {
-  ytPlayers.value.forEach((player) => {
+  for (const player of ytPlayers.value.values()) {
     player.pauseVideo();
-  });
+  }
 };
 
 const toggleThumbnailAndPlayVideo = (slideIndex: number, videoId?: string): void => {
@@ -161,11 +160,11 @@ watch(
 );
 
 const updateSlideWidth = (): void => {
-  slideWidth.value = window.innerWidth > 768 ? 640 : 323;
+  slideWidth.value = globalThis.innerWidth > 768 ? 640 : 323;
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateSlideWidth);
+  globalThis.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
   const firstScriptTag = document.querySelector('script');
   if (firstScriptTag?.parentNode) {
@@ -173,31 +172,30 @@ onMounted(() => {
     tag.src = 'https://www.youtube.com/iframe_api';
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
-  window.onYouTubeIframeAPIReady = (): void => {
-    cards.value.forEach((card) => {
-      if (!card.icon) return;
-
-      const player = new window.YT.Player(`video-${card.icon}`, {
+  globalThis.onYouTubeIframeAPIReady = (): void => {
+    for (const card of cards.value) {
+      if (!card.icon || !globalThis.YT) continue;
+      const player = new globalThis.YT.Player(`video-${card.icon}`, {
         videoId: card.icon,
         playerVars: {
           rel: 0,
         },
         events: {
-          onReady: (event): void => {
+          onReady: (event: YouTubeEvent): void => {
             event.target?.pauseVideo();
           },
         },
       });
       ytPlayers.value.set(card.icon, player);
-    });
+    }
   };
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSlideWidth);
-  ytPlayers.value.forEach((player) => {
+  globalThis.removeEventListener('resize', updateSlideWidth);
+  for (const player of ytPlayers.value.values()) {
     player.destroy();
-  });
+  }
 });
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -207,10 +205,10 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
-        void registerAndRedirectToSearchPage(keycloak);
+      if (keycloak.authenticated) {
+        void loginAndRedirectToRedirectPage(keycloak);
       } else {
-        void loginAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToRedirectPage(keycloak);
       }
     })
     .catch((error) => console.log(error));

@@ -4,7 +4,9 @@ package org.dataland.datalandbackend.frameworks.pcaf.model
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.PcafCompanyValue
+import org.dataland.datalandbackend.frameworks.pcaf.model.companyValueEstimation.PcafCompanyValueEstimation
 import org.dataland.datalandbackend.frameworks.pcaf.model.environmental.PcafEnvironmental
+import org.dataland.datalandbackend.frameworks.pcaf.model.environmentalEstimation.PcafEnvironmentalEstimation
 import org.dataland.datalandbackend.frameworks.pcaf.model.general.PcafGeneral
 
 /**
@@ -19,4 +21,8 @@ data class PcafData(
     val companyValue: PcafCompanyValue? = null,
     @field:Valid()
     val environmental: PcafEnvironmental? = null,
+    @field:Valid()
+    val companyValueEstimation: PcafCompanyValueEstimation? = null,
+    @field:Valid()
+    val environmentalEstimation: PcafEnvironmentalEstimation? = null,
 )

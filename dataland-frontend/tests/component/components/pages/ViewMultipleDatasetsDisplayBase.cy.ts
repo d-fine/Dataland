@@ -61,7 +61,6 @@ describe('Component test for the view multiple dataset display base component', 
         companyId: mockDataAndMetaInfo.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
         reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
-        viewInPreviewMode: false,
       },
     });
 
@@ -91,7 +90,6 @@ describe('Component test for the view multiple dataset display base component', 
       void mounted.wrapper.setProps({
         companyId: mockedData2023.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
-        viewInPreviewMode: false,
       });
     });
     cy.get('[data-test="editDatasetButton"]').should('exist').click();

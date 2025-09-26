@@ -76,6 +76,7 @@ class DataAvailabilityCheckerTest {
             sectorCodeWz = null,
             companyLegalForm = null,
             headquartersPostalCode = null,
+            associatedSubdomains = null,
         )
 
     @BeforeEach

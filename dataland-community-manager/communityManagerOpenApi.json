@@ -20,75 +20,6 @@
     }
   ],
   "paths": {
-    "/user-validation/email": {
-      "post": {
-        "tags": [
-          "user-validation-controller"
-        ],
-        "summary": "Validate an email address and obtain user-related information from an email address.",
-        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
-        "operationId": "postEmailAddressValidation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailAddress"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully validated the posted email address.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KeycloakUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The posted string does not have the format of an email address."
-          },
-          "403": {
-            "description": "You do not have permission to query user information based on email addresses."
-          },
-          "404": {
-            "description": "No Dataland user is registered under this email address."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/requests/single": {
       "post": {
         "tags": [
@@ -192,6 +123,75 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/emails/validation": {
+      "post": {
+        "tags": [
+          "email-address-controller"
+        ],
+        "summary": "Validate an email address and obtain user-related information from an email address.",
+        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
+        "operationId": "postEmailAddressValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAddress"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully validated the posted email address and returned user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeycloakUserInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The posted string does not have the format of an email address."
+          },
+          "403": {
+            "description": "You do not have permission to query user information based on email addresses."
+          },
+          "404": {
+            "description": "No Dataland user is registered under this email address."
           },
           "default": {
             "description": "An error occurred",
@@ -721,7 +721,7 @@
     "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
       "head": {
         "tags": [
-          "request-controller"
+          "data-access-controller"
         ],
         "summary": "This head request checks whether the logged-in user has access to dataset.",
         "description": "This head request checks whether the logged-in user has access to dataset.",
@@ -751,7 +751,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -909,14 +909,21 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
@@ -927,6 +934,16 @@
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Inc."
           },
           {
             "name": "chunkSize",
@@ -1150,14 +1167,21 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
@@ -1168,6 +1192,16 @@
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Inc."
           }
         ],
         "responses": {
@@ -1247,7 +1281,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1277,6 +1311,78 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/emails/{companyId}/recommended-users": {
+      "get": {
+        "tags": [
+          "email-address-controller"
+        ],
+        "summary": "Get users by company-associated subdomains.",
+        "description": "Returns all users whose email address contains one of the subdomains listed in the associatedSubdomains field of the corresponding CompanyInformation object.",
+        "operationId": "getUsersByCompanyAssociatedSubdomains",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users with matching email subdomains.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeycloakUserInfo"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
+          "404": {
+            "description": "The specified company does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -1575,47 +1681,6 @@
   },
   "components": {
     "schemas": {
-      "EmailAddress": {
-        "required": [
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "The email address of the Dataland user in question.",
-            "example": "test@example.com"
-          }
-        }
-      },
-      "KeycloakUserInfo": {
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "The email address of the Dataland user in question.",
-            "example": "test@example.com"
-          },
-          "id": {
-            "type": "string",
-            "description": "The Dataland user ID of the user in question.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "The first name of the Dataland user in question.",
-            "example": "Jane"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "The last name of the Dataland user in question.",
-            "example": "Doe"
-          }
-        }
-      },
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
@@ -1859,7 +1924,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "resourceId": {
@@ -1874,13 +1939,54 @@
           }
         }
       },
+      "EmailAddress": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          }
+        }
+      },
+      "KeycloakUserInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the Dataland user in question.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the Dataland user in question.",
+            "example": "Doe"
+          }
+        }
+      },
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "CompanyOwner",
-          "DataUploader",
           "MemberAdmin",
-          "Member"
+          "Member",
+          "CompanyOwner",
+          "DataUploader"
         ]
       },
       "CompanyRoleAssignment": {
@@ -2033,7 +2139,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2184,7 +2290,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2253,7 +2359,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {

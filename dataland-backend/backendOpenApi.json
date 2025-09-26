@@ -309,7 +309,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1314,12 +1314,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -1901,7 +1901,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -2242,7 +2242,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -2428,7 +2428,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "array",
@@ -3127,7 +3127,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3190,7 +3190,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -3454,7 +3454,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3517,7 +3517,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -3781,7 +3781,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -3844,7 +3844,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4108,7 +4108,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4171,7 +4171,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4435,7 +4435,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4498,7 +4498,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -4762,7 +4762,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -4825,7 +4825,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -5270,12 +5270,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "dataTypes",
@@ -5374,12 +5374,12 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Int"
+            "example": "Inc."
           },
           {
             "name": "resultLimit",
@@ -5825,6 +5825,18 @@
             "description": "The LEI of the parent company if it exists.",
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
+          },
+          "associatedSubdomains": {
+            "type": "array",
+            "description": "List of email subdomains associated with the company. Subdomain labels immediately follow the \u0027@\u0027 and end immediately before one of the subsequent periods \u0027.\u0027. They represent the root domain registered by the company together with subdomains if applicable. They are used to suggest registered Dataland users when managing company roles.",
+            "nullable": true,
+            "example": [
+              "my-company",
+              "hr.my-company"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -5867,7 +5879,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "currentlyActive": {
@@ -5881,7 +5893,7 @@
             "type": "string",
             "description": "The direct link to the page displaying the specified dataset.",
             "nullable": true,
-            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/eutaxonomy-non-financials/1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/sfdr/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
@@ -5938,7 +5950,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "isNonSourceable": {
@@ -5974,7 +5986,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "nullable": true,
             "example": "2023"
           },
@@ -6025,7 +6037,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -9016,7 +9028,7 @@
             ]
           }
         },
-        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Machinery\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\"",
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "PcafCompanyValue": {
@@ -9035,6 +9047,27 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/PcafCompanyvalueUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyValueEstimation": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
               }
             ]
           }
@@ -9082,6 +9115,48 @@
           }
         }
       },
+      "PcafCompanyvalueestimationListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyvalueestimationUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -9108,6 +9183,22 @@
                 "$ref": "#/components/schemas/PcafEnvironmental"
               }
             ]
+          },
+          "companyValueEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyValueEstimation"
+              }
+            ]
+          },
+          "environmentalEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
+              }
+            ]
           }
         }
       },
@@ -9124,7 +9215,57 @@
           }
         }
       },
+      "PcafEnvironmentalEstimation": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
+              }
+            ]
+          }
+        }
+      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
           "scope1GhgEmissionsInTonnes": {
@@ -9222,10 +9363,10 @@
           "Industrials",
           "Industry",
           "InformationTechnology",
-          "Machinery",
           "Materials",
           "RealEstate",
-          "Sovereign"
+          "Sovereign",
+          "Utilities"
         ]
       },
       "PcafGeneralGeneral": {
@@ -16214,7 +16355,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           }
         }
@@ -16249,7 +16390,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "uploaderUserId": {
@@ -16497,6 +16638,18 @@
             "description": "The LEI of the parent company if it exists.",
             "nullable": true,
             "example": "5493001KJX4BT0IHAG73"
+          },
+          "associatedSubdomains": {
+            "type": "array",
+            "description": "List of email subdomains associated with the company. Subdomain labels immediately follow the \u0027@\u0027 and end immediately before one of the subsequent periods \u0027.\u0027. They represent the root domain registered by the company together with subdomains if applicable. They are used to suggest registered Dataland users when managing company roles.",
+            "nullable": true,
+            "example": [
+              "my-company",
+              "hr.my-company"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -16544,7 +16697,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "qualityStatus": {
@@ -16585,7 +16738,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "isNonSourceable": {

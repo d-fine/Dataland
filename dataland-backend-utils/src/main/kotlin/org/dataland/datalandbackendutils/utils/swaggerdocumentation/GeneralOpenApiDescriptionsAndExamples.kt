@@ -9,17 +9,18 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
 
-    const val GENERAL_REPORTING_PERIODS_LIST_EXAMPLE = "[\"2023\",\"2024\"]"
+    const val GENERAL_REPORTING_PERIODS_DESCRIPTION = "The relevant reporting periods (e.g. fiscal years)."
+    const val GENERAL_REPORTING_PERIODS_EXAMPLE = "[\"2023\",\"2024\"]"
 
     const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored data requests."
-    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = GENERAL_REPORTING_PERIODS_LIST_EXAMPLE
+    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE = GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to data requests that were rejected due to being duplicates."
     const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE = "[\"2022\"]"
 
-    const val REPORTING_PERIOD_DESCRIPTION = "The associated reporting period (e.g. a fiscal year)."
+    const val REPORTING_PERIOD_DESCRIPTION = "The relevant reporting period (e.g. a fiscal year)."
     const val REPORTING_PERIOD_EXAMPLE = "2023"
 
     const val UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
@@ -54,4 +55,8 @@ object GeneralOpenApiDescriptionsAndExamples {
         "Boolean indicating whether an immediate notification email shall be " +
             "sent whenever there is an update concerning the request. " +
             "If set to false, these updates are listed in the weekly summary email."
+
+    const val COMPANY_SEARCH_STRING_DESCRIPTION =
+        "Search string used for company substring matching. Matched against company names and identifiers."
+    const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
 }

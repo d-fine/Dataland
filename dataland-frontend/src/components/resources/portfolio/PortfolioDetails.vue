@@ -59,7 +59,20 @@
         style="width: 15%"
       >
         <template #body="portfolioEntry">
-          <a :href="`/companies/${portfolioEntry.data.companyId}`">{{ portfolioEntry.data.companyName }}</a>
+          <Button
+            :label="portfolioEntry.data.companyName"
+            variant="link"
+            data-test="view-company-button"
+            @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
+            :pt="{
+              label: {
+                style: 'font-weight: normal; text-align: left;',
+              },
+              root: {
+                style: 'padding-left: 0;',
+              },
+            }"
+          />
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -115,11 +128,20 @@
         :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
-          <a
+          <Button
             v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            :href="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            >{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</a
-          >
+            :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
+            variant="link"
+            @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
+            :pt="{
+              label: {
+                style: 'font-weight: normal; text-align: left;',
+              },
+              root: {
+                style: 'padding-left: 0;',
+              },
+            }"
+          />
           <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
         </template>
         <template #filter="{ filterModel, filterCallback }">
@@ -154,8 +176,8 @@ import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -175,6 +197,7 @@ import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts'
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
+import router from '@/router';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -201,7 +224,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+    for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -209,7 +232,7 @@ class PortfolioEntryPrepared {
             ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
             : undefined)
       );
-    });
+    }
 
     this.sfdrAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
@@ -277,7 +300,7 @@ watch([enrichedPortfolio], () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.forEach((framework) => {
+  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
@@ -288,7 +311,7 @@ watch([enrichedPortfolio], () => {
         )
       ).sort()
     );
-  });
+  }
 });
 
 /**
@@ -358,8 +381,8 @@ function loadPortfolio(): void {
       reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
       isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
     })
-    .catch((reason) => {
-      console.error(reason);
+    .catch((error) => {
+      console.error(error);
       isError.value = true;
     })
     .finally(() => (isLoading.value = false));
@@ -544,21 +567,6 @@ label {
 
 .filter-checkbox {
   margin: 0.25em 0;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a:after {
-  content: '>';
-  margin: 0 0.5em;
-  font-weight: bold;
 }
 
 .button_bar {
