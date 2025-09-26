@@ -96,6 +96,421 @@
         ]
       }
     },
+    "/{id}": {
+      "get": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Get DataSourcing by ID",
+        "description": "Retrieve a DataSourcing object by its unique identifier.",
+        "operationId": "getDataSourcingById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Dataland ID of the DataSourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved DataSourcing object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins are allowed to query data sourcing objects."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Patch provider and/or admin comment. ",
+        "description": "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID. Null values are ignored.",
+        "operationId": "patchDocumentCollectorAndDataExtractor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Dataland ID of the DataSourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+          },
+          {
+            "name": "documentCollector",
+            "in": "query",
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
+          },
+          {
+            "name": "dataExtractor",
+            "in": "query",
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+          },
+          {
+            "name": "adminComment",
+            "in": "query",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched providers and/or admin comment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataSourcing"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DataSourcing object not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataSourcing"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{id}/state": {
+      "patch": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Patch DataSourcing state",
+        "description": "Patch the state of a DataSourcing object specified by ID.",
+        "operationId": "patchDataSourcingState",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Dataland ID of the DataSourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataSourcingState"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch states of data sourcing objects."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{id}/documents": {
+      "patch": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Patch DataSourcing documents",
+        "description": "Patch the associated document IDs of a DataSourcing object. If appendDocuments is set to true, the provided document IDs are appended to the existing ones. Otherwise, they overwrite the existing ones. If omitted, appendDocuments is treated as true.",
+        "operationId": "patchDataSourcingDocuments",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Dataland ID of the DataSourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+          },
+          {
+            "name": "appendDocuments",
+            "in": "query",
+            "description": "Whether to append the provided document IDs to the existing ones. If set to false, the provided document IDs replace the existing ones instead.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "description": "The IDs of documents to append to or overwrite the existing document IDs.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched document IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{id}/document-sourcing-attempt": {
+      "patch": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Patch the date of the next planned document sourcing attempt",
+        "description": "Patch the date of the next planned document sourcing attempt of a DataSourcing object for a given ID.",
+        "operationId": "patchDateOfNextDocumentSourcingAttempt",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Dataland ID of the DataSourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+          },
+          {
+            "name": "dateOfNextDocumentSourcingAttempt",
+            "in": "query",
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched dateDocumentSourcingAttempt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/{dataRequestId}/state": {
       "patch": {
         "tags": [
@@ -264,310 +679,45 @@
         ]
       }
     },
-    "/data-sourcing/{id}/state": {
-      "patch": {
+    "/{id}/history": {
+      "get": {
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch DataSourcing state",
-        "description": "Patch the state of a DataSourcing object specified by ID.",
-        "operationId": "patchDataSourcingState",
+        "summary": "Get full history of a DataSourcing by ID",
+        "description": "Retrieve the history of a DataSourcing object by its unique identifier.",
+        "operationId": "getDataSourcingHistoryById",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the DataSourcing object.",
+            "description": "Dataland ID of the DataSourcing object.",
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "state",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/DataSourcingState"
-            }
+            },
+            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully patched state.",
+            "description": "Successfully retrieved DataSourcing history.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReducedDataSourcing"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataSourcingWithoutReferences"
+                  }
                 }
               }
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch states of data sourcing objects."
+            "description": "Only admins are allowed to query data sourcing history."
           },
           "404": {
             "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/{id}/documents": {
-      "patch": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Patch DataSourcing documents",
-        "description": "Patch the associated document IDs of a DataSourcing object. Use appendDocuments to append or overwrite.",
-        "operationId": "patchDataSourcingDocuments",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the DataSourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "appendDocuments",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "uniqueItems": true,
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully patched document IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReducedDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/{id}/document-sourcing-attempt": {
-      "patch": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Patch the date of the next planned document sourcing attempt",
-        "description": "Patch the date of the next planned document sourcing attempt of a DataSourcing object for a given ID.",
-        "operationId": "patchDateDocumentSourcingAttempt",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the DataSourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "date",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully patched dateDocumentSourcingAttempt.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReducedDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/{id}/assign": {
-      "patch": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Patch document collector and/or data extractor. ",
-        "description": "Patch the document collector and/or data extractor of a DataSourcing object specified by ID. Null values are ignored. Optionally: Provide an admin comment.",
-        "operationId": "patchDocumentCollectorAndDataExtractor",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the DataSourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "documentCollector",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "dataExtractor",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "adminComment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully patched document collector and/or data extractor.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
           },
           "default": {
             "description": "An error occurred",
@@ -736,245 +886,24 @@
         ]
       }
     },
-    "/data-sourcing/{id}": {
+    "/provider/{providerCompanyId}": {
       "get": {
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Get DataSourcing by ID",
-        "description": "Retrieve a DataSourcing object by its unique identifier.",
-        "operationId": "getDataSourcingById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the DataSourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved DataSourcing object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing objects."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/{id}/history": {
-      "get": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Get full history of DataSourcing history by ID",
-        "description": "Retrieve the history of a DataSourcing object by its unique identifier.",
-        "operationId": "getDataSourcingHistoryById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the DataSourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved DataSourcing history.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataSourcingWithoutReferences"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing history."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/search": {
-      "get": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Get DataSourcing by parameters",
-        "description": "Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.",
-        "operationId": "getDataSourcingByDimensions",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "description": "Company ID.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "description": "Data type.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "description": "Reporting period.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved DataSourcing object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins are allowed to query DataSourcing objects."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/company/{companyId}": {
-      "get": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Get DataSourcing by ID",
+        "summary": "Get DataSourcing by company ID of the provider (document collector and/or data extractor)",
         "description": "Retrieve DataSourcing objects assigned to your company.",
         "operationId": "getDataSourcingForCompanyId",
         "parameters": [
           {
-            "name": "companyId",
+            "name": "providerCompanyId",
             "in": "path",
-            "description": "ID of the document collector or data extractor.",
+            "description": "Dataland company ID of the document collector or data extractor.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "8b35099f-8319-4249-83ea-c618b8d153a0"
           }
         ],
         "responses": {
@@ -1198,6 +1127,94 @@
           }
         }
       }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Get DataSourcing by parameters",
+        "description": "Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.",
+        "operationId": "getDataSourcingByDimensions",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "sfdr"
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": 2023
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved DataSourcing object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins are allowed to query DataSourcing objects."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1242,6 +1259,181 @@
             "type": "string",
             "description": "The unique identifier of the stored request.",
             "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
+          }
+        }
+      },
+      "DataSourcingState": {
+        "type": "string",
+        "description": "The current state of the data sourcing object.",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Answered"
+        ]
+      },
+      "ExpectedPublicationDateOfDocument": {
+        "required": [
+          "documentCategory",
+          "expectedPublicationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "documentCategory": {
+            "type": "string"
+          },
+          "expectedPublicationDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "StoredDataSourcing": {
+        "required": [
+          "associatedRequestIds",
+          "companyId",
+          "dataType",
+          "documentIds",
+          "expectedPublicationDatesOfDocuments",
+          "id",
+          "reportingPeriod",
+          "state"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
+          },
+          "state": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "documentIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The IDs of documents from which the data for this data sourcing object are extracted.",
+            "example": [
+              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "expectedPublicationDatesOfDocuments": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
+            "items": {
+              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
+            }
+          },
+          "dateOfNextDocumentSourcingAttempt": {
+            "type": "string",
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
+            "format": "date"
+          },
+          "documentCollector": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
+          },
+          "dataExtractor": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "associatedRequestIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The IDs of stored data requests associated with this data sourcing object.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ReducedDataSourcing": {
+        "required": [
+          "companyId",
+          "dataType",
+          "documentIds",
+          "expectedPublicationDatesOfDocuments",
+          "id",
+          "reportingPeriod",
+          "state"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The associated reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
+          },
+          "state": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "documentIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The IDs of documents from which the data for this data sourcing object are extracted.",
+            "example": [
+              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "expectedPublicationDatesOfDocuments": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
+            "items": {
+              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
+            }
+          },
+          "dateOfNextDocumentSourcingAttempt": {
+            "type": "string",
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
+            "format": "date"
           }
         }
       },
@@ -1317,180 +1509,6 @@
           }
         }
       },
-      "DataSourcingState": {
-        "type": "string",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Answered"
-        ]
-      },
-      "ExpectedPublicationDateDocument": {
-        "required": [
-          "documentCategory",
-          "expectedPublicationDate"
-        ],
-        "type": "object",
-        "properties": {
-          "documentCategory": {
-            "type": "string"
-          },
-          "expectedPublicationDate": {
-            "type": "string",
-            "format": "date"
-          }
-        }
-      },
-      "ReducedDataSourcing": {
-        "required": [
-          "companyId",
-          "dataType",
-          "documentIds",
-          "expectedPublicationDatesOfDocuments",
-          "id",
-          "reportingPeriod",
-          "state"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "The unique identifier of the data sourcing object.",
-            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
-          },
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
-            "example": "2023"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
-          },
-          "state": {
-            "$ref": "#/components/schemas/DataSourcingState"
-          },
-          "documentIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The documents from which the data for this data sourcing object are extracted.",
-            "example": [
-              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "expectedPublicationDatesOfDocuments": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
-            "items": {
-              "$ref": "#/components/schemas/ExpectedPublicationDateDocument"
-            }
-          },
-          "dateDocumentSourcingAttempt": {
-            "type": "string",
-            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
-            "format": "date"
-          }
-        }
-      },
-      "StoredDataSourcing": {
-        "required": [
-          "associatedRequestIds",
-          "companyId",
-          "dataType",
-          "documentIds",
-          "expectedPublicationDatesOfDocuments",
-          "id",
-          "reportingPeriod",
-          "state"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "The unique identifier of the data sourcing object.",
-            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
-          },
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
-            "example": "2023"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
-          },
-          "state": {
-            "$ref": "#/components/schemas/DataSourcingState"
-          },
-          "documentIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The documents from which the data for this data sourcing object are extracted.",
-            "example": [
-              "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "expectedPublicationDatesOfDocuments": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The expected publication dates of future documents relevant for this data sourcing object.",
-            "items": {
-              "$ref": "#/components/schemas/ExpectedPublicationDateDocument"
-            }
-          },
-          "dateDocumentSourcingAttempt": {
-            "type": "string",
-            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
-            "format": "date"
-          },
-          "documentCollector": {
-            "type": "string",
-            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
-            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
-          },
-          "dataExtractor": {
-            "type": "string",
-            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
-            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
-          },
-          "adminComment": {
-            "type": "string",
-            "description": "A comment that can be set by Dataland admins to provide additional information.",
-            "example": "The data sourcing process is delayed due to unforeseen circumstances."
-          },
-          "associatedRequestIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The IDs of stored data requests associated with this data sourcing object.",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "DataSourcingWithoutReferences": {
         "required": [
           "companyId",
@@ -1508,7 +1526,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
@@ -1524,7 +1542,7 @@
           "state": {
             "$ref": "#/components/schemas/DataSourcingState"
           },
-          "dateDocumentSourcingAttempt": {
+          "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date"

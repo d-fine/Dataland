@@ -468,7 +468,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
