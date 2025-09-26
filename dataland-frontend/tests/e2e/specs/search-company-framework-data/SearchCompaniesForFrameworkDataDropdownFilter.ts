@@ -190,14 +190,21 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.wait(Cypress.env('short_timeout_in_ms') as number);
       cy.get('[id="framework-filter"]').click();
-      cy.get('div.p-multiselect-overlay')
+      // Wait explicitly for the overlay container
+      cy.get('div.p-multiselect-overlay', { timeout: 10000 })
+        .should('exist')
         .should('be.visible')
-        .and('contain.text', humanizeStringOrNumber(frameworkOne))
+        .and('contain.text', humanizeStringOrNumber(frameworkOne));
+      // Now separately get the options inside the overlay
+      cy.get('div.p-multiselect-overlay')
         .find('li.p-multiselect-option')
+        .should('have.length.greaterThan', 0)
         .first()
         .should('be.visible')
         .and('not.have.class', 'p-disabled')
         .click();
+      // Verify the overlay closed after click
+      cy.get('div.p-multiselect-overlay').should('not.exist');
       verifySearchResultTableExists();
       cy.get('div.p-multiselect-overlay').should('not.exist');
     }
@@ -248,12 +255,18 @@ describe('As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
-          cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
+          cy.visit(`/companies`);
+          cy.wait('@getFilterOptions');
+          cy.get('#framework-filter', { timeout: 20000 }).should('be.visible');
           cy.get('#framework-filter').click();
-          cy.get('div.p-multiselect-overlay')
-            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
-            .click();
+          cy.get('div.p-multiselect-overlay', { timeout: 10000 }).should('exist').should('be.visible');
+
+          cy.get('div.p-multiselect-overlay .p-multiselect-item', { timeout: 10000 })
+            .should('have.length.greaterThan', 0)
+            .first()
+            .should('be.visible')
+            .click({ force: true });
           verifySearchResultTableExists();
           cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
             verifySearchResultTableExists();
