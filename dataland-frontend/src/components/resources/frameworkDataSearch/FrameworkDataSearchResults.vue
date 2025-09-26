@@ -103,21 +103,22 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Updates the current Page in the parent component (user-triggered)
-     * and scrolls the results area into view (not the whole window).
+     * Updates the current Page in the parent component
+     * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
       window.scrollTo(0, 0);
       this.$emit('page-update', event.page);
     },
     /**
-     * Navigates to the company cockpit page for the clicked row.
-     * @param {{ data: BasicCompanyInformation }} event - Row click event with company data.
-     * @returns {void}
+     * Navigates to the company cockpit page on a click on the row of the company
+     * @param event the row click event
+     * @param event.data the company the user clicked on
+     * @returns the promise of the router push action
      */
-    goToCompanyCockpit(event: { data: BasicCompanyInformation }): void {
+    goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
       const companyIdOfClickedRow = event.data.companyId;
-      void router.push(`/companies/${companyIdOfClickedRow}`);
+      return router.push(`/companies/${companyIdOfClickedRow}`);
     },
   },
 });
