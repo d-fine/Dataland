@@ -15,6 +15,16 @@ import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRole
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
+/**
+ * Picks a reporting period to filter for in the date-picker.
+ * @param reportingPeriod to click on in the date-picker
+ */
+function clickOnReportingPeriod(reportingPeriod: string): void {
+  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+  cy.contains('span', reportingPeriod).should('exist').click();
+  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+}
+
 describe('Component tests for the Quality Assurance page', () => {
   let LksgFixture: FixtureData<LksgData>;
   let mockDataMetaInfoForActiveDataset: DataMetaInformation;
@@ -82,16 +92,6 @@ describe('Component tests for the Quality Assurance page', () => {
       reportingPeriod: reportingPeriod,
       qaStatus: QaStatus.Pending,
     };
-  }
-
-  /**
-   * Picks a reporting period to filter for in the date-picker.
-   * @param reportingPeriod to click on in the date-picker
-   */
-  function clickOnReportingPeriod(reportingPeriod: string): void {
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-    cy.contains('span', reportingPeriod).should('exist').click();
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
   }
 
   /**

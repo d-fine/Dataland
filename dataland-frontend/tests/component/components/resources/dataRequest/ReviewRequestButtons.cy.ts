@@ -129,12 +129,12 @@ describe('Component tests for the data request review buttons', function (): voi
    * Checks the message history
    */
   function checkMessageHistory(): void {
-    messageHistory.forEach((message) => {
-      message.contacts.forEach((contact) => {
+    for (const message of messageHistory) {
+      for (const contact of message.contacts) {
         cy.contains(contact).should('exist');
-      });
+      }
       cy.contains(message.message).should('exist');
       cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should('exist');
-    });
+    }
   }
 });

@@ -152,7 +152,7 @@ describe('Component test for CompanyRolesCard', () => {
     }
 
     cy.get('table').should('exist');
-    expectedUsers.forEach((user, index) => {
+    for (const [index, user] of expectedUsers.entries()) {
       cy.get('tbody tr')
         .eq(index)
         .within(() => {
@@ -161,7 +161,7 @@ describe('Component test for CompanyRolesCard', () => {
           cy.get('td').eq(2).should('contain', user.email);
           cy.get('td').eq(3).should('contain', user.userId);
         });
-    });
+    }
   }
 
   before(function () {
@@ -196,13 +196,13 @@ describe('Component test for CompanyRolesCard', () => {
       },
     ];
 
-    roleDisplayCases.forEach(({ role, expectedTitle, expectedIcon, expectedInfo }) => {
+    for (const { role, expectedTitle, expectedIcon, expectedInfo } of roleDisplayCases) {
       it(`displays ${expectedTitle} role card correctly`, () => {
         mountCardAs(undefined, role);
         validateCardHeader(expectedTitle, expectedIcon);
         validateInfoMessage(expectedInfo);
       });
-    });
+    }
   });
 
   describe('User Management Tests', () => {
@@ -273,7 +273,7 @@ describe('Component test for CompanyRolesCard', () => {
       Object.values(CompanyRole).map((role) => ({ testCase, role }))
     );
 
-    permissionScenarios.forEach(({ testCase, role }) => {
+    for (const { testCase, role } of permissionScenarios) {
       const shouldExistAndBeEnabled = testCase.allowedRoles.includes(role as CompanyRole);
       const shouldBeDisabled = !shouldExistAndBeEnabled && testCase.allowedRoles.length > 0;
       let buttonState = '';
@@ -311,7 +311,7 @@ describe('Component test for CompanyRolesCard', () => {
           cy.get('[data-test="add-user-button"]').should('not.exist');
         }
       });
-    });
+    }
   });
 
   describe('User Actions Tests', () => {

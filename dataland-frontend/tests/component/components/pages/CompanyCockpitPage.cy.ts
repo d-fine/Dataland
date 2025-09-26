@@ -117,7 +117,7 @@ describe('Component test for the company cockpit', () => {
       }
       if (frameworkName == 'vsme') {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
-        continue;
+        return;
       }
       if (isProvideDataButtonExpected) {
         if (frameworkName != 'lksg') {

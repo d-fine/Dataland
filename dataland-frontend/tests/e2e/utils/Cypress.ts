@@ -52,9 +52,9 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
     promise
       .then(
         (result): void => resolve(result),
-        (reason): void => reject(reason)
+        (error_): void => reject(error_)
       )
-      .catch((reason): void => reject(reason));
+      .catch((error_): void => reject(error_));
   });
 }
 
