@@ -384,7 +384,7 @@ export default defineComponent({
   padding: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
   background-color: var(--p-surface-0);
   position: sticky;
-  top: var(--app-header-offset, 4rem);
+  top: var(--spacing-xxxl);
   z-index: 10;
   contain: paint;
   will-change: padding-top;
