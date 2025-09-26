@@ -190,6 +190,7 @@ class DataSourcingControllerTest {
 
         ApiAwait.waitForData { apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted) }
         ApiAwait.waitForData(
+            timeoutInSeconds = 10,
             supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id).state },
             condition = { it == DataSourcingState.Answered },
         )
