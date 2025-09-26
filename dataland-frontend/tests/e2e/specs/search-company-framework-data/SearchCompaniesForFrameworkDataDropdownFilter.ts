@@ -245,7 +245,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
         }
       );
-      it.only(
+      it(
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
@@ -255,9 +255,11 @@ describe('As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
-          cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
-          cy.get('#framework-filter').should('be.visible').click();
+          cy.visit(`/companies`);
+          cy.wait('@getFilterOptions');
+          cy.get('#framework-filter', { timeout: 20000 }).should('be.visible');
+          cy.get('#framework-filter').click();
           cy.get('div.p-multiselect-overlay', { timeout: 10000 }).should('exist').should('be.visible');
 
           cy.get('div.p-multiselect-overlay .p-multiselect-item', { timeout: 10000 })
