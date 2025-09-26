@@ -310,7 +310,10 @@ async function handleAddUser(): Promise<void> {
  */
 async function getSuggestedUsers(): Promise<User[]> {
   const suggestedUsersResponse = await emailAddressControllerApi.getUsersByCompanyAssociatedSubdomains(props.companyId);
-  const suggestedKeyCloakUsers = suggestedUsersResponse.data;
+  const allSuggestedKeyCloakUsers = suggestedUsersResponse.data;
+  const suggestedKeyCloakUsers = allSuggestedKeyCloakUsers.filter(
+    (user) => !props.existingUsers.some((existing) => existing.userId === user.id)
+  );
   const suggestedUsers: User[] = [];
   for (const keycloakUser of suggestedKeyCloakUsers) {
     const name = `${keycloakUser.firstName || ''} ${keycloakUser.lastName || ''}`.trim() || keycloakUser.email || '';

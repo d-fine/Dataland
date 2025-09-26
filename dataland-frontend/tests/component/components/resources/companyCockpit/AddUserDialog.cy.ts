@@ -100,6 +100,18 @@ describe('AddMemberDialog Component Tests', function () {
     cy.get('[data-test="save-changes-button"]').click();
   }
 
+  /**
+   * Selects the first suggested user in the Listbox and checks that the 'Selected' tag is visible.
+   */
+  function selectFirstSuggestedUserAndCheckSuggestedTag(): void {
+    cy.get('[data-test="suggested-user-row"]')
+      .first()
+      .within(() => {
+        cy.get('[data-test="select-suggested-user-button"]').click();
+        cy.get('[data-test="selected-tag"]').should('be.visible');
+      });
+  }
+
   describe('Initial State and Basic Functionality', function () {
     it('renders empty state and handles basic user operations', function () {
       cy.contains('No users selected').should('be.visible');
@@ -189,22 +201,12 @@ describe('AddMemberDialog Component Tests', function () {
 
     it('allows selecting a suggested user', function () {
       cy.get('[data-test="selected-user-row"]').should('not.exist');
-      cy.get('[data-test="suggested-user-row"]')
-        .first()
-        .within(() => {
-          cy.get('[data-test="select-suggested-user-button"]').click();
-          cy.get('[data-test="selected-tag"]').should('be.visible');
-        });
+      selectFirstSuggestedUserAndCheckSuggestedTag();
       cy.get('[data-test="selected-user-row"]').should('contain', 'Jane Doe');
     });
 
     it('shows the Selected tag and Remove button for already selected users', function () {
-      cy.get('[data-test="suggested-user-row"]')
-        .first()
-        .within(() => {
-          cy.get('[data-test="select-suggested-user-button"]').click();
-          cy.get('[data-test="selected-tag"]').should('be.visible');
-        });
+      selectFirstSuggestedUserAndCheckSuggestedTag();
       cy.get('[data-test="selected-user-row"]')
         .first()
         .within(() => {
@@ -213,11 +215,7 @@ describe('AddMemberDialog Component Tests', function () {
     });
 
     it('removes a selected user from the Listbox, the Select button should appear again in the list of suggested users', function () {
-      cy.get('[data-test="suggested-user-row"]')
-        .first()
-        .within(() => {
-          cy.get('[data-test="select-suggested-user-button"]').click();
-        });
+      selectFirstSuggestedUserAndCheckSuggestedTag();
       cy.get('[data-test="selected-user-row"]')
         .first()
         .within(() => {
