@@ -28,6 +28,24 @@
         "scope2GhgEmissionsMarketBasedInTonnes" : "SCOPE_2_GHG_EMISSIONS_MARKET_IN_T",
         "scope3GhgEmissionsInTonnes" : "SCOPE_3_GHG_EMISSIONS_IN_T"
       }
+    },
+    "companyValueEstimation" : {
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "ESTIMATED_MARKET_CAPITALIZATION_IN_EUR",
+        "bookValueOfDebtInEUR" : "ESTIMATED_BOOK_VALUE_OF_DEBT_IN_EUR",
+        "minoritiesInterestInEUR" : "ESTIMATED_MINORITIES_INTEREST_IN_EUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityAndDebtInEUR" : "ESTIMATED_TOTAL_EQUITY_AND_DEBT_IN_EUR"
+      }
+    },
+    "environmentalEstimation" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "ESTIMATED_SCOPE_1_GHG_EMISSIONS_IN_T",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "ESTIMATED_SCOPE_2_GHG_EMISSIONS_LOCATION_IN_T",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "ESTIMATED_SCOPE_2_GHG_EMISSIONS_MARKET_IN_T",
+        "scope3GhgEmissionsInTonnes" : "ESTIMATED_SCOPE_3_GHG_EMISSIONS_IN_T"
+      }
     }
   }
 }

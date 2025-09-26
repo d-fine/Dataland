@@ -45,7 +45,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
     const val REF_EXAMPLE =
         "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/" +
-            "frameworks/eutaxonomy-non-financials/$DATA_ID_EXAMPLE"
+            "frameworks/sfdr/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
     const val LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE

@@ -70,5 +70,23 @@ export function generatePcafData(nullProbability = DEFAULT_PROBABILITY): PcafDat
         scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
     },
+    companyValueEstimation: {
+      listedCompany: {
+        marketCapitalizationInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        minoritiesInterestInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+      unlistedCompany: {
+        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+    },
+    environmentalEstimation: {
+      greenhouseGasEmissions: {
+        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+    },
   };
 }
