@@ -281,6 +281,25 @@ class DataSourcingControllerTest {
         assertEquals(companyIdExtractor, updatedDataSourcingObject.dataExtractor)
     }
 
+    private fun patchOpenRequestsToProcessingAndReturnInitializedStoredDataSourcings(
+        requestIds: List<String>,
+        companyIds: List<String>,
+    ): List<StoredDataSourcing> {
+        require(requestIds.size == companyIds.size) {
+            "requestIds and companyIds are index-linked lists."
+        }
+        requestIds.forEach {
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(it, RequestState.Processing)
+        }
+        return companyIds.map {
+            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
+                it,
+                testDataType,
+                testReportingPeriod,
+            )
+        }
+    }
+
     @Test
     fun `verify that a document collector or data extractor can see all data sourcing objects assigned to them`() {
         val companyIdDocumentCollectorOrDataExtractor =
@@ -293,38 +312,28 @@ class DataSourcingControllerTest {
         val requestId1 = createRequest(companyId1)
         val requestId2 = createRequest(companyId2)
 
-        var storedDataSourcing1: StoredDataSourcing? = null
-        var storedDataSourcing2: StoredDataSourcing? = null
+        lateinit var storedDataSourcings: List<StoredDataSourcing>
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId1, RequestState.Processing)
-            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId2, RequestState.Processing)
-            storedDataSourcing1 =
-                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                    companyId1,
-                    testDataType,
-                    testReportingPeriod,
-                )
-            storedDataSourcing2 =
-                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                    companyId2,
-                    testDataType,
-                    testReportingPeriod,
+            storedDataSourcings =
+                patchOpenRequestsToProcessingAndReturnInitializedStoredDataSourcings(
+                    listOf(requestId1, requestId2),
+                    listOf(companyId1, companyId2),
                 )
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
-                storedDataSourcing1.id,
+                storedDataSourcings[0].id,
                 DataSourcingState.DocumentSourcing,
             )
             apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
-                storedDataSourcing1.id,
+                storedDataSourcings[0].id,
                 companyIdDocumentCollectorOrDataExtractor,
             )
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
-                storedDataSourcing2.id,
+                storedDataSourcings[1].id,
                 DataSourcingState.DataExtraction,
             )
             apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
-                storedDataSourcing2.id,
+                storedDataSourcings[1].id,
                 null,
                 companyIdDocumentCollectorOrDataExtractor,
             )
@@ -335,7 +344,7 @@ class DataSourcingControllerTest {
                 .getDataSourcingForCompanyId(companyIdDocumentCollectorOrDataExtractor)
         assertEquals(2, updatedDataSourcingObjects.size)
         assertEquals(
-            setOf(storedDataSourcing1?.id, storedDataSourcing2?.id),
+            storedDataSourcings.map { it.id }.toSet(),
             updatedDataSourcingObjects.map { it.id }.toSet(),
         )
     }
