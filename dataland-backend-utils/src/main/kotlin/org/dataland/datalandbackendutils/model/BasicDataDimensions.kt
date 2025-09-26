@@ -18,7 +18,7 @@ data class BasicDataDimensions(
     override val companyId: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     override val dataType: String,
     @field:Schema(

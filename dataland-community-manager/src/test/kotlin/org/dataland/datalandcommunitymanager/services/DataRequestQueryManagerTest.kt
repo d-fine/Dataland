@@ -16,9 +16,9 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -47,7 +47,7 @@ class DataRequestQueryManagerTest {
     private val mockDataRequestRepository = mock<DataRequestRepository>()
     private val mockDataRequestLogger = mock<DataRequestLogger>()
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
-    private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
+    private val mockCommunityManagerDataRequestProcessingUtils = mock<CommunityManagerDataRequestProcessingUtils>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockDataRequestMasker = mock<DataRequestMasker>()
 
@@ -206,7 +206,7 @@ class DataRequestQueryManagerTest {
             .whenever(mockDataRequestMasker)
             .hideAdminCommentForNonAdmins(any<StoredDataRequest>())
 
-        doReturn(DataTypeEnum.sfdr).whenever(mockDataRequestProcessingUtils).getDataTypeEnumForFrameworkName("sfdr")
+        doReturn(DataTypeEnum.sfdr).whenever(mockCommunityManagerDataRequestProcessingUtils).getDataTypeEnumForFrameworkName("sfdr")
     }
 
     @BeforeEach
@@ -218,7 +218,7 @@ class DataRequestQueryManagerTest {
                 dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = mockDataRequestLogger,
                 companyDataControllerApi = mockCompanyDataControllerApi,
-                processingUtils = mockDataRequestProcessingUtils,
+                processingUtils = mockCommunityManagerDataRequestProcessingUtils,
                 keycloakUserControllerApiService = mockKeycloakUserService,
                 dataRequestMasker = mockDataRequestMasker,
                 requestPriorityAggregator = RequestPriorityAggregator(),

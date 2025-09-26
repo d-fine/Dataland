@@ -1,11 +1,9 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackendutils.services.utils
 
-import org.dataland.datalandbackend.DatalandBackend
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -16,9 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
  * - Provides real PostgreSQL DB via container
  * - Enables transactions with rollback, i.e. all data is automatically reset in between tests
  */
-@SpringBootTest(classes = [DatalandBackend::class])
+@SpringBootTest
 @Testcontainers
-@Transactional
 @Rollback
 // Suppress is required as detekt wrongfully suggests to convert this class into an object which would break it
 @Suppress("UtilityClassWithPublicConstructor")

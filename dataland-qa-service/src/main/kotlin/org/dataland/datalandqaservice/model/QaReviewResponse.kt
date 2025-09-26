@@ -28,7 +28,7 @@ data class QaReviewResponse(
     val companyName: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val framework: String,
     @field:Schema(
