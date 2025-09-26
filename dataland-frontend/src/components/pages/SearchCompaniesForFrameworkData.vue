@@ -390,7 +390,7 @@ export default defineComponent({
   width: 100%;
   padding-left: var(--spacing-lg);
   padding-top: var(--spacing-lg);
-  padding-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
   background-color: var(--p-surface-0);
   position: sticky;
   top: var(--app-header-offset, 4rem);
@@ -408,7 +408,6 @@ export default defineComponent({
   justify-content: space-between;
   align-items: end;
   padding-top: 0;
-  padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid var(--p-surface-200);
 }
 
