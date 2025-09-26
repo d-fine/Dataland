@@ -1,8 +1,8 @@
 package org.dataland.datalandbackendutils.interfaces
 
 /**
- * --- API model ---
- * Interface containing the three dimensions of an abstract data object (associated company, reporting Period and which type of data it is)
+ * General interface containing all three dimensions of an abstract data object where the data type can either
+ * represent a data point or a framework.
  */
 interface DataDimensions : BaseDimensions {
     val dataType: String

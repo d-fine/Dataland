@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
@@ -19,7 +18,6 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.set
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Service to determine the category of a given data type string, relevant constituents of datasets and similar tasks
@@ -28,8 +26,8 @@ import kotlin.jvm.optionals.getOrNull
 class DataCompositionService
     @Autowired
     constructor(
+        // To do include object mapper via import not autowired
         private val objectMapper: ObjectMapper,
-        private val datasetDatapointRepository: DatasetDatapointRepository,
         private val specificationControllerApi: SpecificationControllerApi,
     ) {
         // Variables to store known classifications since specifications do not change during runtime
@@ -51,7 +49,7 @@ class DataCompositionService
             initializeSpecificationCache()
         }
 
-        // ToDo: move this into a backend utils class and look into making the start up dependent
+        // To Do: move this into a backend utils class and look into making the start up dependent
         private fun waitUntilSpecificationServiceReady() {
             Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
             for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
@@ -84,29 +82,19 @@ class DataCompositionService
         fun isAssembledFramework(framework: String): Boolean = assembledFrameworks.contains(framework)
 
         /**
-         * Assert that the given framework is an assembled framework
-         * @param framework the name of the framework to be checked
-         * @throws InvalidInputApiException if the framework is not an assembled framework
-         */
-        fun assertFrameworkIsAssembled(framework: String) {
-            if (!isAssembledFramework(framework)) {
-                throw InvalidInputApiException(
-                    "Framework $framework is not an assembled framework.",
-                    "The specified framework $framework is not known to the specification service as an assembled framework.",
-                )
-            }
-        }
-
-        /**
          * Check if any given string represents a non-assembled framework
          * @param framework string to be checked
          */
         fun isNonAssembledFramework(framework: String): Boolean = nonAssembledFrameworks.contains(framework)
 
+        /**
+         * Check if any given string represents a framework (either assembled or non-assembled)
+         * @param framework string to be checked
+         */
         fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
 
         /**
-         * Checks if the given string is indeed a valid data point type
+         * Checks if any given string represents a data point type
          * @param dataPointType the string to be checked
          */
         fun isDataPointType(dataPointType: String): Boolean {
@@ -118,7 +106,7 @@ class DataCompositionService
                     cachedDatapointTypes[dataPointType] = false
                 }
             }
-            return cachedDatapointTypes[dataPointType]!!
+            return cachedDatapointTypes.getOrDefault(dataPointType, false)
         }
 
         /**
@@ -168,36 +156,22 @@ class DataCompositionService
         }
 
         /**
-         * Retrieves the data point IDs of the constituents of a dataset given by a dataset ID
-         * @param datasetId the ID of the dataset to retrieve the constituents for
-         */
-        fun getDataPointConstituents(datasetId: String): Collection<String> {
-            val consistingDataPoints = datasetDatapointRepository.findById(datasetId).getOrNull()
-            return consistingDataPoints?.dataPoints?.keys ?: emptyList()
-        }
-
-        /**
-         * figure out if a data type is actually a known data typy
-         */
-        fun isDataType(input: String): Boolean = isDataPointType(input) || isFramework(input)
-
-        /**
-         * Filters out invalid data dimensions by checking if the company ID, data type, and reporting period are correctly formatted.
-         * @param dataDimensions the list of data dimensions to filter
-         * @return the list of all properly formatted data dimensions from the original list
+         * Filters out invalid data dimensions by checking if the company ID, framework, and reporting period are valid.
+         * @param dataSetDimensions the list of data dimensions to filter
+         * @return the list of all valid data dimensions from the original input
          */
         fun filterOutInvalidDataSetDimensions(dataSetDimensions: List<BasicDataSetDimensions>) =
             dataSetDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isFramework(dimensions.framework)
             }
 
+        /**
+         * Filters out invalid data point dimensions by checking if the company ID, data point type, and reporting period are valid.
+         * @param dataDimensions the list of data point dimensions to filter
+         * @return the list of all valid data point dimensions from the original input
+         */
         fun filterOutInvalidDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>) =
             dataDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataPointType(dimensions.dataPointType)
             }
-
-        /*fun filterOutInvalidDimensions(dataDimensions: List<BasicDataDimensions>) =
-            dataDimensions.filter { dimensions ->
-                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isDataType(dimensions.dataType)
-            }*/
     }

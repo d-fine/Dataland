@@ -25,7 +25,7 @@ class DataAvailabilityChecker
         private val ignoredFields = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields()
 
         /**
-         * Retrieves metadata of datasets that are currently active for the given data dimensions.
+         * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
          * @param dataDimensions List of data dimensions to search for.
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
@@ -51,6 +51,12 @@ class DataAvailabilityChecker
             }
         }
 
+        /**
+         * Retrieves metadata of data points that match the provided data point dimensions irrespective of the active status.
+         * Invalid dimensions are ignored.
+         * @param dataDimensions List of data point dimensions to search for.
+         * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
+         */
         fun getMetaDataOfDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
             val dimensionsToProcess = dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions)
             val formattedTuples =
@@ -73,7 +79,6 @@ class DataAvailabilityChecker
         /**
          * Retrieves all data point IDs that correspond to the data point dimensions provided. Filters out results that are not viewable by
          * the current user. Only returns IDs if at least one data point is viewable that is not an ignorable fields.
-         *
          * @param dataDimensions the list of data point dimensions to get the data point IDs for
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */
@@ -88,69 +93,3 @@ class DataAvailabilityChecker
             }
         }
     }
-
-/*class DataAvailabilityChecker
-@Autowired
-constructor(
-    private val datasetMetaInformationRepository: DataMetaInformationRepository,
-    private val dataPointMetaInformationRepository: DataPointMetaInformationRepository,
-    private val datasetDatapointRepository: DatasetDatapointRepository,
-    private val dataCompositionService: DataCompositionService,
-    private val dataPointUtils: DataPointUtils,
-) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-
-
-
-
-    /**
- * Function to check if a dataset could be delivered to the user based on the dataset ID
- * @param datasetId the ID of the requested dataset
- * @return true if dataset can be delivered false otherwise
- */
-    fun isDatasetDeliverable(datasetId: String): Boolean {
-        val datasetMetainformationEntity = datasetMetaInformationRepository.findById(datasetId).getOrNull()
-        return datasetMetainformationEntity?.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull()) ?: false
-    }
-
-    fun isAssembledDatasetDeliverable(datasetId: String): Boolean {
-        val consistingDataPoints = datasetDatapointRepository.findById(datasetId).getOrNull()
-        return consistingDataPoints?.dataPoints?.keys?.all { isDataPointDeliverable(it) } ?: false
-    }
-
-    fun isDataPointDeliverable(dataPointId: String): Boolean {
-        val dataPointMetainformationEntity = dataPointMetaInformationRepository.findById(dataPointId).getOrNull()
-        return dataPointMetainformationEntity?.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull()) ?: false
-    }
-
-    val ignoredDataPointTypes = arrayOf("Test1", "Test2")
-
-    fun isDataDimensionActive(dataDimension: BasicDataDimensions): Boolean {
-        // Option A: data represents a data point
-        val activeDataPoint = dataPointMetaInformationRepository.getActiveDataPointId(dataDimension.toBasicDataPointDimensions())
-        // Option B: data represents a dataset that was directly uploaded
-        val activeDataset =
-            datasetMetaInformationRepository
-                .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
-                    dataDimension.reportingPeriod, dataDimension.companyId, dataDimension.dataType,
-                )
-        // Option C: data represents a framework that was not directly uploaded but data is present besides the general data points
-        val relevantDimensions = dataCompositionService.getRelevantDataPointTypes(dataDimension.dataType) - ignoredDataPointTypes
-        val couldBeAssembled = relevantDimensions.any { isDataPointDeliverable(dataDimension.toBasicDataPointDimensions(it)) }
-
-        return activeDataPoint != null || activeDataset != null || couldBeAssembled
-    }
-
-    fun isDataPointDeliverable(dataDimension: BasicDataPointDimensions): Boolean {
-        val dataPointMetainformationEntity =
-            // how to deal with inactive data points?
-            dataPointMetaInformationRepository.findByDataPointTypeInAndCompanyIdAndReportingPeriodAndCurrentlyActiveTrue(
-                dataPointTypes = setOf(dataDimension.dataPointType),
-                companyId = dataDimension.companyId,
-                reportingPeriod = dataDimension.reportingPeriod,
-            )
-        return dataPointMetainformationEntity.isNotEmpty() &&
-                dataPointMetainformationEntity.first().isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())
-    }
-}*/

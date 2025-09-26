@@ -21,7 +21,6 @@ import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
@@ -316,48 +315,11 @@ class AssembledDataManager
             return dataPoints
         }
 
-        /**
-         * Assembles datasets by retrieving the data points from the internal storage
-         * and filling their content into the framework template
-         *
-         * This function processes multiple datasets at once. Each dataset in the input is identified by a
-         * BasicDataDimensions object.
-         *
-         * @param dataDimensionsToDataPointIdMap a map of all required data point IDs grouped by data set
-         * @param correlationId the correlation ID for the operation
-         * @return the dataset in the form of a JSON string
-         */
-        private fun assembleDatasetsFromDataPointIds(
-            dataDimensionsToDataPointIdMap: Map<BasicDataDimensions, List<String>>,
-            correlationId: String,
-        ): Map<BasicDataDimensions, String> {
-            val allStoredDatapoints =
-                dataPointManager.retrieveDataPoints(dataDimensionsToDataPointIdMap.flatMap { it.value }, correlationId)
-
-            val frameworkToTemplate =
-                dataDimensionsToDataPointIdMap.keys
-                    .map { it.dataType }
-                    .toSet()
-                    .associateWith { dataPointUtils.getFrameworkTemplate(it) }
-
-            val dataDimensionsToUploadedDataPoints =
-                dataDimensionsToDataPointIdMap
-                    .mapValues { (_, dataPointIds) -> dataPointIds.mapNotNull { allStoredDatapoints[it] } }
-
-            return dataDimensionsToUploadedDataPoints.mapValues { (dataDimensions, dataPoints) ->
-                dataPointUtils.assembleSingleDataSet(
-                    dataPoints,
-                    frameworkToTemplate[dataDimensions.dataType]
-                        ?: throw IllegalArgumentException("Framework not found for data dimensions: $dataDimensions"),
-                )
-            }
-        }
-
         @Transactional(readOnly = true)
         override fun getDatasetData(
-            dataDimensions: Set<BasicDataSetDimensions>,
+            dataDimensionsSet: Set<BasicDataSetDimensions>,
             correlationId: String,
-        ): Map<BasicDataSetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensions, correlationId)
+        ): Map<BasicDataSetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensionsSet, correlationId)
 
         @Transactional(readOnly = true)
         override fun getAllDatasetsAndMetaInformation(
