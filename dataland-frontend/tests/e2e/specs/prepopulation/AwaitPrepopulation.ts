@@ -21,11 +21,11 @@ describeIf(
       const fixtures = prepopulatedDataTypes.map((dataType) =>
         `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace('-', '')
       );
-      fixtures.forEach((fixtureFile) => {
+      for (const fixtureFile of fixtures) {
         cy.fixture(fixtureFile).then(function (companies: []) {
           expectedNumberOfCompanies += companies.length;
         });
-      });
+      }
     });
 
     it(

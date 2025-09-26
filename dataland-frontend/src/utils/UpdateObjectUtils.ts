@@ -79,5 +79,5 @@ export function objectDropNull<T>(obj: T): OptionalNullable<T> {
  * @returns the deep copied object
  */
 export function deepCopyObject(obj: ObjectType): ObjectType {
-  return JSON.parse(JSON.stringify(obj)) as ObjectType;
+  return structuredClone(obj);
 }

@@ -107,7 +107,7 @@ export default defineComponent({
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
+      globalThis.scrollTo(0, 0);
       this.$emit('page-update', event.page);
     },
     /**

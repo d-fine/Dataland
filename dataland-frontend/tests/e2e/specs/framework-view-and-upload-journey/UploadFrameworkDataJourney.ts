@@ -17,6 +17,41 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+/**
+ * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
+ * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
+ * @param uploadedTestCompanyName bears the company name of the prior uploaded company so that it can be checked
+ * if the company name appears as title
+ */
+function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(uploadedTestCompanyName: string): void {
+  cy.contains('h1', uploadedTestCompanyName);
+
+  cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Be the first to create this dataset');
+  cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
+  cy.get('div[id=eutaxonomyDataSetsContainer]').find("[data-test='createDatasetButton']").should('have.length', 2);
+
+  cy.get('div[id=lksgContainer]').contains('Create another dataset for LkSG');
+  cy.get('div[id=lksgContainer]').find('button.p-disabled[aria-label="Create Dataset"]').should('not.exist');
+  cy.get('div[id=lksgContainer]').find('button.p-button[aria-label="Create Dataset"]').should('exist');
+}
+
+/**
+ * Checks if dataset of a framework is rendered on the "ViewFrameworkData"-page after using the dropdown
+ * to select a framework. In the test, it is expected that the change from Eu-Taxo-Financials to LkSG and
+ * vice versa renders the dataset".
+ */
+function checkIfDropDownSwitchRendersData(): void {
+  cy.get('[data-test="chooseFrameworkDropdown"]').click();
+  cy.get('[data-test="chooseFrameworkDropdown"] a:contains("EU Taxonomy Financials")').click();
+  cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
+
+  cy.get('[data-test="chooseFrameworkDropdown"]').click();
+  cy.get('[data-test="chooseFrameworkDropdown"] a:contains("LkSG")').click();
+  cy.get('td[data-cell-label="Data Date"]').should('be.visible');
+
+  cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
+}
+
 describe('As a user, I expect the dataset upload process to behave as I expect', function () {
   describeIf(
     '',
@@ -127,28 +162,6 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       });
 
       /**
-       * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
-       * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
-       * @param uploadedTestCompanyName bears the company name of the prior uploaded company so that it can be checked
-       * if the company name appears as title
-       */
-      function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(
-        uploadedTestCompanyName: string
-      ): void {
-        cy.contains('h1', uploadedTestCompanyName);
-
-        cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Be the first to create this dataset');
-        cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
-        cy.get('div[id=eutaxonomyDataSetsContainer]')
-          .find("[data-test='createDatasetButton']")
-          .should('have.length', 2);
-
-        cy.get('div[id=lksgContainer]').contains('Create another dataset for LkSG');
-        cy.get('div[id=lksgContainer]').find('button.p-disabled[aria-label="Create Dataset"]').should('not.exist');
-        cy.get('div[id=lksgContainer]').find('button.p-button[aria-label="Create Dataset"]').should('exist');
-      }
-
-      /**
        * Checks if on the "ChoosingFrameworkForDataUpload"-page the links for the already existing datasets lead to
        * the correct framework-view-pages.
        * For the Eu-Taxo-Financials datasets it expects the correct data IDs to be attached to the url as query params
@@ -200,23 +213,6 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             'contain',
             `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`
           );
-      }
-
-      /**
-       * Checks if dataset of a framework is rendered on the "ViewFrameworkData"-page after using the dropdown
-       * to select a framework. In the test, it is expected that the change from Eu-Taxo-Financials to LkSG and
-       * vice versa renders the dataset".
-       */
-      function checkIfDropDownSwitchRendersData(): void {
-        cy.get('[data-test="chooseFrameworkDropdown"]').click();
-        cy.get('[data-test="chooseFrameworkDropdown"] a:contains("EU Taxonomy Financials")').click();
-        cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
-
-        cy.get('[data-test="chooseFrameworkDropdown"]').click();
-        cy.get('[data-test="chooseFrameworkDropdown"] a:contains("LkSG")').click();
-        cy.get('td[data-cell-label="Data Date"]').should('be.visible');
-
-        cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
       }
 
       it(

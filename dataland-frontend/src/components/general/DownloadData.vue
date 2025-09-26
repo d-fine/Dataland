@@ -143,9 +143,9 @@ const fileTypeSelectionOptions = computed(() => {
 });
 
 const availableFrameworks = computed(() => {
-  const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
+  const frameworks = new Set(reportingPeriodsPerFramework.value.keys());
 
-  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
+  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.has(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));

@@ -52,16 +52,18 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     options.global = options.global ?? {};
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];
-    options.global.plugins.push(createPinia());
-    options.global.plugins.push([
-      PrimeVue,
-      {
-        theme: {
-          preset: DatalandPreset,
+    options.global.plugins.push(
+      createPinia(),
+      [
+        PrimeVue,
+        {
+          theme: {
+            preset: DatalandPreset,
+          },
         },
-      },
-    ]);
-    options.global.plugins.push(DialogService);
+      ],
+      DialogService
+    );
     options.global.provide = options.global.provide ?? {};
 
     let componentForMounting = component;

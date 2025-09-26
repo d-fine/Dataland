@@ -19,7 +19,7 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
   const isDatabaseReset = Cypress.env('RESET_DATABASE') as ExecutionEnvironment;
   const ignoreExternalStorage = Cypress.env('IGNORE_EXTERNAL_STORAGE') as ExecutionEnvironment;
 
-  if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
+  if (!execConfig.executionEnvironments.includes(executionEnvironment)) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the execution environment ${executionEnvironment} has not been allowed`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed

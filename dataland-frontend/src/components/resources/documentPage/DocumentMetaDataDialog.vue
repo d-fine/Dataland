@@ -91,7 +91,7 @@ export interface ExtendedDocumentMetaInfoEntity extends Omit<DocumentMetaInfoEnt
 const isOpen = defineModel<boolean>('isOpen');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
-const baseURL = ref(window.location.origin);
+const baseURL = ref(globalThis.location.origin);
 
 /**
  * Get metadata of document
