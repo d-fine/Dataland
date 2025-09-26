@@ -204,7 +204,7 @@ class DataSourcingControllerTest {
             )
         }
         uploadDummyDataForDataSourcingObject()
-        sleep(2000)
+        sleep(2000) // make sure events are processed throughout the system before proceeding
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
         assertEquals(
             DataSourcingState.Answered,
@@ -262,7 +262,7 @@ class DataSourcingControllerTest {
                 companyIdCollector,
             )
         }
-        val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
+        var updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
         assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
         assertEquals(null, updatedDataSourcingObject.dataExtractor)
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
@@ -270,11 +270,12 @@ class DataSourcingControllerTest {
                 storedDataSourcing.id,
                 DataSourcingState.DataExtraction,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
-                storedDataSourcing.id,
-                null,
-                companyIdExtractor,
-            )
+            updatedDataSourcingObject =
+                apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                    storedDataSourcing.id,
+                    null,
+                    companyIdExtractor,
+                )
         }
         assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
         assertEquals(companyIdExtractor, updatedDataSourcingObject.dataExtractor)
@@ -338,35 +339,6 @@ class DataSourcingControllerTest {
             updatedDataSourcingObjects.map { it.id }.toSet(),
         )
     }
-
-    // This test will only become relevant after DALA-6296
-
-    /**
-     @Test
-     fun `verify that a data collector can only patch a state from DocumentSourcing to DocumentSourcingDone`() {
-     jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-     DataSourcingState.entries.forEach { initialState ->
-     DataSourcingState.entries.forEach { finalState ->
-     if (initialState == finalState) {
-     return@forEach
-     }
-     GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, initialState)
-     }
-     if (initialState == DataSourcingState.DocumentSourcing && finalState == DataSourcingState.DocumentSourcingDone) {
-     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
-     val updatedDataSourcingObject =
-     apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
-     assertEquals(finalState, updatedDataSourcingObject.state)
-     } else {
-     assertThrows<ClientException> {
-     apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.id, finalState)
-     }
-     }
-     }
-     }
-     }
-     **/
 
     @Test
     fun `verify that historization works for repeated data sourcing workflows for the same data dimensions`() {
@@ -460,6 +432,7 @@ class DataSourcingControllerTest {
         }
     }
 
+    /* We do not think that we want to prohibit adding past dates in case the data provider forgot entering one.
     @Test
     fun `verify that data sourcing attempts cannot be specified in the past`() {
         assertThrows<ClientException> {
@@ -469,6 +442,7 @@ class DataSourcingControllerTest {
             )
         }
     }
+     */
 
     private fun createNewCompanyAndReturnId(): String =
         GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
