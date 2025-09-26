@@ -430,7 +430,7 @@ export default defineComponent({
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
+      globalThis.scrollTo(0, 0);
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;

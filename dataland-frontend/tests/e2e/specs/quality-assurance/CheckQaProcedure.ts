@@ -41,7 +41,7 @@ describeIf(
       });
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
+        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });
     });

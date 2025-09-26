@@ -61,12 +61,12 @@ const isAccessRequestFailed = ref(false);
 const requestableOptions = computed<RequestableOption[]>(() => {
   const reportingPeriodToLatestUploadTime = new Map<string, number>();
 
-  props.metaInfoOfAvailableDatasets.forEach((singleMetaInfo) => {
+  for (const singleMetaInfo of props.metaInfoOfAvailableDatasets) {
     const existingMaxUploadTime = reportingPeriodToLatestUploadTime.get(singleMetaInfo.reportingPeriod);
     if (existingMaxUploadTime === undefined || singleMetaInfo.uploadTime > existingMaxUploadTime) {
       reportingPeriodToLatestUploadTime.set(singleMetaInfo.reportingPeriod, singleMetaInfo.uploadTime);
     }
-  });
+  }
 
   return Array.from(reportingPeriodToLatestUploadTime, ([reportingPeriod, maxUploadTime]) => ({
     reportingPeriod,

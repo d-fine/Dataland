@@ -28,8 +28,8 @@ describe('Component test for CreateCompany', () => {
     });
     (wrapper.vm.removeAlternativeName as (index: number) => void)(2);
     const expectedValues = ['No1', 'No3'];
-    (wrapper.vm.companyAlternativeNames as string[]).forEach((name: string, index: number) => {
+    for (const [index, name] of (wrapper.vm.companyAlternativeNames as string[]).entries()) {
       expect(name).to.equal(expectedValues[index]);
-    });
+    }
   });
 });

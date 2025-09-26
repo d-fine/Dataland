@@ -218,11 +218,11 @@ export default defineComponent({
   },
   watch: {
     currentValue(newVal: string) {
-      if (!this.firstAssignmentWhileEditModeWasDone) {
+      if (this.firstAssignmentWhileEditModeWasDone) {
+        return;
+      } else {
         this.setCheckboxValue(newVal);
         this.firstAssignmentWhileEditModeWasDone = true;
-      } else {
-        return;
       }
     },
 

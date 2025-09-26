@@ -332,7 +332,7 @@ export default defineComponent({
       return this.contactsAsString
         .split(',')
         .map((rawEmail) => rawEmail.trim())
-        .filter((email) => email);
+        .filter(Boolean);
     },
     companyIdentifier(): string {
       return router.currentRoute.value.params.companyId as string;
