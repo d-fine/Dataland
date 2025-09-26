@@ -413,22 +413,22 @@ class DataSourcingControllerTest {
         val fourthDate = thirdDate.plusYears(4)
 
         for (date in listOf(firstDate, secondDate)) {
-            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(storedDataSourcing.id, date)
+            apiAccessor.dataSourcingControllerApi.patchDateOfNextDocumentSourcingAttempt(storedDataSourcing.id, date)
         }
         apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.id).let {
             assertEquals(3, it.size)
-            assertEquals(null, it[0].dateDocumentSourcingAttempt)
-            assertEquals(firstDate, it[1].dateDocumentSourcingAttempt)
-            assertEquals(secondDate, it[2].dateDocumentSourcingAttempt)
+            assertEquals(null, it[0].dateOfNextDocumentSourcingAttempt)
+            assertEquals(firstDate, it[1].dateOfNextDocumentSourcingAttempt)
+            assertEquals(secondDate, it[2].dateOfNextDocumentSourcingAttempt)
         }
 
         for (date in listOf(thirdDate, fourthDate)) {
-            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(storedDataSourcing.id, date)
+            apiAccessor.dataSourcingControllerApi.patchDateOfNextDocumentSourcingAttempt(storedDataSourcing.id, date)
         }
         apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.id).let {
             assertEquals(5, it.size)
-            assertEquals(thirdDate, it[3].dateDocumentSourcingAttempt)
-            assertEquals(fourthDate, it[4].dateDocumentSourcingAttempt)
+            assertEquals(thirdDate, it[3].dateOfNextDocumentSourcingAttempt)
+            assertEquals(fourthDate, it[4].dateOfNextDocumentSourcingAttempt)
         }
     }
 
