@@ -22,8 +22,8 @@ class DataSourcingController(
     override fun getDataSourcingById(id: String): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(id)))
 
-    override fun getDataSourcingForCompanyId(companyId: String): ResponseEntity<List<ReducedDataSourcing>> =
-        ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(companyId)))
+    override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
+        ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(providerCompanyId)))
 
     override fun getDataSourcingByDimensions(
         companyId: String,
@@ -74,10 +74,10 @@ class DataSourcingController(
             ),
         )
 
-    override fun patchDateDocumentSourcingAttempt(
+    override fun patchDateOfNextDocumentSourcingAttempt(
         id: String,
-        date: LocalDate,
+        dateOfNextDocumentSourcingAttempt: LocalDate,
     ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity
-            .ok(dataSourcingManager.patchDateDocumentSourcingAttempt(UUID.fromString(id), date))
+            .ok(dataSourcingManager.patchDateOfNextDocumentSourcingAttempt(UUID.fromString(id), dateOfNextDocumentSourcingAttempt))
 }

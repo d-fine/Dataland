@@ -16,7 +16,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     @Query(
         "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
-            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcing.associatedRequests " +
             "WHERE dataSourcing.id = :id",
     )
@@ -29,7 +29,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     @Query(
         "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
-            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcing.associatedRequests " +
             "WHERE dataSourcing.companyId = :companyId " +
             "AND dataSourcing.dataType = :dataType " +
@@ -47,7 +47,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     @Query(
         "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
-            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "WHERE dataSourcing.documentCollector = :companyId ",
     )
     fun findAllByDocumentCollectorAndFetchNonRequestFields(companyId: UUID): List<DataSourcingEntity>
@@ -58,7 +58,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     @Query(
         "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
-            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesDocuments " +
+            "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "WHERE dataSourcing.dataExtractor = :companyId ",
     )
     fun findAllByDataExtractor(companyId: UUID): List<DataSourcingEntity>

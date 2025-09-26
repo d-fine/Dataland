@@ -36,9 +36,9 @@ data class DataSourcingWithoutReferences(
     )
     val state: DataSourcingState,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.DATE_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATE_OF_NEXT_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
     )
-    val dateDocumentSourcingAttempt: LocalDate? = null,
+    val dateOfNextDocumentSourcingAttempt: LocalDate? = null,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,

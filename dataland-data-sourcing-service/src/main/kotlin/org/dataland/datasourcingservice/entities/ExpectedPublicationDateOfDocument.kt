@@ -10,7 +10,7 @@ import java.time.LocalDate
  * @property expectedPublicationDate The expected publication date of the document.
  */
 @Embeddable
-data class ExpectedPublicationDateDocument(
+data class ExpectedPublicationDateOfDocument(
     val documentCategory: String,
     val expectedPublicationDate: LocalDate,
 )

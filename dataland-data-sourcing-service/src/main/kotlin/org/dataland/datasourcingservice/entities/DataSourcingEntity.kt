@@ -49,9 +49,9 @@ class DataSourcingEntity(
     @NotAudited
     @ElementCollection
     @Column(name = "expected_publication_date_documents")
-    var expectedPublicationDatesDocuments: Set<ExpectedPublicationDateDocument> = emptySet(),
-    @Column(name = "date_document_sourcing_attempt")
-    var dateDocumentSourcingAttempt: LocalDate? = null,
+    var expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument> = emptySet(),
+    @Column(name = "date_of_next_document_sourcing_attempt")
+    var dateOfNextDocumentSourcingAttempt: LocalDate? = null,
     @Column(name = "document_collector")
     var documentCollector: UUID? = null,
     @Column(name = "data_extractor")
@@ -95,10 +95,10 @@ class DataSourcingEntity(
             dataType = dataType,
             state = state,
             documentIds = documentIds,
-            expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
-            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
-            documentCollector = if (documentCollector != null) documentCollector.toString() else null,
-            dataExtractor = if (dataExtractor != null) dataExtractor.toString() else null,
+            expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
+            dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
+            documentCollector = documentCollector?.toString(),
+            dataExtractor = dataExtractor?.toString(),
             adminComment = adminComment,
             associatedRequestIds = associatedRequests.map { it.id.toString() }.toMutableSet(),
         )
@@ -114,8 +114,8 @@ class DataSourcingEntity(
             dataType = dataType,
             state = state,
             documentIds = documentIds,
-            expectedPublicationDatesOfDocuments = expectedPublicationDatesDocuments,
-            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
+            expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
+            dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
         )
 
     /**
@@ -128,7 +128,7 @@ class DataSourcingEntity(
             reportingPeriod = reportingPeriod,
             dataType = dataType,
             state = state,
-            dateDocumentSourcingAttempt = dateDocumentSourcingAttempt,
+            dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
             documentCollector = documentCollector.toString(),
             dataExtractor = dataExtractor.toString(),
             adminComment = adminComment,

@@ -113,10 +113,10 @@ class DataSourcingManager
             performStatePatch(fullyFetchedDataSourcingEntity, dataSourcingPatch.state)
             updateIfNotNull(dataSourcingPatch.documentIds) { fullyFetchedDataSourcingEntity.documentIds = it }
             updateIfNotNull(dataSourcingPatch.expectedPublicationDatesOfDocuments) {
-                fullyFetchedDataSourcingEntity.expectedPublicationDatesDocuments = it
+                fullyFetchedDataSourcingEntity.expectedPublicationDatesOfDocuments = it
             }
-            updateIfNotNull(dataSourcingPatch.dateDocumentSourcingAttempt) {
-                fullyFetchedDataSourcingEntity.dateDocumentSourcingAttempt = it
+            updateIfNotNull(dataSourcingPatch.dateOfNextDocumentSourcingAttempt) {
+                fullyFetchedDataSourcingEntity.dateOfNextDocumentSourcingAttempt = it
             }
             updateIfNotNull(dataSourcingPatch.documentCollector) {
                 fullyFetchedDataSourcingEntity.documentCollector = it
@@ -208,18 +208,18 @@ class DataSourcingManager
          * @return the StoredDataSourcing object corresponding to the patched entity
          */
         @Transactional
-        fun patchDateDocumentSourcingAttempt(
+        fun patchDateOfNextDocumentSourcingAttempt(
             dataSourcingEntityId: UUID,
             date: LocalDate,
         ): ReducedDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
-                "Patch dateDocumentSourcingAttempt of data sourcing entity with id: $dataSourcingEntityId with" +
-                    " dateDocumentSourcingAttempt: $date.",
+                "Patch dateOfNextDocumentSourcingAttempt of data sourcing entity with id: $dataSourcingEntityId with" +
+                    " dateOfNextDocumentSourcingAttempt: $date.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
-                DataSourcingPatch(dateDocumentSourcingAttempt = date),
+                DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date),
             ).toReducedDataSourcing()
         }
 
@@ -275,8 +275,8 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
-                    documentCollector = if (documentCollector != null) UUID.fromString(documentCollector) else null,
-                    dataExtractor = if (dataExtractor != null) UUID.fromString(dataExtractor) else null,
+                    documentCollector = documentCollector?.let { UUID.fromString(it) },
+                    dataExtractor = dataExtractor?.let { UUID.fromString(it) },
                     adminComment = adminComment,
                 ),
             ).toStoredDataSourcing()
