@@ -3610,10 +3610,10 @@
               "Industrials",
               "Industry",
               "InformationTechnology",
-              "Machinery",
               "Materials",
               "RealEstate",
-              "Sovereign"
+              "Sovereign",
+              "Utilities"
             ]
           },
           "quality": {
@@ -3658,6 +3658,17 @@
           }
         }
       },
+      "PcafCompanyValueEstimation": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+          },
+          "unlistedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
+          }
+        }
+      },
       "PcafCompanyvalueListedCompany": {
         "type": "object",
         "properties": {
@@ -3680,6 +3691,28 @@
           }
         }
       },
+      "PcafCompanyvalueestimationListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "bookValueOfDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "minoritiesInterestInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafCompanyvalueestimationUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -3691,6 +3724,12 @@
           },
           "environmental": {
             "$ref": "#/components/schemas/PcafEnvironmental"
+          },
+          "companyValueEstimation": {
+            "$ref": "#/components/schemas/PcafCompanyValueEstimation"
+          },
+          "environmentalEstimation": {
+            "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
           }
         }
       },
@@ -3702,7 +3741,32 @@
           }
         }
       },
+      "PcafEnvironmentalEstimation": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
+          }
+        }
+      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
           "scope1GhgEmissionsInTonnes": {
