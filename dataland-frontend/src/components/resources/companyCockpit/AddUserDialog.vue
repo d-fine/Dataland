@@ -35,13 +35,13 @@
           v-if="suggestedUsers.length > 0"
           :options="suggestedUsers"
           data-test="suggestion-listbox"
-          style="margin-top: var(--spacing-sm); min-height: 4rem; max-height: 20rem; overflow: hidden"
+          style="margin-top: var(--spacing-sm); min-height: 4rem"
           :highlightOnSelect="false"
           :pt="{
             option: {
               style: 'cursor: default; height: 4rem;',
             },
-            listContainer: { style: 'overflow:auto; width: 100%; max-height: 20rem;' },
+            listContainer: { style: 'overflow:auto; max-height: 20rem;' },
           }"
         >
           <template #option="{ option }">
@@ -369,7 +369,7 @@ async function getSuggestedUsers(): Promise<User[]> {
 
 .equal-height-card {
   min-height: 24rem;
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -404,5 +404,8 @@ async function getSuggestedUsers(): Promise<User[]> {
 
 .select-container {
   width: 6rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>
