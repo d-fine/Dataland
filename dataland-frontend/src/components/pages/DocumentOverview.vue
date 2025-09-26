@@ -201,7 +201,7 @@ function updateCurrentDisplayedData(sort: boolean = true): void {
     rowsPerPage * currentPage.value,
     rowsPerPage * (1 + currentPage.value)
   );
-  window.scrollTo({
+  globalThis.scrollTo({
     top: 0,
     behavior: 'smooth',
   });

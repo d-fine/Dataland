@@ -6,6 +6,22 @@ import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
+/**
+ * Method to check the existence and the redirect-functionality of the Bulk Request Data button
+ * @param keycloakMock to be used for the login status
+ */
+function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
+  cy.spy(router, 'push').as('routerPush');
+  cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+    keycloak: keycloakMock,
+    router: router,
+  }).then(() => {
+    cy.wait(500);
+    cy.get('button').contains('BULK DATA REQUEST').should('exist').click({ force: true });
+    cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
+  });
+}
+
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 
 before(function () {
@@ -19,22 +35,6 @@ describe('Component tests for the Dataland companies search page', function (): 
     cy.intercept('**/api/companies?**', mockDataSearchResponse);
     cy.intercept('**/api/companies/meta-information', {});
   });
-
-  /**
-   * Method to check the existence and the redirect-functionality of the Bulk Request Data button
-   * @param keycloakMock to be used for the login status
-   */
-  function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
-    cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
-      keycloak: keycloakMock,
-      router: router,
-    }).then(() => {
-      cy.wait(500);
-      cy.get('button').contains('BULK DATA REQUEST').should('exist').click({ force: true });
-      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
-    });
-  }
 
   it('Check static layout of the search page', function () {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {

@@ -170,7 +170,7 @@ const searchQuery = ref('');
 const unknownUserError = ref('');
 const userCountText = computed(() => {
   const count = selectedUsers.value?.length;
-  return `${count} User${count !== 1 ? 's' : ''}`;
+  return `${count} User${count === 1 ? '' : 's'}`;
 });
 const suggestedUsers = ref<User[]>([]);
 

@@ -316,7 +316,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    window.scrollTo(0, 0);
+    globalThis.scrollTo(0, 0);
   },
 });
 

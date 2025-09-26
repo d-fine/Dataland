@@ -22,6 +22,31 @@ import {
 } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
+/**
+ * Validates the existence of the company search bar
+ * @param isSearchBarExpected determines if the existence of the search bar is expected
+ */
+function validateSearchBarExistence(isSearchBarExpected: boolean): void {
+  const searchBarSelector = 'input[type="text"]#company_search_bar_standard';
+  cy.get(searchBarSelector).should(isSearchBarExpected ? 'exist' : 'not.exist');
+}
+
+/**
+ * Validates the existence of the panel that shows the offer to claim company ownership
+ * @param isThisExpected is this panel expected
+ */
+function validateClaimOwnershipPanel(isThisExpected: boolean): void {
+  cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? 'exist' : 'not.exist');
+}
+
+/**
+ * Validates the existence or non-existence of the single data request button
+ * @param isButtonExpected self explanatory
+ */
+function validateSingleDataRequestButton(isButtonExpected: boolean): void {
+  cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? 'exist' : 'not.exist');
+}
+
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
@@ -50,29 +75,12 @@ describe('Component test for the company cockpit', () => {
   });
 
   /**
-   * Validates the existence of the company search bar
-   * @param isSearchBarExpected determines if the existence of the search bar is expected
-   */
-  function validateSearchBarExistence(isSearchBarExpected: boolean): void {
-    const searchBarSelector = 'input[type="text"]#company_search_bar_standard';
-    cy.get(searchBarSelector).should(isSearchBarExpected ? 'exist' : 'not.exist');
-  }
-
-  /**
    * Validates the existence of the banner that shows info about the company
    * @param hasCompanyCompanyOwner has the mocked company at least one company owner?
    */
   function validateCompanyInformationBanner(hasCompanyCompanyOwner?: boolean): void {
     cy.contains('h1', companyInformationForTest.companyName);
     cy.get("[data-test='verifiedCompanyOwnerBadge']").should(hasCompanyCompanyOwner ? 'exist' : 'not.exist');
-  }
-
-  /**
-   * Validates the existence of the panel that shows the offer to claim company ownership
-   * @param isThisExpected is this panel expected
-   */
-  function validateClaimOwnershipPanel(isThisExpected: boolean): void {
-    cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? 'exist' : 'not.exist');
   }
 
   /**
@@ -88,7 +96,7 @@ describe('Component test for the company cockpit', () => {
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
-    frameworksToTest.forEach((frameworkName: DataTypeEnum) => {
+    for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
       const frameworkDataSummary = new Map(Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary)).get(
         frameworkName
@@ -120,15 +128,7 @@ describe('Component test for the company cockpit', () => {
           'not.exist'
         );
       }
-    });
-  }
-
-  /**
-   * Validates the existence or non-existence of the single data request button
-   * @param isButtonExpected self explanatory
-   */
-  function validateSingleDataRequestButton(isButtonExpected: boolean): void {
-    cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? 'exist' : 'not.exist');
+    }
   }
 
   /**
@@ -280,7 +280,7 @@ describe('Component test for the company cockpit', () => {
     validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
 
-  KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+  for (const keycloakRole of KEYCLOAK_ROLES) {
     it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
       const hasCompanyAtLeastOneOwner = true;
       mockRequestsOnMounted(
@@ -292,7 +292,7 @@ describe('Component test for the company cockpit', () => {
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
       validateVsmeFrameworkSummaryPanel(false);
     });
-  });
+  }
 
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;

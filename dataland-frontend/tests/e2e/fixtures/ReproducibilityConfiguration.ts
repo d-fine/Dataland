@@ -8,7 +8,7 @@ export const HASH_MULTIPLIER = 31;
  * @returns the java hashCode of the string
  */
 function stringHashCode(str: string): number {
-  return str.split('').reduce((acc, toIntegrate) => ((acc << 5) - acc + toIntegrate.charCodeAt(0)) | 0, 0);
+  return str.split('').reduce((acc, toIntegrate) => Math.trunc((acc << 5) - acc + toIntegrate.charCodeAt(0)), 0);
 }
 
 /**
