@@ -39,9 +39,9 @@ describe('Check the portfolio dialog', function (): void {
       },
     }).then(() => {
       cy.get('[data-test="portfolio-name-input"]').should('have.value', portfolioFixture.portfolioName);
-      portfolioFixture.entries.forEach((entry) => {
+      for (const entry of portfolioFixture.entries) {
         cy.get('[id="existing-company-identifiers"]').should('contain', entry.companyName);
-      });
+      }
       cy.get('[data-test="portfolio-dialog-save-button"]')
         .should('contain.text', 'SAVE PORTFOLIO')
         .and('not.be.disabled');

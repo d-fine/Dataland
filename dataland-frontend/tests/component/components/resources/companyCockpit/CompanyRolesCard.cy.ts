@@ -4,6 +4,52 @@ import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/commun
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
+/**
+ * Mocks API requests for company role assignments
+ * @param roleAssignments the role assignments to return
+ */
+function mockCompanyRoleAssignments(roleAssignments: CompanyRoleAssignmentExtended[]): void {
+  cy.intercept('GET', '**/community/company-role-assignments*', {
+    statusCode: 200,
+    body: roleAssignments,
+  }).as('getRoleAssignments');
+
+  cy.intercept('POST', '**/company-role-assignments/*/*/*', {
+    statusCode: 200,
+  }).as('assignRole');
+
+  cy.intercept('DELETE', '**/company-role-assignments/*/*/*', {
+    statusCode: 200,
+  }).as('removeRole');
+}
+
+/**
+ * Validates that the card displays the correct role information
+ * @param expectedTitle the expected card title
+ * @param expectedIcon the expected icon class
+ */
+function validateCardHeader(expectedTitle: string, expectedIcon: string): void {
+  cy.get('[data-test="company-roles-card"]').should('exist');
+  cy.get('[data-test="company-roles-card"]').should('contain', expectedTitle);
+  cy.get(`i.${expectedIcon.replace(' ', '.')}`).should('exist');
+}
+
+/**
+ * Validates the info message functionality
+ * @param expectedInfoText the expected info text content
+ */
+function validateInfoMessage(expectedInfoText: string): void {
+  cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+
+  cy.get('[data-test="info-message"]').first().find('button').click();
+  cy.get('[data-test="info-message"]').should('not.exist');
+
+  cy.get('[data-test="info-icon"]').should('be.visible');
+
+  cy.get('[data-test="info-icon"]').click();
+  cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+}
+
 describe('Component test for CompanyRolesCard', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const dummyUserId = 'mock-user-id';
@@ -41,25 +87,6 @@ describe('Component test for CompanyRolesCard', () => {
       lastName,
       email,
     };
-  }
-
-  /**
-   * Mocks API requests for company role assignments
-   * @param roleAssignments the role assignments to return
-   */
-  function mockCompanyRoleAssignments(roleAssignments: CompanyRoleAssignmentExtended[]): void {
-    cy.intercept('GET', '**/community/company-role-assignments*', {
-      statusCode: 200,
-      body: roleAssignments,
-    }).as('getRoleAssignments');
-
-    cy.intercept('POST', '**/company-role-assignments/*/*/*', {
-      statusCode: 200,
-    }).as('assignRole');
-
-    cy.intercept('DELETE', '**/company-role-assignments/*/*/*', {
-      statusCode: 200,
-    }).as('removeRole');
   }
 
   /**
@@ -111,33 +138,6 @@ describe('Component test for CompanyRolesCard', () => {
   }
 
   /**
-   * Validates that the card displays the correct role information
-   * @param expectedTitle the expected card title
-   * @param expectedIcon the expected icon class
-   */
-  function validateCardHeader(expectedTitle: string, expectedIcon: string): void {
-    cy.get('[data-test="company-roles-card"]').should('exist');
-    cy.get('[data-test="company-roles-card"]').should('contain', expectedTitle);
-    cy.get(`i.${expectedIcon.replace(' ', '.')}`).should('exist');
-  }
-
-  /**
-   * Validates the info message functionality
-   * @param expectedInfoText the expected info text content
-   */
-  function validateInfoMessage(expectedInfoText: string): void {
-    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
-
-    cy.get('[data-test="info-message"]').first().find('button').click();
-    cy.get('[data-test="info-message"]').should('not.exist');
-
-    cy.get('[data-test="info-icon"]').should('be.visible');
-
-    cy.get('[data-test="info-icon"]').click();
-    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
-  }
-
-  /**
    * Validates the user table contents
    * @param expectedUsers array of expected user data
    */
@@ -152,7 +152,7 @@ describe('Component test for CompanyRolesCard', () => {
     }
 
     cy.get('table').should('exist');
-    expectedUsers.forEach((user, index) => {
+    for (const [index, user] of expectedUsers.entries()) {
       cy.get('tbody tr')
         .eq(index)
         .within(() => {
@@ -161,7 +161,7 @@ describe('Component test for CompanyRolesCard', () => {
           cy.get('td').eq(2).should('contain', user.email);
           cy.get('td').eq(3).should('contain', user.userId);
         });
-    });
+    }
   }
 
   before(function () {
@@ -196,13 +196,13 @@ describe('Component test for CompanyRolesCard', () => {
       },
     ];
 
-    roleDisplayCases.forEach(({ role, expectedTitle, expectedIcon, expectedInfo }) => {
+    for (const { role, expectedTitle, expectedIcon, expectedInfo } of roleDisplayCases) {
       it(`displays ${expectedTitle} role card correctly`, () => {
         mountCardAs(undefined, role);
         validateCardHeader(expectedTitle, expectedIcon);
         validateInfoMessage(expectedInfo);
       });
-    });
+    }
   });
 
   describe('User Management Tests', () => {
@@ -273,7 +273,7 @@ describe('Component test for CompanyRolesCard', () => {
       Object.values(CompanyRole).map((role) => ({ testCase, role }))
     );
 
-    permissionScenarios.forEach(({ testCase, role }) => {
+    for (const { testCase, role } of permissionScenarios) {
       const shouldExistAndBeEnabled = testCase.allowedRoles.includes(role as CompanyRole);
       const shouldBeDisabled = !shouldExistAndBeEnabled && testCase.allowedRoles.length > 0;
       let buttonState = '';
@@ -311,7 +311,7 @@ describe('Component test for CompanyRolesCard', () => {
           cy.get('[data-test="add-user-button"]').should('not.exist');
         }
       });
-    });
+    }
   });
 
   describe('User Actions Tests', () => {

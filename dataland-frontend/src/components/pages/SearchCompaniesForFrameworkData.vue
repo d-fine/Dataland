@@ -103,7 +103,7 @@ export default defineComponent({
     PrimeButton,
   },
   created() {
-    window.addEventListener('scroll', this.windowScrollHandler);
+    globalThis.addEventListener('scroll', this.windowScrollHandler);
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -164,19 +164,17 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
-      if (!this.waitingForDataToDisplay) {
-        if (totalSearchResults === 0) {
-          return 'No results';
-        } else {
-          const startIndex = this.currentPage * this.rowsPerPage;
-          const endIndex =
-            startIndex + (this.rowsPerPage - 1) >= totalSearchResults
-              ? totalSearchResults - 1
-              : startIndex + (this.rowsPerPage - 1);
-          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
-        }
-      } else {
+      if (this.waitingForDataToDisplay) {
         return 'loading...';
+      } else if (totalSearchResults === 0) {
+        return 'No results';
+      } else {
+        const startIndex = this.currentPage * this.rowsPerPage;
+        const endIndex =
+          startIndex + (this.rowsPerPage - 1) >= totalSearchResults
+            ? totalSearchResults - 1
+            : startIndex + (this.rowsPerPage - 1);
+        return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
       }
     },
   },
@@ -353,7 +351,7 @@ export default defineComponent({
     },
   },
   unmounted() {
-    window.removeEventListener('scroll', this.windowScrollHandler);
+    globalThis.removeEventListener('scroll', this.windowScrollHandler);
   },
 });
 </script>

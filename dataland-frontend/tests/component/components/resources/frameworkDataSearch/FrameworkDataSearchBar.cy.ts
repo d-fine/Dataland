@@ -10,7 +10,7 @@ before(function () {
   cy.fixture('DataSearchStoredCompanyMocks').then(function (jsonContent) {
     const mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
     const customCompanyName = 'ABCDEFG' + highlightedSubString + 'HIJKLMNOP';
-    modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
+    modifiedMockDataSearchResponse = mockDataSearchResponse.slice(0, 4);
     modifiedMockDataSearchResponse[0] = {
       ...modifiedMockDataSearchResponse[0],
       companyName: customCompanyName,

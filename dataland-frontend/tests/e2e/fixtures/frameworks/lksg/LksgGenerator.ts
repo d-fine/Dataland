@@ -25,7 +25,9 @@ export class LksgGenerator extends Generator {
   generateCustomRandomMap(numEntries: number): { [p: string]: number } {
     const map = new Map<string, number>();
     const randomStringArray = this.guaranteedArray(() => this.guaranteedShortString(), 0, numEntries);
-    randomStringArray.forEach((stringEntry) => map.set(stringEntry, this.guaranteedInt()));
+    for (const stringEntry of randomStringArray) {
+      map.set(stringEntry, this.guaranteedInt());
+    }
     return Object.fromEntries(map);
   }
 
@@ -49,16 +51,18 @@ export class LksgGenerator extends Generator {
       () => faker.number.float() > this.nullProbability
     );
     const lksgProcurementCategoriesMap = new Map<ProcurementCategoryType, LksgProcurementCategory>();
-    categoryTypes.forEach((categoryType) =>
-      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory())
-    );
+    for (const categoryType of categoryTypes) {
+      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory());
+    }
     return Object.fromEntries(lksgProcurementCategoriesMap);
   }
 
   generateSubcontractingCompanies(): { [key: string]: Array<string> } {
     const countryCodes = generateArray(generateIso2CountryCode);
     const lksgSubcontractingCompaniesMap = new Map<string, string[]>();
-    countryCodes.forEach((countryCode) => lksgSubcontractingCompaniesMap.set(countryCode, generateNaceCodes()));
+    for (const countryCode of countryCodes) {
+      lksgSubcontractingCompaniesMap.set(countryCode, generateNaceCodes());
+    }
     return Object.fromEntries(lksgSubcontractingCompaniesMap);
   }
   /**
