@@ -258,7 +258,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
           cy.visit(`/companies`);
           cy.wait('@getFilterOptions');
-          cy.get('#framework-filter', { timeout: 20000 }).should('be.visible');
+          cy.get('#framework-filter', { timeout: 20000 }).should('be.visible').should('not.have.class', 'p-disabled');
           cy.get('#framework-filter').click();
           cy.get('div.p-multiselect-overlay', { timeout: 10000 }).should('exist').should('be.visible');
 
