@@ -1160,7 +1160,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -1239,7 +1239,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "memberComment": {
@@ -1316,7 +1316,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "dataType": {
@@ -1400,7 +1400,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "dataType": {
@@ -1531,7 +1531,7 @@
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The associated reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "dataType": {

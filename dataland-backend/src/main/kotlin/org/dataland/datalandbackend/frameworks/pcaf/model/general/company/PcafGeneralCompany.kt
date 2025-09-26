@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.frameworks.pcaf.model.general.company
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyCompanyExchangeStatusOptions
+import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyMainPcafSectorOptions
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
 /**
