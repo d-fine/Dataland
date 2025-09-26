@@ -132,7 +132,6 @@ export default defineComponent({
       totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
-      isTicking: false,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -211,23 +210,17 @@ export default defineComponent({
      * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
      */
     handleScroll() {
-      if (this.isTicking) return;
-      this.isTicking = true;
+      const y = window.scrollY || document.documentElement.scrollTop;
+      const collapseAt = 160;
+      const expandAt = 20;
+      const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
 
-      requestAnimationFrame(() => {
-        const y = window.scrollY || document.documentElement.scrollTop;
-        const collapseAt = 160;
-        const expandAt = 20;
-        const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
+      if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
+        this.isSearchBarContainerCollapsed = shouldCollapse;
+        this.frameworkDataSearchBar?.closeOverlay();
+      }
 
-        if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
-          this.isSearchBarContainerCollapsed = shouldCollapse;
-
-          this.frameworkDataSearchBar?.closeOverlay();
-        }
-        this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        this.isTicking = false;
-      });
+      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
     },
     /**
      * Parses the framework filter query parameters.
@@ -388,9 +381,7 @@ export default defineComponent({
   align-items: stretch;
   margin: 0;
   width: 100%;
-  padding-left: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
-  padding-bottom: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
+  padding: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
   background-color: var(--p-surface-0);
   position: sticky;
   top: var(--app-header-offset, 4rem);
@@ -405,7 +396,6 @@ export default defineComponent({
 
 .collapsed-search-container {
   flex-direction: row;
-  justify-content: space-between;
   align-items: end;
   padding-top: 0;
   border-bottom: 1px solid var(--p-surface-200);
