@@ -36,7 +36,7 @@ import { inject, onMounted, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import { useRouter } from 'vue-router';
-import { loginAndRedirectToPortfolioPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 import Button from 'primevue/button';
 
 const router = useRouter();
@@ -52,8 +52,8 @@ const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == '/') {
-        void loginAndRedirectToPortfolioPage(keycloak);
+      if (globalThis.location.pathname == '/') {
+        void loginAndRedirectToRedirectPage(keycloak);
       } else {
         keycloak.login().catch((error) => console.error(error));
       }
@@ -62,10 +62,10 @@ const login = (): void => {
 };
 
 /**
- * Sends the user to back to the platform
+ * Sends the user back to the platform
  */
 const backToPlatform = (): void => {
-  void router.push({ path: '/portfolios' });
+  void router.push({ path: '/platform-redirect' });
 };
 
 onMounted(() => {
@@ -83,8 +83,8 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == '/') {
-        void registerAndRedirectToSearchPage(keycloak);
+      if (globalThis.location.pathname == '/') {
+        void registerAndRedirectToRedirectPage(keycloak);
       } else {
         keycloak.register().catch((error) => console.error(error));
       }
