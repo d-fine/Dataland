@@ -18,6 +18,7 @@ import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -80,7 +81,7 @@ internal class DataControllerTest {
 
     lateinit var dataController: LksgDataController
 
-    private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
+    private val testDataDimensions = BasicDataSetDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
     @BeforeEach
     fun setup() {
@@ -185,7 +186,7 @@ internal class DataControllerTest {
     fun `test that resource not found error is thrown if combination of reportingPeriod and companyId and dataType does not exist`() {
         doReturn(null)
             .whenever(mockDataMetaInformationManager)
-            .getActiveDatasetIdByDataDimensions(any<BasicDataDimensions>())
+            .getActiveDatasetIdByDataDimensions(any<BasicDataSetDimensions>())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedDataByDimensions(
@@ -198,7 +199,7 @@ internal class DataControllerTest {
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as Set<BasicDataDimensions>
+            val argument = invocation.arguments[0] as Set<BasicDataSetDimensions>
             argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =

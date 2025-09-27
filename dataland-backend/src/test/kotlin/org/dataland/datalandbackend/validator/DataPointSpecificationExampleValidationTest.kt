@@ -100,9 +100,8 @@ class DataPointSpecificationExampleValidationTest
                 schema.isArray -> {
                     val array = objectMapper.createArrayNode()
                     val schemaElement = schema.firstOrNull()
-                    val exampleArray = example
-                    if (exampleArray.isArray && schemaElement != null) {
-                        exampleArray.forEach { exampleElement ->
+                    if (example.isArray && schemaElement != null) {
+                        example.forEach { exampleElement ->
                             array.add(buildJsonFromSchemaWithExample(schemaElement, exampleElement, objectMapper))
                         }
                     }
