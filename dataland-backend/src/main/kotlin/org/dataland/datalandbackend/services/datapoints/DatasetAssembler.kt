@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -15,6 +14,7 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 
 /**
  * A utility class for assembling datasets from data points
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service
 class DatasetAssembler
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
@@ -63,8 +62,8 @@ class DatasetAssembler
         }
 
         /**
-         * Assemble a single data set using the provided list of uploaded data points and the framework template
-         * @param dataPoints the data points of the data set as retrieved from the internal storage
+         * Assemble a single dataset of type [framework] using the provided list of uploaded [dataPoints]
+         * @param dataPoints the data points of the dataset as retrieved from the internal storage
          * @param framework the framework the data points are to be assembled into
          */
         fun assembleSingleDataSet(

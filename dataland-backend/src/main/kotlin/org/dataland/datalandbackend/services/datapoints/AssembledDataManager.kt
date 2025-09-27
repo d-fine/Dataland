@@ -54,6 +54,7 @@ class AssembledDataManager
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
         private val dataDeliveryService: DataDeliveryService,
+        private val dataSetAssembler: DatasetAssembler,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -293,9 +294,9 @@ class AssembledDataManager
             correlationId: String,
         ): String {
             val dataPoints = getDataPointIdsForDataset(datasetId)
-            return dataPointUtils.assembleSingleDataSet(
+            return dataSetAssembler.assembleSingleDataSet(
                 dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
-                dataPointUtils.getFrameworkTemplate(dataType),
+                dataType,
             )
         }
 

@@ -78,7 +78,7 @@ class AssembledDataManagerTest {
 
     private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val dataPointUtils =
-        DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, referencedReportsUtilities)
+        DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager)
 
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
@@ -90,7 +90,7 @@ class AssembledDataManagerTest {
             dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
             referencedReportsUtilities,
-            companyQueryManager, dataPointUtils, dataDeliveryService,
+            companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler
         )
 
     private val correlationId = "test-correlation-id"
