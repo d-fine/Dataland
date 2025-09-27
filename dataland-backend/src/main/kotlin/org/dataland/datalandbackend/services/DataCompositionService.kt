@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.set
@@ -42,9 +43,12 @@ class DataCompositionService
 
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        /**
+         * Initiates the specification cache after application start up. Waits until the specification service is reachable.
+         */
         @EventListener
-        @Suppress("unused") // This function is triggered via the event listener upon startup, detekt does not recognize this
-        private fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
+        @Async
+        fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
             waitUntilSpecificationServiceReady()
             initializeSpecificationCache()
         }
