@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
-import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.set
@@ -47,7 +46,6 @@ class DataCompositionService
          * Initiates the specification cache after application start up. Waits until the specification service is reachable.
          */
         @EventListener
-        @Async
         fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
             waitUntilSpecificationServiceReady()
             initializeSpecificationCache()

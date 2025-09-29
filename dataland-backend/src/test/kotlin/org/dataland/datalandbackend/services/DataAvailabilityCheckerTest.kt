@@ -8,18 +8,23 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.TestPostgresContainer
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -36,7 +41,7 @@ class DataAvailabilityCheckerTest {
         private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
 
         // Even though this class uses a test container for integration testing, it is not possible to use the BaseIntegrationTest class.
-        // This is due to the direkt usage of the EntityManager, which will lead to issues connecting to the database
+        // This is due to the direct usage of the EntityManager, which will lead to issues connecting to the database
         @Container
         @JvmStatic
         val postgres = TestPostgresContainer.postgres
@@ -60,6 +65,9 @@ class DataAvailabilityCheckerTest {
     @Autowired
     private lateinit var storedCompanyRepository: StoredCompanyRepository
     private lateinit var dataAvailabilityChecker: DataAvailabilityChecker
+
+    @MockitoBean
+    private var specificationClient = mock<SpecificationControllerApi>()
 
     private val baseDimension = BasicDataSetDimensions(companyId = COMPANY_ID, framework = DATA_TYPE, reportingPeriod = REPORTING_PERIOD)
 
@@ -87,6 +95,9 @@ class DataAvailabilityCheckerTest {
     fun setUp() {
         dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService)
         storedCompanyRepository.saveAndFlush(dummyCompany)
+        whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
+            listOf(SimpleFrameworkSpecification(IdWithRef(DATA_TYPE, "dummy"), "Test Framework"))
+        )
     }
 
     @ParameterizedTest
@@ -120,7 +131,7 @@ class DataAvailabilityCheckerTest {
         storeMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(listOf(baseDimension))
         assert(results.size == 1) { "There should be exactly one result." }
-        val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
+        val resultingDimensions = results.map { BasicDataSetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
         assert(resultingDimensions.first() == baseDimension) { "The result should be the provided example." }
     }
 
