@@ -27,7 +27,6 @@ plugins {
 }
 dependencies {
     implementation(project(":dataland-backend-utils"))
-    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.springdoc.openapi.ui)
@@ -53,6 +52,7 @@ dependencies {
     implementation(libs.json)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)

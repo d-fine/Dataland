@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.bcprov.jdk15on)
     implementation(libs.mailjet.client)
     implementation(libs.jackson.module.kotlin)
+    implementation(Spring.boot.data.jpa)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.testcontainers.junit.jupiter)

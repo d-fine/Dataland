@@ -9,11 +9,14 @@ import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
 
 @SpringBootTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class DataSourcingEntityAuditTests : BaseIntegrationTest() {
     @Autowired
     private lateinit var dataSourcingRepository: DataSourcingRepository
