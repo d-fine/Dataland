@@ -53,7 +53,7 @@ interface RequestApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "You were trying to impersonate another Dataland user. Only admins the right to do so. " +
+                    "You were trying to impersonate another Dataland user. Only admins have the right to do so. " +
                         "To make a request for yourself, leave the userId parameter empty.",
                 content = [Content(schema = Schema())],
             ),
