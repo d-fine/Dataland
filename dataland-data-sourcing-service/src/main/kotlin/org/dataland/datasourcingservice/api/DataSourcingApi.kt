@@ -63,11 +63,14 @@ interface DataSourcingApi {
     ): ResponseEntity<StoredDataSourcing>
 
     /**
-     * Retrieve a DataSourcing object by its ID.
+     * Retrieve a DataSourcing object by the company ID of the
+     * external service provider (document collector and/or data extractor)
      */
     @Operation(
         summary = "Get DataSourcing by company ID of the provider (document collector and/or data extractor)",
-        description = "Retrieve DataSourcing objects assigned to your company.",
+        description =
+            "Get DataSourcing by company ID of the assigned external service provider " +
+                "(document collector and/or data extractor).",
     )
     @ApiResponses(
         value = [
