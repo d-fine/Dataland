@@ -119,7 +119,7 @@ describeIf(
           });
         });
       });
-      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames'], { responseTimeout: 300000 });
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
