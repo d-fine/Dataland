@@ -41,9 +41,9 @@ describeIf(
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(delayToWaitForPrepopulationSoThatNotAllRetriesAreWastedInstantly)
           .then(() => getKeycloakToken(reader_name, reader_pw))
-          .then({ timeout: 150000 }, async (token) => {
+          .then({ timeout: 150000 }, async (error_) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
-              countCompaniesAndDatasetsForDataType(token, key as DataTypeEnum)
+              countCompaniesAndDatasetsForDataType(error_, key as DataTypeEnum)
             );
 
             const totalCompanies = (await Promise.all(responsePromises))
