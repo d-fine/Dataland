@@ -44,6 +44,12 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val USER_ID_DESCRIPTION = "Dataland company ID of the document collector or data extractor."
     const val USER_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
 
+    const val REQUEST_PRIORITY_DESCRIPTION = "The priority of the data request."
+    const val REQUEST_PRIORITY_EXAMPLE = "High"
+
+    const val REQUEST_STATE_DESCRIPTION = "The current state of the request."
+    const val REQUEST_STATE_EXAMPLE = "Open"
+
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
             "If set to false, the provided document IDs replace the existing ones instead."

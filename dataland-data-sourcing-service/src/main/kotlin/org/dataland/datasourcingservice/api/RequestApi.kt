@@ -151,11 +151,19 @@ interface RequestApi {
             name = "requestState",
             required = true,
         )
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
+        )
         requestState: RequestState,
         @Valid
         @RequestParam(
             name = "adminComment",
             required = false,
+        )
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
         )
         adminComment: String? = null,
     ): ResponseEntity<StoredRequest>
@@ -199,6 +207,10 @@ interface RequestApi {
             name = "requestPriority",
             required = true,
         )
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_EXAMPLE,
+        )
         requestPriority: RequestPriority,
         @Valid
         @RequestParam(
@@ -233,7 +245,7 @@ interface RequestApi {
     @GetMapping(value = ["/{dataRequestId}/history"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
     fun getRequestHistoryById(
-        @Parameter(description = "ID of the Request object.")
+        @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
     ): ResponseEntity<List<StoredRequest>>
 }

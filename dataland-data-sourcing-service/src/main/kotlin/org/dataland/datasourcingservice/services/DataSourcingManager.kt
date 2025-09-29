@@ -179,7 +179,7 @@ class DataSourcingManager
         /**
          * Patches the documents of the data sourcing entity according to the given documents.
          * @param dataSourcingEntityId the id of the data sourcing entity to patch
-         * @param documentIds to patch to
+         * @param documentIds the document IDs to patch to the data sourcing entity
          * @param appendDocuments flag to decide if the provided list of documentIds should overwrite
          * the current list of documentIds or if the documentIds should be appended to the existing list
          * @return the StoredDataSourcing object corresponding to the patched entity
