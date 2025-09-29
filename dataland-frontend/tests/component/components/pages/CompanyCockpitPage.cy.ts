@@ -169,7 +169,8 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
     const categoryKeys = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
-    for (let i = 0; i < categoryKeys.length; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const _ of categoryKeys) {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
     }
     for (const category of categoryKeys) {
