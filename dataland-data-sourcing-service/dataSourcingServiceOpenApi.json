@@ -1263,11 +1263,11 @@
       },
       "SingleRequestResponse": {
         "required": [
-          "id"
+          "requestId"
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "requestId": {
             "type": "string",
             "description": "The unique identifier of the stored request.",
             "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
@@ -1307,16 +1307,16 @@
         "required": [
           "associatedRequestIds",
           "companyId",
+          "dataSourcingId",
           "dataType",
           "documentIds",
           "expectedPublicationDatesOfDocuments",
-          "id",
           "reportingPeriod",
           "state"
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "dataSourcingId": {
             "type": "string",
             "description": "The unique identifier of the data sourcing object.",
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
@@ -1391,16 +1391,16 @@
       "ReducedDataSourcing": {
         "required": [
           "companyId",
+          "dataSourcingId",
           "dataType",
           "documentIds",
           "expectedPublicationDatesOfDocuments",
-          "id",
           "reportingPeriod",
           "state"
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "dataSourcingId": {
             "type": "string",
             "description": "The unique identifier of the data sourcing object.",
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
@@ -1524,14 +1524,14 @@
       "DataSourcingWithoutReferences": {
         "required": [
           "companyId",
+          "dataSourcingId",
           "dataType",
-          "id",
           "reportingPeriod",
           "state"
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "dataSourcingId": {
             "type": "string",
             "description": "The unique identifier of the data sourcing object.",
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"

@@ -42,7 +42,7 @@ data class StoredRequest(
                 lastModifiedDate = entity.lastModifiedDate,
                 requestPriority = entity.requestPriority,
                 state = entity.state,
-                dataSourcingEntityId = entity.dataSourcingEntity?.id.toString(),
+                dataSourcingEntityId = entity.dataSourcingEntity?.dataSourcingId.toString(),
             )
     }
 

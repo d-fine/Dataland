@@ -11,7 +11,7 @@ import java.util.UUID
  * request is still in a non-final state.
  */
 class DuplicateRequestException(
-    val id: UUID,
+    val requestId: UUID,
     val reportingPeriod: String,
     val companyId: UUID,
     val dataType: String,
@@ -25,7 +25,7 @@ class DuplicateRequestException(
             httpStatus = HttpStatus.BAD_REQUEST,
             metaInformation =
                 mapOf(
-                    "id" to id.toString(),
+                    "id" to requestId.toString(),
                     "reportingPeriod" to reportingPeriod,
                     "companyId" to companyId.toString(),
                     "framework" to dataType,

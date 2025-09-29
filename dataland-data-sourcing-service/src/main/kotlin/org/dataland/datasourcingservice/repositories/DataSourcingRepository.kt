@@ -18,7 +18,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
             "LEFT JOIN FETCH dataSourcing.documentIds " +
             "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcing.associatedRequests " +
-            "WHERE dataSourcing.id = :id",
+            "WHERE dataSourcing.dataSourcingId = :id",
     )
     fun findByIdAndFetchAllStoredFields(id: UUID): DataSourcingEntity?
 

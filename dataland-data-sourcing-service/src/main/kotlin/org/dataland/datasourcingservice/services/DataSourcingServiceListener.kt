@@ -95,7 +95,7 @@ class DataSourcingServiceListener
             when (updatedQaStatus) {
                 QaStatus.Accepted -> {
                     dataSourcingManager.patchDataSourcingEntityById(
-                        UUID.fromString(storedDataSourcing.id),
+                        UUID.fromString(storedDataSourcing.dataSourcingId),
                         DataSourcingPatch(state = DataSourcingState.Answered),
                     )
                 }
@@ -103,7 +103,7 @@ class DataSourcingServiceListener
                 QaStatus.Pending -> {
                     if (storedDataSourcing.state == DataSourcingState.Answered) return
                     dataSourcingManager.patchDataSourcingEntityById(
-                        UUID.fromString(storedDataSourcing.id),
+                        UUID.fromString(storedDataSourcing.dataSourcingId),
                         DataSourcingPatch(state = DataSourcingState.DataVerification),
                     )
                 }

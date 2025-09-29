@@ -27,13 +27,13 @@ import java.util.UUID
 @Table(
     name = "data_sourcing",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["companyId", "reportingPeriod", "dataType"]),
+        UniqueConstraint(columnNames = ["company_id", "reporting_period", "data_type"]),
     ],
 )
 class DataSourcingEntity(
     @Id
-    @Column(name = "id")
-    val id: UUID,
+    @Column(name = "data_sourcing_id")
+    val dataSourcingId: UUID,
     @Column(name = "company_id")
     val companyId: UUID,
     @Column(name = "reporting_period")
@@ -68,7 +68,7 @@ class DataSourcingEntity(
         reportingPeriod: String,
         dataType: String,
     ) : this(
-        id = UUID.randomUUID(),
+        dataSourcingId = UUID.randomUUID(),
         companyId = companyId,
         reportingPeriod = reportingPeriod,
         dataType = dataType,
@@ -89,7 +89,7 @@ class DataSourcingEntity(
      */
     fun toStoredDataSourcing(): StoredDataSourcing =
         StoredDataSourcing(
-            id = id.toString(),
+            dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
             dataType = dataType,
@@ -108,7 +108,7 @@ class DataSourcingEntity(
      */
     fun toReducedDataSourcing(): ReducedDataSourcing =
         ReducedDataSourcing(
-            id = id.toString(),
+            dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
             dataType = dataType,
@@ -123,7 +123,7 @@ class DataSourcingEntity(
      */
     fun toDataSourcingWithoutReferences(): DataSourcingWithoutReferences =
         DataSourcingWithoutReferences(
-            id = id.toString(),
+            dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
             dataType = dataType,
