@@ -129,8 +129,8 @@ class DataSourcingEntity(
             dataType = dataType,
             state = state,
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
-            documentCollector = documentCollector.toString(),
-            dataExtractor = dataExtractor.toString(),
+            documentCollector = documentCollector?.toString(),
+            dataExtractor = dataExtractor?.toString(),
             adminComment = adminComment,
         )
 }
