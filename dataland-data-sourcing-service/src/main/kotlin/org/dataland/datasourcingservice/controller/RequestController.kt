@@ -48,7 +48,7 @@ class RequestController(
             singleRequestManager.patchRequestPriority(UUID.fromString(dataRequestId), requestPriority, adminComment),
         )
 
-    override fun getRequestHistoryById(id: String): ResponseEntity<List<StoredRequest>> =
+    override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
         ResponseEntity
-            .ok(singleRequestManager.retrieveRequestHistory(id))
+            .ok(singleRequestManager.retrieveRequestHistory(dataRequestId))
 }

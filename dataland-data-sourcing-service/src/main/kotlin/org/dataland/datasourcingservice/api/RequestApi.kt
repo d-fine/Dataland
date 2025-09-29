@@ -158,7 +158,7 @@ interface RequestApi {
      * A method to patch the request state of a data request
      *
      * @param dataRequestId The request id of the data request to patch
-     * @param requestState The new request state after patch
+     * @param requestPriority The new request priority after patch
      * @return the modified data request
      */
     @Operation(
@@ -224,10 +224,10 @@ interface RequestApi {
             ),
         ],
     )
-    @GetMapping("/{id}/history", produces = ["application/json"])
+    @GetMapping("/{dataRequestId}/history", produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (#userId == authentication.userId or #userId == null))")
     fun getRequestHistoryById(
         @Parameter(description = "ID of the Request object.")
-        @PathVariable id: String,
+        @PathVariable dataRequestId: String,
     ): ResponseEntity<List<StoredRequest>>
 }

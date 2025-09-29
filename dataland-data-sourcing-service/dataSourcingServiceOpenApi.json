@@ -750,19 +750,18 @@
         ]
       }
     },
-    "/requests/{id}/history": {
+    "/requests/{dataRequestId}": {
       "get": {
         "tags": [
           "request-controller"
         ],
-        "summary": "Get full history of requests by ID",
-        "description": "Retrieve the history of a Request object by its unique identifier.",
-        "operationId": "getRequestHistoryById",
+        "summary": "Get all information associated with the specified data request.",
+        "description": "Gets all the stored data of a particular data request.",
+        "operationId": "getRequest",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataRequestId",
             "in": "path",
-            "description": "ID of the Request object.",
             "required": true,
             "schema": {
               "type": "string"
@@ -771,20 +770,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved request history.",
+            "description": "Successfully retrieved request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
-                  }
+                  "$ref": "#/components/schemas/StoredRequest"
                 }
               }
             }
           },
           "403": {
-            "description": "Only Dataland admins have the right to query request history."
+            "description": "The entered request ID does not belong to any of your requests. Only Dataland admins have the right to query other users\u0027 requests."
           },
           "404": {
             "description": "The specified request ID does not exist."
@@ -820,18 +816,19 @@
         ]
       }
     },
-    "/requests/{dataRequestId}": {
+    "/requests/{dataRequestId}/history": {
       "get": {
         "tags": [
           "request-controller"
         ],
-        "summary": "Get all information associated with the specified data request.",
-        "description": "Gets all the stored data of a particular data request.",
-        "operationId": "getRequest",
+        "summary": "Get full history of requests by ID",
+        "description": "Retrieve the history of a Request object by its unique identifier.",
+        "operationId": "getRequestHistoryById",
         "parameters": [
           {
             "name": "dataRequestId",
             "in": "path",
+            "description": "ID of the Request object.",
             "required": true,
             "schema": {
               "type": "string"
@@ -840,17 +837,20 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved request.",
+            "description": "Successfully retrieved request history.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredRequest"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
                 }
               }
             }
           },
           "403": {
-            "description": "The entered request ID does not belong to any of your requests. Only Dataland admins have the right to query other users\u0027 requests."
+            "description": "Only Dataland admins have the right to query request history."
           },
           "404": {
             "description": "The specified request ID does not exist."
