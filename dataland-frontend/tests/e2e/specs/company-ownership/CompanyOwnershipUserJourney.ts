@@ -11,13 +11,13 @@ import { type StoredCompany } from '@clients/backend';
  * This method verifies that the summary panel for each framework is presented as expected
  */
 function checkFrameworks(): void {
-  FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
+  for (const frameworkName of FRAMEWORKS_WITH_UPLOAD_FORM) {
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     cy.get(frameworkSummaryPanelSelector).should('exist');
     cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
       timeout: Cypress.env('long_timeout_in_ms') as number,
     }).should('exist');
-  });
+  }
 }
 
 describeIf(
