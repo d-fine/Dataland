@@ -180,7 +180,8 @@ class DataSourcingManager
          * Patches the documents of the data sourcing entity according to the given documents.
          * @param dataSourcingEntityId the id of the data sourcing entity to patch
          * @param documentIds to patch to
-         * @param appendDocuments flag to decide if documents should overwrite current documents or merely append
+         * @param appendDocuments flag to decide if the provided list of documentIds should overwrite
+         * the current list of documentIds or if the documentIds should be appended to the existing list
          * @return the StoredDataSourcing object corresponding to the patched entity
          */
         @Transactional
@@ -289,7 +290,7 @@ class DataSourcingManager
          * @return A list of StoredDataSourcing objects associated with the specified company ID, or null if none exist.
          */
         @Transactional(readOnly = true)
-        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing>? {
+        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing> {
             logger.info(
                 "Find all assigned data sourcing objects (either as document collector or data extractor for " +
                     "company with id: $companyId.",
