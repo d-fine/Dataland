@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
@@ -67,7 +68,12 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (#userId == authentication.userId or #userId == null))")
     fun createRequest(
         @Valid @RequestBody singleRequest: SingleRequest,
-        @RequestParam(required = false) userId: String? = null,
+        @RequestParam(required = false)
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        )
+        userId: String? = null,
     ): ResponseEntity<SingleRequestResponse>
 
     /**

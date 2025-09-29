@@ -15,8 +15,8 @@ import java.time.LocalDate
  */
 data class ReducedDataSourcing(
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.ID_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.ID_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
     )
     val id: String,
     @field:Schema(
