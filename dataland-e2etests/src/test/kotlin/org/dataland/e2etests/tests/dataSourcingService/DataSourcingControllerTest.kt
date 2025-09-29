@@ -399,11 +399,15 @@ class DataSourcingControllerTest {
     fun `verify that a nonexisting document ID can not be added to a data sourcing object`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistingDocumentId = "nonExistingDocumentId"
-        apiAccessor.dataSourcingControllerApi.patchDataSourcingDocuments(
-            storedDataSourcing.dataSourcingId,
-            setOf(nonExistingDocumentId),
-            true,
-        )
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.dataSourcingControllerApi.patchDataSourcingDocuments(
+                    storedDataSourcing.dataSourcingId,
+                    setOf(nonExistingDocumentId),
+                    true,
+                )
+            }
+        assertEquals("Client error : 404 ", exception.message)
     }
 
     @Test
