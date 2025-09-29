@@ -1,6 +1,41 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddMemberDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
+/**
+ * Helper to add a user by email
+ * @param email - Email of the user to add
+ */
+function addUser(email: string): void {
+  cy.get('.search-input').clear().type(email);
+  cy.get('[data-test="select-user-button"]').click();
+}
+
+/**
+ * Helper to remove the first user in the list
+ */
+function removeUser(): void {
+  cy.get('[data-test="remove-selected-user-button"]').first().click();
+}
+
+/**
+ * Helper to save changes
+ */
+function saveChanges(): void {
+  cy.get('[data-test="save-changes-button"]').click();
+}
+
+/**
+ * Selects the first suggested user in the Listbox and checks that the 'Selected' tag is visible.
+ */
+function selectFirstSuggestedUserAndCheckSuggestedTag(): void {
+  cy.get('[data-test="suggested-user-row"]')
+    .first()
+    .within(() => {
+      cy.get('[data-test="select-suggested-user-button"]').click();
+      cy.get('[data-test="selected-tag"]').should('be.visible');
+    });
+}
+
 describe('AddMemberDialog Component Tests', function () {
   const existingUsers = [{ userId: '1', email: 'existing@test.com', firstName: 'Existing', lastName: 'User' }];
 
@@ -76,41 +111,6 @@ describe('AddMemberDialog Component Tests', function () {
       },
     });
   });
-
-  /**
-   * Helper to add a user by email
-   * @param email - Email of the user to add
-   */
-  function addUser(email: string): void {
-    cy.get('.search-input').clear().type(email);
-    cy.get('[data-test="select-user-button"]').click();
-  }
-
-  /**
-   * Helper to remove the first user in the list
-   */
-  function removeUser(): void {
-    cy.get('[data-test="remove-selected-user-button"]').first().click();
-  }
-
-  /**
-   * Helper to save changes
-   */
-  function saveChanges(): void {
-    cy.get('[data-test="save-changes-button"]').click();
-  }
-
-  /**
-   * Selects the first suggested user in the Listbox and checks that the 'Selected' tag is visible.
-   */
-  function selectFirstSuggestedUserAndCheckSuggestedTag(): void {
-    cy.get('[data-test="suggested-user-row"]')
-      .first()
-      .within(() => {
-        cy.get('[data-test="select-suggested-user-button"]').click();
-        cy.get('[data-test="selected-tag"]').should('be.visible');
-      });
-  }
 
   describe('Initial State and Basic Functionality', function () {
     it('renders empty state and handles basic user operations', function () {
