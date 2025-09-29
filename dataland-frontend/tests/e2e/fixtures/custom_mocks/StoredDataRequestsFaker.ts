@@ -13,9 +13,8 @@ const DEFAULT_TIME_OFFSET = 500;
  * @returns The list of request
  */
 export function generateStoredDataRequests(): StoredDataRequest[] {
-  const storedDataRequests = [];
-  storedDataRequests.push(generateStoredDataRequest());
-  storedDataRequests.push(
+  return [
+    generateStoredDataRequest(),
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Open,
@@ -23,9 +22,7 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
       '2021',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
-    )
-  );
-  storedDataRequests.push(
+    ),
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
@@ -33,9 +30,7 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
       '2022',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
-    )
-  );
-  storedDataRequests.push(
+    ),
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
@@ -43,9 +38,7 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
       '2024',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
-    )
-  );
-  storedDataRequests.push(
+    ),
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
@@ -53,9 +46,8 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
       '1996',
       DataTypeEnum.EutaxonomyNonFinancials,
       '550e8400-e29b-11d4-a716-446655440000'
-    )
-  );
-  return storedDataRequests;
+    ),
+  ];
 }
 
 /**

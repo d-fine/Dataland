@@ -8,6 +8,16 @@ import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } f
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
+/**
+ * Waits for the 5 requests that happen when the document overview page is being mounted
+ */
+function waitForRequestsOnMounted(): void {
+  cy.wait('@fetchCompanyInfo');
+  cy.wait('@fetchCompanyOwnershipExistence');
+  cy.wait('@fetchValidateCompanyRole');
+  cy.wait('@fetchDocumentsFilteredCompanyId');
+}
+
 describe('Component test for the Document Overview', () => {
   let companyInformationForTest: CompanyInformation;
   let mockFetchedDocuments: DocumentMetaInfoResponse[];
@@ -49,16 +59,6 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments.filter((document) => document.documentCategory === 'AnnualReport'),
       times: 1,
     }).as('fetchDocumentsFilteredDocumentType');
-  }
-
-  /**
-   * Waits for the 5 requests that happen when the document overview page is being mounted
-   */
-  function waitForRequestsOnMounted(): void {
-    cy.wait('@fetchCompanyInfo');
-    cy.wait('@fetchCompanyOwnershipExistence');
-    cy.wait('@fetchValidateCompanyRole');
-    cy.wait('@fetchDocumentsFilteredCompanyId');
   }
 
   /**

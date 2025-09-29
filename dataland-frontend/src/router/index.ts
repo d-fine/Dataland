@@ -33,6 +33,7 @@ const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/component
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 
 const routes = [
   {
@@ -295,6 +296,14 @@ const routes = [
     },
   },
   {
+    path: '/platform-redirect',
+    name: 'Platform Redirect',
+    component: PlatformRedirect,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: '/:notFound(.*)',
     redirect: '/nocontent',
     meta: {
@@ -307,7 +316,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    window.scrollTo(0, 0);
+    globalThis.scrollTo(0, 0);
   },
 });
 

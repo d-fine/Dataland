@@ -46,10 +46,10 @@ function validateIntroSection(): void {
 function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
   expect(images?.length).to.eq(33);
-  images?.forEach((image, index) => {
+  for (const [index, image] of (images ?? []).entries()) {
     const filename = image.split('/').slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
-  });
+  }
 }
 
 /**

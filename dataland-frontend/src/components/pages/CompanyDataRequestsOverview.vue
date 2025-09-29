@@ -343,7 +343,7 @@ export default defineComponent({
         this.datasetsPerPage * this.currentPage,
         this.datasetsPerPage * (1 + this.currentPage)
       );
-      window.scrollTo({
+      globalThis.scrollTo({
         top: 0,
         behavior: 'smooth',
       });

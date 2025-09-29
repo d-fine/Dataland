@@ -96,7 +96,8 @@ function generateRowContents(): void {
   else if (isNonEligible(nuclearAndGasData.value)) listOfActivities = nuclearAndGasActivityNames.nonEligible;
   else throw new Error('Unsupported nuclearAndGasData type');
 
-  Object.keys(nuclearAndGasData.value).forEach((key, idx) => {
+  const keys = Object.keys(nuclearAndGasData.value);
+  for (const [idx, key] of keys.entries()) {
     if (isNonEligible(nuclearAndGasData.value)) {
       listOfRowContents.value.push({
         economicActivity: listOfActivities[idx].description,
@@ -113,6 +114,6 @@ function generateRowContents(): void {
         adaptation: formatPercentageNumberAsString(objective?.adaptation),
       });
     }
-  });
+  }
 }
 </script>

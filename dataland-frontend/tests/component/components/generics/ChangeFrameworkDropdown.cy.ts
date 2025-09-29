@@ -54,9 +54,9 @@ describe('Component test for ChangeFrameworkDropdown', () => {
   function countDropdownEntries(dataMetaInfoArray: Array<DataMetaInformation>): number {
     const uniqueDataTypes = new Set<string>();
 
-    dataMetaInfoArray.forEach((item) => {
+    for (const item of dataMetaInfoArray) {
       uniqueDataTypes.add(item.dataType);
-    });
+    }
     return uniqueDataTypes.size + 1;
   }
 

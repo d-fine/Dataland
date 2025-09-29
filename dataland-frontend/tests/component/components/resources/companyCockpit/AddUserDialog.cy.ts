@@ -1,6 +1,29 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import AddMemberDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
 
+/**
+ * Helper to add a user by email
+ * @param email - Email of the user to add
+ */
+function addUser(email: string): void {
+  cy.get('.search-input').clear().type(email);
+  cy.get('[data-test="select-user-button"]').click();
+}
+
+/**
+ * Helper to remove the first user in the list
+ */
+function removeUser(): void {
+  cy.get('[data-test="remove-user-button"]').first().click();
+}
+
+/**
+ * Helper to save changes
+ */
+function saveChanges(): void {
+  cy.get('[data-test="save-changes-button"]').click();
+}
+
 describe('AddMemberDialog Component Tests', function () {
   const existingUsers = [{ userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' }];
 
@@ -69,29 +92,6 @@ describe('AddMemberDialog Component Tests', function () {
     cy.intercept('POST', '**/company-role-assignments/*/*/*', { statusCode: 200 }).as('assignRole');
   });
 
-  /**
-   * Helper to add a user by email
-   * @param email - Email of the user to add
-   */
-  function addUser(email: string): void {
-    cy.get('.search-input').clear().type(email);
-    cy.get('[data-test="select-user-button"]').click();
-  }
-
-  /**
-   * Helper to remove the first user in the list
-   */
-  function removeUser(): void {
-    cy.get('[data-test="remove-user-button"]').first().click();
-  }
-
-  /**
-   * Helper to save changes
-   */
-  function saveChanges(): void {
-    cy.get('[data-test="save-changes-button"]').click();
-  }
-
   describe('Initial State and Basic Functionality', function () {
     it('renders empty state and handles basic user operations', function () {
       cy.contains('No users selected').should('be.visible');
@@ -110,7 +110,9 @@ describe('AddMemberDialog Component Tests', function () {
     it('handles multiple users and clears input after addition', function () {
       const emails = ['john@doe.com', 'jane@doe.com'];
 
-      emails.forEach(addUser);
+      for (const email of emails) {
+        addUser(email);
+      }
 
       cy.contains('John Doe').should('be.visible');
       cy.contains('Jane Doe').should('be.visible');
@@ -153,12 +155,12 @@ describe('AddMemberDialog Component Tests', function () {
       { email: 'emptynames@test.com', expected: 'E', description: 'email when names are empty strings' },
     ];
 
-    initialTests.forEach(({ email, expected, description }) => {
+    for (const { email, expected, description } of initialTests) {
       it(`generates initials from ${description}`, function () {
         addUser(email);
         cy.get('.user-row').find('[class*="p-tag"]').first().should('contain', expected);
       });
-    });
+    }
   });
 
   describe('Save Operations and API Integration', function () {
