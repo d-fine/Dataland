@@ -52,14 +52,14 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(value = ["/{id}"], produces = ["application/json"])
+    @GetMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingById(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
-        @PathVariable id: String,
+        @PathVariable dataSourcingId: String,
     ): ResponseEntity<StoredDataSourcing>
 
     /**
@@ -161,7 +161,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(value = ["/{id}/history"], produces = ["application/json"])
+    @GetMapping(value = ["/{dataSourcingId}/history"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingHistoryById(
         @Parameter(
@@ -169,7 +169,7 @@ interface DataSourcingApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
-        id: String,
+        dataSourcingId: String,
     ): ResponseEntity<List<DataSourcingWithoutReferences>>
 
     /**
@@ -194,7 +194,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping(value = ["/{id}/state"], produces = ["application/json"])
+    @PatchMapping(value = ["/{dataSourcingId}/state"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingState(
         @Parameter(
@@ -202,7 +202,7 @@ interface DataSourcingApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
-        id: String,
+        dataSourcingId: String,
         @Valid @RequestParam state: DataSourcingState,
     ): ResponseEntity<ReducedDataSourcing>
 
@@ -224,7 +224,7 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
         ],
     )
-    @PatchMapping(value = ["/{id}"], produces = ["application/json"])
+    @PatchMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDocumentCollectorAndDataExtractor(
         @Parameter(
@@ -232,7 +232,7 @@ interface DataSourcingApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
-        id: String,
+        dataSourcingId: String,
         @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
@@ -281,7 +281,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping(value = ["/{id}/documents"], consumes = ["application/json"], produces = ["application/json"])
+    @PatchMapping(value = ["/{dataSourcingId}/documents"], consumes = ["application/json"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingDocuments(
         @Parameter(
@@ -289,7 +289,7 @@ interface DataSourcingApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
-        id: String,
+        dataSourcingId: String,
         @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_PATCH_DESCRIPTION,
@@ -327,7 +327,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping(value = ["/{id}/document-sourcing-attempt"], produces = ["application/json"])
+    @PatchMapping(value = ["/{dataSourcingId}/document-sourcing-attempt"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDateOfNextDocumentSourcingAttempt(
         @Parameter(
@@ -335,7 +335,7 @@ interface DataSourcingApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
-        id: String,
+        dataSourcingId: String,
         @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATE_OF_NEXT_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,

@@ -96,7 +96,7 @@
         ]
       }
     },
-    "/{id}": {
+    "/{dataSourcingId}": {
       "get": {
         "tags": [
           "data-sourcing-controller"
@@ -106,7 +106,7 @@
         "operationId": "getDataSourcingById",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,
@@ -172,7 +172,7 @@
         "operationId": "patchDocumentCollectorAndDataExtractor",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,
@@ -264,7 +264,7 @@
         ]
       }
     },
-    "/{id}/state": {
+    "/{dataSourcingId}/state": {
       "patch": {
         "tags": [
           "data-sourcing-controller"
@@ -274,7 +274,7 @@
         "operationId": "patchDataSourcingState",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,
@@ -340,7 +340,7 @@
         ]
       }
     },
-    "/{id}/documents": {
+    "/{dataSourcingId}/documents": {
       "patch": {
         "tags": [
           "data-sourcing-controller"
@@ -350,7 +350,7 @@
         "operationId": "patchDataSourcingDocuments",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,
@@ -433,7 +433,7 @@
         ]
       }
     },
-    "/{id}/document-sourcing-attempt": {
+    "/{dataSourcingId}/document-sourcing-attempt": {
       "patch": {
         "tags": [
           "data-sourcing-controller"
@@ -443,7 +443,7 @@
         "operationId": "patchDateOfNextDocumentSourcingAttempt",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,
@@ -679,7 +679,7 @@
         ]
       }
     },
-    "/{id}/history": {
+    "/{dataSourcingId}/history": {
       "get": {
         "tags": [
           "data-sourcing-controller"
@@ -689,7 +689,7 @@
         "operationId": "getDataSourcingHistoryById",
         "parameters": [
           {
-            "name": "id",
+            "name": "dataSourcingId",
             "in": "path",
             "description": "Dataland ID of the DataSourcing object.",
             "required": true,

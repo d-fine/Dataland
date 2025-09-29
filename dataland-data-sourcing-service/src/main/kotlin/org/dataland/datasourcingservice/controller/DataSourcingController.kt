@@ -19,8 +19,8 @@ import java.util.UUID
 class DataSourcingController(
     @Autowired private val dataSourcingManager: DataSourcingManager,
 ) : DataSourcingApi {
-    override fun getDataSourcingById(id: String): ResponseEntity<StoredDataSourcing> =
-        ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(id)))
+    override fun getDataSourcingById(dataSourcingId: String): ResponseEntity<StoredDataSourcing> =
+        ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(dataSourcingId)))
 
     override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
         ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(providerCompanyId)))
@@ -38,23 +38,25 @@ class DataSourcingController(
             ),
         )
 
-    override fun getDataSourcingHistoryById(id: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
-        ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(id))
+    override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
+        ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId))
 
     override fun patchDataSourcingState(
-        id: String,
+        dataSourcingId: String,
         state: DataSourcingState,
-    ): ResponseEntity<ReducedDataSourcing> = ResponseEntity.ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(id), state))
+    ): ResponseEntity<ReducedDataSourcing> =
+        ResponseEntity
+            .ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(dataSourcingId), state))
 
     override fun patchDocumentCollectorAndDataExtractor(
-        id: String,
+        dataSourcingId: String,
         documentCollector: String?,
         dataExtractor: String?,
         adminComment: String?,
     ): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(
             dataSourcingManager.patchDocumentCollectorAndDataExtractor(
-                UUID.fromString(id),
+                UUID.fromString(dataSourcingId),
                 documentCollector,
                 dataExtractor,
                 adminComment,
@@ -62,22 +64,25 @@ class DataSourcingController(
         )
 
     override fun patchDataSourcingDocuments(
-        id: String,
+        dataSourcingId: String,
         documentIds: Set<String>,
         appendDocuments: Boolean,
     ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity.ok(
             dataSourcingManager.patchDataSourcingDocument(
-                UUID.fromString(id),
+                UUID.fromString(dataSourcingId),
                 documentIds,
                 appendDocuments,
             ),
         )
 
     override fun patchDateOfNextDocumentSourcingAttempt(
-        id: String,
+        dataSourcingId: String,
         dateOfNextDocumentSourcingAttempt: LocalDate,
     ): ResponseEntity<ReducedDataSourcing> =
         ResponseEntity
-            .ok(dataSourcingManager.patchDateOfNextDocumentSourcingAttempt(UUID.fromString(id), dateOfNextDocumentSourcingAttempt))
+            .ok(
+                dataSourcingManager
+                    .patchDateOfNextDocumentSourcingAttempt(UUID.fromString(dataSourcingId), dateOfNextDocumentSourcingAttempt),
+            )
 }
