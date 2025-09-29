@@ -217,6 +217,10 @@ interface RequestApi {
             name = "adminComment",
             required = false,
         )
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
+        )
         adminComment: String? = null,
     ): ResponseEntity<StoredRequest>
 

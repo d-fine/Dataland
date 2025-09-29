@@ -636,10 +636,12 @@
           {
             "name": "adminComment",
             "in": "query",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           }
         ],
         "responses": {
