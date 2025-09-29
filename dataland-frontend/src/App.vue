@@ -14,7 +14,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
-import type Keycloak from 'keycloak-js';
+import Keycloak from 'keycloak-js';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
   SessionDialogMode,
@@ -22,6 +22,7 @@ import {
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from '@/utils/SessionTimeoutUtils';
 import SessionDialog from '@/components/general/SessionDialog.vue';
+import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
@@ -33,13 +34,11 @@ import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { useDialog } from 'primevue/usedialog';
-// eslint-disable-next-line no-restricted-imports
-import { minimalKeycloakMock } from '../tests/component/testUtils/Keycloak';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
-  windowWidth.value = window.innerWidth;
+  windowWidth.value = globalThis.innerWidth;
 };
 export default defineComponent({
   name: 'app',
@@ -104,7 +103,7 @@ export default defineComponent({
       apiClientProvider: computed(() => {
         return this.apiClientProvider;
       }),
-      useMobileView: computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
+      useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
     };
   },
 
@@ -113,10 +112,10 @@ export default defineComponent({
   },
 
   mounted() {
-    window.addEventListener('resize', storeWindowWidth);
+    globalThis.addEventListener('resize', storeWindowWidth);
   },
   unmounted() {
-    window.removeEventListener('resize', storeWindowWidth);
+    globalThis.removeEventListener('resize', storeWindowWidth);
   },
 
   methods: {
@@ -138,17 +137,12 @@ export default defineComponent({
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {
-      //const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
-      const keycloak = minimalKeycloakMock({
-        userId: 'dummyUser',
-        roles: ['ROLE_USER', 'ROLE_REVIEWER', 'ROLE_UPLOADER', 'ROLE_ADMIN'],
-        authenticated: true,
-      });
+      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({
           onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: window.location.origin + '/static/silent-check-sso.html',
+          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
           pkceMethod: 'S256',
         })
         .then((authenticated) => {
@@ -172,7 +166,7 @@ export default defineComponent({
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+        void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
       }
     },
 
@@ -181,9 +175,10 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      void getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
-        (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
+    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
+        resolvedKeycloakPromise,
+        apiClientProvider
       );
     },
 
