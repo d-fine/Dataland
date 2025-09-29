@@ -119,7 +119,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(value = ["/"], produces = ["application/json"])
+    @GetMapping(produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingByDimensions(
         @Parameter(
