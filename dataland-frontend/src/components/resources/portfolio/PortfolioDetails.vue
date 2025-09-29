@@ -46,9 +46,10 @@
       tableStyle="min-width: 50rem"
       sortField="companyName"
       :sortOrder="1"
-      lazy
-      paginator
+      :paginator="true"
+      :lazy="true"
       :rows="20"
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
     >
       <template #empty>
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
