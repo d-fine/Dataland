@@ -102,6 +102,14 @@ class DataSourcingControllerTest {
         }
     }
 
+    private fun createNewCompanyAndRequestAndReturnTheirIds(): Pair<String, String> {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val companyId = createNewCompanyAndReturnId()
+
+        return Pair(companyId, createRequest(companyId))
+    }
+
     /**
      * Initialize a data sourcing object by creating a request and setting its state to 'Processing'.
      *
@@ -109,12 +117,23 @@ class DataSourcingControllerTest {
      */
     @BeforeEach
     fun initializeDataSourcing() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
+        val companyId = idPair.first
+        val requestId = idPair.second
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
+        storedDataSourcing =
+            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
+                companyId,
+                testDataType,
+                testReportingPeriod,
+            )
+    }
 
-        val companyId =
-            createNewCompanyAndReturnId()
-
-        val requestId = createRequest(companyId)
+    @Test
+    fun `verify that data sourcing objects behave as they should during the early stages of their lifecycle`() {
+        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
+        val companyId = idPair.first
+        val requestId = idPair.second
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
             assertForbiddenException {
@@ -133,16 +152,18 @@ class DataSourcingControllerTest {
                 testReportingPeriod,
             )
         }
+
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
-        storedDataSourcing =
+
+        val dataSourcing =
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
                 companyId,
                 testDataType,
                 testReportingPeriod,
             )
 
-        assertEquals(DataSourcingState.Initialized, storedDataSourcing.state)
-        assertEquals(setOf(requestId), storedDataSourcing.associatedRequestIds)
+        assertEquals(DataSourcingState.Initialized, dataSourcing.state)
+        assertEquals(setOf(requestId), dataSourcing.associatedRequestIds)
     }
 
     @Test
@@ -187,13 +208,11 @@ class DataSourcingControllerTest {
     @Test
     fun `accept a dataset and verify that the state of the corresponding data sourcing object is set to Answered`() {
         val dataSetId = uploadDummyDataForDataSourcingObject()
-
-        ApiAwait.waitForData { apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted) }
-        ApiAwait.waitForData(
-            timeoutInSeconds = 10,
-            supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id).state },
-            condition = { it == DataSourcingState.Answered },
-        )
+        sleep(5000)
+        apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted)
+        sleep(10000)
+        val dataSourcing = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.id)
+        assertEquals(DataSourcingState.Answered, dataSourcing.state)
     }
 
     @Test
