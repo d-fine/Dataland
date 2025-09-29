@@ -32,10 +32,12 @@
           {
             "name": "userId",
             "in": "query",
+            "description": "Dataland company ID of the document collector or data extractor.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "requestBody": {
@@ -63,7 +65,7 @@
             "description": "The request contains invalid data or is a duplicate."
           },
           "403": {
-            "description": "You were trying to impersonate another Dataland user. Only admins the right to do so. To make a request for yourself, leave the userId parameter empty."
+            "description": "You were trying to impersonate another Dataland user. Only admins have the right to do so. To make a request for yourself, leave the userId parameter empty."
           },
           "default": {
             "description": "An error occurred",
@@ -108,12 +110,12 @@
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           }
         ],
         "responses": {
@@ -167,19 +169,19 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch provider and/or admin comment. ",
+        "summary": "Patch provider and/or admin comment",
         "description": "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID. Null values are ignored.",
         "operationId": "patchDocumentCollectorAndDataExtractor",
         "parameters": [
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           {
             "name": "documentCollector",
@@ -233,6 +235,9 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland Admins to patch document collectors and data extractors."
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -276,12 +281,12 @@
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           {
             "name": "state",
@@ -352,12 +357,12 @@
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           {
             "name": "appendDocuments",
@@ -445,12 +450,12 @@
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           {
             "name": "dateOfNextDocumentSourcingAttempt",
@@ -533,18 +538,22 @@
           {
             "name": "requestState",
             "in": "query",
+            "description": "The current state of the request.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/RequestState"
-            }
+            },
+            "example": "Open"
           },
           {
             "name": "adminComment",
             "in": "query",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           }
         ],
         "responses": {
@@ -617,10 +626,12 @@
           {
             "name": "requestPriority",
             "in": "query",
+            "description": "The priority of the data request.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/RequestPriority"
-            }
+            },
+            "example": "High"
           },
           {
             "name": "adminComment",
@@ -691,12 +702,12 @@
           {
             "name": "dataSourcingId",
             "in": "path",
-            "description": "Dataland ID of the DataSourcing object.",
+            "description": "The unique identifier of the data sourcing object.",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "f44ae7b4-41d0-4969-b940-ce0fdee4e128"
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           }
         ],
         "responses": {
@@ -828,11 +839,12 @@
           {
             "name": "dataRequestId",
             "in": "path",
-            "description": "ID of the Request object.",
+            "description": "The unique identifier of the data request on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         ],
         "responses": {
@@ -892,7 +904,7 @@
           "data-sourcing-controller"
         ],
         "summary": "Get DataSourcing by company ID of the provider (document collector and/or data extractor)",
-        "description": "Retrieve DataSourcing objects assigned to your company.",
+        "description": "Get DataSourcing by company ID of the assigned external service provider (document collector and/or data extractor).",
         "operationId": "getDataSourcingForCompanyId",
         "parameters": [
           {
@@ -1134,7 +1146,7 @@
           "data-sourcing-controller"
         ],
         "summary": "Get DataSourcing by parameters",
-        "description": "Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.",
+        "description": "Retrieve a DataSourcing object by reporting period, dataType and companyId",
         "operationId": "getDataSourcingByDimensions",
         "parameters": [
           {
