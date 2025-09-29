@@ -242,6 +242,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
+        { scrollBehavior: false },
         () => {
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
@@ -250,7 +251,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
-          cy.get('#framework-filter').click();
+          cy.get('#framework-filter').should('be.visible').click();
           cy.get('div.p-multiselect-overlay')
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
