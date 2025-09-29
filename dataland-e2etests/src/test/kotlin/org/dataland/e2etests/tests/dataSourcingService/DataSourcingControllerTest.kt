@@ -461,18 +461,6 @@ class DataSourcingControllerTest {
         }
     }
 
-    /* We do not think that we want to prohibit adding past dates in case the data provider forgot entering one.
-    @Test
-    fun `verify that data sourcing attempts cannot be specified in the past`() {
-        assertThrows<ClientException> {
-            apiAccessor.dataSourcingControllerApi.patchDateDocumentSourcingAttempt(
-                storedDataSourcing.id,
-                LocalDate.now().minusDays(1),
-            )
-        }
-    }
-     */
-
     private fun createNewCompanyAndReturnId(): String =
         GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
