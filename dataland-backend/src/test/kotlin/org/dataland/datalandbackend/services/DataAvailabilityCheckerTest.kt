@@ -96,7 +96,7 @@ class DataAvailabilityCheckerTest {
         dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService)
         storedCompanyRepository.saveAndFlush(dummyCompany)
         whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
-            listOf(SimpleFrameworkSpecification(IdWithRef(DATA_TYPE, "dummy"), "Test Framework"))
+            listOf(SimpleFrameworkSpecification(IdWithRef(DATA_TYPE, "dummy"), "Test Framework")),
         )
     }
 

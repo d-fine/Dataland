@@ -90,7 +90,7 @@ class AssembledDataManagerTest {
             dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
             datasetDatapointRepository, spyDataPointManager,
             referencedReportsUtilities,
-            companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler
+            companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler,
         )
 
     private val correlationId = "test-correlation-id"

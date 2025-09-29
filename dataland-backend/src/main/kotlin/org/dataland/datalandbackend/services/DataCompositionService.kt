@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -18,6 +17,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.set
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 
 /**
  * Service to determine the category of a given data type string, relevant constituents of datasets and similar tasks
@@ -26,8 +26,6 @@ import kotlin.collections.set
 class DataCompositionService
     @Autowired
     constructor(
-        // To do include object mapper via import not autowired
-        private val objectMapper: ObjectMapper,
         private val specificationControllerApi: SpecificationControllerApi,
     ) {
         // Variables to store known classifications since specifications do not change during runtime
@@ -51,7 +49,6 @@ class DataCompositionService
             initializeSpecificationCache()
         }
 
-        // To Do: move this into a backend utils class and look into making the start up dependent
         private fun waitUntilSpecificationServiceReady() {
             Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
             for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
