@@ -48,8 +48,7 @@
       :sortOrder="1"
       lazy
       paginator
-      :rows="50"
-      :rowsPerPageOptions="[20, 50, 100]"
+      :rows="20"
     >
       <template #empty>
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
