@@ -30,12 +30,10 @@ class RequestControllerTest {
         dummyRequest = SingleRequest(companyId, "sfdr", "2023", "dummy request")
     }
 
-    private fun postRequestForUserAndVerifyRetrieval(
-        request: SingleRequest,
-        user: TechnicalUser,
-    ) {
+    private fun postRequestForUserAndVerifyRetrieval(request: SingleRequest) {
+        val user = TechnicalUser.Reader
         val timeBeforeUpload = Instant.now().toEpochMilli()
-        val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(request, user.technicalUserId).id
+        val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(request, user.technicalUserId).requestId
 
         val storedRequest =
             GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
@@ -56,14 +54,14 @@ class RequestControllerTest {
     @Test
     fun `post a request and verify that it can be retrieved`() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
-            postRequestForUserAndVerifyRetrieval(dummyRequest, TechnicalUser.Reader)
+            postRequestForUserAndVerifyRetrieval(dummyRequest)
         }
     }
 
     @Test
     fun `post a request in the name of another user as admin and verify that it can be retrieved`() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            postRequestForUserAndVerifyRetrieval(dummyRequest, TechnicalUser.Reader)
+            postRequestForUserAndVerifyRetrieval(dummyRequest)
         }
     }
 
@@ -75,7 +73,7 @@ class RequestControllerTest {
             assertThrows<ClientException> {
                 apiAccessor.dataSourcingRequestControllerApi.createRequest(invalidRequest)
             }
-        assertEquals("Client error : 404 ", exception.message)
+        assertEquals(404, exception.statusCode)
     }
 
     @Test
@@ -86,14 +84,14 @@ class RequestControllerTest {
                 apiAccessor.dataSourcingRequestControllerApi
                     .createRequest(dummyRequest, TechnicalUser.Reviewer.technicalUserId)
             }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(403, exception.statusCode)
     }
 
     @Test
     fun `patch the state of a request and verify that the changes are saved`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
+        val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
         val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
         Thread.sleep(1)
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(initialRequest.id, RequestState.Processing)
@@ -115,7 +113,7 @@ class RequestControllerTest {
     fun `patch the priority of a request and verify that the changes are saved`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
+        val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
         val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
         val comment = "Changing priority to urgent"
         apiAccessor.dataSourcingRequestControllerApi.patchRequestPriority(
@@ -133,7 +131,7 @@ class RequestControllerTest {
     @Test
     fun `verify that historization works for data requests`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).id
+        val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
 
         lateinit var requestHistory: List<StoredRequest>
 
