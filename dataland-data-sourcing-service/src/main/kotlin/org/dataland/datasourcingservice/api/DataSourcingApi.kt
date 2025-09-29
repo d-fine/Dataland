@@ -102,7 +102,7 @@ interface DataSourcingApi {
      */
     @Operation(
         summary = "Get DataSourcing by parameters",
-        description = "Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.",
+        description = "Retrieve a DataSourcing object by reporting period, dataType and companyId",
     )
     @ApiResponses(
         value = [
@@ -213,7 +213,7 @@ interface DataSourcingApi {
      * Patch providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID.
      */
     @Operation(
-        summary = "Patch provider and/or admin comment. ",
+        summary = "Patch provider and/or admin comment",
         description =
             "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object " +
                 "specified by ID. Null values are ignored.",
