@@ -169,7 +169,7 @@ interface RequestApi {
     ): ResponseEntity<StoredRequest>
 
     /**
-     * A method to patch the request state of a data request
+     * A method to patch the request priority of a data request
      *
      * @param dataRequestId The request id of the data request to patch
      * @param requestPriority The new request priority after patch
