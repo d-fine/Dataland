@@ -200,6 +200,7 @@ function safeLogout(): void {
   cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
   cy.get('[data-test="user-profile-toggle"]').click();
   cy.get('a:contains("LOG OUT")').click();
+  cy.wait(Cypress.env('short_timeout_in_ms') as number);
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("[data-test='login-dataland-button']").should('exist');
 }
