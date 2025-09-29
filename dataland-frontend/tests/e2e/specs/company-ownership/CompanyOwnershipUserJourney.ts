@@ -29,7 +29,7 @@ describeIf(
       });
     }
 
-    /*
+    /**
      * Upload a company and set reader as companyOwner
      */
     before(() => {
