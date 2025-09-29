@@ -34,7 +34,7 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
 
         val entity =
             DataSourcingEntity(
-                id = dataSourcingEntityId,
+                dataSourcingId = dataSourcingEntityId,
                 companyId = companyId,
                 reportingPeriod = "2023",
                 dataType = "sfdr",

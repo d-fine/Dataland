@@ -68,7 +68,7 @@ class RequestEntity(
             lastModifiedDate = lastModifiedDate,
             requestPriority = requestPriority,
             state = state,
-            dataSourcingEntityId = dataSourcingEntity?.id.toString(),
+            dataSourcingEntityId = dataSourcingEntity?.dataSourcingId.toString(),
         )
 
     constructor(

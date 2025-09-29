@@ -98,7 +98,7 @@ interface DataSourcingApi {
     ): ResponseEntity<List<ReducedDataSourcing>>
 
     /**
-     * Retrieve a DataSourcing object by reporting period, dataType, companyId, and optionally state.
+     * Retrieve a DataSourcing object by reporting period, dataType and companyId.
      */
     @Operation(
         summary = "Get DataSourcing by parameters",
@@ -224,12 +224,12 @@ interface DataSourcingApi {
                 responseCode = "200",
                 description = "Successfully patched providers and/or admin comment.",
             ),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
             ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland Admins to patch document collectors and data extractors.",
                 content = [Content(schema = Schema())],
             ),
+            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])

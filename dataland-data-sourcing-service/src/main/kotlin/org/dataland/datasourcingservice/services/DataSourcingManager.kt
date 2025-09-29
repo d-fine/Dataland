@@ -245,7 +245,7 @@ class DataSourcingManager
                     dataType = requestEntity.dataType,
                 )
             logger.info(
-                "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.id}.",
+                "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
             )
             dataSourcingEntity.state = DataSourcingState.Initialized
             dataSourcingEntity.addAssociatedRequest(requestEntity)
@@ -271,7 +271,7 @@ class DataSourcingManager
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
                 "Patch documentCollector: $documentCollector, data extractor: $dataExtractor " +
-                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.id}.",
+                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
