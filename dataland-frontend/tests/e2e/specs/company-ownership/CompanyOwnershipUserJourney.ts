@@ -14,7 +14,9 @@ function checkFrameworks(): void {
   for (const frameworkName of FRAMEWORKS_WITH_UPLOAD_FORM) {
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     cy.get(frameworkSummaryPanelSelector).should('exist');
-    cy.get(`[data-test="${frameworkName}-provide-data-button"]`).should('exist');
+    cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
+      timeout: Cypress.env('long_timeout_in_ms') as number,
+    }).should('exist');
   }
 }
 

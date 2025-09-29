@@ -84,11 +84,7 @@ describeIf(
      */
     function checkThatFilesWithSameContentDontGetReuploaded(companyId: string, templateDataId: string): void {
       const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
-      cy.intercept({
-        method: 'GET',
-        url: '**/api/data/**',
-        times: 1,
-      }).as('getDataToPrefillForm');
+      cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/*').as('getDataToPrefillForm');
       cy.visitAndCheckAppMount(
         `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
       );
