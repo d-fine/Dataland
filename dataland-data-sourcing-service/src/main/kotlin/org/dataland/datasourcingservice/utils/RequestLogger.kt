@@ -13,7 +13,7 @@ class RequestLogger {
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleRequestManager::class.java)
 
     /**
-     * Logs an appropriate message when a single data request by dimensions has happened.
+     * Logs an appropriate message when a single data request is created
      */
     fun logMessageForReceivingSingleDataRequest(
         companyId: UUID,
@@ -28,9 +28,9 @@ class RequestLogger {
     }
 
     /**
-     * Logs an appropriate message when a single data request by id has happened.
+     * Logs an appropriate message when a request is retrieved by its id
      */
-    fun logMessageForGettingSingleDataRequest(
+    fun logMessageForGettingDataRequest(
         dataRequestId: UUID,
         correlationId: UUID,
     ) {

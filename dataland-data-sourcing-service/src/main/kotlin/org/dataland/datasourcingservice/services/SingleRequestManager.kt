@@ -142,7 +142,7 @@ class SingleRequestManager
             requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
                 ?: throw RequestNotFoundApiException(
                     dataRequestId,
-                ).also { requestLogger.logMessageForGettingSingleDataRequest(dataRequestId, UUID.randomUUID()) }
+                ).also { requestLogger.logMessageForGettingDataRequest(dataRequestId, UUID.randomUUID()) }
 
         /**
          * Updates the state of a data request identified by its ID.
