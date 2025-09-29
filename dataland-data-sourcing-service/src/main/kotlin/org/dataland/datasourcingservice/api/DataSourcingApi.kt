@@ -225,6 +225,11 @@ interface DataSourcingApi {
                 description = "Successfully patched providers and/or admin comment.",
             ),
             ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland Admins to patch document collectors and data extractors.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
