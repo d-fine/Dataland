@@ -168,7 +168,7 @@ class SingleDataRequestManagerTest {
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not applied`() {
-        TestUtils.mockSecurityContext("premium.requester@example.com", premiumUserId, DatalandRealmRole.ROLE_PREMIUM_USER)
+        TestUtils.mockSecurityContext("data.premium-user@example.com", premiumUserId, DatalandRealmRole.ROLE_PREMIUM_USER)
         for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }

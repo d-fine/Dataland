@@ -24,11 +24,11 @@ import java.util.Base64
 @Service("KeycloakTokenManager")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakTokenManager(
-    @param:Autowired private val objectMapper: ObjectMapper,
-    @param:Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
-    @param:Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
-    @param:Value("\${dataland.keycloak.client-id}") private val clientId: String,
-    @param:Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
+    @Autowired private val objectMapper: ObjectMapper,
+    @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
+    @Value("\${dataland.keycloak.client-id}") private val clientId: String,
+    @Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private data class KeycloakAccessTokenResponse(
