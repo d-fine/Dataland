@@ -27,7 +27,6 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
-    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.moshi.kotlin)
     implementation(libs.springdoc.openapi.ui)
@@ -53,6 +52,7 @@ dependencies {
     implementation(libs.flyway)
     implementation(libs.flyway.core)
     implementation("org.springframework.data:spring-data-envers")
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
 }
