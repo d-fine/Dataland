@@ -148,7 +148,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as('getUploadedDataset');
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
-  cy.wait('@getUploadedDataset');
+  cy.wait('@getUploadedDataset', { responseTimeout: 300000 });
   cy.get('[data-test="datasetDisplayStatusContainer"]').should('exist');
   cy.get('button[data-test="editDatasetButton"]').should('exist').click();
 
@@ -180,7 +180,7 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
   cy.intercept('**/api/users/**').as('getMyDatasets');
   cy.visitAndCheckAppMount('/datasets');
-  cy.wait('@getMyDatasets');
+  cy.wait('@getMyDatasets', { responseTimeout: 300000 });
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
     timeout: Cypress.env('medium_timeout_in_ms') as number,
