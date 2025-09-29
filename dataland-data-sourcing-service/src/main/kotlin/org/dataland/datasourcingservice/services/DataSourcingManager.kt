@@ -292,7 +292,7 @@ class DataSourcingManager
         @Transactional(readOnly = true)
         fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing> {
             logger.info(
-                "Find all assigned data sourcing objects (either as document collector or data extractor for " +
+                "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
             val dataSourcingEntities =
