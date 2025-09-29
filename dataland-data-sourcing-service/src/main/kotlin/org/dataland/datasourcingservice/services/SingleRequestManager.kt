@@ -214,19 +214,19 @@ class SingleRequestManager
 
         /**
          * Retrieves the history of revisions for a specific data request identified by its ID.
-         * @param id The UUID string of the data request whose history is to be retrieved.
+         * @param requestId The UUID string of the data request whose history is to be retrieved.
          * @return A list of StoredRequest objects representing the revision history of the specified data request.
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveRequestHistory(id: String): List<StoredRequest> {
+        fun retrieveRequestHistory(requestId: String): List<StoredRequest> {
             val uuid =
                 try {
-                    UUID.fromString(id)
+                    UUID.fromString(requestId)
                 } catch (_: IllegalArgumentException) {
                     throw InvalidInputApiException(
-                        "Invalid UUID format for id: $id",
-                        message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
+                        "Invalid UUID format for requestId: $requestId",
+                        message = "Invalid UUID format for requestId: $requestId, please provide a valid UUID string.",
                     )
                 }
             return dataRevisionRepository

@@ -225,6 +225,9 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland Admins to patch document collectors and data extractors."
+          },
           "404": {
             "description": "DataSourcing object not found.",
             "content": {
@@ -234,9 +237,6 @@
                 }
               }
             }
-          },
-          "403": {
-            "description": "Only Dataland Admins to patch document collectors and data extractors."
           },
           "default": {
             "description": "An error occurred",

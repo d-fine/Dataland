@@ -16,28 +16,24 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 data class SingleRequest(
     @field:JsonProperty(required = true)
     @field:Schema(
-        type = "string",
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE,
     )
     val companyIdentifier: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        type = "string",
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val dataType: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        type = "string",
         description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String,
     @field:JsonProperty(required = false)
     @field:Schema(
-        type = "string",
         description = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
     )
