@@ -18,6 +18,14 @@
       style="margin: 0 1rem"
     />
     <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
+    <PrimeButton
+      v-if="allowedToUploadDocuments"
+      label="UPLOAD DOCUMENT"
+      data-test="document-upload-button"
+      icon="pi pi-upload"
+      iconPos="left"
+      :pt="{ root: { style: 'float: right;' } }"
+    />
   </div>
 
   <TheContent class="flex flex-col p-3">
@@ -113,13 +121,17 @@ import {
 import type Keycloak from 'keycloak-js';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
-import { inject, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
 import PrimeButton from 'primevue/button';
 import {
   createNewPercentCompletedRef,
   type DocumentDownloadInfo,
   downloadDocument,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { CompanyRole } from '@clients/communitymanager';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
 
 const props = defineProps<{
   companyId: string;
@@ -135,7 +147,7 @@ const firstRowIndex = ref(0);
 const currentPage = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
@@ -148,6 +160,24 @@ watch(selectedDocumentType, () => {
 
 const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
 const activeDownloadId = ref<string | null>(null);
+
+const isGlobalAdmin = ref(false);
+const isUserCompanyOwnerOrUploader = ref(false);
+
+const allowedToUploadDocuments = computed(() => {
+  return isGlobalAdmin.value || isUserCompanyOwnerOrUploader.value;
+});
+
+/**
+ * Checks if the user is allowed to upload documents
+ */
+async function checkIfUserIsAllowedToUploadDocuments(): Promise<void> {
+  isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+  const companyAssignment = assignments.find((assignment) => assignment.companyId === props.companyId);
+  const userRole = companyAssignment ? companyAssignment.companyRole : null;
+  isUserCompanyOwnerOrUploader.value = userRole === CompanyRole.CompanyOwner || userRole === CompanyRole.DataUploader;
+}
 
 /**
  * Get list of documents using the filter for document category
@@ -279,7 +309,8 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await checkIfUserIsAllowedToUploadDocuments();
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 </script>
