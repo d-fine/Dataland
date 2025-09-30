@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -33,7 +32,6 @@ class PortfolioUpdateListenerService
     @Autowired
     constructor(
         private val requestManager: BulkDataRequestManager,
-        private val objectMapper: ObjectMapper,
     ) {
         /**
          * Creates Bulk Data Requests from Portfolio Update Payloads.
@@ -65,7 +63,7 @@ class PortfolioUpdateListenerService
                     RoutingKeyNames.PORTFOLIO_UPDATE -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.PORTFOLIO_UPDATE)
                         val messagePayload =
-                            MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload, objectMapper)
+                            MessageQueueUtils.readMessagePayload<PortfolioUpdatePayload>(payload)
 
                         setDatalandInternalAuthentication(
                             messagePayload.userId,

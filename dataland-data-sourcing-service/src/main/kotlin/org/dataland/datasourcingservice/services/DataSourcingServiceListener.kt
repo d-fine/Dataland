@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -35,7 +34,6 @@ class DataSourcingServiceListener
     constructor(
         private val metaDataControllerApi: MetaDataControllerApi,
         private val dataSourcingManager: DataSourcingManager,
-        private val objectMapper: ObjectMapper,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -66,7 +64,7 @@ class DataSourcingServiceListener
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-            val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+            val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
             val dataId = dataUploadedPayload.dataId
             val updatedQaStatus = dataUploadedPayload.updatedQaStatus
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
