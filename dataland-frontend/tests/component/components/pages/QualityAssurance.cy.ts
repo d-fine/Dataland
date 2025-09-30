@@ -25,6 +25,53 @@ function clickOnReportingPeriod(reportingPeriod: string): void {
   cy.get('span[data-test="reportingPeriod"]').should('exist').click();
 }
 
+/**
+ * Builds a review queue element.
+ * @param dataId to include
+ * @param companyName to include
+ * @param companyId to include
+ * @param framework to include
+ * @param reportingPeriod to include
+ * @param timestamp to include
+ * @returns the element
+ */
+function buildReviewQueueElement(
+  dataId: string,
+  companyName: string,
+  companyId: string,
+  framework: string,
+  reportingPeriod: string,
+  timestamp: number = Date.now()
+): QaReviewResponse {
+  return {
+    dataId: dataId,
+    timestamp: timestamp,
+    companyName: companyName,
+    companyId: companyId,
+    framework: framework,
+    reportingPeriod: reportingPeriod,
+    qaStatus: QaStatus.Pending,
+  };
+}
+
+/**
+ * Types the input into the search bar
+ * @param input to type
+ */
+function typeIntoSearchBar(input: string): void {
+  cy.get(`input[data-test="companyNameSearchbar"]`).type(input);
+}
+
+/**
+ * Checks if the warning is there or is not there, based on the boolean passed to the function.
+ * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
+ */
+function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
+  cy.get('[data-test="companySearchBarWithMessage"]')
+    .contains('Please type at least 3 characters')
+    .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
+}
+
 describe('Component tests for the Quality Assurance page', () => {
   let LksgFixture: FixtureData<LksgData>;
   let mockDataMetaInfoForActiveDataset: DataMetaInformation;
@@ -66,35 +113,6 @@ describe('Component tests for the Quality Assurance page', () => {
   );
 
   /**
-   * Builds a review queue element.
-   * @param dataId to include
-   * @param companyName to include
-   * @param companyId to include
-   * @param framework to include
-   * @param reportingPeriod to include
-   * @param timestamp to include
-   * @returns the element
-   */
-  function buildReviewQueueElement(
-    dataId: string,
-    companyName: string,
-    companyId: string,
-    framework: string,
-    reportingPeriod: string,
-    timestamp: number = Date.now()
-  ): QaReviewResponse {
-    return {
-      dataId: dataId,
-      timestamp: timestamp,
-      companyName: companyName,
-      companyId: companyId,
-      framework: framework,
-      reportingPeriod: reportingPeriod,
-      qaStatus: QaStatus.Pending,
-    };
-  }
-
-  /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
    * are there.
    */
@@ -116,24 +134,6 @@ describe('Component tests for the Quality Assurance page', () => {
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
     cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
-  }
-
-  /**
-   * Types the input into the search bar
-   * @param input to type
-   */
-  function typeIntoSearchBar(input: string): void {
-    cy.get(`input[data-test="companyNameSearchbar"]`).type(input);
-  }
-
-  /**
-   * Checks if the warning is there or is not there, based on the boolean passed to the function.
-   * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
-   */
-  function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
-    cy.get('[data-test="companySearchBarWithMessage"]')
-      .contains('Please type at least 3 characters')
-      .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
   }
 
   /**

@@ -96,19 +96,20 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
       options.global.provide.authenticated = additionalOptions.keycloak.authenticated;
     }
 
-    options.global.plugins.push({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      install(app: any) {
-        app.use(assertDefined(options.router));
+    options.global.plugins.push(
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        install(app: any) {
+          app.use(assertDefined(options.router));
+        },
       },
-    });
-
-    options.global.plugins.push({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      install(app: any) {
-        app.use(plugin, defaultConfig);
-      },
-    });
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        install(app: any) {
+          app.use(plugin, defaultConfig);
+        },
+      }
+    );
 
     return mount(componentForMounting, options);
   };
