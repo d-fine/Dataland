@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import java.util.Date
 
 /**
  * --- API model ---
@@ -16,6 +17,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
+ * @param fiscalYearEnd fiscal year-end of the company
+ * @param reportingPeriodShift fiscal year deviation from calendar year or no deviation
  * @param sector in which the company operates (e.g. Financials)
  * @param sectorCodeWz classification according to the NACE compliant WZ method
  * @param identifiers under which the company is registered (LEI, PermID, ...)
@@ -67,6 +70,16 @@ data class CompanyInformationPatch(
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
+    )
+    val fiscalYearEnd: Date? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_EXAMPLE,
+    )
+    val reportingPeriodShift: Int? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_EXAMPLE,
     )
     val sector: String? = null,
     @field:Schema(

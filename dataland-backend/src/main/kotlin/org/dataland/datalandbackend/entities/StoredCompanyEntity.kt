@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import java.util.Date
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -41,6 +42,10 @@ data class StoredCompanyEntity(
     var headquarters: String,
     @Column(name = "headquarters_postal_code")
     var headquartersPostalCode: String?,
+    @Column(name = "fiscal_year_end")
+    var fiscalYearEnd: Date?,
+    @Column(name = "reporting_period_shift")
+    var reportingPeriodShift: Int?,
     @Column(name = "sector")
     var sector: String?,
     @Column(name = "sector_code_wz")
@@ -77,6 +82,8 @@ data class StoredCompanyEntity(
                     companyContactDetails = companyContactDetails,
                     headquarters = headquarters,
                     headquartersPostalCode = headquartersPostalCode,
+                    fiscalYearEnd = fiscalYearEnd,
+                    reportingPeriodShift = reportingPeriodShift,
                     sector = sector,
                     sectorCodeWz = sectorCodeWz,
                     identifiers = identifierMap,
@@ -157,7 +164,7 @@ data class StoredCompanyEntity(
     }
 
     /**
-     * Updates this [StoredCompanyEntity] according to the contant of the applied [CompanyInformationPatch].
+     * Updates this [StoredCompanyEntity] according to the content of the applied [CompanyInformationPatch].
      * @param patch the [CompanyInformationPatch] containing the new values to apply.
      */
     fun applyPatch(
@@ -172,6 +179,8 @@ data class StoredCompanyEntity(
         updateIfNotNull(patch.companyLegalForm) { storedCompanyEntity.companyLegalForm = it }
         updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
         updateIfNotNull(patch.headquartersPostalCode) { storedCompanyEntity.headquartersPostalCode = it }
+        updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it }
+        updateIfNotNull(patch.reportingPeriodShift) { storedCompanyEntity.reportingPeriodShift = it }
         updateIfNotNull(patch.sector) { storedCompanyEntity.sector = it }
         updateIfNotNull(patch.sectorCodeWz) { storedCompanyEntity.sectorCodeWz = it }
         updateIfNotNull(patch.countryCode) { storedCompanyEntity.countryCode = it }
@@ -217,6 +226,8 @@ data class StoredCompanyEntity(
         this.companyLegalForm = put.companyLegalForm
         this.headquarters = put.headquarters
         this.headquartersPostalCode = put.headquartersPostalCode
+        this.fiscalYearEnd = put.fiscalYearEnd
+        this.reportingPeriodShift = put.reportingPeriodShift
         this.sector = put.sector
         this.sectorCodeWz = put.sectorCodeWz
         this.countryCode = put.countryCode
