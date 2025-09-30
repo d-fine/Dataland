@@ -5769,6 +5769,19 @@
             "nullable": true,
             "example": "10123"
           },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The fiscal year end of the company.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "Fiscal year deviation from calendar year or no deviation.",
+            "format": "int32",
+            "nullable": true,
+            "example": -1
+          },
           "sector": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
@@ -16580,11 +16593,23 @@
             "nullable": true,
             "example": "10123"
           },
-          "sector": {
+          "fiscalYearEnd": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "The fiscal year end of the company.",
+            "format": "int32",
+            "nullable": true
+          },
+          "sector": {
+            "type": "string",
+            "description": "Fiscal year deviation from calendar year or no deviation.",
             "nullable": true,
-            "example": "Information Technology"
+            "example": "-1"
           },
           "sectorCodeWz": {
             "type": "string",
@@ -16895,15 +16920,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
