@@ -1,55 +1,117 @@
 <template>
   <div class="content-wrapper">
-    <Card>
+    <Card class="equal-height-card">
       <template #content>
         <b>Add user by email address</b>
         <div class="search-container">
-          <InputText
-            v-model="searchQuery"
-            placeholder="Enter email address"
-            class="search-input"
-            data-test="email-input-field"
-            @keydown.enter="selectUser"
-          />
-          <Button label="SELECT" @click="selectUser" data-test="select-user-button" />
+          <div class="search-row">
+            <InputText
+              v-model="searchQuery"
+              placeholder="Enter email address"
+              class="search-input"
+              data-test="email-input-field"
+              @keydown.enter="selectUser(searchQuery, true)"
+            />
+            <Button label="SELECT" @click="selectUser(searchQuery, true)" data-test="select-user-button" />
+          </div>
           <Message
             v-if="unknownUserError"
             severity="error"
             data-test="unknown-user-error"
             :pt="{
               root: {
-                style: 'margin-top: var(--spacing-xxs); width: 20em; word-wrap: break-word;',
+                style: 'margin-top: var(--spacing-xxs); max-width:30rem',
+              },
+              text: {
+                style: 'white-space: normal; overflow-wrap: anywhere; word-break: break-word;',
               },
             }"
           >
             {{ unknownUserError }}
           </Message>
         </div>
+
+        <Listbox
+          v-if="suggestedUsers.length > 0"
+          :options="suggestedUsers"
+          data-test="suggestion-listbox"
+          style="margin-top: var(--spacing-sm); min-height: 4rem"
+          :highlightOnSelect="false"
+          :pt="{
+            option: {
+              style: 'cursor: default; height: 4rem;',
+            },
+            listContainer: { style: 'overflow:auto; max-height: 20rem;' },
+          }"
+        >
+          <template #option="{ option }">
+            <div class="user-row" data-test="suggested-user-row">
+              <Tag :value="option.initials" />
+              <div class="user-info">
+                <b>{{ option.name }}</b>
+                <span>{{ option.email }}</span>
+              </div>
+              <div class="select-container">
+                <Tag
+                  v-if="selectedUsers.some((user) => user.userId === option.userId)"
+                  value="Selected"
+                  severity="secondary"
+                  data-test="selected-tag"
+                />
+                <Button
+                  v-else
+                  label="Select"
+                  variant="text"
+                  @click.stop="selectUser(option.email, false)"
+                  rounded
+                  data-test="select-suggested-user-button"
+                />
+              </div>
+            </div>
+          </template>
+        </Listbox>
       </template>
     </Card>
-    <Card class="selected-users-section">
+    <Card class="selected-users-section equal-height-card">
       <template #content>
         <div class="selected-users-header">
           <h3>Selected Users</h3>
           <Tag :value="userCountText" severity="secondary" data-test="user-count-tag" />
         </div>
+
         <div v-if="hasSelectedUsers">
-          <div v-for="user in selectedUsers" :key="user.userId" class="user-row">
-            <Tag :value="user.initials" />
-            <div class="user-info">
-              <b>{{ user.name }}</b>
-              <span>{{ user.email }}</span>
-            </div>
-            <Button
-              icon="pi pi-times"
-              variant="text"
-              @click="handleRemoveUser(user.userId)"
-              rounded
-              data-test="remove-user-button"
-            />
-          </div>
+          <Listbox
+            :options="selectedUsers"
+            data-test="selected-users-listbox"
+            style="min-height: 4rem; margin-top: 21px"
+            :highlightOnSelect="false"
+            :pt="{
+              option: {
+                style: 'cursor: default; height: 4rem;',
+              },
+              listContainer: { style: 'overflow:auto; max-height: 20rem;' },
+            }"
+          >
+            <template #option="{ option }">
+              <div class="user-row" data-test="selected-user-row">
+                <Tag :value="option.initials" />
+                <div class="user-info">
+                  <b>{{ option.name }}</b>
+                  <span>{{ option.email }}</span>
+                </div>
+                <Button
+                  label="Remove"
+                  variant="text"
+                  @click="handleRemoveUser(option.userId)"
+                  rounded
+                  data-test="remove-selected-user-button"
+                />
+              </div>
+            </template>
+          </Listbox>
         </div>
         <div v-else>
+          <Divider />
           <p>No users selected</p>
         </div>
       </template>
@@ -68,17 +130,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, onMounted } from 'vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import { type CompanyRole } from '@clients/communitymanager';
+import type { CompanyRole } from '@clients/communitymanager';
 import { AxiosError } from 'axios';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
+import Listbox from 'primevue/listbox';
+import Divider from 'primevue/divider';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -98,6 +162,7 @@ const emit = defineEmits<{
 defineExpose({ handleAddUser });
 
 const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
+const emailAddressControllerApi = apiClientProvider.apiClients.emailAddressController;
 const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const usersToAdd = ref<User[]>([]);
@@ -106,6 +171,11 @@ const unknownUserError = ref('');
 const userCountText = computed(() => {
   const count = selectedUsers.value?.length;
   return `${count} User${count === 1 ? '' : 's'}`;
+});
+const suggestedUsers = ref<User[]>([]);
+
+onMounted(async () => {
+  suggestedUsers.value = await getSuggestedUsers();
 });
 
 type User = {
@@ -131,9 +201,8 @@ function generateInitials(name: string): string {
 
 /**
  * Validates the email address and adds the user to the selected users list if valid.
- * @param email - The email address to validate and add
  */
-async function validateAndAddUser(email: string): Promise<void> {
+async function validateAndAddUser(email: string, byInputText: boolean): Promise<void> {
   if (!email) return;
   unknownUserError.value = '';
 
@@ -159,7 +228,9 @@ async function validateAndAddUser(email: string): Promise<void> {
     }
 
     selectedUsers.value.push(user);
-    searchQuery.value = '';
+    if (byInputText) {
+      searchQuery.value = '';
+    }
   } catch (error) {
     if (error instanceof AxiosError) {
       unknownUserError.value = error.response?.data?.errors?.[0]?.message;
@@ -174,8 +245,8 @@ async function validateAndAddUser(email: string): Promise<void> {
  * Handles the selection of a user based on the search query.
  * It validates the email and adds the user to the selected users list.
  */
-async function selectUser(): Promise<void> {
-  await validateAndAddUser(searchQuery.value.trim());
+async function selectUser(userEmail: string, byInputText: boolean): Promise<void> {
+  await validateAndAddUser(userEmail.trim(), byInputText);
 }
 
 /**
@@ -232,19 +303,38 @@ async function handleAddUser(): Promise<void> {
     }
   }
 }
+
+/**
+ * Fetches and returns a list of suggested users from the associated company's subdomains.
+ * @return {Promise<User[]>} A promise that resolves to an array of `User` objects representing the suggested users.
+ */
+async function getSuggestedUsers(): Promise<User[]> {
+  const suggestedUsersResponse = await emailAddressControllerApi.getUsersByCompanyAssociatedSubdomains(props.companyId);
+  const allSuggestedKeyCloakUsers = suggestedUsersResponse.data;
+  const suggestedKeyCloakUsers = allSuggestedKeyCloakUsers.filter(
+    (user) => !props.existingUsers.some((existing) => existing.userId === user.id)
+  );
+  const suggestedUsers: User[] = [];
+  for (const keycloakUser of suggestedKeyCloakUsers) {
+    const name = `${keycloakUser.firstName || ''} ${keycloakUser.lastName || ''}`.trim() || keycloakUser.email || '';
+    suggestedUsers.push({
+      email: keycloakUser.email || '',
+      userId: keycloakUser.id,
+      firstName: keycloakUser.firstName,
+      lastName: keycloakUser.lastName,
+      name: name,
+      initials: generateInitials(name),
+    });
+  }
+  return suggestedUsers;
+}
 </script>
 
 <style scoped>
 .selected-users-header {
-  position: sticky;
-  top: 0;
-  background-color: var(--p-surface-0);
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 0.1em solid var(--p-surface-300);
-  margin-bottom: var(--spacing-xs);
 }
 
 .user-row {
@@ -252,6 +342,7 @@ async function handleAddUser(): Promise<void> {
   align-items: center;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-xs);
+  width: 100%;
 }
 
 .user-info {
@@ -262,29 +353,62 @@ async function handleAddUser(): Promise<void> {
 
 .content-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
   padding: var(--spacing-xs);
+  align-items: start;
+}
+
+.content-wrapper > * {
+  min-width: 0;
+}
+
+@media (max-width: 1440px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+.equal-height-card {
+  min-height: 24rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .selected-users-section {
-  height: 20em;
   overflow-y: auto;
   position: relative;
 }
 
 .search-container {
   margin-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
 }
 
 .search-input {
-  width: 20em;
+  flex: 1 1 0%;
+  min-width: 0;
   margin-right: var(--spacing-xs);
 }
 
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+}
+
+.select-container {
+  width: 6rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>
