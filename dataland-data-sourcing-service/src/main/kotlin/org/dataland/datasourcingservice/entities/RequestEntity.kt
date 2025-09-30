@@ -43,7 +43,7 @@ class RequestEntity(
     var adminComment: String? = null,
     @Column(name = "last_modified_date")
     var lastModifiedDate: Long,
-    @Column(name = "request_prioriry")
+    @Column(name = "request_priority")
     var requestPriority: RequestPriority,
     @Column(name = "state")
     var state: RequestState,
