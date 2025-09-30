@@ -37,7 +37,7 @@ class DataSourcingControllerTest {
             assertThrows<ClientException> {
                 function()
             }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(403, exception.statusCode)
     }
 
     private fun assertResourceNotFoundException(function: () -> Unit) {
@@ -45,7 +45,7 @@ class DataSourcingControllerTest {
             assertThrows<ClientException> {
                 function()
             }
-        assertEquals("Client error : 404 ", exception.message)
+        assertEquals(404, exception.statusCode)
     }
 
     private fun createRequest(
@@ -407,7 +407,7 @@ class DataSourcingControllerTest {
                     true,
                 )
             }
-        assertEquals("Client error : 404 ", exception.message)
+        assertEquals(404, exception.statusCode)
     }
 
     @Test
