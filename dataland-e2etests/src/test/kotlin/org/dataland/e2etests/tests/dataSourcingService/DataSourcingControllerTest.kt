@@ -208,11 +208,12 @@ class DataSourcingControllerTest {
     @Test
     fun `accept a dataset and verify that the state of the corresponding data sourcing object is set to Answered`() {
         val dataSetId = uploadDummyDataForDataSourcingObject()
-        sleep(5000)
         apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted)
-        sleep(10000)
-        val dataSourcing = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
-        assertEquals(DataSourcingState.Answered, dataSourcing.state)
+
+        ApiAwait.waitForData(
+            supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId) },
+            condition = { it.state == DataSourcingState.Answered },
+        )
     }
 
     @Test

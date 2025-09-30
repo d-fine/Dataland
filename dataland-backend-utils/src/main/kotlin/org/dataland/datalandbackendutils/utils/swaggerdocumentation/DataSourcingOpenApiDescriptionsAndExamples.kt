@@ -41,7 +41,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val PROVIDER_COMPANY_ID_DESCRIPTION = "Dataland company ID of the document collector or data extractor."
     const val PROVIDER_COMPANY_ID_EXAMPLE = "8b35099f-8319-4249-83ea-c618b8d153a0"
 
-    const val USER_ID_DESCRIPTION = "Dataland company ID of the document collector or data extractor."
+    const val USER_ID_DESCRIPTION =
+        "Dataland ID of the user in whose name the request shall be made. Please omit it " +
+            "if you are making the request on your own behalf."
     const val USER_ID_EXAMPLE = "1e63a842-1e65-43ed-b78a-5e7cec155c28"
 
     const val REQUEST_PRIORITY_DESCRIPTION = "The priority of the data request."

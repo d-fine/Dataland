@@ -32,7 +32,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "Dataland company ID of the document collector or data extractor.",
+            "description": "Dataland ID of the user in whose name the request shall be made. Please omit it if you are making the request on your own behalf.",
             "required": false,
             "schema": {
               "type": "string"
