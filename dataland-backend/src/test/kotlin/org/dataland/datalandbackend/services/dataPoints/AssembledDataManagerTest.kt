@@ -123,6 +123,7 @@ class AssembledDataManagerTest {
                 referencedReportsUtilities,
                 companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler,
             )
+        dataCompositionService.initiateSpecifications(null)
     }
 
     @Test
