@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
@@ -139,7 +138,7 @@ class SingleRequestManager
          */
         @Transactional(readOnly = true)
         fun getRequest(dataRequestId: UUID): StoredRequest =
-            requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
+            requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)?.toStoredDataRequest()
                 ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 ).also { requestLogger.logMessageForGettingDataRequest(dataRequestId, UUID.randomUUID()) }
@@ -161,7 +160,7 @@ class SingleRequestManager
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
             val requestEntity =
-                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId) ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 )
             val oldRequestState = requestEntity.state
@@ -198,7 +197,7 @@ class SingleRequestManager
             requestLogger.logMessageForPatchingRequestPriority(dataRequestId, newRequestPriority)
 
             val requestEntity =
-                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId) ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 )
             requestEntity.requestPriority = newRequestPriority
