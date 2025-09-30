@@ -311,7 +311,7 @@ function updateCurrentDisplayedData(): void {
 
   displayedData.value = data.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1));
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  globalThis.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**

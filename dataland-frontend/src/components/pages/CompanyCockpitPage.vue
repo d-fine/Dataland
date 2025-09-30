@@ -93,9 +93,9 @@ const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
+for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
   latestDocuments[`latest${category}`] = [];
-});
+}
 
 const roles = Object.values(CompanyRole);
 

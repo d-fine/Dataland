@@ -178,11 +178,11 @@ provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDatas
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
-  activeDataForCurrentCompanyAndFramework.value.forEach((item) => {
+  for (const item of activeDataForCurrentCompanyAndFramework.value) {
     if (item.metaInfo.dataType === chosenDataTypeInDropdown.value) {
       set.add(item.metaInfo.reportingPeriod);
     }
-  });
+  }
   return Array.from(set).sort();
 });
 

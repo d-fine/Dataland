@@ -9,30 +9,26 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
-  const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(
+  return [
+    manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()),
+    generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()),
+    generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()),
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
-    )
-  );
-  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(generateFixtureWithDifferentExtendedDatapointCases(generateSfdrDataWithoutNulls()));
-  preparedFixtures.push(
+    ),
+    manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForInvalidLongDataPointInput(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()),
+    manipulateFixtureForTwoInvalidInputs(generateSfdrDataWithoutNulls()),
+    generateFixtureWithDifferentExtendedDatapointCases(generateSfdrDataWithoutNulls()),
     ...generateFixtureOfTwoCompaniesWithSubsidiaryRelationship(
       generateSfdrDataWithoutNulls(),
       generateSfdrDataWithoutNulls()
-    )
-  );
-  return preparedFixtures;
+    ),
+  ];
 }
 
 /**

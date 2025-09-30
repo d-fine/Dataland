@@ -10,6 +10,24 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
+/**
+ * Checks that the downloaded file does actually exist
+ * @param filePath path to file
+ */
+function checkThatFileExists(filePath: string): void {
+  cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+}
+
+/**
+ * Deletes the file and checks that it is deleted
+ * @param filePath path to file
+ */
+function deleteFile(filePath: string): void {
+  cy.task('deleteFile', filePath).then(() => {
+    cy.readFile(filePath).should('not.exist');
+  });
+}
+
 describeIf(
   'As a user, I want to be able to download datasets from Dataland',
   {
@@ -23,24 +41,6 @@ describeIf(
 
     let storedCompany: StoredCompany;
     let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
-
-    /**
-     * Checks that the downloaded file does actually exist
-     * @param filePath path to file
-     */
-    function checkThatFileExists(filePath: string): void {
-      cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
-    }
-
-    /**
-     * Deletes the file and checks that it is deleted
-     * @param filePath path to file
-     */
-    function deleteFile(filePath: string): void {
-      cy.task('deleteFile', filePath).then(() => {
-        cy.readFile(filePath).should('not.exist');
-      });
-    }
 
     /**
      * Checks that the downloaded file has an appropriate size and delete afterward

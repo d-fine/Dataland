@@ -35,7 +35,7 @@ before(function () {
  * @returns inputString the string without parenthesis
  */
 function escapeParenthesisInRegExp(inputString: string): string {
-  return inputString.replace(/[()]/g, '\\$&');
+  return inputString.replace(/[()]/g, String.raw`\$&`);
 }
 
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
@@ -112,7 +112,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get('#country-filter').click();
           cy.get('input[placeholder="Search countries"]').type(`${demoCompanyToTestForCountryName}`);
           cy.get('li')
-            .contains(RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
+            .contains(new RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
             .click();
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
@@ -149,7 +149,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get('#sector-filter').click();
           cy.get('input[placeholder="Search sectors"]').type(`${demoCompanyToTestFor.sector!}`);
           cy.get('li')
-            .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
+            .contains(new RegExp(`^${demoCompanyToTestFor.sector!}$`))
             .click();
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
@@ -242,6 +242,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
+        { scrollBehavior: false },
         () => {
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
@@ -250,7 +251,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
-          cy.get('#framework-filter').click();
+          cy.get('#framework-filter').should('be.visible').click();
           cy.get('div.p-multiselect-overlay')
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();

@@ -10,7 +10,6 @@ import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
  * @returns the prepared fixtures
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
-  const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
 
   const manipulatorFunctions: Array<(input: FixtureData<LksgData>) => FixtureData<LksgData>> = [
@@ -27,12 +26,14 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-  preparedFixtures.push(generateFixtureForDate('2023-04-18'));
-  preparedFixtures.push(generateFixtureForDate('2023-06-22'));
-  preparedFixtures.push(generateFixtureForDate('2022-07-30'));
+  const preparedFixtures = manipulatorFunctions.map((func, index) => func(preparedFixturesBeforeManipulation[index]));
+
+  preparedFixtures.push(
+    generateFixtureForDate('2023-04-18'),
+    generateFixtureForDate('2023-06-22'),
+    generateFixtureForDate('2022-07-30')
+  );
+
   return preparedFixtures;
 }
 
@@ -94,7 +95,7 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
   newFixture.companyInformation.companyName = 'lksg-with-procurement-categories';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
-    throw Error(
+    throw new Error(
       'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }
@@ -115,7 +116,7 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
     GB: ['B'],
   };
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
-    throw Error(
+    throw new Error(
       'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }

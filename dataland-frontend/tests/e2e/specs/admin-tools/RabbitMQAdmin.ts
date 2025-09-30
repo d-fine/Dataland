@@ -29,11 +29,13 @@ const queues = [
  * @param expectedQueues - expected queues.
  */
 function checkQueuesExist($rows: JQuery<HTMLElement>, expectedQueues: string[]): void {
-  const actualQueues = [...$rows].flatMap((row): string[] => {
-    const name = row.querySelector('td:nth-child(2) a')?.textContent?.trim();
-    return name ? [name] : [];
-  });
-  const missingQueues = expectedQueues.filter((q) => !actualQueues.includes(q));
+  const actualQueues = new Set(
+    [...$rows].flatMap((row): string[] => {
+      const name = row.querySelector('td:nth-child(2) a')?.textContent?.trim();
+      return name ? [name] : [];
+    })
+  );
+  const missingQueues = expectedQueues.filter((q) => !actualQueues.has(q));
   if (missingQueues.length > 0) {
     throw new Error(`Missing queues: ${missingQueues.join(', ')}`);
   }

@@ -6,6 +6,16 @@ import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from 
 import { ref } from 'vue';
 import router from '@/router';
 
+/**
+ * Checks if the tab with the defined text is visible or not
+ * @param textInTab that shall be checked
+ * @param isTabExpectedToBeVisible describes if the tab is expected to be visible on the navigation bar
+ */
+function isTabVisible(textInTab: string, isTabExpectedToBeVisible: boolean): void {
+  const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.be.visible';
+  cy.get('[data-pc-name="tablist"]').contains(textInTab).should(visibilityAssertion);
+}
+
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {
     Companies = 'COMPANIES',
@@ -55,16 +65,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
       void router.push('/portfolios');
       assertPortfoliosTabIsHighlighted();
     });
-  }
-
-  /**
-   * Checks if the tab with the defined text is visible or not
-   * @param textInTab that shall be checked
-   * @param isTabExpectedToBeVisible describes if the tab is expected to be visible on the navigation bar
-   */
-  function isTabVisible(textInTab: string, isTabExpectedToBeVisible: boolean): void {
-    const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.be.visible';
-    cy.get('[data-pc-name="tablist"]').contains(textInTab).should(visibilityAssertion);
   }
 
   /**

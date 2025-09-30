@@ -1,6 +1,10 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <div id="searchBarAndFiltersContainer" class="search-bar-and-filters-container">
+    <div
+      id="searchBarAndFiltersContainer"
+      class="search-bar-and-filters-container"
+      :class="{ 'collapsed-search-container': isSearchBarContainerCollapsed }"
+    >
       <FrameworkDataSearchBar
         id="frameworkDataSearchBar"
         ref="frameworkDataSearchBar"
@@ -99,13 +103,14 @@ export default defineComponent({
     PrimeButton,
   },
   created() {
-    window.addEventListener('scroll', this.windowScrollHandler);
+    globalThis.addEventListener('scroll', this.windowScrollHandler);
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
     this.scanQueryParams(this.route);
+    this.handleScroll();
   },
   data() {
     return {
@@ -159,19 +164,17 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
-      if (!this.waitingForDataToDisplay) {
-        if (totalSearchResults === 0) {
-          return 'No results';
-        } else {
-          const startIndex = this.currentPage * this.rowsPerPage;
-          const endIndex =
-            startIndex + (this.rowsPerPage - 1) >= totalSearchResults
-              ? totalSearchResults - 1
-              : startIndex + (this.rowsPerPage - 1);
-          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
-        }
-      } else {
+      if (this.waitingForDataToDisplay) {
         return 'loading...';
+      } else if (totalSearchResults === 0) {
+        return 'No results';
+      } else {
+        const startIndex = this.currentPage * this.rowsPerPage;
+        const endIndex =
+          startIndex + (this.rowsPerPage - 1) >= totalSearchResults
+            ? totalSearchResults - 1
+            : startIndex + (this.rowsPerPage - 1);
+        return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
       }
     },
   },
@@ -194,7 +197,7 @@ export default defineComponent({
      * @param pageNumber the new page index
      */
     handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
+      if (pageNumber !== this.currentPage) {
         this.waitingForDataToDisplay = true;
         this.currentPage = pageNumber;
         this.previousRecords = this.currentPage * this.rowsPerPage;
@@ -205,14 +208,18 @@ export default defineComponent({
      * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
      */
     handleScroll() {
-      document
-        .getElementById('searchBarAndFiltersContainer')
-        ?.classList.toggle('collapsed-search-container', document.documentElement.scrollTop >= 64);
-      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-      this.frameworkDataSearchBar?.closeOverlay();
-      this.isSearchBarContainerCollapsed = document.documentElement.scrollTop >= 64;
-    },
+      const y = window.scrollY || document.documentElement.scrollTop;
+      const collapseAt = 160;
+      const expandAt = 20;
+      const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
 
+      if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
+        this.isSearchBarContainerCollapsed = shouldCollapse;
+        this.frameworkDataSearchBar?.closeOverlay();
+      }
+
+      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+    },
     /**
      * Parses the framework filter query parameters.
      * @param route the current route
@@ -236,10 +243,7 @@ export default defineComponent({
      */
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
       const queryCountryCodes = route.query.countryCode;
-      if (queryCountryCodes) {
-        return parseQueryParamArray(queryCountryCodes);
-      }
-      return [];
+      return queryCountryCodes ? parseQueryParamArray(queryCountryCodes) : [];
     },
     /**
      * Parses the sector-filter query parameters.
@@ -248,10 +252,7 @@ export default defineComponent({
      */
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
       const querySectors = route.query.sector;
-      if (querySectors) {
-        return parseQueryParamArray(querySectors);
-      }
-      return [];
+      return querySectors ? parseQueryParamArray(querySectors) : [];
     },
     /**
      * Parses the search term query parameter
@@ -260,10 +261,7 @@ export default defineComponent({
      */
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
       const queryInput = route.query.input as string;
-      if (queryInput) {
-        return queryInput;
-      }
-      return '';
+      return queryInput || '';
     },
     /**
      * Updates the combined filter object if any of the local filters no longer match the combined filter object.
@@ -327,13 +325,11 @@ export default defineComponent({
       this.waitingForDataToDisplay = false;
 
       const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
-
       const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
-
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
-
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
+
       return router.push({
         name: 'Search Companies for Framework Data',
         query: {
@@ -355,7 +351,7 @@ export default defineComponent({
     },
   },
   unmounted() {
-    window.removeEventListener('scroll', this.windowScrollHandler);
+    globalThis.removeEventListener('scroll', this.windowScrollHandler);
   },
 });
 </script>
@@ -377,15 +373,30 @@ export default defineComponent({
 }
 
 .search-bar-and-filters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
   margin: 0;
   width: 100%;
-  padding-left: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
-  z-index: 100;
+  padding: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
+  background-color: var(--p-surface-0);
+  position: sticky;
+  top: var(--spacing-xxxl);
+  z-index: 10;
+  contain: paint;
+  will-change: padding-top;
+}
 
-  #frameworkDataSearchBar {
-    width: 70%;
-  }
+.search-bar-and-filters-container #frameworkDataSearchBar {
+  width: 70%;
+}
+
+.collapsed-search-container {
+  flex-direction: row;
+  align-items: end;
+  padding-top: 0;
+  border-bottom: 1px solid var(--p-surface-200);
 }
 
 .button-container {
@@ -394,19 +405,5 @@ export default defineComponent({
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
-}
-
-.collapsed-search-container {
-  display: flex;
-  flex-direction: row;
-  position: sticky;
-  top: 4rem;
-  z-index: 50;
-  background-color: var(--p-surface-0);
-  justify-content: space-between;
-  align-items: end;
-  padding-top: 0;
-  padding-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--p-surface-200);
 }
 </style>
