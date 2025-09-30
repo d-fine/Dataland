@@ -32,7 +32,9 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -62,11 +64,10 @@ class AssembledDataManagerTest {
     private val logMessageBuilder = mock<LogMessageBuilder>()
     private val specificationClient = mock<SpecificationControllerApi>()
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
-    private val dataCompositionService = mock<DataCompositionService>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
-    private val datasetAssembler = mock<DatasetAssembler>()
 
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
 
@@ -77,21 +78,14 @@ class AssembledDataManagerTest {
         )
 
     private val referencedReportsUtilities = ReferencedReportsUtilities()
-    private val dataPointUtils =
-        DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager)
+    private val datasetAssembler = DatasetAssembler(specificationClient, referencedReportsUtilities)
+    private lateinit var dataCompositionService: DataCompositionService
+    private lateinit var dataDeliveryService: DataDeliveryService
+    private lateinit var assembledDataManager: AssembledDataManager
+    private val dataPointUtils = DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager)
 
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
-
-    private val dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
-
-    private val assembledDataManager =
-        AssembledDataManager(
-            dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
-            datasetDatapointRepository, spyDataPointManager,
-            referencedReportsUtilities,
-            companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler,
-        )
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
@@ -100,8 +94,10 @@ class AssembledDataManagerTest {
     private val datasetId = "test-dataset-id"
     private val dataPointType = "extendedEnumFiscalYearDeviationDummy"
     private val dataPointId = "test-data-point-1"
-    private val frameworkSpecification =
-        TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+    private val simpleFrameworkSpecification =
+        TestResourceFileReader
+            .getKotlinObject<SimpleFrameworkSpecification>(inputSimpleFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDataSetDimensions(companyId, framework, reportingPeriod)
 
@@ -114,8 +110,19 @@ class AssembledDataManagerTest {
     }
 
     @BeforeEach
-    fun setGeneralMocks() {
+    fun setSpecificationMocks() {
         doReturn(frameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
+        doThrow(ClientException()).whenever(specificationClient).getDataPointTypeSpecification(framework)
+        doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
+        dataCompositionService = DataCompositionService(specificationClient)
+        dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
+        assembledDataManager =
+            AssembledDataManager(
+                dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
+                datasetDatapointRepository, spyDataPointManager,
+                referencedReportsUtilities,
+                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler,
+            )
     }
 
     @Test
@@ -187,6 +194,7 @@ class AssembledDataManagerTest {
         val dataPointDimensions = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
         whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
+        doReturn(listOf(dataPointId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
 
         val dynamicDataset =
             assertDoesNotThrow {
