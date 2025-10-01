@@ -5773,7 +5773,8 @@
             "type": "string",
             "description": "The fiscal year end of the company.",
             "format": "date",
-            "nullable": true
+            "nullable": true,
+            "example": "2024-06-30"
           },
           "reportingPeriodShift": {
             "type": "integer",
@@ -16595,21 +16596,23 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "description": "The industry or sector in which the company operates.",
+            "description": "The fiscal year end of the company.",
             "format": "date",
-            "nullable": true
+            "nullable": true,
+            "example": "2024-06-30"
           },
           "reportingPeriodShift": {
             "type": "integer",
-            "description": "The fiscal year end of the company.",
+            "description": "Fiscal year deviation from calendar year or no deviation.",
             "format": "int32",
-            "nullable": true
+            "nullable": true,
+            "example": -1
           },
           "sector": {
             "type": "string",
-            "description": "Fiscal year deviation from calendar year or no deviation.",
+            "description": "The industry or sector in which the company operates.",
             "nullable": true,
-            "example": "-1"
+            "example": "Information Technology"
           },
           "sectorCodeWz": {
             "type": "string",

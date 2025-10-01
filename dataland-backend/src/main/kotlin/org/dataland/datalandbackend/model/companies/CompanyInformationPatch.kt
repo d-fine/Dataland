@@ -68,18 +68,18 @@ data class CompanyInformationPatch(
     )
     val headquartersPostalCode: String? = null,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
-    )
-    val fiscalYearEnd: LocalDate? = null,
-    @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_EXAMPLE,
     )
-    val reportingPeriodShift: Int? = null,
+    val fiscalYearEnd: LocalDate? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_EXAMPLE,
+    )
+    val reportingPeriodShift: Int? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
     )
     val sector: String? = null,
     @field:Schema(
