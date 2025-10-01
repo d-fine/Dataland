@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Service to determine if data is available
+ * Service to deliver data based on inputs like data dimensions. Performs assembly of datasets from data points.
  */
 @Service("DataDeliveryService")
 class DataDeliveryService
