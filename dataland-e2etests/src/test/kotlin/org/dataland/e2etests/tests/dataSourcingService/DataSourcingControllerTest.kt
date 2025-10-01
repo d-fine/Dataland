@@ -189,7 +189,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 storedDataSourcing.dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcing.dataSourcingId,
                 companyIdCollector,
             )
@@ -203,7 +203,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 DataSourcingState.DataExtraction,
             )
             updatedDataSourcingObject =
-                apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                     storedDataSourcing.dataSourcingId,
                     null,
                     companyIdExtractor,
@@ -256,7 +256,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 storedDataSourcings[0].dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcings[0].dataSourcingId,
                 companyIdDocumentCollectorOrDataExtractor,
             )
@@ -264,7 +264,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 storedDataSourcings[1].dataSourcingId,
                 DataSourcingState.DataExtraction,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcings[1].dataSourcingId,
                 null,
                 companyIdDocumentCollectorOrDataExtractor,

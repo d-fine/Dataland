@@ -276,7 +276,7 @@ class DataSourcingManager
          * @return the StoredDataSourcing object corresponding to the patched entity
          */
         @Transactional
-        fun patchDocumentCollectorAndDataExtractor(
+        fun patchProviderAndAdminComment(
             dataSourcingEntityId: UUID,
             documentCollector: String?,
             dataExtractor: String?,

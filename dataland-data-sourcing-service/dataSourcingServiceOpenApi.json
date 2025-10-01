@@ -171,7 +171,7 @@
         ],
         "summary": "Patch provider and/or admin comment",
         "description": "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID. Null values are ignored.",
-        "operationId": "patchDocumentCollectorAndDataExtractor",
+        "operationId": "patchProviderAndAdminComment",
         "parameters": [
           {
             "name": "dataSourcingId",
@@ -229,14 +229,7 @@
             "description": "Only Dataland Admins to patch document collectors and data extractors."
           },
           "404": {
-            "description": "DataSourcing object not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
+            "description": "DataSourcing object not found."
           },
           "default": {
             "description": "An error occurred",
@@ -382,6 +375,9 @@
                 "uniqueItems": true,
                 "type": "array",
                 "description": "The IDs of documents to append to or overwrite the existing document IDs.",
+                "example": [
+                  "91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c"
+                ],
                 "items": {
                   "type": "string"
                 }
