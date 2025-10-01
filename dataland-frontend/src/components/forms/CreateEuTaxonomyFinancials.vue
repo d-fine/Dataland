@@ -274,8 +274,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId;
-    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    this.templateDataId = this.route.query.templateDataId ?? null;
+    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
     if (
       (this.templateDataId && typeof this.templateDataId === 'string') ||
       (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')

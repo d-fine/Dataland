@@ -164,8 +164,8 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
+const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
+const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 const waitingForData = ref(false);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());

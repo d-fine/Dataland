@@ -164,7 +164,7 @@ export default defineComponent({
       currentReportValue: undefined as string | undefined,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: undefined as string | undefined,
-      checkboxValue: [] as Array<string>,
+      checkboxValue: [] as string[],
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
