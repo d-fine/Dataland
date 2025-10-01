@@ -100,7 +100,12 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
-  <UploadDocumentDialog v-if="showUploadModal" :visible="showUploadModal" @close="closeUploadModal" />
+  <UploadDocumentDialog
+    v-if="showUploadModal"
+    :visible="showUploadModal"
+    :company-id="companyId"
+    @close="closeUploadModal"
+  />
 </template>
 
 <script setup lang="ts">

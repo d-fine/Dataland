@@ -164,7 +164,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import FileUpload from 'primevue/fileupload';
 import type { FileUploadSelectEvent, FileUploadRemoveEvent } from 'primevue/fileupload';
@@ -173,9 +173,12 @@ import Select from 'primevue/select';
 import DatePicker from 'primevue/datepicker';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type Keycloak from 'keycloak-js';
 
-const props = defineProps<{ visible: boolean }>();
+const props = defineProps<{ visible: boolean; companyId: string }>();
 const emit = defineEmits(['close']);
 
 const isVisible = ref<boolean>(props.visible);
@@ -201,9 +204,10 @@ const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
 const successModalIsVisible = ref<boolean>(false);
 
-/**
- * Computed property to check if form is valid.
- */
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const documentControllerApi = apiClientProvider.apiClients.documentController;
+
 const isFormValid = computed<boolean>(() => {
   return selectedFiles.value.length == 1 && !!documentName.value && !!documentCategory.value;
 });
@@ -217,6 +221,26 @@ const showFileLimitError = computed<boolean>(() => {
  */
 function formatCategoryLabel(value: string): string {
   return value.replace(/([A-Z])/g, ' $1').trim();
+}
+
+/**
+ * Handles the document upload process.
+ */
+async function handleDocumentUpload(): Promise<void> {
+  if (selectedFiles.value.length === 0) {
+    return;
+  }
+
+  const fileToUpload = selectedFiles.value[0];
+  const documentMetaInfo: DocumentMetaInfo = {
+    documentName: documentName.value,
+    documentCategory: documentCategory.value!,
+    companyIds: new Set([props.companyId]), // Use Set for type compatibility
+    publicationDate: publicationDate.value ? publicationDate.value.toISOString().split('T')[0] : undefined,
+    reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
+  };
+  console.log('Uploading document with meta info:', documentMetaInfo);
+  await documentControllerApi.postDocument(fileToUpload, documentMetaInfo);
 }
 
 /**
@@ -244,7 +268,7 @@ const onCancel = (): void => {
 /**
  * Submits the document upload form.
  */
-const onSubmit = (): void => {
+const onSubmit = async (): Promise<void> => {
   showErrors.value = true;
   const fileToUpload = selectedFiles.value[0] || null;
 
@@ -260,7 +284,13 @@ const onSubmit = (): void => {
     reportingPeriod: reportingPeriod.value,
   });
 
-  successModalIsVisible.value = true;
+  try {
+    await handleDocumentUpload();
+    successModalIsVisible.value = true;
+  } catch (error) {
+    // Optionally show an error message to the user
+    console.error('Document upload failed:', error);
+  }
 };
 
 /**
