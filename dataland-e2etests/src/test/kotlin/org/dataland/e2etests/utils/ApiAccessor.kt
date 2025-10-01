@@ -144,7 +144,7 @@ class ApiAccessor {
             bypassQa: Boolean,
         ) -> DataMetaInformation,
         uploadConfig: UploadConfiguration = UploadConfiguration(TechnicalUser.Admin, true),
-        reportingPeriod: String = "2024",
+        reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
