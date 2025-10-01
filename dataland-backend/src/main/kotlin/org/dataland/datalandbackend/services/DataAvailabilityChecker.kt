@@ -22,8 +22,6 @@ class DataAvailabilityChecker
         @PersistenceContext private val entityManager: EntityManager,
         private val dataCompositionService: DataCompositionService,
     ) {
-        private val ignoredFields = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields()
-
         /**
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
          * @param dataDimensions List of data dimensions to search for.
@@ -85,8 +83,7 @@ class DataAvailabilityChecker
         fun getViewableDataPointIds(dataDimensions: List<BasicDataPointDimensions>): List<String> {
             val metadata = getMetaDataOfDataPoints(dataDimensions)
             val viewableMetaData = metadata.filter { it.isDatasetViewableByUser(viewingUser = DatalandAuthentication.fromContextOrNull()) }
-            val viewAbleMetaDataWithoutIgnoredFields = viewableMetaData.filter { ignoredFields.contains(it.dataPointType) }
-            return if (viewAbleMetaDataWithoutIgnoredFields.isNotEmpty()) {
+            return if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(viewableMetaData.map { it.dataPointType })) {
                 viewableMetaData.map { it.dataPointId }
             } else {
                 emptyList()
