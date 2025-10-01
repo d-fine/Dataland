@@ -6156,6 +6156,7 @@
             "nullable": true
           },
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "publicationDate": {
@@ -6191,6 +6192,7 @@
         "type": "object",
         "properties": {
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "fileName": {
@@ -6261,6 +6263,7 @@
             "nullable": true
           },
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "publicationDate": {
