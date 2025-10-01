@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
+import kotlin.collections.ifEmpty
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
@@ -160,19 +161,19 @@ class SingleRequestManager
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
             val requestEntity =
-                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId) ?: throw RequestNotFoundApiException(
-                    dataRequestId,
-                )
-            val oldRequestState = requestEntity.state
-            requestEntity.state = newRequestState
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)
+                    ?: throw RequestNotFoundApiException(
+                        dataRequestId,
+                    )
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
+            requestEntity.state = newRequestState
 
             if (adminComment != null) {
                 requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
             }
 
-            if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
+            if (newRequestState == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
@@ -231,5 +232,8 @@ class SingleRequestManager
             return dataRevisionRepository
                 .listDataRequestRevisionsById(uuid)
                 .map { it.toStoredDataRequest() }
+                .ifEmpty {
+                    throw RequestNotFoundApiException(uuid)
+                }
         }
     }

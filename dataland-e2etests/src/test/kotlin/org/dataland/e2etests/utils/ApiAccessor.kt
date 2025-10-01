@@ -37,6 +37,7 @@ import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataController
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
+import java.lang.Thread.sleep
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 
 class ApiAccessor {
@@ -189,6 +190,7 @@ class ApiAccessor {
         return if (bypassQa) {
             qaApiAccessor.ensureQaIsPassed(listOf(dataMetaInformation), metaDataControllerApi)[0]
         } else {
+            sleep(5000) // although QA service will not update the meta information, give it some time to process
             dataMetaInformation
         }
     }
@@ -426,7 +428,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = uploadFunction,
                 reportingPeriod = reportingPeriod,
             )
-        Thread.sleep(waitTime)
+        sleep(waitTime)
         return uploadedMetaData
     }
 }

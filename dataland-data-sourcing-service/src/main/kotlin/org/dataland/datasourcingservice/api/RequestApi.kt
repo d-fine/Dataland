@@ -183,7 +183,6 @@ interface RequestApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
         )
         requestState: RequestState,
-        @Valid
         @RequestParam(
             name = "adminComment",
             required = false,
@@ -239,7 +238,6 @@ interface RequestApi {
             example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_EXAMPLE,
         )
         requestPriority: RequestPriority,
-        @Valid
         @RequestParam(
             name = "adminComment",
             required = false,
