@@ -1,79 +1,83 @@
 <template>
   <Dialog
-      v-model:visible="visible"
-      modal
-      header="Upload Document"
-      :style="{ width: '40rem' }"
-      data-test="upload-document-modal"
-      @hide="emit('close')"
+    v-model:visible="isVisible"
+    modal
+    header="Upload Document"
+    :style="{ width: '40rem' }"
+    data-test="upload-document-modal"
+    @hide="emit('close')"
   >
     <div class="upload-document-container">
       <div class="field">
         <label class="upload-label" for="file-upload">Select Document<span class="required-asterisk">*</span></label>
         <FileUpload
-            id="file-upload"
-            mode="advanced"
-            chooseLabel="Choose"
-            cancelLabel="Cancel"
-            customUpload
-            :showUploadButton="false"
-            @uploader="onFileUpload"
-            :auto="false"
-            :multiple="false"
-            data-test="file-upload"
-            aria-required="true"
+          id="file-upload"
+          mode="advanced"
+          chooseLabel="Choose"
+          cancelLabel="Cancel"
+          customUpload
+          :showUploadButton="false"
+          @uploader="onFileUpload"
+          :auto="false"
+          :multiple="false"
+          data-test="file-upload"
+          aria-required="true"
         >
           <template #empty>
             <span>Drag and drop a file here to upload</span>
           </template>
         </FileUpload>
         <Message
-            v-if="showErrors && !uploadedFile"
-            severity="error"
-            variant="simple"
-            size="small"
-            data-test="file-upload-error" > Please select a file to upload.
+          v-if="showErrors && !uploadedFile"
+          severity="error"
+          variant="simple"
+          size="small"
+          data-test="file-upload-error"
+        >
+          Please select a file to upload.
         </Message>
       </div>
 
       <div class="field">
         <label class="upload-label" for="document-name">Document Name<span class="required-asterisk">*</span></label>
         <InputText
-            id="document-name"
-            v-model="documentName"
-            placeholder="Enter document name"
-            data-test="document-name"
-            aria-required="true"
+          id="document-name"
+          v-model="documentName"
+          placeholder="Enter document name"
+          data-test="document-name"
+          aria-required="true"
         />
         <Message
-            v-if="showErrors && !documentName"
-            severity="error"
-            variant="simple"
-            size="small"
-            data-test="document-name-error"
+          v-if="showErrors && !documentName"
+          severity="error"
+          variant="simple"
+          size="small"
+          data-test="document-name-error"
         >
           Document name is required.
         </Message>
       </div>
 
       <div class="field">
-        <label class="upload-label" for="document-category">Document Category<span class="required-asterisk">*</span></label>
+        <label class="upload-label" for="document-category"
+          >Document Category<span class="required-asterisk">*</span></label
+        >
         <Select
-            id="document-category"
-            v-model="documentCategory"
-            :options="documentCategories"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select category"
-            data-test="document-category"
-            aria-required="true"
+          id="document-category"
+          v-model="documentCategory"
+          :options="documentCategories"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select category"
+          data-test="document-category"
+          aria-required="true"
         />
         <Message
-            v-if="showErrors && !documentCategory"
-            severity="error"
-            variant="simple"
-            size="small"
-            data-test="document-category-error"
+          v-if="showErrors && !documentCategory"
+          severity="error"
+          variant="simple"
+          size="small"
+          data-test="document-category-error"
         >
           Please select a category.
         </Message>
@@ -82,23 +86,26 @@
         <div class="field">
           <label class="upload-label" for="publication-date">Publication Date</label>
           <DatePicker
-              id="publication-date"
-              v-model="publicationDate"
-              showIcon
-              data-test="publication-date"
+            id="publication-date"
+            v-model="publicationDate"
+            showIcon
+            placeholder="Select publication date"
+            :showOnFocus="false"
+            data-test="publication-date"
           />
         </div>
         <div class="field">
           <label class="upload-label" for="reporting-period">Reporting Period</label>
           <DatePicker
-              id="reporting-period"
-              v-model="reportingPeriod"
-              :showIcon="true"
-              view="year"
-              dateFormat="yy"
-              validation="required"
-              placeholder="Select year"
-              data-test="reporting-period"
+            id="reporting-period"
+            v-model="reportingPeriod"
+            :showIcon="true"
+            view="year"
+            dateFormat="yy"
+            validation="required"
+            placeholder="Select year"
+            :showOnFocus="false"
+            data-test="reporting-period"
           />
         </div>
       </div>
@@ -109,18 +116,13 @@
           <span class="upload-label">required Fields</span>
         </div>
         <div>
+          <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
           <Button
-              label="Cancel"
-              class="p-button-text"
-              @click="onCancel"
-              data-test="cancel-button"
-          />
-          <Button
-              label="Upload Document"
-              class="p-button"
-              :disabled="!isFormValid"
-              @click="onSubmit"
-              data-test="upload-document-button"
+            label="Upload Document"
+            class="p-button"
+            :disabled="!isFormValid"
+            @click="onSubmit"
+            data-test="upload-document-button"
           />
         </div>
       </div>
@@ -147,14 +149,14 @@ interface DocumentCategory {
 const props = defineProps<{ visible: boolean }>();
 const emit = defineEmits(['close']);
 
-const visible = ref<boolean>(true);
+const isVisible = ref<boolean>(props.visible);
 const uploadedFile = ref<File | null>(null);
 const documentName = ref<string>('');
 const documentCategory = ref<string>('');
 const documentCategories = ref<DocumentCategory[]>([
   { label: 'Finance', value: 'finance' },
   { label: 'Legal', value: 'legal' },
-  { label: 'HR', value: 'hr' }
+  { label: 'HR', value: 'hr' },
 ]);
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
@@ -164,11 +166,7 @@ const showErrors = ref<boolean>(false);
  * Computed property to check if form is valid.
  */
 const isFormValid = computed<boolean>(() => {
-  return (
-      !!uploadedFile.value &&
-      !!documentName.value &&
-      !!documentCategory.value
-  );
+  return !!uploadedFile.value && !!documentName.value && !!documentCategory.value;
 });
 
 /**
@@ -202,7 +200,7 @@ const onSubmit = (): void => {
     documentName: documentName.value,
     documentCategory: documentCategory.value,
     publicationDate: publicationDate.value,
-    reportingPeriod: reportingPeriod.value
+    reportingPeriod: reportingPeriod.value,
   });
 
   emit('close');
