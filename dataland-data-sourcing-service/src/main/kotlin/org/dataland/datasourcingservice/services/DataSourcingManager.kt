@@ -1,9 +1,6 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
-import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
@@ -32,7 +29,7 @@ class DataSourcingManager
     constructor(
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val documentControllerApi: DocumentControllerApi,
+        private val dataSourcingValidator: DataSourcingValidator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -195,14 +192,7 @@ class DataSourcingManager
             appendDocuments: Boolean,
         ): ReducedDataSourcing {
             documentIds.forEach {
-                try {
-                    documentControllerApi.checkDocument(it)
-                } catch (_: ClientException) {
-                    throw ResourceNotFoundApiException(
-                        summary = "Document with id $it not found.",
-                        message = "The document with id $it does not exist on Dataland.",
-                    )
-                }
+                dataSourcingValidator.validateDocumentId(it)
             }
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             val newDocumentsIds = if (!appendDocuments) documentIds else dataSourcingEntity.documentIds + documentIds

@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -29,22 +28,12 @@ import kotlin.collections.ifEmpty
 class SingleRequestManager
     @Autowired
     constructor(
-        private val companyDataControllerApi: CompanyDataControllerApi,
+        private val dataSourcingValidator: DataSourcingValidator,
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
     ) {
         private val requestLogger = RequestLogger()
-
-        private fun getCompanyIdForIdentifier(identifier: String): UUID {
-            val companyInformation =
-                companyDataControllerApi.postCompanyValidation(listOf(identifier)).firstOrNull()?.companyInformation
-                    ?: throw ResourceNotFoundApiException(
-                        "The company identifier is unknown.",
-                        "No company is associated to the identifier $identifier.",
-                    )
-            return UUID.fromString(companyInformation.companyId)
-        }
 
         private fun storeRequest(
             userId: UUID,
@@ -116,15 +105,15 @@ class SingleRequestManager
         ): SingleRequestResponse {
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
 
-            val companyId = getCompanyIdForIdentifier(singleRequest.companyIdentifier)
+            val companyId = dataSourcingValidator.validateAndGetCompanyIdForIdentifier(singleRequest.companyIdentifier)
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-            assertNoConflictingRequestExists(userIdToUse, companyId, singleRequest.dataType, singleRequest.reportingPeriod)
+            assertNoConflictingRequestExists(userIdToUse, companyId, singleRequest.dataType.toString(), singleRequest.reportingPeriod)
             return SingleRequestResponse(
                 storeRequest(
                     userId = userIdToUse,
                     companyId = companyId,
-                    dataType = singleRequest.dataType,
+                    dataType = singleRequest.dataType.toString(),
                     reportingPeriod = singleRequest.reportingPeriod,
                     memberComment = singleRequest.memberComment,
                 ).toString(),

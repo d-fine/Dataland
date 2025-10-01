@@ -8,6 +8,7 @@ import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -20,10 +21,12 @@ import java.util.UUID
 @RestController
 class RequestController(
     @Autowired private val singleRequestManager: SingleRequestManager,
+    @Autowired private val bulkDataRequestManager: BulkRequestManager,
 ) : RequestApi {
-    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
+        ResponseEntity.ok(
+            bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
+        )
 
     override fun createRequest(
         singleRequest: SingleRequest,
