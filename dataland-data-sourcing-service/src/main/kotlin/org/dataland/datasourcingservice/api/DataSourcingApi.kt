@@ -332,7 +332,7 @@ interface DataSourcingApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched dateDocumentSourcingAttempt."),
+            ApiResponse(responseCode = "200", description = "Successfully patched the date of the next document sourcing attempt."),
             ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
@@ -357,6 +357,7 @@ interface DataSourcingApi {
         @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATE_OF_NEXT_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_DATE_EXAMPLE,
         )
         @RequestParam
         dateOfNextDocumentSourcingAttempt: LocalDate,

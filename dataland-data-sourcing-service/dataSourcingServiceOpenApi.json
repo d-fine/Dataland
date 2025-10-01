@@ -461,12 +461,13 @@
             "schema": {
               "type": "string",
               "format": "date"
-            }
+            },
+            "example": "2025-12-31"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully patched dateDocumentSourcingAttempt.",
+            "description": "Successfully patched the date of the next document sourcing attempt.",
             "content": {
               "application/json": {
                 "schema": {
