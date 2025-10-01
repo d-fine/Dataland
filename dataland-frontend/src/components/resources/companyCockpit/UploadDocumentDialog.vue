@@ -17,8 +17,9 @@
           cancelLabel="Cancel"
           customUpload
           :showUploadButton="false"
-          @select="onFileSelectOrRemove"
-          @remove="onFileSelectOrRemove"
+          @select="onFileSelect"
+          @remove="onFileRemove"
+          @clear="selectedFiles = []"
           :files="selectedFiles"
           :auto="false"
           :multiple="false"
@@ -49,6 +50,7 @@
           id="document-name"
           v-model="documentName"
           placeholder="Enter document name"
+          :class="{ 'error-field': showErrors && !documentName }"
           data-test="document-name"
           aria-required="true"
         />
@@ -74,6 +76,7 @@
           optionLabel="label"
           optionValue="value"
           placeholder="Select category"
+          :class="{ 'error-field': showErrors && !documentCategory }"
           data-test="document-category"
           aria-required="true"
         />
@@ -122,13 +125,7 @@
         </div>
         <div>
           <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
-          <Button
-            label="Upload Document"
-            class="p-button"
-            :disabled="!isFormValid"
-            @click="onSubmit"
-            data-test="upload-document-button"
-          />
+          <Button label="Upload Document" class="p-button" @click="onSubmit" data-test="upload-document-button" />
         </div>
       </div>
     </div>
@@ -165,7 +162,6 @@ const documentCategories = ref<DocumentCategory[]>([
 ]);
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
-const showFileLimitError = ref<boolean>(false);
 const showErrors = ref<boolean>(false);
 
 /**
@@ -175,11 +171,22 @@ const isFormValid = computed<boolean>(() => {
   return selectedFiles.value.length == 1 && !!documentName.value && !!documentCategory.value;
 });
 
+const showFileLimitError = computed<boolean>(() => {
+  return selectedFiles.value.length > 1;
+});
+
 /**
- * Handles file selection and removal events.
+ * Handles file selection event.
  */
-const onFileSelectOrRemove = (event: FileUploadSelectEvent | FileUploadRemoveEvent): void => {
-  showFileLimitError.value = selectedFiles.value.length + event.files.length > 1;
+const onFileSelect = (event: FileUploadSelectEvent): void => {
+  selectedFiles.value = event.files;
+};
+
+/**
+ * Handles file removal event.
+ */
+const onFileRemove = (event: FileUploadRemoveEvent): void => {
+  selectedFiles.value = selectedFiles.value.filter((f) => f !== event.file);
 };
 
 /**
@@ -223,7 +230,6 @@ const resetForm = (): void => {
   publicationDate.value = null;
   reportingPeriod.value = null;
   showErrors.value = false;
-  showFileLimitError.value = false;
 };
 </script>
 
@@ -270,5 +276,9 @@ const resetForm = (): void => {
 }
 .date-row .field {
   flex: 1;
+}
+
+.error-field {
+  border-color: var(--message-error-border);
 }
 </style>
