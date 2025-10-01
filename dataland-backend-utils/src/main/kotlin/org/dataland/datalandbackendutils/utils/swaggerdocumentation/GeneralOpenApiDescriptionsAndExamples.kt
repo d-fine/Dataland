@@ -5,6 +5,7 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_EMAIL_EXAMPLE = "test@example.com"
     const val GENERAL_TIMESTAMP_EXAMPLE = "1751291891271"
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
+    const val GENERAL_DATE_EXAMPLE = "2025-12-31"
 
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
