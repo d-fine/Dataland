@@ -100,11 +100,7 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
-  <UploadDocumentDialog
-    v-if="showUploadModal"
-    :visible="showUploadModal"
-    @close="closeUploadModal"
-  />
+  <UploadDocumentDialog v-if="showUploadModal" :visible="showUploadModal" @close="closeUploadModal" />
 </template>
 
 <script setup lang="ts">
@@ -138,6 +134,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { CompanyRole } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
+// eslint-disable-next-line no-restricted-imports
 import UploadDocumentDialog from '../resources/companyCockpit/UploadDocumentDialog.vue';
 
 const props = defineProps<{

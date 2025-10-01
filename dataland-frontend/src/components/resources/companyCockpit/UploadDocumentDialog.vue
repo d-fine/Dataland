@@ -1,5 +1,5 @@
 <template>
-  <Dialog
+  <PrimeDialog
     v-model:visible="isVisible"
     modal
     header="Upload Document"
@@ -129,12 +129,43 @@
         </div>
       </div>
     </div>
-  </Dialog>
+  </PrimeDialog>
+  <PrimeDialog
+    id="successModal"
+    v-model:visible="successModalIsVisible"
+    modal
+    :closable="false"
+    :dismissableMask="true"
+    style="border-radius: 0.75rem; text-align: center"
+    :show-header="false"
+    data-test="successModal"
+  >
+    <div class="text-center" style="display: flex; flex-direction: column">
+      <div style="margin: 10px">
+        <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+      </div>
+      <div style="margin: 10px">
+        <h2 class="m-0" data-test="successText">Success</h2>
+      </div>
+    </div>
+    <div class="text-block" style="margin: 15px; white-space: pre">Document uploaded successfully.</div>
+    <Button
+      label="CLOSE"
+      @click="
+        () => {
+          successModalIsVisible = false;
+          emit('close');
+          resetForm();
+        }
+      "
+      variant="outlined"
+    />
+  </PrimeDialog>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import Dialog from 'primevue/dialog';
+import PrimeDialog from 'primevue/dialog';
 import FileUpload from 'primevue/fileupload';
 import type { FileUploadSelectEvent, FileUploadRemoveEvent } from 'primevue/fileupload';
 import InputText from 'primevue/inputtext';
@@ -163,6 +194,7 @@ const documentCategories = ref<DocumentCategory[]>([
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
+const successModalIsVisible = ref<boolean>(false);
 
 /**
  * Computed property to check if form is valid.
@@ -216,8 +248,7 @@ const onSubmit = (): void => {
     reportingPeriod: reportingPeriod.value,
   });
 
-  emit('close');
-  resetForm();
+  successModalIsVisible.value = true;
 };
 
 /**
@@ -280,5 +311,18 @@ const resetForm = (): void => {
 
 .error-field {
   border-color: var(--message-error-border);
+}
+
+::v-deep(.p-fileupload-file-thumbnail),
+::v-deep(.p-fileupload-file-icon) {
+  display: none;
+}
+
+::v-deep(.p-fileupload-file-badge) {
+  display: none;
+}
+
+.green-text {
+  color: var(--green);
 }
 </style>
