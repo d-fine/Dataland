@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -55,7 +54,7 @@ class DataAvailabilityChecker
          * @param dataDimensions List of data point dimensions to search for.
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
-        fun getMetaDataOfDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
+        fun getMetaDataOfActiveDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
             val dimensionsToProcess = dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions)
             val formattedTuples =
                 dimensionsToProcess.joinToString(", ") {
@@ -64,7 +63,8 @@ class DataAvailabilityChecker
 
             val queryToExecute =
                 """SELECT * FROM data_point_meta_information
-                WHERE (company_id, data_point_type, reporting_period) IN ($formattedTuples)"""
+                WHERE (company_id, data_point_type, reporting_period) IN ($formattedTuples)
+                AND currently_active = true"""
 
             return if (dimensionsToProcess.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
@@ -81,10 +81,9 @@ class DataAvailabilityChecker
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */
         fun getViewableDataPointIds(dataDimensions: List<BasicDataPointDimensions>): List<String> {
-            val metadata = getMetaDataOfDataPoints(dataDimensions)
-            val viewableMetaData = metadata.filter { it.isDatasetViewableByUser(viewingUser = DatalandAuthentication.fromContextOrNull()) }
-            return if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(viewableMetaData.map { it.dataPointType })) {
-                viewableMetaData.map { it.dataPointId }
+            val metaData = getMetaDataOfActiveDataPoints(dataDimensions)
+            return if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaData.map { it.dataPointType })) {
+                metaData.map { it.dataPointId }
             } else {
                 emptyList()
             }
