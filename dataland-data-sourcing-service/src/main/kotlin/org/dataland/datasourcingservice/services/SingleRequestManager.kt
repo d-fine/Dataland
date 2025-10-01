@@ -161,11 +161,10 @@ class SingleRequestManager
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
             val requestEntity =
-                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId) ?: throw RequestNotFoundApiException(
-                    dataRequestId,
-                )
-            val oldRequestState = requestEntity.state
-            requestEntity.state = newRequestState
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)
+                    ?: throw RequestNotFoundApiException(
+                        dataRequestId,
+                    )
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
 
             if (adminComment != null) {
@@ -173,7 +172,7 @@ class SingleRequestManager
                 requestEntity.adminComment = adminComment
             }
 
-            if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
+            if (requestEntity.state == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
