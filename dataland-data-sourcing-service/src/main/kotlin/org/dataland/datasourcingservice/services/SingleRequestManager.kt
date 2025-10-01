@@ -172,7 +172,7 @@ class SingleRequestManager
                 requestEntity.adminComment = adminComment
             }
 
-            if (requestEntity.state == RequestState.Processing) {
+            if (newRequestState == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
