@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.model.request
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
@@ -22,10 +23,11 @@ data class SingleRequest(
     val companyIdentifier: String,
     @field:JsonProperty(required = true)
     @field:Schema(
+        implementation = DataTypeEnum::class,
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
-    val dataType: String,
+    val dataType: DataTypeEnum,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,

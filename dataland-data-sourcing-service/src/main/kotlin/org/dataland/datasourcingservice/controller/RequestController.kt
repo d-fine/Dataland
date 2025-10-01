@@ -3,6 +3,8 @@ package org.dataland.datasourcingservice.controller
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BulkDataRequest
+import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -19,6 +21,10 @@ import java.util.UUID
 class RequestController(
     @Autowired private val singleRequestManager: SingleRequestManager,
 ) : RequestApi {
+    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
+        TODO("Not yet implemented")
+    }
+
     override fun createRequest(
         singleRequest: SingleRequest,
         userId: String?,

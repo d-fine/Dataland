@@ -13,6 +13,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestI
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BulkDataRequest
+import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -33,6 +35,31 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface RequestApi {
+    /**
+     * A method to post a bulk request to Dataland.
+     * @param bulkDataRequest includes necessary info for the bulk request
+     * @return response after posting a bulk data request to Dataland
+     */
+    @Operation(
+        summary = "Send a bulk request",
+        description = "A bulk of data requests for specific frameworks and companies is being sent.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully processed a bulk of data requests."),
+        ],
+    )
+    @PostMapping(
+        value = ["/bulk"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postBulkDataRequest(
+        @Valid @RequestBody
+        bulkDataRequest: BulkDataRequest,
+    ): ResponseEntity<BulkDataRequestResponse>
+
     /**
      * A method to post a data request to Dataland.
      *
