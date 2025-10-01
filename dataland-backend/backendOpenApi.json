@@ -5772,7 +5772,7 @@
           "fiscalYearEnd": {
             "type": "string",
             "description": "The fiscal year end of the company.",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "reportingPeriodShift": {
@@ -16596,7 +16596,7 @@
           "fiscalYearEnd": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "reportingPeriodShift": {
@@ -16920,15 +16920,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },

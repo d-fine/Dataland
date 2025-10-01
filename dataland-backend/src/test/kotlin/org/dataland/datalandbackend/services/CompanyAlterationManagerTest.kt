@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
+import org.dataland.datalandbackend.exceptions.InvalidReportingPeriodShiftException
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 
 @SpringBootTest(classes = [DatalandBackend::class])
 class CompanyAlterationManagerTest : BaseIntegrationTest() {
@@ -85,12 +87,15 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
         val newCompanyContactDetails = listOf("new@company.com", "another_new@company.com")
+        val newFiscalYearEnd = LocalDate.of(2025, 6, 30)
         val patch =
             CompanyInformationPatch(
                 companyName = newName,
                 headquarters = newHeadquarters,
                 companyAlternativeNames = newAlternativeNames,
                 companyContactDetails = newCompanyContactDetails,
+                fiscalYearEnd = newFiscalYearEnd,
+                reportingPeriodShift = null,
                 sectorCodeWz = null,
             )
 
@@ -190,6 +195,20 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }
+    }
+
+    @Test
+    fun `check that adding an invalid value for reportingPeriodShift throws an exception`() {
+        val patch =
+            CompanyInformationPatch(
+                reportingPeriodShift = 100,
+            )
+
+        val reportingPeriodShiftException =
+            assertThrows<InvalidReportingPeriodShiftException> {
+                companyAlterationManager.patchCompany(existingCompany.companyId, patch = patch)
+            }
+        assertEquals("Only 0 (no deviation) or -1 (deviation) are allowed.", reportingPeriodShiftException.message)
     }
 
     @Test
