@@ -173,11 +173,7 @@ import Select from 'primevue/select';
 import DatePicker from 'primevue/datepicker';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-
-interface DocumentCategory {
-  label: string;
-  value: string;
-}
+import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
 const props = defineProps<{ visible: boolean }>();
 const emit = defineEmits(['close']);
@@ -185,12 +181,21 @@ const emit = defineEmits(['close']);
 const isVisible = ref<boolean>(props.visible);
 const selectedFiles = ref<File[]>([]);
 const documentName = ref<string>('');
-const documentCategory = ref<string>('');
-const documentCategories = ref<DocumentCategory[]>([
-  { label: 'Finance', value: 'finance' },
-  { label: 'Legal', value: 'legal' },
-  { label: 'HR', value: 'hr' },
-]);
+const documentCategory = ref<DocumentMetaInfoDocumentCategoryEnum | null>(null);
+const documentCategories = ref<
+  {
+    label: string;
+    value: DocumentMetaInfoDocumentCategoryEnum;
+  }[]
+>([]);
+
+for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
+  documentCategories.value.push({
+    label: formatCategoryLabel(category),
+    value: category,
+  });
+}
+
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
@@ -206,6 +211,13 @@ const isFormValid = computed<boolean>(() => {
 const showFileLimitError = computed<boolean>(() => {
   return selectedFiles.value.length > 1;
 });
+
+/**
+ * Formats enum-like category values to human-readable labels.
+ */
+function formatCategoryLabel(value: string): string {
+  return value.replace(/([A-Z])/g, ' $1').trim();
+}
 
 /**
  * Handles file selection event.
@@ -257,7 +269,7 @@ const onSubmit = (): void => {
 const resetForm = (): void => {
   selectedFiles.value = [];
   documentName.value = '';
-  documentCategory.value = '';
+  documentCategory.value = null;
   publicationDate.value = null;
   reportingPeriod.value = null;
   showErrors.value = false;
