@@ -87,6 +87,8 @@ internal class CompanyDataControllerTest(
             countryCode = "DE",
             headquarters = "Berlin",
             headquartersPostalCode = "8",
+            fiscalYearEnd = null,
+            reportingPeriodShift = null,
             sector = null,
             sectorCodeWz = null,
             website = null,
