@@ -166,6 +166,7 @@ class SingleRequestManager
                         dataRequestId,
                     )
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
+            requestEntity.state = newRequestState
 
             if (adminComment != null) {
                 requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
