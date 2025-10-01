@@ -338,5 +338,8 @@ class DataSourcingManager
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(uuid)
                 .map { it.toDataSourcingWithoutReferences() }
+                .ifEmpty {
+                    throw DataSourcingNotFoundApiException(uuid)
+                }
         }
     }

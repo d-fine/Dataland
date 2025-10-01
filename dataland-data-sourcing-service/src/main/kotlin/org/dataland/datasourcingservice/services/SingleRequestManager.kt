@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
+import kotlin.collections.ifEmpty
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
@@ -231,5 +232,8 @@ class SingleRequestManager
             return dataRevisionRepository
                 .listDataRequestRevisionsById(uuid)
                 .map { it.toStoredDataRequest() }
+                .ifEmpty {
+                    throw RequestNotFoundApiException(uuid)
+                }
         }
     }
