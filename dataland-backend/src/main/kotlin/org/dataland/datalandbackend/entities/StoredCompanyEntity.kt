@@ -10,12 +10,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.exceptions.InvalidReportingPeriodShiftException
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import java.util.Date
+import java.time.LocalDate
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -43,7 +44,7 @@ data class StoredCompanyEntity(
     @Column(name = "headquarters_postal_code")
     var headquartersPostalCode: String?,
     @Column(name = "fiscal_year_end")
-    var fiscalYearEnd: Date?,
+    var fiscalYearEnd: LocalDate?,
     @Column(name = "reporting_period_shift")
     var reportingPeriodShift: Int?,
     @Column(name = "sector")
@@ -180,7 +181,13 @@ data class StoredCompanyEntity(
         updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
         updateIfNotNull(patch.headquartersPostalCode) { storedCompanyEntity.headquartersPostalCode = it }
         updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it }
-        updateIfNotNull(patch.reportingPeriodShift) { storedCompanyEntity.reportingPeriodShift = it }
+        updateIfNotNull(patch.reportingPeriodShift) { newShift ->
+            if (newShift in setOf(null, 0, -1)) {
+                storedCompanyEntity.reportingPeriodShift = newShift
+            } else {
+                throw InvalidReportingPeriodShiftException()
+            }
+        }
         updateIfNotNull(patch.sector) { storedCompanyEntity.sector = it }
         updateIfNotNull(patch.sectorCodeWz) { storedCompanyEntity.sectorCodeWz = it }
         updateIfNotNull(patch.countryCode) { storedCompanyEntity.countryCode = it }
