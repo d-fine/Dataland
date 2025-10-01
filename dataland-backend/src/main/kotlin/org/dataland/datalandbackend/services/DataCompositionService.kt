@@ -50,7 +50,6 @@ class DataCompositionService
         }
 
         private fun waitUntilSpecificationServiceReady() {
-            Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
             for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
                 try {
                     specificationControllerApi.listFrameworkSpecifications()

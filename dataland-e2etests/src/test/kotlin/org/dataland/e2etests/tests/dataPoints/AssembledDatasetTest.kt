@@ -355,8 +355,7 @@ class AssembledDatasetTest {
         )
 
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val activeSfdrDataset =
-                this.getSfdrDataset(companyId, dummyReportingPeriod)
+            val activeSfdrDataset = this.getSfdrDataset(companyId, dummyReportingPeriod)
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social
@@ -377,8 +376,7 @@ class AssembledDatasetTest {
             dummyReportingPeriod,
         )
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val activeSfdrDataset =
-                this.getSfdrDataset(companyId, dummyReportingPeriod)
+            val activeSfdrDataset = this.getSfdrDataset(companyId, dummyReportingPeriod)
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social

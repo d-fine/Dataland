@@ -19,13 +19,13 @@ data class BasicDataSetDimensions(
      * @return a list of data point dimensions with the same reporting period and company ID as the original dataset dimensions
      */
     fun toBasicDataPointDimensions(dataPointTypes: Collection<String>) =
-        dataPointTypes.map { BasicDataPointDimensions(companyId, it, reportingPeriod) }
+        dataPointTypes.map { BasicDataPointDimensions(companyId = companyId, dataPointType = it, reportingPeriod = reportingPeriod) }
 
     /**
      * Converts the dataset dimensions to the abstract basic data dimensions by using the framework as data type
      * @return a BasicDataDimensions object with the same company ID, framework, and reporting period as the original dataset dimensions
      */
-    fun toBasicDataDimensions() = BasicDataDimensions(companyId, framework, reportingPeriod)
+    fun toBasicDataDimensions() = BasicDataDimensions(companyId = companyId, dataType = framework, reportingPeriod = reportingPeriod)
 
     /**
      * Converts the dataset dimensions to base dimensions by dropping the framework

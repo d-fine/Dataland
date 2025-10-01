@@ -28,16 +28,10 @@ data class BasicDataDimensions(
     override val reportingPeriod: String,
 ) : DataDimensions {
     /**
-     * Converts the basic data dimensions object to a basic data point dimensions object
-     * @param dataPointType the type of the data point the dimensions shall be converted to, defaults to the data type
-     * @return the basic data point dimensions object
-     */
-    fun toBasicDataPointDimensions(dataPointType: String = dataType) = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
-
-    /**
      * Converts the basic data dimensions object to a basic data set dimensions object
      * @param framework the framework of the dataset the dimensions shall be converted to, defaults to the data type
      * @return the basic dataset dimensions object
      */
-    fun toBasicDataSetDimensions(framework: String = dataType) = BasicDataSetDimensions(companyId, framework, reportingPeriod)
+    fun toBasicDataSetDimensions(framework: String = dataType) =
+        BasicDataSetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
 }
