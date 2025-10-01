@@ -13,9 +13,9 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -35,7 +35,7 @@ class DataRequestQueryManager
         private val dataRequestRepository: DataRequestRepository,
         private val dataRequestLogger: DataRequestLogger,
         private val companyDataControllerApi: CompanyDataControllerApi,
-        private val processingUtils: DataRequestProcessingUtils,
+        private val processingUtils: CommunityManagerDataRequestProcessingUtils,
         private val keycloakUserControllerApiService: KeycloakUserService,
         private val dataRequestMasker: DataRequestMasker,
         private val requestPriorityAggregator: RequestPriorityAggregator,

@@ -37,9 +37,9 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         datalandCompanyId: String,
         dataType: String,
         reportingPeriod: String,
-    ): List<DataRequestEntity>?
+    ): List<DataRequestEntity>
 
-    /** This method looks for data requests with the provided params already exist in the database.
+    /** This method looks for data requests with the provided params.
      * @param userId to check for
      * @param datalandCompanyId to check for
      * @param dataType to check for
@@ -51,7 +51,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         datalandCompanyId: String,
         dataType: String,
         reportingPeriod: String,
-    ): List<DataRequestEntity>?
+    ): List<DataRequestEntity>
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
@@ -112,7 +112,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     ): List<DataRequestEntity>
 
     /**
-     * This query counts the number of requests that matches the search fiter and returns this number.
+     * This query counts the number of requests that matches the search filter and returns this number.
      */
     @Query(
         nativeQuery = true,

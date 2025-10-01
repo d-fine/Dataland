@@ -245,7 +245,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -329,7 +329,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -403,7 +403,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -473,7 +473,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -537,7 +537,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -730,7 +730,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -741,7 +741,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "type": "string"
@@ -820,7 +820,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -928,7 +928,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1078,7 +1078,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1186,7 +1186,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1259,7 +1259,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1355,7 +1355,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1436,7 +1436,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1697,7 +1697,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1733,12 +1733,12 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1919,7 +1919,7 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2002,7 +2002,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
@@ -2045,8 +2045,8 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -2134,7 +2134,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2144,7 +2144,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
@@ -2285,7 +2285,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2295,7 +2295,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -2346,7 +2346,7 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -2364,7 +2364,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {
@@ -2392,7 +2392,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {

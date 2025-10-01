@@ -120,6 +120,8 @@ tasks.register("generateClients") {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -135,9 +137,4 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }

@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -15,8 +14,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -24,8 +21,8 @@ import java.time.Instant
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
  */
-@Service
-class DataRequestProcessingUtils
+@Service("CommunityManagerDataRequestProcessingUtils")
+class CommunityManagerDataRequestProcessingUtils
     @Suppress("LongParameterList")
     @Autowired
     constructor(
@@ -36,16 +33,6 @@ class DataRequestProcessingUtils
         private val companyApi: CompanyDataControllerApi,
         private val metaDataApi: MetaDataControllerApi,
     ) {
-        /**
-         * We want to avoid users from using other authentication methods than jwt-authentication, such as
-         * api-key-authentication.
-         */
-        fun throwExceptionIfNotJwtAuth() {
-            if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-                throw AuthenticationMethodNotSupportedException()
-            }
-        }
-
         /**
          * Validates provided company identifiers by querying the backend.
          * @param identifiers the identifiers to validate
@@ -175,10 +162,10 @@ class DataRequestProcessingUtils
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                         userId, companyId, framework.value, reportingPeriod,
-                    )?.filter {
+                    ).filter {
                         it.requestStatus == requestStatus
                     }
-            if (!foundRequests.isNullOrEmpty()) {
+            if (foundRequests.isNotEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     userId,
                     companyId,
@@ -212,32 +199,6 @@ class DataRequestProcessingUtils
                     userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
                 )
             return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
-        }
-
-        /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
-         * and returns the request id
-         * @param companyId the company ID of the data request
-         * @param framework the framework of the data request
-         * @param reportingPeriod the reporting period of the data request
-         * @return the requestId if a request in non-final status exists, else null
-         */
-        fun getRequestIdForDataRequestWithNonFinalStatus(
-            companyId: String,
-            framework: DataTypeEnum,
-            reportingPeriod: String,
-        ): String? {
-            val foundRequests = mutableListOf<DataRequestEntity>()
-            val userId = DatalandAuthentication.fromContext().userId
-            findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Open,
-            )?.forEach { foundRequests.add(it) }
-
-            findAlreadyExistingDataRequestForUser(
-                userId, companyId, framework, reportingPeriod, RequestStatus.Answered,
-            )?.forEach { foundRequests.add(it) }
-
-            return foundRequests.firstOrNull()?.dataRequestId
         }
 
         /**

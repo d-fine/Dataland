@@ -109,24 +109,25 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
     options.global.provide.authenticated = options.keycloak.authenticated;
   }
 
-  options.global.plugins.push({
-    install(app) {
-      app.use(assertDefined(options.router));
+  options.global.plugins.push(
+    {
+      install(app) {
+        app.use(assertDefined(options.router));
+      },
     },
-  });
-
-  options.global.plugins.push({
-    install(app) {
-      app.use(plugin, defaultConfig);
-    },
-  });
+    {
+      install(app) {
+        app.use(plugin, defaultConfig);
+      },
+    }
+  );
 
   /*
-    The mount() function returns a VueWrapper different from the VueWrapper exported by "@vue/test-utils"
-    but that type is not exported and accessing a non-exported type is non-trivial.
-    The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
-    purposes. That is the reason for the ts-ignore and eslint-ignores
-   */
+      The mount() function returns a VueWrapper different from the VueWrapper exported by "@vue/test-utils"
+      but that type is not exported and accessing a non-exported type is non-trivial.
+      The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
+      purposes. That is the reason for the ts-ignore and eslint-ignores
+     */
 
   // @ts-ignore
   return mount(component, options);

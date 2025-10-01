@@ -32,8 +32,8 @@ data class DataRequestPatch(
     )
     val contacts: Set<String>? = null,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_EXAMPLE,
+        description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_MESSAGE_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_MESSAGE_EXAMPLE,
     )
     val message: String? = null,
     @field:Schema(
