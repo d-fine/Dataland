@@ -46,6 +46,8 @@
       tableStyle="min-width: 50rem"
       sortField="companyName"
       :sortOrder="1"
+      paginator
+      :rows="50"
     >
       <template #empty>
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
