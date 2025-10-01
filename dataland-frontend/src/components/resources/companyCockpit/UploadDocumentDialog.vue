@@ -17,7 +17,9 @@
           cancelLabel="Cancel"
           customUpload
           :showUploadButton="false"
-          @uploader="onFileUpload"
+          @select="onFileSelectOrRemove"
+          @remove="onFileSelectOrRemove"
+          :files="selectedFiles"
           :auto="false"
           :multiple="false"
           data-test="file-upload"
@@ -28,13 +30,16 @@
           </template>
         </FileUpload>
         <Message
-          v-if="showErrors && !uploadedFile"
+          v-if="showErrors && selectedFiles.length === 0"
           severity="error"
           variant="simple"
           size="small"
           data-test="file-upload-error"
         >
           Please select a file to upload.
+        </Message>
+        <Message v-if="showFileLimitError" severity="error" variant="simple" size="small">
+          You can only upload one file.
         </Message>
       </div>
 
@@ -134,7 +139,7 @@
 import { ref, computed } from 'vue';
 import Dialog from 'primevue/dialog';
 import FileUpload from 'primevue/fileupload';
-import type { FileUploadUploaderEvent } from 'primevue/fileupload';
+import type { FileUploadSelectEvent, FileUploadRemoveEvent } from 'primevue/fileupload';
 import InputText from 'primevue/inputtext';
 import Select from 'primevue/select';
 import DatePicker from 'primevue/datepicker';
@@ -150,7 +155,7 @@ const props = defineProps<{ visible: boolean }>();
 const emit = defineEmits(['close']);
 
 const isVisible = ref<boolean>(props.visible);
-const uploadedFile = ref<File | null>(null);
+const selectedFiles = ref<File[]>([]);
 const documentName = ref<string>('');
 const documentCategory = ref<string>('');
 const documentCategories = ref<DocumentCategory[]>([
@@ -160,21 +165,21 @@ const documentCategories = ref<DocumentCategory[]>([
 ]);
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
+const showFileLimitError = ref<boolean>(false);
 const showErrors = ref<boolean>(false);
 
 /**
  * Computed property to check if form is valid.
  */
 const isFormValid = computed<boolean>(() => {
-  return !!uploadedFile.value && !!documentName.value && !!documentCategory.value;
+  return selectedFiles.value.length == 1 && !!documentName.value && !!documentCategory.value;
 });
 
 /**
- * Handles file upload.
- * @param event - File upload event object from PrimeVue FileUpload
+ * Handles file selection and removal events.
  */
-const onFileUpload = (event: FileUploadUploaderEvent): void => {
-  uploadedFile.value = Array.isArray(event.files) ? event.files[0] : event.files;
+const onFileSelectOrRemove = (event: FileUploadSelectEvent | FileUploadRemoveEvent): void => {
+  showFileLimitError.value = selectedFiles.value.length + event.files.length > 1;
 };
 
 /**
@@ -190,13 +195,14 @@ const onCancel = (): void => {
  */
 const onSubmit = (): void => {
   showErrors.value = true;
+  const fileToUpload = selectedFiles.value[0] || null;
 
   if (!isFormValid.value) {
     return;
   }
 
   console.log('Submitting:', {
-    file: uploadedFile.value?.name,
+    file: fileToUpload.name,
     documentName: documentName.value,
     documentCategory: documentCategory.value,
     publicationDate: publicationDate.value,
@@ -211,12 +217,13 @@ const onSubmit = (): void => {
  * Resets all form values.
  */
 const resetForm = (): void => {
-  uploadedFile.value = null;
+  selectedFiles.value = [];
   documentName.value = '';
   documentCategory.value = '';
   publicationDate.value = null;
   reportingPeriod.value = null;
   showErrors.value = false;
+  showFileLimitError.value = false;
 };
 </script>
 
