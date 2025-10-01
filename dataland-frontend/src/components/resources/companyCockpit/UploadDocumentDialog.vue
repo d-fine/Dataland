@@ -25,6 +25,10 @@
           :multiple="false"
           data-test="file-upload"
           aria-required="true"
+          :pt="{
+            fileThumbnail: { style: 'display: none;' },
+            fileBadge: { style: 'font-size:60px' },
+          }"
         >
           <template #empty>
             <span>Drag and drop a file here to upload</span>
@@ -231,11 +235,11 @@ async function handleDocumentUpload(): Promise<void> {
     return;
   }
 
-  const fileToUpload = selectedFiles.value[0];
+  const fileToUpload: File = selectedFiles.value[0] as File;
   const documentMetaInfo: DocumentMetaInfo = {
     documentName: documentName.value,
     documentCategory: documentCategory.value!,
-    companyIds: new Set([props.companyId]), // Use Set for type compatibility
+    companyIds: [props.companyId] as unknown as Set<string>,
     publicationDate: publicationDate.value ? publicationDate.value.toISOString().split('T')[0] : undefined,
     reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
   };
@@ -288,7 +292,6 @@ const onSubmit = async (): Promise<void> => {
     await handleDocumentUpload();
     successModalIsVisible.value = true;
   } catch (error) {
-    // Optionally show an error message to the user
     console.error('Document upload failed:', error);
   }
 };
@@ -353,15 +356,6 @@ const resetForm = (): void => {
 
 .error-field {
   border-color: var(--message-error-border);
-}
-
-::v-deep(.p-fileupload-file-thumbnail),
-::v-deep(.p-fileupload-file-icon) {
-  display: none;
-}
-
-::v-deep(.p-fileupload-file-badge) {
-  display: none;
 }
 
 .green-text {
