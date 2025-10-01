@@ -48,7 +48,6 @@ class CommunityManagerListenerUnitTest {
         )
         communityManagerListener =
             CommunityManagerListener(
-                jacksonObjectMapper,
                 mockDataRequestUpdateManager,
                 mockInvestorRelationsManager,
             )
