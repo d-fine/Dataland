@@ -25,6 +25,7 @@
       icon="pi pi-upload"
       iconPos="left"
       :pt="{ root: { style: 'float: right;' } }"
+      @click="openUploadModal"
     />
   </div>
 
@@ -99,6 +100,11 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
+  <UploadDocumentDialog
+    v-if="showUploadModal"
+    :visible="showUploadModal"
+    @close="closeUploadModal"
+  />
 </template>
 
 <script setup lang="ts">
@@ -132,6 +138,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { CompanyRole } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
+import UploadDocumentDialog from '../resources/companyCockpit/UploadDocumentDialog.vue';
 
 const props = defineProps<{
   companyId: string;
@@ -307,6 +314,22 @@ function convertToEnumSet(
     return new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>();
   }
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
+}
+
+const showUploadModal = ref(false);
+
+/**
+ * Opens the upload modal
+ */
+function openUploadModal(): void {
+  showUploadModal.value = true;
+}
+
+/**
+ * Closes the upload modal
+ */
+function closeUploadModal(): void {
+  showUploadModal.value = false;
 }
 
 onMounted(async () => {
