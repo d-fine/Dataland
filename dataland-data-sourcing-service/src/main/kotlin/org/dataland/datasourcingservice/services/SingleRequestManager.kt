@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
@@ -13,10 +14,13 @@ import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 import kotlin.collections.ifEmpty
 
@@ -31,6 +35,8 @@ class SingleRequestManager
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
+        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
+        @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         private val requestLogger = RequestLogger()
 
@@ -78,6 +84,7 @@ class SingleRequestManager
          * @param userId The UUID of the user making the request. If null, it will be extracted from the security context.
          * @return A SingleRequestResponse object containing details about the created request.
          * @throws ResourceNotFoundApiException If the specified company identifier does not exist.
+         * @throws QuotaExceededException If a non-premium user requests more requests than allowed.
          */
         @Transactional
         fun createRequest(
@@ -89,6 +96,7 @@ class SingleRequestManager
             val companyId = dataSourcingValidator.validateAndGetCompanyIdForIdentifier(singleRequest.companyIdentifier)
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
+            performQuotaCheckForNonPremiumUser(userId = userIdToUse.toString(), numberOfNewRequests = 1)
             val idOfConflictingRequest =
                 getIdOfConflictingRequest(userIdToUse, companyId, singleRequest.dataType.value, singleRequest.reportingPeriod)
             return if (idOfConflictingRequest != null) {
@@ -106,6 +114,34 @@ class SingleRequestManager
                     ).toString(),
                 )
             }
+        }
+
+        private fun performQuotaCheckForNonPremiumUser(
+            userId: String,
+            numberOfNewRequests: Int,
+        ) {
+            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId)) {
+                val numberOfDataRequestsPerformedByUserFromTimestamp =
+                    requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
+                        userId, getEpochTimeStartOfDay(),
+                    )
+                if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfNewRequests
+                    > maxRequestsForUser
+                ) {
+                    throw QuotaExceededException(
+                        "Quota has been reached.",
+                        "The daily quota capacity has been reached.",
+                    )
+                }
+            }
+        }
+
+        private fun getEpochTimeStartOfDay(): Long {
+            val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
+            val zoneId = ZoneId.systemDefault()
+            val instantNowZoned = instantNow.atZone(zoneId)
+            val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
+            return startOfDay.toInstant().toEpochMilli()
         }
 
         /**
