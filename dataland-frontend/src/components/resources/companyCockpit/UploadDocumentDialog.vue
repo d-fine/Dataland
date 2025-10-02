@@ -5,7 +5,7 @@
     header="Upload Document"
     :style="{ width: '40rem' }"
     data-test="upload-document-modal"
-    @hide="emit('close')"
+    @hide="onCancel"
   >
     <div class="upload-document-container">
       <div class="field">
@@ -129,7 +129,13 @@
         </div>
         <div>
           <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
-          <Button label="Upload Document" class="p-button" @click="onSubmit" data-test="upload-document-button" />
+          <Button
+            label="Upload Document"
+            class="p-button"
+            @click="onSubmit"
+            :disabled="isUploadButtonDisabled"
+            data-test="upload-document-button"
+          />
         </div>
       </div>
     </div>
@@ -142,6 +148,7 @@
     :dismissableMask="true"
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
+    @hide="closeSuccessModal"
     data-test="successModal"
   >
     <div class="text-center" style="display: flex; flex-direction: column">
@@ -153,17 +160,7 @@
       </div>
     </div>
     <div class="text-block" style="margin: 15px; white-space: pre">Document uploaded successfully.</div>
-    <Button
-      label="CLOSE"
-      @click="
-        () => {
-          successModalIsVisible = false;
-          emit('close');
-          resetForm();
-        }
-      "
-      variant="outlined"
-    />
+    <Button label="CLOSE" @click="closeSuccessModal" variant="outlined" />
   </PrimeDialog>
 </template>
 
@@ -181,9 +178,10 @@ import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@cl
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 const props = defineProps<{ visible: boolean; companyId: string }>();
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'document-uploaded']);
 
 const isVisible = ref<boolean>(props.visible);
 const selectedFiles = ref<File[]>([]);
@@ -198,7 +196,7 @@ const documentCategories = ref<
 
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
   documentCategories.value.push({
-    label: formatCategoryLabel(category),
+    label: humanizeStringOrNumber(category),
     value: category,
   });
 }
@@ -207,6 +205,7 @@ const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
 const successModalIsVisible = ref<boolean>(false);
+const isUploadButtonDisabled = ref<boolean>(false);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -219,13 +218,6 @@ const isFormValid = computed<boolean>(() => {
 const showFileLimitError = computed<boolean>(() => {
   return selectedFiles.value.length > 1;
 });
-
-/**
- * Formats enum-like category values to human-readable labels.
- */
-function formatCategoryLabel(value: string): string {
-  return value.replace(/([A-Z])/g, ' $1').trim();
-}
 
 /**
  * Handles the document upload process.
@@ -280,6 +272,8 @@ const onSubmit = async (): Promise<void> => {
     return;
   }
 
+  isUploadButtonDisabled.value = true;
+
   console.log('Submitting:', {
     file: fileToUpload.name,
     documentName: documentName.value,
@@ -306,6 +300,17 @@ const resetForm = (): void => {
   publicationDate.value = null;
   reportingPeriod.value = null;
   showErrors.value = false;
+  isUploadButtonDisabled.value = false;
+};
+
+/**
+ * Closes the success modal and resets the form.
+ */
+const closeSuccessModal = (): void => {
+  successModalIsVisible.value = false;
+  emit('close');
+  resetForm();
+  emit('document-uploaded');
 };
 </script>
 

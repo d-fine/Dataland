@@ -33,6 +33,7 @@
     <DataTable
       v-if="documentsFiltered && documentsFiltered.length > 0"
       data-test="documents-overview-table"
+      :key="`${refreshDocumentTable}`"
       :value="documentsFiltered"
       :paginator="true"
       :lazy="true"
@@ -105,6 +106,7 @@
     :visible="showUploadModal"
     :company-id="companyId"
     @close="closeUploadModal"
+    @document-uploaded="handleDocumentUpload"
   />
 </template>
 
@@ -159,6 +161,7 @@ const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
+const refreshDocumentTable = ref(0); // incrementing this value will force re-rendering document table
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -219,6 +222,14 @@ async function handleDocumentDownload(documentDownloadInfo: DocumentDownloadInfo
   activeDownloadId.value = documentDownloadInfo.fileReference;
   await downloadDocument(documentDownloadInfo, getKeycloakPromise, percentCompleted);
   activeDownloadId.value = null;
+}
+
+/**
+ * Handles the refresh of the page after upload of documents
+ */
+async function handleDocumentUpload(): Promise<void> {
+  await getAllDocumentsForFilters();
+  refreshDocumentTable.value++;
 }
 
 /**
