@@ -127,7 +127,7 @@
           <span class="required-asterisk">*</span>
           <span class="upload-label">required Fields</span>
         </div>
-        <div>
+        <div class="button-row">
           <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
           <Button
             label="Upload Document"
@@ -179,9 +179,10 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { isAxiosError } from 'axios';
 
 const props = defineProps<{ visible: boolean; companyId: string }>();
-const emit = defineEmits(['close', 'document-uploaded']);
+const emit = defineEmits(['close', 'document-uploaded', 'conflict']);
 
 const isVisible = ref<boolean>(props.visible);
 const selectedFiles = ref<File[]>([]);
@@ -285,10 +286,29 @@ const onSubmit = async (): Promise<void> => {
   try {
     await handleDocumentUpload();
     successModalIsVisible.value = true;
-  } catch (error) {
-    console.error('Document upload failed:', error);
+  } catch (error: unknown) {
+    const documentId = extractDocumentIdFromError(error);
+    if (documentId) {
+      emit('conflict', documentId);
+    } else if (isAxiosError(error) && error.response?.status === 409) {
+      console.error('Document already exists (409 Conflict), but no documentID found.');
+    } else {
+      console.error('Error uploading document:', error);
+    }
   }
 };
+
+/**
+ * Extracts documentID from error response if available.
+ */
+function extractDocumentIdFromError(error: unknown): string | null {
+  if (!isAxiosError(error) || error.response?.status !== 409) return null;
+  const errors = error.response?.data?.errors;
+  if (!Array.isArray(errors)) return null;
+  const conflictError = errors.find((e) => e.errorType === 'conflict');
+  if (!conflictError) return null;
+  return conflictError.summary?.match(/Document ID: ([a-f0-9]+)/i)?.[1] ?? null;
+}
 
 /**
  * Resets all form values.
@@ -331,6 +351,10 @@ const closeSuccessModal = (): void => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.button-row {
   gap: 1rem;
 }
 

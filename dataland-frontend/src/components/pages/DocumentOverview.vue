@@ -25,7 +25,7 @@
       icon="pi pi-upload"
       iconPos="left"
       :pt="{ root: { style: 'float: right;' } }"
-      @click="openUploadModal"
+      @click="showUploadModal = true"
     />
   </div>
 
@@ -104,9 +104,17 @@
   <UploadDocumentDialog
     v-if="showUploadModal"
     :visible="showUploadModal"
-    :company-id="companyId"
-    @close="closeUploadModal"
+    :companyId="companyId"
+    @close="showUploadModal = false"
     @document-uploaded="handleDocumentUpload"
+    @conflict="onDocumentConflict"
+  />
+  <ConflictingDocumentUploadDialog
+    v-if="showConflictModal"
+    :visible="showConflictModal"
+    :documentId="conflictDocumentId"
+    :companyId="companyId"
+    @close="showConflictModal = false"
   />
 </template>
 
@@ -143,6 +151,8 @@ import { CompanyRole } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
 // eslint-disable-next-line no-restricted-imports
 import UploadDocumentDialog from '../resources/companyCockpit/UploadDocumentDialog.vue';
+// eslint-disable-next-line no-restricted-imports
+import ConflictingDocumentUploadDialog from '../resources/companyCockpit/ConflictingDocumentUploadDialog.vue';
 
 const props = defineProps<{
   companyId: string;
@@ -179,6 +189,10 @@ const isUserCompanyOwnerOrUploader = ref(false);
 const allowedToUploadDocuments = computed(() => {
   return isGlobalAdmin.value || isUserCompanyOwnerOrUploader.value;
 });
+
+const showUploadModal = ref(false);
+const showConflictModal = ref(false);
+const conflictDocumentId = ref<string>('');
 
 /**
  * Checks if the user is allowed to upload documents
@@ -329,20 +343,13 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
-const showUploadModal = ref(false);
-
 /**
- * Opens the upload modal
+ * Handles document conflict
  */
-function openUploadModal(): void {
-  showUploadModal.value = true;
-}
-
-/**
- * Closes the upload modal
- */
-function closeUploadModal(): void {
+function onDocumentConflict(documentId: string): void {
   showUploadModal.value = false;
+  conflictDocumentId.value = documentId;
+  showConflictModal.value = true;
 }
 
 onMounted(async () => {
