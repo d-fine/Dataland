@@ -48,6 +48,7 @@ function validateBrandsSection(): void {
   expect(images?.length).to.eq(33);
   for (const [index, image] of (images ?? []).entries()) {
     const filename = image.split('/').slice(-1)[0];
+    if(!filename) throw new Error('Filename is undefined');
     checkImage(`Brand ${index + 1}`, filename);
   }
 }
@@ -83,7 +84,10 @@ function getLandingPageSection(sectionTitle: string): Section {
  * @returns the filename of the found image
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
-  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split('/').slice(-1)[0];
+  const landingPageSection = assertDefined(getLandingPageSection(sectionTitle)?.image?.[0])
+  const singleImage = landingPageSection.split('/').slice(-1)[0];
+  if(!singleImage) throw new Error(`No image found in section ${sectionTitle}`);
+  return singleImage;
 }
 
 /**
@@ -117,7 +121,9 @@ function validateStruggleSection(): void {
       title: 'High Price',
     },
   ];
+
   cy.get('.struggle__cell').each((element, index) => {
+    if(!struggleCellContent[index]) throw new Error(`No content for struggle cell ${index}`);
     checkImage(struggleCellContent[index].title, struggleCellContent[index].imageFilename);
     cy.wrap(element).should('contain.text', struggleCellContent[index].title);
   });

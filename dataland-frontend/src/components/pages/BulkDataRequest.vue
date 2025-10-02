@@ -330,7 +330,7 @@ export default defineComponent({
         console.error(error);
         if (error instanceof AxiosError) {
           const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-          this.message = responseMessages ? responseMessages[0].message : error.message;
+          this.message = responseMessages?.[0]?.message ?? error.message;
         } else {
           this.message =
             'An unexpected error occurred. Please try again or contact the support team if the issue persists.';

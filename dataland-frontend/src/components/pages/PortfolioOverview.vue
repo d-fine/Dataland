@@ -102,10 +102,10 @@ function setCurrentPortfolioId(portfolioId?: string): void {
     currentPortfolioId.value &&
     portfolioNames.value.some((portfolio) => portfolio.portfolioId === currentPortfolioId.value)
   ) {
-    return; // already valid, keep as is
+    return;
   }
 
-  currentPortfolioId.value = portfolioNames.value[0].portfolioId;
+  currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
 }
 
 /**

@@ -54,6 +54,10 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
 export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCellConfig<any> | undefined {
   if (field.component in formFieldValueGetterFactoryMap) {
     const valueGetterFactory = formFieldValueGetterFactoryMap[field.component];
+
+    if(!valueGetterFactory) {
+      return undefined;
+    }
     const valueGetter = valueGetterFactory(path, field);
     return {
       type: 'cell',

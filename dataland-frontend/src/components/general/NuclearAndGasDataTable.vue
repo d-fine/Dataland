@@ -100,7 +100,7 @@ function generateRowContents(): void {
   for (const [idx, key] of keys.entries()) {
     if (isNonEligible(nuclearAndGasData.value)) {
       listOfRowContents.value.push({
-        economicActivity: listOfActivities[idx].description,
+        economicActivity: listOfActivities[idx]!.description,
         proportion: formatPercentageNumberAsString(nuclearAndGasData.value[key as keyof NuclearAndGasNonEligible]),
       });
     } else {
@@ -108,7 +108,7 @@ function generateRowContents(): void {
         key as keyof typeof nuclearAndGasData.value
       ] as NuclearAndGasEnvironmentalObjective;
       listOfRowContents.value.push({
-        economicActivity: listOfActivities[idx].description,
+        economicActivity: listOfActivities[idx]!.description,
         mitigationAndAdaptation: formatPercentageNumberAsString(objective?.mitigationAndAdaptation),
         mitigation: formatPercentageNumberAsString(objective?.mitigation),
         adaptation: formatPercentageNumberAsString(objective?.adaptation),
