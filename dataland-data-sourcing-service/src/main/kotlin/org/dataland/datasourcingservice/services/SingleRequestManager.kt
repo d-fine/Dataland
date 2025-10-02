@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.exceptions.DuplicateRequestException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -59,35 +58,17 @@ class SingleRequestManager
                 }.id
         }
 
-        private fun assertNoConflictingRequestExists(
+        private fun getIdOfConflictingRequest(
             userId: UUID,
             companyId: UUID,
             dataType: String,
             reportingPeriod: String,
-        ) {
-            val duplicateRequests =
-                requestRepository
-                    .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
-                        userId, companyId, dataType, reportingPeriod,
-                    ).filter { it.state == RequestState.Open || it.state == RequestState.Processing }
-
-            if (duplicateRequests.isNotEmpty()) {
-                val duplicate = duplicateRequests.first()
-                requestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
-                    userId,
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                    duplicate.state,
-                )
-                throw DuplicateRequestException(
-                    duplicate.id,
-                    duplicate.reportingPeriod,
-                    duplicate.companyId,
-                    duplicate.dataType,
-                )
-            }
-        }
+        ): UUID? =
+            requestRepository
+                .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
+                    userId, companyId, dataType, reportingPeriod,
+                ).firstOrNull { it.state == RequestState.Open || it.state == RequestState.Processing }
+                ?.id
 
         /**
          * Creates a new data request based on the provided SingleRequest object.
@@ -108,16 +89,23 @@ class SingleRequestManager
             val companyId = dataSourcingValidator.validateAndGetCompanyIdForIdentifier(singleRequest.companyIdentifier)
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-            assertNoConflictingRequestExists(userIdToUse, companyId, singleRequest.dataType.toString(), singleRequest.reportingPeriod)
-            return SingleRequestResponse(
-                storeRequest(
-                    userId = userIdToUse,
-                    companyId = companyId,
-                    dataType = singleRequest.dataType.toString(),
-                    reportingPeriod = singleRequest.reportingPeriod,
-                    memberComment = singleRequest.memberComment,
-                ).toString(),
-            )
+            val idOfConflictingRequest =
+                getIdOfConflictingRequest(userIdToUse, companyId, singleRequest.dataType.value, singleRequest.reportingPeriod)
+            return if (idOfConflictingRequest != null) {
+                SingleRequestResponse(
+                    idOfConflictingRequest.toString(),
+                )
+            } else {
+                SingleRequestResponse(
+                    storeRequest(
+                        userId = userIdToUse,
+                        companyId = companyId,
+                        dataType = singleRequest.dataType.value,
+                        reportingPeriod = singleRequest.reportingPeriod,
+                        memberComment = singleRequest.memberComment,
+                    ).toString(),
+                )
+            }
         }
 
         /**

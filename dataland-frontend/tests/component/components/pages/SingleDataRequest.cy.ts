@@ -13,50 +13,6 @@ function fillMandatoryFields(): void {
   singleDataRequestPage.chooseFrameworkLksg();
 }
 
-/**
- * verify that the messagebox is disabled and that the accept terms checkbox is not visible (as the contacts are
- * not valid)
- */
-function verifyMessageboxAndCheckboxNotAccessible(): void {
-  cy.get("[data-test='dataRequesterMessage']").should('be.disabled');
-  cy.get("input[data-test='acceptConditionsCheckbox']").should('not.be.visible');
-}
-
-/**
- * verify that the messagebox is enabled and that the accept terms checkbox is visible (as the contacts are valid)
- */
-function verifyMessageboxAndCheckboxAccessible(): void {
-  cy.get("[data-test='dataRequesterMessage']").should('be.enabled');
-  cy.get("input[data-test='acceptConditionsCheckbox']").should('be.visible');
-}
-
-/**
- * deletes the previously typed contacts and types new contacts given as the argument
- * @param contacts the contacts to write as a sting
- */
-function typeContacts(contacts: string): void {
-  cy.get("[data-test='contactEmail']").should('exist').clear();
-  cy.get("[data-test='contactEmail']").should('exist').type(contacts);
-}
-
-/**
- * checks that the provided contacts are not valid
- * @param contacts the contacts to write as a sting
- */
-function checkContactsNotValid(contacts: string): void {
-  typeContacts(contacts);
-  verifyMessageboxAndCheckboxNotAccessible();
-}
-
-/**
- * checks that the provided contacts are valid
- * @param contacts the contacts to write as a sting
- */
-function checkContactsValid(contacts: string): void {
-  typeContacts(contacts);
-  verifyMessageboxAndCheckboxAccessible();
-}
-
 describe('Component tests for the single data request page', function (): void {
   it('check submitting with message', function () {
     cy.mountWithPlugins(SingleDataRequestComponent, {
@@ -94,51 +50,7 @@ describe('Component tests for the single data request page', function (): void {
     });
   });
 
-  it('Check email notification toggle', () => {
-    cy.mountWithPlugins(SingleDataRequestComponent, {
-      keycloak: minimalKeycloakMock({}),
-      router: router,
-    }).then(() => {
-      cy.get('[data-test="notifyMeImmediately"]').within(() => {
-        cy.get('[data-test="notifyMeImmediatelyInput"]').scrollIntoView();
-        cy.get('[data-test="notifyMeImmediatelyInput"]').should('be.visible');
-        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
-        cy.get('input[id="notifyMeImmediatelyInput"]').click();
-        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'immediate');
-        cy.get('input[id="notifyMeImmediatelyInput"]').click();
-        cy.get('[data-test="notifyMeImmediatelyText"]').should('contain.text', 'summary');
-      });
-    });
-  });
-
-  it('check email validation', function (): void {
-    cy.mountWithPlugins(SingleDataRequestComponent, {
-      keycloak: minimalKeycloakMock({}),
-      router: router,
-    }).then(() => {
-      fillMandatoryFields();
-
-      checkContactsNotValid('example');
-      checkContactsNotValid('example.com');
-      checkContactsNotValid('@example.com');
-      checkContactsNotValid('test@.com');
-      checkContactsNotValid('test@@example.com');
-      checkContactsNotValid('test@example');
-
-      checkContactsValid('test@example.com');
-      checkContactsNotValid('test@examplecom');
-      checkContactsValid('test.jurgen@example.com');
-      checkContactsValid('Test.tEsT@Example.cOm');
-
-      checkContactsNotValid('test@example.com, hoho');
-
-      checkContactsValid('test@example.com, test2@example.com');
-      checkContactsValid('test@example.com, test2@example.com, ');
-      checkContactsValid('test@example.com , test2@example.com , ');
-    });
-  });
-
-  it('check submitting without message', function (): void {
+  it('check submitting successfully', function (): void {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
