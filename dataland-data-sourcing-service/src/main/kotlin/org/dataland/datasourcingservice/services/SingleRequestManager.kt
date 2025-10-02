@@ -36,7 +36,7 @@ class SingleRequestManager
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
-        @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
+        @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         private val requestLogger = RequestLogger()
 

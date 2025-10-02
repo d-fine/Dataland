@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.dataSourcingService
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingState
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.dataSourcingService.openApiClient.model.StoredDataSourcing
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
@@ -88,7 +89,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
             assertForbiddenException {
                 apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
                     companyId,
-                    testDataType,
+                    testDataType.toString(),
                     testReportingPeriod,
                 )
             }
@@ -97,7 +98,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         assertResourceNotFoundException {
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
                 companyId,
-                testDataType,
+                testDataType.toString(),
                 testReportingPeriod,
             )
         }
@@ -107,7 +108,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         val dataSourcing =
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
                 companyId,
-                testDataType,
+                testDataType.toString(),
                 testReportingPeriod,
             )
 
@@ -127,7 +128,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         val newRequest =
             createRequest(
                 companyId = storedDataSourcing.companyId,
-                dataType = storedDataSourcing.dataType,
+                dataType = SingleRequest.DataType.valueOf(storedDataSourcing.dataType),
                 reportingPeriod = storedDataSourcing.reportingPeriod,
                 comment = "Second request",
                 user = TechnicalUser.PremiumUser,
@@ -226,7 +227,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         return companyIds.map {
             apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
                 it,
-                testDataType,
+                testDataType.toString(),
                 testReportingPeriod,
             )
         }
