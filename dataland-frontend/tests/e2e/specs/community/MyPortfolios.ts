@@ -67,10 +67,10 @@ describeIf(
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${companyTimestamp}`);
-        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
+        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId]![0]);
         await uploadCompanyViaApi(token, companyToUpload);
         const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${companyTimestamp}`);
-        permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId][0]);
+        permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId]![0]);
         await uploadCompanyViaApi(token, secondCompanyToUpload);
       });
     });

@@ -10,7 +10,7 @@ export const HighImpactClimateSectorsKeys: { [key: string]: string } = {};
 
 export const optionsForHighImpactClimateSectors = naceCodeTreeFilteredByHighImpactClimateSectors.map((sector) => {
   const key = sector.key;
-  const keyDescription = sector.label?.split(' - ')[1].trim() ?? `NACE Code ${key}`;
+  const keyDescription = sector.label?.split(' - ')[1]?.trim() ?? `NACE Code ${key}`;
   HighImpactClimateSectorsKeys[`NaceCode${key}` as keyof typeof HighImpactClimateSectorsKeys] = keyDescription;
   return {
     label: sector.label,

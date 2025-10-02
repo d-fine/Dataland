@@ -139,7 +139,7 @@ const openAccordions = ref<Record<string, boolean>>({});
  * Reads from the 'openAccordions' record if the accordion with the title passed as input is open or not
  * @param title
  */
-const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
+const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title]! : false);
 
 /**
  * Toggles the open state of an accordion section. If the accordion section

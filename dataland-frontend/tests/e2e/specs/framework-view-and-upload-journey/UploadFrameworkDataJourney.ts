@@ -154,7 +154,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('button[name="addCompany"]').click();
         cy.get('li[id="createCompanyForm-incomplete"]').should('exist');
         cy.get("input[name='permId']").type(
-          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0]
+          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0]!
         );
         cy.contains(identifierDoesExistMessage).should('exist');
         cy.get("input[name='permId']").type('thisshouldnotexist');

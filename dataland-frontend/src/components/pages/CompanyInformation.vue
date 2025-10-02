@@ -263,7 +263,7 @@ async function getParentCompany(parentCompanyLei: string): Promise<void> {
       1
     );
     if (companyIdAndNames.length > 0) {
-      parentCompany.value = companyIdAndNames[0];
+      parentCompany.value = companyIdAndNames[0]!;
       hasParentCompany.value = true;
     } else {
       hasParentCompany.value = false;

@@ -94,7 +94,7 @@ function humanizeViaMapping(rawText: string): string {
   };
 
   const lowerCaseText = rawText.toLowerCase();
-  return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : '';
+  return mappingObject[lowerCaseText] ?? '';
 }
 
 /**

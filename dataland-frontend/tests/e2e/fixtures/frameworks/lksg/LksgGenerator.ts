@@ -83,7 +83,7 @@ export class LksgGenerator extends Generator {
    */
   generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
     return {
-      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0],
+      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0]!,
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };

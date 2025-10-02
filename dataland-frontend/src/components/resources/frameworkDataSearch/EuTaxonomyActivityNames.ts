@@ -1,5 +1,4 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 /**
  * @param target the camel case string we want to format
@@ -7,20 +6,6 @@ import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
  */
 export function activityApiNameToHumanizedName(target: string): string {
   return assertDefined(Object.entries(ActivityName).find(([key]) => key == target))[1];
-}
-
-/**
- * @returns the activities as dropdown options
- */
-export function getActivityNamesAsDropdownOptions(): DropdownOption[] {
-  return Object.values(ActivityName).map((it) => {
-    const indexOfActivity = Object.values(ActivityName).indexOf(it);
-    const keyOfActivity = Object.keys(ActivityName)[indexOfActivity];
-    return {
-      label: it,
-      value: keyOfActivity,
-    };
-  });
 }
 
 /**

@@ -372,7 +372,7 @@ async function editDataset(event: Event): Promise<void> {
     await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
   } else if (availableReportingPeriods.value.length > 1) {
     reportingPeriodsOverlayPanel.value?.toggle(event);
-  } else if (availableReportingPeriods.value.length === 1) {
+  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
     await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
   }
 }

@@ -17,7 +17,7 @@ export function generatePcafPreparedFixtures(): Array<FixtureData<PcafData>> {
   const preparedFixturesBeforeManipulation = generatePcafFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
+    preparedFixtures.push(manipulatorFunctions[i]!(preparedFixturesBeforeManipulation[i]!));
   }
 
   return preparedFixtures;

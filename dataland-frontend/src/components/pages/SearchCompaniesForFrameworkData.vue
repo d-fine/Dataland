@@ -103,7 +103,7 @@ export default defineComponent({
     PrimeButton,
   },
   created() {
-    globalThis.addEventListener('scroll', this.windowScrollHandler);
+    globalThis.addEventListener('scroll', () => this.handleScroll());
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -132,9 +132,6 @@ export default defineComponent({
       totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
-      windowScrollHandler: (): void => {
-        this.handleScroll();
-      },
       hasUserUploaderRights: null as null | boolean,
     };
   },
@@ -351,7 +348,7 @@ export default defineComponent({
     },
   },
   unmounted() {
-    globalThis.removeEventListener('scroll', this.windowScrollHandler);
+    globalThis.removeEventListener('scroll', () => this.handleScroll());
   },
 });
 </script>

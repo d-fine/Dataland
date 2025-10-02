@@ -14,7 +14,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()),
     generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()),
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
-      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
+      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]!
     ),
     manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()),
     manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()),
@@ -36,7 +36,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @returns One SFDR fixture data set without null entries in the data
  */
 function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
-  return generateSfdrFixtures(1, 0)[0];
+  return generateSfdrFixtures(1, 0)[0]!;
 }
 
 /**
@@ -243,7 +243,7 @@ function generateFixtureOfTwoCompaniesWithSubsidiaryRelationship(
   input_parent: FixtureData<SfdrData>,
   input_child: FixtureData<SfdrData>
 ): Array<FixtureData<SfdrData>> {
-  input_child.companyInformation.parentCompanyLei = input_parent.companyInformation.identifiers[IdentifierType.Lei][0];
+  input_child.companyInformation.parentCompanyLei = input_parent.companyInformation.identifiers[IdentifierType.Lei]![0];
   input_child.companyInformation.companyName = 'test company with parent lei and existing parent';
   input_parent.companyInformation.companyName = 'test company with lei and existing child';
   return [input_parent, input_child];

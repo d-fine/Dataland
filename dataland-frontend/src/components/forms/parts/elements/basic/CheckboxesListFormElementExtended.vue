@@ -164,7 +164,7 @@ export default defineComponent({
       currentReportValue: undefined as string | undefined,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: undefined as string | undefined,
-      checkboxValue: [] as Array<string>,
+      checkboxValue: [] as string[],
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
@@ -229,8 +229,10 @@ export default defineComponent({
     checkboxValue(newArr: string[]) {
       if (newArr.length > 1) {
         const last = newArr[newArr.length - 1];
-        this.checkboxValue = [last];
-        this.yesNoValue = last;
+        if (last !== undefined) {
+          this.checkboxValue = [last];
+          this.yesNoValue = last;
+        }
       } else if (newArr.length === 1) {
         const [only] = newArr;
         if (this.yesNoValue !== only) {

@@ -226,7 +226,7 @@ function assertTable(tableSelector: string, expected: (string | number | undefin
     cy.wrap(row).within(() => {
       cy.get('th, td').each((cell, cellIndex) => {
         const element = cy.wrap(cell);
-        const comparator = expected[rowIndex][cellIndex];
+        const comparator = expected[rowIndex]![cellIndex];
         switch (typeof comparator) {
           case 'string':
           case 'number':

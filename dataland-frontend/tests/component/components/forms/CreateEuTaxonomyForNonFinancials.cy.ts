@@ -182,7 +182,7 @@ function fillAndValidateGeneralSection(reports: string[]): void {
   cy.get('input[name="provider"]').clear().type('Assurance Provider');
   cy.get('div[label="General"]')
     .find('[data-test="dataReport"]')
-    .each((reportField) => selectItemFromDropdownByValue(cy.wrap(reportField), reports[0]));
+    .each((reportField) => selectItemFromDropdownByValue(cy.wrap(reportField), reports[0]!));
   fillAndValidateAssuranceReportPageNumber();
 }
 
@@ -198,7 +198,7 @@ function fillAndValidateOtherSections(reports: string[]): void {
   );
   selectItemFromDropdownByValue(
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] [data-test="dataReport"]'),
-    reports[0]
+    reports[0]!
   );
 
   cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="page"]')

@@ -101,7 +101,7 @@ describe('As a developer, I want to ensure that security relevant headers are se
   it('test for keycloak response', () => {
     cy.request('GET', `${getBaseUrl()}/keycloak/realms/datalandsecurity`).then((response): void => {
       checkCommonHeaders(response);
-      assert.equal(response.headers['x-frame-options'].toString().toLowerCase(), 'sameorigin');
+      assert.equal(response.headers['x-frame-options']!.toString().toLowerCase(), 'sameorigin');
     });
   });
 });

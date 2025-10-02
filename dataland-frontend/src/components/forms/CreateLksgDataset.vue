@@ -149,17 +149,13 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
+const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
+const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 
-const yearOfDataDate = computed({
-  get(): string {
+const yearOfDataDate = computed<string | undefined>({
+  get() {
     const currentDate = companyAssociatedLksgData.value.data?.general?.masterData?.dataDate;
-    if (currentDate === undefined) {
-      return '';
-    } else {
-      return currentDate.split('-')[0];
-    }
+    return currentDate ? currentDate.split('-')[0] : undefined;
   },
   set() {
     // IGNORED
