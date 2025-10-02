@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -42,6 +43,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@DefaultMocks
 @Suppress("LongParameterList")
 class DataManagerExceptionTest
     @Autowired

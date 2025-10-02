@@ -20,6 +20,7 @@ import org.dataland.datalandbackend.utils.DataTypeNameMapper
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -268,10 +269,10 @@ open class DataController<T>(
         companyAndReportingPeriodPairs: Set<Pair<String, String>>,
         framework: String,
         correlationId: String,
-    ): Map<BasicDataDimensions, String> =
+    ): Map<BasicDataSetDimensions, String> =
         datasetStorageService.getDatasetData(
             companyAndReportingPeriodPairs.mapTo(mutableSetOf()) {
-                BasicDataDimensions(
+                BasicDataSetDimensions(
                     it.first,
                     framework,
                     it.second,

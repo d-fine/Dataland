@@ -1,6 +1,6 @@
 {
   "framework": {
-    "id": "dummy-framework",
+    "id": "sfdr",
     "ref": "https://dummy.com/specifications/frameworks/dummy-framework"
   },
   "name": "DummyFramework",

@@ -16,7 +16,7 @@ abstract class BaseExportTest<T> {
     protected lateinit var companyWithNullFieldLei: String
     protected lateinit var companyWithNonNullFieldId: String
     protected lateinit var companyWithNonNullFieldLei: String
-    protected val reportingPeriod = "1999"
+    protected val reportingPeriod = "2024"
 
     // Abstract methods that subclasses must implement
     protected abstract fun getTestDataWithNullField(): T

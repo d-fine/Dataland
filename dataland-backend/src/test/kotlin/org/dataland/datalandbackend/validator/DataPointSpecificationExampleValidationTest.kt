@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.utils.DataPointValidator
-import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -13,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.io.File
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@DefaultMocks
 class DataPointSpecificationExampleValidationTest
     @Autowired
     constructor(
         private val dataPointValidator: DataPointValidator,
-        private val objectMapper: ObjectMapper,
     ) {
         companion object {
             private const val DATA_POINT_BASE_TYPE_DIRECTORY =
@@ -39,9 +39,6 @@ class DataPointSpecificationExampleValidationTest
                         Arguments.of(dataPointBaseTypeId, it)
                     }
         }
-
-        @MockitoBean
-        private lateinit var ignored: DocumentControllerApi
 
         @ParameterizedTest(name = "Ensure the datapoint example {0} matches the specification")
         @MethodSource("dataPointBaseTypeTestProvider")
@@ -100,9 +97,8 @@ class DataPointSpecificationExampleValidationTest
                 schema.isArray -> {
                     val array = objectMapper.createArrayNode()
                     val schemaElement = schema.firstOrNull()
-                    val exampleArray = example
-                    if (exampleArray.isArray && schemaElement != null) {
-                        exampleArray.forEach { exampleElement ->
+                    if (example.isArray && schemaElement != null) {
+                        example.forEach { exampleElement ->
                             array.add(buildJsonFromSchemaWithExample(schemaElement, exampleElement, objectMapper))
                         }
                     }

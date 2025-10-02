@@ -12,16 +12,16 @@ import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInform
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
-import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -53,6 +53,8 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
+        private val dataDeliveryService: DataDeliveryService,
+        private val dataSetAssembler: DatasetAssembler,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -292,9 +294,9 @@ class AssembledDataManager
             correlationId: String,
         ): String {
             val dataPoints = getDataPointIdsForDataset(datasetId)
-            return dataPointUtils.assembleSingleDataSet(
+            return dataSetAssembler.assembleSingleDataSet(
                 dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
-                dataPointUtils.getFrameworkTemplate(dataType),
+                dataType,
             )
         }
 
@@ -314,67 +316,11 @@ class AssembledDataManager
             return dataPoints
         }
 
-        /**
-         * Assembles datasets by retrieving the data points from the internal storage
-         * and filling their content into the framework template
-         *
-         * This function processes multiple datasets at once. Each dataset in the input is identified by a
-         * BasicDataDimensions object.
-         *
-         * @param dataDimensionsToDataPointIdMap a map of all required data point IDs grouped by data set
-         * @param correlationId the correlation ID for the operation
-         * @return the dataset in the form of a JSON string
-         */
-        private fun assembleDatasetsFromDataPointIds(
-            dataDimensionsToDataPointIdMap: Map<BasicDataDimensions, List<String>>,
-            correlationId: String,
-        ): Map<BasicDataDimensions, String> {
-            val allStoredDatapoints =
-                dataPointManager.retrieveDataPoints(dataDimensionsToDataPointIdMap.flatMap { it.value }, correlationId)
-
-            val frameworkToTemplate =
-                dataDimensionsToDataPointIdMap.keys
-                    .map { it.dataType }
-                    .toSet()
-                    .associateWith { dataPointUtils.getFrameworkTemplate(it) }
-
-            val dataDimensionsToUploadedDataPoints =
-                dataDimensionsToDataPointIdMap
-                    .mapValues { (_, dataPointIds) -> dataPointIds.mapNotNull { allStoredDatapoints[it] } }
-
-            return dataDimensionsToUploadedDataPoints.mapValues { (dataDimensions, dataPoints) ->
-                dataPointUtils.assembleSingleDataSet(
-                    dataPoints,
-                    frameworkToTemplate[dataDimensions.dataType]
-                        ?: throw IllegalArgumentException("Framework not found for data dimensions: $dataDimensions"),
-                )
-            }
-        }
-
         @Transactional(readOnly = true)
         override fun getDatasetData(
-            dataDimensionList: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDataSetDimensions>,
             correlationId: String,
-        ): Map<BasicDataDimensions, String> {
-            val dataPointDimensions = dataPointUtils.getBasicDataPointDimensionsForDataDimensions(dataDimensionList, correlationId)
-            val dataPointIds =
-                dataPointDimensions.entries
-                    .associate { (dataDimension, dataPointDimensionList) ->
-                        val availableDataPointIds = dataPointManager.getAssociatedDataPointIds(dataPointDimensionList)
-                        dataDimension to
-                            if (availableDataPointIds.keys
-                                    .map { it.dataPointType }
-                                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
-                                    .isNotEmpty()
-                            ) {
-                                availableDataPointIds.values.toList()
-                            } else {
-                                emptyList()
-                            }
-                    }.filterNot { it.value.isEmpty() }
-
-            return assembleDatasetsFromDataPointIds(dataPointIds, correlationId)
-        }
+        ): Map<BasicDataSetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensionsSet, correlationId)
 
         @Transactional(readOnly = true)
         override fun getAllDatasetsAndMetaInformation(
@@ -393,7 +339,7 @@ class AssembledDataManager
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return getDatasetData(
-                reportingPeriods.mapTo(mutableSetOf()) { BasicDataDimensions(companyId, framework, it) },
+                reportingPeriods.mapTo(mutableSetOf()) { BasicDataSetDimensions(companyId, framework, it) },
                 correlationId,
             ).map { (dataDimensions, dataString) ->
                 PlainDataAndMetaInformation(
@@ -404,7 +350,7 @@ class AssembledDataManager
                             dataType = searchFilter.dataType,
                             reportingPeriod = dataDimensions.reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions),
+                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions.toBasicDataDimensions()),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = dataString,
