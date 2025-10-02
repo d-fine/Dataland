@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
@@ -276,5 +277,57 @@ interface RequestApi {
     fun getRequestHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
+    ): ResponseEntity<List<StoredRequest>>
+
+    /**
+     * Search requests by filters.
+     */
+    @Operation(
+        summary = "Search requests by filters.",
+        description =
+            "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved requests."),
+            ApiResponse(
+                responseCode = "400",
+                description = "At least one of your provided filters is not of the correct format.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to search among all requests.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun searchRequests(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        companyId: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        dataType: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        reportingPeriod: String? = null,
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        requestState: RequestState? = null,
     ): ResponseEntity<List<StoredRequest>>
 }

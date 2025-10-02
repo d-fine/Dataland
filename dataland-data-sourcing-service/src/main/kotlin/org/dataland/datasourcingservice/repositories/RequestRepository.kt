@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.RequestState
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.util.UUID
@@ -29,7 +30,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     )
     fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
 
-/** This method counts the number of data requests that a user
+    /** This method counts the number of data requests that a user
      * has opened after a specified timestamp.
      * @param userId to check for
      * @param timestamp to check for
@@ -45,4 +46,27 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
         userId: String,
         timestamp: Long,
     ): Int
+
+    /**
+     * Return the list of all requests that match the optional filters.
+     * @param companyId to filter by
+     * @param dataType to filter by
+     * @param reportingPeriod to filter by
+     * @param state to filter by
+     * @return list of matching RequestEntity objects
+     */
+    @Query(
+        "SELECT request FROM RequestEntity request " +
+            "WHERE " +
+            "(:companyId IS NULL OR request.companyId = :companyId) AND " +
+            "(:dataType IS NULL OR request.dataType = :dataType) AND " +
+            "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
+            "(:state IS NULL OR request.state = :state)",
+    )
+    fun searchRequests(
+        companyId: UUID?,
+        dataType: String?,
+        reportingPeriod: String?,
+        state: RequestState?,
+    ): List<RequestEntity>
 }
