@@ -26,7 +26,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
-  const preparedFixtures = manipulatorFunctions.map((func, index) => func(preparedFixturesBeforeManipulation[index]));
+  const preparedFixtures = manipulatorFunctions.map((func, index) => func(preparedFixturesBeforeManipulation[index]!));
 
   preparedFixtures.push(
     generateFixtureForDate('2023-04-18'),
@@ -42,7 +42,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
  * @returns the fixture
  */
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0)[0];
+  const newFixture = generateLksgFixtures(1, 0)[0]!;
   newFixture.t.general.masterData.industry = generateNaceCodes(1, 5);
   newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = <{ [key: string]: Array<string> }>{
     DE: generateNaceCodes(1, 5),
@@ -57,7 +57,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
  * @returns the manipulated fixture data
  */
 function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
   newFixture.companyInformation.companyName = 'lksg-not-a-manufacturing-company-but-has-production-sites';
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
   const twoProductionSites = [
@@ -77,7 +77,7 @@ function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
  * @returns the manipulated fixture data
  */
 function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
 
   newFixture.companyInformation.companyName = 'lksg-with-nulls-and-no-child-labor-under-18';
   newFixture.t.social!.childLabor!.employeeSUnder18 = YesNo.No;
@@ -91,7 +91,7 @@ function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): Fixture
  * @returns the manipulated fixture data
  */
 function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0)[0];
+  const newFixture = generateLksgFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'lksg-with-procurement-categories';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
@@ -107,7 +107,7 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
  * @returns the manipulated fixture data
  */
 function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0)[0];
+  const newFixture = generateLksgFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'lksg-with-subcontracting-countries';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionViaSubcontracting = YesNo.Yes;
@@ -128,7 +128,7 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
  * @returns the manipulated fixture data
  */
 function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
   newFixture.companyInformation.companyName = 'six-lksg-data-sets-in-different-years';
   if (newFixture.t.general?.masterData?.dataDate) newFixture.t.general.masterData.dataDate = '2022-01-01';
   else console.error('fakeFixture created improperly: dataDate missing');
@@ -142,7 +142,7 @@ function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgDa
  * @returns the manipulated fixture data
  */
 function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
 
   newFixture.companyInformation.companyName = 'one-lksg-data-set-with-two-production-sites';
@@ -167,10 +167,10 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
  * @returns the manipulated fixture data
  */
 function generateFixtureForDate(date: string): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
   newFixture.companyInformation.companyName = 'LkSG-date-' + date;
   newFixture.t.general.masterData.dataDate = date;
-  newFixture.reportingPeriod = date.split('-')[0];
+  newFixture.reportingPeriod = date.split('-')[0]!;
   return newFixture;
 }
 
@@ -180,7 +180,7 @@ function generateFixtureForDate(date: string): FixtureData<LksgData> {
  * @returns the dataset
  */
 function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1)[0]!;
   newFixture.companyInformation.companyName = 'lksg-almost-only-nulls';
 
   newFixture.t.governance = null;
@@ -206,7 +206,7 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
  * @returns the dataset
  */
 function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0)[0];
+  const newFixture = generateLksgFixtures(1, 0)[0]!;
   const brokenFileReference = '123';
   newFixture.companyInformation.companyName = 'TestForBrokenFileReference';
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference =

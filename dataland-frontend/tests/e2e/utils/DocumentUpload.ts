@@ -28,7 +28,7 @@ function uploadAllDocumentsFromFolder(token: string, documentDirectory: string):
     const pdfFileNames = allFileNames.filter((name: string) => name.endsWith('.pdf'));
     for (const name of pdfFileNames) {
       cy.task<{ [type: string]: ArrayBuffer }>('readFile', documentDirectory + name).then((bufferObject) =>
-        uploadDocumentViaApi(token, bufferObject.data, name)
+        uploadDocumentViaApi(token, bufferObject.data!, name)
       );
     }
   });

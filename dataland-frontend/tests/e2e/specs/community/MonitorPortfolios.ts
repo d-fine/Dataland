@@ -136,13 +136,13 @@ describe('Portfolio Monitoring Modal', () => {
           const financialCompany = generateDummyCompanyInformation(companyNameFinancial, 'financials');
           const noSectorCompany = generateDummyCompanyInformation(companyNameNoSector, null as unknown as string);
 
-          permIdNonFinancial = nonFinancialCompany.identifiers[IdentifierType.PermId][0];
+          permIdNonFinancial = nonFinancialCompany.identifiers[IdentifierType.PermId]![0]!;
           await uploadCompanyViaApi(token, nonFinancialCompany);
 
-          permIdFinancial = financialCompany.identifiers[IdentifierType.PermId][0];
+          permIdFinancial = financialCompany.identifiers[IdentifierType.PermId]![0]!;
           await uploadCompanyViaApi(token, financialCompany);
 
-          permIdNoSector = noSectorCompany.identifiers[IdentifierType.PermId][0];
+          permIdNoSector = noSectorCompany.identifiers[IdentifierType.PermId]![0]!;
           await uploadCompanyViaApi(token, noSectorCompany);
         });
       });

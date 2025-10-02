@@ -45,6 +45,7 @@ describe('Component tests for the Status History', function (): void {
     cy.get('[data-test="creationTimestampEntry"]')
       .should('have.length', dummyStatusHistory.length)
       .each(($el, index) => {
+        if(!dummyStatusHistory[index]) throw new Error(`dummyStatusHistory at ${index} is undefined`);
         expect($el.text()).to.eq(convertUnixTimeInMsToDateString(dummyStatusHistory[index].creationTimestamp));
       });
 

@@ -59,7 +59,7 @@ function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestF
  */
 function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string, frontendDocumentHash: string): void {
   cy.task<{ [type: string]: ArrayBuffer }>('readFile', `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
-    await uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH).then((response) => {
+    await uploadDocumentViaApi(keycloakToken, bufferObject.data!, TEST_PDF_FILE_PATH).then((response) => {
       expect(frontendDocumentHash).to.equal(response.documentId);
     });
   });

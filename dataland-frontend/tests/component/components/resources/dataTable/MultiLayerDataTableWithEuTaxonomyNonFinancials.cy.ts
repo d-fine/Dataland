@@ -36,6 +36,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   before(function () {
     cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then(
       (preparedFixtures: FixtureData<EutaxonomyNonFinancialsData>[]) => {
+
         fixturesForTests = preparedFixtures.filter((it) =>
           [
             'all-fields-defined-for-eu-taxo-non-financials-alpha',
@@ -44,20 +45,20 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           ].includes(it.companyInformation.companyName)
         );
 
-        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0].t.revenue?.totalAmount);
+        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0]!.t.revenue?.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
         revenueOfDatasetAlphaTotalAmount.currency = 'EUR';
 
-        betaCapex = assertDefined(fixturesForTests[1].t.capex);
+        betaCapex = assertDefined(fixturesForTests[1]!.t.capex);
 
-        gammaCapex = assertDefined(fixturesForTests[2].t.capex);
+        gammaCapex = assertDefined(fixturesForTests[2]!.t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
         if (!gammaCapexAlignedActivities.value || gammaCapexAlignedActivities.value.length < 1) {
           throw new Error(
             'Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value[0];
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value[0]!;
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
@@ -67,7 +68,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
             'Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value[0];
+        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value[0]!;
         gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
         assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0;
 
@@ -158,7 +159,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
     const allReports = fixturesForTests.map((it) => assertDefined(it.t.general?.referencedReports));
     const expectedLatestReportingPeriod = allReportingPeriods[0];
-    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0])[0];
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0]!)[0];
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
       dialogOptions: {

@@ -100,7 +100,7 @@ describeIf(
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
-        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
+        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId]![0]);
         testCompanyName = companyToUpload.companyName;
         await uploadCompanyViaApi(token, companyToUpload);
       });

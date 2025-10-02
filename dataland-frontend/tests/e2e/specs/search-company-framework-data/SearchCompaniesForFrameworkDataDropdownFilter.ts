@@ -95,7 +95,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Checks that the country-code filter synchronises between the search bar and the drop down and works',
         { scrollBehavior: false },
         () => {
-          const demoCompanyToTestFor = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
+          const demoCompanyToTestFor = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation;
           const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyFinancialsData.find(
             (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
           )!.companyInformation;
@@ -321,7 +321,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
-            const sfdrFixture = companiesWithSfdrData[0];
+            const sfdrFixture = companiesWithSfdrData[0]!;
             void uploadCompanyAndFrameworkDataForPublicToolboxFramework(
               SfdrBaseFrameworkDefinition,
               token,
