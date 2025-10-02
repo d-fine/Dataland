@@ -20,6 +20,66 @@
     }
   ],
   "paths": {
+    "/requests/bulk": {
+      "post": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Send a bulk request",
+        "description": "A bulk of data requests for specific frameworks and companies is being sent.",
+        "operationId": "postBulkDataRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully processed a bulk of data requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/": {
       "post": {
         "tags": [
@@ -1230,6 +1290,108 @@
   },
   "components": {
     "schemas": {
+      "BulkDataRequest": {
+        "required": [
+          "companyIdentifiers",
+          "dataTypes",
+          "reportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "companyIdentifiers": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A set of identifiers for companies on Dataland by. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28",
+              "5493001KJX4BT0IHAG73",
+              "US0378331005"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework name that cannot be identified will result in an error, and no requests will be created.",
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
+              "vsme"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "sfdr",
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "nuclear-and-gas",
+                "lksg",
+                "pcaf",
+                "vsme"
+              ]
+            }
+          },
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods.",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "BulkDataRequestResponse": {
+        "required": [
+          "acceptedDataRequests",
+          "rejectedDataRequests"
+        ],
+        "type": "object",
+        "properties": {
+          "acceptedDataRequests": {
+            "type": "array",
+            "description": "Contains information about all accepted data requests",
+            "items": {
+              "$ref": "#/components/schemas/BasicDataDimensions"
+            }
+          },
+          "rejectedDataRequests": {
+            "type": "array",
+            "description": "Contains information about all rejected data requests e.g. due to validation errors or because the requests or datasets already exist",
+            "items": {
+              "$ref": "#/components/schemas/BasicDataDimensions"
+            }
+          }
+        }
+      },
       "SingleRequest": {
         "required": [
           "companyIdentifier",
@@ -1246,7 +1408,16 @@
           "dataType": {
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
+            "example": "sfdr",
+            "enum": [
+              "sfdr",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
+              "pcaf",
+              "vsme"
+            ]
           },
           "reportingPeriod": {
             "type": "string",
