@@ -193,7 +193,9 @@ export function waitForPageLoad(options: {
 function closeCookieBannerIfItExists(): void {
   cy.get('body').then(($body) => {
     const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
-    allowCookies[0]!.click();
+    if (allowCookies.length == 1) {
+      allowCookies[0]!.click();
+    }
   });
 }
 
