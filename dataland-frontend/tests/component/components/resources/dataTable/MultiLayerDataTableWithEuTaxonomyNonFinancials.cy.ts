@@ -36,7 +36,6 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   before(function () {
     cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then(
       (preparedFixtures: FixtureData<EutaxonomyNonFinancialsData>[]) => {
-
         fixturesForTests = preparedFixtures.filter((it) =>
           [
             'all-fields-defined-for-eu-taxo-non-financials-alpha',

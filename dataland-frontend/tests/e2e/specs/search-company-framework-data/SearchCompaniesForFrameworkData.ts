@@ -118,7 +118,8 @@ describeIf(
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
             Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it]!.length > 0)
           );
-          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
+          const singleCompanyIdentifier =
+            testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
           const expectedCompanyName = testCompanyInformation.companyName;
           executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
@@ -188,10 +189,7 @@ describeIf(
             assertSearchedCompanyNameIsUnique(testCompany!);
 
             const testCompanyName = testCompany!.companyName;
-            cy.get('.p-autocomplete-option')
-              .eq(0)
-              .should('contain.text', testCompanyName)
-              .click({ force: true });
+            cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompanyName, testCompany!.companyId);
           }
