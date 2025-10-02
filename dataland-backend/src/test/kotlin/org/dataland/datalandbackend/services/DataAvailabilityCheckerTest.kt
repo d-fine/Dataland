@@ -101,9 +101,9 @@ class DataAvailabilityCheckerTest {
 
     @ParameterizedTest
     @CsvSource(
-        "1234, sfdr, 2024",
-        "46b5374b-a720-43e6-9c5e-9dd92bd95b33, dummy, 2024",
-        "46b5374b-a720-43e6-9c5e-9dd92bd95b33, sfdr, 12345",
+        "1234, $framework, $reportingPeriod",
+        "$companyId, dummy, $reportingPeriod",
+        "$companyId, $framework, 12345",
     )
     fun `check that data dimensions are filtered out correctly`(
         companyId: String,
