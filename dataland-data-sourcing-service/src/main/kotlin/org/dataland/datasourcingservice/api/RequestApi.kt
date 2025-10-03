@@ -329,5 +329,17 @@ interface RequestApi {
         )
         @RequestParam(required = false)
         requestState: RequestState? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(defaultValue = "100")
+        chunkSize: Int,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(defaultValue = "0")
+        chunkIndex: Int,
     ): ResponseEntity<List<StoredRequest>>
 }

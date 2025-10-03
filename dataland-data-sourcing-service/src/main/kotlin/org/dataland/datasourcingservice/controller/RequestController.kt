@@ -70,10 +70,12 @@ class RequestController
             dataType: String?,
             reportingPeriod: String?,
             state: RequestState?,
+            chunkSize: Int,
+            chunkIndex: Int,
         ): ResponseEntity<List<StoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    companyId, dataType, reportingPeriod, state,
+                    companyId, dataType, reportingPeriod, state, chunkSize, chunkIndex,
                 ),
             )
     }

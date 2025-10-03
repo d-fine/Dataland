@@ -2,6 +2,8 @@ package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.util.UUID
@@ -57,16 +59,18 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request FROM RequestEntity request " +
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
             "WHERE " +
             "(:companyId IS NULL OR request.companyId = :companyId) AND " +
             "(:dataType IS NULL OR request.dataType = :dataType) AND " +
             "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
             "(:state IS NULL OR request.state = :state)",
     )
-    fun searchRequests(
+    fun searchRequestsAndFetchDataSourcingEntities(
         companyId: UUID?,
         dataType: String?,
         reportingPeriod: String?,
         state: RequestState?,
-    ): List<RequestEntity>
+        pageable: Pageable,
+    ): Page<RequestEntity>
 }
