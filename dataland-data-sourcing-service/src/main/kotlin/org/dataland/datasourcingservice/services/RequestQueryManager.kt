@@ -27,7 +27,7 @@ class RequestQueryManager(
      */
     @Transactional
     fun searchRequests(
-        companyId: String?,
+        companyId: UUID?,
         dataType: String?,
         reportingPeriod: String?,
         state: RequestState?,
@@ -36,7 +36,7 @@ class RequestQueryManager(
     ): List<StoredRequest> =
         requestRepository
             .searchRequestsAndFetchDataSourcingEntities(
-                companyId?.let { UUID.fromString(it) },
+                companyId,
                 dataType,
                 reportingPeriod,
                 state,
