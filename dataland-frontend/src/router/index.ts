@@ -14,7 +14,6 @@ const TheImprint = (): Promise<RouteComponent> => import('@/components/pages/The
 const DataPrivacy = (): Promise<RouteComponent> => import('@/components/pages/DataPrivacy.vue');
 const NoContentFound = (): Promise<RouteComponent> => import('@/components/pages/NoContentFound.vue');
 const ApiKeysPage = (): Promise<RouteComponent> => import('@/components/pages/ApiKeysPage.vue');
-const BulkDataRequest = (): Promise<RouteComponent> => import('@/components/pages/BulkDataRequest.vue');
 const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pages/SingleDataRequest.vue');
 const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pages/ViewFrameworkData.vue');
 const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
@@ -201,14 +200,6 @@ const routes = [
     component: CompanyDataRequestsOverview,
     meta: {
       initialTabIndex: 5,
-      requiresAuthentication: true,
-    },
-  },
-  {
-    path: '/bulkdatarequest',
-    name: 'Bulk Data Request',
-    component: BulkDataRequest,
-    meta: {
       requiresAuthentication: true,
     },
   },

@@ -468,7 +468,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1054,7 +1054,7 @@
       },
       "QaStatus": {
         "type": "string",
-        "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+        "description": "The status with regard to Dataland\u0027s quality assurance process.",
         "enum": [
           "Pending",
           "Accepted",

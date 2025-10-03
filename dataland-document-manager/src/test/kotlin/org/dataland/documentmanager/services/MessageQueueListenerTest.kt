@@ -42,7 +42,6 @@ class MessageQueueListenerTest(
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         messageQueueListener =
             MessageQueueListener(
-                objectMapper = objectMapper,
                 documentMetaInfoRepository = mockDocumentMetaInfoRepository,
                 inMemoryDocumentStore = inMemoryDocumentStore,
             )

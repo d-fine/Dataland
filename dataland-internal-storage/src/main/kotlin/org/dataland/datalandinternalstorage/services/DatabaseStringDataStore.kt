@@ -42,7 +42,6 @@ import org.springframework.transaction.annotation.Transactional
  * @param dataItemRepository the repository for data items
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class DatabaseStringDataStore(
@@ -95,7 +94,6 @@ class DatabaseStringDataStore(
                         MessageQueueUtils
                             .readMessagePayload<DataUploadedPayload>(
                                 payload,
-                                objectMapper,
                             ).dataId
                     }
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
@@ -103,7 +101,6 @@ class DatabaseStringDataStore(
                         MessageQueueUtils
                             .readMessagePayload<DataMetaInfoPatchPayload>(
                                 payload,
-                                objectMapper,
                             ).dataId
                     }
                     else -> throw MessageQueueRejectException(
@@ -150,7 +147,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload).dataId
             MessageQueueUtils.validateDataId(dataId)
             deleteDataItemWithoutTransaction(dataId, correlationId)
         }
@@ -186,7 +183,7 @@ class DatabaseStringDataStore(
             val allDataAndCorrelationIds =
                 messages.map {
                     MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
-                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                    Pair(it.readMessagePayload<DataPointUploadedPayload>().dataPointId, it.getCorrelationId())
                 }
             val allContents =
                 temporarilyCachedDataClient.getBatchReceivedPublicData(

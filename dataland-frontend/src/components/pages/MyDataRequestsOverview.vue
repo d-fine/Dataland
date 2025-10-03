@@ -117,12 +117,15 @@
     <div v-if="!waitingForData && storedDataRequests.length === 0">
       <div class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">You have not requested data yet.</p>
-        <p class="font-medium text-xl">Request data to see your requests here.</p>
+        <p class="font-medium text-xl">Individual data requests can be made for each company from its cockpit page.</p>
+        <p class="font-medium text-xl">
+          Alternatively, become a premium user and create a portfolio for automatic request creation.
+        </p>
         <PrimeButton
-          label="BULK DATA REQUEST"
+          label="MANAGE YOUR PORTFOLIOS"
           icon="pi pi-plus-circle"
-          data-test="bulkDataRequestButton"
-          @click="goToBulkDataRequestPage"
+          data-test="myPortfoliosButton"
+          @click="goToMyPortfoliosPage"
         />
       </div>
     </div>
@@ -200,8 +203,8 @@ watch(searchBarInput, (newSearch) => {
 /**
  * Navigates to the bulk data request page.
  */
-function goToBulkDataRequestPage(): void {
-  void vueRouter.push('/bulkdatarequest');
+function goToMyPortfoliosPage(): void {
+  void vueRouter.push('/portfolios');
 }
 
 /**
@@ -216,7 +219,7 @@ async function getStoredRequestDataList(): Promise<void> {
       storedDataRequests.value = (
         await new ApiClientProvider(
           getKeycloakPromise()
-        ).apiClients.requestController.getDataRequestsForRequestingUser()
+        ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {

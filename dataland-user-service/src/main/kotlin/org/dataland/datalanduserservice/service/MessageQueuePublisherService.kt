@@ -28,7 +28,6 @@ class MessageQueuePublisherService
         private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val objectMapper = defaultObjectMapper
 
         /**
          * Method to publish a portfolio update payload
@@ -55,7 +54,7 @@ class MessageQueuePublisherService
                 )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 body =
-                    objectMapper.writeValueAsString(
+                    defaultObjectMapper.writeValueAsString(
                         PortfolioUpdatePayload(
                             portfolioId,
                             companyIds,
@@ -104,7 +103,7 @@ class MessageQueuePublisherService
                     emptyList(),
                 )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
+                defaultObjectMapper.writeValueAsString(message),
                 MessageType.SEND_EMAIL,
                 correlationId,
                 ExchangeName.SEND_EMAIL,

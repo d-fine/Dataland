@@ -84,7 +84,8 @@ async function submitDataRequestsForSelection(): Promise<void> {
     try {
       messageCounter.value++;
       isAccessRequestFailed.value = false;
-      const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
+      const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients
+        .communityManagerRequestController;
       const reportingPeriodsToRequest = selectedOptions.value.map((it) => it.reportingPeriod);
       await requestController.postSingleDataRequest({
         companyIdentifier: props.companyId,

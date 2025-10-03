@@ -25,17 +25,16 @@ export async function patchDataRequest(
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
-        dataRequestId,
-        {
-          requestStatus: requestStatus,
-          accessStatus: accessStatus,
-          contacts: contacts,
-          message: message,
-          notifyMeImmediately: notifyMeImmediately,
-          requestStatusChangeReason: requestStatusChangeReason,
-        }
-      );
+      await new ApiClientProvider(
+        keycloakPromiseGetter()
+      ).apiClients.communityManagerRequestController.patchDataRequest(dataRequestId, {
+        requestStatus: requestStatus,
+        accessStatus: accessStatus,
+        contacts: contacts,
+        message: message,
+        notifyMeImmediately: notifyMeImmediately,
+        requestStatusChangeReason: requestStatusChangeReason,
+      });
     }
   } catch (error) {
     console.error(error);

@@ -3,12 +3,9 @@ import { DocumentControllerApi } from '@clients/documentmanager';
 import { QaControllerApi } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
-import {
-  CompanyRolesControllerApi,
-  type CompanyRolesControllerApiInterface,
-  RequestControllerApi,
-  type RequestControllerApiInterface,
-} from '@clients/communitymanager';
+import { CompanyRolesControllerApi, type CompanyRolesControllerApiInterface } from '@clients/communitymanager';
+import { RequestControllerApi } from '@clients/datasourcingservice';
+import { RequestControllerApi as CommunityManagerRequestControllerApi } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import * as backendApis from '@clients/backend/api';
@@ -26,7 +23,8 @@ interface ApiBackendClients {
 interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
-  requestController: RequestControllerApiInterface;
+  requestController: RequestControllerApi;
+  communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
@@ -86,7 +84,8 @@ export class ApiClientProvider {
     return {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
-      requestController: this.getClientFactory('/community')(RequestControllerApi),
+      requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
+      communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),

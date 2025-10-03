@@ -13,8 +13,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestRe
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -31,7 +31,7 @@ import java.util.UUID
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageBuilder,
-    @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val utils: CommunityManagerDataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,

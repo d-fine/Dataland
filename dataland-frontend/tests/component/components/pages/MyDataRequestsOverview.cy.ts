@@ -138,8 +138,8 @@ describe('Component tests for the data requests search page', function (): void 
       router: router,
     }).then(() => {
       cy.get('[data-test="requested-datasets-table"]').should('not.exist');
-      cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
+      cy.get('[data-test="myPortfoliosButton"]').should('exist').should('be.visible').click();
+      cy.get('@routerPush').should('have.been.calledWith', '/portfolios');
     });
   });
 

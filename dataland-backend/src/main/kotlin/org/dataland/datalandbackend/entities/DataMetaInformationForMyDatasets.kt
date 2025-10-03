@@ -50,7 +50,7 @@ data class DataMetaInformationForMyDatasets(
 ) {
     companion object {
         /**
-         * A function to construct a DatametaInformationForMyDatasets object from a entity object
+         * A function to construct a DatametaInformationForMyDatasets object from an entity object
          */
         fun fromDatasetMetaInfoEntityForMyDatasets(entity: DatasetMetaInfoEntityForMyDatasets) =
             DataMetaInformationForMyDatasets(
@@ -59,7 +59,7 @@ data class DataMetaInformationForMyDatasets(
                 companyName = entity.companyName,
                 dataType = DataType.valueOf(entity.dataType),
                 reportingPeriod = entity.reportingPeriod,
-                qualityStatus = QaStatus.values().find { it.ordinal == entity.qualityStatus }!!,
+                qualityStatus = QaStatus.entries.find { it.ordinal == entity.qualityStatus }!!,
                 currentlyActive = entity.currentlyActive,
                 uploadTime = entity.uploadTime,
             )

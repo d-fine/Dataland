@@ -30,17 +30,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user in the company role assignment."
     const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
-    const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
-
-    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_DESCRIPTION =
-        "Reporting periods corresponding to the accepted and stored data requests."
-    const val REPORTING_PERIODS_OF_STORED_DATA_REQUESTS_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
-
-    const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_DESCRIPTION =
-        "Reporting periods corresponding to data requests that were rejected due to being duplicates."
-    const val REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS_EXAMPLE = "[\"2022\"]"
+    const val CONTACTS_MESSAGE_DESCRIPTION = "A message to be sent to the specified company contacts."
+    const val CONTACTS_MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."
 
     const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION =
         "Reporting periods corresponding to the accepted and stored access requests."

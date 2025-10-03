@@ -129,7 +129,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,
@@ -164,7 +163,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,
@@ -208,7 +206,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,
