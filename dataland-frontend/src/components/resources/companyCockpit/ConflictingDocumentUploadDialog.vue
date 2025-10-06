@@ -12,7 +12,7 @@
     <div style="margin: 10px">
       <h2 class="m-0" data-test="conflictText">Document already exists</h2>
     </div>
-    <div v-if="isLoading" class="p-d-flex p-jc-center p-ai-center" style="height: 150px">
+    <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
       <DatalandProgressSpinner />
     </div>
     <div v-else>
@@ -34,10 +34,37 @@
         </div>
         <div class="button-row">
           <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
-          <Button label="Associate Document" class="p-button" data-test="associate-document-button" />
+          <Button
+            label="Associate Document"
+            class="p-button"
+            @click="handleAssociateDocument"
+            data-test="associate-document-button"
+          />
         </div>
       </div>
     </div>
+  </PrimeDialog>
+  <PrimeDialog
+    id="successModal"
+    v-model:visible="successModalIsVisible"
+    modal
+    :closable="false"
+    :dismissableMask="true"
+    style="border-radius: 0.75rem; text-align: center"
+    :show-header="false"
+    @hide="closeSuccessModal"
+    data-test="successModal"
+  >
+    <div class="text-center" style="display: flex; flex-direction: column">
+      <div style="margin: 10px">
+        <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+      </div>
+      <div style="margin: 10px">
+        <h2 class="m-0" data-test="successText">Success</h2>
+      </div>
+    </div>
+    <div class="text-block" style="margin: 15px; white-space: pre">Document associated successfully.</div>
+    <Button label="CLOSE" @click="closeSuccessModal" variant="outlined" />
   </PrimeDialog>
 </template>
 
@@ -49,15 +76,17 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import { type DocumentMetaInfoPatch } from '@clients/documentmanager';
 
 const props = defineProps<{ documentId: string; companyId: string }>();
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'document-associated']);
 
 const isVisible = ref<boolean>(true);
 const isLoading = ref<boolean>(true);
 const isConflictForOwnCompany = ref<boolean>(false);
 const conflictingCompanyIds = ref<Set<string>>(new Set());
 const conflictingCompanyNames = ref<Set<string>>(new Set());
+const successModalIsVisible = ref<boolean>(false);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -90,11 +119,38 @@ async function handleUploadConflict(): Promise<void> {
   isLoading.value = false;
 }
 
+/** Associates the document with the current company by updating its metadata.
+ * If successful, shows a success modal.
+ */
+async function handleAssociateDocument(): Promise<void> {
+  try {
+    const companyIdsArray = Array.from(conflictingCompanyIds.value);
+    if (!companyIdsArray.includes(props.companyId)) {
+      companyIdsArray.push(props.companyId);
+    }
+    const documentMetaInfoPatch: DocumentMetaInfoPatch = {
+      companyIds: companyIdsArray as unknown as Set<string>,
+    };
+    await documentControllerApi.patchDocumentMetaInfo(props.documentId, documentMetaInfoPatch);
+    successModalIsVisible.value = true;
+  } catch (error) {
+    console.error('Error associating document with company:', error);
+  }
+}
+
 /** Emits a close event to close the dialog. */
 function onCancel(): void {
   isVisible.value = false;
   emit('close');
 }
+
+/** Closes the success modal.
+ */
+const closeSuccessModal = (): void => {
+  successModalIsVisible.value = false;
+  emit('close');
+  emit('document-associated');
+};
 </script>
 
 <style scoped lang="scss">
@@ -106,5 +162,9 @@ function onCancel(): void {
   gap: 1rem;
   justify-content: center;
   margin-top: 1.5rem;
+}
+
+.green-text {
+  color: var(--green);
 }
 </style>

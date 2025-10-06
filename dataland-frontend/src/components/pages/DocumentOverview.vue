@@ -114,6 +114,7 @@
     :documentId="conflictDocumentId"
     :companyId="companyId"
     @close="showConflictModal = false"
+    @document-associated="handleDocumentUpload"
   />
 </template>
 
