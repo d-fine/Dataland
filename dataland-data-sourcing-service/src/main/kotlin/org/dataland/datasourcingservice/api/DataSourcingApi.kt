@@ -119,7 +119,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(produces = ["application/json"])
+    @GetMapping(value = ["/dimensions"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataSourcingByDimensions(
         @Parameter(
@@ -383,7 +383,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(produces = ["application/json"])
+    @GetMapping(value = ["/search"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun searchDataSourcings(
         @Parameter(

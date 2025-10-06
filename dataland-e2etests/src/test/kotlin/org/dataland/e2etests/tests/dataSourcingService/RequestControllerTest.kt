@@ -41,7 +41,7 @@ class RequestControllerTest {
             }
 
         assertEquals(request.companyIdentifier, storedRequest.companyId)
-        assertEquals(request.dataType, storedRequest.dataType)
+        assertEquals(request.dataType.value, storedRequest.dataType)
         assertEquals(request.reportingPeriod, storedRequest.reportingPeriod)
         assertEquals(request.memberComment, storedRequest.memberComment)
 

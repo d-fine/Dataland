@@ -93,10 +93,13 @@ class SingleRequestManager
         ): SingleRequestResponse {
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
 
-            val companyId = dataSourcingValidator.validateAndGetCompanyIdForIdentifier(singleRequest.companyIdentifier)
+            val companyId =
+                dataSourcingValidator
+                    .validateAndGetCompanyId(singleRequest.companyIdentifier)
+                    .getOrThrow()
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-            performQuotaCheckForNonPremiumUser(userId = userIdToUse.toString(), numberOfNewRequests = 1)
+            performQuotaCheckForNonPremiumUser(userId = userIdToUse, numberOfNewRequests = 1)
             val idOfConflictingRequest =
                 getIdOfConflictingRequest(userIdToUse, companyId, singleRequest.dataType.value, singleRequest.reportingPeriod)
             return if (idOfConflictingRequest != null) {
@@ -117,10 +120,10 @@ class SingleRequestManager
         }
 
         private fun performQuotaCheckForNonPremiumUser(
-            userId: String,
+            userId: UUID,
             numberOfNewRequests: Int,
         ) {
-            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId)) {
+            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
                         userId, getEpochTimeStartOfDay(),

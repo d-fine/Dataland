@@ -24,7 +24,7 @@ class DataSourcingValidator
          * @return the UUID of the company associated to the provided identifier
          * @throws ResourceNotFoundApiException if no company is associated to the provided identifier
          */
-        fun validateAndGetCompanyIdForIdentifier(identifier: String): UUID {
+        private fun validateCompanyId(identifier: String): UUID {
             val companyInformation =
                 companyDataControllerApi.postCompanyValidation(listOf(identifier)).firstOrNull()?.companyInformation
                     ?: throw ResourceNotFoundApiException(
@@ -33,6 +33,19 @@ class DataSourcingValidator
                     )
             return UUID.fromString(companyInformation.companyId)
         }
+
+        /**
+         * Validates if a company identifier exists on Dataland and returns the associated company id wrapped in a Result.
+         * @param identifier the identifier of a company
+         * @return a Result containing the UUID of the company associated to the provided identifier if it exists,
+         *         or a ResourceNotFoundApiException if no company is associated to the provided identifier
+         */
+        fun validateAndGetCompanyId(identifier: String): Result<UUID> =
+            try {
+                Result.success(validateCompanyId(identifier))
+            } catch (e: ResourceNotFoundApiException) {
+                Result.failure(e)
+            }
 
         /**
          * Validates if a document with the provided id exists on Dataland.

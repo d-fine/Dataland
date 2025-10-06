@@ -45,7 +45,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "AND (d.creationTimestamp >= :#{#timestamp})",
     )
     fun getNumberOfRequestsOpenedByUserFromTimestamp(
-        userId: String,
+        userId: UUID,
         timestamp: Long,
     ): Int
 

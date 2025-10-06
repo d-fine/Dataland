@@ -26,13 +26,32 @@ class BulkRequestManager
         fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
             assertNoEmptyListsInBulkRequest(bulkDataRequest)
             val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
-            for (dataDimension in listOfRequestedDataDimensionTuples) {
-                dataSourcingValidator.validateAndGetCompanyIdForIdentifier(dataDimension.companyId)
-            }
+
+            val validatedResults =
+                listOfRequestedDataDimensionTuples.map { dataDimension ->
+                    val validationResult = dataSourcingValidator.validateAndGetCompanyId(dataDimension.companyId)
+                    dataDimension to validationResult // Pair the data dimension with its validation result
+                }
+
+            val (accepted, rejected) =
+                validatedResults.partition { (_, result) ->
+                    result.isSuccess
+                }
+
+            val acceptedRequests =
+                accepted.map { (dataDimension, result) ->
+                    val validatedId = result.getOrThrow() // Extract the validated company ID
+                    dataDimension.copy(companyId = validatedId.toString()) // Update companyId
+                }
+
+            val rejectedRequests =
+                rejected.map { (dataDimension, _) ->
+                    dataDimension // Extract rejected requests without modification
+                }
 
             return BulkDataRequestResponse(
-                acceptedDataRequests = emptyList(),
-                rejectedDataRequests = emptyList(),
+                acceptedDataRequests = acceptedRequests,
+                rejectedDataRequests = rejectedRequests,
             )
         }
 
