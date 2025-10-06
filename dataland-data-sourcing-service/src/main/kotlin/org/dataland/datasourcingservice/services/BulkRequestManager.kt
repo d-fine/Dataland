@@ -8,12 +8,10 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
-import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 import java.util.UUID
 
 /**
@@ -24,7 +22,7 @@ class BulkRequestManager
     @Autowired
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
-        private val requestRepository: RequestRepository,
+        private val requestCreationService: RequestCreationService,
         @Autowired private val metaDataController: MetaDataControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
     ) {
@@ -52,16 +50,7 @@ class BulkRequestManager
             val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets
 
             acceptedDataRequests.forEach { dataDimension ->
-                requestRepository.saveAndFlush(
-                    RequestEntity(
-                        userId = userIdToUse,
-                        companyId = UUID.fromString(dataDimension.companyId),
-                        dataType = dataDimension.dataType,
-                        reportingPeriod = dataDimension.reportingPeriod,
-                        memberComment = null,
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                    ),
-                )
+                requestCreationService.storeRequest(userIdToUse, dataDimension)
             }
 
             return BulkDataRequestResponse(

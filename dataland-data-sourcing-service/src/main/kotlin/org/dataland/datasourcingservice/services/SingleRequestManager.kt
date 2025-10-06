@@ -1,9 +1,9 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -14,13 +14,10 @@ import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.time.ZoneId
 import java.util.UUID
 import kotlin.collections.ifEmpty
 
@@ -35,34 +32,9 @@ class SingleRequestManager
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
-        @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
+        private val requestCreationService: RequestCreationService,
     ) {
         private val requestLogger = RequestLogger()
-
-        private fun storeRequest(
-            userId: UUID,
-            companyId: UUID,
-            dataType: String,
-            reportingPeriod: String,
-            memberComment: String?,
-        ): UUID {
-            val dataRequestEntity =
-                RequestEntity(
-                    userId = userId,
-                    companyId = companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    memberComment = memberComment,
-                    creationTimestamp = Instant.now().toEpochMilli(),
-                )
-
-            return requestRepository
-                .saveAndFlush(dataRequestEntity)
-                .also {
-                    requestLogger.logMessageForStoringDataRequest(it.id)
-                }.id
-        }
 
         private fun getIdOfConflictingRequest(
             userId: UUID,
@@ -92,57 +64,35 @@ class SingleRequestManager
             userId: UUID?,
         ): SingleRequestResponse {
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
-
-            val companyId =
-                dataSourcingValidator
-                    .validateAndGetCompanyId(singleRequest.companyIdentifier)
-                    .getOrThrow()
-            dataSourcingValidator.validateReportingPeriod(singleRequest.reportingPeriod).getOrThrow()
+            val companyId = dataSourcingValidator.validateSingleDataRequest(singleRequest)
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-            performQuotaCheckForNonPremiumUser(userId = userIdToUse)
+
             val idOfConflictingRequest =
-                getIdOfConflictingRequest(userIdToUse, companyId, singleRequest.dataType.value, singleRequest.reportingPeriod)
+                getIdOfConflictingRequest(
+                    userIdToUse,
+                    companyId,
+                    singleRequest.dataType.value,
+                    singleRequest.reportingPeriod,
+                )
             return if (idOfConflictingRequest != null) {
                 SingleRequestResponse(
                     idOfConflictingRequest.toString(),
                 )
             } else {
                 SingleRequestResponse(
-                    storeRequest(
-                        userId = userIdToUse,
-                        companyId = companyId,
-                        dataType = singleRequest.dataType.value,
-                        reportingPeriod = singleRequest.reportingPeriod,
-                        memberComment = singleRequest.memberComment,
-                    ).toString(),
+                    requestCreationService
+                        .storeRequest(
+                            userId = userIdToUse,
+                            BasicDataDimensions(
+                                companyId = companyId.toString(),
+                                dataType = singleRequest.dataType.toString(),
+                                reportingPeriod = singleRequest.reportingPeriod,
+                            ),
+                            memberComment = singleRequest.memberComment,
+                        ).toString(),
                 )
             }
-        }
-
-        private fun performQuotaCheckForNonPremiumUser(userId: UUID) {
-            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())) {
-                val numberOfDataRequestsPerformedByUserFromTimestamp =
-                    requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
-                        userId, getEpochTimeStartOfDay(),
-                    )
-                if (numberOfDataRequestsPerformedByUserFromTimestamp + 1
-                    > maxRequestsForUser
-                ) {
-                    throw QuotaExceededException(
-                        "Quota has been reached.",
-                        "The daily quota capacity has been reached.",
-                    )
-                }
-            }
-        }
-
-        private fun getEpochTimeStartOfDay(): Long {
-            val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
-            val zoneId = ZoneId.systemDefault()
-            val instantNowZoned = instantNow.atZone(zoneId)
-            val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-            return startOfDay.toInstant().toEpochMilli()
         }
 
         /**

@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
+import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -90,9 +91,7 @@ class DataSourcingValidator
         ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
             val validationResults =
                 listOfRequestedDataDimensionTuples.map { dataDimension ->
-                    val companyIdResult = validateAndGetCompanyId(dataDimension.companyId)
-                    val reportingPeriodResult = validateReportingPeriod(dataDimension.reportingPeriod)
-                    DataDimensionValidationResult(dataDimension, companyIdResult, reportingPeriodResult)
+                    validateRequestForDataDimension(dataDimension)
                 }
 
             // Partition validated and invalid requests
@@ -118,6 +117,32 @@ class DataSourcingValidator
                     result.dataDimension
                 }
             return Pair(validatedRequests, invalidRequests)
+        }
+
+        /**
+         * Validates a single data request by checking if the company ID and reporting period are valid.
+         * @param singleRequest the single data request to validate
+         * @return the UUID of the validated company ID
+         * @throws ResourceNotFoundApiException if the company ID is invalid
+         * @throws IllegalArgumentException if the reporting period is invalid
+         */
+        fun validateSingleDataRequest(singleRequest: SingleRequest): UUID {
+            val dataDimension =
+                BasicDataDimensions(
+                    companyId = singleRequest.companyIdentifier,
+                    dataType = singleRequest.dataType.value,
+                    reportingPeriod = singleRequest.reportingPeriod,
+                )
+            val validationResult = validateRequestForDataDimension(dataDimension)
+            val companyId = validationResult.companyIdValidation.getOrThrow()
+            validationResult.reportingPeriodValidation.getOrThrow()
+            return companyId
+        }
+
+        private fun validateRequestForDataDimension(dataDimension: BasicDataDimensions): DataDimensionValidationResult {
+            val companyIdResult = validateAndGetCompanyId(dataDimension.companyId)
+            val reportingPeriodResult = validateReportingPeriod(dataDimension.reportingPeriod)
+            return DataDimensionValidationResult(dataDimension, companyIdResult, reportingPeriodResult)
         }
 
         /**
