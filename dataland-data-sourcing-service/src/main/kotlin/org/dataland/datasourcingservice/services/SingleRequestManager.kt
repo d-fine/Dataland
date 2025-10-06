@@ -100,7 +100,7 @@ class SingleRequestManager
             dataSourcingValidator.validateReportingPeriod(singleRequest.reportingPeriod).getOrThrow()
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-            performQuotaCheckForNonPremiumUser(userId = userIdToUse, numberOfNewRequests = 1)
+            performQuotaCheckForNonPremiumUser(userId = userIdToUse)
             val idOfConflictingRequest =
                 getIdOfConflictingRequest(userIdToUse, companyId, singleRequest.dataType.value, singleRequest.reportingPeriod)
             return if (idOfConflictingRequest != null) {
@@ -120,16 +120,13 @@ class SingleRequestManager
             }
         }
 
-        private fun performQuotaCheckForNonPremiumUser(
-            userId: UUID,
-            numberOfNewRequests: Int,
-        ) {
+        private fun performQuotaCheckForNonPremiumUser(userId: UUID) {
             if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
                         userId, getEpochTimeStartOfDay(),
                     )
-                if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfNewRequests
+                if (numberOfDataRequestsPerformedByUserFromTimestamp + 1
                     > maxRequestsForUser
                 ) {
                     throw QuotaExceededException(
