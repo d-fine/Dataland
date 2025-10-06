@@ -1,4 +1,4 @@
-import type Bluebird from 'cypress/types/bluebird';
+import type Bluebird from 'node_modules/cypress/types/bluebird';
 
 export const reader_name = 'data_reader';
 export const reader_pw = getStringCypressEnv('KEYCLOAK_READER_PASSWORD');

@@ -1,5 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
-import { type Interception } from 'cypress/types/net-stubbing';
+import { type Interception } from 'node_modules/cypress/types/net-stubbing';
 
 /**
  * Visits the edit page for a framework via UI navigation.

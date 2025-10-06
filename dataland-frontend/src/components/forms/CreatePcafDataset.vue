@@ -30,6 +30,7 @@
             <DatePicker
               input-id="reporting-period-picker"
               v-model="reportingPeriod"
+              :updateModelType="'date'"
               :showIcon="true"
               view="year"
               dateFormat="yy"

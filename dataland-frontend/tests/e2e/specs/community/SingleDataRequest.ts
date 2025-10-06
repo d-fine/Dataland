@@ -1,5 +1,5 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw } from '@e2e/utils/Cypress';
-import { type Interception } from 'cypress/types/net-stubbing';
+import { type Interception } from 'node_modules/cypress/types/net-stubbing';
 import { type SingleDataRequest } from '@clients/communitymanager';
 import { describeIf } from '@e2e/support/TestUtility';
 import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';

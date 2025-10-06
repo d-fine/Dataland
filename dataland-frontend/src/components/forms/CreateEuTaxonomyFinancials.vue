@@ -35,6 +35,7 @@
                   <DatePicker
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
+                    :updateModelType="'date'"
                     inputId="icon"
                     :showIcon="true"
                     view="year"

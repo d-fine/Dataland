@@ -22,6 +22,7 @@
           class="search-filter"
           data-test="reportingPeriod"
           v-model="availableReportingPeriods"
+          :updateModelType="'date'"
           placeholder="Search by reporting period"
           :showIcon="true"
           :manualInput="false"

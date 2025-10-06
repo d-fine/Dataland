@@ -3,6 +3,7 @@
     <DatePicker
       inputId="icon"
       v-model="date"
+      :updateModelType="'date'"
       :showIcon="true"
       dateFormat="D, M dd, yy"
       :maxDate="todayAsMax ? new Date() : undefined"
