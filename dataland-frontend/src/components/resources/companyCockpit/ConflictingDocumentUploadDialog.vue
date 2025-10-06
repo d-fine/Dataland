@@ -12,42 +12,49 @@
     <div style="margin: 10px">
       <h2 class="m-0" data-test="conflictText">Document already exists</h2>
     </div>
-    <div v-if="isConflictForOwnCompany">
-      <div class="text-block" style="margin: 15px; white-space: pre">
-        The document is already associated with this company.
-      </div>
-      <div>
-        <Button label="Ok" class="p-button-text" @click="onCancel" data-test="ok-button" />
-      </div>
+    <div v-if="isLoading" class="p-d-flex p-jc-center p-ai-center" style="height: 150px">
+      <DatalandProgressSpinner />
     </div>
     <div v-else>
-      <div class="text-block" style="margin: 15px; white-space: pre">
-        The document already exists for the following companies:
-        <ul>
-          <li v-for="companyName in conflictingCompanyNames" :key="companyName">{{ companyName }}</li>
-        </ul>
-        Do you also want to associate this document with the current company?
+      <div v-if="isConflictForOwnCompany">
+        <div class="text-block" style="margin: 15px; white-space: pre">
+          The document is already associated with this company.
+        </div>
+        <div>
+          <Button label="Ok" class="p-button-text" @click="onCancel" data-test="ok-button" />
+        </div>
       </div>
-      <div class="button-row">
-        <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
-        <Button label="Associate Document" class="p-button" data-test="associate-document-button" />
+      <div v-else>
+        <div class="text-block" style="margin: 15px; white-space: pre">
+          The document already exists for the following companies:
+          <ul>
+            <li v-for="companyName in conflictingCompanyNames" :key="companyName">{{ companyName }}</li>
+          </ul>
+          Do you also want to associate this document with the current company?
+        </div>
+        <div class="button-row">
+          <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
+          <Button label="Associate Document" class="p-button" data-test="associate-document-button" />
+        </div>
       </div>
     </div>
   </PrimeDialog>
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue';
+import { inject, ref } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
-const props = defineProps<{ visible: boolean; documentId: string; companyId: string }>();
+const props = defineProps<{ documentId: string; companyId: string }>();
 const emit = defineEmits(['close']);
 
-const isVisible = ref<boolean>(props.visible);
+const isVisible = ref<boolean>(true);
+const isLoading = ref<boolean>(true);
 const isConflictForOwnCompany = ref<boolean>(false);
 const conflictingCompanyIds = ref<Set<string>>(new Set());
 const conflictingCompanyNames = ref<Set<string>>(new Set());
@@ -56,13 +63,6 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const documentControllerApi = apiClientProvider.apiClients.documentController;
 const companyControllerApi = apiClientProvider.backendClients.companyDataController;
-
-watch(
-  () => props.visible,
-  (val) => {
-    isVisible.value = val;
-  }
-);
 
 /** Fetches the names of companies that have a conflict with the document being uploaded.
  * Populates the conflictingCompanyNames set with the names of these companies.
@@ -77,7 +77,7 @@ async function getConflictingCompanyNames(): Promise<void> {
       conflictingCompanyNames.value.add(companyName);
     }
   } catch (error) {
-    console.log('Error fetching conflicing company names:', error);
+    console.log('Error fetching conflicting company names:', error);
   }
 }
 
@@ -87,10 +87,12 @@ async function getConflictingCompanyNames(): Promise<void> {
 async function handleUploadConflict(): Promise<void> {
   await getConflictingCompanyNames();
   isConflictForOwnCompany.value = conflictingCompanyIds.value.has(props.companyId);
+  isLoading.value = false;
 }
 
 /** Emits a close event to close the dialog. */
 function onCancel(): void {
+  isVisible.value = false;
   emit('close');
 }
 </script>

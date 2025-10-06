@@ -111,7 +111,6 @@
   />
   <ConflictingDocumentUploadDialog
     v-if="showConflictModal"
-    :visible="showConflictModal"
     :documentId="conflictDocumentId"
     :companyId="companyId"
     @close="showConflictModal = false"
