@@ -97,6 +97,7 @@ class SingleRequestManager
                 dataSourcingValidator
                     .validateAndGetCompanyId(singleRequest.companyIdentifier)
                     .getOrThrow()
+            dataSourcingValidator.validateReportingPeriod(singleRequest.reportingPeriod).getOrThrow()
 
             requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
             performQuotaCheckForNonPremiumUser(userId = userIdToUse, numberOfNewRequests = 1)

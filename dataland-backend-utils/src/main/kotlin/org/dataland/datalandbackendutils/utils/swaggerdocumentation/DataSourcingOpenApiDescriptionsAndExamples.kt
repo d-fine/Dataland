@@ -77,7 +77,10 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
-    const val REJECTED_DATA_REQUESTS_DESCRIPTION =
-        "Contains information about all rejected data requests e.g. due to " +
-            "validation errors or because the requests or datasets already exist"
+    const val INVALID_DATA_REQUESTS_DESCRIPTION =
+        "Contains information about all rejected data requests due to validation errors"
+    const val EXISTING_DATA_REQUESTS_DESCRIPTION =
+        "Contains information about all already existing data requests that were not created again"
+    const val EXISTING_DATA_SETS_DESCRIPTION =
+        "Contains information about all data requests with already existing datasets that were not created"
 }

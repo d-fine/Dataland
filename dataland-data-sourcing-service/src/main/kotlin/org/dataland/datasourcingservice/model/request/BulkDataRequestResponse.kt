@@ -10,7 +10,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
  * --- API model ---
  * Contains all relevant info that a user should receive as response when posting a bulk data request to Dataland.
  * @param acceptedDataRequests contains information about all accepted data requests
- * @param rejectedDataRequests contains information about all rejected requests due to valiation errors or because
+ * @param invalidDataRequests contains information about all rejected requests due to valiation errors or because
  * the requests or corresponding datasets already exist
  */
 data class BulkDataRequestResponse(
@@ -28,8 +28,26 @@ data class BulkDataRequestResponse(
         arraySchema =
             Schema(
                 implementation = BasicDataDimensions::class,
-                description = DataSourcingOpenApiDescriptionsAndExamples.REJECTED_DATA_REQUESTS_DESCRIPTION,
+                description = DataSourcingOpenApiDescriptionsAndExamples.INVALID_DATA_REQUESTS_DESCRIPTION,
             ),
     )
-    val rejectedDataRequests: List<BasicDataDimensions>,
+    val invalidDataRequests: List<BasicDataDimensions>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = BasicDataDimensions::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.INVALID_DATA_REQUESTS_DESCRIPTION,
+            ),
+    )
+    val existingDataRequests: List<BasicDataDimensions>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = BasicDataDimensions::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.EXISTING_DATA_SETS_DESCRIPTION,
+            ),
+    )
+    val existingDataSets: List<BasicDataDimensions>,
 )

@@ -55,10 +55,16 @@ interface RequestApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (#userId == authentication.userId or #userId == null))")
     fun postBulkDataRequest(
         @Valid @RequestBody
         bulkDataRequest: BulkDataRequest,
+        @RequestParam(required = false)
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.USER_ID_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        )
+        userId: String? = null,
     ): ResponseEntity<BulkDataRequestResponse>
 
     /**

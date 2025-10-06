@@ -1,7 +1,9 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,4 +64,71 @@ class DataSourcingValidator
                 )
             }
         }
+
+        /**
+         * * Validates if a reporting period matches the expected format (YYYY or YYYY-QX).
+         * @param reportingPeriod the reporting period to validate
+         * @return a Result containing the reporting period if it matches the expected format,
+         *         or an IllegalArgumentException if it does not match the expected format
+         */
+        fun validateReportingPeriod(reportingPeriod: String): Result<String> =
+            if (ValidationUtils.isReportingPeriod(reportingPeriod)) {
+                Result.success(reportingPeriod) // Success if it matches the format
+            } else {
+                Result.failure(IllegalArgumentException("Invalid reporting period: $reportingPeriod"))
+            }
+
+        /**
+         * Validates a list of data dimension tuples by checking if the company ID and reporting period are valid.
+         * @param listOfRequestedDataDimensionTuples the list of data dimension tuples to validate
+         * @return a Pair containing two lists:
+         *         - The first list contains all properly validated data dimension tuples.
+         *         - The second list contains all data dimension tuples that failed validation.
+         */
+        fun validateBulkDataRequest(
+            listOfRequestedDataDimensionTuples: List<BasicDataDimensions>,
+        ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
+            val validationResults =
+                listOfRequestedDataDimensionTuples.map { dataDimension ->
+                    val companyIdResult = validateAndGetCompanyId(dataDimension.companyId)
+                    val reportingPeriodResult = validateReportingPeriod(dataDimension.reportingPeriod)
+                    DataDimensionValidationResult(dataDimension, companyIdResult, reportingPeriodResult)
+                }
+
+            // Partition validated and invalid requests
+            val (validated, invalid) =
+                validationResults.partition { result ->
+                    result.companyIdValidation.isSuccess && result.reportingPeriodValidation.isSuccess
+                }
+
+            // Map validated requests: Apply validated companyId
+            val validatedRequests =
+                validated.map { result ->
+                    val validatedCompanyId = result.companyIdValidation.getOrThrow()
+                    BasicDataDimensions(
+                        companyId = validatedCompanyId.toString(),
+                        dataType = result.dataDimension.dataType,
+                        reportingPeriod = result.dataDimension.reportingPeriod,
+                    )
+                }
+
+            // Map invalid requests: Just extract the original data dimensions
+            val invalidRequests =
+                invalid.map { result ->
+                    result.dataDimension
+                }
+            return Pair(validatedRequests, invalidRequests)
+        }
+
+        /**
+         * Data class representing the result of validating a data dimension tuple.
+         * @param dataDimension the original data dimension tuple
+         * @param companyIdValidation the result of validating the company ID
+         * @param reportingPeriodValidation the result of validating the reporting period
+         */
+        private data class DataDimensionValidationResult(
+            val dataDimension: BasicDataDimensions,
+            val companyIdValidation: Result<UUID>,
+            val reportingPeriodValidation: Result<String>,
+        )
     }

@@ -1,12 +1,20 @@
 package org.dataland.datasourcingservice.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.util.UUID
 
 /**
  * Service class that manages all operations related to bulk requests.
@@ -16,6 +24,9 @@ class BulkRequestManager
     @Autowired
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
+        private val requestRepository: RequestRepository,
+        @Autowired private val metaDataController: MetaDataControllerApi,
+        @PersistenceContext private val entityManager: EntityManager,
     ) {
         /**
          * Processes a bulk data request from a user
@@ -23,36 +34,91 @@ class BulkRequestManager
          * @return relevant info to the user as a response after posting a bulk data request
          */
         @Transactional
-        fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
+        fun processBulkDataRequest(
+            bulkDataRequest: BulkDataRequest,
+            userId: UUID?,
+        ): BulkDataRequestResponse {
             assertNoEmptyListsInBulkRequest(bulkDataRequest)
+            val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
             val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
 
-            val validatedResults =
-                listOfRequestedDataDimensionTuples.map { dataDimension ->
-                    val validationResult = dataSourcingValidator.validateAndGetCompanyId(dataDimension.companyId)
-                    dataDimension to validationResult // Pair the data dimension with its validation result
-                }
+            val (validatedRequests, invalidRequests) =
+                dataSourcingValidator.validateBulkDataRequest(
+                    listOfRequestedDataDimensionTuples,
+                )
+            val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
+            val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
 
-            val (accepted, rejected) =
-                validatedResults.partition { (_, result) ->
-                    result.isSuccess
-                }
+            val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets
 
-            val acceptedRequests =
-                accepted.map { (dataDimension, result) ->
-                    val validatedId = result.getOrThrow() // Extract the validated company ID
-                    dataDimension.copy(companyId = validatedId.toString()) // Update companyId
-                }
-
-            val rejectedRequests =
-                rejected.map { (dataDimension, _) ->
-                    dataDimension // Extract rejected requests without modification
-                }
+            acceptedDataRequests.forEach { dataDimension ->
+                requestRepository.saveAndFlush(
+                    RequestEntity(
+                        userId = userIdToUse,
+                        companyId = UUID.fromString(dataDimension.companyId),
+                        dataType = dataDimension.dataType,
+                        reportingPeriod = dataDimension.reportingPeriod,
+                        memberComment = null,
+                        creationTimestamp = Instant.now().toEpochMilli(),
+                    ),
+                )
+            }
 
             return BulkDataRequestResponse(
-                acceptedDataRequests = acceptedRequests,
-                rejectedDataRequests = rejectedRequests,
+                acceptedDataRequests = acceptedDataRequests,
+                invalidDataRequests = invalidRequests,
+                existingDataRequests = existingRequests,
+                existingDataSets = existingDatasets,
             )
+        }
+
+        private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =
+            metaDataController
+                .retrieveMetaDataOfActiveDatasets(
+                    basicDataDimensions = requests,
+                ).map { it ->
+                    BasicDataDimensions(
+                        companyId = it.companyId,
+                        dataType = it.dataType.toString(),
+                        reportingPeriod = it.reportingPeriod,
+                    )
+                }
+
+        /**
+         * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
+         * For performance reasons tupel matching is used and requires a native query via entity manager.
+         * JPA does not support tupel matching.
+         * @param dataDimensions List of data dimensions to filter the requests.
+         * @param userId The ID of the user for whom to retrieve the active requests.
+         */
+        private fun getExistingRequests(
+            dataDimensions: List<BasicDataDimensions>,
+            userId: UUID,
+        ): List<BasicDataDimensions> {
+            val formattedTuples =
+                dataDimensions.joinToString(", ") {
+                    "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
+                }
+
+            val queryToExecute =
+                """SELECT * FROM requests request
+                WHERE (request.company_id, request.data_type, request.reporting_period) IN ($formattedTuples)
+                AND request.user_id = '$userId'"""
+
+            return if (dataDimensions.isNotEmpty()) {
+                val query = entityManager.createNativeQuery(queryToExecute, RequestEntity::class.java)
+                return query.resultList
+                    .filterIsInstance<RequestEntity>()
+                    .map { it ->
+                        BasicDataDimensions(
+                            companyId = it.companyId.toString(),
+                            reportingPeriod = it.reportingPeriod,
+                            dataType = it.dataType,
+                        )
+                    }
+            } else {
+                emptyList()
+            }
         }
 
         private fun assertNoEmptyListsInBulkRequest(bulkDataRequest: BulkDataRequest) {
@@ -69,15 +135,16 @@ class BulkRequestManager
         }
 
         private fun generateCartesianProduct(bulkDataRequest: BulkDataRequest): List<BasicDataDimensions> =
-            bulkDataRequest.companyIdentifiers.flatMap { companyId ->
-                bulkDataRequest.dataTypes.flatMap { dataType ->
-                    bulkDataRequest.reportingPeriods.map { period ->
-                        BasicDataDimensions(
-                            companyId = companyId,
-                            dataType = dataType.toString(),
-                            reportingPeriod = period,
-                        )
+            bulkDataRequest.companyIdentifiers
+                .flatMap { companyId ->
+                    bulkDataRequest.dataTypes.flatMap { dataType ->
+                        bulkDataRequest.reportingPeriods.map { period ->
+                            BasicDataDimensions(
+                                companyId = companyId,
+                                dataType = dataType.toString(),
+                                reportingPeriod = period,
+                            )
+                        }
                     }
-                }
-            }
+                }.distinct()
     }
