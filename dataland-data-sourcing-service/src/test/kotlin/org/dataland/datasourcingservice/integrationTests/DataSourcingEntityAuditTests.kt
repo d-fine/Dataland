@@ -1,6 +1,6 @@
-package org.dataland.datasourcingservice
+package org.dataland.datasourcingservice.integrationTests
 
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -69,12 +69,12 @@ class DataSourcingEntityAuditTests : BaseIntegrationTest() {
             dataSourcingRevisionRepository
                 .listDataSourcingRevisionsById(dataSourcingEntityId)
 
-        assertThat(entityRevisionList).hasSize(3) // Create, Update 1, Update 2
-        assertThat(entityRevisionList[0].state).isEqualTo(initialState)
-        assertThat(entityRevisionList[0].adminComment).isEqualTo(initialAdminComment)
-        assertThat(entityRevisionList[1].state).isEqualTo(DataSourcingState.DocumentSourcing)
-        assertThat(entityRevisionList[1].adminComment).isEqualTo(updatedAdminComment1)
-        assertThat(entityRevisionList[2].state).isEqualTo(DataSourcingState.DataVerification)
-        assertThat(entityRevisionList[2].adminComment).isEqualTo(updatedAdminComment2)
+        Assertions.assertThat(entityRevisionList).hasSize(3) // Create, Update 1, Update 2
+        Assertions.assertThat(entityRevisionList[0].state).isEqualTo(initialState)
+        Assertions.assertThat(entityRevisionList[0].adminComment).isEqualTo(initialAdminComment)
+        Assertions.assertThat(entityRevisionList[1].state).isEqualTo(DataSourcingState.DocumentSourcing)
+        Assertions.assertThat(entityRevisionList[1].adminComment).isEqualTo(updatedAdminComment1)
+        Assertions.assertThat(entityRevisionList[2].state).isEqualTo(DataSourcingState.DataVerification)
+        Assertions.assertThat(entityRevisionList[2].adminComment).isEqualTo(updatedAdminComment2)
     }
 }
