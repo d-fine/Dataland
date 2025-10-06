@@ -30,7 +30,7 @@
           <ul>
             <li v-for="companyName in conflictingCompanyNames" :key="companyName">{{ companyName }}</li>
           </ul>
-          Do you also want to associate this document with the current company?
+          Do you also want to associate this document with {{ ownCompanyName }}?
         </div>
         <div class="button-row">
           <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
@@ -84,6 +84,7 @@ const emit = defineEmits(['close', 'document-associated']);
 const isVisible = ref<boolean>(true);
 const isLoading = ref<boolean>(true);
 const isConflictForOwnCompany = ref<boolean>(false);
+const ownCompanyName = ref<string>('');
 const conflictingCompanyIds = ref<Set<string>>(new Set());
 const conflictingCompanyNames = ref<Set<string>>(new Set());
 const successModalIsVisible = ref<boolean>(false);
@@ -110,10 +111,23 @@ async function getConflictingCompanyNames(): Promise<void> {
   }
 }
 
+/** Fetches the name of the current company based on the provided companyId prop.
+ * Updates the ownCompanyName ref with the fetched company name.
+ */
+async function getOwnCompanyName(): Promise<void> {
+  try {
+    const companyInfo = await companyControllerApi.getCompanyInfo(props.companyId);
+    ownCompanyName.value = companyInfo.data.companyName;
+  } catch (error) {
+    console.log('Error fetching own company name:', error);
+  }
+}
+
 /** Handles the upload conflict by checking if the document is already associated with the current company.
  * Updates the isConflictForOwnCompany flag based on the presence of the current company ID in the conflictingCompanyIds set.
  */
 async function handleUploadConflict(): Promise<void> {
+  await getOwnCompanyName();
   await getConflictingCompanyNames();
   isConflictForOwnCompany.value = conflictingCompanyIds.value.has(props.companyId);
   isLoading.value = false;
