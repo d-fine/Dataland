@@ -26,11 +26,12 @@ open class DataSourcingTest {
         val requestId = idPair.second
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         storedDataSourcing =
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                companyId,
-                testDataType.toString(),
-                testReportingPeriod,
-            )
+            apiAccessor.dataSourcingControllerApi
+                .searchDataSourcings(
+                    companyId = companyId,
+                    dataType = testDataType.toString(),
+                    reportingPeriod = testReportingPeriod,
+                ).first()
     }
 
     /**

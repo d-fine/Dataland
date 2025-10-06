@@ -98,51 +98,6 @@ interface DataSourcingApi {
     ): ResponseEntity<List<ReducedDataSourcing>>
 
     /**
-     * Retrieve a DataSourcing object by reporting period, dataType and companyId.
-     */
-    @Operation(
-        summary = "Get DataSourcing by parameters",
-        description = "Retrieve a DataSourcing object by reporting period, dataType and companyId",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query DataSourcing objects.",
-                content = [Content(schema = Schema())],
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "DataSourcing object not found.",
-                content = [Content(schema = Schema())],
-            ),
-        ],
-    )
-    @GetMapping(value = ["/dimensions"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getDataSourcingByDimensions(
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-        )
-        @RequestParam
-        companyId: String,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
-        )
-        @RequestParam
-        dataType: String,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-        )
-        @RequestParam
-        reportingPeriod: String,
-    ): ResponseEntity<StoredDataSourcing>
-
-    /**
      * Retrieve the history of a DataSourcing object by its ID.
      */
     @Operation(
@@ -383,7 +338,7 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @GetMapping(value = ["/search"], produces = ["application/json"])
+    @GetMapping(produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun searchDataSourcings(
         @Parameter(

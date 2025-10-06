@@ -29,14 +29,6 @@ class DataSourcingControllerTest : DataSourcingTest() {
         assertEquals(403, exception.statusCode)
     }
 
-    private fun assertResourceNotFoundException(function: () -> Unit) {
-        val exception =
-            assertThrows<ClientException> {
-                function()
-            }
-        assertEquals(404, exception.statusCode)
-    }
-
     private fun verifyDataSourcingDocuments(
         dataSourcingObjectId: String,
         expectedDocuments: Set<String>,
@@ -87,30 +79,32 @@ class DataSourcingControllerTest : DataSourcingTest() {
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
             assertForbiddenException {
-                apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                    companyId,
-                    testDataType.toString(),
-                    testReportingPeriod,
+                apiAccessor.dataSourcingControllerApi.searchDataSourcings(
+                    companyId = companyId,
+                    dataType = testDataType.toString(),
+                    reportingPeriod = testReportingPeriod,
                 )
             }
         }
 
-        assertResourceNotFoundException {
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                companyId,
-                testDataType.toString(),
-                testReportingPeriod,
-            )
-        }
+        assert(
+            apiAccessor.dataSourcingControllerApi
+                .searchDataSourcings(
+                    companyId = companyId,
+                    dataType = testDataType.toString(),
+                    reportingPeriod = testReportingPeriod,
+                ).isEmpty(),
+        )
 
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
 
         val dataSourcing =
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                companyId,
-                testDataType.toString(),
-                testReportingPeriod,
-            )
+            apiAccessor.dataSourcingControllerApi
+                .searchDataSourcings(
+                    companyId = companyId,
+                    dataType = testDataType.toString(),
+                    reportingPeriod = testReportingPeriod,
+                ).first()
 
         assertEquals(DataSourcingState.Initialized, dataSourcing.state)
         assertEquals(setOf(requestId), dataSourcing.associatedRequestIds)
@@ -225,11 +219,12 @@ class DataSourcingControllerTest : DataSourcingTest() {
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(it, RequestState.Processing)
         }
         return companyIds.map {
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                it,
-                testDataType.toString(),
-                testReportingPeriod,
-            )
+            apiAccessor.dataSourcingControllerApi
+                .searchDataSourcings(
+                    companyId = it,
+                    dataType = testDataType.toString(),
+                    reportingPeriod = testReportingPeriod,
+                ).first()
         }
     }
 

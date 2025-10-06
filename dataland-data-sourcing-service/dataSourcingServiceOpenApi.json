@@ -820,125 +820,6 @@
         ]
       }
     },
-    "/search": {
-      "get": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Search data sourcings.",
-        "description": "Search for data sourcing objects using various filter parameters.",
-        "operationId": "searchDataSourcings",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "sfdr"
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": 2023
-          },
-          {
-            "name": "state",
-            "in": "query",
-            "description": "The current state of the data sourcing object.",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/DataSourcingState"
-            }
-          },
-          {
-            "name": "chunkSize",
-            "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 100
-            }
-          },
-          {
-            "name": "chunkIndex",
-            "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved matching data sourcing objects.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredDataSourcing"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only Dataland admins have the right to search for data sourcing objects."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/requests": {
       "get": {
         "tags": [
@@ -1270,94 +1151,6 @@
         ]
       }
     },
-    "/dimensions": {
-      "get": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Get DataSourcing by parameters",
-        "description": "Retrieve a DataSourcing object by reporting period, dataType and companyId",
-        "operationId": "getDataSourcingByDimensions",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "sfdr"
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": 2023
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved DataSourcing object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins are allowed to query DataSourcing objects."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/actuator": {
       "get": {
         "tags": [
@@ -1527,6 +1320,125 @@
             }
           }
         }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Search data sourcings.",
+        "description": "Search for data sourcing objects using various filter parameters.",
+        "operationId": "searchDataSourcings",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "sfdr"
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": 2023
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "The current state of the data sourcing object.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DataSourcingState"
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved matching data sourcing objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataSourcing"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to search for data sourcing objects."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     }
   },

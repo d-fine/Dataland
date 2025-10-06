@@ -37,16 +37,6 @@ class DataSourcingManager
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
 
-        private fun getFullyFetchedDataSourcingEntityByDataDimension(
-            companyId: UUID,
-            dataType: String,
-            reportingPeriod: String,
-        ): DataSourcingEntity =
-            dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(companyId, dataType, reportingPeriod)
-                ?: throw DataSourcingNotFoundApiException(
-                    companyId, reportingPeriod, dataType,
-                )
-
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
          * @param dataSourcingEntityId the ID of the data sourcing entity to retrieve
@@ -57,30 +47,6 @@ class DataSourcingManager
             getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
                 .toStoredDataSourcing()
                 .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
-
-        /**
-         * Returns the unique StoredDataSourcing object for the given company ID, reporting period and
-         * data type. Throws a DataSourcingNotFoundApiException if no such object exists.
-         * @param companyId of the stored data sourcing to retrieve
-         * @param reportingPeriod of the stored data sourcing to retrieve
-         * @param dataType of the stored data sourcing to retrieve
-         * @return the associated StoredDataSourcing object
-         */
-        @Transactional(readOnly = true)
-        fun getStoredDataSourcing(
-            companyId: UUID,
-            reportingPeriod: String,
-            dataType: String,
-        ): StoredDataSourcing =
-            getFullyFetchedDataSourcingEntityByDataDimension(companyId, dataType, reportingPeriod)
-                .toStoredDataSourcing()
-                .also {
-                    logger
-                        .info(
-                            "Get data sourcing entity with companyId: $companyId, reportingPeriod: $reportingPeriod," +
-                                " dataType: $dataType",
-                        )
-                }
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
