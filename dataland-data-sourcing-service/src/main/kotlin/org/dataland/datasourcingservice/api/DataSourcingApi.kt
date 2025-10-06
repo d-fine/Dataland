@@ -78,12 +78,12 @@ interface DataSourcingApi {
             ApiResponse(
                 responseCode = "403",
                 description = "Only uploaders are allowed to use this endpoint.",
-                content = [Content(schema = Schema())],
+                content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
                 responseCode = "404",
                 description = "DataSourcing object not found.",
-                content = [Content(schema = Schema())],
+                content = [Content(array = ArraySchema())],
             ),
         ],
     )
@@ -229,12 +229,16 @@ interface DataSourcingApi {
                 description = "Only Dataland Admins to patch document collectors and data extractors.",
                 content = [Content(schema = Schema())],
             ),
-            ApiResponse(responseCode = "404", description = "DataSourcing object not found."),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchDocumentCollectorAndDataExtractor(
+    fun patchProviderAndAdminComment(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
@@ -289,7 +293,11 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping(value = ["/{dataSourcingId}/documents"], consumes = ["application/json"], produces = ["application/json"])
+    @PatchMapping(
+        value = ["/{dataSourcingId}/documents"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun patchDataSourcingDocuments(
         @Parameter(
@@ -298,14 +306,16 @@ interface DataSourcingApi {
         )
         @PathVariable
         dataSourcingId: String,
-        @Valid
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_PATCH_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
+        @ArraySchema(
+            arraySchema =
+                Schema(
+                    type = "string",
+                    description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_PATCH_DESCRIPTION,
+                    example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
+                ),
         )
         @RequestBody
         documentIds: Set<String>,
-        @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.APPEND_DOCUMENTS_DESCRIPTION,
         )
@@ -322,7 +332,7 @@ interface DataSourcingApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched dateDocumentSourcingAttempt."),
+            ApiResponse(responseCode = "200", description = "Successfully patched the date of the next document sourcing attempt."),
             ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
@@ -347,6 +357,7 @@ interface DataSourcingApi {
         @Valid
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATE_OF_NEXT_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_DATE_EXAMPLE,
         )
         @RequestParam
         dateOfNextDocumentSourcingAttempt: LocalDate,

@@ -93,7 +93,6 @@ class RequestControllerTest {
 
         val initialRequestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
         val initialRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequestId)
-        Thread.sleep(1)
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(initialRequest.id, RequestState.Processing)
         val patchedRequest = apiAccessor.dataSourcingRequestControllerApi.getRequest(initialRequest.id)
 

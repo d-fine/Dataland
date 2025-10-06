@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
-import kotlin.jvm.optionals.getOrNull
+import kotlin.collections.ifEmpty
 
 /**
  * Service responsible for managing data requests in the sense of the data sourcing service.
@@ -139,7 +139,7 @@ class SingleRequestManager
          */
         @Transactional(readOnly = true)
         fun getRequest(dataRequestId: UUID): StoredRequest =
-            requestRepository.findById(dataRequestId).getOrNull()?.toStoredDataRequest()
+            requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)?.toStoredDataRequest()
                 ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 ).also { requestLogger.logMessageForGettingDataRequest(dataRequestId, UUID.randomUUID()) }
@@ -161,19 +161,19 @@ class SingleRequestManager
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
             val requestEntity =
-                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
-                    dataRequestId,
-                )
-            val oldRequestState = requestEntity.state
-            requestEntity.state = newRequestState
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)
+                    ?: throw RequestNotFoundApiException(
+                        dataRequestId,
+                    )
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
+            requestEntity.state = newRequestState
 
             if (adminComment != null) {
                 requestLogger.logMessageForPatchingAdminComment(dataRequestId, adminComment)
                 requestEntity.adminComment = adminComment
             }
 
-            if (oldRequestState == RequestState.Open && newRequestState == RequestState.Processing) {
+            if (newRequestState == RequestState.Processing) {
                 dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
             } else {
                 requestRepository.save(requestEntity)
@@ -198,7 +198,7 @@ class SingleRequestManager
             requestLogger.logMessageForPatchingRequestPriority(dataRequestId, newRequestPriority)
 
             val requestEntity =
-                requestRepository.findById(dataRequestId).getOrNull() ?: throw RequestNotFoundApiException(
+                requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId) ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 )
             requestEntity.requestPriority = newRequestPriority
@@ -232,5 +232,8 @@ class SingleRequestManager
             return dataRevisionRepository
                 .listDataRequestRevisionsById(uuid)
                 .map { it.toStoredDataRequest() }
+                .ifEmpty {
+                    throw RequestNotFoundApiException(uuid)
+                }
         }
     }

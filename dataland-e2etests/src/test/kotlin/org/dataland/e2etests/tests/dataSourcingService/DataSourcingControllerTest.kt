@@ -3,15 +3,10 @@ package org.dataland.e2etests.tests.dataSourcingService
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingState
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.dataSourcingService.openApiClient.model.StoredDataSourcing
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,18 +14,11 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import java.lang.Thread.sleep
 import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataSourcingControllerTest {
-    private val apiAccessor = ApiAccessor()
+class DataSourcingControllerTest : DataSourcingTest() {
     private val documentControllerApiAccessor = DocumentControllerApiAccessor()
-
-    private val testDataType = "sfdr"
-    private val testReportingPeriod = "2023"
-
-    private lateinit var storedDataSourcing: StoredDataSourcing
 
     private fun assertForbiddenException(function: () -> Unit) {
         val exception =
@@ -47,28 +35,6 @@ class DataSourcingControllerTest {
             }
         assertEquals(404, exception.statusCode)
     }
-
-    private fun createRequest(
-        companyId: String,
-        dataType: String = testDataType,
-        reportingPeriod: String = testReportingPeriod,
-        comment: String = "test request",
-        user: TechnicalUser = TechnicalUser.Reader,
-    ): String {
-        val request = SingleRequest(companyId, dataType, reportingPeriod, comment)
-        return GlobalAuth.withTechnicalUser(user) {
-            apiAccessor.dataSourcingRequestControllerApi.createRequest(request).requestId
-        }
-    }
-
-    private fun uploadDummyDataForDataSourcingObject(): String =
-        apiAccessor
-            .uploadDummyFrameworkDataset(
-                storedDataSourcing.companyId,
-                DataTypeEnum.valueOf(storedDataSourcing.dataType),
-                storedDataSourcing.reportingPeriod,
-                false,
-            ).dataId
 
     private fun verifyDataSourcingDocuments(
         dataSourcingObjectId: String,
@@ -102,31 +68,14 @@ class DataSourcingControllerTest {
         }
     }
 
-    private fun createNewCompanyAndRequestAndReturnTheirIds(): Pair<String, String> {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        val companyId = createNewCompanyAndReturnId()
-
-        return Pair(companyId, createRequest(companyId))
-    }
-
     /**
      * Initialize a data sourcing object by creating a request and setting its state to 'Processing'.
      *
      * The object is stored in the class variable 'dataSourcingObject' for use in the tests.
      */
     @BeforeEach
-    fun initializeDataSourcing() {
-        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
-        val companyId = idPair.first
-        val requestId = idPair.second
-        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
-        storedDataSourcing =
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                companyId,
-                testDataType,
-                testReportingPeriod,
-            )
+    fun setup() {
+        super.initializeDataSourcing()
     }
 
     @Test
@@ -195,43 +144,6 @@ class DataSourcingControllerTest {
         )
     }
 
-    @Test
-    fun `upload a dataset and verify that the state of the corresponding data sourcing object is set to DataVerification`() {
-        uploadDummyDataForDataSourcingObject()
-
-        ApiAwait.waitForData(
-            supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId).state },
-            condition = { it == DataSourcingState.DataVerification },
-        )
-    }
-
-    @Test
-    fun `accept a dataset and verify that the state of the corresponding data sourcing object is set to Answered`() {
-        val dataSetId = uploadDummyDataForDataSourcingObject()
-        sleep(5000)
-        apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted)
-        sleep(10000)
-        val dataSourcing = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
-        assertEquals(DataSourcingState.Answered, dataSourcing.state)
-    }
-
-    @Test
-    fun `verify that the state Answered of a data sourcing object cannot be changed by data uploads`() {
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
-                storedDataSourcing.dataSourcingId,
-                DataSourcingState.Answered,
-            )
-        }
-        uploadDummyDataForDataSourcingObject()
-        sleep(2000) // make sure events are processed throughout the system before proceeding
-        val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
-        assertEquals(
-            DataSourcingState.Answered,
-            updatedDataSourcingObject.state,
-        )
-    }
-
     @ParameterizedTest
     @EnumSource(DataSourcingState::class)
     fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`(
@@ -277,7 +189,7 @@ class DataSourcingControllerTest {
                 storedDataSourcing.dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcing.dataSourcingId,
                 companyIdCollector,
             )
@@ -291,7 +203,7 @@ class DataSourcingControllerTest {
                 DataSourcingState.DataExtraction,
             )
             updatedDataSourcingObject =
-                apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+                apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                     storedDataSourcing.dataSourcingId,
                     null,
                     companyIdExtractor,
@@ -344,7 +256,7 @@ class DataSourcingControllerTest {
                 storedDataSourcings[0].dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcings[0].dataSourcingId,
                 companyIdDocumentCollectorOrDataExtractor,
             )
@@ -352,7 +264,7 @@ class DataSourcingControllerTest {
                 storedDataSourcings[1].dataSourcingId,
                 DataSourcingState.DataExtraction,
             )
-            apiAccessor.dataSourcingControllerApi.patchDocumentCollectorAndDataExtractor(
+            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
                 storedDataSourcings[1].dataSourcingId,
                 null,
                 companyIdDocumentCollectorOrDataExtractor,
@@ -464,9 +376,4 @@ class DataSourcingControllerTest {
             assertEquals(fourthDate, it[4].dateOfNextDocumentSourcingAttempt)
         }
     }
-
-    private fun createNewCompanyAndReturnId(): String =
-        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        }
 }

@@ -48,14 +48,14 @@ class DataSourcingController(
         ResponseEntity
             .ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(dataSourcingId), state))
 
-    override fun patchDocumentCollectorAndDataExtractor(
+    override fun patchProviderAndAdminComment(
         dataSourcingId: String,
         documentCollector: String?,
         dataExtractor: String?,
         adminComment: String?,
     ): ResponseEntity<StoredDataSourcing> =
         ResponseEntity.ok(
-            dataSourcingManager.patchDocumentCollectorAndDataExtractor(
+            dataSourcingManager.patchProviderAndAdminComment(
                 UUID.fromString(dataSourcingId),
                 documentCollector,
                 dataExtractor,

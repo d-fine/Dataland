@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import java.util.UUID
 
 /**
@@ -17,4 +18,14 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
         dataType: String,
         reportingPeriod: String,
     ): List<RequestEntity>
+
+    /**
+     * Find a request by id and fetch the associated data sourcing entity.
+     */
+    @Query(
+        "SELECT request FROM RequestEntity request " +
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
+            "WHERE request.id = :id",
+    )
+    fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
 }
