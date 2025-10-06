@@ -47,7 +47,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "3.14.6",
     "@faker-js/faker": "9.9.0",
-    "@tsconfig/node20": "20.1.6",
+    "@tsconfig/node24": "24.0.1",
     "@types/markdown-it": "14.1.2",
     "@types/node": "24.6.2",
     "@vitejs/plugin-vue": "5.2.4",
