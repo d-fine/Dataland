@@ -820,6 +820,129 @@
         ]
       }
     },
+    "/requests": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Search requests by filters.",
+        "description": "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
+        "operationId": "searchRequests",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "sfdr"
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": 2023
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "The current state of the request.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestState"
+            },
+            "example": "Open"
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "At least one of your provided filters is not of the correct format."
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to search among all requests."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/{dataRequestId}": {
       "get": {
         "tags": [
@@ -1204,15 +1327,15 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Get DataSourcing by parameters",
-        "description": "Retrieve a DataSourcing object by reporting period, dataType and companyId",
-        "operationId": "getDataSourcingByDimensions",
+        "summary": "Search data sourcings.",
+        "description": "Search for data sourcing objects using various filter parameters.",
+        "operationId": "searchDataSourcings",
         "parameters": [
           {
             "name": "companyId",
             "in": "query",
             "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             },
@@ -1222,7 +1345,7 @@
             "name": "dataType",
             "in": "query",
             "description": "The associated reporting framework or data point type (as applicable).",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             },
@@ -1232,29 +1355,60 @@
             "name": "reportingPeriod",
             "in": "query",
             "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             },
             "example": 2023
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "The current state of the data sourcing object.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DataSourcingState"
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved DataSourcing object.",
+            "description": "Successfully retrieved matching data sourcing objects.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataSourcing"
+                  }
                 }
               }
             }
           },
           "403": {
-            "description": "Only admins are allowed to query DataSourcing objects."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
+            "description": "Only Dataland admins have the right to search for data sourcing objects."
           },
           "default": {
             "description": "An error occurred",

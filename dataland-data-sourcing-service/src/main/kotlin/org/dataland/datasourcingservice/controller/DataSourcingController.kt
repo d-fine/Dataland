@@ -29,19 +29,6 @@ class DataSourcingController
         override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
             ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(providerCompanyId)))
 
-        override fun getDataSourcingByDimensions(
-            companyId: String,
-            dataType: String,
-            reportingPeriod: String,
-        ): ResponseEntity<StoredDataSourcing> =
-            ResponseEntity.ok(
-                dataSourcingManager.getStoredDataSourcing(
-                    UUID.fromString(companyId),
-                    reportingPeriod,
-                    dataType,
-                ),
-            )
-
         override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
             ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId))
 
