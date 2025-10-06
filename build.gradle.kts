@@ -155,7 +155,17 @@ sonar {
                 "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt," +
 
                 // community manager
-                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt",
+                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt" +
+
+                // data sourcing service
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/DataSourcingApi.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/RequestApi.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "StoredDataSourcing.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "ReducedDataSourcing.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "DataSourcingWithoutReferences.kt",
         )
         property(
             "sonar.exclusions",
