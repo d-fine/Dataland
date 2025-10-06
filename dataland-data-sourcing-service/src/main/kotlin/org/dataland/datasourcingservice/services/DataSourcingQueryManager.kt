@@ -32,8 +32,8 @@ class DataSourcingQueryManager(
         dataType: String?,
         reportingPeriod: String?,
         state: DataSourcingState?,
-        chunkSize: Int,
-        chunkIndex: Int,
+        chunkSize: Int = 100,
+        chunkIndex: Int = 0,
     ): List<StoredDataSourcing> =
         dataSourcingRepository
             .searchDataSourcingEntitiesAndFetchAllStoredFields(

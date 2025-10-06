@@ -31,8 +31,8 @@ class RequestQueryManager(
         dataType: String?,
         reportingPeriod: String?,
         state: RequestState?,
-        chunkSize: Int,
-        chunkIndex: Int,
+        chunkSize: Int = 100,
+        chunkIndex: Int = 0,
     ): List<StoredRequest> =
         requestRepository
             .searchRequestsAndFetchDataSourcingEntities(

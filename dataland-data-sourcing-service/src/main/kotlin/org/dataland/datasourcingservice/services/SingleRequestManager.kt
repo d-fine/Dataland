@@ -72,7 +72,7 @@ class SingleRequestManager
                 getIdOfConflictingRequest(
                     userIdToUse,
                     companyId,
-                    singleRequest.dataType.value,
+                    singleRequest.dataType,
                     singleRequest.reportingPeriod,
                 )
             return if (idOfConflictingRequest != null) {

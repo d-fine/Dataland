@@ -130,7 +130,7 @@ class DataSourcingValidator
             val dataDimension =
                 BasicDataDimensions(
                     companyId = singleRequest.companyIdentifier,
-                    dataType = singleRequest.dataType.value,
+                    dataType = singleRequest.dataType,
                     reportingPeriod = singleRequest.reportingPeriod,
                 )
             val validationResult = validateRequestForDataDimension(dataDimension)
