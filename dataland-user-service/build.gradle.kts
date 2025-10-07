@@ -94,10 +94,34 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the data sourcing service."
+    group = "clients"
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.datasourcingservice"
+    input = project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/datasourcingservice")
+            .get()
+            .toString(),
+    )
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Generate all required clients"
     group = "clients"
     dependsOn("generateBackendClient")
+    dependsOn("generateDataSourcingServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
