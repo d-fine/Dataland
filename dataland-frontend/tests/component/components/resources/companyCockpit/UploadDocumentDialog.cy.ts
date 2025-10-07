@@ -61,4 +61,20 @@ describe('Check the Upload Document modal', function (): void {
     cy.get('[data-test="upload-document-button"]').click();
     cy.get('[data-test="file-upload-error"]').should('be.visible');
   });
+
+  it.only('Check that all fields can be filled and the success modal opens', function (): void {
+    cy.intercept('POST', '**/documents', {
+      statusCode: 200,
+    }).as('postDocumentData');
+    uploadFile('file1.pdf');
+    cy.get('[data-test="document-name"]').type('Test Document');
+    cy.get('[data-test="document-category"]').click();
+    cy.get('.p-select-option').first().click();
+    cy.get('[data-test="publication-date"]').find('.p-datepicker-dropdown').click();
+    cy.get('.p-datepicker-today').click();
+    cy.get('[data-test="reporting-period"]').find('.p-datepicker-dropdown').click();
+    cy.get('.p-datepicker-year').contains('2024').click();
+    cy.get('[data-test="upload-document-button"]').click();
+    cy.get('[data-test="success-modal"]').should('be.visible');
+  });
 });
