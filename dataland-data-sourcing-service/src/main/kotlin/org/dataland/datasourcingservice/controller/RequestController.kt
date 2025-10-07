@@ -72,13 +72,13 @@ class RequestController
             companyId: String?,
             dataType: String?,
             reportingPeriod: String?,
-            state: RequestState?,
+            requestState: RequestState?,
             chunkSize: Int,
             chunkIndex: Int,
         ): ResponseEntity<List<StoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    companyId?.let { UUID.fromString(it) }, dataType, reportingPeriod, state, chunkSize, chunkIndex,
+                    companyId?.let { UUID.fromString(it) }, dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
                 ),
             )
     }

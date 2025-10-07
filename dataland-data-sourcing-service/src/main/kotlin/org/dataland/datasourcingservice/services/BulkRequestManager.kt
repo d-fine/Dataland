@@ -65,7 +65,7 @@ class BulkRequestManager
             metaDataController
                 .retrieveMetaDataOfActiveDatasets(
                     basicDataDimensions = requests,
-                ).map { it ->
+                ).map {
                     BasicDataDimensions(
                         companyId = it.companyId,
                         dataType = it.dataType.toString(),
@@ -75,8 +75,8 @@ class BulkRequestManager
 
         /**
          * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
-         * For performance reasons tupel matching is used and requires a native query via entity manager.
-         * JPA does not support tupel matching.
+         * For performance reasons tuple matching is used and requires a native query via entity manager.
+         * JPA does not support tuple matching.
          * @param dataDimensions List of data dimensions to filter the requests.
          * @param userId The ID of the user for whom to retrieve the active requests.
          */
@@ -98,7 +98,7 @@ class BulkRequestManager
                 val query = entityManager.createNativeQuery(queryToExecute, RequestEntity::class.java)
                 return query.resultList
                     .filterIsInstance<RequestEntity>()
-                    .map { it ->
+                    .map {
                         BasicDataDimensions(
                             companyId = it.companyId.toString(),
                             reportingPeriod = it.reportingPeriod,

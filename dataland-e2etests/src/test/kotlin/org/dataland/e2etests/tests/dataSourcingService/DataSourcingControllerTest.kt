@@ -46,7 +46,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         val requestId2 = createRequest(storedDataSourcing.companyId, user = TechnicalUser.Admin)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            // requests are only linked to data sourcing objects after having been validated by the QUARG Team and set to Processing
+            // requests are only linked to data sourcing objects after having been validated by the QARG Team and set to Processing
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId1, RequestState.Processing)
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId2, RequestState.Processing)
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(storedDataSourcing.dataSourcingId, newSourcingStatus)
@@ -72,9 +72,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
 
     @Test
     fun `verify that data sourcing objects behave as they should during the early stages of their lifecycle`() {
-        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
-        val companyId = idPair.first
-        val requestId = idPair.second
+        val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
             assertForbiddenException {
