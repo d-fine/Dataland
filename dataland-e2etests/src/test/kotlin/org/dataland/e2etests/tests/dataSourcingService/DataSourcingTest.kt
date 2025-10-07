@@ -14,7 +14,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 open class DataSourcingTest {
     val apiAccessor = ApiAccessor()
     lateinit var storedDataSourcing: StoredDataSourcing
-    val testDataType = SingleRequest.DataType.sfdr
+    val testDataType = "sfdr"
     val testReportingPeriod = "2023"
 
     /**
@@ -29,7 +29,7 @@ open class DataSourcingTest {
             apiAccessor.dataSourcingControllerApi
                 .searchDataSourcings(
                     companyId = companyId,
-                    dataType = testDataType.toString(),
+                    dataType = testDataType,
                     reportingPeriod = testReportingPeriod,
                 ).first()
     }
@@ -48,7 +48,7 @@ open class DataSourcingTest {
      */
     fun createRequest(
         companyId: String,
-        dataType: SingleRequest.DataType = testDataType,
+        dataType: String = testDataType,
         reportingPeriod: String = testReportingPeriod,
         comment: String = "test request",
         user: TechnicalUser = TechnicalUser.Reader,
