@@ -3,6 +3,7 @@ import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
+import type { CompanyIdAndName } from '@clients/backend';
 
 describeIf(
   'As an admin, I want to be able to upload documents via the UI',
@@ -10,6 +11,8 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
+    let alphaCompanyIdAndName: CompanyIdAndName;
+    let betaCompanyIdAndName: CompanyIdAndName;
     let testDocFilePath: string;
     let testDocFileName: string;
     const testDocFilePathBase = 'tests/e2e/fixtures/documents/';
@@ -28,9 +31,9 @@ describeIf(
 
     before(() => {
       setupCommonInterceptions();
-      fetchTestCompanies().then(([a, b]) => {
-        Cypress.env('companyA', a);
-        Cypress.env('companyB', b);
+      fetchTestCompanies().then(([alpha, beta]) => {
+        alphaCompanyIdAndName = alpha;
+        betaCompanyIdAndName = beta;
       });
       getKeycloakToken(admin_name, admin_pw).then((t) => {
         Cypress.env('token', t);
@@ -53,8 +56,7 @@ describeIf(
     });
 
     it('Uploads a new document and verifies success', () => {
-      const companyA = Cypress.env('companyA');
-      visitDocumentPageAndUploadDocument(companyA.companyId);
+      visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.get('[data-test="successModal"]').should('be.visible');
       cy.contains('Document uploaded successfully.').should('be.visible');
       cy.get('[data-test="close-success-modal-button"]').click();
@@ -62,33 +64,30 @@ describeIf(
     });
 
     it('Shows conflict modal for already associated document', () => {
-      const companyA = Cypress.env('companyA');
       const token = Cypress.env('token');
       cy.readFile(testDocFilePath, null).then((buffer) => {
         void uploadDocumentViaApi(token, buffer, testDocFileName, {
           documentName: testDocFileName,
           documentCategory: 'Other',
-          companyIds: [companyA.companyId] as unknown as Set<string>,
+          companyIds: [alphaCompanyIdAndName.companyId] as unknown as Set<string>,
         });
       });
-      visitDocumentPageAndUploadDocument(companyA.companyId);
+      visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.contains('Document already exists').should('be.visible');
       cy.get('[data-test="ok-button"]').should('be.visible').click();
       cy.contains(testDocFileName).should('exist');
     });
 
     it('Associate document with new company after conflict', () => {
-      const companyA = Cypress.env('companyA');
-      const companyB = Cypress.env('companyB');
       const token = Cypress.env('token');
       cy.readFile(testDocFilePath, null).then((buffer) => {
         void uploadDocumentViaApi(token, buffer, testDocFileName, {
           documentName: testDocFileName,
           documentCategory: 'Other',
-          companyIds: [companyB.companyId] as unknown as Set<string>,
+          companyIds: [betaCompanyIdAndName.companyId] as unknown as Set<string>,
         });
       });
-      visitDocumentPageAndUploadDocument(companyA.companyId);
+      visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.contains('Document already exists').should('be.visible');
       cy.get('[data-test="associate-document-button"]').should('be.visible').click();
       cy.get('[data-test="successModal"]').should('be.visible');
