@@ -5,14 +5,23 @@ import {
   type BasicCompanyInformation,
   MetaDataControllerApi,
 } from '@clients/backend';
-// @ts-ignore: Cypress types are internal
-import { type RouteHandler } from 'cypress/types/net-stubbing';
 
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export interface UploadIds {
   companyId: string;
   dataId: string;
+}
+
+interface InterceptRequest {
+  headers: Record<string, string>;
+  url: string;
+  query: Record<string, string>;
+  continue: (callback: (response: InterceptResponse) => void) => void;
+}
+
+interface InterceptResponse {
+  statusCode: number;
 }
 
 /**
@@ -62,10 +71,10 @@ export async function countCompaniesAndDatasetsForDataType(
  * response has a status code greater or equal 500, and throws an error depending on the allow-flag
  */
 export function interceptAllAndCheckFor500Errors(): void {
-  const handler: RouteHandler = (incomingRequest) => {
+  const handler = (incomingRequest: InterceptRequest): void => {
     const is500ResponseAllowed = incomingRequest.headers['DATALAND-ALLOW-5XX'] === 'true';
     delete incomingRequest.headers['DATALAND-ALLOW-5XX'];
-    incomingRequest.continue((response) => {
+    incomingRequest.continue((response: InterceptResponse) => {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
         assert(
           false,
@@ -82,7 +91,7 @@ export function interceptAllAndCheckFor500Errors(): void {
  * Intercepts all data upload requests to the backend and sets the bypassQa flag
  */
 export function interceptAllDataPostsAndBypassQaIfPossible(): void {
-  const handler: RouteHandler = (incomingRequest) => {
+  const handler = (incomingRequest: InterceptRequest): void => {
     const isQaRequired = incomingRequest.headers['REQUIRE-QA'] === 'true';
     delete incomingRequest.headers['REQUIRE-QA'];
     if (isQaRequired) {
