@@ -1,39 +1,37 @@
 <template>
   <TheHeader />
-  <div class="datapoints-page">
-    <div class="container mx-auto">
-      <div>
-        <h1>{{ dataPoint?.name || 'Data Point' }} Documentation</h1>
+  <TheContent>
+    <div class="datapoints-page">
+      <div class="structural-container">
+        <h1 data-test="dataPointTitle">{{ dataPoint?.name || 'Data Point' }} Documentation</h1>
         <p>
-          This page displays information about the {{ dataPointTypeId }} data point type used within the Dataland
-          platform.
+          This page displays information about the {{ dataPointTypeId }} data point type used within the Dataland platform.
         </p>
       </div>
 
-      <div v-if="isLoading">
+      <div v-if="isLoading" data-test="dataPointLoading">
         <ProgressSpinner />
-        <p>Loading data point...</p>
-      </div>
-
-      <div v-else-if="error">
-        <Message severity="error" :closable="false">
-          <p>Error loading data point: {{ error }}</p>
+        <Message severity="info" variant="simple" size="small" data-test="dataPointLoadingMessage">
+          Loading data point...
         </Message>
       </div>
 
-      <div v-else-if="!dataPoint">
-        <Message severity="info" :closable="false">
-          <p>Data point not found.</p>
-        </Message>
-      </div>
+      <Message v-else-if="error" severity="error" variant="simple" size="small" data-test="dataPointError">
+        Error loading data point: {{ error }}
+      </Message>
 
-      <div v-else>
+      <Message v-else-if="!dataPoint" severity="info" variant="simple" size="small" data-test="dataPointNotFound">
+        Data point not found.
+      </Message>
+
+      <div v-else data-test="dataPointContent">
         <DataPointCard :data-point="dataPoint">
           <ExpandableSection
             v-if="dataPoint.businessDefinition"
             title="Business Definition"
             :is-expanded="expandedSubsections.businessDefinition || false"
             @toggle="toggleSubsection('businessDefinition')"
+            data-test="businessDefinitionSection"
           >
             <BusinessDefinitionContent :business-definition="dataPoint.businessDefinition" />
           </ExpandableSection>
@@ -42,6 +40,7 @@
             title="Base Type"
             :is-expanded="expandedSubsections.baseType || false"
             @toggle="toggleSubsection('baseType')"
+            data-test="baseTypeSection"
           >
             <TypeInfoContent :type-info="dataPoint.dataPointBaseType" />
           </ExpandableSection>
@@ -51,6 +50,7 @@
             title="Used By Frameworks"
             :is-expanded="expandedSubsections.usedBy || false"
             @toggle="toggleSubsection('usedBy')"
+            data-test="usedBySection"
           >
             <FrameworksContent :frameworks="dataPoint.usedBy" />
           </ExpandableSection>
@@ -60,13 +60,14 @@
             title="Constraints"
             :is-expanded="expandedSubsections.constraints || false"
             @toggle="toggleSubsection('constraints')"
+            data-test="constraintsSection"
           >
             <ConstraintsContent :constraints="dataPoint.constraints" />
           </ExpandableSection>
         </DataPointCard>
       </div>
     </div>
-  </div>
+  </TheContent>
   <TheFooter />
 </template>
 
@@ -77,6 +78,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import { UnauthenticatedApiClientProvider } from '@/services/ApiClients';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
+import TheContent from '@/components/generics/TheContent.vue';
 import DataPointCard from '@/components/resources/datapoints/DataPointCard.vue';
 import ExpandableSection from '@/components/resources/datapoints/ExpandableSection.vue';
 import BusinessDefinitionContent from '@/components/resources/datapoints/BusinessDefinitionContent.vue';
@@ -110,15 +112,18 @@ interface Props {
 const props = defineProps<Props>();
 
 const dataPoint = ref<DataPoint | null>(null);
-const isLoading = ref(true);
+const isLoading = ref<boolean>(true);
 const error = ref<string | null>(null);
 const expandedSubsections = ref<Record<string, boolean>>({});
 
-const loadDataPoint = async () => {
+/**
+ * Loads the data point from the API.
+ * @returns Promise<void>
+ */
+const loadDataPoint = async (): Promise<void> => {
   try {
     isLoading.value = true;
     error.value = null;
-
     const apiClientProvider = new UnauthenticatedApiClientProvider();
     const data = await apiClientProvider.specificationController.getDataPointTypeSpecification(props.dataPointTypeId);
     dataPoint.value = data.data;
@@ -130,15 +135,20 @@ const loadDataPoint = async () => {
   }
 };
 
-const toggleSubsection = (subsectionKey: string) => {
+/**
+ * Toggles the expanded state of a subsection.
+ * @param subsectionKey - The key of the subsection to toggle
+ */
+const toggleSubsection = (subsectionKey: string): void => {
   expandedSubsections.value[subsectionKey] = !expandedSubsections.value[subsectionKey];
 };
 
-onMounted(() => {
-  loadDataPoint();
+onMounted(async () => {
+  await loadDataPoint();
 });
 </script>
 
+<!-- Only structural layout styles, no PrimeVue overrides -->
 <style scoped>
 .datapoints-page {
   min-height: calc(100vh - 4rem);
@@ -146,7 +156,8 @@ onMounted(() => {
   padding-top: var(--spacing-xl);
 }
 
-.container {
+.structural-container {
   max-width: 1200px;
+  margin: 0 auto;
 }
 </style>
