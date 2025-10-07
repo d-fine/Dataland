@@ -17,10 +17,10 @@ object BackendOpenApiDescriptionsAndExamples {
     const val HEADQUARTERS_POSTAL_CODE_DESCRIPTION = "The postal code of the headquarters."
     const val HEADQUARTERS_POSTAL_CODE_EXAMPLE = "10123"
 
-    const val FISCAL_YEAR_END_DESCRIPTION = "The fiscal year end of the company."
+    const val FISCAL_YEAR_END_DESCRIPTION = "The fiscal year-end of the company."
     const val FISCAL_YEAR_END_EXAMPLE = "2024-06-30"
 
-    const val REPORTING_PERIOD_SHIFT_DESCRIPTION = "Fiscal year deviation from calendar year or no deviation."
+    const val REPORTING_PERIOD_SHIFT_DESCRIPTION = "Difference between fiscal year-end and reporting period."
     const val REPORTING_PERIOD_SHIFT_EXAMPLE = "-1"
 
     const val SECTOR_DESCRIPTION = "The industry or sector in which the company operates."

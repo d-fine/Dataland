@@ -18,7 +18,7 @@ import java.time.LocalDate
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
  * @param fiscalYearEnd fiscal year-end of the company
- * @param reportingPeriodShift fiscal year deviation from calendar year or no deviation
+ * @param reportingPeriodShift difference between fiscal year-end and reporting period
  * @param sector in which the company operates (e.g. Financials)
  * @param sectorCodeWz classification according to the NACE compliant WZ method
  * @param identifiers under which the company is registered (LEI, PermID, ...)
