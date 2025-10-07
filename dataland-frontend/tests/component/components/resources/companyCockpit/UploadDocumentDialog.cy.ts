@@ -1,0 +1,64 @@
+import UploadDocumentDialog from '@/components/resources/companyCockpit/UploadDocumentDialog.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
+
+describe('Check the Upload Document modal', function (): void {
+  /** Helper to upload a file */
+  function uploadFile(fileName: string): void {
+    const blob = new Blob([fileName], { type: 'application/pdf' });
+    cy.get('[data-test="file-upload"]').find('input[type=file]').selectFile(
+      {
+        contents: blob,
+        fileName: fileName,
+        mimeType: 'application/pdf',
+      },
+      { force: true }
+    );
+  }
+
+  beforeEach(function () {
+    // @ts-ignore
+    cy.mountWithPlugins(UploadDocumentDialog, {
+      props: {
+        visible: true,
+        companyId: 'company-123',
+      },
+      keycloak: minimalKeycloakMock({}),
+    });
+  });
+
+  it('Check error message visibility when nothing is selected', function (): void {
+    cy.get('[data-test="upload-document-button"]').click();
+    cy.get('[data-test="file-upload-error"]').should('be.visible');
+    cy.get('[data-test="document-name-error"]').should('be.visible');
+    cy.get('[data-test="document-category-error"]').should('be.visible');
+    uploadFile('file1.pdf');
+    cy.get('[data-test="file-upload-error"]').should('not.exist');
+    cy.get('[data-test="document-name-error"]').should('be.visible');
+    cy.get('[data-test="document-name"]').type('Test Document');
+    cy.get('[data-test="document-name-error"]').should('not.exist');
+    cy.get('[data-test="document-category"]').click();
+    cy.get('.p-select-option').first().click();
+    cy.get('[data-test="document-category-error"]').should('not.exist');
+  });
+
+  it('Check error message when more than 1 document is selected and is handled gracefully', function (): void {
+    uploadFile('file1.pdf');
+    uploadFile('file2.pdf');
+    cy.get('[data-test="file-limit-error"]').should('be.visible');
+    uploadFile('file3.pdf');
+    cy.get('[data-test="file-limit-error"]').should('be.visible');
+    cy.get('.p-fileupload-file-remove-button').first().click();
+    cy.get('[data-test="file-limit-error"]').should('be.visible');
+    cy.get('.p-fileupload-file-remove-button').first().click();
+    cy.get('[data-test="file-limit-error"]').should('not.exist');
+  });
+
+  it('Check that the clear files button works as expected', function (): void {
+    uploadFile('file1.pdf');
+    uploadFile('file2.pdf');
+    cy.get('[data-test="file-limit-error"]').should('be.visible');
+    cy.get('.p-fileupload-cancel-button').click();
+    cy.get('[data-test="upload-document-button"]').click();
+    cy.get('[data-test="file-upload-error"]').should('be.visible');
+  });
+});

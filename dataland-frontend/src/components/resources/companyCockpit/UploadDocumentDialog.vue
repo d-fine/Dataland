@@ -43,7 +43,7 @@
         >
           Please select a file to upload.
         </Message>
-        <Message v-if="showFileLimitError" severity="error" variant="simple" size="small">
+        <Message v-if="showFileLimitError" severity="error" variant="simple" size="small" data-test="file-limit-error">
           You can only upload one file.
         </Message>
       </div>
