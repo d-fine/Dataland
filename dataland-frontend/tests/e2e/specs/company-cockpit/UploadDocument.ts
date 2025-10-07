@@ -58,7 +58,7 @@ describeIf(
 
     it('Uploads a new document and verifies success', () => {
       visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
-      cy.get('[data-test="successModal"]').should('be.visible');
+      cy.get('[data-test="success-modal"]').should('be.visible');
       cy.contains('Document uploaded successfully.').should('be.visible');
       cy.get('[data-test="close-success-modal-button"]').click();
       cy.contains(testDocFileName).should('exist');
@@ -91,7 +91,7 @@ describeIf(
       visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.contains('Document already exists').should('be.visible');
       cy.get('[data-test="associate-document-button"]').should('be.visible').click();
-      cy.get('[data-test="successModal"]').should('be.visible');
+      cy.get('[data-test="success-modal"]').should('be.visible');
       cy.contains('Document associated successfully.').should('be.visible');
       cy.get('[data-test="close-success-modal-button"]').click();
       cy.contains(testDocFileName).should('exist');

@@ -12,17 +12,23 @@
         <label class="upload-label" for="file-upload">Select Document<span class="required-asterisk">*</span></label>
         <FileUpload
           id="file-upload"
+          :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
+          :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
+            DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
+          } MB.`"
           mode="advanced"
           chooseLabel="Choose"
           cancelLabel="Cancel"
           customUpload
           :showUploadButton="false"
+          :showCancelButton="false"
           @select="onFileSelect"
           @remove="onFileRemove"
           @clear="selectedFiles = []"
           :files="selectedFiles"
           :auto="false"
           :multiple="false"
+          :disabled="selectedFiles.length >= 1"
           data-test="file-upload"
           aria-required="true"
           :pt="{
@@ -42,9 +48,6 @@
           data-test="file-upload-error"
         >
           Please select a file to upload.
-        </Message>
-        <Message v-if="showFileLimitError" severity="error" variant="simple" size="small" data-test="file-limit-error">
-          You can only upload one file.
         </Message>
       </div>
 
@@ -174,6 +177,7 @@ import Select from 'primevue/select';
 import DatePicker from 'primevue/datepicker';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES, BYTE_TO_MEGABYTE_FACTOR } from '@/DatalandSettings';
 import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -214,10 +218,6 @@ const documentControllerApi = apiClientProvider.apiClients.documentController;
 
 const isFormValid = computed<boolean>(() => {
   return selectedFiles.value.length == 1 && !!documentName.value && !!documentCategory.value;
-});
-
-const showFileLimitError = computed<boolean>(() => {
-  return selectedFiles.value.length > 1;
 });
 
 /**

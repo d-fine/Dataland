@@ -53,7 +53,7 @@
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
     @hide="closeSuccessModal"
-    data-test="successModal"
+    data-test="success-modal"
   >
     <div class="text-center" style="display: flex; flex-direction: column">
       <div style="margin: 10px">
