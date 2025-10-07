@@ -107,7 +107,7 @@ class SecurityUtilsService(
      * Returns true if the user is member of the company
      * @param companyId Dataland company ID
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isUserMemberOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false
@@ -203,8 +203,8 @@ class SecurityUtilsService(
     fun areAllParametersUnset(vararg parameters: Any?): Boolean =
         parameters.all {
             when (it) {
-                is String -> it.isNullOrBlank()
-                is Collection<*> -> it.isNullOrEmpty()
+                is String -> it.isBlank()
+                is Collection<*> -> it.isEmpty()
                 else -> it == null
             }
         }

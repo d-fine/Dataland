@@ -376,6 +376,7 @@
       "dataland-community-manager": [],
       "dataland-email-service": [],
       "dataland-api-key-manager" : [],
+      "dataland-data-sourcing-service" : [],
       "dataland-document-manager": [],
       "dataland-data-exporter": [],
       "dataland-user-service": [],
@@ -785,6 +786,30 @@
         "TERMS_AND_CONDITIONS"
       ],
       "realmRoles": [
+        "default-roles-datalandsecurity"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "08077d9f-97cc-4b3f-9543-c1803752652d",
+      "username": "service-account-dataland-data-sourcing-service",
+      "emailVerified": false,
+      "createdTimestamp": 1754559311,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "dataland-data-sourcing-service",
+      "disableableCredentialTypes": [],
+      "requiredActions": [
+        "TERMS_AND_CONDITIONS"
+      ],
+      "realmRoles": [
+        "ROLE_ADMIN",
         "default-roles-datalandsecurity"
       ],
       "clientRoles": {
@@ -1629,6 +1654,106 @@
         },
         {
           "id": "4afc86f0-e9c3-4558-b87a-d107b40731e1",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "5e1b4d57-21f9-4b5e-922f-d11f69b2c575",
+      "clientId": "dataland-data-sourcing-service",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}",
+      "redirectUris": [
+        "/*"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "client.secret.creation.time": "1754559311",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "2a1c0e94-66d7-43e1-bdc5-2cc6a2a7213d",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "38829e62-35a8-498a-8706-8be7e0a603ad",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "client_id",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "4796befe-3da1-430b-a65c-b31d7fcaf0f6",
           "name": "Client IP Address",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usersessionmodel-note-mapper",
