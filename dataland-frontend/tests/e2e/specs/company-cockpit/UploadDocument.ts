@@ -51,7 +51,8 @@ describeIf(
 
     afterEach(() => {
       if (testDocFileName) {
-        cy.task('deleteFile', testDocFilePathBase + testDocFileName);
+        cy.task('deleteFile', testDocFilePath);
+        testDocFileName = '';
       }
     });
 

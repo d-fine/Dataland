@@ -27,7 +27,7 @@
           aria-required="true"
           :pt="{
             fileThumbnail: { style: 'display: none;' },
-            fileBadge: { style: 'font-size:60px' },
+            pcFileBadge: { root: { style: 'display: none;' } },
           }"
         >
           <template #empty>
