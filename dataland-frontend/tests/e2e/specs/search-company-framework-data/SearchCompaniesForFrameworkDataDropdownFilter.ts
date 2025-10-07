@@ -35,7 +35,7 @@ before(function () {
  * @returns inputString the string without parenthesis
  */
 function escapeParenthesisInRegExp(inputString: string): string {
-  return inputString.replace(/[()]/g, String.raw`\$&`);
+  return inputString.replaceAll(/[()]/g, String.raw`\$&`);
 }
 
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {

@@ -100,7 +100,7 @@ export function visitAndCheckExternalAdminPage(options: {
   let uniqueAlias: string | undefined;
   if (interceptPattern) {
     // Generate a unique alias based on the URL and a timestamp
-    const urlPart = url.replace(/[^a-zA-Z0-9]/g, '').substring(0, 10);
+    const urlPart = url.replaceAll(/[^a-zA-Z0-9]/g, '').substring(0, 10);
     uniqueAlias = `intercept_${urlPart}_${Date.now()}`;
     cy.intercept({ method, url: interceptPattern }).as(uniqueAlias);
   }

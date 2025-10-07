@@ -47,7 +47,7 @@ function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
   expect(images?.length).to.eq(33);
   for (const [index, image] of (images ?? []).entries()) {
-    const filename = image.split('/').slice(-1)[0]!;
+    const filename = image.split('/').at(-1)!;
     checkImage(`Brand ${index + 1}`, filename);
   }
 }
@@ -84,7 +84,7 @@ function getLandingPageSection(sectionTitle: string): Section {
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
   const landingPageSection = assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]);
-  const singleImage = landingPageSection.split('/').slice(-1)[0]!;
+  const singleImage = landingPageSection.split('/').at(-1)!;
   return singleImage;
 }
 

@@ -302,7 +302,7 @@ export default defineComponent({
      * Converts the string inside the identifiers field into a list of identifiers
      */
     processInput() {
-      const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ',').split(','));
+      const uniqueIdentifiers = new Set(this.identifiersInString.replaceAll(/(\r\n|\n|\r|;| )/gm, ',').split(','));
       uniqueIdentifiers.delete('');
       this.identifiers = [...uniqueIdentifiers];
       this.identifiersInString = this.identifiers.join(', ');
