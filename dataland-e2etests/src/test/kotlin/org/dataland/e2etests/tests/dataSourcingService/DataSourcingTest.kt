@@ -22,9 +22,7 @@ open class DataSourcingTest {
      */
     fun initializeDataSourcing() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
-        val companyId = idPair.first
-        val requestId = idPair.second
+        val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         storedDataSourcing =
             apiAccessor.dataSourcingControllerApi

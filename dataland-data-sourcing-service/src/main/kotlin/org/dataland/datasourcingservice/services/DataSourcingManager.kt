@@ -113,7 +113,7 @@ class DataSourcingManager
         ) {
             if (state == null) return
             dataSourcingEntityWithFetchedRequests.state = state
-            if (state in setOf(DataSourcingState.Answered, DataSourcingState.NonSourceable)) {
+            if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
