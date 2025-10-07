@@ -190,8 +190,7 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Isin to originalIsin)))
         }
-        val newCompany =
-            companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
+        val newCompany = companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }
