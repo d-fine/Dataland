@@ -101,7 +101,7 @@ class EmailAddressControllerTest {
                     TechnicalUser.entries.forEach { technicalUser ->
                         assert(
                             keycloakUserInfos.any { userInfo ->
-                                userInfo.id == technicalUser.technicalUserId.toString()
+                                userInfo.id == technicalUser.technicalUserId
                             },
                         )
                     }

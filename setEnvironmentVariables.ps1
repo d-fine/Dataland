@@ -9,6 +9,8 @@
 [Environment]::SetEnvironmentVariable("DATALAND_EMAIL_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_API_KEY_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATA_SOURCING_SERVICE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INTERNAL_STORAGE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DOCUMENT_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("QA_SERVICE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)

@@ -7,8 +7,8 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +22,7 @@ import java.time.Instant
 class DataAccessManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+    @Autowired private val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -45,7 +45,7 @@ class DataAccessManager(
                 .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                     userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
                     reportingPeriod = reportingPeriod,
-                )?.any { it.accessStatus == AccessStatus.Granted } ?: false
+                ).any { it.accessStatus == AccessStatus.Granted }
 
         if (hasAccess) {
             logger.info(
@@ -118,7 +118,7 @@ class DataAccessManager(
                     userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
                     reportingPeriod = reportingPeriod,
                 )
-        if (!existingRequestsOfUser.isNullOrEmpty()) {
+        if (existingRequestsOfUser.isNotEmpty()) {
             val dataRequestEntity = existingRequestsOfUser[0]
 
             val modificationTime = Instant.now().toEpochMilli()
@@ -128,7 +128,7 @@ class DataAccessManager(
                 dataRequestEntity.accessStatus ==
                 AccessStatus.Declined
             ) {
-                dataRequestProcessingUtils.addNewRequestStatusToHistory(
+                communityManagerDataRequestProcessingUtils.addNewRequestStatusToHistory(
                     dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,
                     accessStatus = AccessStatus.Pending, requestStatusChangeReason = null,
                     modificationTime = modificationTime,
@@ -172,14 +172,14 @@ class DataAccessManager(
             )
         dataRequestRepository.save(dataRequestEntity)
 
-        dataRequestProcessingUtils.addNewRequestStatusToHistory(
+        communityManagerDataRequestProcessingUtils.addNewRequestStatusToHistory(
             dataRequestEntity = dataRequestEntity, requestStatus = RequestStatus.Answered,
             accessStatus = AccessStatus.Pending, requestStatusChangeReason = null,
             modificationTime = creationTime,
         )
 
         if (!contacts.isNullOrEmpty()) {
-            dataRequestProcessingUtils.addMessageToMessageHistory(
+            communityManagerDataRequestProcessingUtils.addMessageToMessageHistory(
                 dataRequestEntity = dataRequestEntity,
                 contacts = contacts, message = message, modificationTime = creationTime,
             )
@@ -230,7 +230,7 @@ class DataAccessManager(
             dataRequestRepository
                 .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                     requestingUserId, companyId, framework.name, reportingPeriod,
-                )?.filter {
+                ).filter {
                     it.accessStatus == accessStatus
                 }
         return foundRequests
