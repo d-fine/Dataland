@@ -36,7 +36,7 @@ class BulkRequestManager
             bulkDataRequest: BulkDataRequest,
             userId: UUID?,
         ): BulkDataRequestResponse {
-            assertNoEmptyListsInBulkRequest(bulkDataRequest)
+            assertNoEmptySetsInBulkRequest(bulkDataRequest)
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
             val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
 
@@ -110,7 +110,7 @@ class BulkRequestManager
             }
         }
 
-        private fun assertNoEmptyListsInBulkRequest(bulkDataRequest: BulkDataRequest) {
+        private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {
             val identifiers = bulkDataRequest.companyIdentifiers
             val frameworks = bulkDataRequest.dataTypes
             val reportingPeriods = bulkDataRequest.reportingPeriods
@@ -130,7 +130,7 @@ class BulkRequestManager
                         bulkDataRequest.reportingPeriods.map { period ->
                             BasicDataDimensions(
                                 companyId = companyId,
-                                dataType = dataType.toString(),
+                                dataType = dataType,
                                 reportingPeriod = period,
                             )
                         }

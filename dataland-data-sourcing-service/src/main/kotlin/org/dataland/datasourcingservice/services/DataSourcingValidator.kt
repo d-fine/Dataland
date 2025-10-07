@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
@@ -80,6 +81,19 @@ class DataSourcingValidator
             }
 
         /**
+         * Validates if a data type is known to Dataland.
+         * @param dataType the data type to validate
+         * @return a Result containing the data type if it is known to Dataland,
+         *         or an IllegalArgumentException otherwise
+         */
+        fun validateDataType(dataType: String): Result<String> =
+            if (DataTypeEnum.decode(dataType) != null) {
+                Result.success(dataType)
+            } else {
+                Result.failure(IllegalArgumentException("Invalid data type: $dataType"))
+            }
+
+        /**
          * Validates a list of data dimension tuples by checking if the company ID and reporting period are valid.
          * @param listOfRequestedDataDimensionTuples the list of data dimension tuples to validate
          * @return a Pair containing two lists:
@@ -97,7 +111,9 @@ class DataSourcingValidator
             // Partition validated and invalid requests
             val (validated, invalid) =
                 validationResults.partition { result ->
-                    result.companyIdValidation.isSuccess && result.reportingPeriodValidation.isSuccess
+                    result.companyIdValidation.isSuccess &&
+                        result.dataTypeValidation.isSuccess &&
+                        result.reportingPeriodValidation.isSuccess
                 }
 
             // Map validated requests: Apply validated companyId
@@ -141,8 +157,9 @@ class DataSourcingValidator
 
         private fun validateRequestForDataDimension(dataDimension: BasicDataDimensions): DataDimensionValidationResult {
             val companyIdResult = validateAndGetCompanyId(dataDimension.companyId)
+            val dataTypeResult = validateDataType(dataDimension.dataType)
             val reportingPeriodResult = validateReportingPeriod(dataDimension.reportingPeriod)
-            return DataDimensionValidationResult(dataDimension, companyIdResult, reportingPeriodResult)
+            return DataDimensionValidationResult(dataDimension, companyIdResult, dataTypeResult, reportingPeriodResult)
         }
 
         /**
@@ -154,6 +171,7 @@ class DataSourcingValidator
         private data class DataDimensionValidationResult(
             val dataDimension: BasicDataDimensions,
             val companyIdValidation: Result<UUID>,
+            val dataTypeValidation: Result<String>,
             val reportingPeriodValidation: Result<String>,
         )
     }
