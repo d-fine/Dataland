@@ -125,7 +125,9 @@
           />
         </div>
       </div>
-
+      <Message v-if="errorMessage" severity="error">
+        {{ errorMessage }}
+      </Message>
       <div class="actions">
         <div class="required-fields-note">
           <span class="required-asterisk">*</span>
@@ -184,7 +186,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { isAxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 
 const props = defineProps<{ visible: boolean; companyId: string }>();
 const emit = defineEmits(['close', 'document-uploaded', 'conflict']);
@@ -212,6 +214,7 @@ const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
 const successModalIsVisible = ref<boolean>(false);
 const isUploadButtonDisabled = ref<boolean>(false);
+const errorMessage = ref<string>('');
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -268,21 +271,12 @@ const onCancel = (): void => {
  */
 const onSubmit = async (): Promise<void> => {
   showErrors.value = true;
-  const fileToUpload = selectedFiles.value[0] || null;
 
   if (!isFormValid.value) {
     return;
   }
 
   isUploadButtonDisabled.value = true;
-
-  console.log('Submitting:', {
-    file: fileToUpload.name,
-    documentName: documentName.value,
-    documentCategory: documentCategory.value,
-    publicationDate: publicationDate.value,
-    reportingPeriod: reportingPeriod.value,
-  });
 
   try {
     await handleDocumentUpload();
@@ -291,11 +285,12 @@ const onSubmit = async (): Promise<void> => {
     const documentId = extractDocumentIdFromError(error);
     if (documentId) {
       emit('conflict', documentId);
-    } else if (isAxiosError(error) && error.response?.status === 409) {
-      console.error('Document already exists (409 Conflict), but no documentID found.');
     } else {
       console.error('Error uploading document:', error);
+      errorMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     }
+  } finally {
+    isUploadButtonDisabled.value = false;
   }
 };
 
@@ -321,6 +316,7 @@ const resetForm = (): void => {
   publicationDate.value = null;
   reportingPeriod.value = null;
   showErrors.value = false;
+  errorMessage.value = '';
   isUploadButtonDisabled.value = false;
 };
 
