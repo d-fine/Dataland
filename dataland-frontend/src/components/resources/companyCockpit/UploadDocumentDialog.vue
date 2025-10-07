@@ -8,7 +8,7 @@
     @hide="onCancel"
   >
     <div class="upload-document-container">
-      <div class="field">
+      <div class="field" :title="selectedFiles.length >= 1 ? 'You can only upload one document at a time.' : ''">
         <label class="upload-label" for="file-upload">Select Document<span class="required-asterisk">*</span></label>
         <FileUpload
           id="file-upload"
@@ -34,6 +34,7 @@
           :pt="{
             fileThumbnail: { style: 'display: none;' },
             pcFileBadge: { root: { style: 'display: none;' } },
+            pcProgressBar: { root: { style: 'display: none;' } },
           }"
         >
           <template #empty>
