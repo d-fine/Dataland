@@ -5,7 +5,8 @@ import {
   type BasicCompanyInformation,
   MetaDataControllerApi,
 } from '@clients/backend';
-import { type RouteHandler } from 'node_modules/cypress/types/net-stubbing';
+// @ts-ignore: Cypress types are internal
+import { type RouteHandler } from 'cypress/types/net-stubbing';
 
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 

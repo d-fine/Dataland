@@ -1,5 +1,6 @@
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
-import type { Interception } from 'node_modules/cypress/types/net-stubbing.d.ts';
+// @ts-ignore: Cypress types are internal; safe to ignore missing module
+import type { Interception } from 'cypress/types/net-stubbing.d.ts';
 import { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
