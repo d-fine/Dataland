@@ -1,20 +1,20 @@
 import UploadDocumentDialog from '@/components/resources/companyCockpit/UploadDocumentDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 
-describe('Check the Upload Document modal', function (): void {
-  /** Helper to upload a file */
-  function uploadFile(fileName: string): void {
-    const blob = new Blob([fileName], { type: 'application/pdf' });
-    cy.get('[data-test="file-upload"]').find('input[type=file]').selectFile(
-      {
-        contents: blob,
-        fileName: fileName,
-        mimeType: 'application/pdf',
-      },
-      { force: true }
-    );
-  }
+/** Helper to upload a file */
+function uploadFile(fileName: string): void {
+  const blob = new Blob([fileName], { type: 'application/pdf' });
+  cy.get('[data-test="file-upload"]').find('input[type=file]').selectFile(
+    {
+      contents: blob,
+      fileName: fileName,
+      mimeType: 'application/pdf',
+    },
+    { force: true }
+  );
+}
 
+describe('Check the Upload Document modal', function (): void {
   beforeEach(function () {
     // @ts-ignore
     cy.mountWithPlugins(UploadDocumentDialog, {
