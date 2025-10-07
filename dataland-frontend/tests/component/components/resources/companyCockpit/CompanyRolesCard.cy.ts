@@ -50,6 +50,22 @@ function validateInfoMessage(expectedInfoText: string): void {
   cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
 }
 
+/**
+ * Validates the user table row contents
+ * @param rowIndex the row index to validate
+ * @param user the expected user data
+ */
+function validateUserTableRow(rowIndex: number, user: CompanyRoleAssignmentExtended): void {
+  cy.get('tbody tr')
+    .eq(rowIndex)
+    .within(() => {
+      cy.get('td').eq(0).should('contain', user.firstName);
+      cy.get('td').eq(1).should('contain', user.lastName);
+      cy.get('td').eq(2).should('contain', user.email);
+      cy.get('td').eq(3).should('contain', user.userId);
+    });
+}
+
 describe('Component test for CompanyRolesCard', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const dummyUserId = 'mock-user-id';
@@ -60,6 +76,28 @@ describe('Component test for CompanyRolesCard', () => {
   const anotherUserEmail = 'jane.smith@company.com';
   const anotherUserFirstName = 'Jane';
   const anotherUserLastName = 'Smith';
+
+  /**
+   * Validates button visibility and state
+   */
+  function validateButtonState(buttonState: string): void {
+    const shouldExist = buttonState !== 'not visible';
+    const shouldBeEnabled = buttonState === 'visible and enabled';
+
+    if (!shouldExist) {
+      cy.get('[data-test="dialog-button"]').should('not.exist');
+      cy.get('[data-test="add-user-button"]').should('not.exist');
+      return;
+    }
+
+    cy.get('[data-test="dialog-button"]').should('exist');
+    cy.get('[data-test="add-user-button"]').should('exist');
+
+    if (!shouldBeEnabled) {
+      cy.get('[data-test="dialog-button"]').and('be.disabled');
+      cy.get('[data-test="add-user-button"]').and('be.disabled');
+    }
+  }
 
   /**
    * Generates a company role assignment for testing
@@ -138,22 +176,6 @@ describe('Component test for CompanyRolesCard', () => {
   }
 
   /**
-   * Validates the user table row contents
-   * @param rowIndex the row index to validate
-   * @param user the expected user data
-   */
-  function validateUserTableRow(rowIndex: number, user: CompanyRoleAssignmentExtended): void {
-    cy.get('tbody tr')
-      .eq(rowIndex)
-      .within(() => {
-        cy.get('td').eq(0).should('contain', user.firstName);
-        cy.get('td').eq(1).should('contain', user.lastName);
-        cy.get('td').eq(2).should('contain', user.email);
-        cy.get('td').eq(3).should('contain', user.userId);
-      });
-  }
-
-  /**
    * Validates empty user table
    */
   function validateEmptyUserTable(): void {
@@ -175,43 +197,43 @@ describe('Component test for CompanyRolesCard', () => {
     }
 
     cy.get('table').should('exist');
-    expectedUsers.forEach((user, index) => {
+    for (const [index, user] of expectedUsers.entries()) {
       validateUserTableRow(index, user);
-    });
+    }
   }
 
   before(function () {
     cy.clearLocalStorage();
   });
 
-  describe('Role Display Tests', () => {
-    const roleDisplayCases = [
-      {
-        role: CompanyRole.CompanyOwner,
-        expectedTitle: 'Company Owners',
-        expectedIcon: 'pi pi-crown',
-        expectedInfo: 'Company owners have the highest level of access and can add other users as company owners',
-      },
-      {
-        role: CompanyRole.MemberAdmin,
-        expectedTitle: 'Admins',
-        expectedIcon: 'pi pi-shield',
-        expectedInfo: 'The User Admin has the rights to add or remove other user admins and members',
-      },
-      {
-        role: CompanyRole.Member,
-        expectedTitle: 'Members',
-        expectedIcon: 'pi pi-users',
-        expectedInfo: 'Members have the ability to request unlimited data',
-      },
-      {
-        role: CompanyRole.DataUploader,
-        expectedTitle: 'Uploaders',
-        expectedIcon: 'pi pi-cloud-upload',
-        expectedInfo: 'Uploaders have the responsibility of ensuring all relevant data is uploaded',
-      },
-    ];
+  const roleDisplayCases = [
+    {
+      role: CompanyRole.CompanyOwner,
+      expectedTitle: 'Company Owners',
+      expectedIcon: 'pi pi-crown',
+      expectedInfo: 'Company owners have the highest level of access and can add other users as company owners',
+    },
+    {
+      role: CompanyRole.MemberAdmin,
+      expectedTitle: 'Admins',
+      expectedIcon: 'pi pi-shield',
+      expectedInfo: 'The User Admin has the rights to add or remove other user admins and members',
+    },
+    {
+      role: CompanyRole.Member,
+      expectedTitle: 'Members',
+      expectedIcon: 'pi pi-users',
+      expectedInfo: 'Members have the ability to request unlimited data',
+    },
+    {
+      role: CompanyRole.DataUploader,
+      expectedTitle: 'Uploaders',
+      expectedIcon: 'pi pi-cloud-upload',
+      expectedInfo: 'Uploaders have the responsibility of ensuring all relevant data is uploaded',
+    },
+  ];
 
+  describe('Role Display Tests', () => {
     roleDisplayCases.forEach(({ role, expectedTitle, expectedIcon, expectedInfo }) => {
       it(`displays ${expectedTitle} role card correctly`, () => {
         mountCardAs(undefined, role);
@@ -307,33 +329,11 @@ describe('Component test for CompanyRolesCard', () => {
       return 'Unknown';
     }
 
-    /**
-     * Validates button visibility and state
-     */
-    function validateButtonState(buttonState: string): void {
-      const shouldExist = buttonState !== 'not visible';
-      const shouldBeEnabled = buttonState === 'visible and enabled';
-
-      if (!shouldExist) {
-        cy.get('[data-test="dialog-button"]').should('not.exist');
-        cy.get('[data-test="add-user-button"]').should('not.exist');
-        return;
-      }
-
-      cy.get('[data-test="dialog-button"]').should('exist');
-      cy.get('[data-test="add-user-button"]').should('exist');
-
-      if (!shouldBeEnabled) {
-        cy.get('[data-test="dialog-button"]').and('be.disabled');
-        cy.get('[data-test="add-user-button"]').and('be.disabled');
-      }
-    }
-
     const permissionScenarios = permissionTestCases.flatMap((testCase) =>
       Object.values(CompanyRole).map((role) => ({ testCase, role }))
     );
 
-    permissionScenarios.forEach(({ testCase, role }) => {
+    for (const { testCase, role } of permissionScenarios) {
       const buttonState = getButtonState(testCase, role as CompanyRole);
       const userRoleLabel = getUserRoleLabel(testCase);
 
@@ -344,7 +344,7 @@ describe('Component test for CompanyRolesCard', () => {
 
         validateButtonState(buttonState);
       });
-    });
+    }
   });
 
   describe('User Actions Tests', () => {
