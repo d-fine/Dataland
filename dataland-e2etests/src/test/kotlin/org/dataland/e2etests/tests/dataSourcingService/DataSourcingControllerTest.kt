@@ -142,7 +142,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         state: DataSourcingState,
     ) {
         val expectedStatus =
-            if (state == DataSourcingState.Answered || state == DataSourcingState.NonSourceable) {
+            if (state == DataSourcingState.Done || state == DataSourcingState.NonSourceable) {
                 RequestState.Processed
             } else {
                 RequestState.Processing
@@ -156,7 +156,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcing.dataSourcingId,
-                DataSourcingState.Answered,
+                DataSourcingState.Done,
             )
         }
 
@@ -279,7 +279,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcing.dataSourcingId,
-                DataSourcingState.Answered,
+                DataSourcingState.Done,
             )
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcing.dataSourcingId,
@@ -295,7 +295,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
             apiAccessor.dataSourcingControllerApi.getDataSourcingHistoryById(storedDataSourcing.dataSourcingId)
         assertEquals(4, dataSourcingHistory.size)
         assertEquals(DataSourcingState.Initialized, dataSourcingHistory[0].state)
-        assertEquals(DataSourcingState.Answered, dataSourcingHistory[1].state)
+        assertEquals(DataSourcingState.Done, dataSourcingHistory[1].state)
         assertEquals(DataSourcingState.Initialized, dataSourcingHistory[2].state)
         assertEquals(DataSourcingState.DocumentSourcing, dataSourcingHistory[3].state)
     }
