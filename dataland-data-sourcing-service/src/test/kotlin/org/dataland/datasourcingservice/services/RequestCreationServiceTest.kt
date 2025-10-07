@@ -41,7 +41,7 @@ class RequestCreationServiceTest
             resetSecurityContext(
                 premiumUserId,
                 setOf(DatalandRealmRole.ROLE_USER),
-            ) // will sometimes be overwritten at the beginning of a test
+            )
             doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId)
             requestCreationService =
                 RequestCreationService(

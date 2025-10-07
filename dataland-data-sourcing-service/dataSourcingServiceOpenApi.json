@@ -28,6 +28,18 @@
         "summary": "Send a bulk request",
         "description": "A bulk of data requests for specific frameworks and companies is being sent.",
         "operationId": "postBulkDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Dataland ID of the user in whose name the request shall be made. Please omit it if you are making the request on your own behalf.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1478,16 +1490,7 @@
               "vsme"
             ],
             "items": {
-              "type": "string",
-              "enum": [
-                "sfdr",
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "nuclear-and-gas",
-                "lksg",
-                "pcaf",
-                "vsme"
-              ]
+              "type": "string"
             }
           },
           "reportingPeriods": {
@@ -1526,7 +1529,9 @@
       "BulkDataRequestResponse": {
         "required": [
           "acceptedDataRequests",
-          "rejectedDataRequests"
+          "existingDataRequests",
+          "existingDataSets",
+          "invalidDataRequests"
         ],
         "type": "object",
         "properties": {
@@ -1537,9 +1542,23 @@
               "$ref": "#/components/schemas/BasicDataDimensions"
             }
           },
-          "rejectedDataRequests": {
+          "invalidDataRequests": {
             "type": "array",
-            "description": "Contains information about all rejected data requests e.g. due to validation errors or because the requests or datasets already exist",
+            "description": "Contains information about all rejected data requests due to validation errors",
+            "items": {
+              "$ref": "#/components/schemas/BasicDataDimensions"
+            }
+          },
+          "existingDataRequests": {
+            "type": "array",
+            "description": "Contains information about all rejected data requests due to validation errors",
+            "items": {
+              "$ref": "#/components/schemas/BasicDataDimensions"
+            }
+          },
+          "existingDataSets": {
+            "type": "array",
+            "description": "Contains information about all data requests with already existing datasets that were not created",
             "items": {
               "$ref": "#/components/schemas/BasicDataDimensions"
             }
@@ -1562,16 +1581,7 @@
           "dataType": {
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr",
-            "enum": [
-              "sfdr",
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "nuclear-and-gas",
-              "lksg",
-              "pcaf",
-              "vsme"
-            ]
+            "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",

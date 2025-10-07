@@ -99,7 +99,7 @@ class DatalandUserServiceSpringbootTest
 
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
-            doNothing().whenever(mockPortfolioBulkDataRequestService).publishBulkDataRequestMessageIfMonitored(any())
+            doNothing().whenever(mockPortfolioBulkDataRequestService).postBulkDataRequestMessageIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -197,7 +197,7 @@ class DatalandUserServiceSpringbootTest
                 }
 
                 verify(mockPortfolioBulkDataRequestService)
-                    .publishBulkDataRequestMessageIfMonitored(
+                    .postBulkDataRequestMessageIfMonitored(
                         check {
                             assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
                             assertTrue(it.isMonitored)

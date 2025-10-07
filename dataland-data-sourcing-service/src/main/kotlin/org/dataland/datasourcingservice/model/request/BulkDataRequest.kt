@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.model.request
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 
 /**
@@ -27,12 +26,12 @@ data class BulkDataRequest(
     @field:ArraySchema(
         arraySchema =
             Schema(
-                implementation = DataTypeEnum::class,
+                type = "string",
                 description = DataSourcingOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_DESCRIPTION,
                 example = DataSourcingOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_EXAMPLE,
             ),
     )
-    val dataTypes: Set<DataTypeEnum>,
+    val dataTypes: Set<String>,
     @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema =
