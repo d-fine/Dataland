@@ -92,8 +92,7 @@ describe('Component test for the Document Overview', () => {
     cy.get("[data-test='documents-overview-table'] tbody tr")
       .should('have.length', Object.keys(mockFetchedDocuments).length)
       .each(($el, index) => {
-        const document = mockFetchedDocuments[index];
-        if (!document) throw new Error(`Document at index ${index} is undefined`);
+        const document = mockFetchedDocuments[index]!;
         cy.wrap($el).within(() => {
           cy.get('td').eq(0).should('have.text', document.documentName);
           cy.get('td').eq(1).should('have.text', humanizeStringOrNumber(document.documentCategory));

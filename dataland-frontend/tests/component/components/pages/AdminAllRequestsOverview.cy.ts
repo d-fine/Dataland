@@ -515,10 +515,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.spy(router, 'push').as('routerPush');
     mountAdminAllRequestsPageWithMocks().then(() => {
       const lastMockRequest = mockRequests[mockRequests.length - 1];
-      if (!lastMockRequest) {
-        throw new Error('No mock requests available for testing row click navigation');
-      }
-      const dataRequestIdOfLastElement = lastMockRequest.dataRequestId;
+      const dataRequestIdOfLastElement = lastMockRequest!.dataRequestId;
       cy.get('[data-test=requests-datatable]').within(() => {
         cy.get('tr:last').click();
       });
