@@ -138,30 +138,46 @@ describe('Component test for CompanyRolesCard', () => {
   }
 
   /**
+   * Validates the user table row contents
+   * @param rowIndex the row index to validate
+   * @param user the expected user data
+   */
+  function validateUserTableRow(rowIndex: number, user: CompanyRoleAssignmentExtended): void {
+    cy.get('tbody tr')
+      .eq(rowIndex)
+      .within(() => {
+        cy.get('td').eq(0).should('contain', user.firstName);
+        cy.get('td').eq(1).should('contain', user.lastName);
+        cy.get('td').eq(2).should('contain', user.email);
+        cy.get('td').eq(3).should('contain', user.userId);
+      });
+  }
+
+  /**
+   * Validates empty user table
+   */
+  function validateEmptyUserTable(): void {
+    cy.get('table').should('exist');
+    cy.get('table').contains(dummyFirstName).should('not.exist');
+    cy.get('table').contains(dummyLastName).should('not.exist');
+    cy.get('table').contains(dummyEmail).should('not.exist');
+    cy.get('table').contains(dummyUserId).should('not.exist');
+  }
+
+  /**
    * Validates the user table contents
    * @param expectedUsers array of expected user data
    */
   function validateUserTable(expectedUsers: CompanyRoleAssignmentExtended[]): void {
     if (expectedUsers.length === 0) {
-      cy.get('table').should('exist');
-      cy.get('table').contains(dummyFirstName).should('not.exist');
-      cy.get('table').contains(dummyLastName).should('not.exist');
-      cy.get('table').contains(dummyEmail).should('not.exist');
-      cy.get('table').contains(dummyUserId).should('not.exist');
+      validateEmptyUserTable();
       return;
     }
 
     cy.get('table').should('exist');
-    for (const [index, user] of expectedUsers.entries()) {
-      cy.get('tbody tr')
-        .eq(index)
-        .within(() => {
-          cy.get('td').eq(0).should('contain', user.firstName);
-          cy.get('td').eq(1).should('contain', user.lastName);
-          cy.get('td').eq(2).should('contain', user.email);
-          cy.get('td').eq(3).should('contain', user.userId);
-        });
-    }
+    expectedUsers.forEach((user, index) => {
+      validateUserTableRow(index, user);
+    });
   }
 
   before(function () {
@@ -196,13 +212,13 @@ describe('Component test for CompanyRolesCard', () => {
       },
     ];
 
-    for (const { role, expectedTitle, expectedIcon, expectedInfo } of roleDisplayCases) {
+    roleDisplayCases.forEach(({ role, expectedTitle, expectedIcon, expectedInfo }) => {
       it(`displays ${expectedTitle} role card correctly`, () => {
         mountCardAs(undefined, role);
         validateCardHeader(expectedTitle, expectedIcon);
         validateInfoMessage(expectedInfo);
       });
-    }
+    });
   });
 
   describe('User Management Tests', () => {
@@ -269,49 +285,66 @@ describe('Component test for CompanyRolesCard', () => {
       },
     ];
 
+    /**
+     * Determines the expected button state based on permissions
+     */
+    function getButtonState(testCase: (typeof permissionTestCases)[0], role: CompanyRole): string {
+      const shouldExistAndBeEnabled = testCase.allowedRoles.includes(role);
+      const shouldBeDisabled = !shouldExistAndBeEnabled && testCase.allowedRoles.length > 0;
+
+      if (shouldExistAndBeEnabled) return 'visible and enabled';
+      if (shouldBeDisabled) return 'visible and disabled';
+      return 'not visible';
+    }
+
+    /**
+     * Gets a user-friendly label for the test case
+     */
+    function getUserRoleLabel(testCase: (typeof permissionTestCases)[0]): string {
+      if (testCase.userRole !== null) return testCase.userRole;
+      if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_ADMIN)) return 'Global Admin';
+      if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_USER)) return 'Global User';
+      return 'Unknown';
+    }
+
+    /**
+     * Validates button visibility and state
+     */
+    function validateButtonState(buttonState: string): void {
+      const shouldExist = buttonState !== 'not visible';
+      const shouldBeEnabled = buttonState === 'visible and enabled';
+
+      if (!shouldExist) {
+        cy.get('[data-test="dialog-button"]').should('not.exist');
+        cy.get('[data-test="add-user-button"]').should('not.exist');
+        return;
+      }
+
+      cy.get('[data-test="dialog-button"]').should('exist');
+      cy.get('[data-test="add-user-button"]').should('exist');
+
+      if (!shouldBeEnabled) {
+        cy.get('[data-test="dialog-button"]').and('be.disabled');
+        cy.get('[data-test="add-user-button"]').and('be.disabled');
+      }
+    }
+
     const permissionScenarios = permissionTestCases.flatMap((testCase) =>
       Object.values(CompanyRole).map((role) => ({ testCase, role }))
     );
 
-    for (const { testCase, role } of permissionScenarios) {
-      const shouldExistAndBeEnabled = testCase.allowedRoles.includes(role as CompanyRole);
-      const shouldBeDisabled = !shouldExistAndBeEnabled && testCase.allowedRoles.length > 0;
-      let buttonState = '';
-      if (shouldExistAndBeEnabled) {
-        buttonState = 'visible and enabled';
-      } else if (shouldBeDisabled) {
-        buttonState = 'visible and disabled';
-      } else {
-        buttonState = 'not visible';
-      }
-      let userRoleLabel: string;
-      if (testCase.userRole !== null) {
-        userRoleLabel = testCase.userRole;
-      } else if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_ADMIN)) {
-        userRoleLabel = 'Global Admin';
-      } else if (testCase.keycloakRoles.includes(KEYCLOAK_ROLE_USER)) {
-        userRoleLabel = 'Global User';
-      } else {
-        userRoleLabel = 'Unknown';
-      }
+    permissionScenarios.forEach(({ testCase, role }) => {
+      const buttonState = getButtonState(testCase, role as CompanyRole);
+      const userRoleLabel = getUserRoleLabel(testCase);
+
       it(`As a ${userRoleLabel} on the ${role} card, the Add User button should be ${buttonState}`, () => {
-        // Always mock role assignments to set up the alias
         mockCompanyRoleAssignments([generateCompanyRoleAssignment(role as CompanyRole, dummyCompanyId)]);
         mountCompanyRolesCard(role as CompanyRole, testCase.userRole, true, testCase.keycloakRoles);
         cy.wait('@getRoleAssignments');
 
-        if (shouldExistAndBeEnabled) {
-          cy.get('[data-test="dialog-button"]').should('exist');
-          cy.get('[data-test="add-user-button"]').should('exist');
-        } else if (shouldBeDisabled) {
-          cy.get('[data-test="dialog-button"]').should('exist').and('be.disabled');
-          cy.get('[data-test="add-user-button"]').should('exist').and('be.disabled');
-        } else {
-          cy.get('[data-test="dialog-button"]').should('not.exist');
-          cy.get('[data-test="add-user-button"]').should('not.exist');
-        }
+        validateButtonState(buttonState);
       });
-    }
+    });
   });
 
   describe('User Actions Tests', () => {
@@ -355,8 +388,9 @@ describe('Component test for CompanyRolesCard', () => {
         cy.get('[role="option"]').contains('Admins').click();
         cy.get('[data-test="change-role-button"]').click();
         cy.get('[data-test="confirm-self-role-change-button"]').click();
-        cy.wait('@assignRole');
-        cy.wrap(wrapper.emitted()).should('have.property', 'users-changed');
+        cy.wait('@assignRole').then(() => {
+          cy.wrap(wrapper.emitted()).should('have.property', 'users-changed');
+        });
       });
     });
   });

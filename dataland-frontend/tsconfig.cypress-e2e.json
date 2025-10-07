@@ -13,6 +13,6 @@
       "@clients/*": ["./build/clients/*"],
       "@e2e/*": ["./tests/e2e/*"],
       "@sharedUtils/*": ["./tests/sharedUtils/*"]
-    },
+    }
   }
 }

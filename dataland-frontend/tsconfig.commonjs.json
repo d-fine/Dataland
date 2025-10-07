@@ -5,5 +5,5 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node"
-  },
+  }
 }
