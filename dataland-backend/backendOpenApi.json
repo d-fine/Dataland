@@ -5771,14 +5771,14 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "description": "The fiscal year end of the company.",
+            "description": "The fiscal year-end of the company.",
             "format": "date",
             "nullable": true,
             "example": "2024-06-30"
           },
           "reportingPeriodShift": {
             "type": "integer",
-            "description": "Fiscal year deviation from calendar year or no deviation.",
+            "description": "Difference between fiscal year-end and reporting period.",
             "format": "int32",
             "nullable": true,
             "example": -1
@@ -16596,14 +16596,14 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "description": "The fiscal year end of the company.",
+            "description": "The fiscal year-end of the company.",
             "format": "date",
             "nullable": true,
             "example": "2024-06-30"
           },
           "reportingPeriodShift": {
             "type": "integer",
-            "description": "Fiscal year deviation from calendar year or no deviation.",
+            "description": "Difference between fiscal year-end and reporting period.",
             "format": "int32",
             "nullable": true,
             "example": -1
@@ -16923,15 +16923,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

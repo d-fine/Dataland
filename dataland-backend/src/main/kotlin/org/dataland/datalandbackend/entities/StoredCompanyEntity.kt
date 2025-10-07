@@ -10,7 +10,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.exceptions.InvalidReportingPeriodShiftException
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
@@ -181,13 +180,7 @@ data class StoredCompanyEntity(
         updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
         updateIfNotNull(patch.headquartersPostalCode) { storedCompanyEntity.headquartersPostalCode = it }
         updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it }
-        updateIfNotNull(patch.reportingPeriodShift) { newShift ->
-            if (newShift in setOf(null, 0, -1)) {
-                storedCompanyEntity.reportingPeriodShift = newShift
-            } else {
-                throw InvalidReportingPeriodShiftException()
-            }
-        }
+        updateIfNotNull(patch.reportingPeriodShift) { storedCompanyEntity.reportingPeriodShift = it }
         updateIfNotNull(patch.sector) { storedCompanyEntity.sector = it }
         updateIfNotNull(patch.sectorCodeWz) { storedCompanyEntity.sectorCodeWz = it }
         updateIfNotNull(patch.countryCode) { storedCompanyEntity.countryCode = it }
