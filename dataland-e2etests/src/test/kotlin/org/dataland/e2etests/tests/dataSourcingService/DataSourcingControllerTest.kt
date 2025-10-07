@@ -53,7 +53,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
         }
 
         val updatedSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
-        assertEquals(3, updatedSourcingObject.associatedRequestIds.size)
+        assertEquals(2, updatedSourcingObject.associatedRequestIds.size)
         updatedSourcingObject.associatedRequestIds.forEach {
             val request = apiAccessor.dataSourcingRequestControllerApi.getRequest(it)
             assertEquals(expectedRequestState, request.state)

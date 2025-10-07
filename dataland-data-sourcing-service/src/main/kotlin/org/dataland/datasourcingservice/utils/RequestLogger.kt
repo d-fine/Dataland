@@ -2,7 +2,6 @@ package org.dataland.datasourcingservice.utils
 
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.slf4j.LoggerFactory
 import java.util.UUID
 
@@ -10,7 +9,7 @@ import java.util.UUID
  * Utility service class for logging messages related to data requests.
  */
 class RequestLogger {
-    private val singleDataRequestLogger = LoggerFactory.getLogger(SingleRequestManager::class.java)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Logs an appropriate message when a single data request is created
@@ -20,7 +19,7 @@ class RequestLogger {
         userId: UUID,
         correlationId: UUID,
     ) {
-        singleDataRequestLogger.info(
+        logger.info(
             "Received a single data request with Identifier $companyId" +
                 " for user $userId. -> Processing it. " +
                 "(correlationId: $correlationId)",
@@ -34,7 +33,7 @@ class RequestLogger {
         dataRequestId: UUID,
         correlationId: UUID,
     ) {
-        singleDataRequestLogger.info(
+        logger.info(
             "Received GET request for a single data request with id $dataRequestId" +
                 " -> Processing it. " +
                 "(correlationId: $correlationId)",
@@ -48,7 +47,7 @@ class RequestLogger {
         dataRequestId: UUID,
         requestState: RequestState,
     ) {
-        singleDataRequestLogger.info(
+        logger.info(
             "Patching request $dataRequestId with " +
                 "request status $requestState.",
         )
@@ -61,7 +60,7 @@ class RequestLogger {
         dataRequestId: UUID,
         requestPriority: RequestPriority,
     ) {
-        singleDataRequestLogger.info(
+        logger.info(
             "Patching request $dataRequestId " +
                 "with request priority $requestPriority.",
         )
@@ -74,7 +73,7 @@ class RequestLogger {
         dataRequestId: UUID,
         adminComment: String,
     ) {
-        singleDataRequestLogger.info(
+        logger.info(
             "Patching request $dataRequestId " +
                 "with admin comment $adminComment.",
         )
@@ -91,7 +90,7 @@ class RequestLogger {
         reportingPeriod: String,
         requestState: RequestState,
     ) {
-        singleDataRequestLogger.error(
+        logger.error(
             "The following data request already exists for user with id $userId and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestState)",
@@ -102,6 +101,24 @@ class RequestLogger {
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logMessageForStoringDataRequest(dataRequestId: UUID) {
-        singleDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId.")
+        logger.info("Stored data request with dataRequestId $dataRequestId.")
+    }
+
+    /** Logs an appropriate message when a quota check has been performed for a user.
+     * If the user is premium, it logs that the user has no request quota.
+     * If the user is non-premium, it logs how many requests the user has made out of the maximum allowed requests.
+     */
+    fun logQuotaCheckMessage(
+        userId: UUID,
+        isPremium: Boolean,
+        requestsMade: Int? = null,
+        maxRequests: Int? = null,
+    ) {
+        if (isPremium) {
+            logger.info("User $userId is a premium user and has no request quota.")
+        } else {
+            logger
+                .info("User $userId is a non-premium user and has made $requestsMade out of $maxRequests allowed requests.")
+        }
     }
 }

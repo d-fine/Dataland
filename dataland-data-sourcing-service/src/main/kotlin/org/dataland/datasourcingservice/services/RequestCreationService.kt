@@ -63,6 +63,12 @@ class RequestCreationService
                     requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
                         userId, getEpochTimeStartOfDay(),
                     )
+                requestLogger.logQuotaCheckMessage(
+                    userId,
+                    isPremium = false,
+                    numberOfDataRequestsPerformedByUserFromTimestamp,
+                    maxRequestsForUser,
+                )
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + 1
                     > maxRequestsForUser
                 ) {
@@ -71,6 +77,8 @@ class RequestCreationService
                         "The daily quota capacity has been reached.",
                     )
                 }
+            } else {
+                requestLogger.logQuotaCheckMessage(userId, isPremium = true)
             }
         }
 
