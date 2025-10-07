@@ -21,9 +21,7 @@ open class DataSourcingTest {
      * Common setup function to be run before each test in each subclass.
      */
     fun initializeDataSourcing() {
-        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
-        val companyId = idPair.first
-        val requestId = idPair.second
+        val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         storedDataSourcing =
             apiAccessor.dataSourcingControllerApi

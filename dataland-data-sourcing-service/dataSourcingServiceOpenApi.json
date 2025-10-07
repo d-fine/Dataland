@@ -872,7 +872,7 @@
             "example": 2023
           },
           {
-            "name": "state",
+            "name": "requestState",
             "in": "query",
             "description": "The current state of the request.",
             "required": false,
@@ -1618,7 +1618,7 @@
           "DataExtraction",
           "DataVerification",
           "NonSourceable",
-          "Answered"
+          "Done"
         ]
       },
       "ExpectedPublicationDateOfDocument": {
