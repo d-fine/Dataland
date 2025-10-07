@@ -156,6 +156,22 @@ export default defineConfig({
           return join(folder, match);
         },
       });
+      on('task', {
+        createUniqueTxtFixture() {
+          const fs = require('fs');
+          const path = require('path');
+          const timestamp = Date.now();
+          const txtContent = `Test file created at ${timestamp}`;
+          const destDir = path.resolve(__dirname, 'tests/e2e/fixtures/documents');
+          if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+          }
+          const filename = `upload-${timestamp}.txt`;
+          const destFile = path.join(destDir, filename);
+          fs.writeFileSync(destFile, txtContent);
+          return filename;
+        },
+      });
 
       return config;
     },

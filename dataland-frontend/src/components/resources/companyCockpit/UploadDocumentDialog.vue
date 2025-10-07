@@ -160,7 +160,7 @@
       </div>
     </div>
     <div class="text-block" style="margin: 15px; white-space: pre">Document uploaded successfully.</div>
-    <Button label="CLOSE" @click="closeSuccessModal" variant="outlined" />
+    <Button label="CLOSE" @click="closeSuccessModal" variant="outlined" data-test="close-success-modal-button" />
   </PrimeDialog>
 </template>
 
