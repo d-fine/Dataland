@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataBaseCreationUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -212,6 +213,19 @@ class DataAvailabilityCheckerTest {
     fun `check that only broken and inactive dimensions lead to an empty result`() {
         dbCreationUtils.storeDataPointMetaData(currentlyActive = false)
         val results = dataAvailabilityChecker.getMetaDataOfActiveDataPoints(allDimensions)
+        assert(results.isEmpty()) { "There should be no result." }
+    }
+
+    @Test
+    fun `check that datasets with only ignored fields are not delivered`() {
+        val ignoredDimensions =
+            BasicDataPointDimensions(
+                companyId = companyId,
+                dataPointType = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields().first(),
+                reportingPeriod = reportingPeriod,
+            )
+        dbCreationUtils.storeDataPointMetaData(dataPointType = ignoredDimensions.dataPointType)
+        val results = dataAvailabilityChecker.getViewableDataPointIds(listOf(ignoredDimensions, dataPointDimension))
         assert(results.isEmpty()) { "There should be no result." }
     }
 }

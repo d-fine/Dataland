@@ -156,7 +156,7 @@ class AssembledDatasetTest {
     }
 
     @Test
-    fun `ensure that accepting an assembled dataset also accepts all datapoints`() {
+    fun `ensure that accepting an assembled dataset also accepts all data points`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = false)
 
