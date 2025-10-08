@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
-import org.dataland.datalandbackend.utils.TestPostgresContainer
+import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

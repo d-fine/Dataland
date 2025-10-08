@@ -51,7 +51,7 @@ interface DataAccessApi {
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
         )
         @PathVariable("dataType") dataType: String,
         @Parameter(

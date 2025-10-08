@@ -1,8 +1,8 @@
 import {
-  Configuration,
-  CompanyRolesControllerApi,
-  type CompanyRoleAssignment,
   CompanyRole,
+  type CompanyRoleAssignment,
+  CompanyRolesControllerApi,
+  Configuration,
 } from '@clients/communitymanager';
 import { admin_userId } from '@e2e/utils/Cypress';
 import { type AxiosError, type HttpStatusCode, isAxiosError } from 'axios';
@@ -70,8 +70,7 @@ export async function assignCompanyOwnershipToDatalandAdmin(
   token: string,
   companyId: string
 ): Promise<CompanyRoleAssignment> {
-  const apiResponse = await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  return apiResponse;
+  return await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
 }
 
 /**

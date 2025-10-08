@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
-import org.dataland.datalandbackend.utils.BaseIntegrationTest
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

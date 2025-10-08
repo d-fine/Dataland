@@ -34,7 +34,7 @@ class CommunityManagerListener(
     @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val investorRelationsManager: InvestorRelationsManager,
 ) {
-    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Checks if, for a given dataset, there are open or nonsourceable requests with matching company identifier,
