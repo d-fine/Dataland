@@ -123,9 +123,12 @@ class KeycloakUserService(
                     response,
                     object : TypeReference<KeycloakMappingsRepresentation>() {},
                 )
-            return mappingsRepresentation.realmMappings.map {
-                it.roleName
-            }
+            val roles =
+                mappingsRepresentation.realmMappings.map {
+                    it.roleName
+                }
+            logger.info("Realm roles received from keycloak $roles for userId $userId")
+            return roles
         } catch (e: JacksonException) {
             logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
             return emptyList()
