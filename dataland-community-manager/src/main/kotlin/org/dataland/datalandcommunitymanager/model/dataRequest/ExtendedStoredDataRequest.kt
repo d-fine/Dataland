@@ -43,7 +43,7 @@ data class ExtendedStoredDataRequest(
     val creationTimestamp: Long,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val dataType: String,
     @field:Schema(
