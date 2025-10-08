@@ -6,6 +6,8 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
+const val REPORTING_PERIOD_SHIFT_ERROR_MESSAGE = "Invalid reporting period shift. Only null, 0, or -1 are allowed."
+
 /**
  * Annotation for validating a reporting period shift.
  * Valid values are: null, 0, or -1.
@@ -13,7 +15,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD)
 @Constraint(validatedBy = [ValidReportingPeriodShiftValidator::class])
 annotation class ValidReportingPeriodShift(
-    val message: String = "Invalid reporting period shift. Only null, 0, or -1 are allowed.",
+    val message: String = REPORTING_PERIOD_SHIFT_ERROR_MESSAGE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )

@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
@@ -156,14 +157,20 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `reportingPeriodShift validator triggers for bad value`() {
-        val patchWithInvalidReportingPeriodShift = CompanyInformationPatch(reportingPeriodShift = 100)
+        val objectsToTest =
+            listOf(
+                CompanyInformationPatch(reportingPeriodShift = 100),
+                companyWithTestLei.copy(reportingPeriodShift = 100),
+            )
 
-        val violations = validator.validate(patchWithInvalidReportingPeriodShift)
+        objectsToTest.forEach { testObject ->
+            val violations = validator.validate(testObject)
 
-        assertFalse(violations.isEmpty())
-        val violation = violations.first()
-        assertEquals("reportingPeriodShift", violation.propertyPath.toString())
-        assertEquals("Invalid reporting period shift. Only null, 0, or -1 are allowed.", violation.message)
+            assertFalse(violations.isEmpty())
+            val violation = violations.find { it.propertyPath.toString() == "reportingPeriodShift" }
+            assertEquals("reportingPeriodShift", violation?.propertyPath.toString())
+            assertEquals(REPORTING_PERIOD_SHIFT_ERROR_MESSAGE, violation?.message)
+        }
     }
 
     @Test
