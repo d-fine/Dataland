@@ -14,7 +14,7 @@ function addUser(email: string): void {
  * Helper to remove the first user in the list
  */
 function removeUser(): void {
-  cy.get('[data-test="remove-user-button"]').first().click();
+  cy.get('[data-test="remove-selected-user-button"]').first().click();
 }
 
 /**
@@ -24,30 +24,22 @@ function saveChanges(): void {
   cy.get('[data-test="save-changes-button"]').click();
 }
 
+/**
+ * Selects the first suggested user in the Listbox and checks that the 'Selected' tag is visible.
+ */
+function selectFirstSuggestedUserAndCheckSuggestedTag(): void {
+  cy.get('[data-test="suggested-user-row"]')
+    .first()
+    .within(() => {
+      cy.get('[data-test="select-suggested-user-button"]').click();
+      cy.get('[data-test="selected-tag"]').should('be.visible');
+    });
+}
+
 describe('AddMemberDialog Component Tests', function () {
-  const existingUsers = [{ userId: '1', email: 'existing@test.com', name: 'Existing User', initials: 'EU' }];
+  const existingUsers = [{ userId: '1', email: 'existing@test.com', firstName: 'Existing', lastName: 'User' }];
 
   beforeEach(function () {
-    // @ts-ignore
-    cy.mountWithPlugins(AddMemberDialog, {
-      props: {
-        companyId: 'company-123',
-        role: 'admin',
-        existingUsers,
-      },
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          dialogRef: {
-            value: {
-              close: cy.stub().as('dialogClose'),
-            },
-          },
-          getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
-        },
-      },
-    });
-
     cy.intercept('POST', '**/emails/validation', (req) => {
       const testUsers: Record<string, { statusCode: number; body: unknown }> = {
         'invalid@test.com': {
@@ -90,6 +82,34 @@ describe('AddMemberDialog Component Tests', function () {
     });
 
     cy.intercept('POST', '**/company-role-assignments/*/*/*', { statusCode: 200 }).as('assignRole');
+
+    cy.intercept('GET', '/community/emails/company-123/recommended-users', {
+      statusCode: 200,
+      body: [
+        { id: '3', firstName: 'Jane', lastName: 'Doe', email: 'jane@doe.com' },
+        { id: '2', firstName: 'John', lastName: 'Doe', email: 'john@doe.com' },
+      ],
+    }).as('getRecommendedUsers');
+
+    // @ts-ignore
+    cy.mountWithPlugins(AddMemberDialog, {
+      props: {
+        companyId: 'company-123',
+        role: 'admin',
+        existingUsers,
+      },
+      keycloak: minimalKeycloakMock({}),
+      global: {
+        provide: {
+          dialogRef: {
+            value: {
+              close: cy.stub().as('dialogClose'),
+            },
+          },
+          getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
+        },
+      },
+    });
   });
 
   describe('Initial State and Basic Functionality', function () {
@@ -158,7 +178,7 @@ describe('AddMemberDialog Component Tests', function () {
     for (const { email, expected, description } of initialTests) {
       it(`generates initials from ${description}`, function () {
         addUser(email);
-        cy.get('.user-row').find('[class*="p-tag"]').first().should('contain', expected);
+        cy.get('[data-test="selected-users-listbox"]').find('[class*="p-tag"]').first().should('contain', expected);
       });
     }
   });
@@ -171,6 +191,44 @@ describe('AddMemberDialog Component Tests', function () {
 
       cy.wait('@assignRole');
       cy.get('@assignRole.all').should('have.length', 2);
+    });
+  });
+
+  describe('Suggested Users Listbox Functionality', function () {
+    it('renders suggested users in the Listbox', function () {
+      cy.get('[data-test="suggestion-listbox"]').should('exist');
+      cy.get('[data-test="suggestion-listbox"]').contains('Jane Doe').should('be.visible');
+      cy.get('[data-test="suggestion-listbox"]').contains('John Doe').should('be.visible');
+    });
+
+    it('allows selecting a suggested user', function () {
+      cy.get('[data-test="selected-user-row"]').should('not.exist');
+      selectFirstSuggestedUserAndCheckSuggestedTag();
+      cy.get('[data-test="selected-user-row"]').should('contain', 'Jane Doe');
+    });
+
+    it('shows the Selected tag and Remove button for already selected users', function () {
+      selectFirstSuggestedUserAndCheckSuggestedTag();
+      cy.get('[data-test="selected-user-row"]')
+        .first()
+        .within(() => {
+          cy.get('[data-test="remove-selected-user-button"]').click();
+        });
+    });
+
+    it('removes a selected user from the Listbox, the Select button should appear again in the list of suggested users', function () {
+      selectFirstSuggestedUserAndCheckSuggestedTag();
+      cy.get('[data-test="selected-user-row"]')
+        .first()
+        .within(() => {
+          cy.get('[data-test="remove-selected-user-button"]').click();
+        });
+      cy.get('[data-test="suggested-user-row"]')
+        .first()
+        .within(() => {
+          cy.get('[data-test="selected-tag"]').should('not.exist');
+          cy.get('[data-test="select-suggested-user-button"]').should('be.visible');
+        });
     });
   });
 });

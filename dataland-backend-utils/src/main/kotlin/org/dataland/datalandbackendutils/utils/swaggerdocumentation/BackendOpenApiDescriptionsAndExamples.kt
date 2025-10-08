@@ -54,7 +54,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION = "The amount of available reporting periods per framework."
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":2}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":2}"
 
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
     const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
@@ -142,8 +142,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
-        "Either the framework of the wanted dataset or the dataPointType of the wanted data point."
-    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
+        "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
+    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =
+        "[\"" +
+            "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
+            "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +
+            "\"]"
 
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
@@ -155,7 +159,8 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_LIST_DESCRIPTION =
         "The reporting periods for which the data export is requested."
-    const val REPORTING_PERIODS_LIST_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
+    const val REPORTING_PERIODS_LIST_EXAMPLE =
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."

@@ -21,7 +21,7 @@ import java.util.Base64
 /**
  * Class to manage the token retrieval from keycloak via service account
  */
-@Service
+@Service("KeycloakTokenManager")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -32,9 +32,9 @@ class KeycloakTokenManager(
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private data class KeycloakAccessTokenResponse(
-        @JsonProperty("access_token")
+        @param:JsonProperty("access_token")
         val accessToken: String,
-        @JsonProperty("expires_in")
+        @param:JsonProperty("expires_in")
         val expiresIn: Int,
     )
 
