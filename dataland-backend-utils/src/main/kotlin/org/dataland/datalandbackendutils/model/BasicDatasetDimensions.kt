@@ -14,7 +14,7 @@ data class BasicDatasetDimensions(
     override val reportingPeriod: String,
 ) : DatasetDimensions {
     /**
-     * Converts the dataset dimensions to data point dimensions by providing a list of data point types
+     * Converts the dataset dimensions to a list of data point dimensions using the provided list of data point types
      * @param dataPointTypes a list of data point types
      * @return a list of data point dimensions with the same reporting period and company ID as the original dataset dimensions
      */

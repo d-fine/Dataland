@@ -45,8 +45,8 @@ class DataDeliveryService
 
         /**
          * Assembles datasets for every data dimension provided by retrieving the data points behind the provided IDs from
-         * the internal storage using the dataset assembler to create the corresponding datasets. This class does not check
-         * for visibility or existence of the provide data point IDs.
+         * the internal storage and using the dataset assembler to create the corresponding datasets. This class does not check
+         * for visibility or existence of the provided data point IDs.
          *
          * @param dataDimensionsToDataPointIdMap a map of all required data point IDs grouped by data set
          * @param correlationId the correlation ID for the operation

@@ -92,7 +92,7 @@ class DataCompositionService
         fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
 
         /**
-         * Checks if any given string represents a data point type
+         * Checks if a given string represents a data point type
          * @param dataPointType the string to be checked
          */
         fun isDataPointType(dataPointType: String): Boolean {

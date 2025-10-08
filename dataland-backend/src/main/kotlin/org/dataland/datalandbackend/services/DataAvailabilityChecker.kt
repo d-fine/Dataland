@@ -49,8 +49,7 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Retrieves metadata of data points that match the provided data point dimensions irrespective of the active status.
-         * Invalid dimensions are ignored.
+         * Retrieves metadata of active data points that match the provided data point dimensions. Invalid dimensions are ignored.
          * @param dataDimensions List of data point dimensions to search for.
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
@@ -75,8 +74,8 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Retrieves all data point IDs that correspond to the data point dimensions provided. Filters out results that are not viewable by
-         * the current user. Only returns IDs if at least one data point is viewable that is not an ignorable fields.
+         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
+         * Only returns IDs if at least one data point is not an ignorable fields.
          * @param dataDimensions the list of data point dimensions to get the data point IDs for
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */

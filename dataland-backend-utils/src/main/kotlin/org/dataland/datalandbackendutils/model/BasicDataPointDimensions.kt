@@ -28,7 +28,7 @@ data class BasicDataPointDimensions(
     override val reportingPeriod: String,
 ) : DataPointDimensions {
     /**
-     * Converts the basic data point  dimensions object to a basic data dimensions object by dropping the data point type
+     * Converts the basic data point dimensions object to a basic data dimensions object by dropping the data point type
      * @return the basic data dimensions object
      */
     fun toBaseDimensions(): BasicBaseDimensions = BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod)

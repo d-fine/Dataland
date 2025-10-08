@@ -300,8 +300,8 @@ class DataManager
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
             }
 
-            return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
-                metaInfos[dataDimension.toBasicDataDimensions()]?.let { metaInfo ->
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (datasetDimensions, dataString) ->
+                metaInfos[datasetDimensions.toBasicDataDimensions()]?.let { metaInfo ->
                     PlainDataAndMetaInformation(
                         metaInfo = metaInfo.toApiModel(),
                         data = dataString,
