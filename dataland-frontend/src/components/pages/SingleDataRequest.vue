@@ -7,7 +7,7 @@
     />
     <h1 data-test="headerLabel" style="text-align: left; padding-left: 1.5rem">Single Data Request</h1>
     <div v-if="!submitted" class="single-request-form">
-      <Card :data-test="'reportingPeriods'">
+      <Card data-test="reportingPeriods">
         <template #title>
           Select at least one reporting period
           <Divider />
@@ -33,7 +33,7 @@
           </Message>
         </template>
       </Card>
-      <Card data-test="'selectFramework'">
+      <Card data-test="selectFramework">
         <template #title>
           Select a framework
           <Divider />
@@ -63,7 +63,7 @@
           </Message>
         </template>
       </Card>
-      <Card dataTest="'enterComment'">
+      <Card data-test="enterComment">
         <template #title>
           Enter a comment (optional)
           <Divider />

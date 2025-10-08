@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.springbootTests
+package org.dataland.datasourcingservice.integrationTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
@@ -29,7 +29,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
-class DataSourcingTests(
+class DataSourcingWorkflowTest(
     @Autowired private val dataSourcingController: DataSourcingController,
     @Autowired private val requestController: RequestController,
 ) {
