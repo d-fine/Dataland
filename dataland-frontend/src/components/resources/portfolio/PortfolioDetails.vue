@@ -46,8 +46,8 @@
       tableStyle="min-width: 50rem"
       sortField="companyName"
       :sortOrder="1"
-      paginator
-      :rows="50"
+      :paginator="portfolioEntriesToDisplay.length > MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+      :rows="MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
     >
       <template #empty>
         Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
@@ -174,7 +174,11 @@
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import {
+  ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+  MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE,
+} from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
