@@ -12,7 +12,7 @@ describe('Check the portfolio details view', function (): void {
     cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
       portfolioFixture = jsonContent as EnrichedPortfolio;
     });
-    cy.fixture('enrichedPortfolioLarge.json').then(function (jsonContent) {
+    cy.fixture('largeEnrichedPortfolio.json').then(function (jsonContent) {
       largePortfolioFixture = jsonContent as EnrichedPortfolio;
     });
   });
@@ -162,7 +162,7 @@ describe('Check the portfolio details view', function (): void {
       });
     });
   });
-  it.only('Check pagination for small portfolios', function (): void {
+  it('Check pagination for small portfolios', function (): void {
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDetails, {
