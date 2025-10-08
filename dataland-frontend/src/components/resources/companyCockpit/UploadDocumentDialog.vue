@@ -11,26 +11,21 @@
       <div class="field" :title="selectedFiles.length >= 1 ? 'You can only upload one document at a time.' : ''">
         <label class="upload-label" for="file-upload">Select Document<span class="required-asterisk">*</span></label>
         <FileUpload
-          id="file-upload"
           :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
           :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
             DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
           } MB.`"
           mode="advanced"
-          chooseLabel="Choose"
-          cancelLabel="Cancel"
-          customUpload
+          chooseLabel="CHOOSE"
           :showUploadButton="false"
           :showCancelButton="false"
           @select="onFileSelect"
           @remove="onFileRemove"
-          @clear="selectedFiles = []"
           :files="selectedFiles"
           :auto="false"
           :multiple="false"
           :disabled="selectedFiles.length >= 1"
           data-test="file-upload"
-          aria-required="true"
           :pt="{
             fileThumbnail: { style: 'display: none;' },
             pcFileBadge: { root: { style: 'display: none;' } },
@@ -55,12 +50,10 @@
       <div class="field">
         <label class="upload-label" for="document-name">Document Name<span class="required-asterisk">*</span></label>
         <InputText
-          id="document-name"
           v-model="documentName"
-          placeholder="Enter document name"
+          placeholder="Enter Document Name"
           :class="{ 'error-field': showErrors && !documentName }"
           data-test="document-name"
-          aria-required="true"
         />
         <Message
           v-if="showErrors && !documentName"
@@ -78,7 +71,6 @@
           >Document Category<span class="required-asterisk">*</span></label
         >
         <Select
-          id="document-category"
           v-model="documentCategory"
           :options="documentCategories"
           optionLabel="label"
@@ -86,7 +78,6 @@
           placeholder="Select category"
           :class="{ 'error-field': showErrors && !documentCategory }"
           data-test="document-category"
-          aria-required="true"
         />
         <Message
           v-if="showErrors && !documentCategory"
@@ -102,25 +93,20 @@
         <div class="field">
           <label class="upload-label" for="publication-date">Publication Date</label>
           <DatePicker
-            id="publication-date"
             v-model="publicationDate"
             showIcon
             placeholder="Select publication date"
-            :showOnFocus="false"
             data-test="publication-date"
           />
         </div>
         <div class="field">
           <label class="upload-label" for="reporting-period">Reporting Period</label>
           <DatePicker
-            id="reporting-period"
             v-model="reportingPeriod"
-            :showIcon="true"
+            showIcon
             view="year"
             dateFormat="yy"
-            validation="required"
             placeholder="Select year"
-            :showOnFocus="false"
             data-test="reporting-period"
           />
         </div>
@@ -134,10 +120,9 @@
           <span class="upload-label">required Fields</span>
         </div>
         <div class="button-row">
-          <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
+          <Button label="CANCEL" variant="text" @click="onCancel" data-test="cancel-button" />
           <Button
-            label="Upload Document"
-            class="p-button"
+            label="UPLOAD DOCUMENT"
             @click="onSubmit"
             :disabled="isUploadButtonDisabled"
             data-test="upload-document-button"
@@ -152,7 +137,7 @@
     modal
     :closable="false"
     :dismissableMask="true"
-    style="border-radius: 0.75rem; text-align: center"
+    style="text-align: center"
     :show-header="false"
     @hide="closeSuccessModal"
     data-test="success-modal"
@@ -195,19 +180,12 @@ const isVisible = ref<boolean>(props.visible);
 const selectedFiles = ref<File[]>([]);
 const documentName = ref<string>('');
 const documentCategory = ref<DocumentMetaInfoDocumentCategoryEnum | null>(null);
-const documentCategories = ref<
-  {
-    label: string;
-    value: DocumentMetaInfoDocumentCategoryEnum;
-  }[]
->([]);
-
-for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
-  documentCategories.value.push({
+const documentCategories = ref(
+  Object.values(DocumentMetaInfoDocumentCategoryEnum).map((category) => ({
     label: humanizeStringOrNumber(category),
     value: category,
-  });
-}
+  }))
+);
 
 const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
@@ -240,7 +218,6 @@ async function handleDocumentUpload(): Promise<void> {
     publicationDate: publicationDate.value ? publicationDate.value.toISOString().split('T')[0] : undefined,
     reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
   };
-  console.log('Uploading document with meta info:', documentMetaInfo);
   await documentControllerApi.postDocument(fileToUpload, documentMetaInfo);
 }
 
@@ -335,24 +312,23 @@ const closeSuccessModal = (): void => {
 .upload-document-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--spacing-xxs);
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
 }
 
 .button-row {
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .required-fields-note {
@@ -374,7 +350,7 @@ const closeSuccessModal = (): void => {
 
 .date-row {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 .date-row .field {
   flex: 1;

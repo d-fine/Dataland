@@ -7,25 +7,23 @@
     :dismissableMask="true"
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
-    data-test="conflictModal"
+    data-test="conflict-modal"
   >
     <div style="margin: 10px">
-      <h2 class="m-0" data-test="conflictText">Document already exists</h2>
+      <h2>Document already exists</h2>
     </div>
     <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
       <DatalandProgressSpinner />
     </div>
     <div v-else>
       <div v-if="isConflictForOwnCompany">
-        <div class="text-block" style="margin: 15px; white-space: pre">
-          The document is already associated with this company.
-        </div>
+        <div class="text-block">The document is already associated with this company.</div>
         <div>
-          <Button label="Ok" class="p-button-text" @click="onCancel" data-test="ok-button" />
+          <Button label="OK" variant="text" @click="onCancel" data-test="ok-button" />
         </div>
       </div>
       <div v-else>
-        <div class="text-block" style="margin: 15px; white-space: pre">
+        <div class="text-block">
           The document already exists for the following companies:
           <ul>
             <li v-for="companyName in conflictingCompanyNames" :key="companyName">{{ companyName }}</li>
@@ -33,24 +31,18 @@
           Do you also want to associate this document with {{ ownCompanyName }}?
         </div>
         <div class="button-row">
-          <Button label="Cancel" class="p-button-text" @click="onCancel" data-test="cancel-button" />
-          <Button
-            label="Associate Document"
-            class="p-button"
-            @click="handleAssociateDocument"
-            data-test="associate-document-button"
-          />
+          <Button label="CANCEL" variant="text" @click="onCancel" data-test="cancel-button" />
+          <Button label="ASSOCIATE DOCUMENT" @click="handleAssociateDocument" data-test="associate-document-button" />
         </div>
       </div>
     </div>
   </PrimeDialog>
   <PrimeDialog
-    id="successModal"
     v-model:visible="successModalIsVisible"
     modal
     :closable="false"
     :dismissableMask="true"
-    style="border-radius: 0.75rem; text-align: center"
+    style="text-align: center"
     :show-header="false"
     @hide="closeSuccessModal"
     data-test="success-modal"
@@ -60,7 +52,7 @@
         <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
       </div>
       <div style="margin: 10px">
-        <h2 class="m-0" data-test="successText">Success</h2>
+        <h2>Success</h2>
       </div>
     </div>
     <div class="text-block" style="margin: 15px; white-space: pre">Document associated successfully.</div>
@@ -169,12 +161,14 @@ const closeSuccessModal = (): void => {
 <style scoped lang="scss">
 .text-block {
   text-align: left;
+  margin: 15px;
+  white-space: pre;
 }
 .button-row {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: var(--spacing-lg);
 }
 
 .green-text {
