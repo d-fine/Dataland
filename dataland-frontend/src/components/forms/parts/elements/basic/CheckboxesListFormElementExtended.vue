@@ -229,18 +229,20 @@ export default defineComponent({
     checkboxValue(newArr: string[]) {
       if (newArr.length > 1) {
         const last = newArr.at(-1);
-        if (last !== undefined) {
-          this.checkboxValue = [last];
-          this.yesNoValue = last;
-        }
-      } else if (newArr.length === 1) {
+        if (last === undefined) return;
+
+        this.checkboxValue = [last];
+        this.yesNoValue = last;
+        return;
+      }
+      if (newArr.length === 1) {
         const [only] = newArr;
         if (this.yesNoValue !== only) {
           this.yesNoValue = only;
         }
-      } else {
-        this.yesNoValue = undefined;
+        return;
       }
+      this.yesNoValue = undefined;
     },
   },
   methods: {
