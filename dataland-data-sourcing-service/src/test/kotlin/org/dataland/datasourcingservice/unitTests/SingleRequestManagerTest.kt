@@ -23,7 +23,7 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataSourcingTests {
+class SingleRequestManagerTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()
     private val mockDataSourcingManager = mock<DataSourcingManager>()
