@@ -340,6 +340,7 @@ interface DocumentApi {
         value = ["/"],
         produces = ["application/json"],
     )
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun searchForDocumentMetaInformation(
         @Parameter(
             name = "companyId",
