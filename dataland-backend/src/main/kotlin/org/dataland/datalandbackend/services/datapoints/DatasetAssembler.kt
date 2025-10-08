@@ -66,7 +66,7 @@ class DatasetAssembler
          * @param dataPoints the data points of the dataset as retrieved from the internal storage
          * @param framework the framework the data points are to be assembled into
          */
-        fun assembleSingleDataSet(
+        fun assembleSingleDataset(
             dataPoints: Collection<UploadedDataPoint>,
             framework: String,
         ): String {

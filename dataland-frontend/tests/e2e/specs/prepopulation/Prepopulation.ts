@@ -37,10 +37,10 @@ function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCo
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier)))
         .then((response) => {
           assert(
-            response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+            response.numberOfDatasetsForDataType === expectedNumberOfCompanies &&
               response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
             `Found ${response.numberOfCompaniesForDataType} companies having 
-          ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
+          ${response.numberOfDatasetsForDataType} datasets with datatype ${frameworkIdentifier}, 
           but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
           );
         });

@@ -35,12 +35,12 @@ function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData
  */
 function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFinancialsData> {
   const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
-  const fullDataSet = generateEutaxonomyFinancialsData(0);
+  const fullDataset = generateEutaxonomyFinancialsData(0);
   newFixture.companyInformation.companyName = 'lightweight-eu-taxo-financials-dataset';
-  newFixture.t.general = fullDataSet.general;
+  newFixture.t.general = fullDataset.general;
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
-      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+      fullDataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
     throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
@@ -69,20 +69,20 @@ function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancia
  */
 function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureData<EutaxonomyFinancialsData> {
   const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
-  const fullDataSet = generateEutaxonomyFinancialsData(0);
+  const fullDataset = generateEutaxonomyFinancialsData(0);
   newFixture.companyInformation.companyName = 'minimalistic-all-field-types-dataset-for-blanket-test';
-  newFixture.t.general = fullDataSet.general;
+  newFixture.t.general = fullDataset.general;
 
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
-      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+      fullDataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
     throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
 
   if (newFixture.t.creditInstitution?.turnoverBasedGreenAssetRatioStock) {
     newFixture.t.creditInstitution.turnoverBasedGreenAssetRatioStock.substantialContributionToClimateChangeAdaptationInPercentEligible =
-      fullDataSet.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
+      fullDataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
   } else {
     throw new Error(
       'Could not set substantialContributionToClimateChangeAdaptationInPercentEligible due to missing parent-object.'

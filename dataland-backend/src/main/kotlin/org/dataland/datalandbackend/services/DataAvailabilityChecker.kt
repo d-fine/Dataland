@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -26,8 +26,8 @@ class DataAvailabilityChecker
          * @param dataDimensions List of data dimensions to search for.
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
-        fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDataSetDimensions>): List<DataMetaInformation> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDataSetDimensions(dataDimensions)
+        fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformation> {
+            val dimensionsToProcess = dataCompositionService.filterOutInvalidDatasetDimensions(dataDimensions)
             val formattedTuples =
                 dimensionsToProcess.joinToString(", ") {
                     "('${it.companyId}', '${it.framework}', '${it.reportingPeriod}')"

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -155,11 +155,11 @@ class DataCompositionService
 
         /**
          * Filters out invalid data dimensions by checking if the company ID, framework, and reporting period are valid.
-         * @param dataSetDimensions the list of data dimensions to filter
+         * @param datasetDimensions the list of data dimensions to filter
          * @return the list of all valid data dimensions from the original input
          */
-        fun filterOutInvalidDataSetDimensions(dataSetDimensions: List<BasicDataSetDimensions>) =
-            dataSetDimensions.filter { dimensions ->
+        fun filterOutInvalidDatasetDimensions(datasetDimensions: List<BasicDatasetDimensions>) =
+            datasetDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) && isFramework(dimensions.framework)
             }
 

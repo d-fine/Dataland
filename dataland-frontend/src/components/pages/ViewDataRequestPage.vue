@@ -132,11 +132,11 @@
             <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
           </div>
           <div
-            v-show="answeringDataSetUrl"
+            v-show="answeringDatasetUrl"
             class="link claim-panel-text"
             style="font-weight: bold"
             data-test="viewDataset"
-            @click="goToAnsweringDataSetPage()"
+            @click="goToAnsweringDatasetPage()"
           >
             VIEW DATASET
           </div>
@@ -260,7 +260,7 @@ import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewReque
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
+import { getAnsweringDatasetUrl } from '@/utils/AnsweringDataset.ts';
 import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -313,7 +313,7 @@ export default defineComponent({
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
-      answeringDataSetUrl: undefined as string | undefined,
+      answeringDatasetUrl: undefined as string | undefined,
     };
   },
   mounted() {
@@ -373,7 +373,7 @@ export default defineComponent({
      */
     async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
       try {
-        this.answeringDataSetUrl = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
+        this.answeringDatasetUrl = await getAnsweringDatasetUrl(storedDataRequest, apiClientProvider);
       } catch (error) {
         console.error(error);
       }
@@ -533,8 +533,8 @@ export default defineComponent({
      * Navigates to the company view page
      * @returns the promise of the router push action
      */
-    goToAnsweringDataSetPage() {
-      if (this.answeringDataSetUrl) return router.push(this.answeringDataSetUrl);
+    goToAnsweringDatasetPage() {
+      if (this.answeringDatasetUrl) return router.push(this.answeringDatasetUrl);
     },
     /**
      * Method to check if request status is answered

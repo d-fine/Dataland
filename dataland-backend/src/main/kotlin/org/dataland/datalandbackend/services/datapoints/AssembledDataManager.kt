@@ -21,7 +21,7 @@ import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -54,7 +54,7 @@ class AssembledDataManager
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
         private val dataDeliveryService: DataDeliveryService,
-        private val dataSetAssembler: DatasetAssembler,
+        private val datasetAssembler: DatasetAssembler,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -294,7 +294,7 @@ class AssembledDataManager
             correlationId: String,
         ): String {
             val dataPoints = getDataPointIdsForDataset(datasetId)
-            return dataSetAssembler.assembleSingleDataSet(
+            return datasetAssembler.assembleSingleDataset(
                 dataPointManager.retrieveDataPoints(dataPoints.values, correlationId).values,
                 dataType,
             )
@@ -318,9 +318,9 @@ class AssembledDataManager
 
         @Transactional(readOnly = true)
         override fun getDatasetData(
-            dataDimensionsSet: Set<BasicDataSetDimensions>,
+            dataDimensionsSet: Set<BasicDatasetDimensions>,
             correlationId: String,
-        ): Map<BasicDataSetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensionsSet, correlationId)
+        ): Map<BasicDatasetDimensions, String> = dataDeliveryService.getAssembledDatasets(dataDimensionsSet, correlationId)
 
         @Transactional(readOnly = true)
         override fun getAllDatasetsAndMetaInformation(
@@ -339,7 +339,7 @@ class AssembledDataManager
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return getDatasetData(
-                reportingPeriods.mapTo(mutableSetOf()) { BasicDataSetDimensions(companyId, framework, it) },
+                reportingPeriods.mapTo(mutableSetOf()) { BasicDatasetDimensions(companyId, framework, it) },
                 correlationId,
             ).map { (dataDimensions, dataString) ->
                 PlainDataAndMetaInformation(

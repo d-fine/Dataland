@@ -45,8 +45,8 @@ class DataSourcingServiceListenerTest : DataSourcingTest() {
 
     @Test
     fun `accept a dataset and verify that the state of the corresponding data sourcing object is set to Answered`() {
-        val dataSetId = uploadDummyDataForDataSourcingObject()
-        apiAccessor.qaServiceControllerApi.changeQaStatus(dataSetId, QaStatus.Accepted)
+        val datasetId = uploadDummyDataForDataSourcingObject()
+        apiAccessor.qaServiceControllerApi.changeQaStatus(datasetId, QaStatus.Accepted)
 
         ApiAwait.waitForData(
             supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId) },

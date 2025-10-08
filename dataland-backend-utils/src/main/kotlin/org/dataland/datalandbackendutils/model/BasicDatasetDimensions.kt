@@ -1,6 +1,6 @@
 package org.dataland.datalandbackendutils.model
 
-import org.dataland.datalandbackendutils.interfaces.DataSetDimensions
+import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
 
 /**
  * Data class that contains an instance of the dataset dimensions
@@ -8,11 +8,11 @@ import org.dataland.datalandbackendutils.interfaces.DataSetDimensions
  * @param framework unique identifier for the framework
  * @param reportingPeriod the year for which the data point was provided
  */
-data class BasicDataSetDimensions(
+data class BasicDatasetDimensions(
     override val companyId: String,
     override val framework: String,
     override val reportingPeriod: String,
-) : DataSetDimensions {
+) : DatasetDimensions {
     /**
      * Converts the dataset dimensions to data point dimensions by providing a list of data point types
      * @param dataPointTypes a list of data point types

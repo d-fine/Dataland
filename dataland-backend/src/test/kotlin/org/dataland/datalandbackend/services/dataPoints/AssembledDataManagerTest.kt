@@ -26,7 +26,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -99,7 +99,7 @@ class AssembledDataManagerTest {
         TestResourceFileReader
             .getKotlinObject<SimpleFrameworkSpecification>(inputSimpleFrameworkSpecification)
     private val framework = "sfdr"
-    private val dataDimensions = BasicDataSetDimensions(companyId, framework, reportingPeriod)
+    private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
     @BeforeEach
     fun resetMocks() {

@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -263,9 +263,9 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionsSet: Set<BasicDataSetDimensions>,
+            dataDimensionsSet: Set<BasicDatasetDimensions>,
             correlationId: String,
-        ): Map<BasicDataSetDimensions, String> =
+        ): Map<BasicDatasetDimensions, String> =
             dataDimensionsSet
                 .associateWith {
                     metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
@@ -288,7 +288,7 @@ class DataManager
             val mapOfDataDimensionsWithDataAsString =
                 getDatasetData(
                     metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
-                        BasicDataSetDimensions(
+                        BasicDatasetDimensions(
                             companyId = searchFilter.companyId,
                             framework = it.dataType,
                             reportingPeriod = it.reportingPeriod,

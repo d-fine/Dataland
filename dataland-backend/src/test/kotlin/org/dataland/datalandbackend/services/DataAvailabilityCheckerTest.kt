@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.DataBaseCreationUtils
 import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
@@ -75,7 +75,7 @@ class DataAvailabilityCheckerTest {
 
     private lateinit var dbCreationUtils: DataBaseCreationUtils
 
-    private val datasetDimension = BasicDataSetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
+    private val datasetDimension = BasicDatasetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
     private val dataPointDimension =
         BasicDataPointDimensions(companyId = companyId, dataPointType = dataPointType, reportingPeriod = reportingPeriod)
     private val brokenCompanyId =
@@ -114,7 +114,7 @@ class DataAvailabilityCheckerTest {
         val results =
             dataAvailabilityChecker.getMetaDataOfActiveDatasets(
                 listOf(
-                    BasicDataSetDimensions(
+                    BasicDatasetDimensions(
                         companyId = companyId,
                         framework = dataType,
                         reportingPeriod = reportingPeriod,
@@ -130,7 +130,7 @@ class DataAvailabilityCheckerTest {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(listOf(datasetDimension))
         assert(results.size == 1) { "There should be exactly one result." }
-        val resultingDimensions = results.map { BasicDataSetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
+        val resultingDimensions = results.map { BasicDatasetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
         assert(resultingDimensions.first() == datasetDimension) { "The result should be the provided example." }
     }
 
@@ -148,21 +148,21 @@ class DataAvailabilityCheckerTest {
         val expectedDimensions =
             listOf(
                 datasetDimension,
-                BasicDataSetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = otherYear),
-                BasicDataSetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = reportingPeriod),
+                BasicDatasetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = otherYear),
+                BasicDatasetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = reportingPeriod),
             )
 
         val unexpectedDimensions =
             listOf(
-                BasicDataSetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = otherYear),
-                BasicDataSetDimensions(companyId = otherId, framework = otherFramework, reportingPeriod = reportingPeriod),
-                BasicDataSetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = "2020"),
+                BasicDatasetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = otherYear),
+                BasicDatasetDimensions(companyId = otherId, framework = otherFramework, reportingPeriod = reportingPeriod),
+                BasicDatasetDimensions(companyId = companyId, framework = otherFramework, reportingPeriod = "2020"),
             )
 
         val results = dataAvailabilityChecker.getMetaDataOfActiveDatasets(expectedDimensions + unexpectedDimensions)
 
         assert(results.size == expectedDimensions.size) { "Incorrect number of datasets found." }
-        val resultingDimensions = results.map { BasicDataSetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
+        val resultingDimensions = results.map { BasicDatasetDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod) }
         assert(expectedDimensions.containsAll(resultingDimensions))
     }
 

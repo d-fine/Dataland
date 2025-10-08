@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackendutils.model.BasicDataSetDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,10 +28,10 @@ class DataDeliveryService
          * @param correlationId the correlation ID for the operation
          */
         fun getAssembledDatasets(
-            dataDimensions: Collection<BasicDataSetDimensions>,
+            dataDimensions: Collection<BasicDatasetDimensions>,
             correlationId: String,
-        ): Map<BasicDataSetDimensions, String> {
-            val requiredData = mutableMapOf<BasicDataSetDimensions, List<String>>()
+        ): Map<BasicDatasetDimensions, String> {
+            val requiredData = mutableMapOf<BasicDatasetDimensions, List<String>>()
             for (dataDimension in dataDimensions) {
                 val relevantDataPointTypes = dataCompositionService.getRelevantDataPointTypes(dataDimension.framework)
                 val relevantDimensions = dataDimension.toBasicDataPointDimensions(relevantDataPointTypes)
@@ -53,16 +53,16 @@ class DataDeliveryService
          * @return a map of data dimensions to the dataset in the form of a JSON string
          */
         private fun assembleDatasetsFromDataPointIds(
-            dataDimensionsToDataPointIdMap: Map<BasicDataSetDimensions, List<String>>,
+            dataDimensionsToDataPointIdMap: Map<BasicDatasetDimensions, List<String>>,
             correlationId: String,
-        ): Map<BasicDataSetDimensions, String> {
-            val results = mutableMapOf<BasicDataSetDimensions, String>()
+        ): Map<BasicDatasetDimensions, String> {
+            val results = mutableMapOf<BasicDatasetDimensions, String>()
             val allRequiredIds = dataDimensionsToDataPointIdMap.values.flatten().toSet()
             val allStoredDataPoints = retrieveDataPointsFromInternalStorage(allRequiredIds, correlationId)
 
             dataDimensionsToDataPointIdMap.forEach { (dataDimensions, dataIds) ->
                 val datasetInput = allStoredDataPoints.filter { dataIds.contains(it.key) }
-                results[dataDimensions] = datasetAssembler.assembleSingleDataSet(datasetInput.values, dataDimensions.framework)
+                results[dataDimensions] = datasetAssembler.assembleSingleDataset(datasetInput.values, dataDimensions.framework)
             }
             return results
         }

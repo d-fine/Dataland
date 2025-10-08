@@ -116,8 +116,8 @@ class FrameworkTestDataProvider<T>(
         testCompanyInformationWithTData
             .first { it.companyInformation.companyName == companyName }
 
-    fun getTData(numberOfDataSets: Int): List<T> =
+    fun getTData(numberOfDatasets: Int): List<T> =
         testCompanyInformationWithTData
-            .slice(0 until numberOfDataSets)
+            .slice(0 until numberOfDatasets)
             .map { it.t }
 }
