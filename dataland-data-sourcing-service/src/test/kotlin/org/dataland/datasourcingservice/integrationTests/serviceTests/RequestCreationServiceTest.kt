@@ -36,6 +36,7 @@ class RequestCreationServiceTest
         private val premiumUserId = UUID.randomUUID().toString()
         private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
         private lateinit var requestCreationService: RequestCreationService
+        private val testComment = "Test comment"
 
         @BeforeEach
         fun setup() {
@@ -79,7 +80,7 @@ class RequestCreationServiceTest
                     dataType = "sfdr",
                     reportingPeriod = "2023",
                 )
-            val memberComment = "Test comment"
+            val memberComment = testComment
             val requestId = requestCreationService.storeRequest(userId, basicDataDimensions, memberComment)
             val entity = requestRepository.findByIdAndFetchDataSourcingEntity(requestId)
             assertNotNull(entity)
@@ -91,10 +92,10 @@ class RequestCreationServiceTest
         }
 
         @Test
-        fun `storeRequest throws QuotaExceededException for non-premium user over quota`() {
+        fun `storeRequest throws QuotaExceededException for non premium user over quota`() {
             val userId = UUID.randomUUID()
             val companyId = UUID.randomUUID()
-            val memberComment = "Test comment"
+            val memberComment = testComment
             for (i in 1..requestCreationService.maxRequestsForUser) {
                 val year = 2020 + i
                 requestCreationService.storeRequest(
@@ -125,7 +126,7 @@ class RequestCreationServiceTest
         fun `storeRequest throws QuotaExceededException for premium user over quota`() {
             val userId = UUID.fromString(premiumUserId)
             val companyId = UUID.randomUUID()
-            val memberComment = "Test comment"
+            val memberComment = testComment
             for (i in 1..requestCreationService.maxRequestsForUser) {
                 val year = 2020 + i
                 requestCreationService.storeRequest(

@@ -3,15 +3,18 @@ import { DocumentControllerApi } from '@clients/documentmanager';
 import { QaControllerApi } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
-import { CompanyRolesControllerApi, type CompanyRolesControllerApiInterface } from '@clients/communitymanager';
+import {
+  CompanyRolesControllerApi,
+  type CompanyRolesControllerApiInterface,
+  RequestControllerApi as CommunityManagerRequestControllerApi,
+  EmailAddressControllerApi,
+} from '@clients/communitymanager';
 import { RequestControllerApi } from '@clients/datasourcingservice';
-import { RequestControllerApi as CommunityManagerRequestControllerApi } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import * as backendApis from '@clients/backend/api';
 import { EmailControllerApi } from '@clients/emailservice';
 import { PortfolioControllerApi } from '@clients/userservice';
-import { EmailAddressControllerApi } from '@clients/communitymanager';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;

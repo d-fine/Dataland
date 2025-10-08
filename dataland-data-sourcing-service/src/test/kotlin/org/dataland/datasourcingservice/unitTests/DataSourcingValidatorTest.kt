@@ -149,42 +149,28 @@ class DataSourcingValidatorTest {
     // Test validateBulkDataRequest
     @Test
     fun `validateBulkDataRequest should partition valid and invalid requests`() {
-        // Arrange
+        // Helpers for test data
+        fun makeDimension(
+            companyId: String,
+            dataType: String,
+            period: String,
+        ) = BasicDataDimensions(companyId, dataType, period)
+
         val validCompanyId = "550e8400-e29b-41d4-a716-446655440000"
         val invalidCompanyId = "invalid_company_id"
         val validReportingPeriod = "2023"
         val invalidReportingPeriod = "INVALID"
 
-        val validDimension =
-            BasicDataDimensions(
-                companyId = validCompanyId,
-                dataType = "sfdr",
-                reportingPeriod = validReportingPeriod,
-            )
-
-        val invalidDimensions =
+        val dataDimensions =
             listOf(
-                BasicDataDimensions(
-                    companyId = invalidCompanyId,
-                    dataType = "invalidType",
-                    reportingPeriod = validReportingPeriod,
-                ),
-                BasicDataDimensions(
-                    companyId = validCompanyId,
-                    dataType = "invalidType",
-                    reportingPeriod = invalidReportingPeriod,
-                ),
+                makeDimension(validCompanyId, "sfdr", validReportingPeriod),
+                makeDimension(invalidCompanyId, "invalidType", validReportingPeriod),
+                makeDimension(validCompanyId, "invalidType", invalidReportingPeriod),
             )
-
-        val dataDimensions = listOf(validDimension) + invalidDimensions
 
         val validCompanyInformation =
             BasicCompanyInformation(
-                companyId = validCompanyId,
-                companyName = "Valid Company",
-                headquarters = "Headquarters",
-                countryCode = "US",
-                sector = "Finance",
+                validCompanyId, "Valid Company", "Headquarters", "US", "Finance",
             )
 
         val validResult =
@@ -193,24 +179,24 @@ class DataSourcingValidatorTest {
                 companyInformation = validCompanyInformation,
             )
 
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(validCompanyId))).thenAnswer {
-            listOf(validResult)
-        }
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(invalidCompanyId))).thenAnswer {
-            emptyList<String>()
-        }
+        `when`(companyDataControllerApi.postCompanyValidation(listOf(validCompanyId))).thenReturn(listOf(validResult))
+        `when`(companyDataControllerApi.postCompanyValidation(listOf(invalidCompanyId))).thenReturn(emptyList())
+
         // Act
         val (validRequests, invalidRequests) = dataSourcingValidator.validateBulkDataRequest(dataDimensions)
 
         // Assert
         assertEquals(1, validRequests.size)
         assertEquals(2, invalidRequests.size)
-
-        assertEquals(validCompanyId, validRequests.first().companyId)
-        assertEquals(validReportingPeriod, validRequests.first().reportingPeriod)
-        assertEquals(invalidCompanyId, invalidRequests.first().companyId)
-        assertEquals(validReportingPeriod, invalidRequests.first().reportingPeriod)
-        assertEquals(validCompanyId, invalidRequests[1].companyId)
-        assertEquals(invalidReportingPeriod, invalidRequests[1].reportingPeriod)
+        with(validRequests.first()) {
+            assertEquals(validCompanyId, companyId)
+            assertEquals(validReportingPeriod, reportingPeriod)
+        }
+        with(invalidRequests) {
+            assertEquals(invalidCompanyId, this[0].companyId)
+            assertEquals(validReportingPeriod, this[0].reportingPeriod)
+            assertEquals(validCompanyId, this[1].companyId)
+            assertEquals(invalidReportingPeriod, this[1].reportingPeriod)
+        }
     }
 }
