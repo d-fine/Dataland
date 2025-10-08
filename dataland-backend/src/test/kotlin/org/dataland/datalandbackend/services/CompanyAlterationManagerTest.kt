@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
-import org.dataland.datalandbackend.exceptions.InvalidReportingPeriodShiftException
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -194,20 +193,6 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }
-    }
-
-    @Test
-    fun `check that adding an invalid value for reportingPeriodShift throws an exception`() {
-        val patch =
-            CompanyInformationPatch(
-                reportingPeriodShift = 100,
-            )
-
-        val reportingPeriodShiftException =
-            assertThrows<InvalidReportingPeriodShiftException> {
-                companyAlterationManager.patchCompany(existingCompany.companyId, patch = patch)
-            }
-        assertEquals("Only 0 (no deviation) or -1 (deviation) are allowed.", reportingPeriodShiftException.message)
     }
 
     @Test

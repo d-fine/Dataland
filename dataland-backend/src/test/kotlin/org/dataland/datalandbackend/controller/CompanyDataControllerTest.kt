@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
@@ -151,6 +152,18 @@ internal class CompanyDataControllerTest(
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    @Test
+    fun `reportingPeriodShift validator triggers for bad value`() {
+        val patchWithInvalidReportingPeriodShift = CompanyInformationPatch(reportingPeriodShift = 100)
+
+        val violations = validator.validate(patchWithInvalidReportingPeriodShift)
+
+        assertFalse(violations.isEmpty())
+        val violation = violations.first()
+        assertEquals("reportingPeriodShift", violation.propertyPath.toString())
+        assertEquals("Invalid reporting period shift. Only null, 0, or -1 are allowed.", violation.message)
     }
 
     @Test
