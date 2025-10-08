@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
@@ -78,11 +79,12 @@ class AssembledDataManagerTest {
         )
 
     private val referencedReportsUtilities = ReferencedReportsUtilities()
-    private val datasetAssembler = DatasetAssembler(specificationClient, referencedReportsUtilities)
+    private lateinit var datasetAssembler: DatasetAssembler
     private lateinit var dataCompositionService: DataCompositionService
     private lateinit var dataDeliveryService: DataDeliveryService
     private lateinit var assembledDataManager: AssembledDataManager
-    private val dataPointUtils = DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager)
+    private lateinit var specificationService: SpecificationService
+    private lateinit var dataPointUtils: DataPointUtils
 
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
@@ -114,16 +116,19 @@ class AssembledDataManagerTest {
         doReturn(frameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
         doThrow(ClientException()).whenever(specificationClient).getDataPointTypeSpecification(framework)
         doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
-        dataCompositionService = DataCompositionService(specificationClient)
+        specificationService = SpecificationService(specificationClient)
+        specificationService.initiateSpecifications(null)
+        dataCompositionService = DataCompositionService(specificationService)
+        datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
+        dataPointUtils = DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, specificationService)
         dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
         assembledDataManager =
             AssembledDataManager(
                 dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
                 datasetDatapointRepository, spyDataPointManager,
                 referencedReportsUtilities,
-                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler,
+                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler, specificationService
             )
-        dataCompositionService.initiateSpecifications(null)
     }
 
     @Test

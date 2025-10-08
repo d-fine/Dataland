@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
@@ -55,6 +56,7 @@ class AssembledDataManager
         private val dataPointUtils: DataPointUtils,
         private val dataDeliveryService: DataDeliveryService,
         private val datasetAssembler: DatasetAssembler,
+        private val specificationService: SpecificationService,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -100,7 +102,7 @@ class AssembledDataManager
             data: String,
             dataType: String,
         ): SplitDataset {
-            val frameworkSpecification = dataPointUtils.getFrameworkSpecification(dataType)
+            val frameworkSpecification = specificationService.getFrameworkSpecification(dataType)
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 

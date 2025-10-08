@@ -30,6 +30,7 @@ class DataCompositionServiceTest {
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
     private lateinit var dataCompositionService: DataCompositionService
+    private lateinit var specificationService: SpecificationService
 
     private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
     private val simpleFrameworkSpecification =
@@ -42,8 +43,9 @@ class DataCompositionServiceTest {
         doThrow(ClientException()).whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(null).whenever(specificationClient).getDataPointTypeSpecification(DATA_POINT)
         doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
-        dataCompositionService = DataCompositionService(specificationClient)
-        dataCompositionService.initiateSpecifications(null)
+        specificationService = SpecificationService(specificationClient)
+        specificationService.initiateSpecifications(null)
+        dataCompositionService = DataCompositionService(specificationService)
     }
 
     @ParameterizedTest
@@ -57,7 +59,7 @@ class DataCompositionServiceTest {
         dataType: String,
         expectedResult: String,
     ) {
-        assertEquals(expectedResult.toBoolean(), dataCompositionService.isFramework(dataType))
+        assertEquals(expectedResult.toBoolean(), specificationService.isFramework(dataType))
     }
 
     @ParameterizedTest
@@ -71,7 +73,7 @@ class DataCompositionServiceTest {
         dataType: String,
         expectedResult: String,
     ) {
-        assertEquals(expectedResult.toBoolean(), dataCompositionService.isAssembledFramework(dataType))
+        assertEquals(expectedResult.toBoolean(), specificationService.isAssembledFramework(dataType))
     }
 
     @ParameterizedTest
@@ -85,7 +87,7 @@ class DataCompositionServiceTest {
         dataType: String,
         expectedResult: String,
     ) {
-        assertEquals(expectedResult.toBoolean(), dataCompositionService.isNonAssembledFramework(dataType))
+        assertEquals(expectedResult.toBoolean(), specificationService.isNonAssembledFramework(dataType))
     }
 
     @ParameterizedTest
@@ -99,7 +101,7 @@ class DataCompositionServiceTest {
         dataType: String,
         expectedResult: String,
     ) {
-        assertEquals(expectedResult.toBoolean(), dataCompositionService.isDataPointType(dataType))
+        assertEquals(expectedResult.toBoolean(), specificationService.isDataPointType(dataType))
     }
 
     @Test

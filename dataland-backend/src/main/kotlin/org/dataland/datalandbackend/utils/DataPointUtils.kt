@@ -3,14 +3,13 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -25,26 +24,8 @@ class DataPointUtils
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
+        private val specificationService: SpecificationService,
     ) {
-        private val logger = LoggerFactory.getLogger(javaClass)
-
-        /**
-         * Retrieve a framework specification from the specification service
-         * @param framework the name of the framework to retrieve the specification for
-         * @return the FrameworkSpecification object
-         * @throws InvalidInputApiException if the framework is not found
-         */
-        fun getFrameworkSpecification(framework: String): FrameworkSpecification =
-            try {
-                specificationClient.getFrameworkSpecification(framework)
-            } catch (clientException: ClientException) {
-                logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
-                throw InvalidInputApiException(
-                    "Framework $framework not found.",
-                    "The specified framework $framework is not known to the specification service.",
-                )
-            }
-
         /**
          * Retrieve a framework specification from the specification service
          * @param framework the name of the framework to retrieve the specification for
@@ -63,7 +44,7 @@ class DataPointUtils
          * @return a set of all relevant data point types
          */
         fun getRelevantDataPointTypes(framework: String): Set<String> {
-            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
         }
