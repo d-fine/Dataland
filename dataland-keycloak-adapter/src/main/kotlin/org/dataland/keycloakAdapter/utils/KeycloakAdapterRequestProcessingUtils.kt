@@ -30,5 +30,5 @@ class KeycloakAdapterRequestProcessingUtils(
      * @param userId the userId of the user in question
      * @return true if the user has the role of a premium user, false otherwise
      */
-    fun userIsPremiumUser(userId: String): Boolean = keycloakUserService.getUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
+    fun userIsPremiumUser(userId: String): Boolean = keycloakUserService.getCompositeUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
 }
