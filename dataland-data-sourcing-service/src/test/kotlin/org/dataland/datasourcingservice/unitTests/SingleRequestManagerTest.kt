@@ -1,14 +1,18 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.datasourcingservice.services.SingleRequestManager
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -29,6 +33,7 @@ class SingleRequestManagerTest {
     private val mockDataSourcingManager = mock<DataSourcingManager>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockRequestCreationService = mock<RequestCreationService>()
+    private val mockDataSourcingRepository = mock<DataSourcingRepository>()
 
     private val testSingleRequestManager =
         SingleRequestManager(
@@ -36,15 +41,14 @@ class SingleRequestManagerTest {
             mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository, mockRequestCreationService,
         )
 
+    private val testDataSourcingManager =
+        DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator)
+
+    private lateinit var newRequest: RequestEntity
+
     @BeforeEach
     fun setup() {
-        reset(mockDataSourcingManager)
-    }
-
-    @ParameterizedTest
-    @EnumSource(RequestState::class)
-    fun `verify that a request is appended to the corresponding sourcing object only when set to Processing`(requestState: RequestState) {
-        val newRequest =
+        newRequest =
             RequestEntity(
                 id = UUID.randomUUID(),
                 companyId = UUID.randomUUID(),
@@ -59,6 +63,12 @@ class SingleRequestManagerTest {
                 state = RequestState.Open,
                 dataSourcingEntity = null,
             )
+        reset(mockDataSourcingManager)
+    }
+
+    @ParameterizedTest
+    @EnumSource(RequestState::class)
+    fun `verify that a request is appended to the corresponding sourcing object only when set to Processing`(requestState: RequestState) {
         whenever(mockRequestRepository.findByIdAndFetchDataSourcingEntity(any())).thenReturn(
             newRequest,
         )
@@ -69,6 +79,38 @@ class SingleRequestManagerTest {
             verify(mockDataSourcingManager, times(1)).resetOrCreateDataSourcingObjectAndAddRequest(any())
         } else {
             verify(mockDataSourcingManager, never()).resetOrCreateDataSourcingObjectAndAddRequest(any())
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataSourcingState::class)
+    fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`(
+        state: DataSourcingState,
+    ) {
+        val newDataSourcingEntity =
+            DataSourcingEntity(
+                dataSourcingId = UUID.randomUUID(),
+                companyId = UUID.randomUUID(),
+                reportingPeriod = "2025",
+                dataType = "sfdr",
+                state = DataSourcingState.Initialized,
+                associatedRequests = mutableSetOf(newRequest),
+            )
+
+        whenever(mockDataSourcingRepository.findByIdAndFetchAllStoredFields(any())).thenReturn(
+            newDataSourcingEntity,
+        )
+        whenever(mockDataSourcingRepository.save(any())).thenAnswer {
+            it.arguments[0] as DataSourcingEntity
+        }
+
+        val reducedDataSourcing = testDataSourcingManager.patchDataSourcingState(newDataSourcingEntity.dataSourcingId, state)
+
+        Assertions.assertEquals(state, reducedDataSourcing.state)
+        if (state == DataSourcingState.Done || state == DataSourcingState.NonSourceable) {
+            Assertions.assertEquals(RequestState.Processed, newRequest.state)
+        } else {
+            Assertions.assertNotEquals(RequestState.Processed, newRequest.state)
         }
     }
 }

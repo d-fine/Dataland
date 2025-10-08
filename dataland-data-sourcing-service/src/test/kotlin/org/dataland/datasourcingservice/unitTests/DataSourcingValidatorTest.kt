@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.doNothing
-import org.mockito.Mockito.doThrow
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DataSourcingValidatorTest {
-    @Mock
-    private lateinit var companyDataControllerApi: CompanyDataControllerApi
+    private var mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
-    @Mock
-    private lateinit var documentControllerApi: DocumentControllerApi
+    private var mockDocumentControllerApi = mock<DocumentControllerApi>()
 
-    @InjectMocks
-    private lateinit var dataSourcingValidator: DataSourcingValidator
+    private var dataSourcingValidator = DataSourcingValidator(mockCompanyDataControllerApi, mockDocumentControllerApi)
 
     @BeforeEach
     fun setUp() {
-        MockitoAnnotations.openMocks(this) // Initialize mocks
+        reset(mockCompanyDataControllerApi, mockDocumentControllerApi)
     }
 
     // Test validateAndGetCompanyId
@@ -56,7 +52,7 @@ class DataSourcingValidatorTest {
             )
         val validationResult = CompanyIdentifierValidationResult(identifier, companyInformation)
 
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(identifier)))
+        whenever(mockCompanyDataControllerApi.postCompanyValidation(listOf(identifier)))
             .thenReturn(listOf(validationResult))
 
         // Act
@@ -64,7 +60,7 @@ class DataSourcingValidatorTest {
 
         // Assert
         assertEquals(UUID.fromString(companyId), result)
-        verify(companyDataControllerApi, times(1)).postCompanyValidation(listOf(identifier))
+        verify(mockCompanyDataControllerApi, times(1)).postCompanyValidation(listOf(identifier))
     }
 
     @Test
@@ -72,7 +68,7 @@ class DataSourcingValidatorTest {
         // Arrange
         val identifier = "invalid_company_identifier"
 
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(identifier)))
+        whenever(mockCompanyDataControllerApi.postCompanyValidation(listOf(identifier)))
             .thenReturn(emptyList())
 
         // Act & Assert
@@ -82,7 +78,7 @@ class DataSourcingValidatorTest {
             }
 
         assertEquals("The company identifier is unknown.", exception.summary)
-        verify(companyDataControllerApi, times(1)).postCompanyValidation(listOf(identifier))
+        verify(mockCompanyDataControllerApi, times(1)).postCompanyValidation(listOf(identifier))
     }
 
     // Test validateDocumentId
@@ -91,13 +87,13 @@ class DataSourcingValidatorTest {
         // Arrange
         val documentId = "valid_document_id"
 
-        doNothing().`when`(documentControllerApi).checkDocument(documentId)
+        doNothing().whenever(mockDocumentControllerApi).checkDocument(documentId)
 
         // Act
         assertDoesNotThrow { dataSourcingValidator.validateDocumentId(documentId) }
 
         // Assert
-        verify(documentControllerApi, times(1)).checkDocument(documentId)
+        verify(mockDocumentControllerApi, times(1)).checkDocument(documentId)
     }
 
     @Test
@@ -107,7 +103,7 @@ class DataSourcingValidatorTest {
 
         doThrow(
             ClientException(),
-        ).`when`(documentControllerApi)
+        ).whenever(mockDocumentControllerApi)
             .checkDocument(documentId)
 
         // Act & Assert
@@ -117,7 +113,7 @@ class DataSourcingValidatorTest {
             }
 
         assertEquals("Document with id $documentId not found.", exception.summary)
-        verify(documentControllerApi, times(1)).checkDocument(documentId)
+        verify(mockDocumentControllerApi, times(1)).checkDocument(documentId)
     }
 
     // Test validateReportingPeriod
@@ -179,8 +175,12 @@ class DataSourcingValidatorTest {
                 companyInformation = validCompanyInformation,
             )
 
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(validCompanyId))).thenReturn(listOf(validResult))
-        `when`(companyDataControllerApi.postCompanyValidation(listOf(invalidCompanyId))).thenReturn(emptyList())
+        whenever(mockCompanyDataControllerApi.postCompanyValidation(listOf(validCompanyId))).thenAnswer {
+            listOf(validResult)
+        }
+        whenever(mockCompanyDataControllerApi.postCompanyValidation(listOf(invalidCompanyId))).thenAnswer {
+            emptyList<String>()
+        }
 
         // Act
         val (validRequests, invalidRequests) = dataSourcingValidator.validateBulkDataRequest(dataDimensions)

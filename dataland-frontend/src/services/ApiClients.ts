@@ -1,20 +1,20 @@
-import { type Configuration } from '@clients/backend/configuration';
-import { DocumentControllerApi } from '@clients/documentmanager';
-import { QaControllerApi } from '@clients/qaservice';
-import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
+import * as backendApis from '@clients/backend/api';
+import { type Configuration } from '@clients/backend/configuration';
 import {
   CompanyRolesControllerApi,
   type CompanyRolesControllerApiInterface,
-  RequestControllerApi as CommunityManagerRequestControllerApi,
   EmailAddressControllerApi,
+  RequestControllerApi as CommunityManagerRequestControllerApi,
 } from '@clients/communitymanager';
 import { RequestControllerApi } from '@clients/datasourcingservice';
+import { DocumentControllerApi } from '@clients/documentmanager';
+import { EmailControllerApi } from '@clients/emailservice';
+import { QaControllerApi } from '@clients/qaservice';
+import { PortfolioControllerApi } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import * as backendApis from '@clients/backend/api';
-import { EmailControllerApi } from '@clients/emailservice';
-import { PortfolioControllerApi } from '@clients/userservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;

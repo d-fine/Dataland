@@ -83,6 +83,8 @@ class DataSourcingWorkflowTest(
             Assertions.assertEquals(RequestState.Processed, stored.state)
         }
 
+        Assertions.assertEquals(3, dataSourcingObject.associatedRequestIds.size)
+
         val results = dataSourcingController.searchDataSourcings(companyId, "sfdr", "2026", chunkSize = 10, chunkIndex = 0).body!!
         Assertions.assertEquals(1, results.size)
     }
