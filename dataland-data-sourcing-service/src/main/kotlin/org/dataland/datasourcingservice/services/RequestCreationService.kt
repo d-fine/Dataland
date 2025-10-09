@@ -60,7 +60,7 @@ class RequestCreationService
         private fun performQuotaCheckForNonPremiumUser(userId: UUID) {
             if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
-                    requestRepository.getNumberOfRequestsOpenedByUserFromTimestamp(
+                    requestRepository.countByUserIdAndCreationTimestampGreaterThanEqual(
                         userId, getEpochTimeStartOfDay(),
                     )
                 requestLogger.logQuotaCheckMessage(

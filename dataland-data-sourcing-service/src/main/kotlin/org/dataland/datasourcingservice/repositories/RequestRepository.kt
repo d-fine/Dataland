@@ -25,7 +25,12 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     /**
      * Find a request by id and fetch the associated data sourcing entity.
      */
-    fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity? = findByListOfIdsAndFetchDataSourcingEntity(listOf(id)).firstOrNull()
+    @Query(
+        "SELECT request FROM RequestEntity request " +
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
+            "WHERE request.id = :id",
+    )
+    fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
 
     /** This method counts the number of data requests that a user
      * has opened after a specified timestamp.
@@ -33,13 +38,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      * @param timestamp to check for
      * @returns the number of counts
      */
-    @Query
-    (
-        "SELECT COUNT(d.userId) FROM RequestEntity d " +
-            "WHERE (d.userId = :#{#userId})" +
-            "AND (d.creationTimestamp >= :#{#timestamp})",
-    )
-    fun getNumberOfRequestsOpenedByUserFromTimestamp(
+    fun countByUserIdAndCreationTimestampGreaterThanEqual(
         userId: UUID,
         timestamp: Long,
     ): Int
@@ -72,7 +71,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      * Find all RequestEntity instances by a list of ids and fetch all lazily loaded fields.
      */
     @Query(
-        "SELECT request.id FROM RequestEntity request " +
+        "SELECT request FROM RequestEntity request " +
             "LEFT JOIN FETCH request.dataSourcingEntity " +
             "WHERE " +
             "(request.id IN :requestIds)",

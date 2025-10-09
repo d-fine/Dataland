@@ -86,7 +86,7 @@ class SingleRequestManager
                             userId = userIdToUse,
                             BasicDataDimensions(
                                 companyId = companyId.toString(),
-                                dataType = singleRequest.dataType.toString(),
+                                dataType = singleRequest.dataType,
                                 reportingPeriod = singleRequest.reportingPeriod,
                             ),
                             memberComment = singleRequest.memberComment,
