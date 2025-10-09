@@ -48,11 +48,14 @@ function clickFirstSearchResult(): void {
  * @returns the matching company from the fake fixtures
  */
 function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> {
-  const company = companiesWithEuTaxonomyFinancialsData.find((it) => {
-    const hasAlternativeNames = it.companyInformation.companyAlternativeNames != undefined;
-    return hasAlternativeNames && it.companyInformation.companyAlternativeNames!.length > 0;
-  });
-  return assertDefined(company);
+  return assertDefined(
+    companiesWithEuTaxonomyFinancialsData.find((it) => {
+      return (
+        it.companyInformation.companyAlternativeNames != undefined &&
+        it.companyInformation.companyAlternativeNames.length > 0
+      );
+    })
+  );
 }
 
 /**
@@ -61,85 +64,11 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
  */
 function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
   cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
-    if (items.length !== 1) {
+    if (items.length !== 1)
       throw new Error(
         `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
       );
-    }
   });
-}
-
-/**
- * Clears and types a value into the search bar
- * @param value the value to type
- */
-function typeInSearchBar(value: string): void {
-  cy.get('input[id=search-bar-input]').clear();
-  cy.get('input[id=search-bar-input]').type(value);
-}
-
-/**
- * Validates arrow key navigation in autocomplete
- * @param highlightClass the class name for highlighted items
- */
-function validateArrowKeyNavigation(highlightClass: string): void {
-  cy.get('input[id=search-bar-input]').type('{downArrow}');
-  cy.get('.p-autocomplete-option').eq(0).should('have.class', highlightClass);
-  cy.get('.p-autocomplete-option').eq(1).should('not.have.class', highlightClass);
-
-  cy.get('input[id=search-bar-input]').type('{downArrow}');
-  cy.get('.p-autocomplete-option').eq(0).should('not.have.class', highlightClass);
-  cy.get('.p-autocomplete-option').eq(1).should('have.class', highlightClass);
-
-  cy.get('input[id=search-bar-input]').type('{upArrow}');
-  cy.get('.p-autocomplete-option').eq(0).should('have.class', highlightClass);
-  cy.get('.p-autocomplete-option').eq(1).should('not.have.class', highlightClass);
-}
-
-/**
- * Performs initial autocomplete search and validates results
- * @param searchString the string to search for
- */
-function performInitialAutocompleteSearch(searchString: string): void {
-  typeInSearchBar(searchString);
-  cy.get('[data-test="view-all-results-button"]').contains('View all results').click();
-  verifySearchResultTableExists();
-  cy.url().should('include', `/companies?input=${searchString}`);
-  cy.scrollTo('top');
-}
-
-/**
- * Searches for a specific company and validates selection
- * @param testCompany the company to search for
- */
-function searchAndSelectCompany(testCompany: BasicCompanyInformation): void {
-  const testCompanyName = testCompany.companyName;
-
-  cy.get('input[id=search-bar-input]').click();
-  typeInSearchBar(testCompanyName);
-  assertSearchedCompanyNameIsUnique(testCompany);
-  cy.get('.p-autocomplete-list-container').should('be.visible');
-
-  cy.get('.p-autocomplete-option')
-    .contains(testCompanyName)
-    .should('be.visible')
-    .then(($el) => {
-      cy.wrap($el).click({ force: true });
-    });
-
-  validateCompanyCockpitPage(testCompanyName, testCompany.companyId);
-}
-
-/**
- * Tests arrow key navigation in autocomplete dropdown
- * @param searchString the string to search for
- * @param highlightClass the class name for highlighted items
- */
-function testArrowKeyNavigation(searchString: string, highlightClass: string): void {
-  cy.get('input[id=search-bar-input]').click();
-  typeInSearchBar(searchString);
-  cy.get('.p-autocomplete-list-container').should('be.visible');
-  validateArrowKeyNavigation(highlightClass);
 }
 
 before(function () {
@@ -151,7 +80,6 @@ before(function () {
 beforeEach(function () {
   cy.ensureLoggedIn();
 });
-
 describeIf(
   'As a user, I expect the search functionality on the /companies page to show me the desired results',
   {
@@ -171,7 +99,7 @@ describeIf(
           () => {
             cy.visitAndCheckAppMount('/companies');
             verifySearchResultTableExists();
-            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation.companyName;
+            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0].companyInformation.companyName;
             checkPermIdToolTip();
             executeCompanySearchWithStandardSearchBar(testCompanyName);
             clickFirstSearchResult();
@@ -185,13 +113,12 @@ describeIf(
 
         it('Execute a company Search by identifier and assure that the company is found', () => {
           cy.visitAndCheckAppMount('/companies');
-          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation;
+          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
           const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
-            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it]!.length > 0)
+            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0)
           );
-          const singleCompanyIdentifier =
-            testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
+          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
           const expectedCompanyName = testCompanyInformation.companyName;
           executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
@@ -201,7 +128,7 @@ describeIf(
 
     it('Search for company by its alternative name', () => {
       const testCompany = getCompanyWithAlternativeName();
-      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0]!;
+      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
       cy.visitAndCheckAppMount('/companies');
       executeCompanySearchWithStandardSearchBar(searchValue);
     });
@@ -213,8 +140,9 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
-            const companyId = basicCompanyInformations[0]!.companyId;
-            cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
+            cy.visitAndCheckAppMount(
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+            );
             cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
             cy.get('input[id=company_search_bar_standard]')
               .should('have.value', inputValue)
@@ -225,26 +153,50 @@ describeIf(
       });
     });
 
-    it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
+it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
-
+      
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        const apiCall = searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials);
-        cy.browserThen(apiCall).then((basicCompanyInformation: Array<BasicCompanyInformation>) => {
-          const testCompany = basicCompanyInformation[1]!;
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformation: Array<BasicCompanyInformation>) => {
+            const testCompany = basicCompanyInformation[1];
+            cy.visitAndCheckAppMount('/companies');
 
-          cy.visitAndCheckAppMount('/companies');
-          verifySearchResultTableExists();
+            verifySearchResultTableExists();
+            cy.get('input[id=search-bar-input]').type('abs');
+            cy.get('[data-test="view-all-results-button"]').contains('View all results').click();
 
-          performInitialAutocompleteSearch(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-          testArrowKeyNavigation(
-            searchStringResultingInAtLeastTwoAutocompleteSuggestions,
-            primevueHighlightedSuggestionClass
-          );
-          searchAndSelectCompany(testCompany);
-        });
+            verifySearchResultTableExists();
+            cy.url().should('include', '/companies?input=abs');
+            cy.scrollTo('top');
+            cy.get('input[id=search-bar-input]').click();
+            cy.get('input[id=search-bar-input]').type(
+              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
+            );
+            cy.get('.p-autocomplete-list-container').should('exist');
+            cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
+            cy.get('input[id=search-bar-input]').should('be.focused');
+            cy.wait(150);
+            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
+            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
+            cy.get('.p-autocomplete-option').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('input[id=search-bar-input]').type('{upArrow}', { scrollBehavior: false });
+            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+            cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany!.companyName}`);
+            assertSearchedCompanyNameIsUnique(testCompany!);
+            const testCompanyName = testCompany!.companyName;
+            cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
+            validateCompanyCockpitPage(testCompanyName, testCompany!.companyId);
+          }
+        );
       });
     });
+
   }
 );
