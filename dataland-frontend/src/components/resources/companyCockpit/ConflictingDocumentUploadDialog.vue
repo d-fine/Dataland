@@ -5,7 +5,7 @@
     @show="handleUploadConflict"
     :closable="false"
     :dismissableMask="true"
-    style="border-radius: 0.75rem; text-align: center"
+    style="border-radius: 0.75rem; text-align: center; max-width: 40rem"
     :show-header="false"
     data-test="conflict-modal"
   >
@@ -147,16 +147,12 @@ const closeSuccessModal = (): void => {
 .text-block {
   text-align: left;
   margin: 15px;
-  white-space: pre;
+  white-space: normal;
 }
 .button-row {
   display: flex;
   gap: var(--spacing-md);
   justify-content: center;
   margin-top: var(--spacing-lg);
-}
-
-.green-text {
-  color: var(--green);
 }
 </style>

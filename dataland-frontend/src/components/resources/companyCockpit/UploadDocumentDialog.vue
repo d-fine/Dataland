@@ -286,8 +286,4 @@ const closeSuccessModal = (): void => {
 .error-field {
   border-color: var(--message-error-border);
 }
-
-.green-text {
-  color: var(--green);
-}
 </style>
