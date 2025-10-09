@@ -36,9 +36,11 @@ class DataSourcingQueryManager(
         chunkIndex: Int = 0,
     ): List<StoredDataSourcing> =
         dataSourcingRepository
-            .searchDataSourcingEntitiesAndFetchAllStoredFields(
-                companyId, dataType, reportingPeriod, state,
-                PageRequest.of(chunkIndex, chunkSize),
-            ).content
-            .map { it.toStoredDataSourcing() }
+            .findByIdsAndFetchAllReferences(
+                dataSourcingRepository
+                    .searchDataSourcingEntities(
+                        companyId, dataType, reportingPeriod, state,
+                        PageRequest.of(chunkIndex, chunkSize),
+                    ).content,
+            ).map { it.toStoredDataSourcing() }
 }

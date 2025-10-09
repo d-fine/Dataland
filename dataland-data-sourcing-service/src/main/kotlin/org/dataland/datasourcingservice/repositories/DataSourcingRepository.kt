@@ -67,13 +67,32 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
     fun findAllByDataExtractor(companyId: UUID): List<DataSourcingEntity>
 
     /**
-     * Search data sourcing entities by the optional filters and fetch all lazily loaded fields.
+     * Search data sourcing entities by the optional filters
      * @param companyId to filter by
      * @param dataType to filter by
      * @param reportingPeriod to filter by
      * @param state to filter by
      * @param pageable for pagination
-     * @return page of matching DataSourcingEntity objects
+     * @return List of matching DataSourcingEntity ids
+     */
+    @Query(
+        "SELECT dataSourcingEntity.dataSourcingId FROM DataSourcingEntity dataSourcingEntity " +
+            "WHERE " +
+            "(:companyId IS NULL OR dataSourcingEntity.companyId = :companyId) AND " +
+            "(:dataType IS NULL OR dataSourcingEntity.dataType = :dataType) AND " +
+            "(:reportingPeriod IS NULL OR dataSourcingEntity.reportingPeriod = :reportingPeriod) AND " +
+            "(:state IS NULL OR dataSourcingEntity.state = :state)",
+    )
+    fun searchDataSourcingEntities(
+        companyId: UUID?,
+        dataType: String?,
+        reportingPeriod: String?,
+        state: DataSourcingState?,
+        pageable: Pageable,
+    ): Page<UUID>
+
+/**
+     * Find all DataSourcingEntity instances by a list of ids and fetch all lazily loaded fields.
      */
     @Query(
         "SELECT dataSourcingEntity FROM DataSourcingEntity dataSourcingEntity " +
@@ -81,16 +100,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
             "LEFT JOIN FETCH dataSourcingEntity.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcingEntity.associatedRequests " +
             "WHERE " +
-            "(:companyId IS NULL OR dataSourcingEntity.companyId = :companyId) AND " +
-            "(:dataType IS NULL OR dataSourcingEntity.dataType = :dataType) AND " +
-            "(:reportingPeriod IS NULL OR dataSourcingEntity.reportingPeriod = :reportingPeriod) AND " +
-            "(:state IS NULL OR dataSourcingEntity.state = :state)",
+            "dataSourcingEntity.dataSourcingId IN :dataSourcingIds",
     )
-    fun searchDataSourcingEntitiesAndFetchAllStoredFields(
-        companyId: UUID?,
-        dataType: String?,
-        reportingPeriod: String?,
-        state: DataSourcingState?,
-        pageable: Pageable,
-    ): Page<DataSourcingEntity>
+    fun findByIdsAndFetchAllReferences(dataSourcingIds: List<UUID>?): List<DataSourcingEntity>
 }
