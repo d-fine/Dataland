@@ -13,7 +13,7 @@
       <div style="margin-top: 8px">{{ props.message }}</div>
     </div>
     <template #footer>
-      <PrimeButton label="OK" @click="emit('close')" />
+      <PrimeButton label="OK" @click="emit('close')" data-test="close-success-modal-button" />
     </template>
   </PrimeDialog>
 </template>
