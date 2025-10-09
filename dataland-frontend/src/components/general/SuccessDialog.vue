@@ -6,7 +6,7 @@
     :dismissable-mask="true"
     @update:visible="onUpdateVisible"
     style="min-width: 20rem; text-align: center"
-    data-test="success-dialog"
+    data-test="success-modal"
   >
     <div style="text-align: center; padding: 8px 0">
       <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
