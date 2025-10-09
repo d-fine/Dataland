@@ -2,6 +2,8 @@ package org.dataland.datasourcingservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -42,8 +44,10 @@ class RequestEntity(
     var adminComment: String? = null,
     @Column(name = "last_modified_date")
     var lastModifiedDate: Long,
+    @Enumerated(EnumType.STRING)
     @Column(name = "request_priority")
     var requestPriority: RequestPriority,
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     var state: RequestState,
     @ManyToOne(fetch = FetchType.LAZY)
