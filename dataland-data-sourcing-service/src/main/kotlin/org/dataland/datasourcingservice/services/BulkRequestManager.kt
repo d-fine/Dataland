@@ -23,7 +23,7 @@ class BulkRequestManager
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
         private val requestCreationService: RequestCreationService,
-        @Autowired private val metaDataController: MetaDataControllerApi,
+        private val metaDataController: MetaDataControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
     ) {
         /**
