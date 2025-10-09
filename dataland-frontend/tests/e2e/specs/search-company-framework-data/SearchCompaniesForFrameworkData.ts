@@ -118,7 +118,8 @@ describeIf(
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
             Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it]!.length > 0)
           );
-          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
+          const singleCompanyIdentifier =
+            testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
           const expectedCompanyName = testCompanyInformation.companyName;
           executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
@@ -153,10 +154,10 @@ describeIf(
       });
     });
 
-it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
+    it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
-      
+
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
@@ -177,7 +178,7 @@ it('Search with autocompletion for companies with "abs" in it, click and use arr
             cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
             cy.get('input[id=search-bar-input]').should('be.focused');
-            cy.wait(150);
+            cy.wait(Cypress.env('short_timeout_in_ms') as number);
             cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
@@ -197,6 +198,5 @@ it('Search with autocompletion for companies with "abs" in it, click and use arr
         );
       });
     });
-
   }
 );

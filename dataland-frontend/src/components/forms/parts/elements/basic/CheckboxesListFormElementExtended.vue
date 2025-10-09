@@ -137,7 +137,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export default defineComponent({
-  name: 'ExtendedDataPointFormField',
+  name: 'CheckboxesListFormElementExtended',
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, ToggleSwitch, Checkbox },
   inject: {
     injectReportsNameAndReferences: {
