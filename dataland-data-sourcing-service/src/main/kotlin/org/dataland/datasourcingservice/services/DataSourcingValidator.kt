@@ -8,6 +8,7 @@ import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentController
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -22,16 +23,20 @@ class DataSourcingValidator
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val documentControllerApi: DocumentControllerApi,
     ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         /**
          * Validates whether a list of company identifiers exist in Dataland and retrieves their UUIDs.
          *
          * @param identifierList List of company identifier strings to check.
          * @return List of UUIDs for each identifier in the input; a `null` entry indicates a non-existing company.
          */
-        private fun validateAndGetCompanyIds(identifierList: List<String>): List<UUID?> =
-            companyDataControllerApi
+        private fun validateAndGetCompanyIds(identifierList: List<String>): List<UUID?> {
+            logger.info("Validating company ids for $identifierList")
+            return companyDataControllerApi
                 .postCompanyValidation(identifierList)
-                .map { UUID.fromString(it.companyInformation?.companyId) }
+                .map { it.companyInformation?.companyId?.let { id -> UUID.fromString(id) } }
+        }
 
         /**
          * Validates if a document with the provided id exists on Dataland.
@@ -39,6 +44,7 @@ class DataSourcingValidator
          * @throws ResourceNotFoundApiException if no document is associated to the provided id
          */
         fun validateDocumentId(documentId: String) {
+            logger.info("Validating document ID for $documentId")
             try {
                 documentControllerApi.checkDocument(documentId)
             } catch (_: ClientException) {
@@ -55,10 +61,12 @@ class DataSourcingValidator
          * @param reportingPeriods List of reporting period strings (expected format: "YYYY" or "YYYY-QX").
          * @return List of Boolean values indicating if each reporting period matches the expected format.
          */
-        private fun validateReportingPeriods(reportingPeriods: List<String>): List<Boolean> =
-            reportingPeriods.map { reportingPeriod ->
+        private fun validateReportingPeriods(reportingPeriods: List<String>): List<Boolean> {
+            logger.info("Validating reporting periods for $reportingPeriods")
+            return reportingPeriods.map { reportingPeriod ->
                 ValidationUtils.isReportingPeriod(reportingPeriod)
             }
+        }
 
         /**
          * Validates whether each data type in the provided list is recognized by Dataland.
@@ -66,10 +74,12 @@ class DataSourcingValidator
          * @param dataTypes List of data type strings to validate.
          * @return List of Boolean values indicating if each data type is valid (recognized).
          */
-        private fun validateDataTypes(dataTypes: List<String>): List<Boolean> =
-            dataTypes.map { dataType ->
+        private fun validateDataTypes(dataTypes: List<String>): List<Boolean> {
+            logger.info("Validating data types for $dataTypes")
+            return dataTypes.map { dataType ->
                 DataTypeEnum.decode(dataType) != null
             }
+        }
 
         /**
          * Validates a bulk data request consisting of multiple company IDs, reporting periods, and data types.
