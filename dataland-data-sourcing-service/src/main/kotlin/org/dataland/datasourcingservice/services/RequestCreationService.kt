@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.UUID
 
@@ -82,11 +83,10 @@ class RequestCreationService
             }
         }
 
-        private fun getEpochTimeStartOfDay(): Long {
-            val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
-            val zoneId = ZoneId.systemDefault()
-            val instantNowZoned = instantNow.atZone(zoneId)
-            val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-            return startOfDay.toInstant().toEpochMilli()
-        }
+        private fun getEpochTimeStartOfDay(): Long =
+            LocalDate
+                .now()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
     }
