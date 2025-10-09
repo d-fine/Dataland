@@ -38,12 +38,11 @@ class BulkRequestManager
         ): BulkDataRequestResponse {
             assertNoEmptySetsInBulkRequest(bulkDataRequest)
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
-            val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
-
-            val (validatedRequests, invalidRequests) =
+            val validationResult =
                 dataSourcingValidator.validateBulkDataRequest(
-                    listOfRequestedDataDimensionTuples,
+                    bulkDataRequest,
                 )
+            val (invalidRequests, validatedRequests) = getValidatedAndInvalidRequests(validationResult, bulkDataRequest)
             val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
             val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
 
@@ -59,6 +58,35 @@ class BulkRequestManager
                 existingDataRequests = existingRequests,
                 existingDataSets = existingDatasets,
             )
+        }
+
+        private fun getValidatedAndInvalidRequests(
+            validationResult: DataSourcingValidator.DataRequestValidationResult,
+            bulkDataRequest: BulkDataRequest,
+        ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
+            val validCompanyIds =
+                validationResult.companyIdValidation.filter { it.values.first() != null }.map { it.keys.first() }
+            val validDataTypes =
+                validationResult.dataTypeValidation.filter { it.values.firstOrNull() == true }.map { it.keys.first() }
+            val validatedReportingPeriods =
+                validationResult.reportingPeriodValidation
+                    .filter {
+                        it.values.firstOrNull() == true
+                    }.map {
+                        it.keys
+                            .first()
+                    }
+            val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
+
+            val invalidRequests =
+                listOfRequestedDataDimensionTuples
+                    .filter { dataDimension ->
+                        validCompanyIds.none { it == dataDimension.companyId } ||
+                            validDataTypes.none { it == dataDimension.dataType } ||
+                            validatedReportingPeriods.none { it == dataDimension.reportingPeriod }
+                    }
+            val validatedRequests = listOfRequestedDataDimensionTuples - invalidRequests
+            return Pair(invalidRequests, validatedRequests)
         }
 
         private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =

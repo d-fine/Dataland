@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -185,9 +186,23 @@ class BulkRequestManagerTest {
             mockEntityManager,
         )
 
+        // Build mocks for DataRequestValidationResult with companyIdValidation, dataTypeValidation, reportingPeriodValidation
+        val companyIdValidSet = companyIdentifiers - INVALID_COMPANY_ID
+        val dataTypeValidSet = dataTypes - INVALID_DATA_TYPE
+        val reportingPeriodValidSet = reportingPeriods - INVALID_REPORTING_PERIOD
+
+        val companyIdValidation = companyIdentifiers.map { id -> mapOf(id to if (id in companyIdValidSet) UUID.randomUUID() else null) }
+        val dataTypeValidation = dataTypes.map { dt -> mapOf(dt to (dt in dataTypeValidSet)) }
+        val reportingPeriodValidation = reportingPeriods.map { rp -> mapOf(rp to (rp in reportingPeriodValidSet)) }
+
         doReturn(
-            Pair(validDataDimensions, allRequestedDataDimensions - validDataDimensions),
-        ).whenever(mockDataSourcingValidator).validateBulkDataRequest(allRequestedDataDimensions)
+            DataSourcingValidator.DataRequestValidationResult(
+                companyIdValidation = companyIdValidation,
+                dataTypeValidation = dataTypeValidation,
+                reportingPeriodValidation = reportingPeriodValidation,
+            ),
+        ).whenever(mockDataSourcingValidator).validateBulkDataRequest(any())
+
         doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(
             expectedQueryString, RequestEntity::class.java,
         )
