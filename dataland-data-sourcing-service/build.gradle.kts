@@ -56,7 +56,6 @@ dependencies {
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
-    testImplementation(libs.mockito.kotlin)
 }
 
 openApi {
