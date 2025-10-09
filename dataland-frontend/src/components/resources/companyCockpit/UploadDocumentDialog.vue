@@ -116,7 +116,7 @@
       <Button
         label="UPLOAD DOCUMENT"
         @click="onSubmit"
-        :disabled="isUploadButtonDisabled"
+        :loading="isLoading"
         style="width: auto; margin-left: auto"
         data-test="upload-document-button"
       />
@@ -166,7 +166,7 @@ const publicationDate = ref<Date | null>(null);
 const reportingPeriod = ref<Date | null>(null);
 const showErrors = ref<boolean>(false);
 const successModalIsVisible = ref<boolean>(false);
-const isUploadButtonDisabled = ref<boolean>(false);
+const isLoading = ref<boolean>(false);
 const errorMessage = ref<string>('');
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -220,7 +220,7 @@ const onSubmit = async (): Promise<void> => {
     return;
   }
 
-  isUploadButtonDisabled.value = true;
+  isLoading.value = true;
 
   try {
     await handleDocumentUpload();
@@ -234,7 +234,7 @@ const onSubmit = async (): Promise<void> => {
       errorMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     }
   } finally {
-    isUploadButtonDisabled.value = false;
+    isLoading.value = false;
   }
 };
 

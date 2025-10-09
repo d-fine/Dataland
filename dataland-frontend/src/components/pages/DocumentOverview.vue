@@ -1,5 +1,9 @@
 <template>
-  <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <CompanyInfoSheet
+    :company-id="companyId"
+    :show-single-data-request-button="false"
+    @fetchedCompanyInformation="(companyInfo) => (companyName = companyInfo.companyName)"
+  />
   <div class="selection-header">
     <ChangeFrameworkDropdown
       :data-meta-information="dataMetaInformation"
@@ -113,6 +117,7 @@
     v-if="showConflictModal"
     :documentId="conflictDocumentId"
     :companyId="companyId"
+    :companyName="companyName"
     @close="showConflictModal = false"
     @document-associated="handleDocumentUpload"
   />
@@ -158,6 +163,7 @@ const props = defineProps<{
   companyId: string;
 }>();
 
+const companyName = ref<string>('');
 const waitingForData = ref(true);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
