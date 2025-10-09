@@ -57,7 +57,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
             "If set to false, the provided document IDs replace the existing ones instead."
 
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
-        "A set of identifiers for companies on Dataland by. Use Dataland company IDs, " +
+        "A set of identifiers for companies on Dataland. Use Dataland company IDs, " +
             "Leis or Isins for the best results. Requests will be posted for all companies that can " +
             "be identified."
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE =
