@@ -127,7 +127,7 @@ class AssembledDataManagerTest {
                 dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
                 datasetDatapointRepository, spyDataPointManager,
                 referencedReportsUtilities,
-                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler, specificationService
+                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler, specificationService,
             )
     }
 
