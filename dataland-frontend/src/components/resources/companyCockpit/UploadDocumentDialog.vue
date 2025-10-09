@@ -9,7 +9,7 @@
   >
     <div class="upload-document-container">
       <div class="field" :title="selectedFiles.length >= 1 ? 'You can only upload one document at a time.' : ''">
-        <label class="upload-label" for="file-upload">Select Document</label>
+        <p class="upload-label">Select Document</p>
         <FileUpload
           :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
           :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
@@ -48,7 +48,7 @@
       </div>
 
       <div class="field">
-        <label class="upload-label" for="document-name">Document Name</label>
+        <p class="upload-label">Document Name</p>
         <InputText
           v-model="documentName"
           placeholder="Enter Document Name"
@@ -67,7 +67,7 @@
       </div>
 
       <div class="field">
-        <label class="upload-label" for="document-category">Document Category</label>
+        <p class="upload-label">Document Category</p>
         <Select
           v-model="documentCategory"
           :options="documentCategories"
@@ -89,7 +89,7 @@
       </div>
       <div class="date-row">
         <div class="field">
-          <label class="upload-label" for="publication-date">Publication Date (optional)</label>
+          <p class="upload-label">Publication Date (optional)</p>
           <DatePicker
             v-model="publicationDate"
             showIcon
@@ -98,7 +98,7 @@
           />
         </div>
         <div class="field">
-          <label class="upload-label" for="reporting-period">Reporting Period (optional)</label>
+          <p class="upload-label">Reporting Period (optional)</p>
           <DatePicker
             v-model="reportingPeriod"
             showIcon
@@ -302,7 +302,6 @@ const closeSuccessModal = (): void => {
 .upload-document-container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
 }
 
 .field {
@@ -312,9 +311,7 @@ const closeSuccessModal = (): void => {
 }
 
 .upload-label {
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-xs);
-  margin-bottom: 0;
+  font-weight: var(--font-weight-bold);
 }
 
 .date-row {
