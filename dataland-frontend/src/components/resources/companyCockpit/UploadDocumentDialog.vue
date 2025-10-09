@@ -5,7 +5,7 @@
     header="Upload Document"
     :style="{ width: '40rem' }"
     data-test="upload-document-modal"
-    @hide="onCancel"
+    @hide="emit('close')"
   >
     <div class="upload-document-container">
       <div class="field" :title="selectedFiles.length >= 1 ? 'You can only upload one document at a time.' : ''">
@@ -226,14 +226,6 @@ const onFileRemove = (event: FileUploadRemoveEvent): void => {
 };
 
 /**
- * Cancels the modal and clears form values.
- */
-const onCancel = (): void => {
-  emit('close');
-  resetForm();
-};
-
-/**
  * Submits the document upload form.
  */
 const onSubmit = async (): Promise<void> => {
@@ -274,26 +266,11 @@ function extractDocumentIdFromError(error: unknown): string | null {
 }
 
 /**
- * Resets all form values.
- */
-const resetForm = (): void => {
-  selectedFiles.value = [];
-  documentName.value = '';
-  documentCategory.value = null;
-  publicationDate.value = null;
-  reportingPeriod.value = null;
-  showErrors.value = false;
-  errorMessage.value = '';
-  isUploadButtonDisabled.value = false;
-};
-
-/**
  * Closes the success modal and resets the form.
  */
 const closeSuccessModal = (): void => {
   successModalIsVisible.value = false;
   emit('close');
-  resetForm();
   emit('document-uploaded');
 };
 </script>
