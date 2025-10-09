@@ -33,7 +33,7 @@
           }"
         >
           <template #empty>
-            <span>Drag and drop a file here to upload</span>
+            <span class="custom-drop-area">Drag and drop a file here to upload</span>
           </template>
         </FileUpload>
         <Message
@@ -285,5 +285,14 @@ const closeSuccessModal = (): void => {
 
 .error-field {
   border-color: var(--message-error-border);
+}
+
+.custom-drop-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  border: 2px dashed var(--primary-color);
+  background: var(--grey-tones-100);
 }
 </style>
