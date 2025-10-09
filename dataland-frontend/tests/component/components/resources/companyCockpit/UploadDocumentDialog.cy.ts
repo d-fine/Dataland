@@ -59,6 +59,7 @@ describe('Check the Upload Document modal', function (): void {
     cy.get('[data-test="reporting-period"]').find('.p-datepicker-dropdown').click();
     cy.get('.p-datepicker-year').contains('2024').click();
     cy.get('[data-test="upload-document-button"]').click();
+    cy.wait('@postDocumentData');
     cy.get('[data-test="success-modal"]').should('be.visible');
   });
 });

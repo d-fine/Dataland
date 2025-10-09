@@ -90,6 +90,7 @@ describeIf(
       });
       visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.contains('Document already exists').should('be.visible');
+      cy.contains(betaCompanyIdAndName.companyName).should('be.visible');
       cy.get('[data-test="associate-document-button"]').should('be.visible').click();
       cy.get('[data-test="success-modal"]').should('be.visible');
       cy.contains('Document associated successfully.').should('be.visible');
