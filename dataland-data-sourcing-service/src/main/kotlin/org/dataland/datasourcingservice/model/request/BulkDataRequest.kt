@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
  * Contains all necessary info that a user has to provide in order to request a bulk of datasets on Dataland.
  * @param companyIdentifiers contains company identifiers for which the user wants to request framework data
  * @param dataTypes contains the names of frameworks, for which the user wants to request framework data
+ * @param reportingPeriods contains the reporting periods for which the user wants to request framework data
  */
 data class BulkDataRequest(
     @field:JsonProperty(required = true)
