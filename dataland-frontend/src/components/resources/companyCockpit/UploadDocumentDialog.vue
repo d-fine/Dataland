@@ -121,28 +121,11 @@
       />
     </div>
   </PrimeDialog>
-  <PrimeDialog
-    id="successModal"
-    v-model:visible="successModalIsVisible"
-    modal
-    :closable="false"
-    :dismissableMask="true"
-    style="text-align: center"
-    :show-header="false"
-    @hide="closeSuccessModal"
-    data-test="success-modal"
-  >
-    <div class="text-center" style="display: flex; flex-direction: column">
-      <div style="margin: 10px">
-        <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-      </div>
-      <div style="margin: 10px">
-        <h2 class="m-0" data-test="successText">Success</h2>
-      </div>
-    </div>
-    <div class="text-block" style="margin: 15px; white-space: pre">Document uploaded successfully.</div>
-    <Button label="CLOSE" @click="closeSuccessModal" variant="outlined" data-test="close-success-modal-button" />
-  </PrimeDialog>
+  <SuccessDialog
+    :visible="successModalIsVisible"
+    message="Document uploaded successfully."
+    @close="closeSuccessModal"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -162,6 +145,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { AxiosError, isAxiosError } from 'axios';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 const props = defineProps<{ visible: boolean; companyId: string }>();
 const emit = defineEmits(['close', 'document-uploaded', 'conflict']);
