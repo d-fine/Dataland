@@ -22,6 +22,7 @@
           @select="onFileSelect"
           @remove="onFileRemove"
           :files="selectedFiles"
+          accept=".pdf"
           :auto="false"
           :multiple="false"
           :disabled="selectedFiles.length >= 1"

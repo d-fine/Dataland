@@ -2,13 +2,13 @@ import UploadDocumentDialog from '@/components/resources/companyCockpit/UploadDo
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 
 /** Helper to upload a file */
-function uploadFile(fileName: string): void {
-  const blob = new Blob([fileName], { type: 'application/pdf' });
+function uploadFile(fileName: string, fileType: string = 'application/pdf'): void {
+  const blob = new Blob([fileName], { type: fileType });
   cy.get('[data-test="file-upload"]').find('input[type=file]').selectFile(
     {
       contents: blob,
       fileName: fileName,
-      mimeType: 'application/pdf',
+      mimeType: fileType,
     },
     { force: true }
   );
@@ -44,6 +44,11 @@ describe('Check the Upload Document modal', function (): void {
   it('Check that no more than 1 document can be selected', function (): void {
     uploadFile('file1.pdf');
     cy.get('.p-fileupload-choose-button').should('be.disabled');
+  });
+
+  it('Check that only PDF files can be selected', function (): void {
+    uploadFile('file1.txt', 'text/plain');
+    cy.get('.p-message-error').contains('Invalid file type, allowed file types: .pdf.').should('be.visible');
   });
 
   it('Check that all fields can be filled and the success modal opens', function (): void {

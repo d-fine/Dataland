@@ -43,7 +43,7 @@ describeIf(
     beforeEach(() => {
       setupCommonInterceptions();
       cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.task('createUniqueTxtFixture').then((filename) => {
+      cy.task('createUniquePdfFixture').then((filename) => {
         testDocFileName = filename as string;
         testDocFilePath = testDocFilePathBase + testDocFileName;
       });
