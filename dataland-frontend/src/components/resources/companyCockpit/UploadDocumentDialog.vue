@@ -9,7 +9,7 @@
   >
     <div class="upload-document-container">
       <div class="field" :title="selectedFiles.length >= 1 ? 'You can only upload one document at a time.' : ''">
-        <label class="upload-label" for="file-upload">Select Document<span class="required-asterisk">*</span></label>
+        <label class="upload-label" for="file-upload">Select Document</label>
         <FileUpload
           :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
           :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
@@ -48,7 +48,7 @@
       </div>
 
       <div class="field">
-        <label class="upload-label" for="document-name">Document Name<span class="required-asterisk">*</span></label>
+        <label class="upload-label" for="document-name">Document Name</label>
         <InputText
           v-model="documentName"
           placeholder="Enter Document Name"
@@ -67,9 +67,7 @@
       </div>
 
       <div class="field">
-        <label class="upload-label" for="document-category"
-          >Document Category<span class="required-asterisk">*</span></label
-        >
+        <label class="upload-label" for="document-category">Document Category</label>
         <Select
           v-model="documentCategory"
           :options="documentCategories"
@@ -91,7 +89,7 @@
       </div>
       <div class="date-row">
         <div class="field">
-          <label class="upload-label" for="publication-date">Publication Date</label>
+          <label class="upload-label" for="publication-date">Publication Date (optional)</label>
           <DatePicker
             v-model="publicationDate"
             showIcon
@@ -100,7 +98,7 @@
           />
         </div>
         <div class="field">
-          <label class="upload-label" for="reporting-period">Reporting Period</label>
+          <label class="upload-label" for="reporting-period">Reporting Period (optional)</label>
           <DatePicker
             v-model="reportingPeriod"
             showIcon
@@ -114,21 +112,13 @@
       <Message v-if="errorMessage" severity="error">
         {{ errorMessage }}
       </Message>
-      <div class="actions">
-        <div class="required-fields-note">
-          <span class="required-asterisk">*</span>
-          <span class="upload-label">required Fields</span>
-        </div>
-        <div class="button-row">
-          <Button label="CANCEL" variant="text" @click="onCancel" data-test="cancel-button" />
-          <Button
-            label="UPLOAD DOCUMENT"
-            @click="onSubmit"
-            :disabled="isUploadButtonDisabled"
-            data-test="upload-document-button"
-          />
-        </div>
-      </div>
+      <Button
+        label="UPLOAD DOCUMENT"
+        @click="onSubmit"
+        :disabled="isUploadButtonDisabled"
+        style="width: auto; margin-left: auto"
+        data-test="upload-document-button"
+      />
     </div>
   </PrimeDialog>
   <PrimeDialog
@@ -321,31 +311,10 @@ const closeSuccessModal = (): void => {
   gap: var(--spacing-xxs);
 }
 
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button-row {
-  gap: var(--spacing-md);
-}
-
-.required-fields-note {
-  text-align: left;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 .upload-label {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-xs);
   margin-bottom: 0;
-}
-
-.required-asterisk {
-  color: red;
-  margin-left: 0.2em;
 }
 
 .date-row {
