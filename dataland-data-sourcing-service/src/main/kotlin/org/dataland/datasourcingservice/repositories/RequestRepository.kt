@@ -25,12 +25,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     /**
      * Find a request by id and fetch the associated data sourcing entity.
      */
-    @Query(
-        "SELECT request FROM RequestEntity request " +
-            "LEFT JOIN FETCH request.dataSourcingEntity " +
-            "WHERE request.id = :id",
-    )
-    fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
+    fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity? = findByListOfIdsAndFetchDataSourcingEntity(listOf(id)).firstOrNull()
 
     /** This method counts the number of data requests that a user
      * has opened after a specified timestamp.
@@ -50,27 +45,37 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     ): Int
 
     /**
-     * Return the list of all requests that match the optional filters.
+     * Return the list of all request ids that match the optional filters.
      * @param companyId to filter by
      * @param dataType to filter by
      * @param reportingPeriod to filter by
      * @param state to filter by
-     * @return list of matching RequestEntity objects
+     * @return list of matching request ids
      */
     @Query(
-        "SELECT request FROM RequestEntity request " +
-            "LEFT JOIN FETCH request.dataSourcingEntity " +
+        "SELECT request.id FROM RequestEntity request " +
             "WHERE " +
             "(:companyId IS NULL OR request.companyId = :companyId) AND " +
             "(:dataType IS NULL OR request.dataType = :dataType) AND " +
             "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
             "(:state IS NULL OR request.state = :state)",
     )
-    fun searchRequestsAndFetchDataSourcingEntities(
+    fun searchRequests(
         companyId: UUID?,
         dataType: String?,
         reportingPeriod: String?,
         state: RequestState?,
         pageable: Pageable,
-    ): Page<RequestEntity>
+    ): Page<UUID>
+
+    /**
+     * Find all RequestEntity instances by a list of ids and fetch all lazily loaded fields.
+     */
+    @Query(
+        "SELECT request.id FROM RequestEntity request " +
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
+            "WHERE " +
+            "(request.id IN :requestIds)",
+    )
+    fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
 }

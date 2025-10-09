@@ -102,5 +102,5 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
             "WHERE " +
             "dataSourcingEntity.dataSourcingId IN :dataSourcingIds",
     )
-    fun findByIdsAndFetchAllReferences(dataSourcingIds: List<UUID>?): List<DataSourcingEntity>
+    fun findByIdsAndFetchAllReferences(dataSourcingIds: List<UUID>): List<DataSourcingEntity>
 }

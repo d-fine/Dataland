@@ -35,21 +35,23 @@ class RequestQueryManager(
         chunkIndex: Int = 0,
     ): List<StoredRequest> =
         requestRepository
-            .searchRequestsAndFetchDataSourcingEntities(
-                companyId,
-                dataType,
-                reportingPeriod,
-                state,
-                PageRequest.of(
-                    chunkIndex,
-                    chunkSize,
-                    Sort.by(
-                        Sort.Order.desc("creationTimestamp"),
-                        Sort.Order.asc("companyId"),
-                        Sort.Order.desc("reportingPeriod"),
-                        Sort.Order.asc("state"),
-                    ),
-                ),
-            ).content
-            .map { it.toStoredDataRequest() }
+            .findByListOfIdsAndFetchDataSourcingEntity(
+                requestRepository
+                    .searchRequests(
+                        companyId,
+                        dataType,
+                        reportingPeriod,
+                        state,
+                        PageRequest.of(
+                            chunkIndex,
+                            chunkSize,
+                            Sort.by(
+                                Sort.Order.desc("creationTimestamp"),
+                                Sort.Order.asc("companyId"),
+                                Sort.Order.desc("reportingPeriod"),
+                                Sort.Order.asc("state"),
+                            ),
+                        ),
+                    ).content,
+            ).map { it.toStoredDataRequest() }
 }
