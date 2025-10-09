@@ -1,15 +1,13 @@
 <template>
-  <div class="lg:col-4 md:col-6 col-12 pl-0">
-    <DatePicker
-      inputId="icon"
-      v-model="date"
-      :updateModelType="'date'"
-      :showIcon="true"
-      dateFormat="D, M dd, yy"
-      :maxDate="todayAsMax ? new Date() : undefined"
-      :placeholder="placeholder"
-    />
-  </div>
+  <DatePicker
+    inputId="icon"
+    v-model="date"
+    :updateModelType="'date'"
+    :showIcon="true"
+    dateFormat="D, M dd, yy"
+    :maxDate="todayAsMax ? new Date() : undefined"
+    :placeholder="placeholder"
+  />
 
   <FormKit
     type="text"

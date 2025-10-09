@@ -29,18 +29,16 @@
                   :description="'The year for which the data is reported.'"
                   :is-required="true"
                 />
-                <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <DatePicker
-                    data-test="reportingPeriod"
-                    v-model="reportingPeriod"
-                    :updateModelType="'date'"
-                    inputId="icon"
-                    :showIcon="true"
-                    view="year"
-                    dateFormat="yy"
-                    validation="required"
-                  />
-                </div>
+                <DatePicker
+                  data-test="reportingPeriod"
+                  v-model="reportingPeriod"
+                  :updateModelType="'date'"
+                  inputId="icon"
+                  :showIcon="true"
+                  view="year"
+                  dateFormat="yy"
+                  validation="required"
+                />
                 <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
             </div>
@@ -398,6 +396,7 @@ export default defineComponent({
     cursor: pointer;
     margin: 0 10px 0 0;
   }
+
   input[type='checkbox'] {
     background-color: var(--input-text-bg);
     border: 2px solid var(--input-checked-color);
@@ -415,21 +414,26 @@ export default defineComponent({
     margin-top: -2px;
     display: none;
   }
+
   input[type='checkbox']::before {
     border-style: solid;
     border-color: var(--input-text-bg);
   }
+
   input[type='radio']::before,
   input[type='checkbox']:checked::before,
   input[type='radio']:checked::before {
     display: block;
   }
+
   label[data-checked='true'] input[type='radio']::before {
     display: block;
   }
+
   .title {
     margin: 0.25rem 0;
   }
+
   p {
     margin: 0.25rem;
   }
@@ -446,6 +450,7 @@ export default defineComponent({
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+
     .form-field:not(:last-child) {
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;
