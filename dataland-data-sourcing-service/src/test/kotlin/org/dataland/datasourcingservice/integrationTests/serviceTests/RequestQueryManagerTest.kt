@@ -43,11 +43,11 @@ class RequestQueryManagerTest
             for (i in 0..15) {
                 val requestEntity =
                     dataBaseCreationUtils.storeRequest(
-                        companyId = if (i % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
-                        dataType = if (i / 2 % 2 == 0) dataTypeToFilterBy else otherDataType,
-                        reportingPeriod = if (i / 4 % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
+                        companyId = if (i / 8 % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
+                        dataType = if (i / 4 % 2 == 0) dataTypeToFilterBy else otherDataType,
+                        reportingPeriod = if (i / 2 % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
                         state =
-                            if (i / 8 % 2 == 0) {
+                            if (i % 2 == 0) {
                                 RequestState.valueOf(requestStateToFilterBy)
                             } else {
                                 RequestState.valueOf(
@@ -62,10 +62,10 @@ class RequestQueryManagerTest
         @ParameterizedTest
         @CsvSource(
             value = [
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, $requestStateToFilterBy",
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, null",
-                "null, null, null, $requestStateToFilterBy",
-                "null, null, null, null",
+                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, $requestStateToFilterBy, 0",
+                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, null, 0;1",
+                "null, null, null, $requestStateToFilterBy, 0;2;4;6;8;10;12;14",
+                "null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
             ],
             nullValues = ["null"],
         )
@@ -74,15 +74,11 @@ class RequestQueryManagerTest
             dataType: String?,
             reportingPeriod: String?,
             requestState: String?,
+            indexString: String,
         ) {
+            val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
-                requestEntities
-                    .filter {
-                        (companyId == null || it.companyId == UUID.fromString(companyId)) &&
-                            (dataType == null || it.dataType == dataType) &&
-                            (reportingPeriod == null || it.reportingPeriod == reportingPeriod) &&
-                            (requestState == null || it.state == RequestState.valueOf(requestState))
-                    }.map { it.toStoredDataRequest() }
+                indicesOfExpectedResults.map { requestEntities[it].toStoredDataRequest() }
             val actualResults =
                 requestQueryManager.searchRequests(
                     companyId = companyId?.let { UUID.fromString(it) },

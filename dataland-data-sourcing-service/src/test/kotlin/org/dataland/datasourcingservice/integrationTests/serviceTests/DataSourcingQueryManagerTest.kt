@@ -36,7 +36,7 @@ class DataSourcingQueryManagerTest
         /**
          * Store 8 data sourcings covering all combinations of the three filter parameters other than state.
          * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
-         * 2/3 of the data sourcings have state Initialized, the rest have state DocumentSourcing.
+         * Roughly one third of the data sourcings have state Initialized, the rest have state DocumentSourcing.
          */
         @BeforeEach
         fun setup() {
@@ -44,9 +44,9 @@ class DataSourcingQueryManagerTest
             for (i in 0..7) {
                 val dataSourcingEntity =
                     dataBaseCreationUtils.storeDataSourcing(
-                        companyId = if (i % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
+                        companyId = if (i / 4 % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
                         dataType = if (i / 2 % 2 == 0) dataTypeToFilterBy else otherDataType,
-                        reportingPeriod = if (i / 4 % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
+                        reportingPeriod = if (i % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
                         state =
                             if (i % 3 == 0) {
                                 DataSourcingState.valueOf(dataSourcingStateToFilterBy)
@@ -63,10 +63,10 @@ class DataSourcingQueryManagerTest
         @ParameterizedTest
         @CsvSource(
             value = [
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, $dataSourcingStateToFilterBy",
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, null",
-                "null, null, null, $dataSourcingStateToFilterBy",
-                "null, null, null, null",
+                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, $dataSourcingStateToFilterBy, 0",
+                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, null, 0",
+                "null, null, null, $dataSourcingStateToFilterBy, 0;3;6",
+                "null, null, null, null, 0;1;2;3;4;5;6;7",
             ],
             nullValues = ["null"],
         )
@@ -75,15 +75,12 @@ class DataSourcingQueryManagerTest
             dataType: String?,
             reportingPeriod: String?,
             dataSourcingState: String?,
+            indexString: String,
         ) {
+            val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
-                dataSourcingEntities
-                    .filter {
-                        (companyId == null || it.companyId == UUID.fromString(companyId)) &&
-                            (dataType == null || it.dataType == dataType) &&
-                            (reportingPeriod == null || it.reportingPeriod == reportingPeriod) &&
-                            (dataSourcingState == null || it.state == DataSourcingState.valueOf(dataSourcingState))
-                    }.map { it.toStoredDataSourcing() }
+                indicesOfExpectedResults
+                    .map { dataSourcingEntities[it].toStoredDataSourcing() }
             val actualResults =
                 dataSourcingQueryManager.searchDataSourcings(
                     companyId = companyId?.let { UUID.fromString(it) },
