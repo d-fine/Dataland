@@ -2,13 +2,18 @@ import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.
 import { KEYCLOAK_ROLE_PREMIUM_USER } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 
 describe('Check the portfolio details view', function (): void {
   let portfolioFixture: EnrichedPortfolio;
+  let largePortfolioFixture: EnrichedPortfolio;
 
   before(function () {
     cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
       portfolioFixture = jsonContent as EnrichedPortfolio;
+    });
+    cy.fixture('largeEnrichedPortfolio.json').then(function (jsonContent) {
+      largePortfolioFixture = jsonContent as EnrichedPortfolio;
     });
   });
 
@@ -154,6 +159,39 @@ describe('Check the portfolio details view', function (): void {
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio actively monitored');
+      });
+    });
+  });
+  it('Check pagination for small portfolios', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('.p-datatable-paginator-bottom').should('not.exist');
+      });
+    });
+  });
+  it('Check pagination for large portfolios', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', largePortfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: largePortfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('.p-datatable-paginator-bottom').should('be.visible');
+        cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
+        cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();
+        cy.get('table tr:first-child td:first-child').should(
+          'contain.text',
+          `Company ${MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1}`
+        );
+        cy.get('table tr:first-child th:first-child [data-pc-section="sort"]').click();
+        cy.get('table tr:first-child td:first-child').should('contain.text', `Company 110`);
+        cy.get('[data-pc-section="page"][aria-label="Page 1"]').should('have.attr', 'data-p-active', 'true');
       });
     });
   });
