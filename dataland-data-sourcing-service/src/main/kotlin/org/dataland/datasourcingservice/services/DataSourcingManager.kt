@@ -234,8 +234,8 @@ class DataSourcingManager
         @Transactional
         fun patchProviderAndAdminComment(
             dataSourcingEntityId: UUID,
-            documentCollector: String?,
-            dataExtractor: String?,
+            documentCollector: UUID?,
+            dataExtractor: UUID?,
             adminComment: String?,
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
@@ -246,8 +246,8 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
-                    documentCollector = documentCollector?.let { UUID.fromString(it) },
-                    dataExtractor = dataExtractor?.let { UUID.fromString(it) },
+                    documentCollector = documentCollector,
+                    dataExtractor = dataExtractor,
                     adminComment = adminComment,
                 ),
             ).toStoredDataSourcing()
@@ -280,22 +280,13 @@ class DataSourcingManager
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveDataSourcingHistory(id: String): List<DataSourcingWithoutReferences> {
-            val uuid =
-                try {
-                    UUID.fromString(id)
-                } catch (_: IllegalArgumentException) {
-                    throw InvalidInputApiException(
-                        "Invalid UUID format for id: $id",
-                        message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
-                    )
-                }
+        fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             return dataRevisionRepository
-                .listDataSourcingRevisionsById(uuid)
+                .listDataSourcingRevisionsById(id)
                 .map { it.toDataSourcingWithoutReferences() }
                 .ifEmpty {
-                    throw DataSourcingNotFoundApiException(uuid)
+                    throw DataSourcingNotFoundApiException(id)
                 }
         }
     }

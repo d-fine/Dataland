@@ -1,19 +1,13 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.SingleRequest
-import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,73 +16,17 @@ import java.util.UUID
 import kotlin.collections.ifEmpty
 
 /**
- * Service responsible for managing data requests in the sense of the data sourcing service.
+ * Service responsible for managing existing (data) requests in the sense of the data sourcing service.
  */
-@Service("SingleRequestManager")
-class SingleRequestManager
+@Service("ExistingRequestsManager")
+class ExistingRequestsManager
     @Autowired
     constructor(
-        private val dataSourcingValidator: DataSourcingValidator,
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val requestCreationService: RequestCreationService,
     ) {
         private val requestLogger = RequestLogger()
-
-        private fun getIdOfConflictingRequest(
-            userId: UUID,
-            companyId: UUID,
-            dataType: String,
-            reportingPeriod: String,
-        ): UUID? =
-            requestRepository
-                .findByUserIdAndCompanyIdAndDataTypeAndReportingPeriod(
-                    userId, companyId, dataType, reportingPeriod,
-                ).firstOrNull { it.state == RequestState.Open || it.state == RequestState.Processing }
-                ?.id
-
-        /**
-         * Creates a new data request based on the provided SingleRequest object.
-         * In case a request for the same company, data type, reporting period, and user already exists
-         * with a non-final state (i.e., Open or Processing), it will not create a new request for that reporting period.
-         * @param singleRequest The SingleRequest object containing the details of the data request.
-         * @param userId The UUID of the user making the request. If null, it will be extracted from the security context.
-         * @return A SingleRequestResponse object containing details about the created request.
-         * @throws ResourceNotFoundApiException If the specified company identifier does not exist.
-         * @throws QuotaExceededException If a non-premium user requests more requests than allowed.
-         */
-        @Transactional
-        fun createRequest(
-            singleRequest: SingleRequest,
-            userId: UUID?,
-        ): SingleRequestResponse {
-            val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
-            val companyId = dataSourcingValidator.validateSingleDataRequest(singleRequest)
-
-            requestLogger.logMessageForReceivingSingleDataRequest(companyId, userIdToUse, UUID.randomUUID())
-
-            val idOfConflictingRequest =
-                getIdOfConflictingRequest(
-                    userIdToUse,
-                    companyId,
-                    singleRequest.dataType,
-                    singleRequest.reportingPeriod,
-                )
-            return SingleRequestResponse(
-                idOfConflictingRequest?.toString()
-                    ?: requestCreationService
-                        .storeRequest(
-                            userId = userIdToUse,
-                            BasicDataDimensions(
-                                companyId = companyId.toString(),
-                                dataType = singleRequest.dataType,
-                                reportingPeriod = singleRequest.reportingPeriod,
-                            ),
-                            memberComment = singleRequest.memberComment,
-                        ).toString(),
-            )
-        }
 
         /**
          Retrieves a stored data request by its ID.

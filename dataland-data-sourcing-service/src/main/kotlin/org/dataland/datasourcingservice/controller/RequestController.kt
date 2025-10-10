@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.controller
 
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -9,12 +10,12 @@ import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
+import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.datasourcingservice.services.RequestQueryManager
-import org.dataland.datasourcingservice.services.SingleRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the requests endpoint
@@ -23,8 +24,9 @@ import java.util.UUID
 class RequestController
     @Autowired
     constructor(
-        private val singleRequestManager: SingleRequestManager,
+        private val existingRequestsManager: ExistingRequestsManager,
         private val bulkDataRequestManager: BulkRequestManager,
+        private val requestCreationService: RequestCreationService,
         private val requestQueryManager: RequestQueryManager,
     ) : RequestApi {
         override fun postBulkDataRequest(
@@ -32,7 +34,7 @@ class RequestController
             userId: String?,
         ): ResponseEntity<BulkDataRequestResponse> =
             ResponseEntity.ok(
-                bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, userId?.let { UUID.fromString(it) }),
+                bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, userId?.let { ValidationUtils.convertToUUIDOrThrow(it) }),
             )
 
         override fun createRequest(
@@ -40,11 +42,11 @@ class RequestController
             userId: String?,
         ): ResponseEntity<SingleRequestResponse> =
             ResponseEntity.ok(
-                singleRequestManager.createRequest(singleRequest, userId?.let { UUID.fromString(it) }),
+                requestCreationService.createRequest(singleRequest, userId?.let { ValidationUtils.convertToUUIDOrThrow(it) }),
             )
 
         override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
-            ResponseEntity.ok(singleRequestManager.getRequest(UUID.fromString(dataRequestId)))
+            ResponseEntity.ok(existingRequestsManager.getRequest(ValidationUtils.convertToUUIDOrThrow(dataRequestId)))
 
         override fun patchRequestState(
             dataRequestId: String,
@@ -52,7 +54,7 @@ class RequestController
             adminComment: String?,
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
-                singleRequestManager.patchRequestState(UUID.fromString(dataRequestId), requestState, adminComment),
+                existingRequestsManager.patchRequestState(ValidationUtils.convertToUUIDOrThrow(dataRequestId), requestState, adminComment),
             )
 
         override fun patchRequestPriority(
@@ -61,12 +63,14 @@ class RequestController
             adminComment: String?,
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
-                singleRequestManager.patchRequestPriority(UUID.fromString(dataRequestId), requestPriority, adminComment),
+                existingRequestsManager.patchRequestPriority(
+                    ValidationUtils.convertToUUIDOrThrow(dataRequestId), requestPriority, adminComment,
+                ),
             )
 
         override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
             ResponseEntity
-                .ok(singleRequestManager.retrieveRequestHistory(UUID.fromString(dataRequestId)))
+                .ok(existingRequestsManager.retrieveRequestHistory(ValidationUtils.convertToUUIDOrThrow(dataRequestId)))
 
         override fun searchRequests(
             companyId: String?,
@@ -78,7 +82,10 @@ class RequestController
         ): ResponseEntity<List<StoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    companyId?.let { UUID.fromString(it) }, dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
+                    companyId?.let {
+                        ValidationUtils.convertToUUIDOrThrow(it)
+                    },
+                    dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
                 ),
             )
     }

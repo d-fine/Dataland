@@ -58,9 +58,9 @@ class BulkRequestManagerTest {
     private val allRequestedDataDimensions =
         (0..26).map {
             BasicDataDimensions(
-                companyId = companyIdentifiers.toList()[it / 9 % 3],
-                dataType = dataTypes.toList()[it / 3 % 3],
-                reportingPeriod = reportingPeriods.toList()[it % 3],
+                companyId = companyIdentifiers.elementAt(it / 9 % 3),
+                dataType = dataTypes.elementAt(it / 3 % 3),
+                reportingPeriod = reportingPeriods.elementAt(it % 3),
             )
         }
 
@@ -155,9 +155,9 @@ class BulkRequestManagerTest {
         val reportingPeriodValidSet = reportingPeriods - invalidReportingPeriod
 
         val companyIdValidation =
-            companyIdentifiers.map { id -> mapOf(id to if (id in companyIdValidSet) UUID.randomUUID() else null) }
-        val dataTypeValidation = dataTypes.map { dt -> mapOf(dt to (dt in dataTypeValidSet)) }
-        val reportingPeriodValidation = reportingPeriods.map { rp -> mapOf(rp to (rp in reportingPeriodValidSet)) }
+            companyIdentifiers.associateWith { id -> if (id in companyIdValidSet) UUID.randomUUID() else null }
+        val dataTypeValidation = dataTypes.associateWith { dt -> dt in dataTypeValidSet }
+        val reportingPeriodValidation = reportingPeriods.associateWith { rp -> rp in reportingPeriodValidSet }
 
         doReturn(
             DataSourcingValidator.DataRequestValidationResult(

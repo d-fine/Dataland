@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.controller
 
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.DataSourcingApi
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.util.UUID
 
 /**
  *
@@ -24,20 +24,22 @@ class DataSourcingController
         private val dataSourcingQueryManager: DataSourcingQueryManager,
     ) : DataSourcingApi {
         override fun getDataSourcingById(dataSourcingId: String): ResponseEntity<StoredDataSourcing> =
-            ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(UUID.fromString(dataSourcingId)))
+            ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(ValidationUtils.convertToUUIDOrThrow(dataSourcingId)))
 
         override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
-            ResponseEntity.ok(dataSourcingManager.getStoredDataSourcingForCompanyId(UUID.fromString(providerCompanyId)))
+            ResponseEntity.ok(
+                dataSourcingManager.getStoredDataSourcingForCompanyId(ValidationUtils.convertToUUIDOrThrow(providerCompanyId)),
+            )
 
         override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
-            ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId))
+            ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUIDOrThrow(dataSourcingId)))
 
         override fun patchDataSourcingState(
             dataSourcingId: String,
             state: DataSourcingState,
         ): ResponseEntity<ReducedDataSourcing> =
             ResponseEntity
-                .ok(dataSourcingManager.patchDataSourcingState(UUID.fromString(dataSourcingId), state))
+                .ok(dataSourcingManager.patchDataSourcingState(ValidationUtils.convertToUUIDOrThrow(dataSourcingId), state))
 
         override fun patchProviderAndAdminComment(
             dataSourcingId: String,
@@ -47,9 +49,9 @@ class DataSourcingController
         ): ResponseEntity<StoredDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchProviderAndAdminComment(
-                    UUID.fromString(dataSourcingId),
-                    documentCollector,
-                    dataExtractor,
+                    ValidationUtils.convertToUUIDOrThrow(dataSourcingId),
+                    documentCollector?.let { ValidationUtils.convertToUUIDOrThrow(it) },
+                    dataExtractor?.let { ValidationUtils.convertToUUIDOrThrow(it) },
                     adminComment,
                 ),
             )
@@ -61,7 +63,7 @@ class DataSourcingController
         ): ResponseEntity<ReducedDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchDataSourcingDocument(
-                    UUID.fromString(dataSourcingId),
+                    ValidationUtils.convertToUUIDOrThrow(dataSourcingId),
                     documentIds,
                     appendDocuments,
                 ),
@@ -74,7 +76,9 @@ class DataSourcingController
             ResponseEntity
                 .ok(
                     dataSourcingManager
-                        .patchDateOfNextDocumentSourcingAttempt(UUID.fromString(dataSourcingId), dateOfNextDocumentSourcingAttempt),
+                        .patchDateOfNextDocumentSourcingAttempt(
+                            ValidationUtils.convertToUUIDOrThrow(dataSourcingId), dateOfNextDocumentSourcingAttempt,
+                        ),
                 )
 
         override fun searchDataSourcings(
@@ -87,7 +91,7 @@ class DataSourcingController
         ): ResponseEntity<List<StoredDataSourcing>> =
             ResponseEntity.ok(
                 dataSourcingQueryManager.searchDataSourcings(
-                    companyId?.let { UUID.fromString(it) }, dataType, reportingPeriod, state, chunkSize, chunkIndex,
+                    companyId?.let { ValidationUtils.convertToUUIDOrThrow(it) }, dataType, reportingPeriod, state, chunkSize, chunkIndex,
                 ),
             )
     }

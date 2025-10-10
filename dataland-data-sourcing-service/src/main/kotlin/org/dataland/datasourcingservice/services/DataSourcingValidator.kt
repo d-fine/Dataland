@@ -53,7 +53,7 @@ class DataSourcingValidator
         /**
          * Validates the format of each reporting period in the provided list.
          *
-         * @param reportingPeriods List of reporting period strings (expected format: "YYYY" or "YYYY-QX").
+         * @param reportingPeriods List of reporting period strings (expected format: "YYYY" for the years 2010 to 2039).
          * @return List of Boolean values indicating if each reporting period matches the expected format.
          */
         private fun validateReportingPeriods(reportingPeriods: List<String>): List<Boolean> =
@@ -103,34 +103,26 @@ class DataSourcingValidator
          */
         fun validateSingleDataRequest(singleRequest: SingleRequest): UUID {
             val errors = mutableListOf<String>()
-            val companyIdValidationResult =
+
+            if (!ValidationUtils.isReportingPeriod(singleRequest.reportingPeriod)) {
+                errors.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
+            }
+            DataTypeEnum.decode(singleRequest.dataType) ?: errors.add("The data type ${singleRequest.dataType} is invalid.")
+
+            val validatedCompanyId =
                 validateAndGetCompanyIds(
                     listOf(singleRequest.companyIdentifier),
                 ).first()
-            if (companyIdValidationResult == null) {
+
+            if (validatedCompanyId != null && errors.isEmpty()) {
+                return validatedCompanyId
+            } else if (validatedCompanyId == null) {
                 errors.add("The company identifier ${singleRequest.companyIdentifier} does not exist on Dataland.")
             }
-            val reportingPeriodValidationResult =
-                validateReportingPeriods(
-                    listOf(singleRequest.reportingPeriod),
-                ).first()
-            if (!reportingPeriodValidationResult) {
-                errors.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
-            }
-            val dataTypeValidationResult =
-                validateDataTypes(
-                    listOf(singleRequest.dataType),
-                ).first()
-            if (!dataTypeValidationResult) {
-                errors.add("The data type ${singleRequest.dataType} is invalid.")
-            }
-            if (errors.isNotEmpty()) {
-                throw InvalidInputApiException(
-                    summary = "Invalid input data.",
-                    message = errors.joinToString(" "),
-                )
-            }
-            return companyIdValidationResult!!
+            throw InvalidInputApiException(
+                summary = "Invalid input data.",
+                message = errors.joinToString(" "),
+            )
         }
 
         /**
@@ -146,18 +138,10 @@ class DataSourcingValidator
             reportingPeriods: List<String>,
             dataTypes: List<String>,
         ): DataRequestValidationResult {
-            val companyIdResult =
-                companyIds.zip(validateAndGetCompanyIds(companyIds)).map { (companyId, result) ->
-                    mapOf(companyId to result)
-                }
-            val dataTypeResult =
-                dataTypes.zip(validateDataTypes(dataTypes)).map { (dataType, result) -> mapOf(dataType to result) }
+            val companyIdResult = companyIds.zip(validateAndGetCompanyIds(companyIds)).toMap()
+            val dataTypeResult = dataTypes.zip(validateDataTypes(dataTypes)).toMap()
             val reportingPeriodResult =
-                reportingPeriods.zip(validateReportingPeriods(reportingPeriods)).map { (reportingPeriod, result) ->
-                    mapOf(
-                        reportingPeriod to result,
-                    )
-                }
+                reportingPeriods.zip(validateReportingPeriods(reportingPeriods)).toMap()
             return DataRequestValidationResult(
                 companyIdResult, dataTypeResult,
                 reportingPeriodResult,
@@ -175,8 +159,8 @@ class DataSourcingValidator
          * strings with their Boolean validation result.
          */
         data class DataRequestValidationResult(
-            val companyIdValidation: List<Map<String, UUID?>>,
-            val dataTypeValidation: List<Map<String, Boolean>>,
-            val reportingPeriodValidation: List<Map<String, Boolean>>,
+            val companyIdValidation: Map<String, UUID?>,
+            val dataTypeValidation: Map<String, Boolean>,
+            val reportingPeriodValidation: Map<String, Boolean>,
         )
     }

@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -34,6 +35,7 @@ class RequestCreationServiceTest
         private lateinit var mockAuthentication: DatalandAuthentication
         private val mockSecurityContext = mock<SecurityContext>()
         private val premiumUserId = UUID.randomUUID().toString()
+        private val mockDataSourcingValidator = mock<DataSourcingValidator>()
         private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
         private lateinit var requestCreationService: RequestCreationService
         private val testComment = "Test comment"
@@ -47,6 +49,7 @@ class RequestCreationServiceTest
             doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId)
             requestCreationService =
                 RequestCreationService(
+                    dataSourcingValidator = mockDataSourcingValidator,
                     requestRepository = requestRepository,
                     keycloakAdapterRequestProcessingUtils = mockKeycloakAdapterRequestProcessingUtils,
                     maxRequestsForUser = 3,
