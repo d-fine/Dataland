@@ -128,33 +128,6 @@ describeIf(
     });
 
     /**
-     * Verifies that the request appears on the overview and single request page
-     */
-    function checkThatRequestIsOnRequestPage(): void {
-      cy.visit('/requests');
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('contain', '/requests');
-      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().scrollIntoView();
-      cy.get(`td:contains("${testStoredCompany.companyInformation.companyName}")`).first().click();
-
-      verifyOnSingleRequestPage(testStoredCompany.companyInformation.companyName, false);
-      cy.get('[data-test="notifyMeImmediatelyInput"]').click();
-      cy.reload();
-      cy.get('[data-test="notifyMeImmediatelyInput"]').should('have.class', 'p-toggleswitch-checked');
-    }
-
-    /**
-     * Withdraw the request and check that it succeeded.
-     */
-    function withDrawRequestAndCheckThatItsWithdrawn(): void {
-      cy.get('[data-test="withdrawRequestButton"]').scrollIntoView();
-      cy.get('[data-test="withdrawRequestButton"]').click();
-      cy.get('[data-test="success-modal"] button:contains("OK")').click();
-      cy.get('[data-test="card_requestIs"]').should('contain.text', 'Request is:Withdrawnand Access is:Public');
-      cy.go('back');
-      cy.get(`tr:contains("${testStoredCompany.companyInformation.companyName}")`).should('contain.text', 'Withdrawn');
-    }
-
-    /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
      * @param interception the object of interception with the backend
      */
