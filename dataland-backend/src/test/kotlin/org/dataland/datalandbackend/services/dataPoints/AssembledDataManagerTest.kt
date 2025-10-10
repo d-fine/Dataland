@@ -120,7 +120,7 @@ class AssembledDataManagerTest {
         specificationService.initiateSpecifications(null)
         dataCompositionService = DataCompositionService(specificationService)
         datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
-        dataPointUtils = DataPointUtils(defaultObjectMapper, specificationClient, metaDataManager, specificationService)
+        dataPointUtils = DataPointUtils(specificationClient, metaDataManager, specificationService)
         dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
         assembledDataManager =
             AssembledDataManager(

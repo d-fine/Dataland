@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service
 class DataPointUtils
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
         private val specificationService: SpecificationService,
@@ -45,7 +44,7 @@ class DataPointUtils
          */
         fun getRelevantDataPointTypes(framework: String): Set<String> {
             val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
         }
 
