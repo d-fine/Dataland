@@ -27,6 +27,6 @@ annotation class ValidReportingPeriodShift(
 class ValidReportingPeriodShiftValidator : ConstraintValidator<ValidReportingPeriodShift, Int?> {
     override fun isValid(
         value: Int?,
-        context: ConstraintValidatorContext,
+        context: ConstraintValidatorContext?,
     ): Boolean = value == null || value == 0 || value == -1
 }

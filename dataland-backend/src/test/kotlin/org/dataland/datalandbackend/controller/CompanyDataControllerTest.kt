@@ -32,6 +32,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
@@ -47,6 +50,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
+import java.util.stream.Stream
 import kotlin.reflect.jvm.javaMethod
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
@@ -78,35 +82,43 @@ internal class CompanyDataControllerTest(
             )
     }
 
-    private final val testLei = "testLei"
-    private final val testChildLei = "testChildLei"
-    val companyWithTestLei =
-        CompanyInformation(
-            companyName = "Test Company",
-            companyAlternativeNames = null,
-            companyContactDetails = null,
-            companyLegalForm = null,
-            countryCode = "DE",
-            headquarters = "Berlin",
-            headquartersPostalCode = "8",
-            fiscalYearEnd = null,
-            reportingPeriodShift = null,
-            sector = null,
-            sectorCodeWz = null,
-            website = null,
-            isTeaserCompany = null,
-            identifiers =
-                mapOf(
-                    IdentifierType.Lei to listOf(testLei),
-                ),
-            parentCompanyLei = null,
-        )
-    val companyWithParent =
-        companyWithTestLei.copy(
-            companyName = "Test Company Child",
-            identifiers = mapOf(IdentifierType.Lei to listOf(testChildLei)),
-            parentCompanyLei = testLei,
-        )
+    companion object {
+        private const val TEST_LEI = "testLei"
+        private const val TEST_CHILD_LEI = "testChildLei"
+
+        val companyWithTestLei =
+            CompanyInformation(
+                companyName = "Test Company",
+                companyAlternativeNames = null,
+                companyContactDetails = null,
+                companyLegalForm = null,
+                countryCode = "DE",
+                headquarters = "Berlin",
+                headquartersPostalCode = "8",
+                fiscalYearEnd = null,
+                reportingPeriodShift = null,
+                sector = null,
+                sectorCodeWz = null,
+                website = null,
+                isTeaserCompany = null,
+                identifiers = mapOf(IdentifierType.Lei to listOf(TEST_LEI)),
+                parentCompanyLei = null,
+            )
+
+        val companyWithParent =
+            companyWithTestLei.copy(
+                companyName = "Test Company Child",
+                identifiers = mapOf(IdentifierType.Lei to listOf(TEST_CHILD_LEI)),
+                parentCompanyLei = TEST_LEI,
+            )
+
+        @JvmStatic
+        fun invalidReportingPeriodShiftObjects(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(CompanyInformationPatch(reportingPeriodShift = 100)),
+                Arguments.of(companyWithTestLei.copy(reportingPeriodShift = 100)),
+            )
+    }
 
     fun postCompany(company: CompanyInformation = companyWithTestLei): String =
         companyController
@@ -122,7 +134,7 @@ internal class CompanyDataControllerTest(
         val expectedCompanyId = postCompany()
         assertEquals(
             expectedCompanyId,
-            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
+            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, TEST_LEI).body!!.companyId,
         )
         assertThrows<ResourceNotFoundApiException> {
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
@@ -155,22 +167,15 @@ internal class CompanyDataControllerTest(
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    @Test
-    fun `reportingPeriodShift validator triggers for bad value`() {
-        val objectsToTest =
-            listOf(
-                CompanyInformationPatch(reportingPeriodShift = 100),
-                companyWithTestLei.copy(reportingPeriodShift = 100),
-            )
+    @ParameterizedTest
+    @MethodSource("invalidReportingPeriodShiftObjects")
+    fun `reportingPeriodShift validator triggers for bad value`(testObject: Any) {
+        val violations = validator.validate(testObject)
 
-        objectsToTest.forEach { testObject ->
-            val violations = validator.validate(testObject)
-
-            assertFalse(violations.isEmpty())
-            val violation = violations.find { it.propertyPath.toString() == "reportingPeriodShift" }
-            assertEquals("reportingPeriodShift", violation?.propertyPath.toString())
-            assertEquals(REPORTING_PERIOD_SHIFT_ERROR_MESSAGE, violation?.message)
-        }
+        assertFalse(violations.isEmpty())
+        val violation = violations.find { it.propertyPath.toString() == "reportingPeriodShift" }
+        assertEquals("reportingPeriodShift", violation?.propertyPath.toString())
+        assertEquals(REPORTING_PERIOD_SHIFT_ERROR_MESSAGE, violation?.message)
     }
 
     @Test
@@ -248,7 +253,7 @@ internal class CompanyDataControllerTest(
         assertEquals(basicChildCompanyInformationList?.size, 1)
         assertEquals(basicChildCompanyInformationList?.get(0)?.companyId, childCompanyId)
         assertEquals(basicChildCompanyInformationList?.get(0)?.companyName, companyWithParent.companyName)
-        assertEquals(basicChildCompanyInformationList?.get(0)?.lei, testChildLei)
+        assertEquals(basicChildCompanyInformationList?.get(0)?.lei, TEST_CHILD_LEI)
     }
 
     @Test
