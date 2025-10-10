@@ -4,27 +4,11 @@
       <h1 class="text-left">Data Request</h1>
     </div>
 
-    <PrimeDialog
-      id="successModal"
-      :dismissableMask="true"
-      :modal="true"
-      v-model:visible="successModalIsVisible"
-      :closable="false"
-      style="border-radius: 0.75rem; text-align: center"
-      :show-header="false"
-      data-test="successModal"
-    >
-      <div class="text-center" style="display: flex; flex-direction: column">
-        <div style="margin: 10px">
-          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-        </div>
-        <div style="margin: 10px">
-          <h2 class="m-0" data-test="successText">Success</h2>
-        </div>
-      </div>
-      <div class="text-block" style="margin: 15px; white-space: pre">You have successfully withdrawn your request.</div>
-      <PrimeButton label="CLOSE" @click="successModalIsVisible = false" variant="outlined" />
-    </PrimeDialog>
+    <SuccessDialog
+      :visible="successModalIsVisible"
+      message="You have successfully withdrawn your request."
+      @close="successModalIsVisible = false"
+    />
     <PrimeDialog
       :dismissableMask="true"
       :modal="true"
@@ -273,10 +257,12 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import ToggleSwitch from 'primevue/toggleswitch';
 import { defineComponent, inject } from 'vue';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 export default defineComponent({
   name: 'ViewDataRequest',
   components: {
+    SuccessDialog,
     DatalandTag,
     ReviewRequestButtons,
     TheContent,

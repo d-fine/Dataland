@@ -37,6 +37,10 @@ export const ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS = ['2025', '2024', '202
 export const FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020'];
 export const PORTFOLIO_MONITORING_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020', '2019'];
 
+// - Portfolio related settings
+
+export const MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE = 100;
+
 // - Keycloak and session management related settings
 
 export const KEYCLOAK_INIT_OPTIONS = {

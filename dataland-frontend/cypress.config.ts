@@ -156,6 +156,41 @@ export default defineConfig({
           return join(folder, match);
         },
       });
+      on('task', {
+        createUniquePdfFixture() {
+          const fs = require('fs');
+          const path = require('path');
+          const timestamp = Date.now();
+          const pdfContent = `Test file created at ${timestamp}`;
+          const destDir = path.resolve(__dirname, 'tests/e2e/fixtures/documents');
+          if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+          }
+          const filename = `upload-${timestamp}.pdf`;
+          const destFile = path.join(destDir, filename);
+          // Minimal PDF file generation (single page, text only)
+          const header = Buffer.from('%PDF-1.1\n');
+          const obj1 = Buffer.from('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+          const obj2 = Buffer.from('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+          const obj3 = Buffer.from(
+            '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 144] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n'
+          );
+          const text = pdfContent.replace(/([()\\])/g, '\\$1');
+          const stream = Buffer.from(`BT /F1 24 Tf 50 100 Td (${text}) Tj ET`);
+          const obj4_start = Buffer.from(`4 0 obj\n<< /Length ${stream.length} >>\nstream\n`);
+          const obj4_end = Buffer.from('\nendstream\nendobj\n');
+          const obj4 = Buffer.concat([obj4_start, stream, obj4_end]);
+          const obj5 = Buffer.from('5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
+          const xrefOffset = header.length + obj1.length + obj2.length + obj3.length + obj4.length + obj5.length;
+          const xref = Buffer.from(
+            `xref\n0 6\n0000000000 65535 f \n${String(header.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length + obj4.length).padStart(10, '0')} 00000 n \n`
+          );
+          const trailer = Buffer.from('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF\n');
+          const pdfBuffer = Buffer.concat([header, obj1, obj2, obj3, obj4, obj5, xref, trailer]);
+          fs.writeFileSync(destFile, pdfBuffer);
+          return filename;
+        },
+      });
 
       return config;
     },
