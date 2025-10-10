@@ -34,7 +34,12 @@ class RequestController
             userId: String?,
         ): ResponseEntity<BulkDataRequestResponse> =
             ResponseEntity.ok(
-                bulkDataRequestManager.processBulkDataRequest(bulkDataRequest, userId?.let { ValidationUtils.convertToUUIDOrThrow(it) }),
+                bulkDataRequestManager.processBulkDataRequest(
+                    bulkDataRequest,
+                    userId?.let {
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                    },
+                ),
             )
 
         override fun createRequest(
@@ -42,11 +47,20 @@ class RequestController
             userId: String?,
         ): ResponseEntity<SingleRequestResponse> =
             ResponseEntity.ok(
-                requestCreationService.createRequest(singleRequest, userId?.let { ValidationUtils.convertToUUIDOrThrow(it) }),
+                requestCreationService.createRequest(
+                    singleRequest,
+                    userId?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
+                ),
             )
 
         override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
-            ResponseEntity.ok(existingRequestsManager.getRequest(ValidationUtils.convertToUUIDOrThrow(dataRequestId)))
+            ResponseEntity.ok(
+                existingRequestsManager.getRequest(
+                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        dataRequestId,
+                    ),
+                ),
+            )
 
         override fun patchRequestState(
             dataRequestId: String,
@@ -54,7 +68,12 @@ class RequestController
             adminComment: String?,
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
-                existingRequestsManager.patchRequestState(ValidationUtils.convertToUUIDOrThrow(dataRequestId), requestState, adminComment),
+                existingRequestsManager.patchRequestState(
+                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        dataRequestId,
+                    ),
+                    requestState, adminComment,
+                ),
             )
 
         override fun patchRequestPriority(
@@ -64,13 +83,21 @@ class RequestController
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.patchRequestPriority(
-                    ValidationUtils.convertToUUIDOrThrow(dataRequestId), requestPriority, adminComment,
+                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataRequestId),
+                    requestPriority,
+                    adminComment,
                 ),
             )
 
         override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
             ResponseEntity
-                .ok(existingRequestsManager.retrieveRequestHistory(ValidationUtils.convertToUUIDOrThrow(dataRequestId)))
+                .ok(
+                    existingRequestsManager.retrieveRequestHistory(
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            dataRequestId,
+                        ),
+                    ),
+                )
 
         override fun searchRequests(
             companyId: String?,
@@ -83,7 +110,7 @@ class RequestController
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
                     companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrow(it)
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
                     },
                     dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
                 ),

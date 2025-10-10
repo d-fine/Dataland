@@ -102,26 +102,30 @@ class DataSourcingValidator
          * the exception message provides a summary of all issues found.
          */
         fun validateSingleDataRequest(singleRequest: SingleRequest): UUID {
-            val errors = mutableListOf<String>()
+            val errorsForDataTypeAndReportingPeriod = mutableListOf<String>()
 
             if (!ValidationUtils.isReportingPeriod(singleRequest.reportingPeriod)) {
-                errors.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
+                errorsForDataTypeAndReportingPeriod.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
             }
-            DataTypeEnum.decode(singleRequest.dataType) ?: errors.add("The data type ${singleRequest.dataType} is invalid.")
+            DataTypeEnum.decode(singleRequest.dataType)
+                ?: errorsForDataTypeAndReportingPeriod.add("The data type ${singleRequest.dataType} is invalid.")
 
             val validatedCompanyId =
                 validateAndGetCompanyIds(
                     listOf(singleRequest.companyIdentifier),
                 ).first()
 
-            if (validatedCompanyId != null && errors.isEmpty()) {
+            if (validatedCompanyId != null && errorsForDataTypeAndReportingPeriod.isEmpty()) {
                 return validatedCompanyId
             } else if (validatedCompanyId == null) {
-                errors.add("The company identifier ${singleRequest.companyIdentifier} does not exist on Dataland.")
+                throw ResourceNotFoundApiException(
+                    summary = "Company ID not found.",
+                    message = "The company identifier ${singleRequest.companyIdentifier} does not exist on Dataland.",
+                )
             }
             throw InvalidInputApiException(
                 summary = "Invalid input data.",
-                message = errors.joinToString(" "),
+                message = errorsForDataTypeAndReportingPeriod.joinToString(" "),
             )
         }
 

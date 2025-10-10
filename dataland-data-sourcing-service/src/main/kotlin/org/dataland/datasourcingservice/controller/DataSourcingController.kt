@@ -24,22 +24,51 @@ class DataSourcingController
         private val dataSourcingQueryManager: DataSourcingQueryManager,
     ) : DataSourcingApi {
         override fun getDataSourcingById(dataSourcingId: String): ResponseEntity<StoredDataSourcing> =
-            ResponseEntity.ok(dataSourcingManager.getStoredDataSourcing(ValidationUtils.convertToUUIDOrThrow(dataSourcingId)))
+            ResponseEntity
+                .ok(
+                    dataSourcingManager
+                        .getStoredDataSourcing(
+                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                                dataSourcingId,
+                            ),
+                        ),
+                )
 
         override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
             ResponseEntity.ok(
-                dataSourcingManager.getStoredDataSourcingForCompanyId(ValidationUtils.convertToUUIDOrThrow(providerCompanyId)),
+                dataSourcingManager
+                    .getStoredDataSourcingForCompanyId(
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            providerCompanyId,
+                        ),
+                    ),
             )
 
         override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
-            ResponseEntity.ok(dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUIDOrThrow(dataSourcingId)))
+            ResponseEntity
+                .ok(
+                    dataSourcingManager
+                        .retrieveDataSourcingHistory(
+                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                                dataSourcingId,
+                            ),
+                        ),
+                )
 
         override fun patchDataSourcingState(
             dataSourcingId: String,
             state: DataSourcingState,
         ): ResponseEntity<ReducedDataSourcing> =
             ResponseEntity
-                .ok(dataSourcingManager.patchDataSourcingState(ValidationUtils.convertToUUIDOrThrow(dataSourcingId), state))
+                .ok(
+                    dataSourcingManager
+                        .patchDataSourcingState(
+                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                                dataSourcingId,
+                            ),
+                            state,
+                        ),
+                )
 
         override fun patchProviderAndAdminComment(
             dataSourcingId: String,
@@ -49,9 +78,9 @@ class DataSourcingController
         ): ResponseEntity<StoredDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchProviderAndAdminComment(
-                    ValidationUtils.convertToUUIDOrThrow(dataSourcingId),
-                    documentCollector?.let { ValidationUtils.convertToUUIDOrThrow(it) },
-                    dataExtractor?.let { ValidationUtils.convertToUUIDOrThrow(it) },
+                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
+                    documentCollector?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
+                    dataExtractor?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
                     adminComment,
                 ),
             )
@@ -63,7 +92,7 @@ class DataSourcingController
         ): ResponseEntity<ReducedDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchDataSourcingDocument(
-                    ValidationUtils.convertToUUIDOrThrow(dataSourcingId),
+                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
                     documentIds,
                     appendDocuments,
                 ),
@@ -77,7 +106,8 @@ class DataSourcingController
                 .ok(
                     dataSourcingManager
                         .patchDateOfNextDocumentSourcingAttempt(
-                            ValidationUtils.convertToUUIDOrThrow(dataSourcingId), dateOfNextDocumentSourcingAttempt,
+                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
+                            dateOfNextDocumentSourcingAttempt,
                         ),
                 )
 
@@ -91,7 +121,10 @@ class DataSourcingController
         ): ResponseEntity<List<StoredDataSourcing>> =
             ResponseEntity.ok(
                 dataSourcingQueryManager.searchDataSourcings(
-                    companyId?.let { ValidationUtils.convertToUUIDOrThrow(it) }, dataType, reportingPeriod, state, chunkSize, chunkIndex,
+                    companyId?.let {
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                    },
+                    dataType, reportingPeriod, state, chunkSize, chunkIndex,
                 ),
             )
     }

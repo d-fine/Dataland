@@ -109,7 +109,7 @@ class DataSourcingValidatorTest {
         val request = SingleRequest(identifier, dataType, reportingPeriod, null)
 
         val ex =
-            assertThrows<InvalidInputApiException> {
+            assertThrows<ResourceNotFoundApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
         assertTrue(ex.message == "The company identifier $identifier does not exist on Dataland.")
