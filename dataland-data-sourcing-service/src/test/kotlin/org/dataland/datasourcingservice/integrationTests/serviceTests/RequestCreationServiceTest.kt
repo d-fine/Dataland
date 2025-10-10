@@ -123,7 +123,7 @@ class RequestCreationServiceTest
         }
 
         @Test
-        fun `storeRequest throws QuotaExceededException for premium user over quota`() {
+        fun `storeRequest does not throw QuotaExceededException for premium user over quota`() {
             val userId = UUID.fromString(premiumUserId)
             val companyId = UUID.randomUUID()
             val memberComment = testComment

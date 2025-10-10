@@ -16,7 +16,6 @@ import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -39,92 +38,69 @@ class BulkRequestManagerTest {
     private val mockEntityManager = mock<EntityManager>()
     private val mockQuery = mock<Query>()
 
-    companion object {
-        private val userId = UUID.randomUUID()
+    private val userId = UUID.randomUUID()
 
-        private val companyIdentifier1 = UUID.randomUUID().toString()
-        private val companyIdentifier2 = UUID.randomUUID().toString()
-        private const val INVALID_COMPANY_ID = "invalid-company-id"
-        private val companyIdentifiers = setOf(companyIdentifier1, companyIdentifier2, INVALID_COMPANY_ID)
+    private val companyIdentifier1 = UUID.randomUUID().toString()
+    private val companyIdentifier2 = UUID.randomUUID().toString()
+    private val invalidCompanyId = "invalid-company-id"
+    private val companyIdentifiers = setOf(companyIdentifier1, companyIdentifier2, invalidCompanyId)
 
-        private const val DATA_TYPE_1 = "sfdr"
-        private const val DATA_TYPE_2 = "eutaxonomy-financials"
-        private const val INVALID_DATA_TYPE = "invalid-data-type"
-        private val dataTypes = setOf(DATA_TYPE_1, DATA_TYPE_2, INVALID_DATA_TYPE)
+    private val dataType1 = "sfdr"
+    private val dataType2 = "eutaxonomy-financials"
+    private val invalidDataType = "invalid-data-type"
+    private val dataTypes = setOf(dataType1, dataType2, invalidDataType)
 
-        private const val REPORTING_PERIOD_1 = "2024"
-        private const val REPORTING_PERIOD_2 = "2025"
-        private const val INVALID_REPORTING_PERIOD = "2040" // currently, only reporting periods up to 2039 are valid
-        private val reportingPeriods = setOf(REPORTING_PERIOD_1, REPORTING_PERIOD_2, INVALID_REPORTING_PERIOD)
+    private val reportingPeriod1 = "2024"
+    private val reportingPeriod2 = "2025"
+    private val invalidReportingPeriod = "2040" // currently, only reporting periods up to 2039 are valid
+    private val reportingPeriods = setOf(reportingPeriod1, reportingPeriod2, invalidReportingPeriod)
 
-        private lateinit var allRequestedDataDimensions: List<BasicDataDimensions>
-        private lateinit var validDataDimensions: List<BasicDataDimensions>
-        private lateinit var dataDimensionsWithExistingRequests: List<BasicDataDimensions>
-        private lateinit var dataDimensionsWithExistingDatasets: List<BasicDataDimensions>
-        private lateinit var dataMetaInformationList: List<DataMetaInformation>
-        private lateinit var acceptedDataDimensions: List<BasicDataDimensions>
-
-        /**
-         * Set the values of the six lateinit vars of types List<BasicDataDimensions> and List<DataMetaInformation> above.
-         * For computing allDataDimensions, the base-3 digits of the running index i are used.
-         * Starting with i / 9 % 3, the most significant digit, ensures lexicographic ordering,
-         * as in the productive code.
-         */
-        @BeforeAll
-        @JvmStatic
-        fun createDataDimensionsLists() {
-            val allDataDimensionsMutable = mutableListOf<BasicDataDimensions>()
-
-            for (i in 0..26) {
-                allDataDimensionsMutable.add(
-                    BasicDataDimensions(
-                        companyId = companyIdentifiers.toList()[i / 9 % 3],
-                        dataType = dataTypes.toList()[i / 3 % 3],
-                        reportingPeriod = reportingPeriods.toList()[i % 3],
-                    ),
-                )
-            }
-
-            allRequestedDataDimensions = allDataDimensionsMutable
-
-            validDataDimensions =
-                allRequestedDataDimensions.filter {
-                    it.companyId != INVALID_COMPANY_ID &&
-                        it.dataType != INVALID_DATA_TYPE &&
-                        it.reportingPeriod != INVALID_REPORTING_PERIOD
-                }
-
-            dataDimensionsWithExistingRequests =
-                listOf(
-                    BasicDataDimensions(companyIdentifier1, DATA_TYPE_2, REPORTING_PERIOD_2),
-                    BasicDataDimensions(companyIdentifier2, DATA_TYPE_1, REPORTING_PERIOD_1),
-                    BasicDataDimensions(companyIdentifier2, DATA_TYPE_1, REPORTING_PERIOD_2),
-                )
-
-            dataDimensionsWithExistingDatasets =
-                listOf(
-                    BasicDataDimensions(companyIdentifier2, DATA_TYPE_2, REPORTING_PERIOD_1),
-                    BasicDataDimensions(companyIdentifier2, DATA_TYPE_2, REPORTING_PERIOD_2),
-                )
-
-            dataMetaInformationList =
-                dataDimensionsWithExistingDatasets.map {
-                    DataMetaInformation(
-                        dataId = UUID.randomUUID().toString(),
-                        companyId = it.companyId,
-                        dataType = DataTypeEnum.decode(it.dataType)!!,
-                        uploadTime = 0L,
-                        reportingPeriod = it.reportingPeriod,
-                        currentlyActive = true,
-                        qaStatus = QaStatus.Accepted,
-                        uploaderUserId = UUID.randomUUID().toString(),
-                        ref = null,
-                    )
-                }
-
-            acceptedDataDimensions = validDataDimensions - dataDimensionsWithExistingRequests - dataDimensionsWithExistingDatasets
+    private val allRequestedDataDimensions =
+        (0..26).map {
+            BasicDataDimensions(
+                companyId = companyIdentifiers.toList()[it / 9 % 3],
+                dataType = dataTypes.toList()[it / 3 % 3],
+                reportingPeriod = reportingPeriods.toList()[it % 3],
+            )
         }
-    }
+
+    private val validDataDimensions =
+        allRequestedDataDimensions.filter {
+            it.companyId != invalidCompanyId &&
+                it.dataType != invalidDataType &&
+                it.reportingPeriod != invalidReportingPeriod
+        }
+
+    private val dataDimensionsWithExistingRequests =
+        listOf(
+            BasicDataDimensions(companyIdentifier1, dataType2, reportingPeriod2),
+            BasicDataDimensions(companyIdentifier2, dataType1, reportingPeriod1),
+            BasicDataDimensions(companyIdentifier2, dataType1, reportingPeriod2),
+        )
+
+    private val dataDimensionsWithExistingDatasets =
+        listOf(
+            BasicDataDimensions(companyIdentifier2, dataType2, reportingPeriod1),
+            BasicDataDimensions(companyIdentifier2, dataType2, reportingPeriod2),
+        )
+
+    private val dataMetaInformationList =
+        dataDimensionsWithExistingDatasets.map {
+            DataMetaInformation(
+                dataId = UUID.randomUUID().toString(),
+                companyId = it.companyId,
+                dataType = DataTypeEnum.decode(it.dataType)!!,
+                uploadTime = 0L,
+                reportingPeriod = it.reportingPeriod,
+                currentlyActive = true,
+                qaStatus = QaStatus.Accepted,
+                uploaderUserId = UUID.randomUUID().toString(),
+                ref = null,
+            )
+        }
+
+    private val acceptedDataDimensions =
+        validDataDimensions - dataDimensionsWithExistingRequests - dataDimensionsWithExistingDatasets
 
     /**
      * Native SQL query string that is expected to be generated as part of getting the existing
@@ -135,27 +111,14 @@ class BulkRequestManagerTest {
             append("SELECT * FROM requests request\n                ")
             append("WHERE (request.company_id, request.data_type, request.reporting_period) IN ")
             append("(")
-            validDataDimensions.forEachIndexed { index, dataDimension ->
-                if (index < validDataDimensions.size - 1) {
-                    append("('${dataDimension.companyId}', '${dataDimension.dataType}', '${dataDimension.reportingPeriod}'), ")
-                } else {
-                    append("('${dataDimension.companyId}', '${dataDimension.dataType}', '${dataDimension.reportingPeriod}')")
-                }
-            }
+            append(
+                validDataDimensions.joinToString(separator = ", ") {
+                    "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
+                },
+            )
             append(")\n                ")
             append("AND request.user_id = '$userId'")
         }
-
-    private fun createBulkDataRequest(
-        companyIdentifiers: Set<String>,
-        dataTypes: Set<String>,
-        reportingPeriods: Set<String>,
-    ): BulkDataRequest =
-        BulkDataRequest(
-            companyIdentifiers = companyIdentifiers,
-            dataTypes = dataTypes,
-            reportingPeriods = reportingPeriods,
-        )
 
     private fun createRequestEntity(
         companyId: String,
@@ -187,11 +150,12 @@ class BulkRequestManagerTest {
         )
 
         // Build mocks for DataRequestValidationResult with companyIdValidation, dataTypeValidation, reportingPeriodValidation
-        val companyIdValidSet = companyIdentifiers - INVALID_COMPANY_ID
-        val dataTypeValidSet = dataTypes - INVALID_DATA_TYPE
-        val reportingPeriodValidSet = reportingPeriods - INVALID_REPORTING_PERIOD
+        val companyIdValidSet = companyIdentifiers - invalidCompanyId
+        val dataTypeValidSet = dataTypes - invalidDataType
+        val reportingPeriodValidSet = reportingPeriods - invalidReportingPeriod
 
-        val companyIdValidation = companyIdentifiers.map { id -> mapOf(id to if (id in companyIdValidSet) UUID.randomUUID() else null) }
+        val companyIdValidation =
+            companyIdentifiers.map { id -> mapOf(id to if (id in companyIdValidSet) UUID.randomUUID() else null) }
         val dataTypeValidation = dataTypes.map { dt -> mapOf(dt to (dt in dataTypeValidSet)) }
         val reportingPeriodValidation = reportingPeriods.map { rp -> mapOf(rp to (rp in reportingPeriodValidSet)) }
 
@@ -244,7 +208,7 @@ class BulkRequestManagerTest {
         val dataTypes = if (dataTypesIndicator == null) emptySet() else dataTypes
         val reportingPeriods = if (reportingPeriodsIndicator == null) emptySet() else reportingPeriods
 
-        val invalidBulkDataRequest = createBulkDataRequest(companyIdentifiers, dataTypes, reportingPeriods)
+        val invalidBulkDataRequest = BulkDataRequest(companyIdentifiers, dataTypes, reportingPeriods)
 
         assertThrows<InvalidInputApiException> {
             bulkRequestManager.processBulkDataRequest(
@@ -256,7 +220,7 @@ class BulkRequestManagerTest {
 
     @Test
     fun `check that data dimensions are split correctly into four categories and that exactly the accepted requests are stored`() {
-        val bulkDataRequest = createBulkDataRequest(companyIdentifiers, dataTypes, reportingPeriods)
+        val bulkDataRequest = BulkDataRequest(companyIdentifiers, dataTypes, reportingPeriods)
 
         val bulkDataRequestResponse =
             bulkRequestManager.processBulkDataRequest(

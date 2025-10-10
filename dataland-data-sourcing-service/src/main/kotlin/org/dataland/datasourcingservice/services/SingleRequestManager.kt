@@ -75,13 +75,9 @@ class SingleRequestManager
                     singleRequest.dataType,
                     singleRequest.reportingPeriod,
                 )
-            return if (idOfConflictingRequest != null) {
-                SingleRequestResponse(
-                    idOfConflictingRequest.toString(),
-                )
-            } else {
-                SingleRequestResponse(
-                    requestCreationService
+            return SingleRequestResponse(
+                idOfConflictingRequest?.toString()
+                    ?: requestCreationService
                         .storeRequest(
                             userId = userIdToUse,
                             BasicDataDimensions(
@@ -91,8 +87,7 @@ class SingleRequestManager
                             ),
                             memberComment = singleRequest.memberComment,
                         ).toString(),
-                )
-            }
+            )
         }
 
         /**
@@ -183,21 +178,11 @@ class SingleRequestManager
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveRequestHistory(requestId: String): List<StoredRequest> {
-            val uuid =
-                try {
-                    UUID.fromString(requestId)
-                } catch (_: IllegalArgumentException) {
-                    throw InvalidInputApiException(
-                        "Invalid UUID format for requestId: $requestId",
-                        message = "Invalid UUID format for requestId: $requestId, please provide a valid UUID string.",
-                    )
-                }
-            return dataRevisionRepository
-                .listDataRequestRevisionsById(uuid)
+        fun retrieveRequestHistory(requestId: UUID): List<StoredRequest> =
+            dataRevisionRepository
+                .listDataRequestRevisionsById(requestId)
                 .map { it.toStoredDataRequest() }
                 .ifEmpty {
-                    throw RequestNotFoundApiException(uuid)
+                    throw RequestNotFoundApiException(requestId)
                 }
-        }
     }

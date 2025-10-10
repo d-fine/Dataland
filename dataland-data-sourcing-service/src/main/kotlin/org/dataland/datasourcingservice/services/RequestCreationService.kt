@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
@@ -49,6 +50,12 @@ class RequestCreationService
                     reportingPeriod = basicDataDimension.reportingPeriod,
                     memberComment = memberComment,
                     creationTimestamp = Instant.now().toEpochMilli(),
+                    requestPriority =
+                        if (keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())) {
+                            RequestPriority.High
+                        } else {
+                            RequestPriority.Low
+                        },
                 )
 
             return requestRepository

@@ -66,7 +66,7 @@ class RequestController
 
         override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
             ResponseEntity
-                .ok(singleRequestManager.retrieveRequestHistory(dataRequestId))
+                .ok(singleRequestManager.retrieveRequestHistory(UUID.fromString(dataRequestId)))
 
         override fun searchRequests(
             companyId: String?,

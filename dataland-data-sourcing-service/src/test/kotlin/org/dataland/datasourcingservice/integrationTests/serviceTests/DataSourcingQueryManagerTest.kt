@@ -31,7 +31,7 @@ class DataSourcingQueryManagerTest
         private val dataSourcingRepository: DataSourcingRepository,
     ) : BaseIntegrationTest() {
         private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
-        private lateinit var dataSourcingEntities: MutableList<DataSourcingEntity>
+        private lateinit var dataSourcingEntities: List<DataSourcingEntity>
 
         /**
          * Store 8 data sourcings covering all combinations of the three filter parameters other than state.
@@ -40,24 +40,22 @@ class DataSourcingQueryManagerTest
          */
         @BeforeEach
         fun setup() {
-            dataSourcingEntities = mutableListOf()
-            for (i in 0..7) {
-                val dataSourcingEntity =
+            dataSourcingEntities =
+                (0..7).map {
                     dataBaseCreationUtils.storeDataSourcing(
-                        companyId = if (i / 4 % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
-                        dataType = if (i / 2 % 2 == 0) dataTypeToFilterBy else otherDataType,
-                        reportingPeriod = if (i % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
-                        state =
-                            if (i % 3 == 0) {
-                                DataSourcingState.valueOf(dataSourcingStateToFilterBy)
+                        companyId =
+                            if (it / 4 % 2 == 0) {
+                                UUID.fromString(companyIdToFilterBy)
                             } else {
-                                DataSourcingState.valueOf(
-                                    otherDataSourcingState,
+                                UUID.fromString(
+                                    otherCompanyId,
                                 )
                             },
+                        dataType = if (it / 2 % 2 == 0) dataTypeToFilterBy else otherDataType,
+                        reportingPeriod = if (it % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
+                        state = DataSourcingState.valueOf(if (it % 3 == 0) dataSourcingStateToFilterBy else otherDataSourcingState),
                     )
-                dataSourcingEntities.add(dataSourcingEntity)
-            }
+                }
         }
 
         @ParameterizedTest
