@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
@@ -112,39 +113,34 @@ class DataSourcingValidator
          */
         fun validateSingleDataRequest(singleRequest: SingleRequest): UUID {
             val errors = mutableListOf<String>()
-            val validationResult =
-                validateRequestData(
+            val companyIdValidationResult =
+                validateAndGetCompanyIds(
                     listOf(singleRequest.companyIdentifier),
+                ).first()
+            if (companyIdValidationResult == null) {
+                errors.add("The company identifier ${singleRequest.companyIdentifier} does not exist on Dataland.")
+            }
+            val reportingPeriodValidationResult =
+                validateReportingPeriods(
                     listOf(singleRequest.reportingPeriod),
+                ).first()
+            if (!reportingPeriodValidationResult) {
+                errors.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
+            }
+            val dataTypeValidationResult =
+                validateDataTypes(
                     listOf(singleRequest.dataType),
-                )
-
-            val companyId =
-                validationResult.companyIdValidation
-                    .firstOrNull()
-                    ?.values
-                    ?.first()
-            if (companyId == null) {
-                errors.add("Company with identifier ${singleRequest.companyIdentifier} does not exist on Dataland.")
-            }
-            if (!validationResult.dataTypeValidation
-                    .first()
-                    .values
-                    .first()
-            ) {
-                errors.add("Data type ${singleRequest.dataType} is not recognized.")
-            }
-            if (!validationResult.reportingPeriodValidation
-                    .first()
-                    .values
-                    .first()
-            ) {
-                errors.add("Reporting period ${singleRequest.reportingPeriod} is not valid.")
+                ).first()
+            if (!dataTypeValidationResult) {
+                errors.add("The data type ${singleRequest.dataType} is invalid.")
             }
             if (errors.isNotEmpty()) {
-                throw IllegalArgumentException(errors.joinToString(" | "))
+                throw InvalidInputApiException(
+                    summary = "Invalid input data.",
+                    message = errors.joinToString(" "),
+                )
             }
-            return companyId!!
+            return companyIdValidationResult!!
         }
 
         /**
