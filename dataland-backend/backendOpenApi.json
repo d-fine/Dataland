@@ -7349,6 +7349,73 @@
         "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
         "example": "{\n      \"value\" : 100, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "The date the fiscal year ends.",
+        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
       "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -8243,15 +8310,17 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "description": "The date the fiscal year ends.",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           },
           "referencedReports": {
             "type": "object",
@@ -8271,8 +8340,6 @@
       },
       "SfdrGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "\"Option 1\"",
         "enum": [
           "Deviation",
           "NoDeviation"
@@ -9031,6 +9098,41 @@
         "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
+      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
       "PcafCompanyValue": {
         "type": "object",
         "properties": {
@@ -9376,22 +9478,22 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "description": "The date the fiscal year ends.",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           }
         }
       },
       "PcafGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "\"Option 1\"",
         "enum": [
           "Deviation",
           "NoDeviation"
@@ -14016,38 +14118,6 @@
             "transitionalActivity": "Yes"
           }
         ]
-      },
-      "ExtendedDataPointLocalDate": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "The date the fiscal year ends.",
-        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
