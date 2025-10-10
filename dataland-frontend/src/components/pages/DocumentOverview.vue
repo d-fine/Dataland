@@ -1,5 +1,9 @@
 <template>
-  <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <CompanyInfoSheet
+    :company-id="companyId"
+    :show-single-data-request-button="false"
+    @fetchedCompanyInformation="(companyInfo) => (companyName = companyInfo.companyName)"
+  />
   <div class="selection-header">
     <ChangeFrameworkDropdown
       :data-meta-information="dataMetaInformation"
@@ -18,12 +22,22 @@
       style="margin: 0 1rem"
     />
     <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
+    <PrimeButton
+      v-if="allowedToUploadDocuments"
+      label="UPLOAD DOCUMENT"
+      data-test="document-upload-button"
+      icon="pi pi-upload"
+      iconPos="left"
+      :pt="{ root: { style: 'float: right;' } }"
+      @click="showUploadModal = true"
+    />
   </div>
 
   <TheContent class="flex flex-col p-3">
     <DataTable
       v-if="documentsFiltered && documentsFiltered.length > 0"
       data-test="documents-overview-table"
+      :key="`${refreshDocumentTable}`"
       :value="documentsFiltered"
       :paginator="true"
       :lazy="true"
@@ -91,6 +105,22 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
+  <UploadDocumentDialog
+    v-if="showUploadModal"
+    :visible="showUploadModal"
+    :companyId="companyId"
+    @close="showUploadModal = false"
+    @document-uploaded="handleDocumentUpload"
+    @conflict="onDocumentConflict"
+  />
+  <ConflictingDocumentUploadDialog
+    v-if="showConflictModal"
+    :documentId="conflictDocumentId"
+    :companyId="companyId"
+    :companyName="companyName"
+    @close="showConflictModal = false"
+    @document-associated="handleDocumentUpload"
+  />
 </template>
 
 <script setup lang="ts">
@@ -113,18 +143,27 @@ import {
 import type Keycloak from 'keycloak-js';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
-import { inject, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
 import PrimeButton from 'primevue/button';
 import {
   createNewPercentCompletedRef,
   type DocumentDownloadInfo,
   downloadDocument,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { CompanyRole } from '@clients/communitymanager';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
+// eslint-disable-next-line no-restricted-imports
+import UploadDocumentDialog from '../resources/companyCockpit/UploadDocumentDialog.vue';
+// eslint-disable-next-line no-restricted-imports
+import ConflictingDocumentUploadDialog from '../resources/companyCockpit/ConflictingDocumentUploadDialog.vue';
 
 const props = defineProps<{
   companyId: string;
 }>();
 
+const companyName = ref<string>('');
 const waitingForData = ref(true);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
@@ -135,9 +174,10 @@ const firstRowIndex = ref(0);
 const currentPage = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
+const refreshDocumentTable = ref(0); // incrementing this value will force re-rendering document table
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -148,6 +188,28 @@ watch(selectedDocumentType, () => {
 
 const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
 const activeDownloadId = ref<string | null>(null);
+
+const isGlobalAdmin = ref(false);
+const isUserCompanyOwnerOrUploader = ref(false);
+
+const allowedToUploadDocuments = computed(() => {
+  return isGlobalAdmin.value || isUserCompanyOwnerOrUploader.value;
+});
+
+const showUploadModal = ref(false);
+const showConflictModal = ref(false);
+const conflictDocumentId = ref<string>('');
+
+/**
+ * Checks if the user is allowed to upload documents
+ */
+async function checkIfUserIsAllowedToUploadDocuments(): Promise<void> {
+  isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+  const companyAssignment = assignments.find((assignment) => assignment.companyId === props.companyId);
+  const userRole = companyAssignment ? companyAssignment.companyRole : null;
+  isUserCompanyOwnerOrUploader.value = userRole === CompanyRole.CompanyOwner || userRole === CompanyRole.DataUploader;
+}
 
 /**
  * Get list of documents using the filter for document category
@@ -180,6 +242,14 @@ async function handleDocumentDownload(documentDownloadInfo: DocumentDownloadInfo
   activeDownloadId.value = documentDownloadInfo.fileReference;
   await downloadDocument(documentDownloadInfo, getKeycloakPromise, percentCompleted);
   activeDownloadId.value = null;
+}
+
+/**
+ * Handles the refresh of the page after upload of documents
+ */
+async function handleDocumentUpload(): Promise<void> {
+  await getAllDocumentsForFilters();
+  refreshDocumentTable.value++;
 }
 
 /**
@@ -279,7 +349,17 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
-onMounted(() => {
+/**
+ * Handles document conflict
+ */
+function onDocumentConflict(documentId: string): void {
+  showUploadModal.value = false;
+  conflictDocumentId.value = documentId;
+  showConflictModal.value = true;
+}
+
+onMounted(async () => {
+  await checkIfUserIsAllowedToUploadDocuments();
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 </script>
