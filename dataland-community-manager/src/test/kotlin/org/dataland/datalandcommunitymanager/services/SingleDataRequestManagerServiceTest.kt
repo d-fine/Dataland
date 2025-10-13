@@ -102,10 +102,10 @@ class SingleDataRequestManagerServiceTest
             )
             doReturn(listOf("ROLE_ADMIN", "ROLE_PREMIUM_USER"))
                 .whenever(mockKeycloakUserService)
-                .getUserRoleNames(eq(adminUserId))
+                .getCompositeUserRoleNames(eq(adminUserId))
             doReturn(listOf("ROLE_USER"))
                 .whenever(mockKeycloakUserService)
-                .getUserRoleNames(eq(dummyUserId))
+                .getCompositeUserRoleNames(eq(dummyUserId))
             doReturn(
                 Pair(
                     mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)),

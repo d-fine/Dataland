@@ -1,5 +1,6 @@
 package org.dataland.datalandbackendutils.utils
 
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import java.util.UUID
 
 object ValidationUtils {
@@ -26,8 +27,23 @@ object ValidationUtils {
         try {
             UUID.fromString(testString)
             return true
-        } catch (ignore: Exception) {
+        } catch (_: Exception) {
             return false
         }
     }
+
+    /**
+     * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
+     * @param testString the string to convert
+     * @return the UUID corresponding to the string
+     */
+    fun convertToUUIDOrThrowResourceNotFoundApiException(testString: String): UUID =
+        try {
+            UUID.fromString(testString)
+        } catch (_: IllegalArgumentException) {
+            throw ResourceNotFoundApiException(
+                summary = "Unknown ID.",
+                message = "The string $testString is not a valid UUID. In particular, the resource requested under it is unknown.",
+            )
+        }
 }
