@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 
 @SpringBootTest(classes = [DatalandBackend::class])
 class CompanyAlterationManagerTest : BaseIntegrationTest() {
@@ -85,12 +86,15 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
         val newCompanyContactDetails = listOf("new@company.com", "another_new@company.com")
+        val newFiscalYearEnd = LocalDate.of(2025, 6, 30)
         val patch =
             CompanyInformationPatch(
                 companyName = newName,
                 headquarters = newHeadquarters,
                 companyAlternativeNames = newAlternativeNames,
                 companyContactDetails = newCompanyContactDetails,
+                fiscalYearEnd = newFiscalYearEnd,
+                reportingPeriodShift = null,
                 sectorCodeWz = null,
             )
 
@@ -185,8 +189,7 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Isin to originalIsin)))
         }
-        val newCompany =
-            companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
+        val newCompany = companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }
