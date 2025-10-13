@@ -4,6 +4,7 @@ import BigDecimalBaseDataPointFormField from '@/components/forms/parts/fields/Bi
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
 import ExtendedSingleSelectFormField from '@/components/forms/parts/fields/ExtendedSingleSelectFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
@@ -27,13 +28,13 @@ import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssess
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
 import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
-import UploadReports from '@/components/forms/parts/UploadReports.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentNameMap: { [key: string]: any } = {
@@ -43,6 +44,7 @@ const componentNameMap: { [key: string]: any } = {
   BigDecimalExtendedDataPointFormField,
   CurrencyDataPointFormField,
   DateFormField,
+  DateExtendedDataPointFormField,
   EmployeesPerCountryFormField,
   ExtendedSingleSelectFormField,
   FreeTextFormField,

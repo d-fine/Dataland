@@ -147,6 +147,8 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -192,6 +194,8 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    DateExtendedDataPointFormField,
+    RadioButtonsExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -223,13 +227,12 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd.value;
-        if (currentDate === undefined) {
-          return '';
-        } else {
-          const currentDateSegments = currentDate?.split('-');
-          return currentDateSegments[0] ?? new Date().getFullYear();
+        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
+        if (typeof currentDate !== 'string') {
+          return new Date().getFullYear().toString();
         }
+        const currentDateSegments = currentDate.split('-');
+        return currentDateSegments[0] ?? new Date().getFullYear().toString();
       },
       set() {
         // IGNORED
