@@ -13,7 +13,6 @@ import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.Mockito.mock
@@ -25,7 +24,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExistingRequestsManagerTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()

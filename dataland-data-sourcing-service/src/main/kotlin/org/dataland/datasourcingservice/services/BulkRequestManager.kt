@@ -3,8 +3,8 @@ package org.dataland.datasourcingservice.services
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
@@ -90,7 +90,14 @@ class BulkRequestManager
         private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =
             metaDataController
                 .retrieveMetaDataOfActiveDatasets(
-                    basicDataDimensions = requests,
+                    basicDataDimensions =
+                        requests.map {
+                            org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
+                                companyId = it.companyId,
+                                dataType = it.dataType,
+                                reportingPeriod = it.reportingPeriod,
+                            )
+                        },
                 ).map {
                     BasicDataDimensions(
                         companyId = it.companyId,
