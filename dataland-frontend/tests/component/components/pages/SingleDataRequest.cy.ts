@@ -17,7 +17,7 @@ describe('Component tests for the single data request page', function (): void {
     }).then(() => {
       fillMandatoryFields();
 
-      cy.intercept('**/data-sourcing/requests/', {
+      cy.intercept('**/data-sourcing/requests', {
         statusCode: 200,
         times: 1,
       });
@@ -33,7 +33,7 @@ describe('Component tests for the single data request page', function (): void {
     }).then(() => {
       fillMandatoryFields();
 
-      cy.intercept('**/data-sourcing/requests/', {
+      cy.intercept('**/data-sourcing/requests', {
         statusCode: 404,
         times: 1,
       });
@@ -52,7 +52,7 @@ describe('Component tests for the single data request page', function (): void {
     }).then(() => {
       fillMandatoryFields();
 
-      cy.intercept('**/data-sourcing/requests/', {
+      cy.intercept('**/data-sourcing/requests', {
         statusCode: 403,
         times: 1,
       });

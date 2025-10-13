@@ -95,7 +95,6 @@ interface RequestApi {
         ],
     )
     @PostMapping(
-        value = ["/"],
         produces = ["application/json"],
         consumes = ["application/json"],
     )
