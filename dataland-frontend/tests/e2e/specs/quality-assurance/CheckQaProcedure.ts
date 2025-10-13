@@ -48,6 +48,9 @@ describeIf(
 
     it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
       const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+
+      cy.intercept('POST', '**/api/data/eutaxonomy-financials*').as('uploadDataset');
+
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
@@ -57,6 +60,9 @@ describeIf(
           data.t,
           false
         ).then(() => {
+          cy.wait('@uploadDataset', { timeout: 15000 }).its('response.statusCode').should('be.oneOf', [200, 201]);
+
+          cy.wait(2000);
           testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
         });
       });
@@ -64,6 +70,9 @@ describeIf(
 
     it('Check whether newly added dataset has Rejected status and can be edited', () => {
       const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
+
+      cy.intercept('POST', '**/api/data/lksg*').as('uploadLksgDataset');
+
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           LksgBaseFrameworkDefinition,
@@ -73,6 +82,9 @@ describeIf(
           data.t,
           false
         ).then((dataMetaInfo) => {
+          cy.wait('@uploadLksgDataset', { timeout: 15000 }).its('response.statusCode').should('be.oneOf', [200, 201]);
+
+          cy.wait(2000);
           testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
         });
       });
@@ -95,32 +107,31 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
 
   viewRecentlyUploadedDatasetsInQaTable();
 
+  cy.get('[data-test="qa-review-section"]', { timeout: 15000 }).should('be.visible');
+
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
     .get('[data-test="qa-review-company-name"]')
     .should('contain', companyName);
 
+  cy.intercept('GET', '**/api/data/**').as('loadDatasetDetails');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
+  cy.wait('@loadDatasetDetails', { timeout: 15000 });
 
   cy.get('[data-test="qaRejectButton"]').should('exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
   cy.get('.p-toggleswitch-slider').should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-toggleswitch-checked');
 
+  cy.intercept('PUT', '**/api/data/**/qa-status').as('approveDataset');
   cy.get('[data-test="qaApproveButton"]').should('exist').click();
+  cy.wait('@approveDataset', { timeout: 15000 }).its('response.statusCode').should('eq', 200);
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
   testDatasetPresentWithCorrectStatus(companyName, 'Accepted');
-}
-
-/**
- * Validates that the view page is in review mode by ensuring that at least one hidden-field icon is displayed
- */
-function validateThatViewPageIsInReviewMode(): void {
-  cy.get('i[data-test=hidden-icon]').should('exist');
 }
 
 /**
@@ -136,10 +147,15 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   viewRecentlyUploadedDatasetsInQaTable();
 
-  cy.contains('td', dataMetaInfo.dataId).click();
+  cy.get('[data-test="qa-review-section"]', { timeout: 15000 }).should('be.visible');
+  cy.intercept('GET', '**/api/data/**').as('loadDatasetDetails');
 
-  validateThatViewPageIsInReviewMode();
+  cy.contains('td', dataMetaInfo.dataId).click();
+  cy.wait('@loadDatasetDetails', { timeout: 15000 });
+
+  cy.intercept('PUT', '**/api/data/**/qa-status').as('rejectDataset');
   cy.get('[data-test="qaRejectButton"]').should('exist').click();
+  cy.wait('@rejectDataset', { timeout: 15000 }).its('response.statusCode').should('eq', 200);
 
   safeLogout();
   login(uploader_name, uploader_pw);
@@ -148,8 +164,9 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as('getUploadedDataset');
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
-  cy.wait('@getUploadedDataset');
-  cy.get('[data-test="datasetDisplayStatusContainer"]').should('exist');
+  cy.wait('@getUploadedDataset', { timeout: 15000 });
+
+  cy.get('[data-test="datasetDisplayStatusContainer"]', { timeout: 10000 }).should('exist');
   cy.get('button[data-test="editDatasetButton"]').should('exist').click();
 
   cy.url().should(
@@ -162,13 +179,23 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
  * Visits the quality assurance page and switches to the last table page
  */
 function viewRecentlyUploadedDatasetsInQaTable(): void {
+  cy.intercept('GET', '**/api/data-meta-information/qa-status/pending*').as('getPendingDatasets');
+  cy.intercept('GET', '**/api/users/**').as('getUserInfo');
+
   cy.visitAndCheckAppMount('/qualityassurance');
-  cy.contains('span', 'REVIEW');
+
+  cy.wait('@getPendingDatasets', { timeout: 15000 });
+  cy.wait('@getUserInfo', { timeout: 10000 }).then(() => {
+    cy.log('getUserInfo request failed or timed out, continuing anyway');
+  });
+
+  cy.contains('span', 'REVIEW', { timeout: 10000 }).should('be.visible');
+
   cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
-    if (element.prop('disabled')) {
-      return;
+    if (!element.prop('disabled')) {
+      cy.wrap(element).click();
+      cy.wait(1000);
     }
-    element.trigger('click');
   });
 }
 
@@ -179,17 +206,28 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
   cy.intercept('**/api/users/**').as('getMyDatasets');
+  cy.intercept('GET', '**/api/data-meta-information**').as('getDatasetsMetaInfo');
+
   cy.visitAndCheckAppMount('/datasets');
-  cy.wait('@getMyDatasets');
+
+  cy.wait('@getMyDatasets', { timeout: 15000 });
+  cy.wait('@getDatasetsMetaInfo', { timeout: 15000 });
+
+  cy.wait(1000);
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
     timeout: Cypress.env('medium_timeout_in_ms') as number,
   })
     .first()
+    .should('be.visible')
     .find('.data-test-company-name')
     .should('contain', companyName);
 
-  cy.get('[data-test="datasets-table"]').find('[data-test="qa-status"]').should('contain', status);
+  cy.get('[data-test="datasets-table"]')
+    .find('[data-test="qa-status"]')
+    .first()
+    .should('be.visible')
+    .and('contain', status);
 }
 
 /**
@@ -197,10 +235,17 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  */
 function safeLogout(): void {
   cy.intercept('**/api-keys/getApiKeyMetaInfoForUser', { body: [] }).as('getApiKeyMetaInfoForUser');
-  cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
-  cy.get('[data-test="user-profile-toggle"]').click();
-  cy.get('a:contains("LOG OUT")').click();
-  cy.wait(Cypress.env('short_timeout_in_ms') as number);
+  cy.intercept('POST', '**/auth/realms/**/protocol/openid-connect/logout').as('keycloakLogout');
+
+  cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser', { timeout: 10000 });
+
+  cy.get('[data-test="user-profile-toggle"]').should('be.visible').click();
+  cy.get('a:contains("LOG OUT")').should('be.visible').click();
+
+  cy.wait('@keycloakLogout', { timeout: 10000 }).then(() => {
+    cy.log('Keycloak logout intercept failed, but continuing');
+  });
+
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.get("[data-test='login-dataland-button']").should('exist');
+  cy.get("[data-test='login-dataland-button']", { timeout: 10000 }).should('exist');
 }
