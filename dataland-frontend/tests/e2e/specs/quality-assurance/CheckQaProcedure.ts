@@ -46,27 +46,24 @@ describeIf(
       });
     });
 
-      Cypress._.times(10, () => {
-          it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
-              const data = getPreparedFixture(
-                  'lightweight-eu-taxo-financials-dataset',
-                  preparedEuTaxonomyFixtures
-              );
+    Cypress._.times(10, () => {
+      it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
+        const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
 
-              getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-                  return uploadFrameworkDataForPublicToolboxFramework(
-                      EuTaxonomyFinancialsBaseFrameworkDefinition,
-                      token,
-                      storedCompany.companyId,
-                      '2022',
-                      data.t,
-                      false
-                  ).then(() => {
-                      testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
-                  });
-              });
+        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
+            token,
+            storedCompany.companyId,
+            '2022',
+            data.t,
+            false
+          ).then(() => {
+            testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
           });
+        });
       });
+    });
 
     it('Check whether newly added dataset has Rejected status and can be edited', () => {
       const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
@@ -184,17 +181,42 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-  cy.intercept('**/api/users/**').as('getMyDatasets');
   cy.visitAndCheckAppMount('/datasets');
-  cy.wait('@getMyDatasets', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((interception) => {
-    if (!interception) {
-      cy.log('Warning: getMyDatasets intercept did not fire');
-    }
-  });
 
-  cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
+  cy.get('[data-test="datasets-table"]', {
     timeout: Cypress.env('medium_timeout_in_ms') as number,
-  })
+  }).should('be.visible');
+
+  cy.get('body').then(() => {
+    let found = false;
+    let attempts = 0;
+    const maxAttempts = 5;
+
+    const checkDataset = () => {
+      cy.get('[data-test="datasets-table"] .p-datatable-tbody tr')
+        .first()
+        .find('.data-test-company-name')
+        .invoke('text')
+        .then((text) => {
+          if (text.includes(companyName)) {
+            found = true;
+            cy.log(`Dataset found: ${companyName}`);
+          } else if (attempts < maxAttempts) {
+            attempts++;
+            cy.log(`Dataset not found yet, attempt ${attempts}/${maxAttempts}, reloading...`);
+            cy.wait(2000);
+            cy.reload();
+            cy.get('[data-test="datasets-table"]').should('be.visible');
+            checkDataset();
+          } else {
+            throw new Error(`Dataset ${companyName} not found after ${maxAttempts} attempts`);
+          }
+        });
+    };
+
+    checkDataset();
+  });
+  cy.get('[data-test="datasets-table"] .p-datatable-tbody tr')
     .first()
     .find('.data-test-company-name')
     .should('contain', companyName);
