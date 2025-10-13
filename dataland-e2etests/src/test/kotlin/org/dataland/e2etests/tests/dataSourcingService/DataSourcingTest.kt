@@ -21,16 +21,16 @@ open class DataSourcingTest {
      * Common setup function to be run before each test in each subclass.
      */
     fun initializeDataSourcing() {
-        val idPair = createNewCompanyAndRequestAndReturnTheirIds()
-        val companyId = idPair.first
-        val requestId = idPair.second
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         storedDataSourcing =
-            apiAccessor.dataSourcingControllerApi.getDataSourcingByDimensions(
-                companyId,
-                testDataType,
-                testReportingPeriod,
-            )
+            apiAccessor.dataSourcingControllerApi
+                .searchDataSourcings(
+                    companyId = companyId,
+                    dataType = testDataType,
+                    reportingPeriod = testReportingPeriod,
+                ).first()
     }
 
     /**
@@ -50,7 +50,7 @@ open class DataSourcingTest {
         dataType: String = testDataType,
         reportingPeriod: String = testReportingPeriod,
         comment: String = "test request",
-        user: TechnicalUser = TechnicalUser.Reader,
+        user: TechnicalUser = TechnicalUser.PremiumUser,
     ): String {
         val request = SingleRequest(companyId, dataType, reportingPeriod, comment)
         return GlobalAuth.withTechnicalUser(user) {
@@ -62,8 +62,6 @@ open class DataSourcingTest {
      * Creates a new company and a new request for that company, returning the IDs of both.
      */
     fun createNewCompanyAndRequestAndReturnTheirIds(): Pair<String, String> {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
         val companyId = createNewCompanyAndReturnId()
 
         return Pair(companyId, createRequest(companyId))

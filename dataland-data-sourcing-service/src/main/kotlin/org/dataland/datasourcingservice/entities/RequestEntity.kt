@@ -2,6 +2,8 @@ package org.dataland.datasourcingservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -10,8 +12,6 @@ import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.StoredRequest
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.envers.Audited
 import java.util.UUID
 
@@ -42,8 +42,10 @@ class RequestEntity(
     var adminComment: String? = null,
     @Column(name = "last_modified_date")
     var lastModifiedDate: Long,
+    @Enumerated(EnumType.STRING)
     @Column(name = "request_priority")
     var requestPriority: RequestPriority,
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     var state: RequestState,
     @ManyToOne(fetch = FetchType.LAZY)
@@ -76,6 +78,7 @@ class RequestEntity(
         reportingPeriod: String,
         memberComment: String?,
         creationTimestamp: Long,
+        requestPriority: RequestPriority,
     ) : this(
         id = UUID.randomUUID(),
         companyId = companyId,
@@ -85,12 +88,7 @@ class RequestEntity(
         creationTimestamp = creationTimestamp,
         memberComment = memberComment,
         lastModifiedDate = creationTimestamp,
-        requestPriority =
-            if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
-                RequestPriority.High
-            } else {
-                RequestPriority.Low
-            },
+        requestPriority = requestPriority,
         state = RequestState.Open,
     )
 }

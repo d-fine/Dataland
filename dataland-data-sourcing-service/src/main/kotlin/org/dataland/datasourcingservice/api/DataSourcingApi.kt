@@ -98,51 +98,6 @@ interface DataSourcingApi {
     ): ResponseEntity<List<ReducedDataSourcing>>
 
     /**
-     * Retrieve a DataSourcing object by reporting period, dataType and companyId.
-     */
-    @Operation(
-        summary = "Get DataSourcing by parameters",
-        description = "Retrieve a DataSourcing object by reporting period, dataType and companyId",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query DataSourcing objects.",
-                content = [Content(schema = Schema())],
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "DataSourcing object not found.",
-                content = [Content(schema = Schema())],
-            ),
-        ],
-    )
-    @GetMapping(produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getDataSourcingByDimensions(
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-        )
-        @RequestParam
-        companyId: String,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
-        )
-        @RequestParam
-        dataType: String,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-        )
-        @RequestParam
-        reportingPeriod: String,
-    ): ResponseEntity<StoredDataSourcing>
-
-    /**
      * Retrieve the history of a DataSourcing object by its ID.
      */
     @Operation(
@@ -332,7 +287,10 @@ interface DataSourcingApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched the date of the next document sourcing attempt."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully patched the date of the next document sourcing attempt.",
+            ),
             ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
@@ -362,4 +320,60 @@ interface DataSourcingApi {
         @RequestParam
         dateOfNextDocumentSourcingAttempt: LocalDate,
     ): ResponseEntity<ReducedDataSourcing>
+
+    /**
+     * Search for DataSourcing objects based on various parameters.
+     */
+    @Operation(
+        summary = "Search data sourcings.",
+        description = "Search for data sourcing objects using various filter parameters.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved matching data sourcing objects."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to search for data sourcing objects.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun searchDataSourcings(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        companyId: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        dataType: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        reportingPeriod: String? = null,
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.STATE_DESCRIPTION,
+        )
+        state: DataSourcingState? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(defaultValue = "100")
+        chunkSize: Int,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(defaultValue = "0")
+        chunkIndex: Int,
+    ): ResponseEntity<List<StoredDataSourcing>>
 }

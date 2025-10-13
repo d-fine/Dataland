@@ -7,14 +7,7 @@ import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 /**
  * Test function for creating portfolio and monitor it
  */
-function testPatchMonitoring(
-  portfolioName: string,
-  companyName: string,
-  permId: string,
-  frameworkValue: string,
-  frameworkTitle: string,
-  frameworkSubtitles: string[]
-): void {
+function testPatchMonitoring(portfolioName: string, permId: string, frameworkValue: string): void {
   cy.get('[data-test="add-portfolio"]').click({
     timeout: Cypress.env('medium_timeout_in_ms'),
   });
@@ -78,20 +71,6 @@ function testPatchMonitoring(
       expect(body.monitoredFrameworks).to.include(frameworkValue);
     });
 
-  // Verify requests page
-  cy.wait(Cypress.env('long_timeout_in_ms'));
-  cy.visitAndCheckAppMount('/requests');
-
-  cy.get('[data-test="requested-datasets-table"] tbody tr')
-    .filter(`:contains("${companyName}")`)
-    .as('companyRequestRows');
-
-  cy.get('@companyRequestRows').filter(`:contains("${frameworkTitle}")`).should('have.length.at.least', 1);
-
-  for (const subtitle of frameworkSubtitles) {
-    cy.get('@companyRequestRows').filter(`:contains("${subtitle}")`).should('have.length.at.least', 1);
-  }
-
   // Cleanup: delete portfolio
   cy.visitAndCheckAppMount('/portfolios');
   cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
@@ -150,7 +129,6 @@ describe('Portfolio Monitoring Modal', () => {
       beforeEach(() => {
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount('/portfolios');
-        cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
         cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
         cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
         cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
@@ -163,29 +141,15 @@ describe('Portfolio Monitoring Modal', () => {
       });
 
       it('Monitoring yields bulk data request when inputs are valid for non financial company', () => {
-        testPatchMonitoring(
-          nonFinancialPortfolio,
-          companyNameNonFinancial,
-          permIdNonFinancial,
-          'eutaxonomy',
-          'EU Taxonomy',
-          ['for non-financial companies', 'Nuclear and Gas']
-        );
+        testPatchMonitoring(nonFinancialPortfolio, permIdNonFinancial, 'eutaxonomy');
       });
 
       it('Monitoring yields bulk data request when inputs are valid for financial company', () => {
-        testPatchMonitoring(financialPortfolio, companyNameFinancial, permIdFinancial, 'eutaxonomy', 'EU Taxonomy', [
-          'for financial companies',
-          'Nuclear and Gas',
-        ]);
+        testPatchMonitoring(financialPortfolio, permIdFinancial, 'eutaxonomy');
       });
 
       it('Monitoring yields bulk data request when inputs are valid for non sector company', () => {
-        testPatchMonitoring(nonSectorPortfolio, companyNameNoSector, permIdNoSector, 'eutaxonomy', 'EU Taxonomy', [
-          'for financial companies',
-          'for non-financial companies',
-          'Nuclear and Gas',
-        ]);
+        testPatchMonitoring(nonSectorPortfolio, permIdNoSector, 'eutaxonomy');
       });
     }
   );

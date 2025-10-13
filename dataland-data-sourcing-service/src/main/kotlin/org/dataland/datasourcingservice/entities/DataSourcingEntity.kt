@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
@@ -40,6 +42,7 @@ class DataSourcingEntity(
     val reportingPeriod: String,
     @Column(name = "data_type")
     val dataType: String,
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     var state: DataSourcingState,
     @NotAudited
