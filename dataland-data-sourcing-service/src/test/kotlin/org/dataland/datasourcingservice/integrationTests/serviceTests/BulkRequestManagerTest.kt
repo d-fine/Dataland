@@ -3,11 +3,11 @@ package org.dataland.datasourcingservice.integrationTests.serviceTests
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -178,7 +178,13 @@ class BulkRequestManagerTest {
         doReturn(dataMetaInformationList)
             .whenever(mockMetaDataControllerApi)
             .retrieveMetaDataOfActiveDatasets(
-                validDataDimensions - dataDimensionsWithExistingRequests,
+                (validDataDimensions - dataDimensionsWithExistingRequests).map {
+                    org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
+                        companyId = it.companyId,
+                        dataType = it.dataType,
+                        reportingPeriod = it.reportingPeriod,
+                    )
+                },
             )
 
         bulkRequestManager =

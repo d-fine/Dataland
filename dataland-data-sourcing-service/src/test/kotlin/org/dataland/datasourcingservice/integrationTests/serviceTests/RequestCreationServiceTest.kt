@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.integrationTests.serviceTests
 
-import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.repositories.RequestRepository
