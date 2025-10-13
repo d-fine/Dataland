@@ -7,6 +7,9 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+import { ref } from 'vue';
+import { generateCompanyRoleAssignment } from '@ct/testUtils/CompanyCockpitUtils.ts';
 
 /**
  * Waits for the 5 requests that happen when the document overview page is being mounted
@@ -66,9 +69,19 @@ describe('Component test for the Document Overview', () => {
    * Mounts the document overview page with a specific authentication
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
    * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
+   * @param companyRoleAssignments defines the company role assignments that the current user shall have
    * @returns the mounted component
    */
-  function mountDocumentOverviewWithAuthentication(isLoggedIn: boolean, keycloakRoles?: string[]): Cypress.Chainable {
+  function mountDocumentOverviewWithAuthentication(
+    isLoggedIn: boolean,
+    keycloakRoles?: string[],
+    companyRoleAssignments: CompanyRoleAssignmentExtended[] = []
+  ): Cypress.Chainable {
+    cy.intercept(`**/community/company-role-assignments?userId=${dummyUserId}`, {
+      statusCode: 200,
+      body: companyRoleAssignments,
+      times: 1,
+    }).as('fetchCompanyRoleAssignments');
     return getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: isLoggedIn,
@@ -76,6 +89,11 @@ describe('Component test for the Document Overview', () => {
         userId: dummyUserId,
       }),
     })(DocumentOverview, {
+      global: {
+        provide: {
+          companyRoleAssignments: ref(companyRoleAssignments),
+        },
+      },
       props: {
         companyId: dummyCompanyId,
       },
@@ -88,6 +106,7 @@ describe('Component test for the Document Overview', () => {
     mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
     cy.get("[data-test='company-info-sheet']").should('exist').and('contain', companyInformationForTest.companyName);
+    cy.get("[data-test='document-upload-button']").should('not.exist');
     cy.get("[data-test='documents-overview-table']").should('exist');
     cy.get("[data-test='documents-overview-table'] tbody tr")
       .should('have.length', Object.keys(mockFetchedDocuments).length)
@@ -104,6 +123,15 @@ describe('Component test for the Document Overview', () => {
           cy.get('td').eq(5).should('have.text', 'DOWNLOAD');
         });
       });
+  });
+
+  it('Check for upload document button for a logged-in company uploader', () => {
+    const hasCompanyAtLeastOneOwner = true;
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.DataUploader, dummyCompanyId)];
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
+    waitForRequestsOnMounted();
+    cy.get("[data-test='document-upload-button']").should('exist');
   });
 
   it('Checks if filter function shows only results with selected DocumentCategory and if reset button resets filter to show all results', () => {
