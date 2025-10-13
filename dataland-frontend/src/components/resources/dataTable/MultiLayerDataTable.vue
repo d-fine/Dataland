@@ -40,21 +40,42 @@
         </tbody>
       </table>
     </div>
-    <EditDataPointModal
-      v-if="isModalOpen"
-      :visible="isModalOpen"
-      :dataPoint="selectedDataPoint"
-      :documents="availableDocuments"
-      @close="closeEditModal"
-      @save="saveDataPoint"
-    />
+    <Dialog v-if="isModalOpen" v-model:visible="isModalOpen" header="Edit Data Point" :modal="true" :closable="false">
+      <form @submit.prevent="saveDataPoint()">
+        <div class="form-group">
+          <label for="value">Value</label>
+          <InputText
+            id="value"
+            v-model="dummyValue"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="document">Document</label>
+          <Dropdown
+            id="document"
+            v-model="dummyDocument"
+            :options="availableDocuments"
+            optionLabel="name"
+            optionValue="id"
+            required
+          />
+        </div>
+        <div class="modal-actions">
+          <Button label="Cancel" class="p-button-text" @click="closeEditModal" />
+          <Button label="Save" type="submit" class="p-button-primary" />
+        </div>
+      </form>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, PropType } from 'vue';
-import { Button } from 'primevue/button';
-import EditDataPointModal from './EditDataPointModal.vue';
+import {ref, defineProps, PropType, UnwrapRef, Ref} from 'vue';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
 
 const props = defineProps({
   dataAndMetaInfo: {
@@ -69,18 +90,20 @@ const props = defineProps({
 
 const isEditMode = ref(false);
 const isModalOpen = ref(false);
-const selectedDataPoint = ref<{ metaInfo: { kpi: string; reportingPeriod: string }; data: Array<{ value: string }> } | null>(null);
+const selectedDataPoint = ref<{ metaInfo: { kpi: string; reportingPeriod: string }; data: Array<{ value: string }>; document?: string } | null>(null);
 const availableDocuments = ref<Array<{ id: string; name: string }>>([
   { id: 'doc1', name: 'Document 1' },
   { id: 'doc2', name: 'Document 2' },
 ]);
+const dummyValue = ref('');
+const dummyDocument = ref('');
 
 function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
 }
 
-function openEditModal(dataPoint: { metaInfo: { kpi: string; reportingPeriod: string }; data: Array<{ value: string }> }) {
-  selectedDataPoint.value = dataPoint;
+function openEditModal(dataPoint: { metaInfo: { kpi: string; reportingPeriod: string }; data: Array<{ value: string }>; document?: string }) {
+  selectedDataPoint.value = { ...dataPoint };
   isModalOpen.value = true;
 }
 
@@ -89,14 +112,11 @@ function closeEditModal() {
   selectedDataPoint.value = null;
 }
 
-function saveDataPoint(updatedDataPoint: { metaInfo: { kpi: string; reportingPeriod: string }; data: Array<{ value: string }> }) {
-  const index = props.dataAndMetaInfo.findIndex(
-    (item) => item.metaInfo.kpi === updatedDataPoint.metaInfo.kpi
-  );
-  if (index !== -1) {
-    props.dataAndMetaInfo[index] = updatedDataPoint;
+function saveDataPoint() {
+  if (selectedDataPoint.value) {
+    console.log('Saving data point:', selectedDataPoint.value);
+    closeEditModal();
   }
-  closeEditModal();
 }
 </script>
 
@@ -112,5 +132,15 @@ function saveDataPoint(updatedDataPoint: { metaInfo: { kpi: string; reportingPer
 
 .headers-bg {
   background-color: #f9f9f9;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 </style>
