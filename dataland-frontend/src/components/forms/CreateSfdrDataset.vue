@@ -147,6 +147,8 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -192,6 +194,8 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    DateExtendedDataPointFormField,
+    RadioButtonsExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -227,7 +231,7 @@ export default defineComponent({
         if (currentDate === undefined) {
           return '';
         } else {
-          const currentDateSegments = currentDate?.split('-');
+          const currentDateSegments = currentDate.value.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
