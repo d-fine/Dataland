@@ -48,6 +48,10 @@ describeIf(
 
         it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
             const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+
+            cy.intercept('POST', '**/api/data/eutaxonomy-financials').as('uploadDataset')
+            cy.intercept('GET', '**/api/users/**').as('getMyDatasets')
+
             getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
                 return uploadFrameworkDataForPublicToolboxFramework(
                     EuTaxonomyFinancialsBaseFrameworkDefinition,
@@ -57,11 +61,14 @@ describeIf(
                     data.t,
                     false
                 ).then(() => {
+                    cy.wait('@uploadDataset')
+                        .its('response.statusCode')
+                        .should('eq', 200)
+
                     testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
                 });
             });
         });
-
         it('Check whether newly added dataset has Rejected status and can be edited', () => {
             const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
             getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
@@ -178,18 +185,22 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-    cy.intercept('**/api/users/**').as('getMyDatasets');
-    cy.visitAndCheckAppMount('/datasets');
-    cy.wait('@getMyDatasets');
+    cy.visitAndCheckAppMount('/datasets')
+
+    cy.wait('@getMyDatasets')
+        .its('response.statusCode')
+        .should('eq', 200)
 
     cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
         timeout: Cypress.env('medium_timeout_in_ms') as number,
     })
         .first()
         .find('.data-test-company-name')
-        .should('contain', companyName);
+        .should('contain', companyName)
 
-    cy.get('[data-test="datasets-table"]').find('[data-test="qa-status"]').should('contain', status);
+    cy.get('[data-test="datasets-table"]')
+        .find('[data-test="qa-status"]')
+        .should('contain', status)
 }
 
 /**
