@@ -35,7 +35,7 @@ class DataAvailabilityCheckerTest {
         private const val COMPANY_ID = "46b5374b-a720-43e6-9c5e-9dd92bd95b33"
 
         // Even though this class uses a test container for integration testing, it is not possible to use the BaseIntegrationTest class.
-        // This is due to the direkt usage of the EntityManager, which will lead to issues connecting to the database
+        // This is due to the direct usage of the EntityManager, which will lead to issues connecting to the database
         @Container
         @JvmStatic
         val postgres = TestPostgresContainer.postgres
@@ -72,6 +72,8 @@ class DataAvailabilityCheckerTest {
             parentCompanyLei = null,
             companyAlternativeNames = null,
             companyContactDetails = null,
+            fiscalYearEnd = null,
+            reportingPeriodShift = null,
             sector = null,
             sectorCodeWz = null,
             companyLegalForm = null,

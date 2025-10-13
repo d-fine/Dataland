@@ -136,6 +136,7 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/companies/CompanyInformation.kt," +
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
