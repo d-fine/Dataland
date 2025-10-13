@@ -273,6 +273,7 @@ jobs:
           subfolder: 'unit-tests-backend'
   e2e-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     if: github.event_name != 'workflow_dispatch'
     needs:
       - rebuild-docker-images
@@ -313,6 +314,7 @@ jobs:
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
+        timeout-minutes: 100
         run: ./testing/e2e_test_launcher.sh
         env:
           KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"

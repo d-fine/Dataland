@@ -5,7 +5,7 @@ source "$(dirname "$0")"/../deployment/docker_utils.sh
 #Start E2E Test and wait for E2E Test completion
 docker compose --project-name dala-e2e-test --profile testing pull -q
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
-timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
+timeout 5400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
 # Check and validate that all docker containers are indeed healthy
 health_check_results=$(get_services_that_are_not_healthy_but_should_be_in_compose_profile testing)

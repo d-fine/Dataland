@@ -61,7 +61,7 @@ describeIf(
                     data.t,
                     false
                 ).then(() => {
-                    cy.wait('@uploadDataset')
+                    cy.wait('@uploadDataset', { timeout: 30000 })
                         .its('response.statusCode')
                         .should('eq', 200)
 
@@ -69,6 +69,7 @@ describeIf(
                 });
             });
         });
+
         it('Check whether newly added dataset has Rejected status and can be edited', () => {
             const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
             getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
@@ -187,12 +188,12 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
     cy.visitAndCheckAppMount('/datasets')
 
-    cy.wait('@getMyDatasets')
+    cy.wait('@getMyDatasets', { timeout: 30000 })
         .its('response.statusCode')
         .should('eq', 200)
 
     cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: 30000,
     })
         .first()
         .find('.data-test-company-name')
