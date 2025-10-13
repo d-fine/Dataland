@@ -1516,13 +1516,19 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
