@@ -13,16 +13,13 @@ export function fetchTestCompanies(): Cypress.Chainable<[CompanyIdAndName, Compa
       return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
     })
     .then((basicCompanyInfos) => {
-      if (!basicCompanyInfos || basicCompanyInfos.length < 2) {
-        throw new Error('Not enough companies found for test setup.');
-      }
       const alphaCompanyIdAndName: CompanyIdAndName = {
-        companyId: basicCompanyInfos[0].companyId,
-        companyName: basicCompanyInfos[0].companyName,
+        companyId: basicCompanyInfos[0]!.companyId,
+        companyName: basicCompanyInfos[0]!.companyName,
       };
       const betaCompanyIdAndName: CompanyIdAndName = {
-        companyId: basicCompanyInfos[1].companyId,
-        companyName: basicCompanyInfos[1].companyName,
+        companyId: basicCompanyInfos[1]!.companyId,
+        companyName: basicCompanyInfos[1]!.companyName,
       };
       return [alphaCompanyIdAndName, betaCompanyIdAndName] as [CompanyIdAndName, CompanyIdAndName];
     });

@@ -31,6 +31,7 @@ describe('Component test for the Document Overview', () => {
   before(function () {
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent): void {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      if (!lksgFixtures[0]) throw new Error(`Fixture for lksg not defined`);
       companyInformationForTest = lksgFixtures[0].companyInformation;
     });
     cy.fixture('CompanyDocumentsMock').then(function (jsonContent) {
@@ -110,13 +111,14 @@ describe('Component test for the Document Overview', () => {
     cy.get("[data-test='documents-overview-table'] tbody tr")
       .should('have.length', Object.keys(mockFetchedDocuments).length)
       .each(($el, index) => {
+        const document = mockFetchedDocuments[index]!;
         cy.wrap($el).within(() => {
-          cy.get('td').eq(0).should('have.text', mockFetchedDocuments[index].documentName);
-          cy.get('td').eq(1).should('have.text', humanizeStringOrNumber(mockFetchedDocuments[index].documentCategory));
+          cy.get('td').eq(0).should('have.text', document.documentName);
+          cy.get('td').eq(1).should('have.text', humanizeStringOrNumber(document.documentCategory));
           // Check that a null publication date is not converted to Jan 1, 1970.
           cy.get('td').eq(2).should('not.contain', '1970');
-          cy.get('td').eq(2).should('have.text', dateStringFormatter(mockFetchedDocuments[index].publicationDate));
-          cy.get('td').eq(3).should('have.text', mockFetchedDocuments[index].reportingPeriod);
+          cy.get('td').eq(2).should('have.text', dateStringFormatter(document.publicationDate));
+          cy.get('td').eq(3).should('have.text', document.reportingPeriod);
           cy.get('td').eq(4).should('contain', 'VIEW DETAILS');
           cy.get('td').eq(5).should('have.text', 'DOWNLOAD');
         });

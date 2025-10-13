@@ -73,8 +73,15 @@ const toggleScrollLock = (lock: boolean): void => {
 
 const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
   if (slideCount.value <= 1) return;
-  state.startX = 'touches' in e ? e.touches[0].pageX : e.pageX;
-  state.startY = 'touches' in e ? e.touches[0].pageY : e.pageY;
+
+  if ('touches' in e) {
+    if (!e.touches[0]) return;
+    state.startX = e.touches[0].pageX;
+    state.startY = e.touches[0].pageY;
+  } else {
+    state.startX = e.pageX;
+    state.startY = e.pageY;
+  }
   dragStart(e);
 };
 
@@ -98,7 +105,11 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
     return;
   }
   state.isDragging = true;
-  state.startPos = 'touches' in e ? e.touches[0].pageX : e.pageX;
+
+  if ('touches' in e) {
+    if (!e.touches[0]) return;
+    state.startPos = e.touches[0].pageX;
+  } else state.startPos = e.pageX;
   state.prevTranslate = state.currentTranslate;
 
   if (slider.value) {
@@ -115,7 +126,15 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
 const drag = (e: PointerEvent | TouchEvent): void => {
   if (!state.isDragging) return;
 
-  const { pageX } = 'touches' in e ? e.touches[0] : e;
+  let pageX: number;
+
+  if ('touches' in e) {
+    if (!e.touches[0]) return;
+    pageX = e.touches[0].pageX;
+  } else {
+    pageX = e.pageX;
+  }
+
   const dx = Math.abs(pageX - state.startX);
   state.thresholdReached = dx > 20;
   if (state.thresholdReached && !state.disableScroll) {

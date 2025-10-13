@@ -51,10 +51,10 @@ describeIf(
         );
       });
 
-      cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, 'base64').then((base64String) => {
-        const fileBuffer = Buffer.from(base64String, 'base64');
+      cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
+        const arrayBuffer = Uint8Array.from(buffer).buffer;
         getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-          documentMetaInfoResponse = await uploadDocumentViaApi(token, fileBuffer, documentName);
+          documentMetaInfoResponse = await uploadDocumentViaApi(token, arrayBuffer, documentName);
           return documentMetaInfoResponse;
         });
       });

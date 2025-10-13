@@ -38,6 +38,7 @@
             data-test="expiryDatePicker"
             inputId="icon"
             v-model="customDate"
+            :updateModelType="'date'"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             :minDate="minDate"

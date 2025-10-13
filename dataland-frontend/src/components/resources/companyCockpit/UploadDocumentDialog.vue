@@ -93,6 +93,7 @@
           <p class="upload-label">Publication Date (optional)</p>
           <DatePicker
             v-model="publicationDate"
+            :updateModelType="'date'"
             showIcon
             placeholder="Select publication date"
             data-test="publication-date"
@@ -102,6 +103,7 @@
           <p class="upload-label">Reporting Period (optional)</p>
           <DatePicker
             v-model="reportingPeriod"
+            :updateModelType="'date'"
             showIcon
             view="year"
             dateFormat="yy"

@@ -1,4 +1,5 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw } from '@e2e/utils/Cypress';
+// @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 import { type SingleRequest } from '@clients/datasourcingservice';
 import { describeIf } from '@e2e/support/TestUtility';

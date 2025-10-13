@@ -86,8 +86,9 @@ watchEffect(() => {
  * Handles the tab change event.
  */
 function onTabChange(newIndex: number | string): void {
-  const route = tabs.value[newIndex as number].route;
-  router.push(route).catch((err) => {
+  const tab = tabs.value[newIndex as number];
+  if (!tab) return;
+  router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
 }
@@ -99,7 +100,7 @@ function onTabChange(newIndex: number | string): void {
 function setVisibilityForTabWithQualityAssurance(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise)
     .then((hasUserReviewerRights) => {
-      tabs.value[3].isVisible = hasUserReviewerRights;
+      tabs.value[3]!.isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
 }
@@ -114,7 +115,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
-    tabs.value[5].isVisible = companyOwnershipAssignments.length > 0;
+    tabs.value[5]!.isVisible = companyOwnershipAssignments.length > 0;
   }
 }
 
@@ -125,7 +126,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
 function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
-      tabs.value[6].isVisible = hasUserAdminRights;
+      tabs.value[6]!.isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }

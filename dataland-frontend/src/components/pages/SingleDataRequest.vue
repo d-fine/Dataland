@@ -325,7 +325,7 @@ export default defineComponent({
             this.openMaxRequestsReachedModal();
           } else {
             const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.editStateVariables(responseMessages ? responseMessages[0].message : error.message, true, false);
+            this.editStateVariables(responseMessages?.[0]?.message ?? error.message, true, false);
           }
         } else {
           this.editStateVariables(

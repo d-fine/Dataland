@@ -182,7 +182,7 @@
           </Column>
           <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
             <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" />
+              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
             </template>
           </Column>
           <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
