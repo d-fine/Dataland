@@ -3,7 +3,7 @@ import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtil
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
-import { uploadAllDocuments } from '@e2e/utils/DocumentUpload';
+import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
 import {
   type PublicApiClientConstructor,
   uploadGenericFrameworkData,
