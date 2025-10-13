@@ -2,13 +2,13 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -23,20 +23,16 @@ class DataSourcingValidator
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val documentControllerApi: DocumentControllerApi,
     ) {
-        private val logger = LoggerFactory.getLogger(javaClass)
-
         /**
          * Validates whether a list of company identifiers exist in Dataland and retrieves their UUIDs.
          *
          * @param identifierList List of company identifier strings to check.
          * @return List of UUIDs for each identifier in the input; a `null` entry indicates a non-existing company.
          */
-        private fun validateAndGetCompanyIds(identifierList: List<String>): List<UUID?> {
-            logger.info("Validating company ids for $identifierList")
-            return companyDataControllerApi
+        private fun validateAndGetCompanyIds(identifierList: List<String>): List<UUID?> =
+            companyDataControllerApi
                 .postCompanyValidation(identifierList)
                 .map { it.companyInformation?.companyId?.let { id -> UUID.fromString(id) } }
-        }
 
         /**
          * Validates if a document with the provided id exists on Dataland.
@@ -44,7 +40,6 @@ class DataSourcingValidator
          * @throws ResourceNotFoundApiException if no document is associated to the provided id
          */
         fun validateDocumentId(documentId: String) {
-            logger.info("Validating document ID for $documentId")
             try {
                 documentControllerApi.checkDocument(documentId)
             } catch (_: ClientException) {
@@ -58,15 +53,13 @@ class DataSourcingValidator
         /**
          * Validates the format of each reporting period in the provided list.
          *
-         * @param reportingPeriods List of reporting period strings (expected format: "YYYY" or "YYYY-QX").
+         * @param reportingPeriods List of reporting period strings (expected format: "YYYY" for the years 2010 to 2039).
          * @return List of Boolean values indicating if each reporting period matches the expected format.
          */
-        private fun validateReportingPeriods(reportingPeriods: List<String>): List<Boolean> {
-            logger.info("Validating reporting periods for $reportingPeriods")
-            return reportingPeriods.map { reportingPeriod ->
+        private fun validateReportingPeriods(reportingPeriods: List<String>): List<Boolean> =
+            reportingPeriods.map { reportingPeriod ->
                 ValidationUtils.isReportingPeriod(reportingPeriod)
             }
-        }
 
         /**
          * Validates whether each data type in the provided list is recognized by Dataland.
@@ -74,12 +67,10 @@ class DataSourcingValidator
          * @param dataTypes List of data type strings to validate.
          * @return List of Boolean values indicating if each data type is valid (recognized).
          */
-        private fun validateDataTypes(dataTypes: List<String>): List<Boolean> {
-            logger.info("Validating data types for $dataTypes")
-            return dataTypes.map { dataType ->
+        private fun validateDataTypes(dataTypes: List<String>): List<Boolean> =
+            dataTypes.map { dataType ->
                 DataTypeEnum.decode(dataType) != null
             }
-        }
 
         /**
          * Validates a bulk data request consisting of multiple company IDs, reporting periods, and data types.
@@ -111,40 +102,31 @@ class DataSourcingValidator
          * the exception message provides a summary of all issues found.
          */
         fun validateSingleDataRequest(singleRequest: SingleRequest): UUID {
-            val errors = mutableListOf<String>()
-            val validationResult =
-                validateRequestData(
-                    listOf(singleRequest.companyIdentifier),
-                    listOf(singleRequest.reportingPeriod),
-                    listOf(singleRequest.dataType),
-                )
+            val errorsForDataTypeAndReportingPeriod = mutableListOf<String>()
 
-            val companyId =
-                validationResult.companyIdValidation
-                    .firstOrNull()
-                    ?.values
-                    ?.first()
-            if (companyId == null) {
-                errors.add("Company with identifier ${singleRequest.companyIdentifier} does not exist on Dataland.")
+            if (!ValidationUtils.isReportingPeriod(singleRequest.reportingPeriod)) {
+                errorsForDataTypeAndReportingPeriod.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
             }
-            if (!validationResult.dataTypeValidation
-                    .first()
-                    .values
-                    .first()
-            ) {
-                errors.add("Data type ${singleRequest.dataType} is not recognized.")
+            DataTypeEnum.decode(singleRequest.dataType)
+                ?: errorsForDataTypeAndReportingPeriod.add("The data type ${singleRequest.dataType} is invalid.")
+
+            val validatedCompanyId =
+                validateAndGetCompanyIds(
+                    listOf(singleRequest.companyIdentifier),
+                ).first()
+
+            if (validatedCompanyId != null && errorsForDataTypeAndReportingPeriod.isEmpty()) {
+                return validatedCompanyId
+            } else if (validatedCompanyId == null) {
+                throw ResourceNotFoundApiException(
+                    summary = "Company ID not found.",
+                    message = "The company identifier ${singleRequest.companyIdentifier} does not exist on Dataland.",
+                )
             }
-            if (!validationResult.reportingPeriodValidation
-                    .first()
-                    .values
-                    .first()
-            ) {
-                errors.add("Reporting period ${singleRequest.reportingPeriod} is not valid.")
-            }
-            if (errors.isNotEmpty()) {
-                throw IllegalArgumentException(errors.joinToString(" | "))
-            }
-            return companyId!!
+            throw InvalidInputApiException(
+                summary = "Invalid input data.",
+                message = errorsForDataTypeAndReportingPeriod.joinToString(" "),
+            )
         }
 
         /**
@@ -160,18 +142,10 @@ class DataSourcingValidator
             reportingPeriods: List<String>,
             dataTypes: List<String>,
         ): DataRequestValidationResult {
-            val companyIdResult =
-                companyIds.zip(validateAndGetCompanyIds(companyIds)).map { (companyId, result) ->
-                    mapOf(companyId to result)
-                }
-            val dataTypeResult =
-                dataTypes.zip(validateDataTypes(dataTypes)).map { (dataType, result) -> mapOf(dataType to result) }
+            val companyIdResult = companyIds.zip(validateAndGetCompanyIds(companyIds)).toMap()
+            val dataTypeResult = dataTypes.zip(validateDataTypes(dataTypes)).toMap()
             val reportingPeriodResult =
-                reportingPeriods.zip(validateReportingPeriods(reportingPeriods)).map { (reportingPeriod, result) ->
-                    mapOf(
-                        reportingPeriod to result,
-                    )
-                }
+                reportingPeriods.zip(validateReportingPeriods(reportingPeriods)).toMap()
             return DataRequestValidationResult(
                 companyIdResult, dataTypeResult,
                 reportingPeriodResult,
@@ -189,8 +163,8 @@ class DataSourcingValidator
          * strings with their Boolean validation result.
          */
         data class DataRequestValidationResult(
-            val companyIdValidation: List<Map<String, UUID?>>,
-            val dataTypeValidation: List<Map<String, Boolean>>,
-            val reportingPeriodValidation: List<Map<String, Boolean>>,
+            val companyIdValidation: Map<String, UUID?>,
+            val dataTypeValidation: Map<String, Boolean>,
+            val reportingPeriodValidation: Map<String, Boolean>,
         )
     }

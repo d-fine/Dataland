@@ -10,12 +10,11 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
  * --- API model ---
  * Contains all relevant info that a user should receive as response when posting a bulk data request to Dataland.
  * @param acceptedDataRequests contains information about all accepted data requests
- * @param invalidDataRequests contains information about all rejected requests due to valiation errors or because
+ * @param invalidDataRequests contains information about all rejected requests due to validation errors
  * @param existingDataRequests contains information about all requests that were not created because there are already
  * existing requests for the same data dimension
  * @param existingDataSets contains information about all requests that were not created because there are already
  * datasets on dataland for that data dimension
- * the requests or corresponding datasets already exist
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)

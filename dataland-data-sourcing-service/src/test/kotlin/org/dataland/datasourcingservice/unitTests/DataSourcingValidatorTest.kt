@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.unitTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
@@ -11,11 +12,11 @@ import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
@@ -26,35 +27,30 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DataSourcingValidatorTest {
-    private var mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
-    private var mockDocumentControllerApi = mock<DocumentControllerApi>()
+    private val mockDocumentControllerApi = mock<DocumentControllerApi>()
 
-    private var dataSourcingValidator = DataSourcingValidator(mockCompanyDataControllerApi, mockDocumentControllerApi)
+    private val dataSourcingValidator = DataSourcingValidator(mockCompanyDataControllerApi, mockDocumentControllerApi)
 
     @BeforeEach
     fun setUp() {
         reset(mockCompanyDataControllerApi, mockDocumentControllerApi)
     }
 
-    // Test validateDocumentId
     @Test
     fun `validateDocumentId should complete successfully when document exists`() {
-        // Arrange
         val documentId = "valid_document_id"
 
         doNothing().whenever(mockDocumentControllerApi).checkDocument(documentId)
 
-        // Act
         assertDoesNotThrow { dataSourcingValidator.validateDocumentId(documentId) }
 
-        // Assert
         verify(mockDocumentControllerApi, times(1)).checkDocument(documentId)
     }
 
     @Test
     fun `validateDocumentId should throw ResourceNotFoundApiException when document does not exist`() {
-        // Arrange
         val documentId = "invalid_document_id"
 
         doThrow(
@@ -62,9 +58,8 @@ class DataSourcingValidatorTest {
         ).whenever(mockDocumentControllerApi)
             .checkDocument(documentId)
 
-        // Act & Assert
         val exception =
-            assertThrows(ResourceNotFoundApiException::class.java) {
+            assertThrows<ResourceNotFoundApiException> {
                 dataSourcingValidator.validateDocumentId(documentId)
             }
 
@@ -102,15 +97,22 @@ class DataSourcingValidatorTest {
         val dataType = "sfdr"
         val reportingPeriod = "2022"
         whenever(mockCompanyDataControllerApi.postCompanyValidation(listOf(identifier)))
-            .thenReturn(emptyList())
+            .thenReturn(
+                listOf(
+                    CompanyIdentifierValidationResult(
+                        identifier = identifier,
+                        companyInformation = null,
+                    ),
+                ),
+            )
 
         val request = SingleRequest(identifier, dataType, reportingPeriod, null)
 
         val ex =
-            assertThrows(IllegalArgumentException::class.java) {
+            assertThrows<ResourceNotFoundApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message!!.contains(identifier))
+        assertTrue(ex.message == "The company identifier $identifier does not exist on Dataland.")
     }
 
     @Test
@@ -134,10 +136,10 @@ class DataSourcingValidatorTest {
         val request = SingleRequest(identifier, dataType, reportingPeriod, null)
 
         val ex =
-            assertThrows(IllegalArgumentException::class.java) {
+            assertThrows<InvalidInputApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message!!.contains("not recognized"))
+        assertTrue(ex.message == "The data type $dataType is invalid.")
     }
 
     @Test
@@ -161,10 +163,10 @@ class DataSourcingValidatorTest {
         val request = SingleRequest(identifier, dataType, reportingPeriod, null)
 
         val ex =
-            assertThrows(IllegalArgumentException::class.java) {
+            assertThrows<InvalidInputApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message!!.contains("not valid"))
+        assertTrue(ex.message == "The reporting period $reportingPeriod is invalid.")
     }
 
     @Test
@@ -184,11 +186,11 @@ class DataSourcingValidatorTest {
                 countryCode = "A",
                 sector = "B",
             )
-        val validCompanyResult = CompanyIdentifierValidationResult(validCompanyId, validCompanyInfo)
+        val validationResult = CompanyIdentifierValidationResult(validCompanyId, validCompanyInfo)
         val companyIds = listOf(validCompanyId, invalidCompanyId)
-        // Setup: Only validCompanyId returns a UUID, the rest is not found
+
         whenever(mockCompanyDataControllerApi.postCompanyValidation(companyIds))
-            .thenReturn(listOf(validCompanyResult))
+            .thenReturn(listOf(validationResult))
 
         val req =
             BulkDataRequest(
@@ -199,18 +201,15 @@ class DataSourcingValidatorTest {
 
         val result = dataSourcingValidator.validateBulkDataRequest(req)
 
-        // Check company validation mapping
-        val companyValidation = result.companyIdValidation.associate { it.entries.first().toPair() }
+        val companyValidation = result.companyIdValidation
         assertEquals(UUID.fromString(validCompanyId), companyValidation[validCompanyId])
         assertNull(companyValidation[invalidCompanyId])
 
-        // Check data type validation mapping
-        val dataTypeValidation = result.dataTypeValidation.associate { it.entries.first().toPair() }
+        val dataTypeValidation = result.dataTypeValidation
         assertTrue(dataTypeValidation[validType] == true)
         assertTrue(dataTypeValidation[invalidType] == false)
 
-        // Check reporting period validation mapping
-        val reportingPeriodValidation = result.reportingPeriodValidation.associate { it.entries.first().toPair() }
+        val reportingPeriodValidation = result.reportingPeriodValidation
         assertTrue(reportingPeriodValidation[validPeriod] == true)
         assertTrue(reportingPeriodValidation[invalidPeriod] == false)
     }

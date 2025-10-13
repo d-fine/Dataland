@@ -31,7 +31,7 @@ class RequestQueryManagerTest
         private val requestRepository: RequestRepository,
     ) : BaseIntegrationTest() {
         private val dataBaseCreationUtils = DataBaseCreationUtils(requestRepository = requestRepository)
-        private lateinit var requestEntities: MutableList<RequestEntity>
+        private lateinit var requestEntities: List<RequestEntity>
 
         /**
          * Store 16 requests covering all combinations of the four filter parameters defined above.
@@ -39,24 +39,15 @@ class RequestQueryManagerTest
          */
         @BeforeEach
         fun setup() {
-            requestEntities = mutableListOf()
-            for (i in 0..15) {
-                val requestEntity =
+            requestEntities =
+                (0..15).map {
                     dataBaseCreationUtils.storeRequest(
-                        companyId = if (i / 8 % 2 == 0) UUID.fromString(companyIdToFilterBy) else UUID.fromString(otherCompanyId),
-                        dataType = if (i / 4 % 2 == 0) dataTypeToFilterBy else otherDataType,
-                        reportingPeriod = if (i / 2 % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
-                        state =
-                            if (i % 2 == 0) {
-                                RequestState.valueOf(requestStateToFilterBy)
-                            } else {
-                                RequestState.valueOf(
-                                    otherRequestState,
-                                )
-                            },
+                        companyId = UUID.fromString(if (it / 8 % 2 == 0) companyIdToFilterBy else otherCompanyId),
+                        dataType = if (it / 4 % 2 == 0) dataTypeToFilterBy else otherDataType,
+                        reportingPeriod = if (it / 2 % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
+                        state = RequestState.valueOf(if (it % 2 == 0) requestStateToFilterBy else otherRequestState),
                     )
-                requestEntities.add(requestEntity)
-            }
+                }
         }
 
         @ParameterizedTest

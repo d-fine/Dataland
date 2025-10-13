@@ -10,8 +10,7 @@ import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.services.RequestCreationService
-import org.dataland.datasourcingservice.services.SingleRequestManager
+import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
@@ -27,19 +26,15 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SingleRequestManagerTest {
+class ExistingRequestsManagerTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()
     private val mockDataSourcingManager = mock<DataSourcingManager>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
-    private val mockRequestCreationService = mock<RequestCreationService>()
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
 
-    private val testSingleRequestManager =
-        SingleRequestManager(
-            mockDataSourcingValidator,
-            mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository, mockRequestCreationService,
-        )
+    private val testExistingRequestsManager =
+        ExistingRequestsManager(mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository)
 
     private val testDataSourcingManager =
         DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator)
@@ -74,7 +69,7 @@ class SingleRequestManagerTest {
         )
         whenever(mockRequestRepository.save(any())).thenReturn(newRequest)
 
-        testSingleRequestManager.patchRequestState(UUID.randomUUID(), requestState, null)
+        testExistingRequestsManager.patchRequestState(UUID.randomUUID(), requestState, null)
         if (requestState == RequestState.Processing) {
             verify(mockDataSourcingManager, times(1)).resetOrCreateDataSourcingObjectAndAddRequest(any())
         } else {

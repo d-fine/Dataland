@@ -80,45 +80,9 @@ class RequestLogger {
     }
 
     /**
-     * Logs an appropriate message when it has been checked if a specific data request already exists and that check
-     * returned "true".
-     */
-    fun logMessageForCheckingIfDataRequestAlreadyExists(
-        userId: UUID,
-        companyId: UUID,
-        framework: String,
-        reportingPeriod: String,
-        requestState: RequestState,
-    ) {
-        logger.error(
-            "The following data request already exists for user with id $userId and therefore " +
-                "is not being recreated: (companyId: $companyId, framework: $framework, " +
-                "reportingPeriod: $reportingPeriod, requestStatus: $requestState)",
-        )
-    }
-
-    /**
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logMessageForStoringDataRequest(dataRequestId: UUID) {
         logger.info("Stored data request with dataRequestId $dataRequestId.")
-    }
-
-    /** Logs an appropriate message when a quota check has been performed for a user.
-     * If the user is premium, it logs that the user has no request quota.
-     * If the user is non-premium, it logs how many requests the user has made out of the maximum allowed requests.
-     */
-    fun logQuotaCheckMessage(
-        userId: UUID,
-        isPremium: Boolean,
-        requestsMade: Int? = null,
-        maxRequests: Int? = null,
-    ) {
-        if (isPremium) {
-            logger.info("User $userId is a premium user and has no request quota.")
-        } else {
-            logger
-                .info("User $userId is a non-premium user and has made $requestsMade out of $maxRequests allowed requests.")
-        }
     }
 }

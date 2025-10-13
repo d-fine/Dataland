@@ -33,15 +33,7 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
-    <Dialog v-model:visible="showSuccess" header="Success" :modal="true">
-      <div style="text-align: center; padding: 8px 0">
-        <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
-        <div style="margin-top: 8px">Changes successfully saved.</div>
-      </div>
-      <template #footer>
-        <Button label="OK" @click="showSuccess = false" />
-      </template>
-    </Dialog>
+    <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
   </TheContent>
 </template>
 
@@ -60,8 +52,6 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
 
 import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -71,6 +61,7 @@ import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } f
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 const props = defineProps<{ companyId: string }>();
 

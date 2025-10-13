@@ -65,28 +65,26 @@ class BulkRequestManager
             bulkDataRequest: BulkDataRequest,
         ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
             val validCompanyIds =
-                validationResult.companyIdValidation.filter { it.values.first() != null }.map { it.keys.first() }
+                validationResult.companyIdValidation.filter { it.value != null }.map { it.key }
             val validDataTypes =
-                validationResult.dataTypeValidation.filter { it.values.firstOrNull() == true }.map { it.keys.first() }
+                validationResult.dataTypeValidation.filter { it.value }.map { it.key }
             val validatedReportingPeriods =
-                validationResult.reportingPeriodValidation
-                    .filter {
-                        it.values.firstOrNull() == true
-                    }.map {
-                        it.keys
-                            .first()
-                    }
-            val listOfRequestedDataDimensionTuples = generateCartesianProduct(bulkDataRequest)
+                validationResult.reportingPeriodValidation.filter { it.value }.map { it.key }
+            val listOfRequestedDataDimensionTuples =
+                generateCartesianProduct(
+                    bulkDataRequest.companyIdentifiers,
+                    bulkDataRequest.dataTypes,
+                    bulkDataRequest.reportingPeriods,
+                )
+            val validatedDataDimensionTuples =
+                generateCartesianProduct(
+                    validCompanyIds.toSet(),
+                    validDataTypes.toSet(),
+                    validatedReportingPeriods.toSet(),
+                )
+            val invalidDataDimensionTuples = listOfRequestedDataDimensionTuples - validatedDataDimensionTuples
 
-            val invalidRequests =
-                listOfRequestedDataDimensionTuples
-                    .filter { dataDimension ->
-                        validCompanyIds.none { it == dataDimension.companyId } ||
-                            validDataTypes.none { it == dataDimension.dataType } ||
-                            validatedReportingPeriods.none { it == dataDimension.reportingPeriod }
-                    }
-            val validatedRequests = listOfRequestedDataDimensionTuples - invalidRequests
-            return Pair(invalidRequests, validatedRequests)
+            return Pair(invalidDataDimensionTuples, validatedDataDimensionTuples)
         }
 
         private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =
@@ -151,11 +149,15 @@ class BulkRequestManager
             }
         }
 
-        private fun generateCartesianProduct(bulkDataRequest: BulkDataRequest): List<BasicDataDimensions> =
-            bulkDataRequest.companyIdentifiers
+        private fun generateCartesianProduct(
+            companyIdentifiers: Set<String>,
+            dataTypes: Set<String>,
+            reportingPeriods: Set<String>,
+        ): List<BasicDataDimensions> =
+            companyIdentifiers
                 .flatMap { companyId ->
-                    bulkDataRequest.dataTypes.flatMap { dataType ->
-                        bulkDataRequest.reportingPeriods.map { period ->
+                    dataTypes.flatMap { dataType ->
+                        reportingPeriods.map { period ->
                             BasicDataDimensions(
                                 companyId = companyId,
                                 dataType = dataType,
@@ -163,5 +165,5 @@ class BulkRequestManager
                             )
                         }
                     }
-                }.distinct()
+                }
     }
