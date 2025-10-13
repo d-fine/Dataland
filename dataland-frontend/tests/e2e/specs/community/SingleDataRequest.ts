@@ -106,7 +106,7 @@ describeIf(
     });
 
     it('Fill out the request page and check correct validation, request and success message', () => {
-      cy.intercept('POST', '**/data-sourcing/requests/').as('postRequestData');
+      cy.intercept('POST', '**/data-sourcing/requests').as('postRequestData');
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
