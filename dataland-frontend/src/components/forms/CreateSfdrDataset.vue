@@ -223,7 +223,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
+        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd.value;
         if (currentDate === undefined) {
           return '';
         } else {
