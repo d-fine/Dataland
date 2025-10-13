@@ -7,7 +7,6 @@ templates:
       {{ define "alert_title_template" }}
         {{ if gt (len .Alerts.Firing) 0 }}
         ⛔ {{ len .Alerts.Firing }} Service(s) trigger {{ .CommonLabels.alertname }} Alert.
-        {{ index .Alerts.Firing 0 | .Annotations.description }}
         {{ end }}
         {{ if gt (len .Alerts.Resolved) 0 }}
         ✅ {{ len .Alerts.Resolved }} {{ .CommonLabels.alertname }} Alert(s) resolved.
