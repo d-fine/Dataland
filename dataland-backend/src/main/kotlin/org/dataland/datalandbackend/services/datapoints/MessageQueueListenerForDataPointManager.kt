@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
@@ -22,14 +21,12 @@ import org.springframework.stereotype.Service
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param dataPointMetaInformationManager service for managing metadata
  */
 @Service
 class MessageQueueListenerForDataPointManager
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val dataPointMetaInformationManager: DataPointMetaInformationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -64,7 +61,7 @@ class MessageQueueListenerForDataPointManager
                     messages.map {
                         MessageQueueUtils.validateMessageType(it.getType(), MessageType.QA_STATUS_UPDATED)
                         val qaStatusChangeMessage =
-                            it.readMessagePayload<QaStatusChangeMessage>(objectMapper)
+                            it.readMessagePayload<QaStatusChangeMessage>()
                         val correlationId = it.getCorrelationId()
                         logger.info(
                             "Updating QA status for dataId ${qaStatusChangeMessage.dataId} to " +

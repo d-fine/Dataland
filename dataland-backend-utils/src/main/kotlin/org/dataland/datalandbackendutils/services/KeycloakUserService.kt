@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.dataland.datalandbackendutils.model.KeycloakMappingsRepresentation
 import org.dataland.datalandbackendutils.model.KeycloakRoleRepresentation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.slf4j.LoggerFactory
@@ -108,28 +107,6 @@ class KeycloakUserService(
         val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailAddress&exact=true"
         val response = getKeycloakResponse(url)
         return extractUsers(response).firstOrNull()
-    }
-
-    /**
-     * Get keycloak roles for a user by their userId.
-     */
-    fun getUserRoleNames(userId: String): List<String> {
-        val url = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId/role-mappings"
-        val response = getKeycloakResponse(url)
-
-        try {
-            val mappingsRepresentation: KeycloakMappingsRepresentation =
-                objectMapper.readValue(
-                    response,
-                    object : TypeReference<KeycloakMappingsRepresentation>() {},
-                )
-            return mappingsRepresentation.realmMappings.map {
-                it.roleName
-            }
-        } catch (e: JacksonException) {
-            logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
-            return emptyList()
-        }
     }
 
     /**

@@ -371,9 +371,9 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           this.storedDataRequest = (
-            await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequestById(
-              this.requestId
-            )
+            await new ApiClientProvider(
+              this.getKeycloakPromise()
+            ).apiClients.communityManagerRequestController.getDataRequestById(this.requestId)
           ).data;
         }
       } catch (error) {
