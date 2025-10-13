@@ -46,21 +46,27 @@ describeIf(
       });
     });
 
-    it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
-      const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkDataForPublicToolboxFramework(
-          EuTaxonomyFinancialsBaseFrameworkDefinition,
-          token,
-          storedCompany.companyId,
-          '2022',
-          data.t,
-          false
-        ).then(() => {
-          testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
-        });
+      Cypress._.times(10, () => {
+          it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
+              const data = getPreparedFixture(
+                  'lightweight-eu-taxo-financials-dataset',
+                  preparedEuTaxonomyFixtures
+              );
+
+              getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+                  return uploadFrameworkDataForPublicToolboxFramework(
+                      EuTaxonomyFinancialsBaseFrameworkDefinition,
+                      token,
+                      storedCompany.companyId,
+                      '2022',
+                      data.t,
+                      false
+                  ).then(() => {
+                      testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
+                  });
+              });
+          });
       });
-    });
 
     it('Check whether newly added dataset has Rejected status and can be edited', () => {
       const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
