@@ -8,15 +8,30 @@
               dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED
             "
           >
-            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
+            <th scope="row" class="headers-bg width-auto">
+              <span class="table-left-label">Value</span>
+              <span v-if="isEditMode" class="edit-icon" @click="openEditDialog('value')">
+                <i class="pi pi-pencil" />
+              </span>
+            </th>
             <td>{{ dialogData.dataPointDisplay.value }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.quality">
-            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
+            <th scope="row" class="headers-bg width-auto">
+              <span class="table-left-label">Quality</span>
+              <span v-if="isEditMode" class="edit-icon" @click="openEditDialog('quality')">
+                <i class="pi pi-pencil" />
+              </span>
+            </th>
             <td>{{ humanizeStringOrNumber(dialogData.dataPointDisplay.quality) }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.dataSource">
-            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
+            <th scope="row" class="headers-bg width-auto">
+              <span class="table-left-label">Data source</span>
+              <span v-if="isEditMode" class="edit-icon" @click="openEditDialog('dataSource')">
+                <i class="pi pi-pencil" />
+              </span>
+            </th>
             <td>
               <DocumentDownloadLink
                 :document-download-info="{
@@ -39,7 +54,12 @@
             <td>{{ dataSourcePageRange }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
-            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
+            <th scope="row" class="headers-bg width-auto">
+              <span class="table-left-label">Comment</span>
+              <span v-if="isEditMode" class="edit-icon" @click="openEditDialog('comment')">
+                <i class="pi pi-pencil" />
+              </span>
+            </th>
             <td>
               <RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" />
             </td>
@@ -47,11 +67,24 @@
         </tbody>
       </table>
     </div>
+
+    <Dialog v-model:visible="showEditDialog" modal>
+      <template #header>
+        <h2>Edit {{ editField }}</h2>
+      </template>
+      <template #default>
+        <InputText v-model="editValue" />
+      </template>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" @click="closeEditDialog" />
+        <Button label="Save" icon="pi pi-check" @click="saveEdit" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
@@ -65,10 +98,36 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
   },
-
   components: { RenderSanitizedMarkdownInput, DocumentDownloadLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
+
+  setup() {
+    const isEditMode = inject('isEditMode', ref(false));
+    const showEditDialog = ref(false);
+    const editField = ref('');
+    const editValue = ref('');
+
+    function openEditDialog(field: string) {
+      editField.value = field;
+      editValue.value = dialogData.dataPointDisplay[field] ?? '';
+      showEditDialog.value = true;
+    }
+
+    function closeEditDialog() {
+      showEditDialog.value = false;
+      editField.value = '';
+      editValue.value = '';
+    }
+
+    async function saveEdit() {
+      // TODO: Implement backend update logic here
+      // Example: await updateDataPoint(dialogData.dataId, editField.value, editValue.value);
+      closeEditDialog();
+    }
+
+    return { isEditMode, showEditDialog, editField, editValue, openEditDialog, closeEditDialog, saveEdit };
+  },
 
   data: () => {
     return { ONLY_AUXILIARY_DATA_PROVIDED };

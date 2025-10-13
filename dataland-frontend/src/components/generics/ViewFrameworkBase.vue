@@ -80,6 +80,13 @@
               data-test="goToNewDatasetButton"
               @click="linkToNewDataset"
             />
+            <PrimeButton
+              label="EDIT MODE"
+              data-test="editModeButton"
+              icon="pi pi-pencil"
+              :class="{ 'p-button-success': isEditMode }"
+              @click="toggleEditMode"
+            />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SimpleReportingPeriodSelectorDialog
@@ -164,6 +171,7 @@ const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
+const isEditMode = ref(false);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -175,6 +183,7 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
 
 provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
+provide('isEditMode', isEditMode);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -200,7 +209,7 @@ const isEditableByCurrentUser = computed(
 );
 
 const reportingPeriodsPerFramework = computed(() =>
-  groupReportingPeriodsPerFrameworkForCompany(
+  groupReportingPeriodsPerFramework(
     dataMetaInformation.value.map((meta) => ({
       metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod },
     }))
@@ -487,6 +496,10 @@ function downloadData(): void {
       onDownloadDataset: handleDatasetDownload,
     },
   });
+}
+
+function toggleEditMode() {
+  isEditMode.value = !isEditMode.value;
 }
 </script>
 <style scoped>
