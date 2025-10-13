@@ -299,6 +299,8 @@ interface DocumentApi {
         documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
 
+    // Do not use PreAuthorize for the following endpoint, as it shall be called on the company cockpit page even for unauthenticated users.
+
     /**
      * Search for document meta information by document ID. Only results with QA status "Accepted" are returned.
      * @param companyId The company ID to filter by, ignored if null.
@@ -340,7 +342,6 @@ interface DocumentApi {
         value = ["/"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun searchForDocumentMetaInformation(
         @Parameter(
             name = "companyId",
