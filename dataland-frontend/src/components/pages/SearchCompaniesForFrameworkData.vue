@@ -31,12 +31,6 @@
 
         <div v-if="!isSearchBarContainerCollapsed" class="button-container">
           <PrimeButton
-            label="BULK DATA REQUEST"
-            data-test="bulkDataRequestButton"
-            @click="routeToBulkDataRequest()"
-            icon="pi pi-file"
-          />
-          <PrimeButton
             v-if="hasUserUploaderRights"
             icon="pi pi-plus"
             label="NEW DATASET"
@@ -176,12 +170,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Redirect to the bulk data request page
-     */
-    routeToBulkDataRequest() {
-      void router.push('/bulkdatarequest');
-    },
     /**
      * Redirects to the new dataset page
      */

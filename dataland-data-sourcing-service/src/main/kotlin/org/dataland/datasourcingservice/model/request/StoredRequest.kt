@@ -22,30 +22,6 @@ data class StoredRequest(
     val state: RequestState,
     val dataSourcingEntityId: String? = null,
 ) {
-    companion object {
-        /**
-         * Converts a RequestEntity to a StoredDataRequest.
-         *
-         * @param entity The RequestEntity to convert.
-         * @return The corresponding StoredDataRequest.
-         */
-        fun fromRequestEntity(entity: RequestEntity): StoredRequest =
-            StoredRequest(
-                id = entity.id.toString(),
-                companyId = entity.companyId.toString(),
-                reportingPeriod = entity.reportingPeriod,
-                dataType = entity.dataType,
-                userId = entity.userId.toString(),
-                creationTimeStamp = entity.creationTimestamp,
-                memberComment = entity.memberComment,
-                adminComment = entity.adminComment,
-                lastModifiedDate = entity.lastModifiedDate,
-                requestPriority = entity.requestPriority,
-                state = entity.state,
-                dataSourcingEntityId = entity.dataSourcingEntity?.dataSourcingId.toString(),
-            )
-    }
-
     /**
      * Converts this StoredDataRequest to a RequestEntity.
      *

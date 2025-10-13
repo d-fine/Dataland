@@ -374,7 +374,7 @@ export default defineComponent({
             this.searchBarInputCompanySearchString === '' ? undefined : this.searchBarInputCompanySearchString;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
-            await apiClientProvider.apiClients.requestController.getDataRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
@@ -390,7 +390,7 @@ export default defineComponent({
             )
           ).data;
           this.totalRecords = (
-            await apiClientProvider.apiClients.requestController.getNumberOfRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,

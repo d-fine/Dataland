@@ -161,7 +161,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           const response = await new ApiClientProvider(
             this.getKeycloakPromise()
-          ).apiClients.requestController.getDataRequestById(this.dataRequestId);
+          ).apiClients.communityManagerRequestController.getDataRequestById(this.dataRequestId);
           this.messageHistory = response.data.messageHistory;
         }
       } catch (error) {

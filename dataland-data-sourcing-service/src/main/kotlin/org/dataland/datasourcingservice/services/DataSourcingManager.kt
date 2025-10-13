@@ -1,9 +1,6 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentControllerApi
-import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
@@ -32,23 +29,13 @@ class DataSourcingManager
     constructor(
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val documentControllerApi: DocumentControllerApi,
+        private val dataSourcingValidator: DataSourcingValidator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         private fun getFullyFetchedDataSourcingEntityById(dataSourcingEntityId: UUID): DataSourcingEntity =
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
-
-        private fun getFullyFetchedDataSourcingEntityByDataDimension(
-            companyId: UUID,
-            dataType: String,
-            reportingPeriod: String,
-        ): DataSourcingEntity =
-            dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(companyId, dataType, reportingPeriod)
-                ?: throw DataSourcingNotFoundApiException(
-                    companyId, reportingPeriod, dataType,
-                )
 
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
@@ -60,30 +47,6 @@ class DataSourcingManager
             getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
                 .toStoredDataSourcing()
                 .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
-
-        /**
-         * Returns the unique StoredDataSourcing object for the given company ID, reporting period and
-         * data type. Throws a DataSourcingNotFoundApiException if no such object exists.
-         * @param companyId of the stored data sourcing to retrieve
-         * @param reportingPeriod of the stored data sourcing to retrieve
-         * @param dataType of the stored data sourcing to retrieve
-         * @return the associated StoredDataSourcing object
-         */
-        @Transactional(readOnly = true)
-        fun getStoredDataSourcing(
-            companyId: UUID,
-            reportingPeriod: String,
-            dataType: String,
-        ): StoredDataSourcing =
-            getFullyFetchedDataSourcingEntityByDataDimension(companyId, dataType, reportingPeriod)
-                .toStoredDataSourcing()
-                .also {
-                    logger
-                        .info(
-                            "Get data sourcing entity with companyId: $companyId, reportingPeriod: $reportingPeriod," +
-                                " dataType: $dataType",
-                        )
-                }
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
@@ -150,7 +113,7 @@ class DataSourcingManager
         ) {
             if (state == null) return
             dataSourcingEntityWithFetchedRequests.state = state
-            if (state in setOf(DataSourcingState.Answered, DataSourcingState.NonSourceable)) {
+            if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
@@ -195,14 +158,7 @@ class DataSourcingManager
             appendDocuments: Boolean,
         ): ReducedDataSourcing {
             documentIds.forEach {
-                try {
-                    documentControllerApi.checkDocument(it)
-                } catch (_: ClientException) {
-                    throw ResourceNotFoundApiException(
-                        summary = "Document with id $it not found.",
-                        message = "The document with id $it does not exist on Dataland.",
-                    )
-                }
+                dataSourcingValidator.validateDocumentId(it)
             }
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             val newDocumentsIds = if (!appendDocuments) documentIds else dataSourcingEntity.documentIds + documentIds
@@ -278,8 +234,8 @@ class DataSourcingManager
         @Transactional
         fun patchProviderAndAdminComment(
             dataSourcingEntityId: UUID,
-            documentCollector: String?,
-            dataExtractor: String?,
+            documentCollector: UUID?,
+            dataExtractor: UUID?,
             adminComment: String?,
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
@@ -290,8 +246,8 @@ class DataSourcingManager
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
-                    documentCollector = documentCollector?.let { UUID.fromString(it) },
-                    dataExtractor = dataExtractor?.let { UUID.fromString(it) },
+                    documentCollector = documentCollector,
+                    dataExtractor = dataExtractor,
                     adminComment = adminComment,
                 ),
             ).toStoredDataSourcing()
@@ -324,22 +280,13 @@ class DataSourcingManager
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveDataSourcingHistory(id: String): List<DataSourcingWithoutReferences> {
-            val uuid =
-                try {
-                    UUID.fromString(id)
-                } catch (_: IllegalArgumentException) {
-                    throw InvalidInputApiException(
-                        "Invalid UUID format for id: $id",
-                        message = "Invalid UUID format for id: $id, please provide a valid UUID string.",
-                    )
-                }
+        fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             return dataRevisionRepository
-                .listDataSourcingRevisionsById(uuid)
+                .listDataSourcingRevisionsById(id)
                 .map { it.toDataSourcingWithoutReferences() }
                 .ifEmpty {
-                    throw DataSourcingNotFoundApiException(uuid)
+                    throw DataSourcingNotFoundApiException(id)
                 }
         }
     }
