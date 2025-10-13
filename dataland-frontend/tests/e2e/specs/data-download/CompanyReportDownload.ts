@@ -12,7 +12,7 @@ import {
 } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
-import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUpload.ts';
+import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
 
