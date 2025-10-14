@@ -1,8 +1,8 @@
 {
-  "id" : "customEnumCompanyExchangeStatus",
+  "id" : "extendedEnumCompanyExchangeStatus",
   "name" : "Company exchange status data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source storing the exchange status of the company.",
-  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.CustomCompanyExchangeStatusDataPoint",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.enums.ExtendedCompanyExchangeStatusDataPoint",
   "schema" : {
     "value" : "String",
     "quality" : "QualityOptions",
