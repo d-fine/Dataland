@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.DataPointMetaInformationReposit
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.mockito.kotlin.mock
+import java.time.LocalDate
 import java.util.UUID
 
 const val DEFAULT_REPORTING_PERIOD = "2023"
@@ -43,6 +44,8 @@ class DataBaseCreationUtils(
         companyLegalForm: String? = null,
         headquarters: String = "Berlin",
         headquartersPostalCode: String? = null,
+        fiscalYearEnd: LocalDate? = null,
+        reportingPeriodShift: Int? = null,
         sector: String? = null,
         sectorCodeWz: String? = null,
         identifiers: MutableList<CompanyIdentifierEntity> = mutableListOf(),
@@ -62,6 +65,8 @@ class DataBaseCreationUtils(
                 companyLegalForm = companyLegalForm,
                 headquarters = headquarters,
                 headquartersPostalCode = headquartersPostalCode,
+                fiscalYearEnd = fiscalYearEnd,
+                reportingPeriodShift = reportingPeriodShift,
                 sector = sector,
                 sectorCodeWz = sectorCodeWz,
                 identifiers = identifiers,

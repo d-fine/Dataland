@@ -84,7 +84,7 @@ class DataAvailabilityCheckerTest {
     private val brokenReportingPeriod =
         BasicDataPointDimensions(companyId = companyId, dataPointType = dataPointType, reportingPeriod = "0")
     private val allDimensions = listOf(dataPointDimension, brokenCompanyId, brokenReportingPeriod)
-//ToDo update object
+
     @BeforeEach
     fun setUp() {
         dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService)

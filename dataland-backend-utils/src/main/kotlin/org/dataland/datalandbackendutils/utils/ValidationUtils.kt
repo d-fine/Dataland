@@ -1,7 +1,7 @@
 package org.dataland.datalandbackendutils.utils
 
-import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
@@ -32,6 +32,7 @@ object ValidationUtils {
             return false
         }
     }
+
     /**
      * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
      * @param testString the string to convert
