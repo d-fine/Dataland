@@ -9,7 +9,7 @@
   >
     <div class="mb-2">
       <DateFormField
-        :name="name"
+        :name="'value'"
         :validation-label="validationLabel"
         :validation="validation"
         :placeholder="placeholder"
