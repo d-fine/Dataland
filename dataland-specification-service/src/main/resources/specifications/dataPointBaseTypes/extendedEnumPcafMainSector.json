@@ -1,5 +1,5 @@
 {
-  "id" : "customEnumPcafMainSector",
+  "id" : "extendedEnumPcafMainSector",
   "name" : "General PCAF sector data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source storing the main commercial sector.",
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.enums.ExtendedPcafMainSectorDataPoint",
