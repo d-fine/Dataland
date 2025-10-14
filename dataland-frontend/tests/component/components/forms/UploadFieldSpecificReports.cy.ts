@@ -100,7 +100,7 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
   const hashForFileWithOneByteSize = '6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d';
   const hashForFileWithTwoBytesSize = '96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7';
 
-  it.only('Check if the document uploads in Sfdr upload page do not interfere', () => {
+  it('Check if the document uploads in Sfdr upload page do not interfere', () => {
     const setOfHashesThatShouldBeCheckedForExistence = new Set([
       hashForFileWithOneByteSize,
       hashForFileWithTwoBytesSize,
