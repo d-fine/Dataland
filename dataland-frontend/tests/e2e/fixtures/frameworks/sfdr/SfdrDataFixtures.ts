@@ -2,7 +2,7 @@
 import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
-import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator';
+import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import { SfdrGeneralGeneralFiscalYearDeviationOptions, type SfdrData } from '@clients/backend';
 

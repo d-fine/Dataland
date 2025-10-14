@@ -117,6 +117,8 @@ class CompanyAlterationManager
                     companyLegalForm = companyInformation.companyLegalForm,
                     headquarters = companyInformation.headquarters,
                     headquartersPostalCode = companyInformation.headquartersPostalCode,
+                    fiscalYearEnd = companyInformation.fiscalYearEnd,
+                    reportingPeriodShift = companyInformation.reportingPeriodShift,
                     sector = companyInformation.sector,
                     sectorCodeWz = companyInformation.sectorCodeWz,
                     identifiers = mutableListOf(),

@@ -116,7 +116,7 @@ function toggleSection(idx: number): void {
 function expandSectionsOnPageLoad(): void {
   for (let i = 0; i < props.config.length; i++) {
     const element = props.config[i];
-    if (element.type == 'section' && element.expandOnPageLoad) {
+    if (element && element.type == 'section' && element.expandOnPageLoad) {
       expandedSections.value.add(i);
     }
   }
@@ -133,6 +133,7 @@ const columnWidthStyle = computed(() => {
  * @returns a boolean stating if the crossed-eye-symbol shall be added to the section label
  */
 function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>): boolean {
+  if (!props.dataAndMetaInfo[0]) return false;
   const datasetThatIsBeingReviewed = props.dataAndMetaInfo[0].data;
   if (element.areThisSectionAndAllParentSectionsDisplayedForTheDataset) {
     return !element.areThisSectionAndAllParentSectionsDisplayedForTheDataset(datasetThatIsBeingReviewed);

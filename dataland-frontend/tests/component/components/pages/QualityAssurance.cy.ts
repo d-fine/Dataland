@@ -81,7 +81,7 @@ describe('Component tests for the Quality Assurance page', () => {
       const preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       LksgFixture = getPreparedFixture('LkSG-date-2023-04-18', preparedLksgFixtures);
       cy.fixture('MetaInfoDataMocksForOneCompany.json').then((metaInfos: Array<DataMetaInformation>) => {
-        mockDataMetaInfoForActiveDataset = metaInfos[0];
+        mockDataMetaInfoForActiveDataset = metaInfos[0]!;
       });
     });
   });

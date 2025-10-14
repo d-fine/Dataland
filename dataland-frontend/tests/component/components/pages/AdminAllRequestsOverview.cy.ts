@@ -514,8 +514,8 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Check the functionality of the rowClick event', () => {
     cy.spy(router, 'push').as('routerPush');
     mountAdminAllRequestsPageWithMocks().then(() => {
-      const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
-
+      const lastMockRequest = mockRequests.at(-1);
+      const dataRequestIdOfLastElement = lastMockRequest!.dataRequestId;
       cy.get('[data-test=requests-datatable]').within(() => {
         cy.get('tr:last').click();
       });

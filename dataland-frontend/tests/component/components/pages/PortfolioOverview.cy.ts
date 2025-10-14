@@ -25,10 +25,11 @@ describe('Check the portfolio overview view', function (): void {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.wait('@basePortfolios').then(() => {
+        expect(basePortfolioNames).to.have.length.greaterThan(0);
         cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
         cy.get('[data-test="portfolios"] [data-p-active="true"]').should(
           'contain',
-          basePortfolioNames[0].portfolioName
+          basePortfolioNames[0]!.portfolioName
         );
       });
     });

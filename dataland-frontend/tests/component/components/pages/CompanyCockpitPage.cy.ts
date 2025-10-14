@@ -63,7 +63,7 @@ describe('Component test for the company cockpit', () => {
     cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      companyInformationForTest = lksgFixtures[0].companyInformation;
+      companyInformationForTest = lksgFixtures[0]!.companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<

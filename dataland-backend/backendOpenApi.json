@@ -5769,6 +5769,20 @@
             "nullable": true,
             "example": "10123"
           },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The fiscal year-end of the company.",
+            "format": "date",
+            "nullable": true,
+            "example": "2024-06-30"
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "Difference between fiscal year-end and reporting period.",
+            "format": "int32",
+            "nullable": true,
+            "example": -1
+          },
           "sector": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
@@ -16649,6 +16663,20 @@
             "description": "The postal code of the headquarters.",
             "nullable": true,
             "example": "10123"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The fiscal year-end of the company.",
+            "format": "date",
+            "nullable": true,
+            "example": "2024-06-30"
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "Difference between fiscal year-end and reporting period.",
+            "format": "int32",
+            "nullable": true,
+            "example": -1
           },
           "sector": {
             "type": "string",

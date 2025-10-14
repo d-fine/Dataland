@@ -14,7 +14,7 @@ import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } f
  * @returns the converted string in camel case
  */
 export function convertKebabCaseToCamelCase(rawText: string): string {
-  return rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+  return rawText.replaceAll(/-([a-z])/g, (_, char: string) => char.toUpperCase());
 }
 
 /**
@@ -34,7 +34,7 @@ export function convertKebabCaseToPascalCase(rawText: string): string {
  */
 function convertCamelCaseToSentenceCase(rawText: string): string {
   // Split the sting to words
-  const processedText = rawText.replace(/((?!^)[A-Z])/g, ' $1');
+  const processedText = rawText.replaceAll(/((?!^)[A-Z])/g, ' $1');
   // uppercase the first letter of the first word
   return processedText.charAt(0).toUpperCase() + processedText.slice(1);
 }
@@ -47,7 +47,7 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
 export function convertCamelCaseToWordsWithSpaces(rawText: string): string {
   return rawText
     .toString()
-    .replace(/([A-Z])/g, ' $1')
+    .replaceAll(/([A-Z])/g, ' $1')
     .trim();
 }
 
@@ -94,7 +94,7 @@ function humanizeViaMapping(rawText: string): string {
   };
 
   const lowerCaseText = rawText.toLowerCase();
-  return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : '';
+  return mappingObject[lowerCaseText] ?? '';
 }
 
 /**

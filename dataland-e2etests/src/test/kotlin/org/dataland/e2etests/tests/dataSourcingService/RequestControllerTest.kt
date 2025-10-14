@@ -31,12 +31,12 @@ class RequestControllerTest {
     }
 
     private fun postRequestForUserAndVerifyRetrieval(request: SingleRequest) {
-        val user = TechnicalUser.Reader
+        val user = TechnicalUser.PremiumUser
         val timeBeforeUpload = Instant.now().toEpochMilli()
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(request, user.technicalUserId).requestId
 
         val storedRequest =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+            GlobalAuth.withTechnicalUser(TechnicalUser.PremiumUser) {
                 apiAccessor.dataSourcingRequestControllerApi.getRequest(requestId)
             }
 
@@ -53,7 +53,7 @@ class RequestControllerTest {
 
     @Test
     fun `post a request and verify that it can be retrieved`() {
-        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+        GlobalAuth.withTechnicalUser(TechnicalUser.PremiumUser) {
             postRequestForUserAndVerifyRetrieval(dummyRequest)
         }
     }
@@ -67,7 +67,7 @@ class RequestControllerTest {
 
     @Test
     fun `post a request with invalid company ID and verify that it is rejected`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val invalidRequest = SingleRequest("invalidCompanyId", "sfdr", "2023", "dummy request")
         val exception =
             assertThrows<ClientException> {
@@ -77,8 +77,8 @@ class RequestControllerTest {
     }
 
     @Test
-    fun `post a request in the name of another user as reader and verify that it is forbidden`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+    fun `post a request in the name of another user as PremiumUser and verify that it is forbidden`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataSourcingRequestControllerApi
@@ -129,7 +129,7 @@ class RequestControllerTest {
 
     @Test
     fun `verify that historization works for data requests`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
 
         lateinit var requestHistory: List<StoredRequest>

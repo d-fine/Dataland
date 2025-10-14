@@ -54,12 +54,12 @@ function generateDocumentMetaInformation(
   reportingPeriod: string;
 } {
   return {
-    documentId: dummyDocumentIds[index],
+    documentId: dummyDocumentIds[index]!,
     documentName: 'test_' + (query['documentCategories'] ?? 'document') + `_${index + 1}`,
     documentCategory: (query['documentCategories'] as string) ?? 'AnnualReport',
     companyIds: [(query['companyId'] as string) ?? '???'],
     publicationDate: dummyPublicationDates[index],
-    reportingPeriod: dummyReportingPeriods[index],
+    reportingPeriod: dummyReportingPeriods[index]!,
   };
 }
 
