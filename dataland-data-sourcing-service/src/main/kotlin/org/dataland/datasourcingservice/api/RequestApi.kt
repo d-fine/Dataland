@@ -376,6 +376,7 @@ interface RequestApi {
         value = ["/count"],
         produces = ["text/plain"],
     )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getNumberOfRequests(
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
