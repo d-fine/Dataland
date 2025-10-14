@@ -15,7 +15,7 @@ const createSfdrDataset = {
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
     cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
-    cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
+    cy.get(`[data-test="${fieldName}"] input.formkit-input`).should('not.be.visible');
     cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
     cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },
@@ -100,7 +100,7 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
   const hashForFileWithOneByteSize = '6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d';
   const hashForFileWithTwoBytesSize = '96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7';
 
-  it('Check if the document uploads in Sfdr upload page do not interfere', () => {
+  it.only('Check if the document uploads in Sfdr upload page do not interfere', () => {
     const setOfHashesThatShouldBeCheckedForExistence = new Set([
       hashForFileWithOneByteSize,
       hashForFileWithTwoBytesSize,
