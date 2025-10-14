@@ -115,4 +115,19 @@ class RequestController
                     dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
                 ),
             )
+
+        override fun getNumberOfRequests(
+            companyId: String?,
+            dataType: String?,
+            reportingPeriod: String?,
+            requestState: RequestState?,
+        ): ResponseEntity<Int> =
+            ResponseEntity.ok(
+                requestQueryManager.getNumberOfRequests(
+                    companyId?.let {
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                    },
+                    dataType, reportingPeriod, requestState,
+                ),
+            )
     }

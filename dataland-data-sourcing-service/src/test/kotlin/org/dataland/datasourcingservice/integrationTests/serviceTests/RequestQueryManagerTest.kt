@@ -77,7 +77,15 @@ class RequestQueryManagerTest
                     reportingPeriod = reportingPeriod,
                     state = requestState?.let { RequestState.valueOf(it) },
                 )
+            val actualNumberOfResultsAccordingToEndpoint =
+                requestQueryManager.getNumberOfRequests(
+                    companyId = companyId?.let { UUID.fromString(it) },
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    state = requestState?.let { RequestState.valueOf(it) },
+                )
             assertEquals(expectedResults.size, actualResults.size)
+            assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
             expectedResults.forEach {
                 assert(it in actualResults) { "Expected result $it not found in actual results." }
             }

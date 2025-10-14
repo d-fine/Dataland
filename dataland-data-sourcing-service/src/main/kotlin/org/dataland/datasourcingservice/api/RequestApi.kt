@@ -298,7 +298,7 @@ interface RequestApi {
             ApiResponse(
                 responseCode = "400",
                 description = "At least one of your provided filters is not of the correct format.",
-                content = [Content(schema = Schema())],
+                content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
                 responseCode = "403",
@@ -347,4 +347,59 @@ interface RequestApi {
         @RequestParam(defaultValue = "0")
         chunkIndex: Int,
     ): ResponseEntity<List<StoredRequest>>
+
+    /**
+     * Get the number of requests based on filters.
+     */
+    @Operation(
+        summary = "Get the number of requests based on filters.",
+        description =
+            "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, " +
+                "data type, reporting period or state.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully queried the number of requests."),
+            ApiResponse(
+                responseCode = "400",
+                description = "At least one of your provided filters is not of the correct format.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to query the number of requests.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(
+        value = ["/count"],
+        produces = ["text/plain"],
+    )
+    fun getNumberOfRequests(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        companyId: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        dataType: String? = null,
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        reportingPeriod: String? = null,
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        requestState: RequestState? = null,
+    ): ResponseEntity<Int>
 }

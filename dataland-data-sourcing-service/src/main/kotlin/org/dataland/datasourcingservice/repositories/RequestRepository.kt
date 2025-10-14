@@ -77,4 +77,27 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "(request.id IN :requestIds)",
     )
     fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
+
+    /**
+     * Return the number of requests that match the optional filters.
+     * @param companyId to filter by
+     * @param dataType to filter by
+     * @param reportingPeriod to filter by
+     * @param state to filter by
+     * @return number of matching requests
+     */
+    @Query(
+        "SELECT COUNT(request) FROM RequestEntity request " +
+            "WHERE " +
+            "(:companyId IS NULL OR request.companyId = :companyId) AND " +
+            "(:dataType IS NULL OR request.dataType = :dataType) AND " +
+            "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
+            "(:state IS NULL OR request.state = :state)",
+    )
+    fun getNumberOfRequests(
+        companyId: UUID?,
+        dataType: String?,
+        reportingPeriod: String?,
+        state: RequestState?,
+    ): Int
 }

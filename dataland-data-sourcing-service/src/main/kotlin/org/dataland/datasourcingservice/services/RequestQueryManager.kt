@@ -25,7 +25,7 @@ class RequestQueryManager(
      * @param state to filter by
      * @return list of matching StoredRequest objects
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun searchRequests(
         companyId: UUID?,
         dataType: String?,
@@ -54,4 +54,20 @@ class RequestQueryManager(
                         ),
                     ).content,
             ).map { it.toStoredDataRequest() }
+
+    /**
+     * Get the number of requests that match the optional filters.
+     * @param companyId to filter by
+     * @param dataType to filter by
+     * @param reportingPeriod to filter by
+     * @param state to filter by
+     * @return the number of matching requests
+     */
+    @Transactional(readOnly = true)
+    fun getNumberOfRequests(
+        companyId: UUID?,
+        dataType: String?,
+        reportingPeriod: String?,
+        state: RequestState?,
+    ): Int = requestRepository.getNumberOfRequests(companyId, dataType, reportingPeriod, state)
 }
