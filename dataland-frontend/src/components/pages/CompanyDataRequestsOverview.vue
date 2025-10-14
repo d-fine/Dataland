@@ -258,7 +258,7 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
-            const response = await apiClientProvider.apiClients.requestController.getDataRequests(
+            const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
               undefined,
               undefined,
               undefined,
@@ -381,10 +381,9 @@ export default defineComponent({
     async updateAccessStatus(requestId: string, newAccessStatus: AccessStatus) {
       try {
         if (this.getKeycloakPromise) {
-          await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
-            requestId,
-            { accessStatus: newAccessStatus }
-          );
+          await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).apiClients.communityManagerRequestController.patchDataRequest(requestId, { accessStatus: newAccessStatus });
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();
         }

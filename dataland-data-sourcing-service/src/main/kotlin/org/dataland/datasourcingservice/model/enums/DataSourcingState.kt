@@ -15,5 +15,5 @@ enum class DataSourcingState {
     DataExtraction,
     DataVerification,
     NonSourceable,
-    Answered,
+    Done,
 }

@@ -9,7 +9,7 @@ import { type FrontendFrameworkDefinition } from '@/frameworks/BaseFrameworkDefi
 export function getFrontendFrameworkDefinition(identifier: string): FrontendFrameworkDefinition<object> | undefined {
   for (const key in FrontendFrameworkDefinitions) {
     const frameworkDefinition = FrontendFrameworkDefinitions[key];
-    if (frameworkDefinition.identifier === identifier) {
+    if (frameworkDefinition?.identifier === identifier) {
       return frameworkDefinition;
     }
   }

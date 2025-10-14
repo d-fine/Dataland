@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("DataRequestUpdater")
 class CommunityManagerListener(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val investorRelationsManager: InvestorRelationsManager,
 ) {
@@ -66,7 +64,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
         val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -117,7 +115,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
-        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload, objectMapper)
+        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload)
         val dataId = privateDataUploadMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -188,7 +186,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload, objectMapper)
+        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)

@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.moshi.kotlin)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
     implementation(libs.jackson.kotlin)
@@ -94,10 +95,35 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the data sourcing service."
+    group = "clients"
+    val dataSourcingServiceClientDestinationPackage = "org.dataland.dataSourcingService.openApiClient"
+    input = project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/data-sourcing-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(dataSourcingServiceClientDestinationPackage)
+    modelPackage.set("$dataSourcingServiceClientDestinationPackage.model")
+    apiPackage.set("$dataSourcingServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Generate all required clients"
     group = "clients"
     dependsOn("generateBackendClient")
+    dependsOn("generateDataSourcingServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -133,6 +159,7 @@ jacoco {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
 }
 
 ktlint {

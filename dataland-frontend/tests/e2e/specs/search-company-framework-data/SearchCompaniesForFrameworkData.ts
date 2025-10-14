@@ -99,7 +99,7 @@ describeIf(
           () => {
             cy.visitAndCheckAppMount('/companies');
             verifySearchResultTableExists();
-            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0].companyInformation.companyName;
+            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation.companyName;
             checkPermIdToolTip();
             executeCompanySearchWithStandardSearchBar(testCompanyName);
             clickFirstSearchResult();
@@ -113,12 +113,13 @@ describeIf(
 
         it('Execute a company Search by identifier and assure that the company is found', () => {
           cy.visitAndCheckAppMount('/companies');
-          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
+          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation;
           const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
-            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0)
+            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it]!.length > 0)
           );
-          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
+          const singleCompanyIdentifier =
+            testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
           const expectedCompanyName = testCompanyInformation.companyName;
           executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
@@ -128,7 +129,7 @@ describeIf(
 
     it('Search for company by its alternative name', () => {
       const testCompany = getCompanyWithAlternativeName();
-      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
+      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0]!;
       cy.visitAndCheckAppMount('/companies');
       executeCompanySearchWithStandardSearchBar(searchValue);
     });
@@ -141,7 +142,7 @@ describeIf(
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+              `/companies/${basicCompanyInformations[0]!.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
             );
             cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
             cy.get('input[id=company_search_bar_standard]')
@@ -156,6 +157,7 @@ describeIf(
     it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
+
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
@@ -174,6 +176,9 @@ describeIf(
               `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
             );
             cy.get('.p-autocomplete-list-container').should('exist');
+            cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
+            cy.get('input[id=search-bar-input]').should('be.focused');
+            cy.wait(Cypress.env('short_timeout_in_ms') as number);
             cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
@@ -184,15 +189,11 @@ describeIf(
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
-            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
-            assertSearchedCompanyNameIsUnique(testCompany);
-
-            cy.get('.p-autocomplete-option')
-              .eq(0)
-              .should('contain.text', testCompany.companyName)
-              .click({ force: true });
-
-            validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
+            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany!.companyName}`);
+            assertSearchedCompanyNameIsUnique(testCompany!);
+            const testCompanyName = testCompany!.companyName;
+            cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
+            validateCompanyCockpitPage(testCompanyName, testCompany!.companyId);
           }
         );
       });

@@ -1,6 +1,5 @@
 package org.dataland.datalandemailservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.email.build
@@ -36,7 +35,6 @@ class EmailMessageListener
     @Autowired
     constructor(
         private val emailSender: EmailSender,
-        private val objectMapper: ObjectMapper,
         private val emailContactService: EmailContactService,
         private val emailSubscriptionTracker: EmailSubscriptionTracker,
         @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
@@ -84,7 +82,7 @@ class EmailMessageListener
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.SEND_EMAIL)
 
-            val message = MessageQueueUtils.readMessagePayload<EmailMessage>(jsonString, objectMapper)
+            val message = MessageQueueUtils.readMessagePayload<EmailMessage>(jsonString)
             logger.info(
                 "Received email message of type ${message.typedEmailContent::class} with correlationId $correlationId.",
             )

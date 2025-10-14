@@ -12,7 +12,7 @@ before(function () {
     const customCompanyName = 'ABCDEFG' + highlightedSubString + 'HIJKLMNOP';
     modifiedMockDataSearchResponse = mockDataSearchResponse.slice(0, 4);
     modifiedMockDataSearchResponse[0] = {
-      ...modifiedMockDataSearchResponse[0],
+      ...modifiedMockDataSearchResponse[0]!,
       companyName: customCompanyName,
     };
   });

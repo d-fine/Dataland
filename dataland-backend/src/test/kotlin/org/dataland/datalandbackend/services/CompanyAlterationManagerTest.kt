@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 
 @DefaultMocks
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -87,12 +88,15 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
         val newCompanyContactDetails = listOf("new@company.com", "another_new@company.com")
+        val newFiscalYearEnd = LocalDate.of(2025, 6, 30)
         val patch =
             CompanyInformationPatch(
                 companyName = newName,
                 headquarters = newHeadquarters,
                 companyAlternativeNames = newAlternativeNames,
                 companyContactDetails = newCompanyContactDetails,
+                fiscalYearEnd = newFiscalYearEnd,
+                reportingPeriodShift = null,
                 sectorCodeWz = null,
             )
 

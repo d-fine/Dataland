@@ -68,7 +68,7 @@ describeIf(
 
     it('shows tabs on data requests pages', () => {
       ensureLoggedIn(reader_name, reader_pw);
-      visitPagesAndCheckTabsVisibility(['/bulkdatarequest', '/requests'], true);
+      visitPagesAndCheckTabsVisibility(['/requests'], true);
     });
   }
 );

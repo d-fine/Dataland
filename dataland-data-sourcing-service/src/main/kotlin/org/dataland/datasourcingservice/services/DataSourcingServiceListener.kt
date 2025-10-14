@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -10,9 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
-import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -35,7 +32,7 @@ class DataSourcingServiceListener
     constructor(
         private val metaDataControllerApi: MetaDataControllerApi,
         private val dataSourcingManager: DataSourcingManager,
-        private val objectMapper: ObjectMapper,
+        private val dataSourcingQueryManager: DataSourcingQueryManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -66,7 +63,7 @@ class DataSourcingServiceListener
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-            val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+            val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
             val dataId = dataUploadedPayload.dataId
             val updatedQaStatus = dataUploadedPayload.updatedQaStatus
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
@@ -74,16 +71,18 @@ class DataSourcingServiceListener
             val reportingPeriod = dataMetaInformation.reportingPeriod
             val dataType = dataMetaInformation.dataType
 
-            val storedDataSourcing: StoredDataSourcing
+            val storedDataSourcing =
+                dataSourcingQueryManager
+                    .searchDataSourcings(
+                        companyId = companyId,
+                        dataType = dataType.toString(),
+                        reportingPeriod = reportingPeriod,
+                        state = null,
+                        chunkSize = 1,
+                        chunkIndex = 0,
+                    ).firstOrNull()
 
-            try {
-                storedDataSourcing =
-                    dataSourcingManager.getStoredDataSourcing(
-                        companyId,
-                        reportingPeriod,
-                        dataType.toString(),
-                    )
-            } catch (_: DataSourcingNotFoundApiException) {
+            if (storedDataSourcing == null) {
                 logger.info(
                     "Received QA status update message for dataset with ID $dataId. However, no data sourcing " +
                         "object exists for the associated company ID $companyId, reporting period $reportingPeriod and " +
@@ -96,12 +95,12 @@ class DataSourcingServiceListener
                 QaStatus.Accepted -> {
                     dataSourcingManager.patchDataSourcingEntityById(
                         UUID.fromString(storedDataSourcing.dataSourcingId),
-                        DataSourcingPatch(state = DataSourcingState.Answered),
+                        DataSourcingPatch(state = DataSourcingState.Done),
                     )
                 }
 
                 QaStatus.Pending -> {
-                    if (storedDataSourcing.state == DataSourcingState.Answered) return
+                    if (storedDataSourcing.state == DataSourcingState.Done) return
                     dataSourcingManager.patchDataSourcingEntityById(
                         UUID.fromString(storedDataSourcing.dataSourcingId),
                         DataSourcingPatch(state = DataSourcingState.DataVerification),

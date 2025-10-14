@@ -12,7 +12,7 @@ import {
 } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
-import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUpload.ts';
+import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
 
@@ -51,10 +51,10 @@ describeIf(
         );
       });
 
-      cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, 'base64').then((base64String) => {
-        const fileBuffer = Buffer.from(base64String, 'base64');
+      cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
+        const arrayBuffer = Uint8Array.from(buffer).buffer;
         getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-          documentMetaInfoResponse = await uploadDocumentViaApi(token, fileBuffer, documentName);
+          documentMetaInfoResponse = await uploadDocumentViaApi(token, arrayBuffer, documentName);
           return documentMetaInfoResponse;
         });
       });

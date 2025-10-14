@@ -22,6 +22,7 @@
           class="search-filter"
           data-test="reportingPeriod"
           v-model="availableReportingPeriods"
+          :updateModelType="'date'"
           placeholder="Search by reporting period"
           :showIcon="true"
           :manualInput="false"
@@ -147,6 +148,7 @@ import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import { defineComponent, inject } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -172,7 +174,7 @@ export default defineComponent({
   },
   data() {
     return {
-      apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
+      apiClientProvider: new ApiClientProvider(assertDefined(this.getKeycloakPromise)()),
       displayDataOfPage: [] as QaReviewResponse[],
       waitingForData: true,
       KEYCLOAK_ROLE_REVIEWER,

@@ -9,8 +9,8 @@
         <img :src="getInTouchSection.cards[1].icon" :alt="getInTouchSection.cards[1].title" />
       </div>
       <div class="getintouch__text">
-        <p class="getintouch__text-title">{{ getInTouchSection.cards[1].title }}</p>
-        <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
+        <p class="getintouch__text-title">{{ getInTouchSection.cards[1]!.title }}</p>
+        <p class="getintouch__text-text">{{ getInTouchSection.cards[1]!.text }}</p>
         <Button
           label="GET IN TOUCH"
           data-test="get-in-touch-button"

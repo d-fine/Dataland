@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.hibernate.envers.AuditReaderFactory
+import org.hibernate.envers.query.AuditEntity
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -32,8 +33,12 @@ class DataRevisionRepository(
     ): List<T> {
         val auditReader = AuditReaderFactory.get(entityManager)
 
-        val revisions = auditReader.getRevisions(classType, id)
-        val entityList = revisions.map { revision -> auditReader.find(classType, id, revision) }
+        val entityList =
+            auditReader
+                .createQuery()
+                .forRevisionsOfEntity(classType, true, false)
+                .add(AuditEntity.id().eq(id))
+                .resultList as List<T>
 
         return entityList
     }

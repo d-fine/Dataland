@@ -24,7 +24,7 @@ export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureDat
  * @returns the fixture
  */
 function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'eutaxonomy-financials-dataset-with-no-null-fields';
   return newFixture;
 }
@@ -34,7 +34,7 @@ function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData
  * @returns the fixture
  */
 function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0]!;
   const fullDataset = generateEutaxonomyFinancialsData(0);
   newFixture.companyInformation.companyName = 'lightweight-eu-taxo-financials-dataset';
   newFixture.t.general = fullDataset.general;
@@ -52,7 +52,7 @@ function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFin
  * @returns the fixture
  */
 function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'TestForIncompleteReferencedReport';
   if (newFixture.t.general?.general?.referencedReports) {
     newFixture.t.general.general.referencedReports = null;
@@ -68,7 +68,7 @@ function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancia
  * @returns the fixture
  */
 function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0]!;
   const fullDataset = generateEutaxonomyFinancialsData(0);
   newFixture.companyInformation.companyName = 'minimalistic-all-field-types-dataset-for-blanket-test';
   newFixture.t.general = fullDataset.general;

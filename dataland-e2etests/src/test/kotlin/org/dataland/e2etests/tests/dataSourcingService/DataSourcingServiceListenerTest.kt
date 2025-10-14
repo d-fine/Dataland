@@ -50,7 +50,7 @@ class DataSourcingServiceListenerTest : DataSourcingTest() {
 
         ApiAwait.waitForData(
             supplier = { apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId) },
-            condition = { it.state == DataSourcingState.Answered },
+            condition = { it.state == DataSourcingState.Done },
         )
     }
 
@@ -59,14 +59,14 @@ class DataSourcingServiceListenerTest : DataSourcingTest() {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcing.dataSourcingId,
-                DataSourcingState.Answered,
+                DataSourcingState.Done,
             )
         }
         uploadDummyDataForDataSourcingObject()
         sleep(2000) // make sure events are processed throughout the system before proceeding
         val updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
         assertEquals(
-            DataSourcingState.Answered,
+            DataSourcingState.Done,
             updatedDataSourcingObject.state,
         )
     }

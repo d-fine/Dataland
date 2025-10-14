@@ -49,7 +49,7 @@ describe('Check the portfolio dialog', function (): void {
   });
 
   it('Should be possible to edit the portfolio', function (): void {
-    const validIdentifier = portfolioFixture.entries[0].companyName;
+    const validIdentifier = portfolioFixture.entries[0]!.companyName;
     const invalidIdentifier = 'INVALID-ID';
 
     cy.intercept('POST', '**/companies/validation', {
@@ -78,7 +78,7 @@ describe('Check the portfolio dialog', function (): void {
       cy.get('[data-test="company-identifiers-input"]').type(`${validIdentifier}, ${invalidIdentifier}`);
       cy.get('[data-test="portfolio-dialog-add-companies"]').click();
       cy.wait('@validateCompanies');
-      cy.get('[id="existing-company-identifiers"]').should('contain', portfolioFixture.entries[0].companyName);
+      cy.get('[id="existing-company-identifiers"]').should('contain', portfolioFixture.entries[0]!.companyName);
       cy.get('[data-test="invalidIdentifierErrorMessage"]').should('be.visible');
       cy.get('[data-test="company-identifiers-input"]').should('have.value', invalidIdentifier);
       cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
@@ -98,7 +98,7 @@ describe('Check the portfolio dialog', function (): void {
     cy.mountWithPlugins(PortfolioDialog, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('[data-test="company-identifiers-input"]').type(portfolioFixture.entries[0].companyName);
+      cy.get('[data-test="company-identifiers-input"]').type(portfolioFixture.entries[0]!.companyName);
       cy.get('[data-test="portfolio-dialog-add-companies"]').click();
       cy.wait('@validateCompanies').then(() => {
         // Check if error message is displayed

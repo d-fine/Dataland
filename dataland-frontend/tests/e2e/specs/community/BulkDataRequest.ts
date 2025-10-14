@@ -1,5 +1,6 @@
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
-import { type Interception } from 'cypress/types/net-stubbing';
+// @ts-ignore: Cypress types are internal; safe to ignore missing module
+import type { Interception } from 'cypress/types/net-stubbing.d.ts';
 import { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
@@ -100,7 +101,7 @@ describeIf(
     before(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
-        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
+        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId]![0]);
         testCompanyName = companyToUpload.companyName;
         await uploadCompanyViaApi(token, companyToUpload);
       });
