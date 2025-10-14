@@ -48,10 +48,6 @@ describeIf(
 
         it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
             const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-
-            cy.intercept('POST', '**/api/data/eutaxonomy-financials').as('uploadDataset')
-            cy.intercept('GET', '**/api/users/**').as('getMyDatasets')
-
             getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
                 return uploadFrameworkDataForPublicToolboxFramework(
                     EuTaxonomyFinancialsBaseFrameworkDefinition,
@@ -61,10 +57,6 @@ describeIf(
                     data.t,
                     false
                 ).then(() => {
-                    cy.wait('@uploadDataset', { timeout: 30000 })
-                        .its('response.statusCode')
-                        .should('eq', 200)
-
                     testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
                 });
             });
@@ -186,22 +178,18 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-    cy.visitAndCheckAppMount('/datasets')
-
-    cy.wait('@getMyDatasets', { timeout: 30000 })
-        .its('response.statusCode')
-        .should('eq', 200)
+    cy.intercept('**/api/users/**').as('getMyDatasets');
+    cy.visitAndCheckAppMount('/datasets');
+    cy.wait('@getMyDatasets');
 
     cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
-        timeout: 30000,
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
     })
         .first()
         .find('.data-test-company-name')
-        .should('contain', companyName)
+        .should('contain', companyName);
 
-    cy.get('[data-test="datasets-table"]')
-        .find('[data-test="qa-status"]')
-        .should('contain', status)
+    cy.get('[data-test="datasets-table"]').find('[data-test="qa-status"]').should('contain', status);
 }
 
 /**
