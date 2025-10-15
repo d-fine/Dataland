@@ -82,11 +82,14 @@ class RequestQueryManagerTest
                 )
             val actualNumberOfResultsAccordingToEndpoint =
                 requestQueryManager.getNumberOfRequests(
-                    companyId = companyId?.let { UUID.fromString(it) },
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    state = requestState?.let { RequestState.valueOf(it) },
-                    null,
+                    RequestSearchFilter<UUID>(
+                        companyId = companyId?.let { UUID.fromString(it) },
+                        dataTypes = dataType?.let { setOf(it) },
+                        reportingPeriods = reportingPeriod?.let { setOf(it) },
+                        userId = null,
+                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
+                        requestPriorities = null,
+                    ),
                 )
             assertEquals(expectedResults.size, actualResults.size)
             assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)

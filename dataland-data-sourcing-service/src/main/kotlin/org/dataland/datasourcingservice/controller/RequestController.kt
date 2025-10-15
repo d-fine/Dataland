@@ -130,19 +130,8 @@ class RequestController
                 ),
             )
 
-        override fun getNumberOfRequests(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: RequestState?,
-            requestPriority: RequestPriority?,
-        ): ResponseEntity<Int> =
+        override fun postRequestCountQuery(requestSearchFilter: RequestSearchFilter<String>): ResponseEntity<Int> =
             ResponseEntity.ok(
-                requestQueryManager.getNumberOfRequests(
-                    companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
-                    },
-                    dataType, reportingPeriod, requestState, requestPriority,
-                ),
+                requestQueryManager.getNumberOfRequests(convertToSearchFilterWithUUIDs(requestSearchFilter)),
             )
     }

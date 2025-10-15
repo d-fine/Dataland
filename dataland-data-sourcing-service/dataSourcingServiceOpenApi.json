@@ -190,6 +190,73 @@
         ]
       }
     },
+    "/requests/count": {
+      "post": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get the number of requests based on filters.",
+        "description": "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
+        "operationId": "postRequestCountQuery",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestSearchFilterString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully queried the number of requests.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "At least one of your provided filters is not of the correct format."
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to query the number of requests."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/bulk": {
       "post": {
         "tags": [
@@ -958,115 +1025,6 @@
           },
           "404": {
             "description": "The specified request ID does not exist."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/requests/count": {
-      "get": {
-        "tags": [
-          "request-controller"
-        ],
-        "summary": "Get the number of requests based on filters.",
-        "description": "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
-        "operationId": "getNumberOfRequests",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "sfdr"
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": 2023
-          },
-          {
-            "name": "requestState",
-            "in": "query",
-            "description": "The current state of the request.",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestState"
-            },
-            "example": "Open"
-          },
-          {
-            "name": "requestPriority",
-            "in": "query",
-            "description": "The priority of the data request.",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestPriority"
-            },
-            "example": "High"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully queried the number of requests.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "At least one of your provided filters is not of the correct format."
-          },
-          "403": {
-            "description": "Only Dataland admins have the right to query the number of requests."
           },
           "default": {
             "description": "An error occurred",

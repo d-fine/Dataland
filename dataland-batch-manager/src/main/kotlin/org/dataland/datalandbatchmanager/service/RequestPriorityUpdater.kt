@@ -87,15 +87,19 @@ class RequestPriorityUpdater
                 }
         }
 
-        /**
-         * Gets all requests with the specified state and priority from the database and adds them to allRequests.
-         */
-        private fun getAllRequestsWithGivenStateAndPriority(
-            requestState: RequestState,
-            requestPriority: RequestPriority,
-            expectedNumberOfRequests: Int,
-            allRequests: MutableList<StoredRequest>,
-        ) {
+        private fun getAllRequests(priority: RequestPriority): List<StoredRequest> {
+            val expectedNumberOfRequests =
+                requestControllerApi.postRequestCountQuery(
+                    RequestSearchFilterString(
+                        requestPriorities = listOf(priority),
+                        requestStates = listOf(RequestState.Open, RequestState.Processing),
+                    ),
+                )
+            logger.info(
+                "Found $expectedNumberOfRequests requests with priority $priority to be considered for updating.",
+            )
+            val allRequests = mutableListOf<StoredRequest>()
+
             var page = 0
 
             while (true) {
@@ -103,8 +107,8 @@ class RequestPriorityUpdater
                     requestControllerApi.postRequestSearch(
                         requestSearchFilterString =
                             RequestSearchFilterString(
-                                requestStates = listOf(requestState),
-                                requestPriorities = listOf(requestPriority),
+                                requestStates = listOf(RequestState.Open, RequestState.Processing),
+                                requestPriorities = listOf(priority),
                             ),
                         chunkSize = resultsPerPage,
                         chunkIndex = page,
@@ -116,36 +120,6 @@ class RequestPriorityUpdater
                 }
                 page++
             }
-        }
-
-        private fun getAllRequests(priority: RequestPriority): List<StoredRequest> {
-            val expectedNumberOfOpenRequests =
-                requestControllerApi.getNumberOfRequests(
-                    requestState = RequestState.Open,
-                    requestPriority = priority,
-                )
-            val expectedNumberOfProcessingRequests =
-                requestControllerApi.getNumberOfRequests(
-                    requestState = RequestState.Processing,
-                    requestPriority = priority,
-                )
-            logger.info(
-                "Found ${expectedNumberOfOpenRequests + expectedNumberOfProcessingRequests} requests with priority" +
-                    "$priority to be considered for updating.",
-            )
-            val allRequests = mutableListOf<StoredRequest>()
-            getAllRequestsWithGivenStateAndPriority(
-                requestState = RequestState.Open,
-                requestPriority = priority,
-                expectedNumberOfRequests = expectedNumberOfOpenRequests,
-                allRequests = allRequests,
-            )
-            getAllRequestsWithGivenStateAndPriority(
-                requestState = RequestState.Processing,
-                requestPriority = priority,
-                expectedNumberOfRequests = expectedNumberOfProcessingRequests,
-                allRequests = allRequests,
-            )
 
             return allRequests
         }

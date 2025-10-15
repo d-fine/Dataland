@@ -115,9 +115,11 @@ class RequestPriorityUpdaterTest {
                         chunkSize = resultsPerPage,
                         chunkIndex = 0,
                     )
-                doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).getNumberOfRequests(
-                    requestState = state,
-                    requestPriority = priority,
+                doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).postRequestCountQuery(
+                    RequestSearchFilterString(
+                        requestStates = listOf(state),
+                        requestPriorities = listOf(priority),
+                    ),
                 )
             }
         }

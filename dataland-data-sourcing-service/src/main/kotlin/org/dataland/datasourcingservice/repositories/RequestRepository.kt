@@ -1,8 +1,6 @@
 package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.enums.RequestPriority
-import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -90,17 +88,15 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     @Query(
         "SELECT COUNT(request) FROM RequestEntity request " +
             "WHERE " +
-            "(:companyId IS NULL OR request.companyId = :companyId) AND " +
-            "(:dataType IS NULL OR request.dataType = :dataType) AND " +
-            "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
-            "(:state IS NULL OR request.state = :state) AND " +
-            "(:priority IS NULL OR request.requestPriority = :priority)",
+            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "(" +
+            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
+            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
+            ") AND " +
+            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
     )
-    fun getNumberOfRequests(
-        companyId: UUID?,
-        dataType: String?,
-        reportingPeriod: String?,
-        state: RequestState?,
-        priority: RequestPriority?,
-    ): Int
+    fun getNumberOfRequests(searchFilter: RequestSearchFilter<UUID>): Int
 }

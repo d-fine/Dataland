@@ -1,7 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datasourcingservice.model.enums.RequestPriority
-import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
@@ -50,19 +48,10 @@ class RequestQueryManager(
 
     /**
      * Get the number of requests that match the optional filters.
-     * @param companyId to filter by
-     * @param dataType to filter by
-     * @param reportingPeriod to filter by
-     * @param state to filter by
-     * @param priority to filter by
+     * @param requestSearchFilter to filter by
      * @return the number of matching requests
      */
     @Transactional(readOnly = true)
-    fun getNumberOfRequests(
-        companyId: UUID?,
-        dataType: String?,
-        reportingPeriod: String?,
-        state: RequestState?,
-        priority: RequestPriority?,
-    ): Int = requestRepository.getNumberOfRequests(companyId, dataType, reportingPeriod, state, priority)
+    fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
+        requestRepository.getNumberOfRequests(requestSearchFilter)
 }
