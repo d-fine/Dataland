@@ -33,8 +33,8 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.net.ConnectException
+import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
@@ -48,7 +48,7 @@ class ProcessDataUpdatesTest {
     private val mockRelationshipExtractor = mock<RelationshipExtractor>()
     private val mockBackendActuatorApi = mock<BackendActuatorApi>()
     private val mockRequestPriorityUpdater = mock<RequestPriorityUpdater>()
-    private val mockCommunityActuatorApi = mock<CommunityActuatorApi>()
+    private val mockDataSourcingActuatorApi = mock<DataSourcingActuatorApi>()
     private val mockFile = mock<File>()
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
@@ -74,7 +74,7 @@ class ProcessDataUpdatesTest {
                 nothDataIngestorTest,
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
-                mockCommunityActuatorApi,
+                mockDataSourcingActuatorApi,
                 allGleifCompaniesForceIngest = false,
                 allNorthDataCompaniesForceIngest = false,
                 allGleifCompaniesIngestFlagFilePath = flagFileGleif,
@@ -154,10 +154,10 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `waitForCommunityManager should stop on first successful health check`() {
-        whenever(mockCommunityActuatorApi.health()).thenReturn(Any())
+        whenever(mockDataSourcingActuatorApi.health()).thenReturn(Any())
         initProcessDataUpdates()
-        processDataUpdates.waitForCommunityManager()
-        verify(mockCommunityActuatorApi).health()
+        processDataUpdates.waitForDataSourcingService()
+        verify(mockDataSourcingActuatorApi).health()
     }
 
     @Test

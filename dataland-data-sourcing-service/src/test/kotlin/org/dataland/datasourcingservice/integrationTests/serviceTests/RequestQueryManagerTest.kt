@@ -4,6 +4,7 @@ import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
@@ -72,10 +73,12 @@ class RequestQueryManagerTest
                 indicesOfExpectedResults.map { requestEntities[it].toStoredDataRequest() }
             val actualResults =
                 requestQueryManager.searchRequests(
-                    companyId = companyId?.let { UUID.fromString(it) },
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    state = requestState?.let { RequestState.valueOf(it) },
+                    RequestSearchFilter<UUID>(
+                        companyId = companyId?.let { UUID.fromString(it) },
+                        dataTypes = dataType?.let { setOf(it) },
+                        reportingPeriods = reportingPeriod?.let { setOf(it) },
+                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
+                    ),
                 )
             val actualNumberOfResultsAccordingToEndpoint =
                 requestQueryManager.getNumberOfRequests(
@@ -83,6 +86,7 @@ class RequestQueryManagerTest
                     dataType = dataType,
                     reportingPeriod = reportingPeriod,
                     state = requestState?.let { RequestState.valueOf(it) },
+                    null,
                 )
             assertEquals(expectedResults.size, actualResults.size)
             assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)

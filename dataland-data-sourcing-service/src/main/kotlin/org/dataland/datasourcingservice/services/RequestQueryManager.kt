@@ -1,6 +1,8 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,18 +21,12 @@ class RequestQueryManager(
 ) {
     /**
      * Search for requests based on optional filters.
-     * @param companyId to filter by
-     * @param dataType to filter by
-     * @param reportingPeriod to filter by
-     * @param state to filter by
+     * @param requestSearchFilter to filter by
      * @return list of matching StoredRequest objects
      */
     @Transactional(readOnly = true)
     fun searchRequests(
-        companyId: UUID?,
-        dataType: String?,
-        reportingPeriod: String?,
-        state: RequestState?,
+        requestSearchFilter: RequestSearchFilter<UUID>,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
     ): List<StoredRequest> =
@@ -38,10 +34,7 @@ class RequestQueryManager(
             .findByListOfIdsAndFetchDataSourcingEntity(
                 requestRepository
                     .searchRequests(
-                        companyId,
-                        dataType,
-                        reportingPeriod,
-                        state,
+                        requestSearchFilter,
                         PageRequest.of(
                             chunkIndex,
                             chunkSize,
@@ -61,6 +54,7 @@ class RequestQueryManager(
      * @param dataType to filter by
      * @param reportingPeriod to filter by
      * @param state to filter by
+     * @param priority to filter by
      * @return the number of matching requests
      */
     @Transactional(readOnly = true)
@@ -69,5 +63,6 @@ class RequestQueryManager(
         dataType: String?,
         reportingPeriod: String?,
         state: RequestState?,
-    ): Int = requestRepository.getNumberOfRequests(companyId, dataType, reportingPeriod, state)
+        priority: RequestPriority?,
+    ): Int = requestRepository.getNumberOfRequests(companyId, dataType, reportingPeriod, state, priority)
 }

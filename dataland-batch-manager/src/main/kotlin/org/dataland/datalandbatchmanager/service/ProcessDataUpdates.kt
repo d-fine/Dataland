@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
 import java.time.Instant
+import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
@@ -32,7 +32,7 @@ class ProcessDataUpdates
         private val northdataDataIngestor: NorthdataDataIngestor,
         private val backendActuatorApi: BackendActuatorApi,
         private val requestPriorityUpdater: RequestPriorityUpdater,
-        private val communityActuatorApi: CommunityActuatorApi,
+        private val dataSourcingActuatorApi: DataSourcingActuatorApi,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
         private val allGleifCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
@@ -156,7 +156,7 @@ class ProcessDataUpdates
         @Scheduled(cron = "0 0 5 * * *")
         private fun processRequestPriorityUpdates() {
             logger.info("Running scheduled update of request priorities.")
-            waitForCommunityManager()
+            waitForDataSourcingService()
             requestPriorityUpdater.processRequestPriorityUpdates()
         }
 
@@ -182,16 +182,16 @@ class ProcessDataUpdates
         /**
          * This method waits for the community manager to be ready
          */
-        fun waitForCommunityManager() {
+        fun waitForDataSourcingService() {
             val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
             while (Instant.now().toEpochMilli() <= timeoutTime) {
                 try {
-                    communityActuatorApi.health()
+                    dataSourcingActuatorApi.health()
                     break
                 } catch (exception: ConnectException) {
                     logger.info(
-                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s " +
-                            "community manager to be available. Exception was: ${exception.message}.",
+                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for" +
+                            "data sourcing service to be available. Exception was: ${exception.message}.",
                     )
                     Thread.sleep(WAIT_TIME_IN_MS)
                 }

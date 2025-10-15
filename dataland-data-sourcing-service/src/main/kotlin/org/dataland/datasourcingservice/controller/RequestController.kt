@@ -6,6 +6,7 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -16,6 +17,7 @@ import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Controller for the requests endpoint
@@ -99,20 +101,32 @@ class RequestController
                     ),
                 )
 
+        private fun convertToSearchFilterWithUUIDs(requestSearchFilterWithStrings: RequestSearchFilter<String>): RequestSearchFilter<UUID> =
+            RequestSearchFilter<UUID>(
+                companyId =
+                    requestSearchFilterWithStrings.companyId?.let {
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                    },
+                dataTypes = requestSearchFilterWithStrings.dataTypes,
+                reportingPeriods = requestSearchFilterWithStrings.reportingPeriods,
+                userId =
+                    requestSearchFilterWithStrings.userId?.let {
+                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            it,
+                        )
+                    },
+                requestStates = requestSearchFilterWithStrings.requestStates,
+                requestPriorities = requestSearchFilterWithStrings.requestPriorities,
+            )
+
         override fun searchRequests(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: RequestState?,
+            requestSearchFilter: RequestSearchFilter<String>,
             chunkSize: Int,
             chunkIndex: Int,
         ): ResponseEntity<List<StoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
-                    },
-                    dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
+                    convertToSearchFilterWithUUIDs(requestSearchFilter), chunkSize, chunkIndex,
                 ),
             )
 
@@ -121,13 +135,14 @@ class RequestController
             dataType: String?,
             reportingPeriod: String?,
             requestState: RequestState?,
+            requestPriority: RequestPriority?,
         ): ResponseEntity<Int> =
             ResponseEntity.ok(
                 requestQueryManager.getNumberOfRequests(
                     companyId?.let {
                         ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
                     },
-                    dataType, reportingPeriod, requestState,
+                    dataType, reportingPeriod, requestState, requestPriority,
                 ),
             )
     }

@@ -1,15 +1,15 @@
 package org.dataland.datalandbatchmanager.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
@@ -17,7 +17,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as Co
 @Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
-    @Value("\${dataland.communitymanager.base-url}") private val communityManagerBaseUrl: String,
+    @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -39,13 +39,13 @@ class ApiClients(
     @Bean
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): RequestControllerApi = RequestControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+    ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an ActuatorApi of the community manager
      */
     @Bean
-    fun getCommunityManagerActuatorApi(): CommunityActuatorApi = CommunityActuatorApi(communityManagerBaseUrl)
+    fun getDataSourcingServiceActuatorApi(): DataSourcingActuatorApi = DataSourcingActuatorApi(dataSourcingServiceBaseUrl)
 
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend

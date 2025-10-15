@@ -1,112 +1,170 @@
 package org.dataland.batchmanager.service
 
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
+import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.AccessStatus
-import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
-import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class RequestPriorityUpdaterTest {
-    private lateinit var mockKeycloakUserService: KeycloakUserService
-    private lateinit var mockRequestControllerApi: RequestControllerApi
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockRequestControllerApi = mock<RequestControllerApi>()
+    private val resultsPerPage = 100
     private lateinit var requestPriorityUpdater: RequestPriorityUpdater
 
-    private val premiumUserId = UUID.randomUUID().toString()
-    private val normalUserId = UUID.randomUUID().toString()
-    private val requestIdPremiumUserPrioHigh = UUID.randomUUID()
-    private val requestIdPremiumUserPrioLow = UUID.randomUUID()
-    private val requestIdNormalUserPrioHigh = UUID.randomUUID()
-    private val requestIdNormalUserPrioLow = UUID.randomUUID()
+    companion object {
+        private val premiumUserId = UUID.randomUUID().toString()
+        private val normalUserId = UUID.randomUUID().toString()
+
+        private val userIds = listOf(premiumUserId, normalUserId)
+        private val requestPriorities = RequestPriority.entries.toList()
+        private val requestStates = RequestState.entries.toList()
+
+        private val numberOfTriples = userIds.size * requestPriorities.size * requestStates.size
+
+        @JvmStatic
+        @Suppress("UnusedPrivateMember") // detekt wrongly thinks this function is not used
+        private fun provideIndexAndPriority(): List<Arguments> =
+            (0..<numberOfTriples).flatMap { index ->
+                RequestPriority.entries.map { priority -> Arguments.of(index, priority) }
+            }
+    }
+
+    private fun userId(index: Int) = userIds[index % userIds.size]
+
+    private fun requestPriority(index: Int) = requestPriorities[(index / userIds.size) % requestPriorities.size]
+
+    private fun requestState(index: Int) = requestStates[(index / (userIds.size * requestPriorities.size)) % requestStates.size]
+
+    private fun triple(index: Int): Triple<String, RequestPriority, RequestState> =
+        Triple(userId(index), requestPriority(index), requestState(index))
+
+    private val requestIdsMap =
+        (0..<numberOfTriples).associate { index ->
+            triple(index) to UUID.randomUUID()
+        }
+
+    private fun createRequest(
+        userId: String,
+        requestId: UUID,
+        state: RequestState,
+        priority: RequestPriority,
+    ): StoredRequest =
+        StoredRequest(
+            id = requestId.toString(),
+            companyId = UUID.randomUUID().toString(),
+            userId = userId,
+            reportingPeriod = "2025",
+            dataType = "sfdr",
+            creationTimeStamp = 0L,
+            lastModifiedDate = 0L,
+            requestPriority = priority,
+            state = state,
+        )
+
+    private val storedRequestsMap =
+        (0..<numberOfTriples).associate { index ->
+            triple(index) to
+                createRequest(
+                    userId(index),
+                    requestIdsMap[triple(index)] ?: UUID.randomUUID(),
+                    requestState(index),
+                    requestPriority(index),
+                )
+        }
 
     private val adminUser = KeycloakUserInfo("admin@dataland.com", premiumUserId, "Admin", "Doe")
 
     @BeforeEach
     fun setup() {
-        mockKeycloakUserService = mock(KeycloakUserService::class.java)
-        mockRequestControllerApi = mock(RequestControllerApi::class.java)
-        requestPriorityUpdater = RequestPriorityUpdater(mockKeycloakUserService, mockRequestControllerApi)
-    }
-
-    private fun createRequest(
-        userId: String,
-        requestId: UUID,
-        priority: RequestPriority,
-    ): ExtendedStoredDataRequest =
-        ExtendedStoredDataRequest(
-            dataRequestId = requestId.toString(),
-            userId = userId,
-            reportingPeriod = "",
-            creationTimestamp = 0,
-            dataType = "sfdr",
-            datalandCompanyId = "",
-            companyName = "",
-            lastModifiedDate = 0,
-            requestStatus = RequestStatus.Open,
-            accessStatus = AccessStatus.Public,
-            requestPriority = priority,
+        reset(
+            mockKeycloakUserService,
+            mockRequestControllerApi,
         )
 
-    @Test
-    fun `validate the request priorities are updated correctly`() {
-        val extendedRequestPremiumUserPrioHigh = createRequest(premiumUserId, requestIdPremiumUserPrioHigh, RequestPriority.High)
-        val extendedRequestPremiumUserPrioLow = createRequest(premiumUserId, requestIdPremiumUserPrioLow, RequestPriority.Low)
-        val extendedRequestNormalUserPrioHigh = createRequest(normalUserId, requestIdNormalUserPrioHigh, RequestPriority.High)
-        val extendedRequestNormalUserPrioLow = createRequest(normalUserId, requestIdNormalUserPrioLow, RequestPriority.Low)
-        val patchLow = DataRequestPatch(requestPriority = RequestPriority.Low)
-        val patchHigh = DataRequestPatch(requestPriority = RequestPriority.High)
+        requestPriorities.forEach { priority ->
+            requestStates.forEach { state ->
+                val matchingStoredRequests =
+                    storedRequestsMap.values.filter { it.requestPriority == priority && it.state == state }
+                doReturn(matchingStoredRequests)
+                    .whenever(mockRequestControllerApi)
+                    .searchRequests(
+                        requestSearchFilter =
+                            RequestSearchFilterString(
+                                requestStates = listOf(state),
+                                requestPriorities = listOf(priority),
+                            ),
+                        chunkSize = resultsPerPage,
+                        chunkIndex = 0,
+                    )
+                doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).getNumberOfRequests(
+                    requestState = state,
+                    requestPriority = priority,
+                )
+            }
+        }
 
-        `when`(mockKeycloakUserService.getUsersByRole("ROLE_PREMIUM_USER"))
-            .thenReturn(listOf(adminUser))
-
-        `when`(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN"))
-            .thenReturn(listOf())
-
-        `when`(
-            mockRequestControllerApi.getDataRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(RequestPriority.Low),
-            ),
-        ).thenReturn(listOf(extendedRequestPremiumUserPrioLow, extendedRequestNormalUserPrioLow))
-
-        `when`(
-            mockRequestControllerApi.getDataRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(RequestPriority.High),
-            ),
-        ).thenReturn(listOf(extendedRequestPremiumUserPrioHigh, extendedRequestNormalUserPrioHigh))
-
-        requestPriorityUpdater.processRequestPriorityUpdates()
-
-        verify(mockRequestControllerApi, times(1))
-            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioLow, dataRequestPatch = patchHigh)
-
-        verify(mockRequestControllerApi, times(1))
-            .patchDataRequest(dataRequestId = requestIdNormalUserPrioHigh, dataRequestPatch = patchLow)
-
-        verify(mockRequestControllerApi, never())
-            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioHigh, dataRequestPatch = patchLow)
-
-        verify(mockRequestControllerApi, never())
-            .patchDataRequest(dataRequestId = requestIdNormalUserPrioLow, dataRequestPatch = patchHigh)
+        requestPriorityUpdater =
+            RequestPriorityUpdater(mockKeycloakUserService, mockRequestControllerApi, resultsPerPage)
     }
 
     @Test
     fun `check that the update priority process exits if the list of premium users is empty`() {
-        `when`(mockKeycloakUserService.getUsersByRole(any())).thenReturn(listOf())
+        doReturn(emptyList<KeycloakUserInfo>()).whenever(mockKeycloakUserService).getUsersByRole(any())
         assertThrows<IllegalArgumentException> { requestPriorityUpdater.processRequestPriorityUpdates() }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideIndexAndPriority")
+    fun `validate that the request priorities are updated correctly`(
+        index: Int,
+        priorityInPatch: RequestPriority,
+    ) {
+        doReturn(listOf(adminUser)).whenever(mockKeycloakUserService).getUsersByRole("ROLE_PREMIUM_USER")
+        doReturn(emptyList<KeycloakUserInfo>()).whenever(mockKeycloakUserService).getUsersByRole("ROLE_ADMIN")
+
+        requestPriorityUpdater.processRequestPriorityUpdates()
+
+        val userId = userId(index)
+        val requestPriority = requestPriority(index)
+        val requestState = requestState(index)
+        val requestId = requestIdsMap[triple(index)] ?: UUID.randomUUID()
+
+        val requestPriorityToChange = if (userId == premiumUserId) RequestPriority.Low else RequestPriority.High
+        val desiredPriorityAfterChange = if (userId == premiumUserId) RequestPriority.High else RequestPriority.Low
+
+        val verificationMode =
+            if (
+                requestPriority == requestPriorityToChange &&
+                priorityInPatch == desiredPriorityAfterChange &&
+                requestState in setOf(RequestState.Open, RequestState.Processing)
+            ) {
+                times(1)
+            } else {
+                never()
+            }
+
+        verify(mockRequestControllerApi, verificationMode).patchRequestPriority(
+            dataRequestId = requestId.toString(),
+            requestPriority = priorityInPatch,
+        )
     }
 }

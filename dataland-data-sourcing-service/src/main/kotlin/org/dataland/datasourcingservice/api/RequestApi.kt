@@ -16,6 +16,7 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -307,37 +308,14 @@ interface RequestApi {
             ),
         ],
     )
-    @GetMapping(produces = ["application/json"])
+    @GetMapping(
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun searchRequests(
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        companyId: String? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        dataType: String? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        reportingPeriod: String? = null,
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        requestState: RequestState? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
-            required = false,
-        )
+        @RequestBody
+        requestSearchFilter: RequestSearchFilter<String>,
         @RequestParam(defaultValue = "100")
         chunkSize: Int,
         @Parameter(
@@ -402,5 +380,11 @@ interface RequestApi {
         )
         @RequestParam(required = false)
         requestState: RequestState? = null,
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_EXAMPLE,
+        )
+        @RequestParam(required = false)
+        requestPriority: RequestPriority? = null,
     ): ResponseEntity<Int>
 }

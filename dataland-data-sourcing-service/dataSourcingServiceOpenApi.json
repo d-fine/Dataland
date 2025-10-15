@@ -30,49 +30,16 @@
         "operationId": "searchRequests",
         "parameters": [
           {
-            "name": "companyId",
+            "name": "requestSearchFilter",
             "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": false,
+            "required": true,
             "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "dataType",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "sfdr"
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": 2023
-          },
-          {
-            "name": "requestState",
-            "in": "query",
-            "description": "The current state of the request.",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestState"
-            },
-            "example": "Open"
+              "$ref": "#/components/schemas/RequestSearchFilterString"
+            }
           },
           {
             "name": "chunkSize",
             "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1138,6 +1105,16 @@
               "$ref": "#/components/schemas/RequestState"
             },
             "example": "Open"
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "description": "The priority of the data request.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestPriority"
+            },
+            "example": "High"
           }
         ],
         "responses": {
@@ -2010,6 +1987,65 @@
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          }
+        }
+      },
+      "RequestSearchFilterString": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataTypes": {
+            "type": "array",
+            "description": "A list of associated reporting frameworks or data point types (as applicable).",
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriods": {
+            "type": "array",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "requestStates": {
+            "type": "array",
+            "description": "A list of associated request states.",
+            "example": [
+              "Open",
+              "Processing"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestState"
+            }
+          },
+          "requestPriorities": {
+            "type": "array",
+            "description": "A list of associated request priorities.",
+            "example": [
+              "Low",
+              "High"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
           }
         }
       },
