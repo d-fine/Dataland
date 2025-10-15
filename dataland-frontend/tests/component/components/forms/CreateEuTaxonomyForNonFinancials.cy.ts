@@ -168,7 +168,7 @@ function fillAndValidateGeneralSection(reports: string[]): void {
   cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
   cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
   cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
-  cy.get('div[data-test="fiscalYearEnd"] input[name="fiscalYearEnd"]').invoke('val').should('contain', '11');
+  cy.get('div[data-test="fiscalYearEnd"] input[name="value"]').invoke('val').should('contain', '11');
   cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').check();
   cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.get('div[data-test="scopeOfEntities"] input[type="checkbox"][value="Yes"]').check();

@@ -15,7 +15,7 @@ const createSfdrDataset = {
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
     cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
-    cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
+    cy.get(`[data-test="${fieldName}"] input.formkit-input`).should('not.be.visible');
     cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
     cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },
