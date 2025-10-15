@@ -14,6 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
+// This is due to some weird detekt error
+const val THRESHOLD2 = 3L
+
 /**
  * Service to post Bulk Data Requests upon Portfolio or Monitoring status changes.
  * Currently restricted to Requests up to 2025. If required, change UPPER_BOUND accordingly.
@@ -28,8 +31,8 @@ class PortfolioBulkDataRequestService
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
-        private val threshold1InMonths = 1L
-        private val threshold2InMonths = 3L
+        internal var threshold1InMonths = 1L
+        internal var threshold2InMonths = THRESHOLD2
 
         private val financialsString = "financials"
         private val nonfinancialsString = "nonfinancials"
@@ -39,7 +42,7 @@ class PortfolioBulkDataRequestService
 
         private var setOfCompanyReportingYearAndSectorInfo: MutableSet<CompanyReportingYearAndSectorInfo> = mutableSetOf()
 
-        private data class CompanyReportingYearAndSectorInfo(
+        internal data class CompanyReportingYearAndSectorInfo(
             val companyId: String,
             val reportingPeriod: String,
             val sector: String?,
@@ -101,7 +104,7 @@ class PortfolioBulkDataRequestService
          * @param storedCompany The StoredCompany object containing company information.
          * @return CompanyReportingYearAndSectorInfo for the company, or null if insufficient data.
          */
-        private fun getCompanyReportingYearInfoForCompany(storedCompany: StoredCompany): CompanyReportingYearAndSectorInfo? {
+        internal fun getCompanyReportingYearInfoForCompany(storedCompany: StoredCompany): CompanyReportingYearAndSectorInfo? {
             val (fiscalYearEnd, reportingPeriodShift, normalizedSector) =
                 with(storedCompany.companyInformation) {
                     Triple(
