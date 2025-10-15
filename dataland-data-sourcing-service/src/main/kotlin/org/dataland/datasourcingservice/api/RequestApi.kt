@@ -308,12 +308,13 @@ interface RequestApi {
             ),
         ],
     )
-    @GetMapping(
+    @PostMapping(
+        value = ["/search"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun searchRequests(
+    fun postRequestSearch(
         @RequestBody
         requestSearchFilter: RequestSearchFilter<String>,
         @RequestParam(defaultValue = "100")

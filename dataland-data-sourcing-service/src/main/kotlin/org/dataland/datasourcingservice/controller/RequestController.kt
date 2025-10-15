@@ -119,7 +119,7 @@ class RequestController
                 requestPriorities = requestSearchFilterWithStrings.requestPriorities,
             )
 
-        override fun searchRequests(
+        override fun postRequestSearch(
             requestSearchFilter: RequestSearchFilter<String>,
             chunkSize: Int,
             chunkIndex: Int,

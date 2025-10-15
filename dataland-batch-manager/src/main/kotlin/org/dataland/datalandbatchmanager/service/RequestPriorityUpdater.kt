@@ -100,8 +100,8 @@ class RequestPriorityUpdater
 
             while (true) {
                 val requestsWithSpecifiedState =
-                    requestControllerApi.searchRequests(
-                        requestSearchFilter =
+                    requestControllerApi.postRequestSearch(
+                        requestSearchFilterString =
                             RequestSearchFilterString(
                                 requestStates = listOf(requestState),
                                 requestPriorities = listOf(requestPriority),

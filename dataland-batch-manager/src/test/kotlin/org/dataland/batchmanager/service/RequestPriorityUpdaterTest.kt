@@ -106,8 +106,8 @@ class RequestPriorityUpdaterTest {
                     storedRequestsMap.values.filter { it.requestPriority == priority && it.state == state }
                 doReturn(matchingStoredRequests)
                     .whenever(mockRequestControllerApi)
-                    .searchRequests(
-                        requestSearchFilter =
+                    .postRequestSearch(
+                        requestSearchFilterString =
                             RequestSearchFilterString(
                                 requestStates = listOf(state),
                                 requestPriorities = listOf(priority),

@@ -21,94 +21,6 @@
   ],
   "paths": {
     "/requests": {
-      "get": {
-        "tags": [
-          "request-controller"
-        ],
-        "summary": "Search requests by filters.",
-        "description": "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
-        "operationId": "searchRequests",
-        "parameters": [
-          {
-            "name": "requestSearchFilter",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/RequestSearchFilterString"
-            }
-          },
-          {
-            "name": "chunkSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 100
-            }
-          },
-          {
-            "name": "chunkIndex",
-            "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved requests.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "At least one of your provided filters is not of the correct format."
-          },
-          "403": {
-            "description": "Only Dataland admins have the right to search among all requests."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
       "post": {
         "tags": [
           "request-controller"
@@ -154,6 +66,98 @@
           },
           "403": {
             "description": "You were trying to impersonate another Dataland user. Only admins have the right to do so. To make a request for yourself, leave the userId parameter empty."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/search": {
+      "post": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Search requests by filters.",
+        "description": "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
+        "operationId": "postRequestSearch",
+        "parameters": [
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestSearchFilterString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredRequest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "At least one of your provided filters is not of the correct format."
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to search among all requests."
           },
           "default": {
             "description": "An error occurred",
@@ -1573,6 +1577,137 @@
           }
         }
       },
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "RequestSearchFilterString": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataTypes": {
+            "type": "array",
+            "description": "A list of associated reporting frameworks or data point types (as applicable).",
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriods": {
+            "type": "array",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "requestStates": {
+            "type": "array",
+            "description": "A list of associated request states.",
+            "example": [
+              "Open",
+              "Processing"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestState"
+            }
+          },
+          "requestPriorities": {
+            "type": "array",
+            "description": "A list of associated request priorities.",
+            "example": [
+              "Low",
+              "High"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
+          }
+        }
+      },
+      "RequestState": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Withdrawn",
+          "Processing",
+          "Processed"
+        ]
+      },
+      "StoredRequest": {
+        "required": [
+          "companyId",
+          "creationTimeStamp",
+          "dataType",
+          "id",
+          "lastModifiedDate",
+          "reportingPeriod",
+          "requestPriority",
+          "state",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimeStamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "memberComment": {
+            "type": "string"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "dataSourcingEntityId": {
+            "type": "string"
+          }
+        }
+      },
       "BulkDataRequest": {
         "required": [
           "companyIdentifiers",
@@ -1685,78 +1820,6 @@
             "items": {
               "$ref": "#/components/schemas/BasicDataDimensions"
             }
-          }
-        }
-      },
-      "RequestState": {
-        "type": "string",
-        "enum": [
-          "Open",
-          "Withdrawn",
-          "Processing",
-          "Processed"
-        ]
-      },
-      "RequestPriority": {
-        "type": "string",
-        "enum": [
-          "Low",
-          "Baseline",
-          "High",
-          "Urgent"
-        ]
-      },
-      "StoredRequest": {
-        "required": [
-          "companyId",
-          "creationTimeStamp",
-          "dataType",
-          "id",
-          "lastModifiedDate",
-          "reportingPeriod",
-          "requestPriority",
-          "state",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          },
-          "creationTimeStamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "memberComment": {
-            "type": "string"
-          },
-          "adminComment": {
-            "type": "string"
-          },
-          "lastModifiedDate": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "requestPriority": {
-            "$ref": "#/components/schemas/RequestPriority"
-          },
-          "state": {
-            "$ref": "#/components/schemas/RequestState"
-          },
-          "dataSourcingEntityId": {
-            "type": "string"
           }
         }
       },
@@ -1932,65 +1995,6 @@
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date"
-          }
-        }
-      },
-      "RequestSearchFilterString": {
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataTypes": {
-            "type": "array",
-            "description": "A list of associated reporting frameworks or data point types (as applicable).",
-            "example": [
-              "sfdr",
-              "eutaxonomy-financials"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "reportingPeriods": {
-            "type": "array",
-            "description": "The relevant reporting periods (e.g. fiscal years).",
-            "example": [
-              "2023",
-              "2024"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "userId": {
-            "type": "string",
-            "description": "The ID of the user who created the data request.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "requestStates": {
-            "type": "array",
-            "description": "A list of associated request states.",
-            "example": [
-              "Open",
-              "Processing"
-            ],
-            "items": {
-              "$ref": "#/components/schemas/RequestState"
-            }
-          },
-          "requestPriorities": {
-            "type": "array",
-            "description": "A list of associated request priorities.",
-            "example": [
-              "Low",
-              "High"
-            ],
-            "items": {
-              "$ref": "#/components/schemas/RequestPriority"
-            }
           }
         }
       },
