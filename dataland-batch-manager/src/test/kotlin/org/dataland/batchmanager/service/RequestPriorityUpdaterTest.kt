@@ -101,27 +101,27 @@ class RequestPriorityUpdaterTest {
         )
 
         requestPriorities.forEach { priority ->
-            requestStates.forEach { state ->
-                val matchingStoredRequests =
-                    storedRequestsMap.values.filter { it.requestPriority == priority && it.state == state }
-                doReturn(matchingStoredRequests)
-                    .whenever(mockRequestControllerApi)
-                    .postRequestSearch(
-                        requestSearchFilterString =
-                            RequestSearchFilterString(
-                                requestStates = listOf(state),
-                                requestPriorities = listOf(priority),
-                            ),
-                        chunkSize = resultsPerPage,
-                        chunkIndex = 0,
-                    )
-                doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).postRequestCountQuery(
-                    RequestSearchFilterString(
-                        requestStates = listOf(state),
-                        requestPriorities = listOf(priority),
-                    ),
+            val matchingStoredRequests =
+                storedRequestsMap.values.filter {
+                    it.requestPriority == priority && it.state in setOf(RequestState.Open, RequestState.Processing)
+                }
+            doReturn(matchingStoredRequests)
+                .whenever(mockRequestControllerApi)
+                .postRequestSearch(
+                    requestSearchFilterString =
+                        RequestSearchFilterString(
+                            requestStates = listOf(RequestState.Open, RequestState.Processing),
+                            requestPriorities = listOf(priority),
+                        ),
+                    chunkSize = resultsPerPage,
+                    chunkIndex = 0,
                 )
-            }
+            doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).postRequestCountQuery(
+                RequestSearchFilterString(
+                    requestStates = listOf(RequestState.Open, RequestState.Processing),
+                    requestPriorities = listOf(priority),
+                ),
+            )
         }
 
         requestPriorityUpdater =

@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.flyway)
     implementation(libs.flyway.core)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.springframework.security:spring-security-test")
     implementation("org.springframework.data:spring-data-envers")
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.junit.jupiter)
