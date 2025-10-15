@@ -56,7 +56,7 @@ class PortfolioBulkDataRequestService
          * @see postBulkDataRequestIfMonitored
          */
         @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 0 2 * * *")
+        @Scheduled(cron = "0 */3 * * * *")
         private fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("Running scheduled request creation job for monitored portfolios.")
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
