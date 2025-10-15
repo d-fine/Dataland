@@ -8,11 +8,9 @@ import org.slf4j.LoggerFactory
 typealias CompanyAssociatedDataPointMigration = (dataPointTableEntity: DataPointTableEntity) -> Unit
 
 /**
- * Retrieves all data point entities of a specific type from the database.
- * @param context The Flyway migration context
- * @param dataPointType The type of data points to retrieve
- * @return List of data point entities matching the specified type
+ * Function that provides a list of all DataPointTableEntities with respect to a certain data type
  */
+
 fun getDataPointTableEntitiesWithRespectToDataType(
     context: Context?,
     dataPointType: String,
@@ -29,18 +27,15 @@ fun getDataPointTableEntitiesWithRespectToDataType(
     while (getQueryResultSet.next()) {
         listOfDataPointTableEntities.add(
             DataPointTableEntity(
-                dataPointId = getQueryResultSet.getString("data_point_id"),
-                companyId = getQueryResultSet.getString("company_id"),
-                dataPoint =
-                    JSONObject(
-                        objectMapper.readValue(
-                            getQueryResultSet.getString("data"), String::class.java,
-                        ),
+                getQueryResultSet.getString("data_point_id"),
+                getQueryResultSet.getString("company_id"),
+                JSONObject(
+                    objectMapper.readValue(
+                        getQueryResultSet.getString("data"), String::class.java,
                     ),
-                dataPointType = dataPointType,
-                reportingPeriod = getQueryResultSet.getString("reporting_period"),
-                framework = getQueryResultSet.getString("framework"),
-                currentlyActive = getQueryResultSet.getBoolean("currently_active"),
+                ),
+                dataPointType,
+                getQueryResultSet.getString("reporting_period"),
             ),
         )
     }
@@ -51,10 +46,10 @@ fun getDataPointTableEntitiesWithRespectToDataType(
 private val logger = LoggerFactory.getLogger("Migration Iterator")
 
 /**
- * Migrates data point entities by applying a transformation function and persisting the changes.
- * @param context The Flyway migration context
- * @param dataPointType The type of data points to migrate
- * @param migrate The transformation function to apply to each data point
+ * Gets all data entries for a specific datatype, modifies them and writes them back to the table
+ * @context the context of the migration script
+ * @dataType the data type string for the data to modify
+ * @migrate migration script for a single DataTableEntity
  */
 fun migrateDataPointTableEntities(
     context: Context?,

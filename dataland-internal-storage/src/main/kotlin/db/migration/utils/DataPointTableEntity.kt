@@ -5,7 +5,7 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * Represents a data point entity from the data_point_items table for use in migrations.
+ * Class that models a row in the data_point_items internal storage table
  */
 data class DataPointTableEntity(
     val dataPointId: String,
@@ -13,12 +13,9 @@ data class DataPointTableEntity(
     val dataPoint: JSONObject,
     var dataPointType: String,
     val reportingPeriod: String,
-    val framework: String = "",
-    val currentlyActive: Boolean = true,
 ) {
     /**
-     * Executes an UPDATE query to persist changes to the data point in the database.
-     * @param context The Flyway migration context
+     * Method to get a query that writes data to the corresponding table entry
      */
     fun executeUpdateQuery(context: Context) {
         val queryStatement =
@@ -45,8 +42,6 @@ data class DataPointTableEntity(
             companyId == other.companyId,
             dataPointType == other.dataPointType,
             reportingPeriod == other.reportingPeriod,
-            framework == other.framework,
-            currentlyActive == other.currentlyActive,
             dataPoint.similar(other.dataPoint),
         ).all { it }
     }
@@ -54,8 +49,6 @@ data class DataPointTableEntity(
     override fun hashCode(): Int {
         var result = dataPointId.hashCode()
         result = 31 * result + dataPoint.toString().hashCode()
-        result = 31 * result + framework.hashCode()
-        result = 31 * result + currentlyActive.hashCode()
         return result
     }
 }
