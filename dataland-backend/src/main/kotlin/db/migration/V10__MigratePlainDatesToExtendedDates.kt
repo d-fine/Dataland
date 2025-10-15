@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * Migration to convert plain date and enum fields to extended format for fiscal year fields.
- * Handles conflicts by deactivating plain data points when extended versions already exist.
+ * Handles conflicts where both plain and extended versions exist by deactivating the plain version.
  */
 @Suppress("ClassName")
 class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
@@ -19,76 +19,64 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
         )
 
     override fun migrate(context: Context?) {
-        val connection = context!!.connection
         val metaTable = "data_point_meta_information"
         val uuidTable = "data_point_uuid_map"
         val typeColumn = "data_point_type"
         val identifierColumn = "data_point_identifier"
 
-        val metaResultSet = connection.metaData.getTables(null, null, metaTable, null)
-        val uuidResultSet = connection.metaData.getTables(null, null, uuidTable, null)
+        val metaResultSet = context!!.connection.metaData.getTables(null, null, metaTable, null)
+        val uuidResultSet = context.connection.metaData.getTables(null, null, uuidTable, null)
 
         if (metaResultSet.next()) {
             plainToExtendedMappings.forEach { (plainType, extendedType) ->
-                migratePlainToExtended(context, metaTable, typeColumn, plainType, extendedType)
+                val conflicts =
+                    findConflictingTuples(
+                        context,
+                        metaTable,
+                        typeColumn,
+                        plainType,
+                        extendedType,
+                    )
+
+                if (conflicts.isNotEmpty()) {
+                    logger.info("Found ${conflicts.size} conflicts for $plainType, deactivating plain versions")
+                    deactivateConflictingPlainDataPoints(
+                        context,
+                        metaTable,
+                        typeColumn,
+                        plainType,
+                        conflicts,
+                    )
+                }
+
+                migratePlainToExtended(
+                    context,
+                    metaTable,
+                    typeColumn,
+                    plainType,
+                    extendedType,
+                )
             }
         }
 
         if (uuidResultSet.next()) {
             plainToExtendedMappings.forEach { (plainType, extendedType) ->
-                migratePlainToExtended(context, uuidTable, identifierColumn, plainType, extendedType)
+                deleteConflictingPlainUuidMappings(
+                    context,
+                    uuidTable,
+                    identifierColumn,
+                    plainType,
+                    extendedType,
+                )
+                migratePlainToExtended(
+                    context,
+                    uuidTable,
+                    identifierColumn,
+                    plainType,
+                    extendedType,
+                )
             }
         }
-    }
-
-    /**
-     * Migrates plain data point types to extended format with conflict handling.
-     *
-     * Steps:
-     * 1. Detect conflicts where plain and extended both exist.
-     * 2. Deactivate the plain version in those conflicts.
-     * 3. Update remaining active plain records to extended type.
-     *
-     * @param context the Flyway migration context
-     * @param tableName the name of the target table
-     * @param columnName the name of the type/identifier column
-     * @param plainType the original type name
-     * @param extendedType the new type name
-     */
-    @Suppress("MagicNumber")
-    fun migratePlainToExtended(
-        context: Context,
-        tableName: String,
-        columnName: String,
-        plainType: String,
-        extendedType: String,
-    ) {
-        val conflictingTuples = findConflictingTuples(context, tableName, columnName, plainType, extendedType)
-
-        if (conflictingTuples.isNotEmpty()) {
-            val deactivateCount =
-                deactivateConflictingPlainDataPoints(
-                    context,
-                    tableName,
-                    columnName,
-                    plainType,
-                    conflictingTuples,
-                )
-            logger.info("Deactivated $deactivateCount conflicting plain data points of type $plainType in $tableName")
-        }
-
-        val updateStatement =
-            context.connection.prepareStatement(
-                "UPDATE $tableName SET $columnName = ? " +
-                    "WHERE $columnName = ? AND currently_active = true",
-            )
-        updateStatement.setString(1, extendedType)
-        updateStatement.setString(2, plainType)
-
-        val count = updateStatement.executeUpdate()
-        logger.info("Updated $count rows in $tableName from $plainType to $extendedType")
-
-        updateStatement.close()
     }
 
     /**
@@ -102,6 +90,7 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
      * @param extendedType the extended value to migrate to
      * @return a set of conflicting DataPointTuples
      */
+    @Suppress("MagicNumber")
     fun findConflictingTuples(
         context: Context,
         tableName: String,
@@ -148,14 +137,14 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
     }
 
     /**
-     * Deactivates all plain data points that conflict with already-active extended ones.
+     * Deactivates plain data points that conflict with extended versions.
      *
-     * @param context Flyway context
-     * @param tableName name of the table
+     * @param context the Flyway context
+     * @param tableName name of the table to update
      * @param columnName type/identifier column
-     * @param plainType value to deactivate
-     * @param conflictingTuples list of companyId/reportingPeriod pairs
-     * @return total number of deactivated records
+     * @param plainType the plain value to deactivate
+     * @param conflicts set of tuples to deactivate
+     * @return count of deactivated rows
      */
     @Suppress("MagicNumber")
     fun deactivateConflictingPlainDataPoints(
@@ -163,29 +152,105 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
         tableName: String,
         columnName: String,
         plainType: String,
-        conflictingTuples: Set<DataPointTuple>,
+        conflicts: Set<DataPointTuple>,
     ): Int {
-        var totalDeactivated = 0
-        val deactivateStatement =
+        val updateStatement =
             context.connection.prepareStatement(
-                "UPDATE $tableName SET currently_active = null " +
-                    "WHERE $columnName = ? AND company_id = ? " +
-                    "AND reporting_period = ? AND currently_active = true",
+                """
+                UPDATE $tableName
+                SET currently_active = null
+                WHERE $columnName = ?
+                    AND company_id = ?
+                    AND reporting_period = ?
+                    AND currently_active = true
+                """.trimIndent(),
             )
 
-        conflictingTuples.forEach { tuple ->
-            deactivateStatement.setString(1, plainType)
-            deactivateStatement.setString(2, tuple.companyId)
-            deactivateStatement.setString(3, tuple.reportingPeriod)
-            totalDeactivated += deactivateStatement.executeUpdate()
+        var totalDeactivated = 0
+
+        conflicts.forEach { conflict ->
+            updateStatement.setString(1, plainType)
+            updateStatement.setString(2, conflict.companyId)
+            updateStatement.setString(3, conflict.reportingPeriod)
+            totalDeactivated += updateStatement.executeUpdate()
         }
 
-        deactivateStatement.close()
+        updateStatement.close()
+        logger.info("Deactivated $totalDeactivated plain data points in $tableName for $plainType")
+
         return totalDeactivated
     }
 
     /**
-     * Tuple representing (company_id, reporting_period) for conflict resolution.
+     * Migrates plain data point types to extended format.
+     *
+     * @param context the Flyway context
+     * @param tableName name of the table to update
+     * @param columnName type/identifier column
+     * @param plainType the plain value to migrate from
+     * @param extendedType the extended value to migrate to
+     */
+    @Suppress("MagicNumber")
+    fun migratePlainToExtended(
+        context: Context,
+        tableName: String,
+        columnName: String,
+        plainType: String,
+        extendedType: String,
+    ) {
+        val updateStatement =
+            context.connection.prepareStatement(
+                "UPDATE $tableName SET $columnName = ? WHERE $columnName = ?",
+            )
+
+        updateStatement.setString(1, extendedType)
+        updateStatement.setString(2, plainType)
+        val count = updateStatement.executeUpdate()
+
+        updateStatement.close()
+        logger.info("Migrated $count rows in $tableName from $plainType to $extendedType")
+    }
+
+    /**
+     * Deletes plain uuid mappings where extended version already exists to prevent conflicts.
+     * Only applicable to data_point_uuid_map table which has unique constraint on (dataset_id, data_point_identifier).
+     *
+     * @param context the Flyway context
+     * @param tableName name of the table to delete from
+     * @param columnName type/identifier column
+     * @param plainType the plain value to delete
+     * @param extendedType the extended value to check for existence
+     */
+    @Suppress("MagicNumber")
+    fun deleteConflictingPlainUuidMappings(
+        context: Context,
+        tableName: String,
+        columnName: String,
+        plainType: String,
+        extendedType: String,
+    ) {
+        val deleteStatement =
+            context.connection.prepareStatement(
+                """
+                DELETE FROM $tableName
+                WHERE $columnName = ?
+                AND dataset_id IN (
+                    SELECT dataset_id FROM $tableName
+                    WHERE $columnName = ?
+                )
+                """.trimIndent(),
+            )
+
+        deleteStatement.setString(1, plainType)
+        deleteStatement.setString(2, extendedType)
+        val count = deleteStatement.executeUpdate()
+
+        deleteStatement.close()
+        logger.info("Deleted $count conflicting plain uuid mappings from $tableName for $plainType")
+    }
+
+    /**
+     * Simple data class to represent a (company_id, reporting_period) tuple
      */
     data class DataPointTuple(
         val companyId: String,

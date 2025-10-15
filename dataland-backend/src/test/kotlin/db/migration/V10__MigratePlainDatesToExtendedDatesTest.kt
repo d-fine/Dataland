@@ -53,7 +53,7 @@ class V10__MigratePlainDatesToExtendedDatesTest {
 
         migration.migrate(mockContext)
 
-        verify(mockPreparedStatement, times(8)).executeUpdate()
+        verify(mockPreparedStatement, times(6)).executeUpdate()
     }
 
     @Test
@@ -143,5 +143,24 @@ class V10__MigratePlainDatesToExtendedDatesTest {
         assertEquals(tuple1, tuple2)
         assertEquals(tuple1.hashCode(), tuple2.hashCode())
         assertTrue(tuple1 != tuple3)
+    }
+
+    @Test
+    fun `check that conflicting plain uuid mappings are deleted`() {
+        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
+        whenever(mockPreparedStatement.executeUpdate()).thenReturn(3)
+
+        migration.deleteConflictingPlainUuidMappings(
+            mockContext,
+            "data_point_uuid_map",
+            "data_point_identifier",
+            "plainDateFiscalYearEnd",
+            "extendedDateFiscalYearEnd",
+        )
+
+        verify(mockPreparedStatement, times(1)).executeUpdate()
+        verify(mockPreparedStatement).setString(1, "plainDateFiscalYearEnd")
+        verify(mockPreparedStatement).setString(2, "extendedDateFiscalYearEnd")
+        verify(mockPreparedStatement).close()
     }
 }
