@@ -929,11 +929,6 @@
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
-          },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
@@ -1002,11 +997,6 @@
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
-          },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
@@ -1049,11 +1039,6 @@
           "isMonitored": {
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
-          },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
@@ -1101,11 +1086,6 @@
           "isMonitored": {
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
-          },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
