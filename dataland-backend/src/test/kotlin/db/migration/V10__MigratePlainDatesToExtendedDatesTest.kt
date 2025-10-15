@@ -62,7 +62,6 @@ class V10__MigratePlainDatesToExtendedDatesTest {
         whenever(mockConflictResultSet.next()).thenReturn(true, true, false)
         whenever(mockConflictResultSet.getString("company_id")).thenReturn("company-1", "company-2")
         whenever(mockConflictResultSet.getString("reporting_period")).thenReturn("2024", "2023")
-        whenever(mockConflictResultSet.getString("framework")).thenReturn("sfdr", "pcaf")
 
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
         whenever(mockPreparedStatement.executeQuery()).thenReturn(mockConflictResultSet)
@@ -79,29 +78,29 @@ class V10__MigratePlainDatesToExtendedDatesTest {
         assertEquals(2, conflicts.size)
         assertTrue(
             conflicts.contains(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024", "sfdr"),
+                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
             ),
         )
         assertTrue(
             conflicts.contains(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023", "pcaf"),
+                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
             ),
         )
     }
 
     @Test
-    fun `check that conflicting plain data points are deleted`() {
+    fun `check that conflicting plain data points are deactivated`() {
         val conflicts =
             setOf(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024", "sfdr"),
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023", "pcaf"),
+                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
+                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
             )
 
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
         whenever(mockPreparedStatement.executeUpdate()).thenReturn(1)
 
-        val deletedCount =
-            migration.deleteConflictingPlainDataPoints(
+        val deactivatedCount =
+            migration.deactivateConflictingPlainDataPoints(
                 mockContext,
                 "data_point_meta_information",
                 "data_point_type",
@@ -109,7 +108,7 @@ class V10__MigratePlainDatesToExtendedDatesTest {
                 conflicts,
             )
 
-        assertEquals(2, deletedCount)
+        assertEquals(2, deactivatedCount)
         verify(mockPreparedStatement, times(2)).executeUpdate()
         verify(mockPreparedStatement).close()
     }
@@ -133,17 +132,13 @@ class V10__MigratePlainDatesToExtendedDatesTest {
         verify(mockPreparedStatement, times(1)).executeUpdate()
         verify(mockPreparedStatement).setString(1, "extendedDateFiscalYearEnd")
         verify(mockPreparedStatement).setString(2, "plainDateFiscalYearEnd")
-        @Suppress("MagicNumber")
-        verify(mockPreparedStatement).setString(3, "sfdr")
-        @Suppress("MagicNumber")
-        verify(mockPreparedStatement).setString(4, "pcaf")
     }
 
     @Test
     fun `check DataPointTuple equality`() {
-        val tuple1 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024", "sfdr")
-        val tuple2 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024", "sfdr")
-        val tuple3 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2024", "sfdr")
+        val tuple1 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
+        val tuple2 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
+        val tuple3 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2024")
 
         assertEquals(tuple1, tuple2)
         assertEquals(tuple1.hashCode(), tuple2.hashCode())
