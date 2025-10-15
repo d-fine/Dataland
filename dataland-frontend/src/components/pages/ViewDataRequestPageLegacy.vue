@@ -236,16 +236,13 @@
   </TheContent>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, inject, onMounted } from 'vue';
-import { defineProps } from 'vue';
+<script lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import router from '@/router';
-import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
 import { getCompanyName } from '@/utils/CompanyInformation.ts';
@@ -259,290 +256,304 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import ToggleSwitch from 'primevue/toggleswitch';
+import { defineComponent, inject } from 'vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
-const props = defineProps<{ requestId: string }>();
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
-const toggleEmailDetailsError = ref(false);
-const successModalIsVisible = ref(false);
-const reopenModalIsVisible = ref(false);
-const reopenMessage = ref('');
-const reopenedModalIsVisible = ref(false);
-const isUsersOwnRequest = ref(false);
-const isUserKeycloakAdmin = ref(false);
-const storedDataRequest = reactive({} as StoredDataRequest);
-const companyName = ref('');
-const showNewMessageDialog = ref(false);
-const emailContacts = ref(undefined as string[] | undefined);
-const emailMessage = ref(undefined as string | undefined);
-const hasValidEmailForm = ref(false);
-const reopenMessageError = ref(false);
-const answeringDataSetUrl = ref(undefined as string | undefined);
-
-/**
- * Perform all steps required to set up the component.
- */
-async function initializeComponent(): Promise<void> {
-  await getRequest()
-    .catch((error) => console.error(error))
-    .then(async () => {
-      if (getKeycloakPromise) {
-        const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-        await getAndStoreCompanyName(storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
-          console.error(error)
-        );
-        await checkForAvailableData(storedDataRequest, apiClientProvider).catch((error) => console.error(error));
+export default defineComponent({
+  name: 'ViewDataRequest',
+  components: {
+    SuccessDialog,
+    DatalandTag,
+    ReviewRequestButtons,
+    TheContent,
+    EmailDetails,
+    PrimeDialog,
+    PrimeButton,
+    ToggleSwitch,
+    StatusHistory,
+  },
+  props: {
+    requestId: {
+      type: String,
+      required: true,
+    },
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+    };
+  },
+  data() {
+    return {
+      toggleEmailDetailsError: false,
+      successModalIsVisible: false,
+      reopenModalIsVisible: false,
+      reopenMessage: '',
+      reopenedModalIsVisible: false,
+      isUsersOwnRequest: false,
+      isUserKeycloakAdmin: false,
+      storedDataRequest: {} as StoredDataRequest,
+      companyName: '',
+      showNewMessageDialog: false,
+      emailContacts: undefined as string[] | undefined,
+      emailMessage: undefined as string | undefined,
+      hasValidEmailForm: false,
+      reopenMessageError: false,
+      answeringDataSetUrl: undefined as string | undefined,
+    };
+  },
+  mounted() {
+    this.initializeComponent();
+  },
+  methods: {
+    convertUnixTimeInMsToDateString,
+    getFrameworkSubtitle,
+    frameworkHasSubTitle,
+    getFrameworkTitle,
+    /**
+     * Perform all steps required to set up the component.
+     */
+    initializeComponent() {
+      this.getRequest()
+        .catch((error) => console.error(error))
+        .then(() => {
+          if (this.getKeycloakPromise) {
+            const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+            this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+            this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+          }
+          this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+          void this.setUserAccessFields();
+        })
+        .catch((error) => console.error(error));
+    },
+    /**
+     * Method to update the email fields
+     * @param hasValidForm boolean indicating if the input is correct
+     * @param contacts email addresses
+     * @param message the content
+     */
+    updateEmailFields(hasValidForm: boolean, contacts: string[], message: string) {
+      this.hasValidEmailForm = hasValidForm;
+      this.emailContacts = contacts;
+      this.emailMessage = message;
+    },
+    /**
+     * Retrieve the company name and store it if a value was found.
+     */
+    async getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider) {
+      try {
+        this.companyName = await getCompanyName(companyId, apiClientProvider);
+      } catch (error) {
+        console.error(error);
       }
-      storedDataRequest.dataRequestStatusHistory?.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-      await setUserAccessFields();
-    })
-    .catch((error) => console.error(error));
-}
-
-/**
- * Method to update the email fields
- * @param hasValidForm boolean indicating if the input is correct
- * @param contacts email addresses
- * @param message the content
- */
-function updateEmailFields(hasValidForm: boolean, contacts: string[], message: string): void {
-  hasValidEmailForm.value = hasValidForm;
-  emailContacts.value = contacts;
-  emailMessage.value = message;
-}
-
-/**
- * Retrieve the company name and store it if a value was found.
- */
-async function getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider): Promise<void> {
-  try {
-    companyName.value = await getCompanyName(companyId, apiClientProvider);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
- * Method to check if there exist an approved dataset for a dataRequest
- * @param storedDataRequest dataRequest
- * @param apiClientProvider the ApiClientProvider to use for the connection
- */
-async function checkForAvailableData(
-  storedDataRequest: StoredDataRequest,
-  apiClientProvider: ApiClientProvider
-): Promise<void> {
-  try {
-    answeringDataSetUrl.value = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
- * Method to get the request from the api
- */
-async function getRequest(): Promise<void> {
-  try {
-    if (getKeycloakPromise) {
-      const result = await new ApiClientProvider(getKeycloakPromise()).apiClients.requestController.getRequest(
-        props.requestId
+    },
+    /**
+     * Method to check if there exist an approved dataset for a dataRequest
+     * @param storedDataRequest dataRequest
+     * @param apiClientProvider the ApiClientProvider to use for the connection
+     */
+    async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
+      try {
+        this.answeringDataSetUrl = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Method to get the request from the api
+     */
+    async getRequest() {
+      try {
+        if (this.getKeycloakPromise) {
+          this.storedDataRequest = (
+            await new ApiClientProvider(
+              this.getKeycloakPromise()
+            ).apiClients.communityManagerRequestController.getDataRequestById(this.requestId)
+          ).data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Method to check if a request can be reopened (only for nonSourceable requests)
+     * @param requestStatus request status of the dataland request
+     * @returns true if request status is non sourceable otherwise false
+     */
+    isRequestReopenable(requestStatus: RequestStatus) {
+      return requestStatus == RequestStatus.NonSourceable;
+    },
+    /**
+     * Opens a pop-up window to get the users message why the nonSourceable request should be reopened
+     */
+    openModalReopenRequest() {
+      this.reopenModalIsVisible = true;
+    },
+    /**
+     * Method to change if the user wants to receive emails on updates
+     */
+    async changeReceiveEmails() {
+      try {
+        await patchDataRequest(
+          this.requestId,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this.storedDataRequest.notifyMeImmediately,
+          undefined,
+          this.getKeycloakPromise
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+    /**
+     * Method to reopen the non sourceable data request
+     */
+    async reopenRequest() {
+      if (this.reopenMessage.length > 10) {
+        try {
+          await patchDataRequest(
+            this.storedDataRequest.dataRequestId,
+            RequestStatus.Open as RequestStatus,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            this.reopenMessage,
+            this.getKeycloakPromise
+          );
+          this.reopenModalIsVisible = false;
+          this.reopenedModalIsVisible = true;
+          this.storedDataRequest.requestStatus = RequestStatus.Open;
+          this.reopenMessage = '';
+        } catch (error) {
+          console.log(error);
+        }
+        return;
+      }
+      this.reopenMessageError = true;
+    },
+    /**
+     * Method to withdraw the request when clicking on the button
+     */
+    async withdrawRequest() {
+      try {
+        await patchDataRequest(
+          this.requestId,
+          RequestStatus.Withdrawn as RequestStatus,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this.getKeycloakPromise
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+      this.successModalIsVisible = true;
+      this.storedDataRequest.requestStatus = RequestStatus.Withdrawn;
+    },
+    /**
+     * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
+     * Both variables are used to show information on page depending on who's visiting
+     */
+    async setUserAccessFields() {
+      try {
+        if (this.getKeycloakPromise) {
+          const userId = await getUserId(this.getKeycloakPromise);
+          this.isUsersOwnRequest = this.storedDataRequest.userId == userId;
+          this.isUserKeycloakAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise);
+        }
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+    /**
+     * Method to update the request message when clicking on the button
+     */
+    addMessage() {
+      if (this.hasValidEmailForm) {
+        patchDataRequest(
+          this.requestId,
+          undefined,
+          undefined,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          this.emailContacts as unknown as Set<string>,
+          this.emailMessage,
+          undefined,
+          undefined,
+          this.getKeycloakPromise
+        )
+          .then(() => {
+            this.getRequest().catch((error) => console.error(error));
+            this.showNewMessageDialog = false;
+          })
+          .catch((error) => console.error(error));
+      } else {
+        this.toggleEmailDetailsError = !this.toggleEmailDetailsError;
+      }
+    },
+    /**
+     * Method to check if request is withdrawAble
+     * @returns boolean is withdrawAble
+     */
+    isRequestWithdrawable() {
+      return (
+        this.storedDataRequest.requestStatus == RequestStatus.Open ||
+        this.storedDataRequest.requestStatus == RequestStatus.Answered ||
+        this.storedDataRequest.requestStatus == RequestStatus.NonSourceable
       );
-      Object.assign(storedDataRequest, result.data);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
- * Method to check if a request can be reopened (only for nonSourceable requests)
- * @param requestStatus request status of the dataland request
- * @returns true if request status is non sourceable otherwise false
- */
-function isRequestReopenable(requestStatus: RequestStatus): boolean {
-  return requestStatus == RequestStatus.NonSourceable;
-}
-
-/**
- * Opens a pop-up window to get the users message why the nonSourceable request should be reopened
- */
-function openModalReopenRequest(): void {
-  reopenModalIsVisible.value = true;
-}
-
-/**
- * Method to change if the user wants to receive emails on updates
- */
-async function changeReceiveEmails(): Promise<void> {
-  try {
-    await patchDataRequest(
-      props.requestId,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      storedDataRequest.notifyMeImmediately,
-      undefined,
-      getKeycloakPromise
-    );
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-}
-
-/**
- * Method to reopen the non sourceable data request
- */
-async function reopenRequest(): Promise<void> {
-  if (reopenMessage.value.length > 10) {
-    try {
-      await patchDataRequest(
-        storedDataRequest.dataRequestId,
-        RequestStatus.Open as RequestStatus,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        reopenMessage.value,
-        getKeycloakPromise
-      );
-      reopenModalIsVisible.value = false;
-      reopenedModalIsVisible.value = true;
-      storedDataRequest.requestStatus = RequestStatus.Open;
-      reopenMessage.value = '';
-    } catch (error) {
-      console.log(error);
-    }
-    return;
-  }
-  reopenMessageError.value = true;
-}
-
-/**
- * Method to withdraw the request when clicking on the button
- */
-async function withdrawRequest(): Promise<void> {
-  try {
-    await patchDataRequest(
-      props.requestId,
-      RequestStatus.Withdrawn as RequestStatus,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      getKeycloakPromise
-    );
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-  successModalIsVisible.value = true;
-  storedDataRequest.requestStatus = RequestStatus.Withdrawn;
-}
-
-/**
- * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
- * Both variables are used to show information on page depending on who's visiting
- */
-async function setUserAccessFields(): Promise<void> {
-  try {
-    if (getKeycloakPromise) {
-      const userId = await getUserId(getKeycloakPromise);
-      isUsersOwnRequest.value = storedDataRequest.userId == userId;
-      isUserKeycloakAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-    }
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-}
-
-/**
- * Method to update the request message when clicking on the button
- */
-function addMessage(): void {
-  if (hasValidEmailForm.value) {
-    patchDataRequest(
-      props.requestId,
-      undefined,
-      undefined,
-      emailContacts.value as unknown as Set<string>,
-      emailMessage.value,
-      undefined,
-      undefined,
-      getKeycloakPromise
-    )
-      .then(() => {
-        getRequest().catch((error) => console.error(error));
-        showNewMessageDialog.value = false;
-      })
-      .catch((error) => console.error(error));
-  } else {
-    toggleEmailDetailsError.value = !toggleEmailDetailsError.value;
-  }
-}
-
-/**
- * Method to check if request is withdrawAble
- * @returns boolean is withdrawAble
- */
-function isRequestWithdrawable(): boolean {
-  return (
-    storedDataRequest.requestStatus == RequestStatus.Open ||
-    storedDataRequest.requestStatus == RequestStatus.Answered ||
-    storedDataRequest.requestStatus == RequestStatus.NonSourceable
-  );
-}
-
-/**
- * Navigates to the company view page
- * @returns the promise of the router push action
- */
-function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefined> | void {
-  if (answeringDataSetUrl.value) return router.push(answeringDataSetUrl.value);
-}
-
-/**
- * Method to check if request status is answered
- * @returns boolean if request status is answered
- */
-function isRequestStatusAnswered(): boolean {
-  return storedDataRequest.requestStatus == RequestStatus.Answered;
-}
-
-/**
- * Method to transform set of string to one string representing the set elements seperated by ','
- * @param contacts set of strings
- * @returns string representing the elements of the set
- */
-function formatContactsToString(contacts: Set<string>): string {
-  const contactsList = Array.from(contacts);
-  return contactsList.join(', ');
-}
-
-/**
- * Shows or hides the Modal depending on the current state
- */
-function openMessageDialog(): void {
-  showNewMessageDialog.value = true;
-}
-
-/**
- * Method to check if request status is open
- * @returns boolean if request status is open
- */
-function isNewMessageAllowed(): boolean {
-  return storedDataRequest.requestStatus == RequestStatus.Open;
-}
-
-onMounted(() => {
-  void initializeComponent();
+    },
+    /**
+     * Navigates to the company view page
+     * @returns the promise of the router push action
+     */
+    goToAnsweringDataSetPage() {
+      if (this.answeringDataSetUrl) return router.push(this.answeringDataSetUrl);
+    },
+    /**
+     * Method to check if request status is answered
+     * @returns boolean if request status is answered
+     */
+    isRequestStatusAnswered() {
+      return this.storedDataRequest.requestStatus == RequestStatus.Answered;
+    },
+    /**
+     * Method to transform set of string to one string representing the set elements seperated by ','
+     * @param contacts set of strings
+     * @returns string representing the elements of the set
+     */
+    formatContactsToString(contacts: Set<string>) {
+      const contactsList = Array.from(contacts);
+      return contactsList.join(', ');
+    },
+    /**
+     * Shows or hides the Modal depending on the current state
+     */
+    openMessageDialog() {
+      this.showNewMessageDialog = true;
+    },
+    /**
+     * Method to check if request status is open
+     * @returns boolean if request status is open
+     */
+    isNewMessageAllowed() {
+      return this.storedDataRequest.requestStatus == RequestStatus.Open;
+    },
+  },
 });
 </script>
-
 <style lang="scss" scoped>
 .message {
   width: 100%;
