@@ -97,23 +97,23 @@
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
             <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
-            <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
+            <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedRequest.userEmailAddress }}</div>
             <div class="card__subtitle">Company</div>
             <div class="card__data">{{ companyName }}</div>
             <div class="card__subtitle">Framework</div>
             <div class="card__data">
-              {{ getFrameworkTitle(storedDataRequest.dataType) }}
+              {{ getFrameworkTitle(storedRequest.dataType) }}
 
               <div
-                v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
+                v-show="frameworkHasSubTitle(storedRequest.dataType)"
                 style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
               >
                 <br />
-                {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
+                {{ getFrameworkSubtitle(storedRequest.dataType) }}
               </div>
             </div>
             <div class="card__subtitle">Reporting year</div>
-            <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+            <div class="card__data">{{ storedRequest.reportingPeriod }}</div>
           </div>
           <div
             v-show="answeringDataSetUrl"
@@ -131,29 +131,29 @@
               <span style="display: flex; align-items: center">
                 <span class="card__title">Request is:</span>
                 <DatalandTag
-                  :severity="storedDataRequest.requestStatus || ''"
-                  :value="storedDataRequest.requestStatus"
+                  :severity="storedRequest.state || ''"
+                  :value="storedRequest.state"
                   class="dataland-inline-tag"
                 />
                 <span class="card__title">and Access is:</span>
                 <DatalandTag
-                  :severity="storedDataRequest.accessStatus || ''"
-                  :value="storedDataRequest.accessStatus"
+                  :severity="storedRequest.accessStatus || ''"
+                  :value="storedRequest.accessStatus"
                   class="dataland-inline-tag"
                 />
                 <span class="card__subtitle">
-                  since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
+                  since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
                 </span>
                 <span style="margin-left: auto">
                   <ReviewRequestButtons
-                    v-if="isUsersOwnRequest && isRequestStatusAnswered()"
+                    v-if="isUsersOwnRequest && isstateAnswered()"
                     @request-reopened-or-resolved="initializeComponent()"
-                    :data-request-id="storedDataRequest.dataRequestId"
+                    :data-request-id="storedRequest.id"
                   />
                 </span>
               </span>
               <div class="card__separator" />
-              <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
+              <StatusHistory :status-history="storedRequest.datastateHistory" />
             </div>
             <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
               <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
@@ -163,11 +163,11 @@
                 style="margin: 1rem 0"
                 data-test="notifyMeImmediatelyInput"
                 inputId="notifyMeImmediatelyInput"
-                v-model="storedDataRequest.notifyMeImmediately"
+                v-model="storedRequest.notifyMeImmediately"
                 @update:modelValue="changeReceiveEmails()"
               />
               <label for="notifyMeImmediatelyInput">
-                <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
+                <strong v-if="storedRequest.notifyMeImmediately">immediate update</strong>
                 <span v-else>weekly summary</span>
               </label>
             </div>
@@ -185,7 +185,7 @@
                 </span>
               </span>
               <div class="card__separator" />
-              <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
+              <div v-for="message in storedRequest.messageHistory" :key="message.creationTimestamp">
                 <div style="color: black; font-weight: bold; font-size: small">
                   {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
                 </div>
@@ -198,7 +198,7 @@
                 </div>
               </div>
             </div>
-            <div class="card" v-show="isRequestReopenable(storedDataRequest.requestStatus)" data-test="card_reopen">
+            <div class="card" v-show="isRequestReopenable(storedRequest.state)" data-test="card_reopen">
               <div class="card__title">Reopen Request</div>
               <div class="card__separator" />
               <div>
@@ -254,7 +254,7 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import { patchDataRequest } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -271,7 +271,7 @@ const reopenMessage = ref('');
 const reopenedModalIsVisible = ref(false);
 const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
-const storedDataRequest = reactive({} as StoredDataRequest);
+const storedRequest = reactive({} as StoredRequest);
 const companyName = ref('');
 const showNewMessageDialog = ref(false);
 const emailContacts = ref(undefined as string[] | undefined);
@@ -289,12 +289,10 @@ async function initializeComponent(): Promise<void> {
     .then(async () => {
       if (getKeycloakPromise) {
         const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-        await getAndStoreCompanyName(storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
-          console.error(error)
-        );
-        await checkForAvailableData(storedDataRequest, apiClientProvider).catch((error) => console.error(error));
+        await getAndStoreCompanyName(storedRequest.companyId, apiClientProvider).catch((error) => console.error(error));
+        await checkForAvailableData(storedRequest, apiClientProvider).catch((error) => console.error(error));
       }
-      storedDataRequest.dataRequestStatusHistory?.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+      storedRequest.datastateHistory?.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
@@ -325,15 +323,15 @@ async function getAndStoreCompanyName(companyId: string, apiClientProvider: ApiC
 
 /**
  * Method to check if there exist an approved dataset for a dataRequest
- * @param storedDataRequest dataRequest
+ * @param storedRequest dataRequest
  * @param apiClientProvider the ApiClientProvider to use for the connection
  */
 async function checkForAvailableData(
-  storedDataRequest: StoredDataRequest,
+  storedRequest: StoredRequest,
   apiClientProvider: ApiClientProvider
 ): Promise<void> {
   try {
-    answeringDataSetUrl.value = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
+    answeringDataSetUrl.value = await getAnsweringDataSetUrl(storedRequest, apiClientProvider);
   } catch (error) {
     console.error(error);
   }
@@ -348,7 +346,7 @@ async function getRequest(): Promise<void> {
       const result = await new ApiClientProvider(getKeycloakPromise()).apiClients.requestController.getRequest(
         props.requestId
       );
-      Object.assign(storedDataRequest, result.data);
+      Object.assign(storedRequest, result.data);
     }
   } catch (error) {
     console.error(error);
@@ -357,11 +355,11 @@ async function getRequest(): Promise<void> {
 
 /**
  * Method to check if a request can be reopened (only for nonSourceable requests)
- * @param requestStatus request status of the dataland request
+ * @param state request status of the dataland request
  * @returns true if request status is non sourceable otherwise false
  */
-function isRequestReopenable(requestStatus: RequestStatus): boolean {
-  return requestStatus == RequestStatus.NonSourceable;
+function isRequestReopenable(state: RequestState): boolean {
+  return state == state.NonSourceable;
 }
 
 /**
@@ -382,7 +380,7 @@ async function changeReceiveEmails(): Promise<void> {
       undefined,
       undefined,
       undefined,
-      storedDataRequest.notifyMeImmediately,
+      storedRequest.notifyMeImmediately,
       undefined,
       getKeycloakPromise
     );
@@ -399,8 +397,8 @@ async function reopenRequest(): Promise<void> {
   if (reopenMessage.value.length > 10) {
     try {
       await patchDataRequest(
-        storedDataRequest.dataRequestId,
-        RequestStatus.Open as RequestStatus,
+        storedRequest.id,
+        RequestState.Open,
         undefined,
         undefined,
         undefined,
@@ -410,7 +408,7 @@ async function reopenRequest(): Promise<void> {
       );
       reopenModalIsVisible.value = false;
       reopenedModalIsVisible.value = true;
-      storedDataRequest.requestStatus = RequestStatus.Open;
+      storedRequest.state = RequestState.Open;
       reopenMessage.value = '';
     } catch (error) {
       console.log(error);
@@ -427,7 +425,7 @@ async function withdrawRequest(): Promise<void> {
   try {
     await patchDataRequest(
       props.requestId,
-      RequestStatus.Withdrawn as RequestStatus,
+      RequestState.Withdrawn,
       undefined,
       undefined,
       undefined,
@@ -440,7 +438,7 @@ async function withdrawRequest(): Promise<void> {
     return;
   }
   successModalIsVisible.value = true;
-  storedDataRequest.requestStatus = RequestStatus.Withdrawn;
+  storedRequest.state = RequestState.Withdrawn;
 }
 
 /**
@@ -451,7 +449,7 @@ async function setUserAccessFields(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       const userId = await getUserId(getKeycloakPromise);
-      isUsersOwnRequest.value = storedDataRequest.userId == userId;
+      isUsersOwnRequest.value = storedRequest.userId == userId;
       isUserKeycloakAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
     }
   } catch (error) {
@@ -491,9 +489,9 @@ function addMessage(): void {
  */
 function isRequestWithdrawable(): boolean {
   return (
-    storedDataRequest.requestStatus == RequestStatus.Open ||
-    storedDataRequest.requestStatus == RequestStatus.Answered ||
-    storedDataRequest.requestStatus == RequestStatus.NonSourceable
+    storedRequest.state == RequestState.Open ||
+    storedRequest.state == RequestState.Answered ||
+    storedRequest.state == RequestState.NonSourceable
   );
 }
 
@@ -509,8 +507,8 @@ function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefine
  * Method to check if request status is answered
  * @returns boolean if request status is answered
  */
-function isRequestStatusAnswered(): boolean {
-  return storedDataRequest.requestStatus == RequestStatus.Answered;
+function isstateAnswered(): boolean {
+  return storedRequest.state == RequestState.Answered;
 }
 
 /**
@@ -535,7 +533,7 @@ function openMessageDialog(): void {
  * @returns boolean if request status is open
  */
 function isNewMessageAllowed(): boolean {
-  return storedDataRequest.requestStatus == RequestStatus.Open;
+  return storedRequest.state == RequestState.Open;
 }
 
 onMounted(() => {

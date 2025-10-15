@@ -1,17 +1,17 @@
-import type { ExtendedStoredDataRequest, StoredDataRequest } from '@clients/communitymanager';
+import type { ExtendedStoredRequest, StoredRequest } from '@clients/datasourcingservice';
 import { type ApiClientProvider } from '@/services/ApiClients.ts';
 import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 import { getParentCompanyId } from '@/utils/CompanyInformation.ts';
 
 /**
- * Retrieve the meta data object of the active data set identified by the given parameters.
+ * Retrieve the metadata object of the active data set identified by the given parameters.
  *
  * This function may throw an exception.
  * @param companyId the company to which the dataset belongs
  * @param dataType the framework to search for
  * @param reportingPeriod the reporting period to search for
  * @param apiClientProvider an api client provider to use when polling the backend
- * @return the meta data object if found, else "undefined"
+ * @return the metadata object if found, else "undefined"
  */
 async function getDataMetaInfo(
   companyId: string,
@@ -30,26 +30,26 @@ async function getDataMetaInfo(
 
 /**
  * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
- * @param storedDataRequest the data request whose ansering data set URL shall be found
+ * @param storedRequest the data request whose answering data set URL shall be found
  * @param apiClientProvider the ApiClientProvider to use for the connection
  */
 export async function getAnsweringDataSetUrl(
-  storedDataRequest: StoredDataRequest | ExtendedStoredDataRequest,
+  storedRequest: StoredRequest | ExtendedStoredRequest,
   apiClientProvider: ApiClientProvider
 ): Promise<string | undefined> {
   let answeringDataMetaInfo = await getDataMetaInfo(
-    storedDataRequest.datalandCompanyId,
-    storedDataRequest.dataType,
-    storedDataRequest.reportingPeriod,
+    storedRequest.companyId,
+    storedRequest.dataType,
+    storedRequest.reportingPeriod,
     apiClientProvider
   );
   if (!answeringDataMetaInfo) {
-    const parentCompanyId = await getParentCompanyId(storedDataRequest.datalandCompanyId, apiClientProvider);
+    const parentCompanyId = await getParentCompanyId(storedRequest.companyId, apiClientProvider);
     if (!parentCompanyId) return;
     answeringDataMetaInfo = await getDataMetaInfo(
       parentCompanyId,
-      storedDataRequest.dataType,
-      storedDataRequest.reportingPeriod,
+      storedRequest.dataType,
+      storedRequest.reportingPeriod,
       apiClientProvider
     );
   }
