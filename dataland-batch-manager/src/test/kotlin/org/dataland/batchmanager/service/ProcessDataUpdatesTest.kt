@@ -153,7 +153,7 @@ class ProcessDataUpdatesTest {
     }
 
     @Test
-    fun `waitForCommunityManager should stop on first successful health check`() {
+    fun `waitForDataSourcingService should stop on first successful health check`() {
         whenever(mockDataSourcingActuatorApi.health()).thenReturn(Any())
         initProcessDataUpdates()
         processDataUpdates.waitForDataSourcingService()
