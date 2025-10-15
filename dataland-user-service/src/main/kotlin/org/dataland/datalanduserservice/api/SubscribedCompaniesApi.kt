@@ -58,5 +58,5 @@ interface SubscribedCompaniesApi {
         value = ["/incomplete-fye-information"],
         produces = ["application/json"],
     )
-    fun getCompaniesWithIncompleteFyeInformation(): ResponseEntity<List<String>>
+    fun getCompaniesWithIncompleteFyeInformation(): ResponseEntity<Set<String>>
 }
