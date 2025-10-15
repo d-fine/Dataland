@@ -2,12 +2,17 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.model.BulkDataRequest
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.model.BasePortfolio
-import org.dataland.datalanduserservice.model.EnrichedPortfolio
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.datalanduserservice.repository.PortfolioRepository
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 /**
  * Service to post Bulk Data Requests upon Portfolio or Monitoring status changes.
@@ -17,146 +22,275 @@ import org.springframework.stereotype.Service
 class PortfolioBulkDataRequestService
     @Autowired
     constructor(
-        private val portfolioEnrichmentService: PortfolioEnrichmentService,
+        private val companyDataControllerApi: CompanyDataControllerApi,
         private val requestControllerApi: RequestControllerApi,
+        val portfolioRepository: PortfolioRepository,
     ) {
-        companion object {
-            const val UPPER_BOUND = 2025
+        private val logger = LoggerFactory.getLogger(javaClass)
+
+        private val threshold1InMonths = 1L
+        private val threshold2InMonths = 3L
+
+        private val financialsString = "financials"
+        private val nonfinancialsString = "nonfinancials"
+        private val unsectorizedString = "unsectorized"
+
+        var companyIdsWithoutReportingYearInfo: MutableSet<String> = mutableSetOf()
+
+        private var setOfCompanyReportingYearAndSectorInfo: MutableSet<CompanyReportingYearAndSectorInfo> = mutableSetOf()
+
+        private data class CompanyReportingYearAndSectorInfo(
+            val companyId: String,
+            val reportingPeriod: String,
+            val sector: String?,
+        )
+
+        /**
+         * Schedules and executes the creation of Bulk Data Requests for all monitored portfolios in the system.
+         *
+         * This function runs automatically at 2:00 a.m. daily (server time).
+         * It retrieves all monitored portfolios, updates company reporting year and sector information,
+         * and then publishes appropriate Bulk Data Requests for each portfolio.
+         *
+         * @see setCompanyReportingYearAndSectorInfo
+         * @see postBulkDataRequestIfMonitored
+         */
+        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
+        @Scheduled(cron = "0 0 2 * * *")
+        private fun createBulkDataRequestsForAllMonitoredPortfolios() {
+            logger.info("Running scheduled request creation job for monitored portfolios.")
+            val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
+            setCompanyReportingYearAndSectorInfo(allMonitoredPortfolios)
+            allMonitoredPortfolios.forEach { postBulkDataRequestIfMonitored(it.toBasePortfolio()) }
         }
 
         /**
-         * Publishes Bulk Data Request Messages for monitored portfolios.
+         * Sets the reporting year and sector information for all company IDs across the provided monitored portfolios.
+         *
+         * Iterates over all company IDs in the monitored portfolios, retrieves their reporting info,
+         * and updates the setOfCompanyReportingYearAndSectorInfo and companyIdsWithoutReportingYearInfo accordingly.
+         * Skips company IDs that have already been processed or are known to have missing reporting info.
+         *
+         * @param allMonitoredPortfolios List of all monitored PortfolioEntity items to collect company info from.
          */
-        fun postBulkDataRequestMessageIfMonitored(portfolio: BasePortfolio) {
-            if (!portfolio.isMonitored) {
-                return
-            }
-            val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(portfolio)
-            val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)
+        private fun setCompanyReportingYearAndSectorInfo(allMonitoredPortfolios: List<PortfolioEntity>) {
+            setOfCompanyReportingYearAndSectorInfo = mutableSetOf()
+            companyIdsWithoutReportingYearInfo = mutableSetOf()
 
-            if ("eutaxonomy" in portfolio.monitoredFrameworks) {
-                postFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
-                postNonFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
-                postFinancialAndNonFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
-            }
-
-            if ("sfdr" in portfolio.monitoredFrameworks) {
-                postSfdrBulkDataRequest(enrichedPortfolio, monitoringPeriods)
-            }
-        }
-
-        private fun filterCompanyIdsBySector(
-            portfolio: EnrichedPortfolio,
-            filterFunction: (String?) -> Boolean = { true },
-        ): Set<String> =
-            portfolio.entries
-                .filter { filterFunction(it.sector) }
-                .map { it.companyId }
+            val processedCompanyIds = mutableSetOf<String>()
+            allMonitoredPortfolios
+                .flatMap { it.companyIds }
                 .toSet()
-
-        private fun getFinancialsCompanyIds(portfolio: EnrichedPortfolio) =
-            filterCompanyIdsBySector(portfolio) {
-                it != null && it.lowercase() == "financials"
-            }
-
-        private fun getUnsectorizedCompanyIds(portfolio: EnrichedPortfolio) =
-            filterCompanyIdsBySector(portfolio) {
-                it == null
-            }
-
-        private fun getNonFinancialsCompanyIds(portfolio: EnrichedPortfolio) =
-            filterCompanyIdsBySector(portfolio) { it != null && it.lowercase() != "financials" }
-
-        private fun getAllCompanyIds(portfolio: EnrichedPortfolio) = filterCompanyIdsBySector(portfolio) { true }
-
-        private fun getMonitoringPeriods(startingMonitoringPeriod: String?): Set<String> {
-            val startingMonitoringPeriodInt =
-                startingMonitoringPeriod?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid start year: '$startingMonitoringPeriod' is not a valid number")
-            return (startingMonitoringPeriodInt until UPPER_BOUND)
-                .map { it.toString() }
-                .toSet()
+                .forEach { id ->
+                    if (!processedCompanyIds.contains(id) && !companyIdsWithoutReportingYearInfo.contains(id)) {
+                        processedCompanyIds += id
+                        val storedCompany = companyDataControllerApi.getCompanyById(id)
+                        getCompanyReportingYearInfoForCompany(storedCompany)
+                            ?.let { setOfCompanyReportingYearAndSectorInfo += it }
+                    }
+                }
         }
 
         /**
-         * Post a Bulk Data Request based on the company sector
-         * @param enrichedPortfolio: enrichment of the given portfolio
-         * @param reportingPeriods: the monitoring periods
-         * @param selector: the getter function for (non)-financial company Ids
-         * @param monitoredFrameworks: the chosen frameworks
+         * Retrieves the reporting year and sector information for a specific company.
+         *
+         * Calculates the relevant reporting year based on the company's fiscal year end and reporting period shift.
+         * Sectors are normalized to "financials", "nonfinancials", or "unsectorized".
+         * If required information is unavailable, the company is added to companyIdsWithoutReportingYearInfo and null is returned.
+         *
+         * @param storedCompany The StoredCompany object containing company information.
+         * @return CompanyReportingYearAndSectorInfo for the company, or null if insufficient data.
          */
-        private fun postBulkDataRequest(
-            enrichedPortfolio: EnrichedPortfolio,
-            reportingPeriods: Set<String>,
-            selector: (EnrichedPortfolio) -> Set<String>,
-            monitoredFrameworks: Set<String>,
+        private fun getCompanyReportingYearInfoForCompany(storedCompany: StoredCompany): CompanyReportingYearAndSectorInfo? {
+            val (fiscalYearEnd, reportingPeriodShift, normalizedSector) =
+                with(storedCompany.companyInformation) {
+                    Triple(
+                        fiscalYearEnd,
+                        reportingPeriodShift,
+                        when (sector?.lowercase()) {
+                            financialsString -> financialsString
+                            null -> unsectorizedString
+                            else -> nonfinancialsString
+                        },
+                    )
+                }
+
+            if (fiscalYearEnd == null || reportingPeriodShift == null) {
+                companyIdsWithoutReportingYearInfo += storedCompany.companyId
+                return null
+            }
+
+            val today = LocalDate.now()
+            val lowerBoundary = today.minusMonths(threshold1InMonths)
+            val upperBoundary = today.plusMonths(threshold2InMonths)
+
+            val candidatesForRelevantFYE =
+                listOf(
+                    fiscalYearEnd.withYear(lowerBoundary.year),
+                    fiscalYearEnd.withYear(upperBoundary.year),
+                )
+
+            val selectedRelevantFYE =
+                candidatesForRelevantFYE
+                    .firstOrNull { it.isAfter(lowerBoundary) && it.isBefore(upperBoundary) }
+
+            val reportingYear = selectedRelevantFYE?.plusYears(reportingPeriodShift.toLong())?.year
+
+            return if (reportingYear != null) {
+                CompanyReportingYearAndSectorInfo(
+                    storedCompany.companyId,
+                    reportingYear.toString(),
+                    normalizedSector,
+                )
+            } else {
+                null
+            }
+        }
+
+        /**
+         * Publishes Bulk Data Request messages for a monitored portfolio.
+         *
+         * For each unique combination of sector and reporting period among the portfolio's company IDs,
+         * posts one or more bulk data requests using the appropriate frameworks.
+         * Does nothing if the provided portfolio is not monitored.
+         *
+         * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
+         */
+        fun postBulkDataRequestIfMonitored(basePortfolio: BasePortfolio) {
+            if (!basePortfolio.isMonitored) return
+
+            val reportingPeriodAndSectorInfoByCompanyId = buildCompanyInfoLookup()
+            val groupedCompanyIds =
+                groupCompanyIdsBySectorAndReportingPeriod(
+                    basePortfolio.companyIds,
+                    reportingPeriodAndSectorInfoByCompanyId,
+                )
+
+            groupedCompanyIds.forEach { (key, companyIds) ->
+                if ("eutaxonomy" in basePortfolio.monitoredFrameworks) {
+                    postEutaxonomyBulkRequest(basePortfolio, key, companyIds)
+                }
+                if ("sfdr" in basePortfolio.monitoredFrameworks) {
+                    postSfdrBulkRequest(basePortfolio, key, companyIds)
+                }
+            }
+        }
+
+        private fun buildCompanyInfoLookup(): Map<String, CompanyReportingYearAndSectorInfo> =
+            setOfCompanyReportingYearAndSectorInfo.associateBy { it.companyId }
+
+        private data class ReportingGroupKey(
+            val sector: String,
+            val reportingPeriod: String,
+        )
+
+        /**
+         * Groups the provided companyIds by their sector and reporting period. Bulk Data Requests can then be posted
+         * for each group.
+         * Only companyIds for which reporting and sector info is available are included.
+         * @param companyIds The set of company IDs to group.
+         * @param infoLookup A map from companyId to CompanyReportingYearAndSectorInfo.
+         * @return A map from (sector, reportingPeriod) key to the set of companyIds sharing those attributes.
+         */
+        private fun groupCompanyIdsBySectorAndReportingPeriod(
+            companyIds: Set<String>,
+            infoLookup: Map<String, CompanyReportingYearAndSectorInfo>,
+        ): Map<ReportingGroupKey, Set<String>> =
+            companyIds
+                .mapNotNull { companyId ->
+                    infoLookup[companyId]?.let { info ->
+                        ReportingGroupKey(
+                            sector = info.sector?.lowercase() ?: unsectorizedString,
+                            reportingPeriod = info.reportingPeriod,
+                        ) to companyId
+                    }
+                }.groupBy({ it.first }, { it.second })
+                .mapValues { it.value.toSet() }
+
+        /**
+         * Post a Bulk Data Request for the given portfolio, sector, and reporting period,
+         * specifying the correct frameworks for 'eutaxonomy'.
+         *
+         * @param basePortfolio The portfolio for which to create the request.
+         * @param groupKey The key specifying sector and reporting period.
+         * @param companyIds The set of company IDs in this sector and reporting period group.
+         */
+
+        private fun postEutaxonomyBulkRequest(
+            basePortfolio: BasePortfolio,
+            groupKey: ReportingGroupKey,
+            companyIds: Set<String>,
         ) {
-            val companyIds = selector(enrichedPortfolio)
-            if (companyIds.isEmpty()) {
-                return
-            }
+            val monitoredFrameworks =
+                when (groupKey.sector) {
+                    financialsString ->
+                        setOf(
+                            DataTypeEnum.eutaxonomyMinusFinancials.value,
+                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                        )
 
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = companyIds,
-                    dataTypes = monitoredFrameworks,
-                    reportingPeriods = reportingPeriods,
-                ),
-                userId = DatalandAuthentication.fromContext().userId,
+                    nonfinancialsString ->
+                        setOf(
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
+                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                        )
+
+                    else ->
+                        setOf(
+                            DataTypeEnum.eutaxonomyMinusFinancials.value,
+                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
+                        )
+                }
+            postBulkDataRequest(
+                userId = basePortfolio.userId,
+                companyIds = companyIds,
+                reportingPeriods = setOf(groupKey.reportingPeriod),
+                frameworks = monitoredFrameworks,
             )
         }
 
         /**
-         * Post EU Taxonomy Bulk Data Requests for "financials" companies
+         * Post a Bulk Data Request for the given portfolio, sector, and reporting period,
+         * specifying the 'sfdr' framework.
+         *
+         * @param basePortfolio The portfolio for which to create the request.
+         * @param groupKey The key specifying sector and reporting period.
+         * @param companyIds The set of company IDs in this sector and reporting period group.
          */
-        private fun postFinancialBulkDataRequest(
-            enrichedPortfolio: EnrichedPortfolio,
-            monitoringPeriods: Set<String>,
-        ) = postBulkDataRequest(
-            enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
-            setOf(DataTypeEnum.eutaxonomyMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
-        )
+        private fun postSfdrBulkRequest(
+            basePortfolio: BasePortfolio,
+            groupKey: ReportingGroupKey,
+            companyIds: Set<String>,
+        ) {
+            postBulkDataRequest(
+                userId = basePortfolio.userId,
+                companyIds = companyIds,
+                reportingPeriods = setOf(groupKey.reportingPeriod),
+                frameworks = setOf(DataTypeEnum.sfdr.value),
+            )
+        }
 
         /**
-         * Post EU Taxonomy Bulk Data Requests for non-"financials" companies
+         * Post a Bulk Data Request based on the company sector
+         * @param userId: the id of the user to whom the portfolio belongs
+         * @param companyIds: the company ids to be included in the request
+         * @param reportingPeriods: the monitoring periods
+         * @param frameworks: the chosen frameworks
          */
-        private fun postNonFinancialBulkDataRequest(
-            enrichedPortfolio: EnrichedPortfolio,
-            monitoringPeriods: Set<String>,
-        ) = postBulkDataRequest(
-            enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
-            setOf(
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
-                DataTypeEnum.nuclearMinusAndMinusGas.value,
-            ),
-        )
-
-        /**
-         * Post EU Taxonomy Bulk Data Requests for companies without sector
-         */
-        private fun postFinancialAndNonFinancialBulkDataRequest(
-            enrichedPortfolio: EnrichedPortfolio,
-            monitoringPeriods: Set<String>,
-        ) = postBulkDataRequest(
-            enrichedPortfolio, monitoringPeriods, ::getUnsectorizedCompanyIds,
-            setOf(
-                DataTypeEnum.eutaxonomyMinusFinancials.value,
-                DataTypeEnum.nuclearMinusAndMinusGas.value,
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
-            ),
-        )
-
-        /**
-         * Post SFDR Bulk Data Requests for all companies
-         */
-
-        private fun postSfdrBulkDataRequest(
-            enrichedPortfolio: EnrichedPortfolio,
-            monitoringPeriods: Set<String>,
-        ) = postBulkDataRequest(
-            enrichedPortfolio, monitoringPeriods, ::getAllCompanyIds,
-            setOf(
-                DataTypeEnum.sfdr.value,
-            ),
-        )
+        private fun postBulkDataRequest(
+            userId: String,
+            companyIds: Set<String>,
+            reportingPeriods: Set<String>,
+            frameworks: Set<String>,
+        ) {
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    companyIdentifiers = companyIds,
+                    dataTypes = frameworks,
+                    reportingPeriods = reportingPeriods,
+                ),
+                userId = userId,
+            )
+        }
     }
