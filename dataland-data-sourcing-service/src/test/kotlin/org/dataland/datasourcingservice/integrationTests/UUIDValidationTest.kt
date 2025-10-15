@@ -8,10 +8,13 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureMockMvc
@@ -37,14 +40,16 @@ class UUIDValidationTest {
             userId = userId,
         )
 
-    private fun postWithFilterAndExpectNotFound(
+    private fun postWithFilterAndExpect(
         urlString: String,
         companyId: String?,
         userId: String?,
+        status: ResultMatcher,
     ) = mockMvc
         .perform(
             post(urlString)
                 .contentType("application/json")
+                .accept(MediaType.APPLICATION_JSON)
                 .content(
                     objectMapper.writeValueAsString(
                         createRequestSearchFilter(
@@ -53,7 +58,7 @@ class UUIDValidationTest {
                         ),
                     ),
                 ),
-        ).andExpect(status().isNotFound)
+        ).andExpect(status)
 
     @ParameterizedTest
     @CsvSource(
@@ -70,10 +75,24 @@ class UUIDValidationTest {
         companyId: String?,
         userId: String?,
     ) {
-        postWithFilterAndExpectNotFound(
+        postWithFilterAndExpect(
             urlString = urlString,
             companyId = companyId,
             userId = userId,
+            status().isNotFound,
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [SEARCH_URL_STRING, COUNT_URL_STRING],
+    )
+    fun `posting a query with valid UUIDs works`(urlString: String) {
+        postWithFilterAndExpect(
+            urlString = urlString,
+            companyId = UUID.randomUUID().toString(),
+            userId = UUID.randomUUID().toString(),
+            status = status().isOk,
         )
     }
 }

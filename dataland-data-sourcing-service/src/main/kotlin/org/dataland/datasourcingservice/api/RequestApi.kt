@@ -353,7 +353,7 @@ interface RequestApi {
     )
     @PostMapping(
         value = ["/count"],
-        produces = ["text/plain"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postRequestCountQuery(

@@ -212,7 +212,7 @@
           "200": {
             "description": "Successfully queried the number of requests.",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
                   "type": "integer",
                   "format": "int32"
