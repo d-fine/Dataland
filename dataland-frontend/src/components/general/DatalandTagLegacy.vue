@@ -12,9 +12,9 @@
 
 <script setup lang="ts">
 import { ExtendedQaStatus } from '@/components/resources/datasetOverview/DatasetTableInfo.ts';
+import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import Tag from 'primevue/tag';
 import { computed, type Ref } from 'vue';
-import { RequestState, RequestPriority } from "@clients/datasourcingservice";
 
 type TagColorDefinition = {
   background: string;
@@ -66,6 +66,17 @@ const { severity } = defineProps({
 
 const designToken: Ref<TagColorDefinition> = computed(() => {
   switch (severity) {
+    // access status
+    case AccessStatus.Declined:
+      return yellowTag;
+    case AccessStatus.Granted:
+      return greenTag;
+    case AccessStatus.Pending:
+      return amberTag;
+    case AccessStatus.Public:
+      return skyTag;
+    case AccessStatus.Revoked:
+      return slateTag;
     // quality status
     case ExtendedQaStatus.Pending:
       return amberTag;
@@ -84,14 +95,18 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
       return primaryTag;
     case RequestPriority.Urgent:
       return redTag;
-      // request state
-    case RequestState.Open:
+    // request status
+    case RequestStatus.Open:
       return amberTag;
-    case RequestState.Processing:
+    case RequestStatus.Answered:
       return skyTag;
-    case RequestState.Processed:
+    case RequestStatus.Closed:
+      return yellowTag;
+    case RequestStatus.NonSourceable:
+      return slateTag;
+    case RequestStatus.Resolved:
       return greenTag;
-    case RequestState.Withdrawn:
+    case RequestStatus.Withdrawn:
       return slateTag;
     default:
       return slateTag;

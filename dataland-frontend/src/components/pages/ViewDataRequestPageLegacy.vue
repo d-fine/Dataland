@@ -237,7 +237,7 @@
 </template>
 
 <script lang="ts">
-import DatalandTag from '@/components/general/DatalandTag.vue';
+import DatalandTag from '@/components/general/DatalandTagLegacy.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
