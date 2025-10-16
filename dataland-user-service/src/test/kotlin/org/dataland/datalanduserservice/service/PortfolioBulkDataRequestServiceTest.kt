@@ -1,224 +1,287 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.BulkDataRequest
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.model.BasePortfolio
-import org.dataland.datalanduserservice.model.EnrichedPortfolio
-import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
 import org.dataland.datalanduserservice.repository.PortfolioRepository
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Answers
 import org.mockito.Mockito.mockStatic
-import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.clearInvocations
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.LocalDate
-import java.util.UUID
-import java.util.stream.Stream
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class PortfolioBulkDataRequestServiceTest {
-    private val mockRequestControllerApi = mock<RequestControllerApi>()
-
-    // private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
-    private var portfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
-    private lateinit var mockAuthentication: DatalandAuthentication
-    private var mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
-    private var mockPortfolioRepository = mock<PortfolioRepository>()
-    private val mockSecurityContext = mock<SecurityContext>()
+    private val mockCompanyDataApi = mock<CompanyDataControllerApi>()
+    private lateinit var reportingInfoService: CompanyReportingInfoService
+    private val mockRequestApi = mock<RequestControllerApi>()
+    private val mockPortfolioRepo = mock<PortfolioRepository>()
+    private lateinit var service: PortfolioBulkDataRequestService
 
     @BeforeEach
     fun setup() {
-        reset(mockRequestControllerApi, mockCompanyDataControllerApi, mockPortfolioRepository)
-        portfolioBulkDataRequestService =
+        reportingInfoService = CompanyReportingInfoService(mockCompanyDataApi)
+        service =
             PortfolioBulkDataRequestService(
-                requestControllerApi = mockRequestControllerApi,
-                companyDataControllerApi = mockCompanyDataControllerApi,
-                portfolioRepository = mockPortfolioRepository,
+                reportingInfoService,
+                mockRequestApi,
+                mockPortfolioRepo,
             )
-        resetSecurityContext(
-            UUID.randomUUID().toString(),
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        reportingInfoService.resetData()
+        clearInvocations(mockCompanyDataApi, mockRequestApi, mockPortfolioRepo)
     }
 
-    /**
-     * Setting the security context to use the specified userId and set of roles.
-     */
-    private fun resetSecurityContext(
-        userId: String,
-        roles: Set<DatalandRealmRole>,
-    ) {
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "username",
-                userId,
-                roles,
-            )
-        doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    val basePortfolio =
-        BasePortfolio(
-            portfolioId = "123",
-            portfolioName = "abc",
-            userId = "xyz",
-            creationTimestamp = 456,
-            lastUpdateTimestamp = 789,
-            companyIds = setOf("c1", "c2"),
-            isMonitored = true,
-            monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-        )
-
-    val enrichedPortfolio =
-        EnrichedPortfolio(
-            basePortfolio.portfolioId,
-            basePortfolio.portfolioName,
-            basePortfolio.userId,
-            listOf(
-                EnrichedPortfolioEntry(
-                    companyId = "c1", "C1",
-                    sector = "financials", "Germany", "ref1",
-                    emptyMap(), emptyMap(),
-                ),
-                EnrichedPortfolioEntry(
-                    companyId = "c2", "C2",
-                    sector = "industry", "Sweden", "ref2",
-                    emptyMap(), emptyMap(),
-                ),
-                EnrichedPortfolioEntry(
-                    companyId = "c3", "C3",
-                    sector = null, "Italy", "ref3",
-                    emptyMap(), emptyMap(),
-                ),
-            ),
-            basePortfolio.isMonitored,
-            basePortfolio.monitoredFrameworks,
-        )
-
-/*
-    @Test
-    fun `publishPortfolioUpdate behaves correctly for various frameworks`() {
-        whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(basePortfolio))
-            .thenReturn(enrichedPortfolio)
-
-        whenever(mockPortfolioEnrichmentService.getEnrichedPortfolio(any()))
-            .thenReturn(enrichedPortfolio)
-
-        portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(basePortfolio)
-
-        val requestCaptor = argumentCaptor<BulkDataRequest>()
-
-        verify(mockRequestControllerApi, times(4)).postBulkDataRequest(
-            requestCaptor.capture(),
-            any(),
-        )
-
-        val allPublishedTypes = requestCaptor.allValues.map { it.dataTypes.toSet() }.toSet()
-        println("Captured frameworks: $allPublishedTypes")
-        assertEquals(
-            setOf(
-                setOf(DataTypeEnum.eutaxonomyMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
-                setOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
-                setOf(
-                    DataTypeEnum.eutaxonomyMinusFinancials.value,
-                    DataTypeEnum.nuclearMinusAndMinusGas.value,
-                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
-                ),
-                setOf(DataTypeEnum.sfdr.value),
-            ),
-            allPublishedTypes,
-        )
-    }
-
-    @Test
-    fun `sendBulkDataRequestIfMonitored does nothing when portfolio is not monitored`() {
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "non-monitored-id",
-                portfolioName = "Non-Monitored Portfolio",
-                userId = "user",
-                creationTimestamp = Instant.now().toEpochMilli(),
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
-                companyIds = setOf("c1", "c2"),
-                isMonitored = false,
-                monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
-            )
-
-        portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(basePortfolio)
-
-        verify(mockPortfolioEnrichmentService, never()).getEnrichedPortfolio(any())
-        verify(mockRequestControllerApi, never()).postBulkDataRequest(
-            any(),
-            any(),
-        )
-    }
-
- */
-    companion object {
-        @JvmStatic
-        fun paramStream(): Stream<Arguments> =
-            Stream.of(
-                // fiscalYearEnd, reportingPeriodShift, today, expectedReportingPeriod
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, 1L, 3L, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), -1, 1L, 3L, LocalDate.of(2025, 12, 1), 2025),
-                Arguments.of(LocalDate.of(2018, 1, 31), 0, 1L, 3L, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, 1L, 3L, LocalDate.of(2021, 12, 1), 2022),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, 1L, 9L, LocalDate.of(2025, 6, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, 1L, 3L, LocalDate.of(2025, 6, 1), null),
-            )
-    }
-
-    @ParameterizedTest
-    @MethodSource("paramStream")
-    fun `unittest getCompanyReportingYearInfoForCompany`(
-        fiscalYearEnd: LocalDate,
-        reportingPeriodShift: Int,
-        threshold1: Long,
-        threshold2: Long,
+    private fun stubCompany(
+        id: String,
+        fiscalYearEnd: LocalDate?,
+        reportingPeriodShift: Int?,
+        sector: String?,
         today: LocalDate,
-        expectedReportingPeriod: Int?,
     ) {
-        val testCompanyInformation =
+        val info =
             CompanyInformation(
-                companyName = "testCompany",
-                headquarters = "testHeadquarters",
+                companyName = "Company name",
+                headquarters = "HQ",
                 identifiers = emptyMap(),
                 countryCode = "DE",
                 fiscalYearEnd = fiscalYearEnd,
                 reportingPeriodShift = reportingPeriodShift,
-                sector = "testSector",
+                sector = sector,
             )
-
-        portfolioBulkDataRequestService.threshold1InMonths = threshold1
-        portfolioBulkDataRequestService.threshold2InMonths = threshold2
-
-        val testStoredCompany =
-            StoredCompany(
-                companyId = UUID.randomUUID().toString(),
-                companyInformation = testCompanyInformation,
-                dataRegisteredByDataland = emptyList(),
-            )
-
+        whenever(mockCompanyDataApi.getCompanyById(id)).thenReturn(StoredCompany(id, info, emptyList()))
+        // We rely on LocalDate.now for reporting-year calculation, so mock it:
         mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic
-                .`when`<LocalDate> { LocalDate.now() }
-                .thenReturn(today)
-            val companyReportingYearAndSectorInfo = portfolioBulkDataRequestService.getCompanyReportingYearInfoForCompany(testStoredCompany)
-            assertEquals(expectedReportingPeriod, companyReportingYearAndSectorInfo?.reportingPeriod?.toInt())
+            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
+            reportingInfoService.updateCompanies(listOf(id))
         }
+    }
+
+    @Test
+    fun `does not post request if portfolio is not monitored`() {
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "portfolio id 1",
+                userId = "user id 1",
+                companyIds = setOf("company id 1", "company id 2"),
+                monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
+                isMonitored = false,
+                portfolioName = "My not monitored test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+
+        service.postBulkDataRequestIfMonitored(basePortfolio)
+
+        verifyNoInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `posts bulk requests for all framework and sector types inside grouping`() {
+        val today = LocalDate.of(2025, 1, 15)
+        stubCompany(
+            id = "Company id 1",
+            fiscalYearEnd = LocalDate.of(2024, 12, 31),
+            reportingPeriodShift = 0,
+            sector = "financials",
+            today = today,
+        )
+        stubCompany(
+            id = "Company id 2",
+            fiscalYearEnd = LocalDate.of(2024, 12, 31),
+            reportingPeriodShift = -1,
+            sector = "consumer",
+            today = today,
+        )
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "Portfolio id",
+                userId = "user id",
+                companyIds = setOf("Company id 1", "Company id 2"),
+                monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
+                isMonitored = true,
+                portfolioName = "My monitored test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+
+        service.postBulkDataRequestIfMonitored(basePortfolio)
+
+        // B1 Group: 2025, Sector.FINANCIALS
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id 1") &&
+                    dataTypes == setOf("sfdr") &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq("user id"),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id 1") &&
+                    dataTypes == setOf("eutaxonomy-financials", "nuclear-and-gas") &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq("user id"),
+        )
+
+        // B2 Group: 2024, Sector.NONFINANCIALS
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id 2") &&
+                    dataTypes == setOf("eutaxonomy-non-financials", "nuclear-and-gas") &&
+                    reportingPeriods == setOf("2023")
+            },
+            eq("user id"),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id 2") &&
+                    dataTypes == setOf("sfdr") &&
+                    reportingPeriods == setOf("2023")
+            },
+            eq("user id"),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `posts only eutaxonomy when framework does not include sfdr`() {
+        val today = LocalDate.of(2025, 1, 15)
+        stubCompany(
+            id = "Company id",
+            fiscalYearEnd = LocalDate.of(2024, 12, 31),
+            reportingPeriodShift = 0,
+            sector = "nonfinancials",
+            today = today,
+        )
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "Portfolio id",
+                userId = "user id",
+                companyIds = setOf("Company id"),
+                monitoredFrameworks = setOf("eutaxonomy"),
+                isMonitored = true,
+                portfolioName = "My monitored eutaxonomy test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+        service.postBulkDataRequestIfMonitored(basePortfolio)
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id") &&
+                    dataTypes == setOf("eutaxonomy-non-financials", "nuclear-and-gas") &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq("user id"),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `posts only sfdr when framework does not include eutaxonomy`() {
+        val today = LocalDate.of(2025, 1, 15)
+        stubCompany(
+            id = "Company id",
+            fiscalYearEnd = LocalDate.of(2024, 12, 31),
+            reportingPeriodShift = 0,
+            sector = "random",
+            today = today,
+        )
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "Portfolio id",
+                userId = "user id",
+                companyIds = setOf("Company id"),
+                monitoredFrameworks = setOf("sfdr"),
+                isMonitored = true,
+                portfolioName = "My monitored sfdr test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+        service.postBulkDataRequestIfMonitored(basePortfolio)
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf("Company id") &&
+                    dataTypes == setOf("sfdr") &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq("user id"),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `no requests posted if reporting info not available`() {
+        whenever(mockCompanyDataApi.getCompanyById("Company id")).thenReturn(
+            StoredCompany(
+                companyId = "Company id",
+                companyInformation =
+                    CompanyInformation(
+                        companyName = "Company name",
+                        headquarters = "HQ",
+                        identifiers = emptyMap(),
+                        countryCode = "DE",
+                        fiscalYearEnd = null,
+                        reportingPeriodShift = 1,
+                        sector = "financials",
+                    ),
+                dataRegisteredByDataland = emptyList(),
+            ),
+        )
+
+        reportingInfoService.updateCompanies(listOf("Company id"))
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "Portfolio id",
+                userId = "user id",
+                companyIds = setOf("Company id"),
+                monitoredFrameworks = setOf("eutaxonomy", "sfdr"),
+                isMonitored = true,
+                portfolioName = "My monitored test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+        service.postBulkDataRequestIfMonitored(basePortfolio)
+        verifyNoInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `exceptions in postBulkDataRequest are thrown`() {
+        val today = LocalDate.of(2025, 1, 15)
+        stubCompany(
+            id = "F1",
+            fiscalYearEnd = LocalDate.of(2024, 12, 31),
+            reportingPeriodShift = 0,
+            sector = "financials",
+            today = today,
+        )
+        whenever(mockRequestApi.postBulkDataRequest(any(), any())).thenThrow(RuntimeException("fail"))
+        val basePortfolio =
+            BasePortfolio(
+                portfolioId = "p6",
+                userId = "u6",
+                companyIds = setOf("F1"),
+                monitoredFrameworks = setOf("eutaxonomy"),
+                isMonitored = true,
+                portfolioName = "My monitored eutaxonomy test portfolio",
+                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            )
+
+        assertThrows<RuntimeException> { service.postBulkDataRequestIfMonitored(basePortfolio) }
     }
 }

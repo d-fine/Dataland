@@ -187,9 +187,10 @@ class PortfolioBulkDataRequestService
                 )
             } catch (ex: Exception) {
                 logger.error(
-                    "Bulk request posting failed for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds: ${ex.message}",
+                    "Bulk request posting failed for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
                     ex,
                 )
+                throw ex
             }
         }
     }
