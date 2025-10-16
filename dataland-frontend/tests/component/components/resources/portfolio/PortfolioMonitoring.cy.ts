@@ -41,33 +41,8 @@ describe('Portfolio Monitoring Modal', function () {
       .should('be.visible');
   });
 
-  it('shows only framework error if reporting year is selected', function () {
+  it('submits successfully framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
-
-    cy.get('[data-test="saveChangesButton"]').click();
-
-    cy.get('[data-test="frameworkError"]')
-      .should('contain', 'Please select at least one Framework.')
-      .should('be.visible');
-  });
-
-  it('shows only reporting year error if framework selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group')
-      .first()
-      .within(() => {
-        cy.get('input[type="checkbox"]').check().should('be.checked');
-      });
-
-    cy.get('[data-test="saveChangesButton"]').click();
-  });
-
-  it('submits successfully when both year and framework are selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
 
     cy.get('.framework-switch-group')
       .first()
