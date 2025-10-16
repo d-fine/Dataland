@@ -213,8 +213,8 @@
   </TheContent>
 </template>
 
-<script lang="ts">
-import { ref, reactive, computed, watch, onMounted, inject, defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -246,213 +246,169 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 
-export default defineComponent({
-  name: 'AdminAllRequestsRequestsOverviewNew',
-  components: {
-    DatalandProgressSpinner,
-    DatalandTag,
-    PrimeButton,
-    FrameworkDataSearchDropdownFilter,
-    TheContent,
-    DataTable,
-    Column,
-    IconField,
-    InputText,
-    InputIcon,
-    Message,
-  },
-  setup() {
-    const frameworkFilter = ref();
-    const datasetsPerPage = 100;
-    const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const frameworkFilter = ref();
+const datasetsPerPage = 100;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-    const waitingForData = ref(true);
-    const currentChunkIndex = ref(0);
-    const totalRecords = ref(0);
-    const rowsPerPage = ref(100);
-    const firstRowIndex = ref(0);
-    const currentDataRequests = ref<ExtendedStoredDataRequest[]>([]);
-    const searchBarInputEmail = ref('');
-    const searchBarInputComment = ref('');
-    const searchBarInputCompanySearchString = ref('');
-    const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
-    const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-    const availableRequestStatuses = ref<SelectableItem[]>([]);
-    const selectedRequestStatuses = ref<SelectableItem[]>([]);
-    const availablePriorities = ref<SelectableItem[]>([]);
-    const selectedPriorities = ref<SelectableItem[]>([]);
-    const availableReportingPeriods = ref<SelectableItem[]>([]);
-    const selectedReportingPeriods = ref<SelectableItem[]>([]);
+const waitingForData = ref(true);
+const currentChunkIndex = ref(0);
+const totalRecords = ref(0);
+const rowsPerPage = ref(100);
+const firstRowIndex = ref(0);
+const currentDataRequests = ref<ExtendedStoredDataRequest[]>([]);
+const searchBarInputEmail = ref('');
+const searchBarInputComment = ref('');
+const searchBarInputCompanySearchString = ref('');
 
-    const numberOfRequestsInformation = computed(() => {
-      if (!waitingForData.value) {
-        if (totalRecords.value === 0) {
-          return 'No results for this search.';
-        } else {
-          const startIndex = currentChunkIndex.value * rowsPerPage.value + 1;
-          const endIndex = Math.min(startIndex + rowsPerPage.value - 1, totalRecords.value);
-          return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
-        }
-      }
-      return '';
-    });
+const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
+const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
+const availableRequestStatuses = ref<SelectableItem[]>([]);
+const selectedRequestStatuses = ref<SelectableItem[]>([]);
+const availablePriorities = ref<SelectableItem[]>([]);
+const selectedPriorities = ref<SelectableItem[]>([]);
+const availableReportingPeriods = ref<SelectableItem[]>([]);
+const selectedReportingPeriods = ref<SelectableItem[]>([]);
 
-    watch(selectedFrameworks, () => setChunkAndFirstRowIndexToZero());
-    watch(selectedRequestStatuses, () => setChunkAndFirstRowIndexToZero());
-    watch(selectedPriorities, () => setChunkAndFirstRowIndexToZero());
-    watch(selectedReportingPeriods, () => setChunkAndFirstRowIndexToZero());
-    watch(searchBarInputEmail, () => setChunkAndFirstRowIndexToZero());
-    watch(searchBarInputComment, () => setChunkAndFirstRowIndexToZero());
-    watch(searchBarInputCompanySearchString, () => setChunkAndFirstRowIndexToZero());
-
-    onMounted(() => {
-      availableFrameworks.value = retrieveAvailableFrameworks();
-      availableRequestStatuses.value = retrieveAvailableRequestStatuses();
-      availablePriorities.value = retrieveAvailablePriorities();
-      availableReportingPeriods.value = retrieveAvailableReportingPeriods();
-      getAllRequestsForFilters();
-    });
-
-    /**
-     * Sets the chunk index and first row index to zero. Used to reset pagination when filters change.
-     */
-    function setChunkAndFirstRowIndexToZero() {
-      currentChunkIndex.value = 0;
-      firstRowIndex.value = 0;
+const numberOfRequestsInformation = computed(() => {
+  if (!waitingForData.value) {
+    if (totalRecords.value === 0) {
+      return 'No results for this search.';
+    } else {
+      const startIndex = currentChunkIndex.value * rowsPerPage.value + 1;
+      const endIndex = Math.min(startIndex + rowsPerPage.value - 1, totalRecords.value);
+      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
     }
-
-    /**
-     * Fetches all requests based on the current filters and updates the data table.
-     * Handles loading state and error logging.
-     */
-    async function getAllRequestsForFilters() {
-      waitingForData.value = true;
-      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
-        selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType)
-      );
-      const selectedRequestStatusesAsSet = new Set<RequestStatus>(
-        selectedRequestStatuses.value.map((selectableItem) => selectableItem.displayName as RequestStatus)
-      );
-      const selectedPriorityAsSet = new Set<RequestPriority>(
-        selectedPriorities.value.map((selectableItem) => selectableItem.displayName as RequestPriority)
-      );
-      const selectedReportingPeriodAsSet = new Set<string>(
-        selectedReportingPeriods.value.map((selectableItem) => selectableItem.displayName)
-      );
-      try {
-        if (getKeycloakPromise) {
-          const emailFilter = searchBarInputEmail.value === '' ? undefined : searchBarInputEmail.value;
-          const commentFilter = searchBarInputComment.value === '' ? undefined : searchBarInputComment.value;
-          const companySearchStringFilter =
-            searchBarInputCompanySearchString.value === '' ? undefined : searchBarInputCompanySearchString.value;
-          const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-          currentDataRequests.value = (
-            await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-              undefined,
-              emailFilter,
-              commentFilter,
-              selectedRequestStatusesAsSet,
-              undefined,
-              selectedPriorityAsSet,
-              selectedReportingPeriodAsSet,
-              undefined,
-              companySearchStringFilter,
-              datasetsPerPage,
-              currentChunkIndex.value
-            )
-          ).data;
-          totalRecords.value = (
-            await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-              undefined,
-              emailFilter,
-              commentFilter,
-              selectedRequestStatusesAsSet,
-              undefined,
-              selectedPriorityAsSet,
-              selectedReportingPeriodAsSet,
-              undefined,
-              companySearchStringFilter
-            )
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      waitingForData.value = false;
-    }
-
-    /**
-     * Resets all filters and search bar inputs to their default values and reloads the requests.
-     */
-    function resetFilterAndSearchBar() {
-      currentChunkIndex.value = 0;
-      selectedFrameworks.value = [];
-      selectedRequestStatuses.value = [];
-      selectedPriorities.value = [];
-      selectedReportingPeriods.value = [];
-      searchBarInputEmail.value = '';
-      searchBarInputComment.value = '';
-      searchBarInputCompanySearchString.value = '';
-      void getAllRequestsForFilters();
-    }
-
-    /**
-     * Handles pagination events from the data table and fetches the corresponding chunk of requests.
-     * @param event DataTablePageEvent containing the new page index.
-     */
-    function onPage(event: DataTablePageEvent) {
-      globalThis.scrollTo(0, 0);
-      if (event.page != currentChunkIndex.value) {
-        currentChunkIndex.value = event.page;
-        firstRowIndex.value = currentChunkIndex.value * rowsPerPage.value;
-        void getAllRequestsForFilters();
-      }
-    }
-
-    /**
-     * Handles row click events in the data table and navigates to the request details page.
-     * @param event DataTableRowClickEvent containing the clicked row data.
-     */
-    function onRowClick(event: DataTableRowClickEvent) {
-      const requestIdOfClickedRow = event.data.dataRequestId;
-      return router.push(`/requests/${requestIdOfClickedRow}`);
-    }
-
-    return {
-      frameworkFilter,
-      datasetsPerPage,
-      waitingForData,
-      currentChunkIndex,
-      totalRecords,
-      rowsPerPage,
-      firstRowIndex,
-      currentDataRequests,
-      searchBarInputEmail,
-      searchBarInputComment,
-      searchBarInputCompanySearchString,
-      availableFrameworks,
-      selectedFrameworks,
-      availableRequestStatuses,
-      selectedRequestStatuses,
-      availablePriorities,
-      selectedPriorities,
-      availableReportingPeriods,
-      selectedReportingPeriods,
-      numberOfRequestsInformation,
-      frameworkHasSubTitle,
-      getFrameworkTitle,
-      getFrameworkSubtitle,
-      convertUnixTimeInMsToDateString,
-      getAllRequestsForFilters,
-      resetFilterAndSearchBar,
-      onPage,
-      onRowClick,
-      setChunkAndFirstRowIndexToZero,
-    };
-  },
+  }
+  return '';
 });
+
+function setChunkAndFirstRowIndexToZero() {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+}
+
+watch(
+  [
+    selectedFrameworks,
+    selectedRequestStatuses,
+    selectedPriorities,
+    selectedReportingPeriods,
+    searchBarInputEmail,
+    searchBarInputComment,
+    searchBarInputCompanySearchString,
+  ],
+  setChunkAndFirstRowIndexToZero
+);
+
+onMounted(() => {
+  availableFrameworks.value = retrieveAvailableFrameworks();
+  availableRequestStatuses.value = retrieveAvailableRequestStatuses();
+  availablePriorities.value = retrieveAvailablePriorities();
+  availableReportingPeriods.value = retrieveAvailableReportingPeriods();
+  getAllRequestsForFilters();
+});
+
+/**
+ * Fetches all requests from the backend based on the selected filters and search bar inputs.
+ */
+async function getAllRequestsForFilters() {
+  waitingForData.value = true;
+  const selectedFrameworksAsSet = new Set<DataTypeEnum>(
+    selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType)
+  );
+  const selectedRequestStatusesAsSet = new Set<RequestStatus>(
+    selectedRequestStatuses.value.map((selectableItem) => selectableItem.displayName as RequestStatus)
+  );
+  const selectedPriorityAsSet = new Set<RequestPriority>(
+    selectedPriorities.value.map((selectableItem) => selectableItem.displayName as RequestPriority)
+  );
+  const selectedReportingPeriodAsSet = new Set<string>(
+    selectedReportingPeriods.value.map((selectableItem) => selectableItem.displayName)
+  );
+
+  try {
+    if (getKeycloakPromise) {
+      const emailFilter = searchBarInputEmail.value || undefined;
+      const commentFilter = searchBarInputComment.value || undefined;
+      const companySearchStringFilter = searchBarInputCompanySearchString.value || undefined;
+      const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
+
+      const [dataResponse, countResponse] = await Promise.all([
+        apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
+          selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+          undefined,
+          emailFilter,
+          commentFilter,
+          selectedRequestStatusesAsSet,
+          undefined,
+          selectedPriorityAsSet,
+          selectedReportingPeriodAsSet,
+          undefined,
+          companySearchStringFilter,
+          datasetsPerPage,
+          currentChunkIndex.value
+        ),
+        apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
+          selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+          undefined,
+          emailFilter,
+          commentFilter,
+          selectedRequestStatusesAsSet,
+          undefined,
+          selectedPriorityAsSet,
+          selectedReportingPeriodAsSet,
+          undefined,
+          companySearchStringFilter
+        ),
+      ]);
+
+      currentDataRequests.value = dataResponse.data;
+      totalRecords.value = countResponse.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  waitingForData.value = false;
+}
+
+/**
+ * Resets all filters and search bars to their initial state and fetches all requests again.
+ */
+function resetFilterAndSearchBar() {
+  currentChunkIndex.value = 0;
+  selectedFrameworks.value = [];
+  selectedRequestStatuses.value = [];
+  selectedPriorities.value = [];
+  selectedReportingPeriods.value = [];
+  searchBarInputEmail.value = '';
+  searchBarInputComment.value = '';
+  searchBarInputCompanySearchString.value = '';
+  void getAllRequestsForFilters();
+}
+
+/**
+ * Handles the pagination event of the data table.
+ * @param event
+ */
+function onPage(event: DataTablePageEvent) {
+  globalThis.scrollTo(0, 0);
+  if (event.page != currentChunkIndex.value) {
+    currentChunkIndex.value = event.page;
+    firstRowIndex.value = currentChunkIndex.value * rowsPerPage.value;
+    void getAllRequestsForFilters();
+  }
+}
+
+/**
+ * Handles the row click event of the data table.
+ * Navigates to the request detail page of the clicked request.
+ * @param event
+ */
+function onRowClick(event: DataTableRowClickEvent) {
+  const requestIdOfClickedRow = event.data.dataRequestId;
+  router.push(`/requests/${requestIdOfClickedRow}`);
+}
 </script>
 
 <style scoped lang="scss">

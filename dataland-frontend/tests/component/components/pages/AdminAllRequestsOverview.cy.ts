@@ -1,4 +1,4 @@
-import AdminAllRequestsOverview from '@/components/pages/AdminAllRequestsOverview.vue';
+import AdminAllRequestsOverviewLegacy from '@/components/pages/AdminAllRequestsOverviewLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -185,7 +185,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userId: crypto.randomUUID(),
       }),
       router: router,
-    })(AdminAllRequestsOverview);
+    })(AdminAllRequestsOverviewLegacy);
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     for (const extendedStoredDataRequest of mockRequests) {
@@ -210,7 +210,7 @@ describe('Component test for the admin-requests-overview page', () => {
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-    })(AdminAllRequestsOverview);
+    })(AdminAllRequestsOverviewLegacy);
     assertNumberOfSearchResults(chunkSize);
   }
 

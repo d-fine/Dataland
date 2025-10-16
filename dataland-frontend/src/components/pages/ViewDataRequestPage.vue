@@ -97,7 +97,7 @@
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
             <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
-            <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedRequest.userEmailAddress }}</div>
+            <div class="card__data" v-if="isUserKeycloakAdmin">{{ props.userEmailAddress }}</div>
             <div class="card__subtitle">Company</div>
             <div class="card__data">{{ companyName }}</div>
             <div class="card__subtitle">Framework</div>
@@ -135,68 +135,19 @@
                   :value="storedRequest.state"
                   class="dataland-inline-tag"
                 />
-                <span class="card__title">and Access is:</span>
-                <DatalandTag
-                  :severity="storedRequest.accessStatus || ''"
-                  :value="storedRequest.accessStatus"
-                  class="dataland-inline-tag"
-                />
                 <span class="card__subtitle">
                   since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
                 </span>
                 <span style="margin-left: auto">
                   <ReviewRequestButtons
-                    v-if="isUsersOwnRequest && isstateAnswered()"
+                    v-if="isUsersOwnRequest && isStateAnswered()"
                     @request-reopened-or-resolved="initializeComponent()"
                     :data-request-id="storedRequest.id"
                   />
                 </span>
               </span>
               <div class="card__separator" />
-              <StatusHistory :status-history="storedRequest.datastateHistory" />
-            </div>
-            <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
-              <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
-              <div class="card__separator" />
-              Receive emails directly or via summary
-              <ToggleSwitch
-                style="margin: 1rem 0"
-                data-test="notifyMeImmediatelyInput"
-                inputId="notifyMeImmediatelyInput"
-                v-model="storedRequest.notifyMeImmediately"
-                @update:modelValue="changeReceiveEmails()"
-              />
-              <label for="notifyMeImmediatelyInput">
-                <strong v-if="storedRequest.notifyMeImmediately">immediate update</strong>
-                <span v-else>weekly summary</span>
-              </label>
-            </div>
-            <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
-              <span style="display: flex; align-items: center">
-                <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
-                <span
-                  v-show="isNewMessageAllowed()"
-                  style="cursor: pointer; display: flex; align-items: center"
-                  @click="openMessageDialog()"
-                  data-test="newMessage"
-                >
-                  <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
-                  <span style="font-weight: bold">NEW MESSAGE</span>
-                </span>
-              </span>
-              <div class="card__separator" />
-              <div v-for="message in storedRequest.messageHistory" :key="message.creationTimestamp">
-                <div style="color: black; font-weight: bold; font-size: small">
-                  {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
-                </div>
-                <div class="message">
-                  <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
-                  <div class="card__separator" />
-                  <div style="color: gray">
-                    {{ message.message }}
-                  </div>
-                </div>
-              </div>
+              <StatusHistory :status-history="requestHistory" />
             </div>
             <div class="card" v-show="isRequestReopenable(storedRequest.state)" data-test="card_reopen">
               <div class="card__title">Reopen Request</div>
@@ -251,17 +202,16 @@ import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
 import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
+import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
 import { patchDataRequest } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import ToggleSwitch from 'primevue/toggleswitch';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
-const props = defineProps<{ requestId: string }>();
+const props = defineProps<{ requestId: string, userEmailAddress: string }>();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const toggleEmailDetailsError = ref(false);
@@ -279,6 +229,7 @@ const emailMessage = ref(undefined as string | undefined);
 const hasValidEmailForm = ref(false);
 const reopenMessageError = ref(false);
 const answeringDataSetUrl = ref(undefined as string | undefined);
+const requestHistory = ref<StoredRequest[]>([]);
 
 /**
  * Perform all steps required to set up the component.
@@ -290,9 +241,10 @@ async function initializeComponent(): Promise<void> {
       if (getKeycloakPromise) {
         const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
         await getAndStoreCompanyName(storedRequest.companyId, apiClientProvider).catch((error) => console.error(error));
+        await getAndStoreRequestHistory(props.requestId, apiClientProvider).catch((error) => console.error(error));
         await checkForAvailableData(storedRequest, apiClientProvider).catch((error) => console.error(error));
       }
-      storedRequest.datastateHistory?.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+      requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
@@ -316,6 +268,17 @@ function updateEmailFields(hasValidForm: boolean, contacts: string[], message: s
 async function getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider): Promise<void> {
   try {
     companyName.value = await getCompanyName(companyId, apiClientProvider);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Retrieve the request history and store it if a value was found.
+ */
+async function getAndStoreRequestHistory(requestId: string, apiClientProvider: ApiClientProvider): Promise<void> {
+  try {
+    requestHistory.value = (await apiClientProvider.apiClients.requestController.getRequestHistoryById(requestId)).data;
   } catch (error) {
     console.error(error);
   }
@@ -359,7 +322,7 @@ async function getRequest(): Promise<void> {
  * @returns true if request status is non sourceable otherwise false
  */
 function isRequestReopenable(state: RequestState): boolean {
-  return state == state.NonSourceable;
+  return state == RequestState.Processed || state == RequestState.Withdrawn;
 }
 
 /**
@@ -367,27 +330,6 @@ function isRequestReopenable(state: RequestState): boolean {
  */
 function openModalReopenRequest(): void {
   reopenModalIsVisible.value = true;
-}
-
-/**
- * Method to change if the user wants to receive emails on updates
- */
-async function changeReceiveEmails(): Promise<void> {
-  try {
-    await patchDataRequest(
-      props.requestId,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      storedRequest.notifyMeImmediately,
-      undefined,
-      getKeycloakPromise
-    );
-  } catch (error) {
-    console.error(error);
-    return;
-  }
 }
 
 /**
@@ -490,8 +432,8 @@ function addMessage(): void {
 function isRequestWithdrawable(): boolean {
   return (
     storedRequest.state == RequestState.Open ||
-    storedRequest.state == RequestState.Answered ||
-    storedRequest.state == RequestState.NonSourceable
+    storedRequest.state == RequestState.Processing ||
+    storedRequest.state == RequestState.Processed
   );
 }
 
@@ -507,33 +449,8 @@ function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefine
  * Method to check if request status is answered
  * @returns boolean if request status is answered
  */
-function isstateAnswered(): boolean {
+function isStateAnswered(): boolean {
   return storedRequest.state == RequestState.Answered;
-}
-
-/**
- * Method to transform set of string to one string representing the set elements seperated by ','
- * @param contacts set of strings
- * @returns string representing the elements of the set
- */
-function formatContactsToString(contacts: Set<string>): string {
-  const contactsList = Array.from(contacts);
-  return contactsList.join(', ');
-}
-
-/**
- * Shows or hides the Modal depending on the current state
- */
-function openMessageDialog(): void {
-  showNewMessageDialog.value = true;
-}
-
-/**
- * Method to check if request status is open
- * @returns boolean if request status is open
- */
-function isNewMessageAllowed(): boolean {
-  return storedRequest.state == RequestState.Open;
 }
 
 onMounted(() => {
