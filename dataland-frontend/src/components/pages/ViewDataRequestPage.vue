@@ -140,7 +140,7 @@
                 </span>
                 <span style="margin-left: auto">
                   <ReviewRequestButtons
-                    v-if="isUsersOwnRequest && isStateAnswered()"
+                    v-if="isUsersOwnRequest && isStateProcessed()"
                     @request-reopened-or-resolved="initializeComponent()"
                     :data-request-id="storedRequest.id"
                   />
@@ -446,11 +446,11 @@ function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefine
 }
 
 /**
- * Method to check if request status is answered
- * @returns boolean if request status is answered
+ * Method to check if request status is processed
+ * @returns boolean if request status is processed
  */
-function isStateAnswered(): boolean {
-  return storedRequest.state == RequestState.Answered;
+function isStateProcessed(): boolean {
+  return storedRequest.state == RequestState.Processed;
 }
 
 onMounted(() => {

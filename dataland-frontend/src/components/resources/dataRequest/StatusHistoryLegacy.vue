@@ -17,7 +17,7 @@
 
   <div v-show="isStatusHistoryVisible">
     <div>
-      <DataTable :value="props.statusHistory" data-test="statusHistoryTable">
+      <DataTable :value="statusHistory" data-test="statusHistoryTable">
         <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 28%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
@@ -59,18 +59,39 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import type {StoredRequest} from "@clients/datasourcingservice";
+import { defineComponent } from 'vue';
 
-const props = defineProps<{ statusHistory: StoredRequest[] }>();
-const isStatusHistoryVisible = ref(false);
-
-function toggleViewStatusHistory() {
-  isStatusHistoryVisible.value = !isStatusHistoryVisible.value;
-}
+export default defineComponent({
+  name: 'StatusHistory',
+  components: { DataTable, Column },
+  props: {
+    statusHistory: {
+      type: Array<StoredDataRequestStatusObject>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isStatusHistoryVisible: false,
+    };
+  },
+  methods: {
+    getRequestStatusLabel,
+    accessStatusBadgeClass,
+    convertUnixTimeInMsToDateString,
+    badgeClass,
+    /**
+     * Toggles whether the status history and the corresponding buttons are visible
+     */
+    toggleViewStatusHistory() {
+      this.isStatusHistoryVisible = !this.isStatusHistoryVisible;
+    },
+  },
+});
 </script>

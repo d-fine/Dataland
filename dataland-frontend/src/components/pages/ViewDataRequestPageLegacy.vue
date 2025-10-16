@@ -241,7 +241,7 @@ import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import StatusHistory from '@/components/resources/dataRequest/StatusHistoryLegacy.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { getAnsweringDataSetUrl } from '@/utils/AnsweringDatasetLegacy.ts';
