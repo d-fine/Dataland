@@ -90,12 +90,7 @@
             </Column>
             <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
               <template #body="{ data }">
-                <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
-              </template>
-            </Column>
-            <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
-              <template #body="{ data }">
-                <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
+                <DatalandTag :severity="data.state" :value="data.state" />
               </template>
             </Column>
             <Column field="resolve" header="">
