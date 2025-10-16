@@ -13,7 +13,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
-import { getRequestStatusLabel } from '@/utils/RequestUtils.ts';
+import { getRequestStatusLabel } from '@/utils/RequestUtilsLegacy.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the view data request page', function (): void {
@@ -177,6 +177,7 @@ describe('Component tests for the view data request page', function (): void {
       {
         props: {
           requestId: requestId,
+          userEmailAddress: dummyEmail,
         },
       }
     ).then(() => {
@@ -198,6 +199,7 @@ describe('Component tests for the view data request page', function (): void {
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: {
         requestId: requestId,
+        userEmailAddress: dummyEmail,
       },
     });
     checkBasicPageElementsAsUser(RequestStatus.Withdrawn);
@@ -217,6 +219,7 @@ describe('Component tests for the view data request page', function (): void {
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: {
         requestId: requestId,
+        userEmailAddress: dummyEmail,
       },
     });
     checkBasicPageElementsAsUser(RequestStatus.NonSourceable);
@@ -249,7 +252,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+      props: { requestId: requestId, userEmailAddress: dummyEmail },
     });
     checkBasicPageElementsAsUser(RequestStatus.Open);
     cy.get('[data-test="card_providedContactDetails"]').should('exist').get('[data-test="newMessage"]').should('exist');
@@ -278,7 +281,7 @@ describe('Component tests for the view data request page', function (): void {
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
       ViewDataRequestPage,
       {
-        props: { requestId: requestId },
+        props: { requestId: requestId, userEmailAddress: dummyEmail },
       }
     ).then(() => {
       checkBasicPageElementsAsUser(RequestStatus.Open);
@@ -296,7 +299,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
-        props: { requestId: requestId },
+        props: { requestId: requestId, userEmailAddress: dummyEmail },
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();
@@ -317,7 +320,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
-        props: { requestId: requestId },
+        props: { requestId: requestId, userEmailAddress: dummyEmail },
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
@@ -339,7 +342,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-        props: { requestId: requestId },
+        props: { requestId: requestId, userEmailAddress: dummyEmail },
       });
       checkBasicPageElementsAsUser(RequestStatus.Open);
       cy.get('[data-test="newMessage"]').should('exist').click();
@@ -361,7 +364,7 @@ describe('Component tests for the view data request page', function (): void {
         userId: crypto.randomUUID(),
       }),
     })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+      props: { requestId: requestId, userEmailAddress: dummyEmail },
     });
 
     checkBasicPageElementsAsAdmin(RequestStatus.Answered);
@@ -371,7 +374,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check email notification toggle', () => {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+      props: { requestId: requestId, userEmailAddress: dummyEmail },
     });
     cy.intercept('PATCH', `**/community/requests/${requestId}`, {
       status: 200,

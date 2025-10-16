@@ -9,28 +9,6 @@
       message="You have successfully withdrawn your request."
       @close="successModalIsVisible = false"
     />
-    <PrimeDialog
-      :dismissableMask="true"
-      :modal="true"
-      v-if="showNewMessageDialog"
-      v-model:visible="showNewMessageDialog"
-      :closable="true"
-      style="text-align: center"
-      :show-header="true"
-    >
-      <template #header>
-        <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
-      </template>
-      <EmailDetails
-        :is-optional="false"
-        :show-errors="toggleEmailDetailsError"
-        @has-new-input="updateEmailFields"
-        data-test="newMessageModal"
-      />
-      <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
-        <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
-      </PrimeButton>
-    </PrimeDialog>
 
     <PrimeDialog
       id="reopenModal"
@@ -192,7 +170,6 @@ import { ref, reactive, inject, onMounted } from 'vue';
 import { defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import router from '@/router';
@@ -203,7 +180,7 @@ import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
-import { patchDataRequest } from '@/utils/RequestUtils';
+import { patchRequestState } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
 import type Keycloak from 'keycloak-js';
@@ -214,7 +191,6 @@ import SuccessDialog from '@/components/general/SuccessDialog.vue';
 const props = defineProps<{ requestId: string, userEmailAddress: string }>();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const toggleEmailDetailsError = ref(false);
 const successModalIsVisible = ref(false);
 const reopenModalIsVisible = ref(false);
 const reopenMessage = ref('');
@@ -223,10 +199,6 @@ const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
 const companyName = ref('');
-const showNewMessageDialog = ref(false);
-const emailContacts = ref(undefined as string[] | undefined);
-const emailMessage = ref(undefined as string | undefined);
-const hasValidEmailForm = ref(false);
 const reopenMessageError = ref(false);
 const answeringDataSetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
@@ -248,18 +220,6 @@ async function initializeComponent(): Promise<void> {
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
-}
-
-/**
- * Method to update the email fields
- * @param hasValidForm boolean indicating if the input is correct
- * @param contacts email addresses
- * @param message the content
- */
-function updateEmailFields(hasValidForm: boolean, contacts: string[], message: string): void {
-  hasValidEmailForm.value = hasValidForm;
-  emailContacts.value = contacts;
-  emailMessage.value = message;
 }
 
 /**
@@ -338,14 +298,9 @@ function openModalReopenRequest(): void {
 async function reopenRequest(): Promise<void> {
   if (reopenMessage.value.length > 10) {
     try {
-      await patchDataRequest(
+      await patchRequestState(
         storedRequest.id,
         RequestState.Open,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        reopenMessage.value,
         getKeycloakPromise
       );
       reopenModalIsVisible.value = false;
@@ -365,14 +320,9 @@ async function reopenRequest(): Promise<void> {
  */
 async function withdrawRequest(): Promise<void> {
   try {
-    await patchDataRequest(
+    await patchRequestState(
       props.requestId,
       RequestState.Withdrawn,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
       getKeycloakPromise
     );
   } catch (error) {
@@ -397,31 +347,6 @@ async function setUserAccessFields(): Promise<void> {
   } catch (error) {
     console.error(error);
     return;
-  }
-}
-
-/**
- * Method to update the request message when clicking on the button
- */
-function addMessage(): void {
-  if (hasValidEmailForm.value) {
-    patchDataRequest(
-      props.requestId,
-      undefined,
-      undefined,
-      emailContacts.value as unknown as Set<string>,
-      emailMessage.value,
-      undefined,
-      undefined,
-      getKeycloakPromise
-    )
-      .then(() => {
-        getRequest().catch((error) => console.error(error));
-        showNewMessageDialog.value = false;
-      })
-      .catch((error) => console.error(error));
-  } else {
-    toggleEmailDetailsError.value = !toggleEmailDetailsError.value;
   }
 }
 

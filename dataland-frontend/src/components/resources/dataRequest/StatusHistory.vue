@@ -32,18 +32,7 @@
               :class="badgeClass(slotProps.data.status)"
               data-test="requestStatusEntry"
             >
-              {{ getRequestStatusLabel(slotProps.data.status) }}
-            </div></template
-          >
-        </Column>
-        <Column field="accessStatus" header="Access Status"
-          ><template #body="slotProps"
-            ><div
-              style="display: inline-flex"
-              :class="accessStatusBadgeClass(slotProps.data.accessStatus)"
-              data-test="accessStatusEntry"
-            >
-              {{ slotProps.data.accessStatus }}
+              {{ slotProps.data.status }}
             </div></template
           >
         </Column>
@@ -62,7 +51,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import { badgeClass } from '@/utils/RequestUtils';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import type {StoredRequest} from "@clients/datasourcingservice";
