@@ -1,4 +1,4 @@
-import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
+import ViewDataRequestPageLegacy from '@/components/pages/ViewDataRequestPageLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
   AccessStatus,
@@ -173,7 +173,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptPatchRequest();
     cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
-      ViewDataRequestPage,
+      ViewDataRequestPageLegacy,
       {
         props: {
           requestId: requestId,
@@ -195,7 +195,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPageLegacy, {
       props: {
         requestId: requestId,
       },
@@ -214,7 +214,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPageLegacy, {
       props: {
         requestId: requestId,
       },
@@ -248,7 +248,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPageLegacy, {
       props: { requestId: requestId },
     });
     checkBasicPageElementsAsUser(RequestStatus.Open);
@@ -276,7 +276,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptPatchRequest();
     cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
-      ViewDataRequestPage,
+      ViewDataRequestPageLegacy,
       {
         props: { requestId: requestId },
       }
@@ -295,7 +295,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
-      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPageLegacy, {
         props: { requestId: requestId },
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
@@ -316,7 +316,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
-      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPageLegacy, {
         props: { requestId: requestId },
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
@@ -338,7 +338,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
-      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPageLegacy, {
         props: { requestId: requestId },
       });
       checkBasicPageElementsAsUser(RequestStatus.Open);
@@ -360,7 +360,7 @@ describe('Component tests for the view data request page', function (): void {
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-    })(ViewDataRequestPage, {
+    })(ViewDataRequestPageLegacy, {
       props: { requestId: requestId },
     });
 
@@ -370,7 +370,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check email notification toggle', () => {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPageLegacy, {
       props: { requestId: requestId },
     });
     cy.intercept('PATCH', `**/community/requests/${requestId}`, {
