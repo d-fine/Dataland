@@ -92,15 +92,11 @@
             </div>
             <div class="card__subtitle">Reporting year</div>
             <div class="card__data">{{ storedRequest.reportingPeriod }}</div>
-          </div>
-          <div
-            v-show="answeringDataSetUrl"
-            class="link claim-panel-text"
-            style="font-weight: bold"
-            data-test="viewDataset"
-            @click="goToAnsweringDataSetPage()"
-          >
-            VIEW DATASET
+            <PrimeButton
+                data-test="viewDatasetButton"
+                label="VIEW DATASET"
+                @click="goToAnsweringDataSetPage()"
+            />
           </div>
         </div>
         <div class="grid col-8 flex-direction-column">
@@ -115,13 +111,6 @@
                 />
                 <span class="card__subtitle">
                   since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
-                </span>
-                <span style="margin-left: auto">
-                  <ReviewRequestButtons
-                    v-if="isUsersOwnRequest && isStateProcessed()"
-                    @request-reopened-or-resolved="initializeComponent()"
-                    :data-request-id="storedRequest.id"
-                  />
                 </span>
               </span>
               <div class="card__separator" />
@@ -170,7 +159,6 @@ import { ref, reactive, inject, onMounted } from 'vue';
 import { defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
@@ -368,14 +356,6 @@ function isRequestWithdrawable(): boolean {
  */
 function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefined> | void {
   if (answeringDataSetUrl.value) return router.push(answeringDataSetUrl.value);
-}
-
-/**
- * Method to check if request status is processed
- * @returns boolean if request status is processed
- */
-function isStateProcessed(): boolean {
-  return storedRequest.state == RequestState.Processed;
 }
 
 onMounted(() => {
