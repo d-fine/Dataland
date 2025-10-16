@@ -17,7 +17,7 @@
 
   <div v-show="isStatusHistoryVisible">
     <div>
-      <DataTable :value="props.statusHistory" data-test="statusHistoryTable">
+      <DataTable :value="statusHistory" data-test="statusHistoryTable">
         <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 28%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
@@ -32,7 +32,18 @@
               :class="badgeClass(slotProps.data.status)"
               data-test="requestStatusEntry"
             >
-              {{ slotProps.data.status }}
+              {{ getRequestStatusLabel(slotProps.data.status) }}
+            </div></template
+          >
+        </Column>
+        <Column field="accessStatus" header="Access Status"
+          ><template #body="slotProps"
+            ><div
+              style="display: inline-flex"
+              :class="accessStatusBadgeClass(slotProps.data.accessStatus)"
+              data-test="accessStatusEntry"
+            >
+              {{ slotProps.data.accessStatus }}
             </div></template
           >
         </Column>
@@ -48,18 +59,39 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
+import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import type {StoredRequest} from "@clients/datasourcingservice";
+import { defineComponent } from 'vue';
 
-const props = defineProps<{ statusHistory: StoredRequest[] }>();
-const isStatusHistoryVisible = ref(false);
-
-function toggleViewStatusHistory() {
-  isStatusHistoryVisible.value = !isStatusHistoryVisible.value;
-}
+export default defineComponent({
+  name: 'StatusHistory',
+  components: { DataTable, Column },
+  props: {
+    statusHistory: {
+      type: Array<StoredDataRequestStatusObject>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isStatusHistoryVisible: false,
+    };
+  },
+  methods: {
+    getRequestStatusLabel,
+    accessStatusBadgeClass,
+    convertUnixTimeInMsToDateString,
+    badgeClass,
+    /**
+     * Toggles whether the status history and the corresponding buttons are visible
+     */
+    toggleViewStatusHistory() {
+      this.isStatusHistoryVisible = !this.isStatusHistoryVisible;
+    },
+  },
+});
 </script>

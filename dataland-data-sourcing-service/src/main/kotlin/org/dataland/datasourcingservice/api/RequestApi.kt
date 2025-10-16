@@ -367,8 +367,4 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>>
-
-
-
-
 }
