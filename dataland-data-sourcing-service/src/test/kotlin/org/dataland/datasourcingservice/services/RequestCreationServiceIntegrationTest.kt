@@ -1,17 +1,15 @@
-package org.dataland.datasourcingservice.integrationTests.serviceTests
+package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.repositories.RequestRepository
-import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -27,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class])
-class RequestCreationServiceTest
+class RequestCreationServiceIntegrationTest
     @Autowired
     constructor(
         private val requestRepository: RequestRepository,
@@ -87,11 +85,11 @@ class RequestCreationServiceTest
             val requestId = requestCreationService.storeRequest(userId, basicDataDimensions, memberComment)
             val entity = requestRepository.findByIdAndFetchDataSourcingEntity(requestId)
             assertNotNull(entity)
-            assertEquals(userId, entity.userId)
-            assertEquals(companyId, entity.companyId)
-            assertEquals("sfdr", entity.dataType)
-            assertEquals("2023", entity.reportingPeriod)
-            assertEquals(memberComment, entity.memberComment)
+            Assertions.assertEquals(userId, entity.userId)
+            Assertions.assertEquals(companyId, entity.companyId)
+            Assertions.assertEquals("sfdr", entity.dataType)
+            Assertions.assertEquals("2023", entity.reportingPeriod)
+            Assertions.assertEquals(memberComment, entity.memberComment)
         }
 
         @Test

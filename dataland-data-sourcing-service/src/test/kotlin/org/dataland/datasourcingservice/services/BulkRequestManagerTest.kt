@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.integrationTests.serviceTests
+package org.dataland.datasourcingservice.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
@@ -12,10 +12,7 @@ import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
-import org.dataland.datasourcingservice.services.BulkRequestManager
-import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.services.RequestCreationService
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -89,7 +86,7 @@ class BulkRequestManagerTest {
             DataMetaInformation(
                 dataId = UUID.randomUUID().toString(),
                 companyId = it.companyId,
-                dataType = DataTypeEnum.decode(it.dataType)!!,
+                dataType = DataTypeEnum.Companion.decode(it.dataType)!!,
                 uploadTime = 0L,
                 reportingPeriod = it.reportingPeriod,
                 currentlyActive = true,
@@ -234,22 +231,22 @@ class BulkRequestManagerTest {
                 userId,
             )
 
-        assertEquals(
+        Assertions.assertEquals(
             acceptedDataDimensions,
             bulkDataRequestResponse.acceptedDataRequests,
         )
 
-        assertEquals(
+        Assertions.assertEquals(
             allRequestedDataDimensions - validDataDimensions,
             bulkDataRequestResponse.invalidDataRequests,
         )
 
-        assertEquals(
+        Assertions.assertEquals(
             dataDimensionsWithExistingRequests,
             bulkDataRequestResponse.existingDataRequests,
         )
 
-        assertEquals(
+        Assertions.assertEquals(
             dataDimensionsWithExistingDatasets,
             bulkDataRequestResponse.existingDataSets,
         )

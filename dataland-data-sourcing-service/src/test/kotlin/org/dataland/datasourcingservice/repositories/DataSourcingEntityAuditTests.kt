@@ -1,11 +1,9 @@
-package org.dataland.datasourcingservice.integrationTests
+package org.dataland.datasourcingservice.repositories
 
 import org.assertj.core.api.Assertions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.repositories.DataRevisionRepository
-import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

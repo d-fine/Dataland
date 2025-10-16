@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.unitTests
+package org.dataland.datasourcingservice.services
 
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -8,15 +8,11 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
-import org.dataland.datasourcingservice.services.DataSourcingManager
-import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
+import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -25,11 +21,11 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class ExistingRequestsManagerTest {
-    private val mockDataSourcingValidator = mock<DataSourcingValidator>()
-    private val mockRequestRepository = mock<RequestRepository>()
-    private val mockDataSourcingManager = mock<DataSourcingManager>()
-    private val mockDataRevisionRepository = mock<DataRevisionRepository>()
-    private val mockDataSourcingRepository = mock<DataSourcingRepository>()
+    private val mockDataSourcingValidator = Mockito.mock<DataSourcingValidator>()
+    private val mockRequestRepository = Mockito.mock<RequestRepository>()
+    private val mockDataSourcingManager = Mockito.mock<DataSourcingManager>()
+    private val mockDataRevisionRepository = Mockito.mock<DataRevisionRepository>()
+    private val mockDataSourcingRepository = Mockito.mock<DataSourcingRepository>()
 
     private val testExistingRequestsManager =
         ExistingRequestsManager(mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository)
@@ -71,7 +67,7 @@ class ExistingRequestsManagerTest {
         if (requestState == RequestState.Processing) {
             verify(mockDataSourcingManager, times(1)).resetOrCreateDataSourcingObjectAndAddRequest(any())
         } else {
-            verify(mockDataSourcingManager, never()).resetOrCreateDataSourcingObjectAndAddRequest(any())
+            verify(mockDataSourcingManager, Mockito.never()).resetOrCreateDataSourcingObjectAndAddRequest(any())
         }
     }
 

@@ -1,27 +1,26 @@
-package org.dataland.datasourcingservice.integrationTests.serviceTests
+package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.services.DataSourcingQueryManager
+import org.dataland.datasourcingservice.utils.COMPANY_ID_1
+import org.dataland.datasourcingservice.utils.COMPANY_ID_2
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_1
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_2
+import org.dataland.datasourcingservice.utils.DATA_TYPE_1
+import org.dataland.datasourcingservice.utils.DATA_TYPE_2
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
+import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
-import org.dataland.datasourcingservice.utils.COMPANY_ID_1 as companyIdToFilterBy
-import org.dataland.datasourcingservice.utils.COMPANY_ID_2 as otherCompanyId
-import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_1 as dataSourcingStateToFilterBy
-import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_2 as otherDataSourcingState
-import org.dataland.datasourcingservice.utils.DATA_TYPE_1 as dataTypeToFilterBy
-import org.dataland.datasourcingservice.utils.DATA_TYPE_2 as otherDataType
-import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1 as reportingPeriodToFilterBy
-import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2 as otherReportingPeriod
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class])
 class DataSourcingQueryManagerTest
@@ -45,15 +44,15 @@ class DataSourcingQueryManagerTest
                     dataBaseCreationUtils.storeDataSourcing(
                         companyId =
                             if (it / 4 % 2 == 0) {
-                                UUID.fromString(companyIdToFilterBy)
+                                UUID.fromString(COMPANY_ID_1)
                             } else {
                                 UUID.fromString(
-                                    otherCompanyId,
+                                    COMPANY_ID_2,
                                 )
                             },
-                        dataType = if (it / 2 % 2 == 0) dataTypeToFilterBy else otherDataType,
-                        reportingPeriod = if (it % 2 == 0) reportingPeriodToFilterBy else otherReportingPeriod,
-                        state = DataSourcingState.valueOf(if (it % 3 == 0) dataSourcingStateToFilterBy else otherDataSourcingState),
+                        dataType = if (it / 2 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2,
+                        reportingPeriod = if (it % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2,
+                        state = DataSourcingState.valueOf(if (it % 3 == 0) DATA_SOURCING_STATE_1 else DATA_SOURCING_STATE_2),
                     )
                 }
         }
@@ -61,9 +60,9 @@ class DataSourcingQueryManagerTest
         @ParameterizedTest
         @CsvSource(
             value = [
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, $dataSourcingStateToFilterBy, 0",
-                "$companyIdToFilterBy, $dataTypeToFilterBy, $reportingPeriodToFilterBy, null, 0",
-                "null, null, null, $dataSourcingStateToFilterBy, 0;3;6",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${DATA_SOURCING_STATE_1}, 0",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0",
+                "null, null, null, ${DATA_SOURCING_STATE_1}, 0;3;6",
                 "null, null, null, null, 0;1;2;3;4;5;6;7",
             ],
             nullValues = ["null"],
@@ -86,7 +85,7 @@ class DataSourcingQueryManagerTest
                     reportingPeriod = reportingPeriod,
                     state = dataSourcingState?.let { DataSourcingState.valueOf(it) },
                 )
-            assertEquals(expectedResults.size, actualResults.size)
+            Assertions.assertEquals(expectedResults.size, actualResults.size)
             expectedResults.forEach {
                 assert(it in actualResults) { "Expected result $it not found in actual results" }
             }
