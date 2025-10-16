@@ -5,16 +5,21 @@
     </div>
 
     <SuccessDialog
-      :visible="successModalIsVisible"
-      message="You have successfully withdrawn your request."
-      @close="successModalIsVisible = false"
+      :visible="withdrawSuccessModalIsVisible"
+      message="Your request has been successfully withdrawn."
+      @close="withdrawSuccessModalIsVisible = false"
+    />
+    <SuccessDialog
+        :visible="resubmitSuccessModalIsVisible"
+        message="Your request has been successfully resubmitted."
+        @close="resubmitSuccessModalIsVisible = false"
     />
 
     <PrimeDialog
       id="reopenModal"
       :dismissableMask="true"
       :modal="true"
-      v-model:visible="reopenModalIsVisible"
+      v-model:visible="resubmitModalIsVisible"
       :closable="true"
       style="text-align: left; height: fit-content; width: 21vw"
       data-test="reopenModal"
@@ -41,31 +46,7 @@
           the data provider.
         </p>
       </FormKit>
-      <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
-    </PrimeDialog>
-
-    <PrimeDialog
-      id="reopenedModal"
-      :dismissableMask="true"
-      :modal="true"
-      v-model:visible="reopenedModalIsVisible"
-      :closable="false"
-      style="border-radius: 0.75rem; text-align: center"
-      :show-header="false"
-      data-test="reopenedModal"
-    >
-      <div class="text-center" style="display: flex; flex-direction: column">
-        <div style="margin: 10px">
-          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-        </div>
-        <div style="margin: 10px">
-          <h2 class="m-0" data-test="successText">Reopened</h2>
-        </div>
-      </div>
-      <div class="text-block" style="margin: 15px; white-space: pre">
-        You have successfully reopened your data request.
-      </div>
-      <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
+      <PrimeButton data-test="reopenRequestButton" @click="resubmitRequest()" label="REOPEN REQUEST" />
     </PrimeDialog>
 
     <div class="py-4">
@@ -116,7 +97,7 @@
               <div class="card__separator" />
               <StatusHistory :status-history="requestHistory" />
             </div>
-            <div class="card" v-show="isRequestReopenable(storedRequest.state)" data-test="card_reopen">
+            <div class="card" v-show="isRequestResubmittable(storedRequest.state)" data-test="card_reopen">
               <div class="card__title">Reopen Request</div>
               <div class="card__separator" />
               <div>
@@ -126,7 +107,7 @@
                 <a
                   class="link"
                   style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
-                  @click="openModalReopenRequest()"
+                  @click="resubmitModalIsVisible = true"
                 >
                   Reopen request</a
                 >
@@ -179,10 +160,10 @@ import SuccessDialog from '@/components/general/SuccessDialog.vue';
 const props = defineProps<{ requestId: string, userEmailAddress: string }>();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const successModalIsVisible = ref(false);
-const reopenModalIsVisible = ref(false);
+const withdrawSuccessModalIsVisible = ref(false);
+const resubmitModalIsVisible = ref(false);
 const reopenMessage = ref('');
-const reopenedModalIsVisible = ref(false);
+const resubmitSuccessModalIsVisible = ref(false);
 const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
@@ -269,21 +250,14 @@ async function getRequest(): Promise<void> {
  * @param state request status of the dataland request
  * @returns true if request status is non sourceable otherwise false
  */
-function isRequestReopenable(state: RequestState): boolean {
+function isRequestResubmittable(state: RequestState): boolean {
   return state == RequestState.Processed || state == RequestState.Withdrawn;
-}
-
-/**
- * Opens a pop-up window to get the users message why the nonSourceable request should be reopened
- */
-function openModalReopenRequest(): void {
-  reopenModalIsVisible.value = true;
 }
 
 /**
  * Method to reopen the non sourceable data request
  */
-async function reopenRequest(): Promise<void> {
+async function resubmitRequest(): Promise<void> {
   if (reopenMessage.value.length > 10) {
     try {
       await patchRequestState(
@@ -291,8 +265,8 @@ async function reopenRequest(): Promise<void> {
         RequestState.Open,
         getKeycloakPromise
       );
-      reopenModalIsVisible.value = false;
-      reopenedModalIsVisible.value = true;
+      resubmitModalIsVisible.value = false;
+      resubmitSuccessModalIsVisible.value = true;
       storedRequest.state = RequestState.Open;
       reopenMessage.value = '';
     } catch (error) {
@@ -317,7 +291,7 @@ async function withdrawRequest(): Promise<void> {
     console.error(error);
     return;
   }
-  successModalIsVisible.value = true;
+  withdrawSuccessModalIsVisible.value = true;
   storedRequest.state = RequestState.Withdrawn;
 }
 
