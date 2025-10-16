@@ -5,38 +5,38 @@
         <IconField id="company-search-bar" class="company-search">
           <InputIcon class="pi pi-search" />
           <InputText
-            data-test="requested-datasets-searchbar"
-            v-model="searchBarInput"
-            placeholder="Search by company name"
-            fluid
-            variant="filled"
+              data-test="requested-datasets-searchbar"
+              v-model="searchBarInput"
+              placeholder="Search by company name"
+              fluid
+              variant="filled"
           />
         </IconField>
 
         <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworks"
-          ref="frameworkFilter"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          data-test="requested-datasets-frameworks"
-          id="framework-filter"
-          filter-placeholder="Search frameworks"
-          class="search-filter"
-          :max-selected-labels="1"
-          selected-items-label="{0} frameworks selected"
+            v-model="selectedFrameworks"
+            ref="frameworkFilter"
+            :available-items="availableFrameworks"
+            filter-name="Framework"
+            data-test="requested-datasets-frameworks"
+            id="framework-filter"
+            filter-placeholder="Search frameworks"
+            class="search-filter"
+            :max-selected-labels="1"
+            selected-items-label="{0} frameworks selected"
         />
 
         <FrameworkDataSearchDropdownFilter
-          v-model="selectedAccessStatus"
-          ref="accessStatusFilter"
-          :available-items="availableAccessStatus"
-          filter-name="Access Status"
-          data-test="requested-datasets-access-status"
-          id="access-status-filter"
-          filter-placeholder="access status"
-          class="search-filter"
-          :max-selected-labels="1"
-          selected-items-label="{0} status selected"
+            v-model="selectedAccessStatus"
+            ref="accessStatusFilter"
+            :available-items="availableAccessStatus"
+            filter-name="Access Status"
+            data-test="requested-datasets-access-status"
+            id="access-status-filter"
+            filter-placeholder="access status"
+            class="search-filter"
+            :max-selected-labels="1"
+            selected-items-label="{0} status selected"
         />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
@@ -44,20 +44,20 @@
       <div class="col-12 text-left p-3">
         <div class="card">
           <DataTable
-            :value="displayedData"
-            style="cursor: pointer"
-            :row-hover="true"
-            :loading="waitingForData"
-            data-test="requested-datasets-table"
-            paginator
-            paginator-position="bottom"
-            :rows="datasetsPerPage"
-            lazy
-            :total-records="numberOfFilteredRequests"
-            @page="onPage"
-            @sort="onSort"
-            @row-click="onRowClick"
-            id="my-data-requests-overview-table"
+              :value="displayedData"
+              style="cursor: pointer"
+              :row-hover="true"
+              :loading="waitingForData"
+              data-test="requested-datasets-table"
+              paginator
+              paginator-position="bottom"
+              :rows="datasetsPerPage"
+              lazy
+              :total-records="numberOfFilteredRequests"
+              @page="onPage"
+              @sort="onSort"
+              @row-click="onRowClick"
+              id="my-data-requests-overview-table"
           >
             <Column header="COMPANY" field="companyName" :sortable="true">
               <template #body="{ data }">{{ data.companyName }}</template>
@@ -66,9 +66,9 @@
               <template #body="{ data }">
                 <div>{{ getFrameworkTitle(data.dataType) }}</div>
                 <div
-                  v-if="frameworkHasSubTitle(data.dataType)"
-                  data-test="framework-subtitle"
-                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                    v-if="frameworkHasSubTitle(data.dataType)"
+                    data-test="framework-subtitle"
+                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
                   <br />
                   {{ getFrameworkSubtitle(data.dataType) }}
@@ -78,9 +78,9 @@
             <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
               <template #body="{ data }">{{ data.reportingPeriod }}</template>
             </Column>
-            <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
+            <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
               <template #body="{ data }">
-                {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
+                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
               </template>
             </Column>
             <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
@@ -90,14 +90,19 @@
             </Column>
             <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
               <template #body="{ data }">
-                <DatalandTag :severity="data.state" :value="data.state" />
+                <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
+              </template>
+            </Column>
+            <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
+              <template #body="{ data }">
+                <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
               </template>
             </Column>
             <Column field="resolve" header="">
               <template #body="{ data }">
                 <div
-                  v-if="data.requestStatus === RequestState.Processed"
-                  class="text-right text-primary no-underline font-bold"
+                    v-if="data.requestStatus === RequestStatus.Answered"
+                    class="text-right text-primary no-underline font-bold"
                 >
                   <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
                   <span class="ml-3">&gt;</span>
@@ -117,10 +122,10 @@
           Alternatively, become a premium user and create a portfolio for automatic request creation.
         </p>
         <PrimeButton
-          label="MANAGE YOUR PORTFOLIOS"
-          icon="pi pi-plus-circle"
-          data-test="myPortfoliosButton"
-          @click="goToMyPortfoliosPage"
+            label="MANAGE YOUR PORTFOLIOS"
+            icon="pi pi-plus-circle"
+            data-test="myPortfoliosButton"
+            @click="goToMyPortfoliosPage"
         />
       </div>
     </div>
@@ -141,6 +146,7 @@ import {
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -154,14 +160,13 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import {ExtendedStoredRequest, RequestState} from "@clients/datasourcingservice";
 
 const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
-const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
-const displayedData = ref<ExtendedStoredRequest[]>([]);
+const storedDataRequests = ref<ExtendedStoredDataRequest[]>([]);
+const displayedData = ref<ExtendedStoredDataRequest[]>([]);
 const searchBarInput = ref('');
 const searchBarInputFilter = ref('');
 
@@ -172,7 +177,7 @@ const availableAccessStatus = ref<SelectableItem[]>([]);
 const selectedAccessStatus = ref<SelectableItem[]>([]);
 
 const numberOfFilteredRequests = ref(0);
-const sortField = ref<keyof ExtendedStoredRequest>('state');
+const sortField = ref<keyof ExtendedStoredDataRequest>('requestStatus');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
@@ -212,9 +217,9 @@ async function getStoredRequestDataList(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       storedDataRequests.value = (
-        await new ApiClientProvider(
-          getKeycloakPromise()
-        ).apiClients.requestController.getRequestsForRequestingUser()
+          await new ApiClientProvider(
+              getKeycloakPromise()
+          ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {
@@ -230,7 +235,7 @@ async function getStoredRequestDataList(): Promise<void> {
  * @param {DataTableRowClickEvent} event - The row click event containing data about the clicked row.
  */
 function onRowClick(event: DataTableRowClickEvent): void {
-  const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
+  const requestIdOfClickedRow = (event.data as ExtendedStoredDataRequest).dataRequestId;
   void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
 }
 
@@ -242,7 +247,7 @@ function onRowClick(event: DataTableRowClickEvent): void {
  * @param {DataTableSortEvent} event - The sorting event containing the sort field and sort order.
  */
 function onSort(event: DataTableSortEvent): void {
-  sortField.value = event.sortField as keyof ExtendedStoredRequest;
+  sortField.value = event.sortField as keyof ExtendedStoredDataRequest;
   sortOrder.value = event.sortOrder ?? 1;
   updateCurrentDisplayedData();
 }
@@ -294,13 +299,13 @@ function resetFilterAndSearchBar(): void {
  * Updates the displayed data and scrolls to the top of the page.
  */
 function updateCurrentDisplayedData(): void {
-  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName!));
+  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName));
 
   if (selectedFrameworks.value.length > 0) {
     data = data.filter((d) => filterFramework(d.dataType));
   }
   if (selectedAccessStatus.value.length > 0) {
-    data = data.filter((d) => filterAccessStatus(d.state));
+    data = data.filter((d) => filterAccessStatus(d.accessStatus));
   }
 
   data.sort((a, b) => customCompareForExtendedStoredDataRequests(a, b));
@@ -316,30 +321,29 @@ function updateCurrentDisplayedData(): void {
  * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
  * Compares based on the current sort field, request status, last modified date, and company name.
  *
- * @param {ExtendedStoredRequest} a - The first data request object to compare.
- * @param {ExtendedStoredRequest} b - The second data request object to compare.
+ * @param {ExtendedStoredDataRequest} a - The first data request object to compare.
+ * @param {ExtendedStoredDataRequest} b - The second data request object to compare.
  * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
  */
 function customCompareForExtendedStoredDataRequests(
-  a: ExtendedStoredRequest,
-  b: ExtendedStoredRequest
-):
-    number {
+    a: ExtendedStoredDataRequest,
+    b: ExtendedStoredDataRequest
+): number {
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';
 
-  if (sortField.value !== 'state') {
+  if (sortField.value !== 'requestStatus') {
     if (aValue < bValue) return -1 * sortOrder.value;
     if (aValue > bValue) return sortOrder.value;
   }
 
-  if (a.state !== b.state)
-    return customCompareForRequestStatus(a.state, b.state, sortOrder.value);
+  if (a.requestStatus !== b.requestStatus)
+    return customCompareForRequestStatus(a.requestStatus, b.requestStatus, sortOrder.value);
 
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
 
-  return a.companyName! < b.companyName! ? -1 * sortOrder.value : sortOrder.value;
+  return a.companyName < b.companyName ? -1 * sortOrder.value : sortOrder.value;
 }
 
 /**
