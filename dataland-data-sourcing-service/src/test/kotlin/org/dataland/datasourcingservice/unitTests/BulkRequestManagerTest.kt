@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.unitTests
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
@@ -12,6 +12,9 @@ import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
+import org.dataland.datasourcingservice.services.BulkRequestManager
+import org.dataland.datasourcingservice.services.DataSourcingValidator
+import org.dataland.datasourcingservice.services.RequestCreationService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

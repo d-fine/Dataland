@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -8,6 +8,9 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.services.DataSourcingManager
+import org.dataland.datasourcingservice.services.DataSourcingValidator
+import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest

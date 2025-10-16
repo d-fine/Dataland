@@ -1,10 +1,12 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.integrationTests.serviceTests
 
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.services.DataSourcingValidator
+import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -24,8 +26,11 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
-class RequestCreationServiceIntegrationTest
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=norabbitmq"],
+)
+class RequestCreationServiceTest
     @Autowired
     constructor(
         private val requestRepository: RequestRepository,

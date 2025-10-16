@@ -1,9 +1,12 @@
-package org.dataland.datasourcingservice.repositories
+package org.dataland.datasourcingservice.integrationTests
 
 import org.assertj.core.api.Assertions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.repositories.DataRevisionRepository
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,7 +16,10 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.UUID
 
-@SpringBootTest
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=norabbitmq"],
+)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class DataSourcingEntityAuditTests
     @Autowired

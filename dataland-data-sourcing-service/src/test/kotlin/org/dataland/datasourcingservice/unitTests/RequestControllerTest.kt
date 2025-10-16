@@ -1,6 +1,7 @@
-package org.dataland.datasourcingservice.controller
+package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datasourcingservice.controller.RequestController
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager

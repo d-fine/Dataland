@@ -1,10 +1,12 @@
-package org.dataland.datasourcingservice.controller
+package org.dataland.datasourcingservice.integrationTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datasourcingservice.DatalandDataSourcingService
+import org.dataland.datasourcingservice.controller.DataSourcingController
+import org.dataland.datasourcingservice.controller.RequestController
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest

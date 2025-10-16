@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.integrationTests.serviceTests
 
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
@@ -6,6 +6,7 @@ import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.COMPANY_ID_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
@@ -23,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=norabbitmq"],
+)
 class RequestQueryManagerTest
     @Autowired
     constructor(

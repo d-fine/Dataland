@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
@@ -9,6 +9,7 @@ import org.dataland.datalanddocumentmanager.openApiClient.api.DocumentController
 import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

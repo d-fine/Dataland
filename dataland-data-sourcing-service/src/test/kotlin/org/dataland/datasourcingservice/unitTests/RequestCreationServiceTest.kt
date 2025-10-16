@@ -1,8 +1,10 @@
-package org.dataland.datasourcingservice.services
+package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.services.DataSourcingValidator
+import org.dataland.datasourcingservice.services.RequestCreationService
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,7 +18,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class RequestCreationServiceUnitTest {
+class RequestCreationServiceTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()
     private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
