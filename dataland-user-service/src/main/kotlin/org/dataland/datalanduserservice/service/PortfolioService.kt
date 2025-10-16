@@ -142,9 +142,6 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
-
-            // portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(portfolio)
-
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
 

@@ -272,7 +272,6 @@ class PortfolioServiceTest {
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = setOf(dummyCompanyId),
         isMonitored = false,
-        startingMonitoringPeriod = null,
         monitoredFrameworks = emptySet(),
     )
 }

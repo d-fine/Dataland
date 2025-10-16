@@ -46,18 +46,6 @@ class PortfolioMonitoringValidatorTest {
     }
 
     @Test
-    fun `invalid when monitored but missing starting period`() {
-        val monitoring =
-            PortfolioMonitoringPatch(
-                isMonitored = true,
-                monitoredFrameworks = setOf("eutaxonomy"),
-            )
-
-        val violations = validator.validate(monitoring)
-        assertFalse(violations.isEmpty())
-    }
-
-    @Test
     fun `invalid when not monitored but fields are set`() {
         val monitoring =
             PortfolioMonitoringPatch(
