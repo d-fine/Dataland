@@ -244,12 +244,12 @@ import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewReque
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
+import { getAnsweringDataSetUrl } from '@/utils/AnsweringDatasetLegacy.ts';
 import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import { patchDataRequest } from '@/utils/RequestUtils';
+import { patchDataRequest } from '@/utils/RequestUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
