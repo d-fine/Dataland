@@ -95,7 +95,7 @@
                 </span>
               </span>
               <div class="card__separator" />
-              <StatusHistory :status-history="requestHistory" />
+              <RequestStateHistory :stateHistory="requestHistory" />
             </div>
             <div class="card" v-show="isRequestResubmittable(storedRequest.state)" data-test="card_reopen">
               <div class="card__title">Reopen Request</div>
@@ -140,7 +140,7 @@ import { ref, reactive, inject, onMounted } from 'vue';
 import { defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
