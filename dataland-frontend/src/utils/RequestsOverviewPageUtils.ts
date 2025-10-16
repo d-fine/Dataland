@@ -3,6 +3,7 @@ import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/Frame
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import {RequestState} from "@clients/datasourcingservice";
 
 /**
  * Compares two request status
@@ -11,7 +12,7 @@ import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRe
  * @param sortOrder is a reactive variable in the vue components that use this sorting function
  * @returns result of the comparison
  */
-export function customCompareForRequestStatus(a: RequestStatus, b: RequestStatus, sortOrder: number): number {
+export function customCompareForRequestStatus(a: RequestState, b: RequestState, sortOrder: number): number {
   const sortOrderRequestStatus: { [key: string]: number } = {};
   sortOrderRequestStatus[RequestStatus.Answered] = 1;
   sortOrderRequestStatus[RequestStatus.Open] = 2;
