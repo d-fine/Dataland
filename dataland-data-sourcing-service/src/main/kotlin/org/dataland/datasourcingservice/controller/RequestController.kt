@@ -107,7 +107,7 @@ constructor(
         requestState: RequestState?,
         chunkSize: Int,
         chunkIndex: Int,
-    ): ResponseEntity<List<StoredRequest>> =
+    ): ResponseEntity<List<ExtendedStoredRequest>> =
         ResponseEntity.ok(
             requestQueryManager.searchRequests(
                 companyId?.let {

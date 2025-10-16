@@ -347,7 +347,7 @@ interface RequestApi {
         )
         @RequestParam(defaultValue = "0")
         chunkIndex: Int,
-    ): ResponseEntity<List<StoredRequest>>
+    ): ResponseEntity<List<ExtendedStoredRequest>>
 
     /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list

@@ -39,7 +39,7 @@ class RequestQueryManager @Autowired constructor(
         state: RequestState?,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<StoredRequest> =
+    ): List<ExtendedStoredRequest> =
         requestRepository
             .findByListOfIdsAndFetchDataSourcingEntity(
                 requestRepository
@@ -59,7 +59,7 @@ class RequestQueryManager @Autowired constructor(
                             ),
                         ),
                     ).content,
-            ).map { it.toStoredDataRequest() }
+            ).map { it.toExtendedStoredDataRequest() }
 
     /**
      * Search for requests based on userId
