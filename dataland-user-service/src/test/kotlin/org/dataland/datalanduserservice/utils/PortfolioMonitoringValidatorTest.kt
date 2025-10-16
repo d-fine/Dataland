@@ -27,7 +27,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
-                startingMonitoringPeriod = "2022",
             )
 
         val violations = validator.validate(monitoring)
@@ -40,20 +39,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
-                startingMonitoringPeriod = "2024",
-            )
-
-        val violations = validator.validate(monitoring)
-        assertFalse(violations.isEmpty())
-    }
-
-    @Test
-    fun `invalid when monitored but missing starting period`() {
-        val monitoring =
-            PortfolioMonitoringPatch(
-                isMonitored = true,
-                monitoredFrameworks = setOf("eutaxonomy"),
-                startingMonitoringPeriod = "",
             )
 
         val violations = validator.validate(monitoring)
@@ -66,7 +51,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
-                startingMonitoringPeriod = "2023",
             )
 
         val violations = validator.validate(monitoring)
@@ -79,7 +63,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
-                startingMonitoringPeriod = null,
             )
 
         val violations = validator.validate(monitoring)

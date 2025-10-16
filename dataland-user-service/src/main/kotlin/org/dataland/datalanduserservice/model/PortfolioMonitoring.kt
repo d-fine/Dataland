@@ -5,6 +5,5 @@ package org.dataland.datalanduserservice.model
  */
 interface PortfolioMonitoring {
     val isMonitored: Boolean
-    val startingMonitoringPeriod: String?
     val monitoredFrameworks: Set<String>
 }

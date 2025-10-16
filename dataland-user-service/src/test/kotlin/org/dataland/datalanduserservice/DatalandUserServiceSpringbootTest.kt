@@ -71,7 +71,6 @@ class DatalandUserServiceSpringbootTest
         private val validCompanyId2 = "valid-company-id-2"
         private val invalidCompanyId = "invalid-company-id"
         private val isMonitored = false
-        private val dummyStartingMonitoringPeriod = "2023"
         private val dummyMonitoredFrameworks = setOf("sfdr", "eutaxonomy")
 
         private val dummyPortfolioUpload1 =
@@ -79,7 +78,6 @@ class DatalandUserServiceSpringbootTest
                 portfolioName = "Test Portfolio",
                 companyIds = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
-                dummyStartingMonitoringPeriod,
                 dummyMonitoredFrameworks,
             )
 
@@ -88,7 +86,6 @@ class DatalandUserServiceSpringbootTest
                 portfolioName = "Second Test Portfolio",
                 companyIds = setOf(validCompanyId1),
                 isMonitored,
-                dummyStartingMonitoringPeriod,
                 dummyMonitoredFrameworks,
             )
 
@@ -99,7 +96,7 @@ class DatalandUserServiceSpringbootTest
 
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
-            doNothing().whenever(mockPortfolioBulkDataRequestService).postBulkDataRequestMessageIfMonitored(any())
+            doNothing().whenever(mockPortfolioBulkDataRequestService).postBulkDataRequestIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -160,7 +157,6 @@ class DatalandUserServiceSpringbootTest
                 val portfolioMonitoringPatch =
                     PortfolioMonitoringPatch(
                         isMonitored = true,
-                        startingMonitoringPeriod = "2024",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                     )
                 val patchedPortfolio =
@@ -173,7 +169,6 @@ class DatalandUserServiceSpringbootTest
 
                 assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
                 assertTrue(patchedPortfolio.isMonitored)
-                assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, patchedPortfolio.startingMonitoringPeriod)
                 assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
                 assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
@@ -188,7 +183,6 @@ class DatalandUserServiceSpringbootTest
                 val portfolioMonitoringPatch =
                     PortfolioMonitoringPatch(
                         isMonitored = true,
-                        startingMonitoringPeriod = "2020",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                     )
 
@@ -197,11 +191,10 @@ class DatalandUserServiceSpringbootTest
                 }
 
                 verify(mockPortfolioBulkDataRequestService)
-                    .postBulkDataRequestMessageIfMonitored(
+                    .postBulkDataRequestIfMonitored(
                         check {
                             assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
                             assertTrue(it.isMonitored)
-                            assertEquals("2020", it.startingMonitoringPeriod)
                             assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
                         },
                     )
@@ -244,7 +237,6 @@ class DatalandUserServiceSpringbootTest
                 val portfolioMonitoringPatch =
                     PortfolioMonitoringPatch(
                         isMonitored = true,
-                        startingMonitoringPeriod = "2024",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                     )
 

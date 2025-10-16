@@ -36,12 +36,6 @@ data class PortfolioUpload(
     )
     override val isMonitored: Boolean = false,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
-        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE,
-    )
-    override val startingMonitoringPeriod: String? = null,
-    @field:JsonProperty(required = false)
     @field:ArraySchema(
         arraySchema =
             Schema(

@@ -60,12 +60,6 @@ data class BasePortfolio(
     )
     override val isMonitored: Boolean,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
-        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE,
-    )
-    override val startingMonitoringPeriod: String?,
-    @field:JsonProperty(required = false)
     @field:ArraySchema(
         arraySchema =
             Schema(
@@ -85,7 +79,6 @@ data class BasePortfolio(
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = portfolioUpload.companyIds,
         isMonitored = portfolioUpload.isMonitored,
-        startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
 
@@ -97,7 +90,6 @@ data class BasePortfolio(
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
-        startingMonitoringPeriod = portfolioMonitoringPatch.startingMonitoringPeriod,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
     )
 
@@ -109,7 +101,6 @@ data class BasePortfolio(
         creationTimestamp: Long = this.creationTimestamp,
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
-        startingMonitoringPeriod: String? = null,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
     ): PortfolioEntity =
         PortfolioEntity(
@@ -120,7 +111,6 @@ data class BasePortfolio(
             lastUpdateTimestamp = lastUpdateTimestamp,
             companyIds = this.companyIds.toMutableSet(),
             isMonitored = isMonitored,
-            startingMonitoringPeriod = startingMonitoringPeriod ?: this.startingMonitoringPeriod,
             monitoredFrameworks = monitoredFrameworks,
         )
 }
