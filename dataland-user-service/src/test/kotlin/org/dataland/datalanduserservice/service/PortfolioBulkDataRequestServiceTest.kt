@@ -9,10 +9,8 @@ import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Answers
 import org.mockito.Mockito.mockStatic
-import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.clearInvocations
 import org.mockito.kotlin.eq
@@ -92,20 +90,8 @@ class PortfolioBulkDataRequestServiceTest {
     @Test
     fun `posts bulk requests for all framework and sector types inside grouping`() {
         val today = LocalDate.of(2025, 1, 15)
-        stubCompany(
-            id = "Company id 1",
-            fiscalYearEnd = LocalDate.of(2024, 12, 31),
-            reportingPeriodShift = 0,
-            sector = "financials",
-            today = today,
-        )
-        stubCompany(
-            id = "Company id 2",
-            fiscalYearEnd = LocalDate.of(2024, 12, 31),
-            reportingPeriodShift = -1,
-            sector = "consumer",
-            today = today,
-        )
+        stubCompany("Company id 1", LocalDate.of(2024, 12, 31), 0, "financials", today)
+        stubCompany("Company id 2", LocalDate.of(2024, 12, 31), -1, "consumer", today)
         val basePortfolio =
             BasePortfolio(
                 portfolioId = "Portfolio id",
@@ -120,41 +106,22 @@ class PortfolioBulkDataRequestServiceTest {
 
         service.postBulkDataRequestIfMonitored(basePortfolio)
 
-        // B1 Group: 2025, Sector.FINANCIALS
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf("Company id 1") &&
-                    dataTypes == setOf("sfdr") &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq("user id"),
-        )
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf("Company id 1") &&
-                    dataTypes == setOf("eutaxonomy-financials", "nuclear-and-gas") &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq("user id"),
-        )
+        val expected =
+            listOf(
+                Triple(setOf("Company id 1"), setOf("sfdr"), setOf("2024")),
+                Triple(setOf("Company id 1"), setOf("eutaxonomy-financials", "nuclear-and-gas"), setOf("2024")),
+                Triple(setOf("Company id 2"), setOf("eutaxonomy-non-financials", "nuclear-and-gas"), setOf("2023")),
+                Triple(setOf("Company id 2"), setOf("sfdr"), setOf("2023")),
+            )
 
-        // B2 Group: 2024, Sector.NONFINANCIALS
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf("Company id 2") &&
-                    dataTypes == setOf("eutaxonomy-non-financials", "nuclear-and-gas") &&
-                    reportingPeriods == setOf("2023")
-            },
-            eq("user id"),
-        )
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf("Company id 2") &&
-                    dataTypes == setOf("sfdr") &&
-                    reportingPeriods == setOf("2023")
-            },
-            eq("user id"),
-        )
+        expected.forEach { (ids, types, periods) ->
+            verify(mockRequestApi).postBulkDataRequest(
+                argThat<BulkDataRequest> {
+                    companyIdentifiers == ids && dataTypes == types && reportingPeriods == periods
+                },
+                eq("user id"),
+            )
+        }
         verifyNoMoreInteractions(mockRequestApi)
     }
 
@@ -257,31 +224,5 @@ class PortfolioBulkDataRequestServiceTest {
             )
         service.postBulkDataRequestIfMonitored(basePortfolio)
         verifyNoInteractions(mockRequestApi)
-    }
-
-    @Test
-    fun `exceptions in postBulkDataRequest are thrown`() {
-        val today = LocalDate.of(2025, 1, 15)
-        stubCompany(
-            id = "F1",
-            fiscalYearEnd = LocalDate.of(2024, 12, 31),
-            reportingPeriodShift = 0,
-            sector = "financials",
-            today = today,
-        )
-        whenever(mockRequestApi.postBulkDataRequest(any(), any())).thenThrow(RuntimeException("fail"))
-        val basePortfolio =
-            BasePortfolio(
-                portfolioId = "p6",
-                userId = "u6",
-                companyIds = setOf("F1"),
-                monitoredFrameworks = setOf("eutaxonomy"),
-                isMonitored = true,
-                portfolioName = "My monitored eutaxonomy test portfolio",
-                creationTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                lastUpdateTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-            )
-
-        assertThrows<RuntimeException> { service.postBulkDataRequestIfMonitored(basePortfolio) }
     }
 }

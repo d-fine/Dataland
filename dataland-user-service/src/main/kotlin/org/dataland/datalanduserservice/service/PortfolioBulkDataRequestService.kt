@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
-// This is due to some weird detekt error
-const val THRESHOLD2 = 3L
-
 /**
  * Service to post Bulk Data Requests upon Portfolio or Monitoring status changes.
  * Currently restricted to Requests up to 2025. If required, change UPPER_BOUND accordingly.
@@ -120,11 +117,13 @@ class PortfolioBulkDataRequestService
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+
                     SectorType.NONFINANCIALS ->
                         setOf(
                             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+
                     else ->
                         setOf(
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
@@ -173,24 +172,16 @@ class PortfolioBulkDataRequestService
             reportingPeriods: Set<String>,
             frameworks: Set<String>,
         ) {
-            try {
-                requestControllerApi.postBulkDataRequest(
-                    BulkDataRequest(
-                        companyIdentifiers = companyIds,
-                        dataTypes = frameworks,
-                        reportingPeriods = reportingPeriods,
-                    ),
-                    userId = userId,
-                )
-                logger.info(
-                    "Bulk request posted for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
-                )
-            } catch (ex: Exception) {
-                logger.error(
-                    "Bulk request posting failed for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
-                    ex,
-                )
-                throw ex
-            }
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    companyIdentifiers = companyIds,
+                    dataTypes = frameworks,
+                    reportingPeriods = reportingPeriods,
+                ),
+                userId = userId,
+            )
+            logger.info(
+                "Bulk request posted for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
+            )
         }
     }
