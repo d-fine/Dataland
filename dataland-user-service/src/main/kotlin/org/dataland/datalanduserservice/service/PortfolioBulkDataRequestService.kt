@@ -41,11 +41,21 @@ class PortfolioBulkDataRequestService
         @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 2 * * *")
         private fun createBulkDataRequestsForAllMonitoredPortfolios() {
-            logger.info("Running scheduled request creation job for monitored portfolios.")
+            logger.info("BulkDataRequest scheduled job started.")
+
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
+            logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
+
             companyReportingInfoService.resetData()
-            companyReportingInfoService.updateCompanies(allMonitoredPortfolios.flatMap { it.companyIds })
-            allMonitoredPortfolios.forEach { postBulkDataRequestIfMonitored(it.toBasePortfolio()) }
+            val allCompanyIds = allMonitoredPortfolios.flatMap { it.companyIds }.toSet()
+            logger.info("Updating company reporting info for ${allCompanyIds.size} unique company IDs across portfolios.")
+            companyReportingInfoService.updateCompanies(allCompanyIds)
+            logger.info("Company reporting info update completed.")
+            allMonitoredPortfolios.forEach {
+                postBulkDataRequestIfMonitored(it.toBasePortfolio())
+            }
+
+            logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
         }
 
         /**
@@ -163,13 +173,23 @@ class PortfolioBulkDataRequestService
             reportingPeriods: Set<String>,
             frameworks: Set<String>,
         ) {
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(
-                    companyIdentifiers = companyIds,
-                    dataTypes = frameworks,
-                    reportingPeriods = reportingPeriods,
-                ),
-                userId = userId,
-            )
+            try {
+                requestControllerApi.postBulkDataRequest(
+                    BulkDataRequest(
+                        companyIdentifiers = companyIds,
+                        dataTypes = frameworks,
+                        reportingPeriods = reportingPeriods,
+                    ),
+                    userId = userId,
+                )
+                logger.info(
+                    "Bulk request posted for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
+                )
+            } catch (ex: Exception) {
+                logger.error(
+                    "Bulk request posting failed for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds: ${ex.message}",
+                    ex,
+                )
+            }
         }
     }
