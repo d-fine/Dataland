@@ -100,7 +100,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
+                    "$ref": "#/components/schemas/ExtendedStoredRequest"
                   }
                 }
               }

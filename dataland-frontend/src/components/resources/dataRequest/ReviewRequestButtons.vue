@@ -103,7 +103,7 @@
 import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
-import { patchDataRequest } from '@/utils/RequestUtils';
+import { patchDataRequest } from '@/utils/RequestUtilsLegacy';
 import { type ErrorResponse } from '@clients/backend';
 import { type AccessStatus, RequestStatus, type StoredDataRequestMessageObject } from '@clients/communitymanager';
 import PrimeDialog from 'primevue/dialog';
