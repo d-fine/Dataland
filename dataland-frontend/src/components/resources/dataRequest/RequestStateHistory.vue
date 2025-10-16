@@ -1,0 +1,61 @@
+<template>
+  <div class="card__data" data-test="stateHistoryContainer">
+    <h3 style="margin-bottom: 1rem">Request State History</h3>
+    <DataTable
+        :value="props.stateHistory"
+        data-test="stateHistoryTable"
+        responsiveLayout="scroll"
+        class="p-datatable-sm"
+    >
+      <Column
+          field="lastModifiedDate"
+          header="Date"
+          style="width: 30%"
+      >
+        <template #body="slotProps">
+      <span data-test="creationTimestampEntry">
+        {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+      </span>
+        </template>
+      </Column>
+
+      <Column
+          field="state"
+          header="Request State"
+          style="width: 25%"
+      >
+        <template #body="slotProps">
+          <div
+              style="display: inline-flex"
+              :class="badgeClass(slotProps.data.state)"
+              data-test="requestStateEntry"
+          >
+            {{ slotProps.data.state }}
+          </div>
+        </template>
+      </Column>
+
+      <Column
+          field="adminComment"
+          header="Comment"
+          style="width: 45%"
+      >
+        <template #body="slotProps">
+          <div style="display: inline-flex" data-test="commentEntry">
+            {{ slotProps.data.adminComment || '—' }}
+          </div>
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { badgeClass } from '@/utils/RequestUtils';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import type { StoredRequest } from '@clients/datasourcingservice';
+
+const props = defineProps<{ stateHistory: StoredRequest[] }>();
+</script>
