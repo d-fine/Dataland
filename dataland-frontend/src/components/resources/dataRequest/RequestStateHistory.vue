@@ -25,13 +25,11 @@
           style="width: 25%"
       >
         <template #body="slotProps">
-          <div
-              style="display: inline-flex"
-              :class="badgeClass(slotProps.data.state)"
-              data-test="requestStateEntry"
-          >
-            {{ slotProps.data.state }}
-          </div>
+          <DatalandTag
+              :severity="slotProps.data.state || ''"
+              :value="slotProps.data.state"
+              class="dataland-inline-tag"
+          />
         </template>
       </Column>
 
@@ -52,10 +50,10 @@
 
 <script setup lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { badgeClass } from '@/utils/RequestUtils';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import type { StoredRequest } from '@clients/datasourcingservice';
+import DatalandTag from "@/components/general/DatalandTag.vue";
 
 const props = defineProps<{ stateHistory: StoredRequest[] }>();
 </script>

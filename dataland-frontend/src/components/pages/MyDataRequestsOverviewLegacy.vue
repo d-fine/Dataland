@@ -133,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import DatalandTag from '@/components/general/DatalandTag.vue';
+import DatalandTag from '@/components/general/DatalandTagLegacy.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 
