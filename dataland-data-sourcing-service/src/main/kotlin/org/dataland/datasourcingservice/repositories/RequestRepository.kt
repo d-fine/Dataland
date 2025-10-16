@@ -27,8 +27,8 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request FROM RequestEntity request " +
-            "LEFT JOIN FETCH request.dataSourcingEntity " +
-            "WHERE request.id = :id",
+                "LEFT JOIN FETCH request.dataSourcingEntity " +
+                "WHERE request.id = :id",
     )
     fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
 
@@ -53,11 +53,11 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request.id FROM RequestEntity request " +
-            "WHERE " +
-            "(:companyId IS NULL OR request.companyId = :companyId) AND " +
-            "(:dataType IS NULL OR request.dataType = :dataType) AND " +
-            "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
-            "(:state IS NULL OR request.state = :state)",
+                "WHERE " +
+                "(:companyId IS NULL OR request.companyId = :companyId) AND " +
+                "(:dataType IS NULL OR request.dataType = :dataType) AND " +
+                "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
+                "(:state IS NULL OR request.state = :state)",
     )
     fun searchRequests(
         companyId: UUID?,
@@ -72,9 +72,17 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request FROM RequestEntity request " +
-            "LEFT JOIN FETCH request.dataSourcingEntity " +
-            "WHERE " +
-            "(request.id IN :requestIds)",
+                "LEFT JOIN FETCH request.dataSourcingEntity " +
+                "WHERE " +
+                "(request.id IN :requestIds)",
     )
     fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
+
+    /**
+     * Get all requests by userId.
+     * @param userId to filter by
+     * @return list of matching RequestEntity objects
+     */
+
+    fun findByUserId(userId: UUID): List<RequestEntity>
 }
