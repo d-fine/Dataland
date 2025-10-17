@@ -11,12 +11,12 @@ class V10__RenamePcafDatapoints : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val statement = context!!.connection.createStatement()
         statement.execute(
-            "UPDATE data_point_meta_information SET data_point_type = 'customEnumPcafMainSector'" +
-                " WHERE data_point_type = 'extendedEnumPcafMainSector';",
+            "UPDATE data_point_meta_information SET data_point_type = 'extendedEnumPcafMainSector'" +
+                " WHERE data_point_type = 'customEnumPcafMainSector';",
         )
         statement.execute(
-            "UPDATE data_point_meta_information SET data_point_type = 'customEnumCompanyExchangeStatus'" +
-                " WHERE data_point_type = 'extendedEnumCompanyExchangeStatus';",
+            "UPDATE data_point_meta_information SET data_point_type = 'extendedEnumCompanyExchangeStatus'" +
+                " WHERE data_point_type = 'customEnumCompanyExchangeStatus';",
         )
     }
 }
