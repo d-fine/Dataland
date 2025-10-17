@@ -15,6 +15,9 @@ import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
+import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
+import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -22,6 +25,7 @@ import org.dataland.specificationservice.openApiClient.api.SpecificationControll
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -46,6 +50,7 @@ import java.io.File
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Suppress("LongParameterList")
 class DataPointSpecificationExampleValidationTest
     @Autowired
     constructor(
@@ -156,7 +161,13 @@ class DataPointSpecificationExampleValidationTest
                 )
             }
 
-            // TODO: Add Check that schema and example have the same keys
+            val jsonDifferences =
+                compareJson(
+                    schema,
+                    example,
+                    JsonComparator.JsonComparisonOptions(ignoreValues = true, fullyNullObjectsAreEqualToNull = false),
+                ).filter { !it.path.matches(Regex(".+\\[[0-9]+\\]$")) } // ignore differences in array lengths
+            assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDifferences)
         }
 
         @MockitoBean
@@ -165,35 +176,34 @@ class DataPointSpecificationExampleValidationTest
         @MockitoBean
         private lateinit var specificationClient: SpecificationControllerApi
 
-        @ParameterizedTest(name = "Ensure the datapoint matches the schema structure and class")
+        @Suppress("unused")
+        @MockitoBean
+        private lateinit var messageQueuePublications: org.dataland.datalandbackend.services.MessageQueuePublications
+
+        @ParameterizedTest(name = "Ensure datapoints are retrieved as they are uploaded")
         @MethodSource("dataPointBaseTypeTestProvider")
-        fun `ensure the datapoint matches the schema structure and class`(
-            ignored: String,
+        fun `ensure datapoints are retrieved as they are uploaded`(
+            dataPointBaseTypeId: String,
             file: File,
         ) {
             val fileContents = objectMapper.readTree(file)
-            val example = fileContents["example"]
             val validatedByRef = fileContents["validatedBy"].asText()
-            val dataPointBaseTypeId = file.nameWithoutExtension
 
             doReturn(true).whenever(companyRoleChecker).canUserBypassQa(any())
             mockSecurityContext()
 
             val uploadedDataPoint =
                 UploadedDataPoint(
-                    dataPoint = objectMapper.writeValueAsString(example),
+                    dataPoint = objectMapper.writeValueAsString(fileContents["example"]),
                     dataPointType = dataPointBaseTypeId,
                     companyId = companyIdOfPostedCompany,
                     reportingPeriod = "2025",
                 )
 
-            val idWithRefMock =
-                mock<IdWithRef> {
-                    on { id } doReturn "dummy"
-                }
+            val dataPointTypeMock = mock<IdWithRef> { on { id } doReturn "dummy" }
             val dataPointTypeSpecificationMock =
                 mock<DataPointTypeSpecification> {
-                    on { dataPointBaseType } doReturn idWithRefMock
+                    on { dataPointBaseType } doReturn dataPointTypeMock
                     on { constraints } doReturn null
                 }
             doReturn(dataPointTypeSpecificationMock).whenever(specificationClient).getDataPointTypeSpecification(any())
@@ -204,14 +214,13 @@ class DataPointSpecificationExampleValidationTest
                 }
             doReturn(dataPointBaseTypeSpecificationMock).whenever(specificationClient).getDataPointBaseType(any())
 
-            val response =
-                dataPointManager
-                    .processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
+            val response = dataPointManager.processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
+            val downloadedDataPoint = dataPointManager.retrieveDataPoint(response.dataPointId, "correlationId")
 
-            // TODO: Something with the "messageQueuePublications.publishDataPointUploadedMessageWithBypassQa"
-            //      in the processDataPoint method is not working yet
-            // TODO: Download the datapoint
-            // TODO: Assert that the downloaded datapoint matches the example
+            assertEquals(
+                emptyList<JsonComparator.JsonDiff>(),
+                compareJsonStrings(uploadedDataPoint.dataPoint, downloadedDataPoint.dataPoint),
+            )
         }
 
         fun postCompany(company: CompanyInformation = companyWithTestLei): String =

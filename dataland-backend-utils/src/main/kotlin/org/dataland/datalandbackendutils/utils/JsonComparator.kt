@@ -24,6 +24,7 @@ object JsonComparator {
     data class JsonComparisonOptions(
         val ignoredKeys: Set<String> = emptySet(),
         val fullyNullObjectsAreEqualToNull: Boolean = true,
+        val ignoreValues: Boolean = false,
     )
 
     /**
@@ -134,7 +135,7 @@ object JsonComparator {
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
-            valuesDiffer(expected, actual) -> {
+            !options.ignoreValues && valuesDiffer(expected, actual) -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
             }
             else -> {
