@@ -1,13 +1,12 @@
 <template>
   <TheContent class="min-h-screen flex sheet">
-    <router-view :key="route.fullPath" />
     <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
       <h1 class="text-left">Data Request</h1>
     </div>
 
     <SuccessDialog
         :visible="withdrawSuccessModalIsVisible"
-        message="Your request has been successfully withdrawn."
+        message="The request has been successfully withdrawn."
         @close="() => {
           withdrawSuccessModalIsVisible = false;
           initializeComponent();
@@ -16,10 +15,7 @@
     <SuccessDialog
         :visible="resubmitSuccessModalIsVisible"
         message="Your request has been successfully resubmitted."
-        @close="() => {
-          resubmitSuccessModalIsVisible = false;
-          router.push(`/requests/${newRequestId}`);
-        }"
+        @close="goToNewRequestPage()"
     />
 
     <PrimeDialog
@@ -132,7 +128,8 @@
               <Divider/>
               <p class="dataland-info-text normal"
                  style="align-items: baseline">
-                Some placeholder text.
+                If you want to stop the processing of your request, you can withdraw it. The data provider will no longer
+                process your request.
               </p>
               <PrimeButton
                   data-test="withdraw-request-button"
@@ -157,25 +154,24 @@ import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
-import { useRoute } from 'vue-router';
 import {type NavigationFailure} from 'vue-router';
 import {ApiClientProvider} from '@/services/ApiClients';
 import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
 import {KEYCLOAK_ROLE_ADMIN} from '@/utils/KeycloakRoles';
 import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
+import {assertDefined} from "@/utils/TypeScriptUtils.ts";
 import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
 import {RequestState, type SingleRequest, type StoredRequest} from '@clients/datasourcingservice';
+import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import {assertDefined} from "@/utils/TypeScriptUtils.ts";
-import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider'
 import Message from "primevue/message";
 
 const props = defineProps<{ requestId: string }>();
-const route = useRoute();
+const requestId = ref<string>(props.requestId);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -235,7 +231,7 @@ async function getAndStoreCompanyName(): Promise<void> {
  */
 async function getAndStoreRequestHistory(): Promise<void> {
   try {
-    requestHistory.value = (await requestControllerApi.getRequestHistoryById(props.requestId)).data;
+    requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
   } catch (error) {
     console.error(error);
   }
@@ -303,9 +299,7 @@ async function getParentCompanyId(): Promise<string | undefined> {
 async function getRequest(): Promise<void> {
   try {
     if (getKeycloakPromise) {
-      const result = await requestControllerApi.getRequest(
-          props.requestId
-      );
+      const result = await requestControllerApi.getRequest(requestId.value);
       Object.assign(storedRequest, result.data);
     }
   } catch (error) {
@@ -351,7 +345,7 @@ async function resubmitRequest(): Promise<void> {
  */
 async function withdrawRequest(): Promise<void> {
   try {
-    await requestControllerApi.patchRequestState(props.requestId, RequestState.Withdrawn);
+    await requestControllerApi.patchRequestState(requestId.value, RequestState.Withdrawn);
   } catch (error) {
     console.error(error);
     return;
@@ -395,6 +389,17 @@ function isRequestWithdrawable(): boolean {
  */
 function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefined> | void {
   if (answeringDataSetUrl.value) return router.push(answeringDataSetUrl.value);
+}
+
+/**
+ * Navigates to the new request page after resubmission
+ */
+function goToNewRequestPage(): void {
+  resubmitSuccessModalIsVisible.value = false;
+  router.push(`/requests/${newRequestId.value}`);
+  requestId.value = newRequestId.value;
+  newRequestId.value = '';
+  void initializeComponent();
 }
 
 onMounted(() => {
