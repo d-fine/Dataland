@@ -2,17 +2,17 @@ package org.dataland.datalandbackendutils.services.utils
 
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
 
 object TestPostgresContainer {
-    @Container
     @JvmStatic
-    val postgres: PostgreSQLContainer<*> =
+    val postgres: PostgreSQLContainer<*> by lazy {
         PostgreSQLContainer("postgres:15-alpine")
             .withDatabaseName("dataland_test")
             .withUsername("test")
             .withPassword("test")
-            .withReuse(true)
+            .withCommand("postgres -c max_connections=200")
+            .also { it.start() }
+    }
 
     @JvmStatic
     fun configureProperties(registry: DynamicPropertyRegistry) {

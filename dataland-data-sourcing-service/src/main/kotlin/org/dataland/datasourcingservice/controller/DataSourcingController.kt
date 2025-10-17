@@ -28,7 +28,7 @@ class DataSourcingController
                 .ok(
                     dataSourcingManager
                         .getStoredDataSourcing(
-                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            ValidationUtils.convertToUUID(
                                 dataSourcingId,
                             ),
                         ),
@@ -38,7 +38,7 @@ class DataSourcingController
             ResponseEntity.ok(
                 dataSourcingManager
                     .getStoredDataSourcingForCompanyId(
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        ValidationUtils.convertToUUID(
                             providerCompanyId,
                         ),
                     ),
@@ -49,7 +49,7 @@ class DataSourcingController
                 .ok(
                     dataSourcingManager
                         .retrieveDataSourcingHistory(
-                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            ValidationUtils.convertToUUID(
                                 dataSourcingId,
                             ),
                         ),
@@ -63,7 +63,7 @@ class DataSourcingController
                 .ok(
                     dataSourcingManager
                         .patchDataSourcingState(
-                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                            ValidationUtils.convertToUUID(
                                 dataSourcingId,
                             ),
                             state,
@@ -78,9 +78,9 @@ class DataSourcingController
         ): ResponseEntity<StoredDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchProviderAndAdminComment(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
-                    documentCollector?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
-                    dataExtractor?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
+                    ValidationUtils.convertToUUID(dataSourcingId),
+                    documentCollector?.let { ValidationUtils.convertToUUID(it) },
+                    dataExtractor?.let { ValidationUtils.convertToUUID(it) },
                     adminComment,
                 ),
             )
@@ -92,7 +92,7 @@ class DataSourcingController
         ): ResponseEntity<ReducedDataSourcing> =
             ResponseEntity.ok(
                 dataSourcingManager.patchDataSourcingDocument(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
+                    ValidationUtils.convertToUUID(dataSourcingId),
                     documentIds,
                     appendDocuments,
                 ),
@@ -106,7 +106,7 @@ class DataSourcingController
                 .ok(
                     dataSourcingManager
                         .patchDateOfNextDocumentSourcingAttempt(
-                            ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataSourcingId),
+                            ValidationUtils.convertToUUID(dataSourcingId),
                             dateOfNextDocumentSourcingAttempt,
                         ),
                 )
@@ -122,7 +122,7 @@ class DataSourcingController
             ResponseEntity.ok(
                 dataSourcingQueryManager.searchDataSourcings(
                     companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                        ValidationUtils.convertToUUID(it)
                     },
                     dataType, reportingPeriod, state, chunkSize, chunkIndex,
                 ),

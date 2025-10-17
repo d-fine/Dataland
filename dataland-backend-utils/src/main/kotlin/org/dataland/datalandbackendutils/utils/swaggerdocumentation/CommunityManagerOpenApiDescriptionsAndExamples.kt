@@ -25,10 +25,7 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
         "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
             "the posted requests. If set to false, these updates are listed in the weekly summary email."
 
-    const val GENERAL_USER_ID_DESCRIPTION = "The Dataland user ID of the user in question."
-    const val DATA_REQUEST_USER_ID_DESCRIPTION = "The ID of the user who created the data request."
     const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user in the company role assignment."
-    const val USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val CONTACTS_MESSAGE_DESCRIPTION = "A message to be sent to the specified company contacts."
     const val CONTACTS_MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."

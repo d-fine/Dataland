@@ -10,9 +10,7 @@ import org.dataland.datalanddocumentmanager.openApiClient.infrastructure.ClientE
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.junit.jupiter.api.Assertions.assertDoesNotThrow
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
@@ -44,7 +42,7 @@ class DataSourcingValidatorTest {
 
         doNothing().whenever(mockDocumentControllerApi).checkDocument(documentId)
 
-        assertDoesNotThrow { dataSourcingValidator.validateDocumentId(documentId) }
+        Assertions.assertDoesNotThrow { dataSourcingValidator.validateDocumentId(documentId) }
 
         verify(mockDocumentControllerApi, times(1)).checkDocument(documentId)
     }
@@ -63,7 +61,7 @@ class DataSourcingValidatorTest {
                 dataSourcingValidator.validateDocumentId(documentId)
             }
 
-        assertEquals("Document with id $documentId not found.", exception.summary)
+        Assertions.assertEquals("Document with id $documentId not found.", exception.summary)
         verify(mockDocumentControllerApi, times(1)).checkDocument(documentId)
     }
 
@@ -88,7 +86,7 @@ class DataSourcingValidatorTest {
         val request = SingleRequest(identifier, dataType, reportingPeriod, null)
         val uuid = dataSourcingValidator.validateSingleDataRequest(request)
 
-        assertEquals(UUID.fromString(companyId), uuid)
+        Assertions.assertEquals(UUID.fromString(companyId), uuid)
     }
 
     @Test
@@ -112,7 +110,7 @@ class DataSourcingValidatorTest {
             assertThrows<ResourceNotFoundApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message == "The company identifier $identifier does not exist on Dataland.")
+        Assertions.assertTrue(ex.message == "The company identifier $identifier does not exist on Dataland.")
     }
 
     @Test
@@ -139,7 +137,7 @@ class DataSourcingValidatorTest {
             assertThrows<InvalidInputApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message == "The data type $dataType is invalid.")
+        Assertions.assertTrue(ex.message == "The data type $dataType is invalid.")
     }
 
     @Test
@@ -166,7 +164,7 @@ class DataSourcingValidatorTest {
             assertThrows<InvalidInputApiException> {
                 dataSourcingValidator.validateSingleDataRequest(request)
             }
-        assertTrue(ex.message == "The reporting period $reportingPeriod is invalid.")
+        Assertions.assertTrue(ex.message == "The reporting period $reportingPeriod is invalid.")
     }
 
     @Test
@@ -202,15 +200,15 @@ class DataSourcingValidatorTest {
         val result = dataSourcingValidator.validateBulkDataRequest(req)
 
         val companyValidation = result.companyIdValidation
-        assertEquals(UUID.fromString(validCompanyId), companyValidation[validCompanyId])
+        Assertions.assertEquals(UUID.fromString(validCompanyId), companyValidation[validCompanyId])
         assertNull(companyValidation[invalidCompanyId])
 
         val dataTypeValidation = result.dataTypeValidation
-        assertTrue(dataTypeValidation[validType] == true)
-        assertTrue(dataTypeValidation[invalidType] == false)
+        Assertions.assertTrue(dataTypeValidation[validType] == true)
+        Assertions.assertTrue(dataTypeValidation[invalidType] == false)
 
         val reportingPeriodValidation = result.reportingPeriodValidation
-        assertTrue(reportingPeriodValidation[validPeriod] == true)
-        assertTrue(reportingPeriodValidation[invalidPeriod] == false)
+        Assertions.assertTrue(reportingPeriodValidation[validPeriod] == true)
+        Assertions.assertTrue(reportingPeriodValidation[invalidPeriod] == false)
     }
 }

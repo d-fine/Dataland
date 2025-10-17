@@ -11,7 +11,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -26,7 +26,10 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 class RequestCreationServiceTest
     @Autowired
     constructor(
@@ -87,11 +90,11 @@ class RequestCreationServiceTest
             val requestId = requestCreationService.storeRequest(userId, basicDataDimensions, memberComment)
             val entity = requestRepository.findByIdAndFetchDataSourcingEntity(requestId)
             assertNotNull(entity)
-            assertEquals(userId, entity.userId)
-            assertEquals(companyId, entity.companyId)
-            assertEquals("sfdr", entity.dataType)
-            assertEquals("2023", entity.reportingPeriod)
-            assertEquals(memberComment, entity.memberComment)
+            Assertions.assertEquals(userId, entity.userId)
+            Assertions.assertEquals(companyId, entity.companyId)
+            Assertions.assertEquals("sfdr", entity.dataType)
+            Assertions.assertEquals("2023", entity.reportingPeriod)
+            Assertions.assertEquals(memberComment, entity.memberComment)
         }
 
         @Test

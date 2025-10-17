@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
  * Sub-set of the properties that are returned when you request user info from keycloak via user endpoint.
@@ -18,8 +19,8 @@ data class KeycloakUserInfo(
     val email: String?,
     @JsonProperty("id", required = true)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.GENERAL_USER_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.GENERAL_USER_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
     @JsonProperty("firstName")

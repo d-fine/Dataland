@@ -20,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 @DefaultMocks
-@SpringBootTest(classes = [DatalandBackend::class])
 class CompanyAlterationManagerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var companyAlterationManager: CompanyAlterationManager
@@ -191,7 +194,8 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Isin to originalIsin)))
         }
-        val newCompany = companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
+        val newCompany =
+            companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }

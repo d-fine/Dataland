@@ -74,6 +74,8 @@ openApi {
 }
 
 tasks.test {
+    maxParallelForks = 1
+
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {

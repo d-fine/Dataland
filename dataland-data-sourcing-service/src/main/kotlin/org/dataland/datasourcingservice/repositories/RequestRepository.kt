@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -45,25 +45,24 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
 
     /**
      * Return the list of all request ids that match the optional filters.
-     * @param companyId to filter by
-     * @param dataType to filter by
-     * @param reportingPeriod to filter by
-     * @param state to filter by
+     * @param searchFilter to filter by
      * @return list of matching request ids
      */
     @Query(
         "SELECT request.id FROM RequestEntity request " +
             "WHERE " +
-            "(:companyId IS NULL OR request.companyId = :companyId) AND " +
-            "(:dataType IS NULL OR request.dataType = :dataType) AND " +
-            "(:reportingPeriod IS NULL OR request.reportingPeriod = :reportingPeriod) AND " +
-            "(:state IS NULL OR request.state = :state)",
+            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "(" +
+            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
+            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
+            ") AND " +
+            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
     )
     fun searchRequests(
-        companyId: UUID?,
-        dataType: String?,
-        reportingPeriod: String?,
-        state: RequestState?,
+        searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
     ): Page<UUID>
 
@@ -77,4 +76,27 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "(request.id IN :requestIds)",
     )
     fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
+
+    /**
+     * Return the number of requests that match the optional filters.
+     * @param companyId to filter by
+     * @param dataType to filter by
+     * @param reportingPeriod to filter by
+     * @param state to filter by
+     * @return number of matching requests
+     */
+    @Query(
+        "SELECT COUNT(request) FROM RequestEntity request " +
+            "WHERE " +
+            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "(" +
+            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
+            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
+            ") AND " +
+            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
+    )
+    fun getNumberOfRequests(searchFilter: RequestSearchFilter<UUID>): Int
 }

@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.Parameter
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    description = GeneralOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
+    example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     required = false,
 )
 annotation class UserIdParameterNonRequired
@@ -83,7 +83,7 @@ annotation class CompanyRoleParameterRequired
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     required = true,
 )
 annotation class CompanyRoleUserIdParameterRequired

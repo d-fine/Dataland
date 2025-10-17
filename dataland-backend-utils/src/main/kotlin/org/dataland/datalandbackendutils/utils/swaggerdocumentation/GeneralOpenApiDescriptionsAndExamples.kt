@@ -49,6 +49,13 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val DATA_TYPE_FRAMEWORK_EXAMPLE = "sfdr"
     const val DATA_TYPE_DATA_POINT_TYPE_EXAMPLE = "extendedDateFiscalYearEnd"
 
+    const val GENERAL_DATA_TYPES_DESCRIPTION = "A list of associated reporting frameworks or data point types (as applicable)."
+    const val DATA_TYPES_FRAMEWORK_EXAMPLE = "[\"sfdr\",\"eutaxonomy-financials\"]"
+
+    const val GENERAL_USER_ID_DESCRIPTION = "The Dataland user ID of the user in question."
+    const val DATA_REQUEST_USER_ID_DESCRIPTION = "The ID of the user who created the data request."
+    const val USER_ID_EXAMPLE = GENERAL_UUID_EXAMPLE
+
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE
 
