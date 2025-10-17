@@ -139,19 +139,18 @@ import { defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
-import { patchRequestState } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import {assertDefined} from "@/utils/TypeScriptUtils.ts";
 import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
 
@@ -300,11 +299,7 @@ function isRequestResubmittable(): boolean {
 async function resubmitRequest(): Promise<void> {
   if (resubmitMessage.value.length > 10) {
     try {
-      await patchRequestState(
-        storedRequest.id,
-        RequestState.Open,
-        getKeycloakPromise
-      );
+      await requestControllerApi.patchRequestState(props.requestId, RequestState.Open);
       resubmitModalIsVisible.value = false;
       resubmitSuccessModalIsVisible.value = true;
       storedRequest.state = RequestState.Open;
@@ -322,11 +317,7 @@ async function resubmitRequest(): Promise<void> {
  */
 async function withdrawRequest(): Promise<void> {
   try {
-    await patchRequestState(
-      props.requestId,
-      RequestState.Withdrawn,
-      getKeycloakPromise
-    );
+    await requestControllerApi.patchRequestState(props.requestId, RequestState.Withdrawn);
   } catch (error) {
     console.error(error);
     return;
