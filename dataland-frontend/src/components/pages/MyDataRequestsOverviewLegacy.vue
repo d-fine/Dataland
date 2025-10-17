@@ -144,7 +144,7 @@ import {
   customCompareForRequestStatus,
   retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
-} from '@/utils/RequestsOverviewPageUtils';
+} from '@/utils/RequestsOverviewPageUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';

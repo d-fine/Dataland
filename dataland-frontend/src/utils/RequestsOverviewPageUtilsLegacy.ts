@@ -60,9 +60,9 @@ export function retrieveAvailableAccessStatuses(): Array<SelectableItem> {
  * @returns array of SelectableItem
  */
 export function retrieveAvailableRequestStatuses(): Array<SelectableItem> {
-  return Object.values(RequestState).map((RequestState) => {
+  return Object.values(RequestStatus).map((requestStatus) => {
     return {
-      displayName: RequestState,
+      displayName: requestStatus,
       disabled: false,
     };
   });
