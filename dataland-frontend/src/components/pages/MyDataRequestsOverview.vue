@@ -2,7 +2,7 @@
   <TheContent class="min-h-screen relative">
     <div v-if="waitingForData || storedDataRequests.length > 0">
       <div class="container">
-        <IconField id="company-search-bar" class="company-search">
+        <IconField class="company-search" >
           <InputIcon class="pi pi-search"/>
           <InputText
               data-test="requested-datasets-searchbar"
@@ -19,11 +19,10 @@
             :available-items="availableFrameworks"
             filter-name="Framework"
             data-test="requested-datasets-frameworks"
-            id="framework-filter"
-            filter-placeholder="Search frameworks"
+            filter-placeholder="Search Frameworks"
             class="search-filter"
             :max-selected-labels="1"
-            selected-items-label="{0} frameworks selected"
+            selected-items-label="{0} Frameworks selected"
         />
 
         <FrameworkDataSearchDropdownFilter
@@ -32,17 +31,15 @@
             :available-items="availableState"
             filter-name="Request State"
             data-test="requested-datasets-access-status"
-            id="access-status-filter"
-            filter-placeholder="access status"
+            filter-placeholder="Search State"
             class="search-filter"
             :max-selected-labels="1"
-            selected-items-label="{0} status selected"
+            selected-items-label="{0} States selected"
         />
-        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter"/>
+        <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter"/>
       </div>
 
-      <div class="col-12 text-left p-3">
-        <div class="card">
+      <div class="p-3">
           <DataTable
               :value="displayedData"
               style="cursor: pointer"
@@ -57,7 +54,6 @@
               @page="onPage"
               @sort="onSort"
               @row-click="onRowClick"
-              id="my-data-requests-overview-table"
           >
             <Column header="COMPANY" field="companyName" :sortable="true">
               <template #body="{ data }">{{ data.companyName }}</template>
@@ -105,7 +101,6 @@
               </template>
             </Column>
           </DataTable>
-        </div>
       </div>
     </div>
 
@@ -359,12 +354,9 @@ function onPage(event: DataTablePageEvent): void {
 
 <style scoped>
 .container {
-  margin: 0;
-  width: 100%;
   padding: var(--spacing-lg);
   display: flex;
   gap: var(--spacing-lg);
-  align-items: start;
 
   .company-search {
     width: 30%;
@@ -374,21 +366,5 @@ function onPage(event: DataTablePageEvent): void {
     width: 13%;
     text-align: left;
   }
-}
-
-#my-data-requests-overview-table tr:hover {
-  cursor: pointer;
-}
-
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 </style>
