@@ -74,9 +74,11 @@
             <div class="card__subtitle">Reporting year</div>
             <div class="card__data">{{ storedRequest.reportingPeriod }}</div>
             <PrimeButton
+                v-if="answeringDataSetUrl"
                 data-test="viewDatasetButton"
                 label="VIEW DATASET"
                 @click="goToAnsweringDataSetPage()"
+                style="width: auto"
             />
           </div>
         </div>
@@ -321,7 +323,7 @@ function isRequestWithdrawable(): boolean {
     storedRequest.state == RequestState.Open ||
     storedRequest.state == RequestState.Processing ||
     storedRequest.state == RequestState.Processed
-  );
+  ) && isUserKeycloakAdmin.value;
 }
 
 /**
