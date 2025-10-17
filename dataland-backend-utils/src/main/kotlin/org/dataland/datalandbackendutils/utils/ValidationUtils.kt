@@ -36,8 +36,9 @@ object ValidationUtils {
      * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
      * @param testString the string to convert
      * @return the UUID corresponding to the string
+     * @throws ResourceNotFoundApiException if the string is not a valid UUID (so there is no resource with such an ID)
      */
-    fun convertToUUIDOrThrowResourceNotFoundApiException(testString: String): UUID =
+    fun convertToUUID(testString: String): UUID =
         try {
             UUID.fromString(testString)
         } catch (_: IllegalArgumentException) {

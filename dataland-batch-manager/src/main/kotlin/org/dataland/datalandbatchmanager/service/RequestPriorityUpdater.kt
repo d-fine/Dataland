@@ -63,7 +63,7 @@ class RequestPriorityUpdater
          * @param currentPriority the current priority of requests to filter.
          * @param newPriority the new priority to assign to the filtered requests.
          * @param filterCondition a lambda function that determines whether a request's priority should be updated.
-         *                        It takes an [ExtendedStoredDataRequest] as input and returns a boolean.
+         *                        It takes a StoredRequest as input and returns a boolean.
          */
         private fun updateRequestPriorities(
             currentPriority: RequestPriority,

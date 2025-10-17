@@ -39,7 +39,7 @@ class RequestController
                 bulkDataRequestManager.processBulkDataRequest(
                     bulkDataRequest,
                     userId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                        ValidationUtils.convertToUUID(it)
                     },
                 ),
             )
@@ -51,14 +51,14 @@ class RequestController
             ResponseEntity.ok(
                 requestCreationService.createRequest(
                     singleRequest,
-                    userId?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
+                    userId?.let { ValidationUtils.convertToUUID(it) },
                 ),
             )
 
         override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.getRequest(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                    ValidationUtils.convertToUUID(
                         dataRequestId,
                     ),
                 ),
@@ -71,7 +71,7 @@ class RequestController
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.patchRequestState(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                    ValidationUtils.convertToUUID(
                         dataRequestId,
                     ),
                     requestState, adminComment,
@@ -85,7 +85,7 @@ class RequestController
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.patchRequestPriority(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataRequestId),
+                    ValidationUtils.convertToUUID(dataRequestId),
                     requestPriority,
                     adminComment,
                 ),
@@ -95,7 +95,7 @@ class RequestController
             ResponseEntity
                 .ok(
                     existingRequestsManager.retrieveRequestHistory(
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),
                     ),
@@ -105,13 +105,13 @@ class RequestController
             RequestSearchFilter<UUID>(
                 companyId =
                     requestSearchFilterWithStrings.companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                        ValidationUtils.convertToUUID(it)
                     },
                 dataTypes = requestSearchFilterWithStrings.dataTypes,
                 reportingPeriods = requestSearchFilterWithStrings.reportingPeriods,
                 userId =
                     requestSearchFilterWithStrings.userId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        ValidationUtils.convertToUUID(
                             it,
                         )
                     },

@@ -171,7 +171,7 @@ class ProcessDataUpdates
                     break
                 } catch (exception: ConnectException) {
                     logger.info(
-                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s " +
+                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for " +
                             "backend to be available. Exception was: ${exception.message}.",
                     )
                     Thread.sleep(WAIT_TIME_IN_MS)
@@ -180,7 +180,7 @@ class ProcessDataUpdates
         }
 
         /**
-         * This method waits for the community manager to be ready
+         * This method waits for the data sourcing service to be ready
          */
         fun waitForDataSourcingService() {
             val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
@@ -190,7 +190,7 @@ class ProcessDataUpdates
                     break
                 } catch (exception: ConnectException) {
                     logger.info(
-                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for" +
+                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for " +
                             "data sourcing service to be available. Exception was: ${exception.message}.",
                     )
                     Thread.sleep(WAIT_TIME_IN_MS)

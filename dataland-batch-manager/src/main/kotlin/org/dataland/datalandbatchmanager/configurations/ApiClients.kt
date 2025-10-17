@@ -42,7 +42,7 @@ class ApiClients(
     ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an ActuatorApi of the community manager
+     * Creates an ActuatorApi of the data sourcing service
      */
     @Bean
     fun getDataSourcingServiceActuatorApi(): DataSourcingActuatorApi = DataSourcingActuatorApi(dataSourcingServiceBaseUrl)
