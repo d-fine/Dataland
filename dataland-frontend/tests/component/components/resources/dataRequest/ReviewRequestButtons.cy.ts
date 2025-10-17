@@ -1,4 +1,4 @@
-import ReviewRequestButtonsComponent from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import ReviewRequestButtonsLegacyComponent from '@/components/resources/dataRequest/ReviewRequestButtonsLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
@@ -94,7 +94,7 @@ describe('Component tests for the data request review buttons', function (): voi
    */
   function mountReviewRequestButtons(): void {
     //@ts-ignore
-    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
+    cy.mountWithPlugins(ReviewRequestButtonsLegacyComponent, {
       keycloak: minimalKeycloakMock({}),
 
       // @ts-ignore

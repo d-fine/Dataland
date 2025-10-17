@@ -239,8 +239,8 @@
 <script lang="ts">
 import DatalandTag from '@/components/general/DatalandTagLegacy.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import EmailDetailsLegacy from '@/components/resources/dataRequest/EmailDetailsLegacy.vue';
+import ReviewRequestButtonsLegacy from '@/components/resources/dataRequest/ReviewRequestButtonsLegacy.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistoryLegacy.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -264,9 +264,9 @@ export default defineComponent({
   components: {
     SuccessDialog,
     DatalandTag,
-    ReviewRequestButtons,
+    ReviewRequestButtons: ReviewRequestButtonsLegacy,
     TheContent,
-    EmailDetails,
+    EmailDetails: EmailDetailsLegacy,
     PrimeDialog,
     PrimeButton,
     ToggleSwitch,
