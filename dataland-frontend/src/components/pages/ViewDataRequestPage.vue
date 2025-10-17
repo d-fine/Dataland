@@ -12,7 +12,10 @@
     <SuccessDialog
         :visible="resubmitSuccessModalIsVisible"
         message="Your request has been successfully resubmitted."
-        @close="resubmitSuccessModalIsVisible = false"
+        @close="() => {
+          resubmitSuccessModalIsVisible = false;
+          void router.push(`/requests/${newRequestId}`);
+        }"
     />
 
     <PrimeDialog
@@ -147,7 +150,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
+import { RequestState, type SingleRequest, type StoredRequest } from '@clients/datasourcingservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -165,6 +168,7 @@ const withdrawSuccessModalIsVisible = ref(false);
 const resubmitModalIsVisible = ref(false);
 const resubmitMessage = ref('');
 const resubmitSuccessModalIsVisible = ref(false);
+const newRequestId = ref<string>('');
 const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
@@ -299,10 +303,16 @@ function isRequestResubmittable(): boolean {
 async function resubmitRequest(): Promise<void> {
   if (resubmitMessage.value.length > 10) {
     try {
-      await requestControllerApi.patchRequestState(props.requestId, RequestState.Open);
+      const request: SingleRequest = {
+        companyIdentifier: storedRequest.companyId,
+        dataType: storedRequest.dataType,
+        reportingPeriod: storedRequest.reportingPeriod,
+        memberComment: resubmitMessage.value,
+      };
+      const response = await requestControllerApi.createRequest(request, storedRequest.userId);
+      newRequestId.value = response.data.requestId;
       resubmitModalIsVisible.value = false;
       resubmitSuccessModalIsVisible.value = true;
-      storedRequest.state = RequestState.Open;
       resubmitMessage.value = '';
     } catch (error) {
       console.log(error);
@@ -324,6 +334,7 @@ async function withdrawRequest(): Promise<void> {
   }
   withdrawSuccessModalIsVisible.value = true;
   storedRequest.state = RequestState.Withdrawn;
+  void initializeComponent();
 }
 
 /**
