@@ -176,6 +176,7 @@ const sortField = ref<keyof ExtendedStoredRequest>('state');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
+const userEmailAddress = ref('');
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -184,7 +185,12 @@ const vueRouter = useRouter();
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableState.value = retrieveAvailableRequestStatuses();
+  if (getKeycloakPromise) {
+    const keycloak = await getKeycloakPromise();
+    userEmailAddress.value = keycloak.tokenParsed?.email || '';
+  }
   await getStoredRequestDataList();
+
 });
 
 watch([selectedFrameworks, selectedState, waitingForData], () => updateCurrentDisplayedData(), {deep: true});
@@ -230,7 +236,10 @@ async function getStoredRequestDataList(): Promise<void> {
  */
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
-  void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
+  void vueRouter.push({
+    path: `/requests/${requestIdOfClickedRow}`,
+    query: { userEmailAddress: userEmailAddress.value }
+  });
 }
 
 /**

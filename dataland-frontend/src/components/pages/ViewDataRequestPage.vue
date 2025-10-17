@@ -56,7 +56,7 @@
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
             <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
-            <div class="card__data" v-if="isUserKeycloakAdmin">{{ props.userEmailAddress }}</div>
+            <div class="card__data" v-if="isUserKeycloakAdmin">{{ userEmail }}</div>
             <div class="card__subtitle">Company</div>
             <div class="card__data">{{ companyName }}</div>
             <div class="card__subtitle">Framework</div>
@@ -134,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted } from 'vue';
+import { ref, reactive, inject, onMounted, computed } from 'vue';
 import { defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -153,8 +153,13 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import {assertDefined} from "@/utils/TypeScriptUtils.ts";
 import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
+import { useRoute } from 'vue-router';
 
-const props = defineProps<{ requestId: string, userEmailAddress: string }>();
+const route = useRoute();
+const props = defineProps<{ requestId: string, userEmailAddress?: string }>();
+
+const userEmail = computed(() => props.userEmailAddress || (route.query.userEmailAddress as string) || '');
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const requestControllerApi = apiClientProvider.apiClients.requestController;
