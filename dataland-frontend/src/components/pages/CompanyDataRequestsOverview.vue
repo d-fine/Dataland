@@ -130,6 +130,7 @@ const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const companyRoleAssignments = inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments');
 
+
 const waitingForData = ref(true);
 const currentPage = ref(0);
 const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
@@ -148,7 +149,8 @@ const sortOrder = ref(1);
 async function getStoredCompanyRequestDataList() {
   waitingForData.value = true;
   storedDataRequests.value = [];
-  if (!companyRoleAssignments) {
+  if (!companyRoleAssignments || !Array.isArray(companyRoleAssignments)) {
+    waitingForData.value = false;
     return;
   }
   const companyIDs = Array.from(new Set(companyRoleAssignments.map((assignment) => assignment.companyId)));
@@ -156,19 +158,7 @@ async function getStoredCompanyRequestDataList() {
     const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
     const dataRequestsPromises = companyIDs.map(async (companyId) => {
       try {
-        const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            companyId,
-            undefined,
-            undefined
-        );
+        const response = await apiClientProvider.apiClients.requestController.searchRequests(companyId);
         return response.data;
       } catch (error) {
         console.error(`Error fetching data for companyId ${companyId}:`, error);
@@ -279,7 +269,7 @@ watch(searchBarInput, (newSearch: string) => {
 
 watch(() => companyRoleAssignments, () => {
   void getStoredCompanyRequestDataList();
-});
+}, { deep: true });
 </script>
 
 <style scoped>
