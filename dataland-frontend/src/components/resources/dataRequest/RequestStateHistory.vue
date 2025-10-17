@@ -1,6 +1,5 @@
 <template>
-  <div class="card__data" data-test="stateHistoryContainer">
-    <h3 style="margin-bottom: 1rem">Request State History</h3>
+  <div data-test="stateHistoryContainer">
     <DataTable
         :value="props.stateHistory"
         data-test="stateHistoryTable"

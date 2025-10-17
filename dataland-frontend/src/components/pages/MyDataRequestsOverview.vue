@@ -185,10 +185,6 @@ const vueRouter = useRouter();
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableState.value = retrieveAvailableRequestStatuses();
-  if (getKeycloakPromise) {
-    const keycloak = await getKeycloakPromise();
-    userEmailAddress.value = keycloak.tokenParsed?.email || '';
-  }
   await getStoredRequestDataList();
 
 });
@@ -238,7 +234,6 @@ function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
   void vueRouter.push({
     path: `/requests/${requestIdOfClickedRow}`,
-    query: { userEmailAddress: userEmailAddress.value }
   });
 }
 
