@@ -1,5 +1,6 @@
 <template>
   <TheContent class="min-h-screen flex sheet">
+    <router-view :key="route.fullPath" />
     <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
       <h1 class="text-left">Data Request</h1>
     </div>
@@ -18,7 +19,6 @@
         @close="() => {
           resubmitSuccessModalIsVisible = false;
           router.push(`/requests/${newRequestId}`);
-          initializeComponent();
         }"
     />
 
@@ -88,7 +88,7 @@
                 data-test="viewDatasetButton"
                 label="VIEW DATASET"
                 @click="goToAnsweringDataSetPage()"
-                style="width: auto"
+                style="width:fit-content"
             />
           </div>
         </div>
@@ -157,6 +157,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
+import { useRoute } from 'vue-router';
 import {type NavigationFailure} from 'vue-router';
 import {ApiClientProvider} from '@/services/ApiClients';
 import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
@@ -174,6 +175,7 @@ import Divider from 'primevue/divider'
 import Message from "primevue/message";
 
 const props = defineProps<{ requestId: string }>();
+const route = useRoute();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
