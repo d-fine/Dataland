@@ -5,26 +5,19 @@
         <IconField class="request-company-search-bar-container">
           <InputIcon class="pi pi-search" />
           <InputText
-            data-test="requested-datasets-searchbar"
-            v-model="searchBarInput"
-            placeholder="Search by requester"
-            variant="filled"
-            fluid
+              data-test="requested-datasets-searchbar"
+              v-model="searchBarInput"
+              placeholder="Search by requester"
+              variant="filled"
+              fluid
           />
         </IconField>
         <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworks"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          data-test="requested-datasets-frameworks"
-          filter-placeholder="Search frameworks"
-        />
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedAccessStatus"
-          :available-items="availableAccessStatus"
-          filter-name="Access Status"
-          data-test="requested-datasets-frameworks"
-          filter-placeholder="access status"
+            v-model="selectedFrameworks"
+            :available-items="availableFrameworks"
+            filter-name="Framework"
+            data-test="requested-datasets-frameworks"
+            filter-placeholder="Search frameworks"
         />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
@@ -32,16 +25,16 @@
       <div class="col-12 text-left p-3">
         <div class="card">
           <DataTable
-            :value="displayedData"
-            style="cursor: pointer"
-            :rowHover="true"
-            :loading="waitingForData"
-            data-test="requested-datasets-table"
-            paginator
-            paginator-position="bottom"
-            :rows="datasetsPerPage"
-            :total-records="numberOfFilteredRequests"
-            id="my-company-requests-overview-table"
+              :value="displayedData"
+              style="cursor: pointer"
+              :rowHover="true"
+              :loading="waitingForData"
+              data-test="requested-datasets-table"
+              paginator
+              paginator-position="bottom"
+              :rows="datasetsPerPage"
+              :total-records="numberOfFilteredRequests"
+              id="my-company-requests-overview-table"
           >
             <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
               <template #body="slotProps">
@@ -54,9 +47,9 @@
                   {{ getFrameworkTitle(slotProps.data.dataType) }}
                 </div>
                 <div
-                  data-test="framework-subtitle"
-                  v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                    data-test="framework-subtitle"
+                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
                   <br />
                   {{ getFrameworkSubtitle(slotProps.data.dataType) }}
@@ -96,40 +89,6 @@
                 </div>
               </template>
             </Column>
-            <Column field="resolve" header="">
-              <template #body="slotProps">
-                <div
-                  v-if="slotProps.data.accessStatus == AccessStatus.Pending"
-                  class="text-right text-primary no-underline font-bold"
-                >
-                  <div class="button-container">
-                    <PrimeButton
-                      icon="pi pi-check"
-                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                      label="Grant"
-                    />
-                    <PrimeButton
-                      icon="pi pi-times"
-                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                      label="Decline"
-                    />
-                  </div>
-                </div>
-                <div
-                  v-if="slotProps.data.accessStatus == AccessStatus.Granted"
-                  class="text-right text-primary no-underline font-bold"
-                >
-                  <div>
-                    <PrimeButton
-                      class="button-container"
-                      icon="pi pi-ban"
-                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                      label="Revoke"
-                    />
-                  </div>
-                </div>
-              </template>
-            </Column>
           </DataTable>
         </div>
       </div>
@@ -142,23 +101,20 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
-  customCompareForRequestStatus,
-  retrieveAvailableAccessStatuses,
+  customCompareForRequestState,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import {
-  AccessStatus,
   type CompanyRoleAssignmentExtended,
-  type ExtendedStoredDataRequest,
 } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -167,233 +123,165 @@ import DataTable from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import { defineComponent, inject } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
+import {ExtendedStoredRequest} from "@clients/datasourcingservice";
 
-export default defineComponent({
-  name: 'MyDataRequestsOverview',
-  computed: {
-    AccessStatus() {
-      return AccessStatus;
-    },
-  },
-  components: {
-    PrimeButton,
-    FrameworkDataSearchDropdownFilter,
-    TheContent,
-    DataTable,
-    Column,
-    InputText,
-    InputIcon,
-    IconField,
-  },
+const datasetsPerPage = 100;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const companyRoleAssignments = inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments');
 
-  setup() {
-    return {
-      datasetsPerPage: 100,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
-    };
-  },
+const waitingForData = ref(true);
+const currentPage = ref(0);
+const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
+const displayedData = ref<ExtendedStoredRequest[]>([]);
+const searchBarInput = ref('');
+const searchBarInputFilter = ref('');
+const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const numberOfFilteredRequests = ref(0);
+const sortField = ref<keyof ExtendedStoredRequest>('state');
+const sortOrder = ref(1);
 
-  data() {
-    return {
-      waitingForData: true,
-      currentPage: 0,
-      storedDataRequests: [] as ExtendedStoredDataRequest[],
-      displayedData: [] as ExtendedStoredDataRequest[],
-      searchBarInput: '',
-      searchBarInputFilter: '',
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableAccessStatus: [] as Array<SelectableItem>,
-      selectedAccessStatus: [] as Array<SelectableItem>,
-      numberOfFilteredRequests: 0,
-      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
-      sortOrder: 1,
-    };
-  },
-  mounted() {
-    this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableAccessStatus = retrieveAvailableAccessStatuses();
-    this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
-  },
-  watch: {
-    selectedFrameworks() {
-      this.updateCurrentDisplayedData();
-    },
-    selectedAccessStatus() {
-      this.updateCurrentDisplayedData();
-    },
-    waitingForData() {
-      this.updateCurrentDisplayedData();
-    },
-    searchBarInput(newSearch: string) {
-      this.searchBarInputFilter = newSearch;
-      this.updateCurrentDisplayedData();
-    },
-    companyRoleAssignments() {
-      void this.getStoredCompanyRequestDataList();
-    },
-  },
-  methods: {
-    getRequestStatusLabel,
-    accessStatusBadgeClass,
-    badgeClass,
-    frameworkHasSubTitle,
-    getFrameworkTitle,
-    getFrameworkSubtitle,
-    convertUnixTimeInMsToDateString,
-
-    /**
-     * Gets list of storedComapnyDataRequests
-     */
-    async getStoredCompanyRequestDataList() {
-      this.waitingForData = true;
-      this.storedDataRequests = [];
-      if (!this.companyRoleAssignments) {
-        return;
-      }
-      const companyIDs = Array.from(new Set(this.companyRoleAssignments.map((assignment) => assignment.companyId)));
-      if (this.getKeycloakPromise) {
-        const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-        const dataRequestsPromises = companyIDs.map(async (companyId) => {
-          try {
-            const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              companyId,
-              undefined,
-              undefined
-            );
-            return response.data;
-          } catch (error) {
-            console.error(`Error fetching data for companyId ${companyId}:`, error);
-            return [];
-          }
-        });
-        this.storedDataRequests = (await Promise.all(dataRequestsPromises)).flat();
-      }
-      this.waitingForData = false;
-    },
-
-    /**
-     * Filterfunction for frameworks
-     * @param framework dataland framework
-     * @returns checks if given framework is selected
-     */
-    filterFramework(framework: string) {
-      for (const selectedFramework of this.selectedFrameworks) {
-        if (framework == selectedFramework.frameworkDataType) return true;
-      }
-      return false;
-    },
-    /**
-     * Filterfunction for access status
-     * @param accessStatus dataland framework
-     * @returns checks if given accessStatus is selected
-     */
-    filterAccessStatus(accessStatus: string) {
-      for (const selectedAccessStatus of this.selectedAccessStatus) {
-        if (accessStatus == selectedAccessStatus.displayName) return true;
-      }
-      return false;
-    },
-    /**
-     * Filterfunction for searchbar
-     * @param requesterMail dataland requesterMail
-     * @returns checks if given requesterMail contains searchbar text
-     */
-    filterSearchInput(requesterMail: string | undefined) {
-      const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
-      const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
-      return lowerCaseRequesterMail.includes(lowerCaseSearchString);
-    },
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.selectedFrameworks = [];
-      this.selectedAccessStatus = [];
-      this.searchBarInput = '';
-    },
-    /**
-     * Updates the displayedData
-     */
-    updateCurrentDisplayedData() {
-      this.displayedData = this.storedDataRequests.filter((dataRequest) =>
-        this.filterSearchInput(dataRequest.companyName)
-      );
-      if (this.selectedFrameworks.length > 0) {
-        this.displayedData = this.displayedData.filter((dataRequest) => this.filterFramework(dataRequest.dataType));
-      }
-      if (this.selectedAccessStatus.length > 0) {
-        this.displayedData = this.displayedData.filter((dataRequest) =>
-          this.filterAccessStatus(dataRequest.accessStatus)
-        );
-      }
-      this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
-      this.numberOfFilteredRequests = this.displayedData.length;
-      this.displayedData = this.displayedData.slice(
-        this.datasetsPerPage * this.currentPage,
-        this.datasetsPerPage * (1 + this.currentPage)
-      );
-      globalThis.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    /**
-     * Compares two  stored data requests (sort field, request status, last modified, requester mail)
-     * @param a StoredDataRequest to sort
-     * @param b StoredDataRequest to sort
-     * @returns result of the comparison
-     */
-    customCompareForStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField] ?? '';
-      const bValue = b[this.sortField] ?? '';
-
-      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
-        if (aValue < bValue) return -1 * this.sortOrder;
-        if (aValue > bValue) return this.sortOrder;
-      }
-
-      if (a.requestStatus != b.requestStatus)
-        return customCompareForRequestStatus(a.requestStatus, b.requestStatus, this.sortOrder);
-
-      if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
-      if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
-
-      if ((a.userEmailAddress ?? '') < (b.userEmailAddress ?? '')) return -1 * this.sortOrder;
-      else return this.sortOrder;
-    },
-
-    /**
-     * Updates the access status
-     * @param requestId to update
-     * @param newAccessStatus to set
-     */
-    async updateAccessStatus(requestId: string, newAccessStatus: AccessStatus) {
+/**
+ * Gets list of storedComapnyDataRequests
+ */
+async function getStoredCompanyRequestDataList() {
+  waitingForData.value = true;
+  storedDataRequests.value = [];
+  if (!companyRoleAssignments) {
+    return;
+  }
+  const companyIDs = Array.from(new Set(companyRoleAssignments.map((assignment) => assignment.companyId)));
+  if (getKeycloakPromise) {
+    const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
+    const dataRequestsPromises = companyIDs.map(async (companyId) => {
       try {
-        if (this.getKeycloakPromise) {
-          await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).apiClients.communityManagerRequestController.patchDataRequest(requestId, { accessStatus: newAccessStatus });
-          await this.getStoredCompanyRequestDataList();
-          this.updateCurrentDisplayedData();
-        }
+        const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            companyId,
+            undefined,
+            undefined
+        );
+        return response.data;
       } catch (error) {
-        console.error(error);
+        console.error(`Error fetching data for companyId ${companyId}:`, error);
+        return [];
       }
-    },
-  },
+    });
+    storedDataRequests.value = (await Promise.all(dataRequestsPromises)).flat();
+  }
+  waitingForData.value = false;
+}
+
+/**
+ * Filterfunction for frameworks
+ * @param framework dataland framework
+ * @returns checks if given framework is selected
+ */
+function filterFramework(framework: string) {
+  for (const selectedFramework of selectedFrameworks.value) {
+    if (framework == selectedFramework.frameworkDataType) return true;
+  }
+  return false;
+}
+
+/**
+ * Filterfunction for searchbar
+ * @param requesterMail dataland requesterMail
+ * @returns checks if given requesterMail contains searchbar text
+ */
+function filterSearchInput(requesterMail: string | undefined) {
+  const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
+  const lowerCaseSearchString = searchBarInputFilter.value.toLowerCase();
+  return lowerCaseRequesterMail.includes(lowerCaseSearchString);
+}
+
+/**
+ * Resets selected frameworks and searchBarInput
+ */
+function resetFilterAndSearchBar() {
+  selectedFrameworks.value = [];
+  searchBarInput.value = '';
+}
+
+/**
+ * Compares two  stored data requests (sort field, request status, last modified, requester mail)
+ * @param a StoredDataRequest to sort
+ * @param b StoredDataRequest to sort
+ * @returns result of the comparison
+ */
+function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest) {
+  const aValue = a[sortField.value] ?? '';
+  const bValue = b[sortField.value] ?? '';
+
+  if (sortField.value != ('status' as keyof ExtendedStoredRequest)) {
+    if (aValue < bValue) return -1 * sortOrder.value;
+    if (aValue > bValue) return sortOrder.value;
+  }
+
+  if (a.state != b.state)
+    return customCompareForRequestState(a.state, b.state, sortOrder.value);
+
+  if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
+  if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
+
+  if ((a.userEmailAddress ?? '') < (b.userEmailAddress ?? '')) return -1 * sortOrder.value;
+  else return sortOrder.value;
+}
+
+/**
+ * Updates the displayedData
+ */
+function updateCurrentDisplayedData() {
+  displayedData.value = storedDataRequests.value.filter((dataRequest) =>
+      filterSearchInput(dataRequest.companyName)
+  );
+  if (selectedFrameworks.value.length > 0) {
+    displayedData.value = displayedData.value.filter((dataRequest) => filterFramework(dataRequest.dataType));
+  }
+  displayedData.value.sort((a, b) => customCompareForStoredDataRequests(a, b));
+  numberOfFilteredRequests.value = displayedData.value.length;
+  displayedData.value = displayedData.value.slice(
+      datasetsPerPage * currentPage.value,
+      datasetsPerPage * (1 + currentPage.value)
+  );
+  globalThis.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+
+onMounted(() => {
+  availableFrameworks.value = retrieveAvailableFrameworks();
+  getStoredCompanyRequestDataList().catch((error) => console.error(error));
+});
+
+watch(selectedFrameworks, () => {
+  updateCurrentDisplayedData();
+});
+
+watch(waitingForData, () => {
+  updateCurrentDisplayedData();
+});
+
+watch(searchBarInput, (newSearch: string) => {
+  searchBarInputFilter.value = newSearch;
+  updateCurrentDisplayedData();
+});
+
+watch(() => companyRoleAssignments, () => {
+  void getStoredCompanyRequestDataList();
 });
 </script>
+
 <style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;

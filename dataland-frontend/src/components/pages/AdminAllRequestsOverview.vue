@@ -226,7 +226,7 @@ import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkD
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStatuses,
+  retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
@@ -302,7 +302,7 @@ watch(
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableRequestStatuses.value = retrieveAvailableRequestStatuses();
+  availableRequestStatuses.value = retrieveAvailableRequestStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   getAllRequestsForFilters();

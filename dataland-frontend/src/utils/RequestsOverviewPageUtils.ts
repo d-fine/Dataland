@@ -1,4 +1,4 @@
-import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
+import { RequestPriority } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -6,19 +6,19 @@ import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRe
 import {RequestState} from "@clients/datasourcingservice";
 
 /**
- * Compares two request status
- * @param a RequestStatus to compare
- * @param b RequestStatus to compare
+ * Compares two request states
+ * @param a state to compare
+ * @param b state to compare
  * @param sortOrder is a reactive variable in the vue components that use this sorting function
  * @returns result of the comparison
  */
-export function customCompareForRequestStatus(a: RequestState, b: RequestState, sortOrder: number): number {
-  const sortOrderRequestStatus: { [key: string]: number } = {};
-  sortOrderRequestStatus[RequestState.Processed] = 1;
-    sortOrderRequestStatus[RequestState.Processing] = 2;
-  sortOrderRequestStatus[RequestState.Open] = 3;
-  sortOrderRequestStatus[RequestState.Withdrawn] = 4;
-  if (sortOrderRequestStatus[a]! <= sortOrderRequestStatus[b]!) return -1 * sortOrder;
+export function customCompareForRequestState(a: RequestState, b: RequestState, sortOrder: number): number {
+  const sortOrderRequestState: { [key: string]: number } = {};
+  sortOrderRequestState[RequestState.Processed] = 1;
+    sortOrderRequestState[RequestState.Processing] = 2;
+  sortOrderRequestState[RequestState.Open] = 3;
+  sortOrderRequestState[RequestState.Withdrawn] = 4;
+  if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
 }
 
@@ -42,23 +42,10 @@ export function retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
 }
 
 /**
- * Gets list with all available access status
+ * Gets list with all available request states
  * @returns array of SelectableItem
  */
-export function retrieveAvailableAccessStatuses(): Array<SelectableItem> {
-  return Object.values(AccessStatus).map((accessStatus) => {
-    return {
-      displayName: accessStatus,
-      disabled: false,
-    };
-  });
-}
-
-/**
- * Gets list with all available request status
- * @returns array of SelectableItem
- */
-export function retrieveAvailableRequestStatuses(): Array<SelectableItem> {
+export function retrieveAvailableRequestStates(): Array<SelectableItem> {
   return Object.values(RequestState).map((RequestState) => {
     return {
       displayName: RequestState,

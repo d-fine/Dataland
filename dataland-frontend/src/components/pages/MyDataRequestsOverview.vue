@@ -132,8 +132,8 @@ import {ApiClientProvider} from '@/services/ApiClients';
 import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
 import {type FrameworkSelectableItem, type SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
-  customCompareForRequestStatus,
-  retrieveAvailableFrameworks, retrieveAvailableRequestStatuses,
+  customCompareForRequestState,
+  retrieveAvailableFrameworks, retrieveAvailableRequestStates,
 } from '@/utils/RequestsOverviewPageUtils';
 import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -178,7 +178,7 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableState.value = retrieveAvailableRequestStatuses();
+  availableState.value = retrieveAvailableRequestStates();
   await getStoredRequestDataList();
 
 });
@@ -253,10 +253,10 @@ function filterFramework(framework: string): boolean {
 }
 
 /**
- * Determines whether the specified access status matches any selected access status.
+ * Determines whether the specified state matches any selected state.
  *
  * @param {string} state - The state to check.
- * @returns {boolean} True if the specified access status matches a selected access status, false otherwise.
+ * @returns {boolean} True if the specified state matches a selected state, false otherwise.
  */
 function filterState(state: string): boolean {
   return selectedState.value.some((s) => s.displayName === state);
@@ -274,7 +274,7 @@ function filterSearchInput(companyName: string): boolean {
 
 /**
  * Resets all the filters and the search bar input to their default state.
- * This clears the selected frameworks, selected access statuses, and search input values.
+ * This clears the selected frameworks, selected states, and search input values.
  */
 function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
@@ -284,7 +284,7 @@ function resetFilterAndSearchBar(): void {
 
 /**
  * Updates the list of currently displayed data based on filters, sorting, and pagination.
- * Filters the data requests by search input, selected frameworks, and access statuses.
+ * Filters the data requests by search input, selected frameworks, and states.
  * Sorts the filtered data using a custom comparison function.
  * Updates the displayed data and scrolls to the top of the page.
  */
@@ -309,7 +309,7 @@ function updateCurrentDisplayedData(): void {
 
 /**
  * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
- * Compares based on the current sort field, request status, last modified date, and company name.
+ * Compares based on the current sort field, request state, last modified date, and company name.
  *
  * @param {ExtendedStoredRequest} a - The first data request object to compare.
  * @param {ExtendedStoredRequest} b - The second data request object to compare.
@@ -329,7 +329,7 @@ function customCompareForExtendedStoredDataRequests(
   }
 
   if (a.state !== b.state)
-    return customCompareForRequestStatus(a.state, b.state, sortOrder.value);
+    return customCompareForRequestState(a.state, b.state, sortOrder.value);
 
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;

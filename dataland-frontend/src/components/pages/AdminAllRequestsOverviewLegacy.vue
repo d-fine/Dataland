@@ -225,7 +225,7 @@ import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkD
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStatuses,
+  retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
@@ -293,7 +293,7 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableRequestStatuses = retrieveAvailableRequestStatuses();
+    this.availableRequestStatuses = retrieveAvailableRequestStates();
     this.availablePriorities = retrieveAvailablePriorities();
     this.availableReportingPeriods = retrieveAvailableReportingPeriods();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
