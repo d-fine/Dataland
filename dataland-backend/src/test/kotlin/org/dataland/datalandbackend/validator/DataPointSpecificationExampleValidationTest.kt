@@ -69,7 +69,6 @@ class DataPointSpecificationExampleValidationTest
 
         @BeforeAll
         fun seedCompanyOnce() {
-            // build the controller once (you already have the services autowired)
             companyController =
                 CompanyDataController(
                     companyAlterationManager,
@@ -79,7 +78,6 @@ class DataPointSpecificationExampleValidationTest
                     dataPointUtils,
                 )
 
-            // create the company once and keep the id
             companyIdOfPostedCompany = postCompany(companyWithTestLei)
         }
 
@@ -166,7 +164,7 @@ class DataPointSpecificationExampleValidationTest
                     schema,
                     example,
                     JsonComparator.JsonComparisonOptions(ignoreValues = true, fullyNullObjectsAreEqualToNull = false),
-                ).filter { !it.path.matches(Regex(".+\\[[0-9]+\\]$")) } // ignore differences in array lengths
+                ).filter { !it.path.matches(Regex(".+\\[[0-9][1-9]*\\]$")) }
             assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDifferences)
         }
 
