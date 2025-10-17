@@ -68,6 +68,8 @@ openApi {
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 tasks.test {
+    maxParallelForks = 1
+
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {

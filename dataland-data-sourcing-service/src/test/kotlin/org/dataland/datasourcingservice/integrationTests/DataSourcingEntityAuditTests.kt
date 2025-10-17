@@ -7,6 +7,7 @@ import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,7 +19,7 @@ import java.util.UUID
 
 @SpringBootTest(
     classes = [DatalandDataSourcingService::class],
-    properties = ["spring.profiles.active=norabbitmq"],
+    properties = ["spring.profiles.active=containerized-db"],
 )
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class DataSourcingEntityAuditTests
@@ -27,6 +28,11 @@ class DataSourcingEntityAuditTests
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataSourcingRevisionRepository: DataRevisionRepository,
     ) : BaseIntegrationTest() {
+        @AfterEach
+        fun cleanup() {
+            dataSourcingRepository.deleteAll()
+        }
+
         @Test
         fun `test audit historization of DataSourcingEntity with updated states`() {
             val dataSourcingEntityId = UUID.randomUUID()

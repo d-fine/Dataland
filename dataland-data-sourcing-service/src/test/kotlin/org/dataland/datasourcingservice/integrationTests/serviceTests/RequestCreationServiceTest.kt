@@ -28,7 +28,7 @@ import java.util.UUID
 
 @SpringBootTest(
     classes = [DatalandDataSourcingService::class],
-    properties = ["spring.profiles.active=norabbitmq"],
+    properties = ["spring.profiles.active=containerized-db"],
 )
 class RequestCreationServiceTest
     @Autowired
