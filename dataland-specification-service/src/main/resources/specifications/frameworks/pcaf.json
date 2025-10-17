@@ -6,8 +6,8 @@
   "schema" : {
     "general" : {
       "general" : {
-        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
-        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+        "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "extendedDateFiscalYearEnd"
       },
       "company" : {
         "mainPcafSector" : "customEnumPcafMainSector",
