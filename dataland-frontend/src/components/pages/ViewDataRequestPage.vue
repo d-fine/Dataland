@@ -227,7 +227,7 @@ async function checkForAvailableData(): Promise<void> {
 /**
  * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
  */
-export async function getAnsweringDataSetUrl(): Promise<string | undefined> {
+async function getAnsweringDataSetUrl(): Promise<string | undefined> {
   let answeringDataMetaInfo = await getDataMetaInfo(storedRequest.companyId);
   if (!answeringDataMetaInfo) {
     const parentCompanyId = await getParentCompanyId();
@@ -257,7 +257,7 @@ async function getDataMetaInfo(companyId: string): Promise<DataMetaInformation |
 /**
  * Get the id of the parent company. This function may throw an exception.
  */
-export async function getParentCompanyId(): Promise<string | undefined> {
+async function getParentCompanyId(): Promise<string | undefined> {
   const companyInformation = (await companyControllerApi.getCompanyInfo(storedRequest.companyId)).data;
   if (!companyInformation?.parentCompanyLei) return undefined;
 
