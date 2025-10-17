@@ -23,7 +23,10 @@ import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2 as otherReporti
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_1 as requestStateToFilterBy
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_2 as otherRequestState
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 class RequestQueryManagerTest
     @Autowired
     constructor(

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
@@ -23,7 +24,10 @@ import org.dataland.datasourcingservice.utils.DATA_TYPE_2 as otherDataType
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1 as reportingPeriodToFilterBy
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2 as otherReportingPeriod
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 class DataSourcingQueryManagerTest
     @Autowired
     constructor(
@@ -32,6 +36,8 @@ class DataSourcingQueryManagerTest
     ) : BaseIntegrationTest() {
         private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
         private lateinit var dataSourcingEntities: List<DataSourcingEntity>
+
+        private val logger = LoggerFactory.getLogger(DataSourcingQueryManagerTest::class.java)
 
         /**
          * Store 8 data sourcings covering all combinations of the three filter parameters other than state.
@@ -86,9 +92,10 @@ class DataSourcingQueryManagerTest
                     reportingPeriod = reportingPeriod,
                     state = dataSourcingState?.let { DataSourcingState.valueOf(it) },
                 )
-            assertEquals(expectedResults.size, actualResults.size)
-            expectedResults.forEach {
-                assert(it in actualResults) { "Expected result $it not found in actual results" }
-            }
+            logger.info("Expected results size: ${expectedResults.size}")
+            logger.info("Expected results: $expectedResults")
+            logger.info("Actual results size: ${actualResults.size}")
+            logger.info("Actual results: $actualResults")
+            assertEquals(expectedResults.toSet(), actualResults.toSet())
         }
     }

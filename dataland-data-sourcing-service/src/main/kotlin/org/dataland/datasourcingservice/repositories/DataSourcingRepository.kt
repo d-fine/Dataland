@@ -17,7 +17,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * Return null if no entity with the given id exists.
      */
     @Query(
-        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+        "SELECT DISTINCT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
             "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcing.associatedRequests " +
@@ -30,7 +30,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * all lazily loaded fields.
      */
     @Query(
-        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+        "SELECT DISTINCT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
             "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcing.associatedRequests " +
@@ -48,7 +48,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * Find all DataSourcingEntity instances by companyId of document collector.
      */
     @Query(
-        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+        "SELECT DISTINCT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
             "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "WHERE dataSourcing.documentCollector = :companyId ",
@@ -59,7 +59,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * Find all DataSourcingEntity instances by companyId of data extractor.
      */
     @Query(
-        "SELECT dataSourcing FROM DataSourcingEntity dataSourcing " +
+        "SELECT DISTINCT dataSourcing FROM DataSourcingEntity dataSourcing " +
             "LEFT JOIN FETCH dataSourcing.documentIds " +
             "LEFT JOIN FETCH dataSourcing.expectedPublicationDatesOfDocuments " +
             "WHERE dataSourcing.dataExtractor = :companyId ",
@@ -76,7 +76,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * @return List of matching DataSourcingEntity ids
      */
     @Query(
-        "SELECT dataSourcingEntity.dataSourcingId FROM DataSourcingEntity dataSourcingEntity " +
+        "SELECT DISTINCT dataSourcingEntity.dataSourcingId FROM DataSourcingEntity dataSourcingEntity " +
             "WHERE " +
             "(:companyId IS NULL OR dataSourcingEntity.companyId = :companyId) AND " +
             "(:dataType IS NULL OR dataSourcingEntity.dataType = :dataType) AND " +
@@ -95,7 +95,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
      * Find all DataSourcingEntity instances by a list of ids and fetch all lazily loaded fields.
      */
     @Query(
-        "SELECT dataSourcingEntity FROM DataSourcingEntity dataSourcingEntity " +
+        "SELECT DISTINCT dataSourcingEntity FROM DataSourcingEntity dataSourcingEntity " +
             "LEFT JOIN FETCH dataSourcingEntity.documentIds " +
             "LEFT JOIN FETCH dataSourcingEntity.expectedPublicationDatesOfDocuments " +
             "LEFT JOIN FETCH dataSourcingEntity.associatedRequests " +

@@ -26,7 +26,10 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class])
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 class RequestCreationServiceTest
     @Autowired
     constructor(
