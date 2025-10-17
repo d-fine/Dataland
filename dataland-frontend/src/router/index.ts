@@ -35,6 +35,7 @@ const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/component
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
     import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
+import ViewDataRequestPageLegacy from "@/components/pages/ViewDataRequestPageLegacy.vue";
 
 const routes = [
     {
@@ -201,6 +202,15 @@ const routes = [
         name: 'Data Request View Page',
         props: true,
         component: ViewDataRequestPage,
+        meta: {
+            requiresAuthentication: true,
+        },
+    },
+    {
+        path: `/requests-legacy/:requestId`,
+        name: 'Data Request View Page (Legacy)',
+        props: true,
+        component: ViewDataRequestPageLegacy,
         meta: {
             requiresAuthentication: true,
         },

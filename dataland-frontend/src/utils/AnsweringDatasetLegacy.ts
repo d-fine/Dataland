@@ -1,7 +1,7 @@
 import type { ExtendedStoredDataRequest, StoredDataRequest } from '@clients/communitymanager';
 import { type ApiClientProvider } from '@/services/ApiClients.ts';
 import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-import { getParentCompanyId } from '@/utils/CompanyInformation.ts';
+import { getParentCompanyId } from '@/utils/CompanyInformationLegacy.ts';
 
 /**
  * Retrieve the meta data object of the active data set identified by the given parameters.

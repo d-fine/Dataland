@@ -16,37 +16,37 @@
     />
 
     <PrimeDialog
-      id="reopenModal"
+      id="resubmitModal"
       :dismissableMask="true"
       :modal="true"
       v-model:visible="resubmitModalIsVisible"
       :closable="true"
       style="text-align: left; height: fit-content; width: 21vw"
-      data-test="reopenModal"
+      data-test="resubmit-modal"
       class="modal pl-2"
     >
       <template #header>
-        <span style="font-weight: bold; margin-right: auto">REOPEN REQUEST</span>
+        <span style="font-weight: bold; margin-right: auto">resubmit REQUEST</span>
       </template>
 
       <FormKit type="form" :actions="false" class="formkit-wrapper">
         <label for="Message">
           <b style="margin-bottom: 8px">Message</b>
         </label>
-        <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
+        <FormKit v-model="resubmitMessage" type="textarea" name="resubmitMessage" data-test="resubmit-message" />
         <p
-          v-show="reopenMessageError && reopenMessage.length < 10"
+          v-show="resubmitMessageError && resubmitMessage.length < 10"
           class="text-danger"
           data-test="noMessageErrorMessage"
         >
           You have not provided a sufficient reason yet. Please provide a reason.
         </p>
         <p class="gray-text font-italic" style="text-align: left">
-          Please enter the reason why you think that the dataset should be available. Your message will be forwarded to
+          Please enter the reason why you want to resubmit your request. Your message will be forwarded to
           the data provider.
         </p>
       </FormKit>
-      <PrimeButton data-test="reopenRequestButton" @click="resubmitRequest()" label="REOPEN REQUEST" />
+      <PrimeButton data-test="resubmit-confirmation-button" @click="resubmitRequest()" label="RESUBMIT REQUEST" />
     </PrimeDialog>
 
     <div class="py-4">
@@ -99,31 +99,27 @@
               <div class="card__separator" />
               <RequestStateHistory :stateHistory="requestHistory" />
             </div>
-            <div class="card" v-show="isRequestResubmittable(storedRequest.state)" data-test="card_reopen">
-              <div class="card__title">Reopen Request</div>
+            <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
+              <div class="card__title">Resubmit Request</div>
               <div class="card__separator" />
               <div>
-                Currently, your request has the status non-sourceable. If you believe that your data should be
-                available, you can reopen the request and comment why you believe the data should be available.<br />
-                <br />
-                <a
-                  class="link"
-                  style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
-                  @click="resubmitModalIsVisible = true"
-                >
-                  Reopen request</a
-                >
+                Currently, your request has the state {{ storedRequest.state }}. If you believe that your data should be
+                available, you can resubmit the request and comment why you believe the data should be available.<br />
+                <PrimeButton
+                    data-test="resubmit-request-button"
+                    label="RESUBMIT REQUEST"
+                    @click="resubmitModalIsVisible = true"
+                    variant="link"
+                />
               </div>
             </div>
             <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               <div>
-                Once a data request is withdrawn, it will be removed from your data request list. The company owner will
-                not be notified anymore. <br />
-                <br />
+                Some placeholder text.
                 <PrimeButton
-                  data-test="withdrawRequestButton"
+                  data-test="withdraw-request-button"
                   label="WITHDRAW REQUEST"
                   @click="withdrawRequest()"
                   variant="link"
@@ -146,8 +142,6 @@ import RequestStateHistory from '@/components/resources/dataRequest/RequestState
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
-import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
@@ -158,19 +152,25 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
+import {assertDefined} from "@/utils/TypeScriptUtils.ts";
+import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
 
 const props = defineProps<{ requestId: string, userEmailAddress: string }>();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const requestControllerApi = apiClientProvider.apiClients.requestController;
+const companyControllerApi = apiClientProvider.backendClients.companyDataController;
+const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
 
 const withdrawSuccessModalIsVisible = ref(false);
 const resubmitModalIsVisible = ref(false);
-const reopenMessage = ref('');
+const resubmitMessage = ref('');
 const resubmitSuccessModalIsVisible = ref(false);
 const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
 const companyName = ref('');
-const reopenMessageError = ref(false);
+const resubmitMessageError = ref(false);
 const answeringDataSetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
 
@@ -182,10 +182,9 @@ async function initializeComponent(): Promise<void> {
     .catch((error) => console.error(error))
     .then(async () => {
       if (getKeycloakPromise) {
-        const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-        await getAndStoreCompanyName(storedRequest.companyId, apiClientProvider).catch((error) => console.error(error));
-        await getAndStoreRequestHistory(props.requestId, apiClientProvider).catch((error) => console.error(error));
-        await checkForAvailableData(storedRequest, apiClientProvider).catch((error) => console.error(error));
+        await getAndStoreCompanyName().catch((error) => console.error(error));
+        await getAndStoreRequestHistory().catch((error) => console.error(error));
+        await checkForAvailableData().catch((error) => console.error(error));
       }
       requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
       await setUserAccessFields();
@@ -196,9 +195,9 @@ async function initializeComponent(): Promise<void> {
 /**
  * Retrieve the company name and store it if a value was found.
  */
-async function getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider): Promise<void> {
+async function getAndStoreCompanyName(): Promise<void> {
   try {
-    companyName.value = await getCompanyName(companyId, apiClientProvider);
+    companyName.value = (await companyControllerApi.getCompanyInfo(storedRequest.companyId)).data.companyName;
   } catch (error) {
     console.error(error);
   }
@@ -207,9 +206,9 @@ async function getAndStoreCompanyName(companyId: string, apiClientProvider: ApiC
 /**
  * Retrieve the request history and store it if a value was found.
  */
-async function getAndStoreRequestHistory(requestId: string, apiClientProvider: ApiClientProvider): Promise<void> {
+async function getAndStoreRequestHistory(): Promise<void> {
   try {
-    requestHistory.value = (await apiClientProvider.apiClients.requestController.getRequestHistoryById(requestId)).data;
+    requestHistory.value = (await requestControllerApi.getRequestHistoryById(props.requestId)).data;
   } catch (error) {
     console.error(error);
   }
@@ -217,18 +216,58 @@ async function getAndStoreRequestHistory(requestId: string, apiClientProvider: A
 
 /**
  * Method to check if there exist an approved dataset for a dataRequest
- * @param storedRequest dataRequest
- * @param apiClientProvider the ApiClientProvider to use for the connection
  */
-async function checkForAvailableData(
-  storedRequest: StoredRequest,
-  apiClientProvider: ApiClientProvider
-): Promise<void> {
+async function checkForAvailableData(): Promise<void> {
   try {
-    answeringDataSetUrl.value = await getAnsweringDataSetUrl(storedRequest, apiClientProvider);
+    answeringDataSetUrl.value = await getAnsweringDataSetUrl();
   } catch (error) {
     console.error(error);
   }
+}
+
+/**
+ * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
+ */
+export async function getAnsweringDataSetUrl(): Promise<string | undefined> {
+  let answeringDataMetaInfo = await getDataMetaInfo(storedRequest.companyId);
+  if (!answeringDataMetaInfo) {
+    const parentCompanyId = await getParentCompanyId();
+    if (!parentCompanyId) return;
+    answeringDataMetaInfo = await getDataMetaInfo(parentCompanyId);
+  }
+  if (answeringDataMetaInfo)
+    return `/companies/${answeringDataMetaInfo.companyId}/frameworks/${answeringDataMetaInfo.dataType}`;
+}
+
+/**
+ * Retrieve the metadata object of the active data set identified by the given parameters.
+ *
+ * This function may throw an exception.
+ * @return the metadata object if found, else "undefined"
+ */
+async function getDataMetaInfo(companyId: string): Promise<DataMetaInformation | undefined> {
+  const datasets = await metaDataControllerApi.getListOfDataMetaInfo(
+      companyId,
+      storedRequest.dataType as DataTypeEnum,
+      true,
+      storedRequest.reportingPeriod
+  );
+  return datasets.data.length > 0 ? datasets.data[0] : undefined;
+}
+
+/**
+ * Get the id of the parent company. This function may throw an exception.
+ */
+export async function getParentCompanyId(): Promise<string | undefined> {
+  const companyInformation = (await companyControllerApi.getCompanyInfo(storedRequest.companyId)).data;
+  if (!companyInformation?.parentCompanyLei) return undefined;
+
+  return (
+      await companyControllerApi.getCompanyIdByIdentifier(
+          IdentifierType.Lei,
+          companyInformation.parentCompanyLei
+      )
+  ).data.companyId;
 }
 
 /**
@@ -237,7 +276,7 @@ async function checkForAvailableData(
 async function getRequest(): Promise<void> {
   try {
     if (getKeycloakPromise) {
-      const result = await new ApiClientProvider(getKeycloakPromise()).apiClients.requestController.getRequest(
+      const result = await requestControllerApi.getRequest(
         props.requestId
       );
       Object.assign(storedRequest, result.data);
@@ -248,19 +287,18 @@ async function getRequest(): Promise<void> {
 }
 
 /**
- * Method to check if a request can be reopened (only for nonSourceable requests)
- * @param state request status of the dataland request
- * @returns true if request status is non sourceable otherwise false
+ * Method to check if a request can be resubmitted
+ * @returns true if request can be resubmitted otherwise false
  */
-function isRequestResubmittable(state: RequestState): boolean {
-  return state == RequestState.Processed || state == RequestState.Withdrawn;
+function isRequestResubmittable(): boolean {
+  return storedRequest.state == RequestState.Processed || storedRequest.state == RequestState.Withdrawn;
 }
 
 /**
- * Method to reopen the non sourceable data request
+ * Method to resubmit the data request
  */
 async function resubmitRequest(): Promise<void> {
-  if (reopenMessage.value.length > 10) {
+  if (resubmitMessage.value.length > 10) {
     try {
       await patchRequestState(
         storedRequest.id,
@@ -270,13 +308,13 @@ async function resubmitRequest(): Promise<void> {
       resubmitModalIsVisible.value = false;
       resubmitSuccessModalIsVisible.value = true;
       storedRequest.state = RequestState.Open;
-      reopenMessage.value = '';
+      resubmitMessage.value = '';
     } catch (error) {
       console.log(error);
     }
     return;
   }
-  reopenMessageError.value = true;
+  resubmitMessageError.value = true;
 }
 
 /**

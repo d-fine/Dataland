@@ -245,7 +245,7 @@ import StatusHistory from '@/components/resources/dataRequest/StatusHistoryLegac
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { getAnsweringDataSetUrl } from '@/utils/AnsweringDatasetLegacy.ts';
-import { getCompanyName } from '@/utils/CompanyInformation.ts';
+import { getCompanyName } from '@/utils/CompanyInformationLegacy.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
