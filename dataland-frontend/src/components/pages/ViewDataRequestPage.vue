@@ -6,16 +6,16 @@
 
     <SuccessDialog
         :visible="withdrawSuccessModalIsVisible"
-        message="Your request has been successfully withdrawn."
-        @close="withdrawSuccessModalIsVisible = false"
+        message="The request has been successfully withdrawn."
+        @close="() => {
+          withdrawSuccessModalIsVisible = false;
+          initializeComponent();
+        }"
     />
     <SuccessDialog
         :visible="resubmitSuccessModalIsVisible"
         message="Your request has been successfully resubmitted."
-        @close="() => {
-          resubmitSuccessModalIsVisible = false;
-          void router.push(`/requests/${newRequestId}`);
-        }"
+        @close="goToNewRequestPage()"
     />
 
     <PrimeDialog
@@ -84,7 +84,7 @@
                 data-test="viewDatasetButton"
                 label="VIEW DATASET"
                 @click="goToAnsweringDataSetPage()"
-                style="width: auto"
+                style="width:fit-content"
             />
           </div>
         </div>
@@ -126,15 +126,18 @@
             <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <Divider/>
-              <div>
-                Some placeholder text.
-                <PrimeButton
-                    data-test="withdraw-request-button"
-                    label="WITHDRAW REQUEST"
-                    @click="withdrawRequest()"
-                    variant="link"
-                />
-              </div>
+              <p class="dataland-info-text normal"
+                 style="align-items: baseline">
+                If you want to stop the processing of your request, you can withdraw it. The data provider will no longer
+                process your request.
+              </p>
+              <PrimeButton
+                  data-test="withdraw-request-button"
+                  label="WITHDRAW REQUEST"
+                  @click="withdrawRequest()"
+                  variant="outlined"
+                  style="width:fit-content"
+              />
             </div>
           </div>
         </div>
@@ -168,6 +171,7 @@ import Divider from 'primevue/divider'
 import Message from "primevue/message";
 
 const props = defineProps<{ requestId: string }>();
+const requestId = ref<string>(props.requestId);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -227,7 +231,7 @@ async function getAndStoreCompanyName(): Promise<void> {
  */
 async function getAndStoreRequestHistory(): Promise<void> {
   try {
-    requestHistory.value = (await requestControllerApi.getRequestHistoryById(props.requestId)).data;
+    requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
   } catch (error) {
     console.error(error);
   }
@@ -295,9 +299,7 @@ async function getParentCompanyId(): Promise<string | undefined> {
 async function getRequest(): Promise<void> {
   try {
     if (getKeycloakPromise) {
-      const result = await requestControllerApi.getRequest(
-          props.requestId
-      );
+      const result = await requestControllerApi.getRequest(requestId.value);
       Object.assign(storedRequest, result.data);
     }
   } catch (error) {
@@ -343,14 +345,13 @@ async function resubmitRequest(): Promise<void> {
  */
 async function withdrawRequest(): Promise<void> {
   try {
-    await requestControllerApi.patchRequestState(props.requestId, RequestState.Withdrawn);
+    await requestControllerApi.patchRequestState(requestId.value, RequestState.Withdrawn);
   } catch (error) {
     console.error(error);
     return;
   }
   withdrawSuccessModalIsVisible.value = true;
   storedRequest.state = RequestState.Withdrawn;
-  void initializeComponent();
 }
 
 /**
@@ -388,6 +389,17 @@ function isRequestWithdrawable(): boolean {
  */
 function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefined> | void {
   if (answeringDataSetUrl.value) return router.push(answeringDataSetUrl.value);
+}
+
+/**
+ * Navigates to the new request page after resubmission
+ */
+function goToNewRequestPage(): void {
+  resubmitSuccessModalIsVisible.value = false;
+  router.push(`/requests/${newRequestId.value}`);
+  requestId.value = newRequestId.value;
+  newRequestId.value = '';
+  void initializeComponent();
 }
 
 onMounted(() => {
