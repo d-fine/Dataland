@@ -7,14 +7,18 @@
     <SuccessDialog
         :visible="withdrawSuccessModalIsVisible"
         message="Your request has been successfully withdrawn."
-        @close="withdrawSuccessModalIsVisible = false"
+        @close="() => {
+          withdrawSuccessModalIsVisible = false;
+          initializeComponent();
+        }"
     />
     <SuccessDialog
         :visible="resubmitSuccessModalIsVisible"
         message="Your request has been successfully resubmitted."
         @close="() => {
           resubmitSuccessModalIsVisible = false;
-          void router.push(`/requests/${newRequestId}`);
+          router.push(`/requests/${newRequestId}`);
+          initializeComponent();
         }"
     />
 
@@ -126,15 +130,17 @@
             <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <Divider/>
-              <div>
+              <p class="dataland-info-text normal"
+                 style="align-items: baseline">
                 Some placeholder text.
-                <PrimeButton
-                    data-test="withdraw-request-button"
-                    label="WITHDRAW REQUEST"
-                    @click="withdrawRequest()"
-                    variant="link"
-                />
-              </div>
+              </p>
+              <PrimeButton
+                  data-test="withdraw-request-button"
+                  label="WITHDRAW REQUEST"
+                  @click="withdrawRequest()"
+                  variant="outlined"
+                  style="width:fit-content"
+              />
             </div>
           </div>
         </div>
@@ -144,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, inject, onMounted, computed} from 'vue';
+import { ref, reactive, inject, onMounted } from 'vue';
 import {defineProps} from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -163,7 +169,6 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import {assertDefined} from "@/utils/TypeScriptUtils.ts";
 import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
-import {useRoute} from 'vue-router';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider'
 import Message from "primevue/message";
@@ -351,7 +356,6 @@ async function withdrawRequest(): Promise<void> {
   }
   withdrawSuccessModalIsVisible.value = true;
   storedRequest.state = RequestState.Withdrawn;
-  void initializeComponent();
 }
 
 /**
