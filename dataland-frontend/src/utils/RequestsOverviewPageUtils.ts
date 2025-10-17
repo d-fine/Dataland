@@ -14,11 +14,10 @@ import {RequestState} from "@clients/datasourcingservice";
  */
 export function customCompareForRequestStatus(a: RequestState, b: RequestState, sortOrder: number): number {
   const sortOrderRequestStatus: { [key: string]: number } = {};
-  sortOrderRequestStatus[RequestStatus.Answered] = 1;
-  sortOrderRequestStatus[RequestStatus.Open] = 2;
-  sortOrderRequestStatus[RequestStatus.Resolved] = 3;
-  sortOrderRequestStatus[RequestStatus.Closed] = 4;
-  sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
+  sortOrderRequestStatus[RequestState.Processed] = 1;
+    sortOrderRequestStatus[RequestState.Processing] = 2;
+  sortOrderRequestStatus[RequestState.Open] = 3;
+  sortOrderRequestStatus[RequestState.Withdrawn] = 4;
   if (sortOrderRequestStatus[a]! <= sortOrderRequestStatus[b]!) return -1 * sortOrder;
   return sortOrder;
 }

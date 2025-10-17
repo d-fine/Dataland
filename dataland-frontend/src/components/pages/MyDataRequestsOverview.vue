@@ -92,8 +92,8 @@
             <Column field="resolve" header="">
               <template #body="{ data }">
                 <div
-                    v-if="data.requestState === RequestState.Processed"
-                    class="text-right text-primary no-underline font-bold"
+                    v-if="data.state === RequestState.Processed"
+                    class="text-primary no-underline"
                 >
                   <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
                   <span class="ml-3">&gt;</span>
@@ -171,7 +171,6 @@ const sortField = ref<keyof ExtendedStoredRequest>('state');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
-const userEmailAddress = ref('');
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -227,9 +226,7 @@ async function getStoredRequestDataList(): Promise<void> {
  */
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
-  void vueRouter.push({
-    path: `/requests/${requestIdOfClickedRow}`,
-  });
+  void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
 }
 
 /**

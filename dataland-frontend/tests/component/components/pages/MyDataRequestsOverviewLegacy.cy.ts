@@ -1,4 +1,4 @@
-import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
+import MyDataRequestsOverviewLegacy from '@/components/pages/MyDataRequestsOverviewLegacy.vue';
 import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
 import {
@@ -98,12 +98,12 @@ before(function () {
   );
 });
 describe('Component tests for the data requests search page', function (): void {
-  it('Check sorting', function (): void {
+  it.only('Check sorting', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
     const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
@@ -133,7 +133,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
@@ -151,7 +151,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -184,7 +184,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -205,7 +205,7 @@ describe('Component tests for the data requests search page', function (): void 
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
@@ -238,7 +238,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.get('[data-test="requested-datasets-frameworks"]')
@@ -264,7 +264,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
