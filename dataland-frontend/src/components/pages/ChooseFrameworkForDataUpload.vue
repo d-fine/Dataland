@@ -14,7 +14,7 @@
                 <p>{{ buildSubtitle('EU Taxonomy') }}</p>
               </div>
               <div class="col-9 d-card">
-                <div id="eutaxonomyDataSetsContainer">
+                <div id="eutaxonomyDatasetsContainer">
                   <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
                   <MetaInfoPerCompanyAndFramework
@@ -94,7 +94,7 @@ export default defineComponent({
   },
 
   created() {
-    void this.getMetaInfoAboutAllDataSetsForCurrentCompany();
+    void this.getMetaInfoAboutAllDatasetsForCurrentCompany();
   },
 
   data() {
@@ -200,7 +200,7 @@ export default defineComponent({
      * Gets all data meta information of the company identified by the company ID in the URL and fills the lists for
      * data meta information of the various frameworks
      */
-    async getMetaInfoAboutAllDataSetsForCurrentCompany() {
+    async getMetaInfoAboutAllDatasetsForCurrentCompany() {
       try {
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;

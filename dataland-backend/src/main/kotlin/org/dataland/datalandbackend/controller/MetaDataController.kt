@@ -216,7 +216,7 @@ class MetaDataController(
     }
 
     override fun retrieveMetaDataOfActiveDatasets(dataDimensions: List<BasicDataDimensions>): ResponseEntity<List<DataMetaInformation>> {
-        val foundMetaInformation = dataAvailabilityChecker.getMetaDataOfActiveDatasets(dataDimensions)
+        val foundMetaInformation = dataAvailabilityChecker.getMetaDataOfActiveDatasets(dataDimensions.map { it.toBasicDatasetDimensions() })
         foundMetaInformation.forEach { it.addRef(proxyPrimaryUrl) }
         return ResponseEntity.ok(foundMetaInformation)
     }

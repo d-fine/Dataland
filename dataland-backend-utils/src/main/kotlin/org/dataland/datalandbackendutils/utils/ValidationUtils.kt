@@ -1,6 +1,7 @@
 package org.dataland.datalandbackendutils.utils
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
@@ -47,4 +48,12 @@ object ValidationUtils {
                 message = "The string $testString is not a valid UUID. In particular, the resource requested under it is unknown.",
             )
         }
+
+    /**
+     * Checks if a given base dimension contains valid reporting period and company ID
+     * @param baseDimensions the base dimension to be checked
+     * @return a boolean indicating if it is a valid base dimension or not
+     */
+    fun isBaseDimensions(baseDimensions: BaseDimensions) =
+        isCompanyId(baseDimensions.companyId) && isReportingPeriod(baseDimensions.reportingPeriod)
 }

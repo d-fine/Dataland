@@ -219,9 +219,9 @@ describe('As a user, I expect the search functionality on the /companies page to
           'option, and check that the company appears in the autocomplete suggestions and in the ' +
           'search results, if no framework filter is set.',
         () => {
-          const preFix = 'ThisCompanyHasNoDataSet';
+          const preFix = 'ThisCompanyHasNoDataset';
           const companyName = preFix + companyNameMarker;
-          const sector = 'SectorWithNoDataSet';
+          const sector = 'SectorWithNoDataset';
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });

@@ -26,9 +26,9 @@ import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(uploadedTestCompanyName: string): void {
   cy.contains('h1', uploadedTestCompanyName);
 
-  cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Be the first to create this dataset');
-  cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
-  cy.get('div[id=eutaxonomyDataSetsContainer]').find("[data-test='createDatasetButton']").should('have.length', 2);
+  cy.get('div[id=eutaxonomyDatasetsContainer]').contains('Be the first to create this dataset');
+  cy.get('div[id=eutaxonomyDatasetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
+  cy.get('div[id=eutaxonomyDatasetsContainer]').find("[data-test='createDatasetButton']").should('have.length', 2);
 
   cy.get('div[id=lksgContainer]').contains('Create another dataset for LkSG');
   cy.get('div[id=lksgContainer]').find('button.p-disabled[aria-label="Create Dataset"]').should('not.exist');
@@ -182,7 +182,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
         dataIdOfLksgDataset: string
       ): void {
-        cy.get('div[id=eutaxonomyDataSetsContainer]')
+        cy.get('div[id=eutaxonomyDatasetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
@@ -194,7 +194,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
-        cy.get('div[id=eutaxonomyDataSetsContainer]')
+        cy.get('div[id=eutaxonomyDatasetsContainer]')
           .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
