@@ -81,7 +81,7 @@
             <div class="card__data">{{ storedRequest.reportingPeriod }}</div>
             <PrimeButton
                 v-if="answeringDataSetUrl"
-                data-test="viewDatasetButton"
+                data-test="view-dataset-button"
                 label="VIEW DATASET"
                 @click="goToAnsweringDataSetPage()"
                 style="width:fit-content"
@@ -128,8 +128,8 @@
               <Divider/>
               <p class="dataland-info-text normal"
                  style="align-items: baseline">
-                If you want to stop the processing of your request, you can withdraw it. The data provider will no longer
-                process your request.
+                If you want to stop the processing of this request, you can withdraw it. The data provider will no longer
+                process this request.
               </p>
               <PrimeButton
                   data-test="withdraw-request-button"

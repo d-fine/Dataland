@@ -1,7 +1,7 @@
 import ReviewRequestButtonsLegacyComponent from '@/components/resources/dataRequest/ReviewRequestButtonsLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
-import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
+import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetailsLegacy.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 
 /**
