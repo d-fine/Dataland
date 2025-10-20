@@ -10,7 +10,6 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
-  const newRequestId = 'newDummyRequestId';
   const dummyUserId = 'dummyUserId';
   const dummyEmail = 'dummy@mail.de';
   const dummyCompanyId = 'dummyCompanyId';
@@ -242,7 +241,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it.only(
+  it(
     'Check view data request page for Processed request and check resubmitting the request works as expected',
     function () {
       const dummyRequest = createStoredDataRequest(RequestState.Processed);
