@@ -66,7 +66,7 @@ class CompanyReportingInfoService
          * This map is populated by calling the `updateCompanies` method with a list of company IDs.
          * If a company's reporting year or sector information is unavailable, it will not be included in the map.
          */
-        fun getCachedReportingYearAndSectorInformation(): MutableMap<CompanyId, ReportingPeriodAndSector> = reportingYearsAndSectors
+        fun getCachedReportingYearAndSectorInformation(): Map<CompanyId, ReportingPeriodAndSector> = reportingYearsAndSectors.toMap()
 
         /**
          * Returns the cached set of company IDs that lack reporting year information.
@@ -74,7 +74,7 @@ class CompanyReportingInfoService
          * This set is populated by calling the `updateCompanies` method with a list of company IDs.
          * Companies without sufficient data to determine their reporting year are added to this set.
          */
-        fun getCachedCompanyIdsWithoutReportingYearInfo(): Set<CompanyId> = companyIdsWithoutReportingYearInfo
+        fun getCachedCompanyIdsWithoutReportingYearInfo(): Set<CompanyId> = companyIdsWithoutReportingYearInfo.toSet()
 
         /**
          * Retrieves the reporting year and sector information for a specific company.

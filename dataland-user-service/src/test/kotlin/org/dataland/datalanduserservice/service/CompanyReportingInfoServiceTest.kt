@@ -80,7 +80,7 @@ class CompanyReportingInfoServiceTest {
                 .thenReturn(today)
             companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId))
             val companyReportingYearAndSectorInfo =
-                companyReportingInfoService.getCachedReportingYearAndSectorInformation().toMap()
+                companyReportingInfoService.getCachedReportingYearAndSectorInformation()
             assertEquals(
                 expectedReportingPeriod,
                 companyReportingYearAndSectorInfo
