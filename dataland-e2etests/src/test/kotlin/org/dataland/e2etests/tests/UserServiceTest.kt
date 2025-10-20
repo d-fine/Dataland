@@ -128,7 +128,7 @@ class UserServiceTest {
 
     @Test
     fun `portfolio yields expected bulk requests after activating monitoring`() {
-        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifierFYEAndReportingShift().actualStoredCompany.companyId
         val portfolioUpload =
             PortfolioUpload(
                 portfolioName = "Test Portfolio ${UUID.randomUUID()}",

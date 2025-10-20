@@ -38,6 +38,7 @@ import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import java.lang.Thread.sleep
+import java.time.LocalDate
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 
 class ApiAccessor {
@@ -362,6 +363,14 @@ class ApiAccessor {
         val testCompanyInformation =
             generalTestDataProvider
                 .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
+        return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
+    }
+
+    fun uploadOneCompanyWithRandomIdentifierFYEAndReportingShift(): UploadInfo {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val testCompanyInformation =
+            generalTestDataProvider
+                .generateCompanyInformationWithFYEAndReportingShift(LocalDate.of(2023, 12, 31), 0)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 

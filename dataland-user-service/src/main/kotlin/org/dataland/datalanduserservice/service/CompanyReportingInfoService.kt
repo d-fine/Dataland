@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.model.ReportingPeriodAndSector
 import org.dataland.datalanduserservice.model.SectorType
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -31,6 +32,8 @@ class CompanyReportingInfoService
         private val companyIdsWithoutReportingYearInfo: MutableSet<CompanyId> = mutableSetOf()
         private val reportingYearsAndSectors: MutableMap<CompanyId, ReportingPeriodAndSector> = mutableMapOf()
 
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         /**
          * Resets the cached data.
          */
@@ -51,6 +54,10 @@ class CompanyReportingInfoService
                     reportingYearsAndSectors[companyId] = it
                 } ?: companyIdsWithoutReportingYearInfo.add(companyId)
             }
+            logger.info(
+                "Found ${reportingYearsAndSectors.size} companies with reporting year info," +
+                    " and ${companyIdsWithoutReportingYearInfo.size} companies without reporting year info.",
+            )
         }
 
         /**
