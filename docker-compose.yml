@@ -68,6 +68,7 @@ services:
       - backend-db
       - keycloak-db
       - api-key-manager-db
+      - data-sourcing-service-db
       - internal-storage-db
       - document-manager-db
       - qa-service-db
@@ -77,7 +78,7 @@ services:
       - grafana
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5441:5433-5441"
+      - "127.0.0.1:5433-5442:5433-5442"
       - "127.0.0.1:5672:5672"
     logging:
       <<: *loki-logging
@@ -96,6 +97,7 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -113,6 +115,41 @@ services:
       PGUSER: api_key_manager
     logging:
       <<: *loki-logging
+  data-sourcing-service:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - internal
+          - data-sourcing-service-db
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        expose:
+          - "8080"
+        depends_on:
+          - data-sourcing-service-db
+        <<: *uncritical-constants-env
+        environment:
+          <<: *rabbit-mq-user-and-pass
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        logging:
+          <<: *loki-logging
+  data-sourcing-service-db:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - data-sourcing-service-db
+        image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+        volumes:
+          - data_sourcing_service_data:/var/lib/postgresql/data
+        environment:
+          POSTGRES_DB: data_sourcing_service
+          POSTGRES_USER: data_sourcing_service
+          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          PGUSER: data_sourcing_service
+        logging:
+          <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -347,6 +384,8 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
@@ -372,6 +411,7 @@ services:
       - keycloak-db
       - backend-db
       - api-key-manager-db
+      - data-sourcing-service-db
       - internal
       - internal-storage-db
       - document-manager-db
@@ -388,6 +428,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -645,7 +686,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:6567bca8d7bc8c82c5922425a0baee57be8402df92bae5eacad5f01ae9544daa
+    image: postgres:alpine@sha256:d5f196a551b5cef1c70853c6dd588f456d16ca4ea733e3f31c75bc1ae2f65f3f
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -737,6 +778,7 @@ networks:
   keycloak-db:
   backend-db:
   api-key-manager-db:
+  data-sourcing-service-db:
   internal-storage-db:
   document-manager-db:
   qa-service-db:
@@ -751,6 +793,8 @@ volumes:
   backend_data:
     driver: local
   api_key_manager_data:
+    driver: local
+  data_sourcing_service_data:
     driver: local
   internal_storage_data:
     driver: local

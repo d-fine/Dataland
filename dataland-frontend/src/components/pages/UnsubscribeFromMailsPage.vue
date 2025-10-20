@@ -1,6 +1,4 @@
 <template>
-  <TheHeader :showUserProfileDropdown="false" />
-
   <TheContent class="container">
     <main>
       <div>
@@ -22,14 +20,10 @@
       </div>
     </main>
   </TheContent>
-
-  <TheFooter />
 </template>
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
@@ -39,9 +33,7 @@ import { defineComponent, inject } from 'vue';
 export default defineComponent({
   name: 'UnsubscribeFromMailsPage',
   components: {
-    TheFooter,
     TheContent,
-    TheHeader,
     PrimeButton,
   },
 
@@ -132,5 +124,9 @@ h1,
   @media only screen and (max-width: 768px) {
     top: 60vh;
   }
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

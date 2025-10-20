@@ -10,11 +10,60 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { uploadDocumentViaApi } from '@e2e/utils/DocumentUpload';
+import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from '@e2e/utils/GeneralUtils';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+
+/**
+ * Fills all the required fields of the eu-taxonomy upload form for non-financial companies to enable submit button
+ */
+function fillRequiredEutaxonomyNonFinancialsFields(): void {
+  cy.get(
+    'div[data-test="fiscalYearEnd"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
+  ).within(() => {
+    cy.get('#dataPointIsAvailableSwitch').click();
+  });
+  cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
+  cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').first().click();
+  cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
+  selectItemFromDropdownByIndex(cy.get('[data-test="assurance-form-field"]'), 1);
+  cy.get('input[name="provider"]').type('Some Assurance Provider Company');
+}
+
+/**
+ * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation and then checks
+ * if already uploaded reports do exist in the form.
+ * @param companyId the id of the company for which to edit a dataset
+ * @param isPdfTestFileExpected specifies if the test file is expected to be in the server response
+ */
+function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
+  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
+    (interceptionOfGetDataRequestForEditMode) => {
+      const dataAndMetaInformation: DataAndMetaInformationEutaxonomyNonFinancialsData[] = assertDefined(
+        interceptionOfGetDataRequestForEditMode
+      ).response?.body;
+      const referencedReportsInDataset = dataAndMetaInformation[0]?.data?.general?.referencedReports;
+      assert(referencedReportsInDataset);
+      expect(TEST_PDF_FILE_NAME in referencedReportsInDataset!).to.equal(isPdfTestFileExpected);
+      expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset!).to.equal(true);
+    }
+  );
+}
+
+/**
+ * Checks that the computed hash in the frontend is the same as the one returned by the document upload endpoint
+ * @param keycloakToken token given by keycloak after logging in
+ * @param frontendDocumentHash calculated hash of the document
+ */
+function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string, frontendDocumentHash: string): void {
+  cy.task<{ [type: string]: ArrayBuffer }>('readFile', `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
+    await uploadDocumentViaApi(keycloakToken, bufferObject.data!, TEST_PDF_FILE_PATH).then((response) => {
+      expect(frontendDocumentHash).to.equal(response.documentId);
+    });
+  });
+}
 
 describeIf(
   'As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company',
@@ -29,69 +78,13 @@ describeIf(
     });
 
     /**
-     * Fills all the required fields of the eu-taxonomy upload form for non-financial companies to enable submit button
-     */
-    function fillRequiredEutaxonomyNonFinancialsFields(): void {
-      cy.get(
-        'div[data-test="fiscalYearEnd"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-      )
-        .should('exist')
-        .click();
-      cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
-      cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').first().click();
-      cy.get('div.p-datepicker').find('span:contains("11")').click();
-      selectItemFromDropdownByIndex(cy.get('div[name="value"]'), 1);
-      cy.get('input[name="provider"]').type('Some Assurance Provider Company');
-    }
-
-    /**
-     * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation and then checks
-     * if already uploaded reports do exist in the form.
-     * @param companyId the id of the company for which to edit a dataset
-     * @param isPdfTestFileExpected specifies if the test file is expected to be in the server response
-     */
-    function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
-      goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
-        (interceptionOfGetDataRequestForEditMode) => {
-          const dataAndMetaInformation: DataAndMetaInformationEutaxonomyNonFinancialsData[] = assertDefined(
-            interceptionOfGetDataRequestForEditMode
-          ).response?.body;
-          const referencedReportsInDataset = dataAndMetaInformation[0]?.data?.general?.referencedReports;
-          assert(referencedReportsInDataset);
-          expect(TEST_PDF_FILE_NAME in referencedReportsInDataset!).to.equal(isPdfTestFileExpected);
-          expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset!).to.equal(true);
-        }
-      );
-    }
-
-    /**
-     * Checks that the computed hash in the frontend is the same as the one returned by the document upload endpoint
-     * @param keycloakToken token given by keycloak after logging in
-     * @param frontendDocumentHash calculated hash of the document
-     */
-    function validateFrontendAndBackendDocumentHashesCoincide(
-      keycloakToken: string,
-      frontendDocumentHash: string
-    ): void {
-      cy.task<{ [type: string]: ArrayBuffer }>('readFile', `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
-        await uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH).then((response) => {
-          expect(frontendDocumentHash).to.equal(response.documentId);
-        });
-      });
-    }
-
-    /**
      * This method verifies that there are no files with the same content uploaded twice
      * @param companyId the ID of the company whose data is to be edited
      * @param templateDataId the ID of the dataset to edit
      */
     function checkThatFilesWithSameContentDontGetReuploaded(companyId: string, templateDataId: string): void {
       const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
-      cy.intercept({
-        method: 'GET',
-        url: '**/api/data/**',
-        times: 1,
-      }).as('getDataToPrefillForm');
+      cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/*').as('getDataToPrefillForm');
       cy.visitAndCheckAppMount(
         `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
       );
@@ -103,10 +96,13 @@ describeIf(
       );
       uploadReports.fillAllFormsOfReportsSelectedForUpload();
       selectItemFromDropdownByValue(
-        cy.get('div[name="capex"] div[name="fileName"]').eq(0),
+        cy.get('div[name="capex"] div[data-test="dataReport"]').eq(0),
         differentFileNameForSameFile
       );
-      selectItemFromDropdownByValue(cy.get('div[name="opex"] div[name="fileName"]').eq(0), `${TEST_PDF_FILE_NAME}2`);
+      selectItemFromDropdownByValue(
+        cy.get('div[name="opex"] div[data-test="dataReport"]').eq(0),
+        `${TEST_PDF_FILE_NAME}2`
+      );
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
@@ -140,23 +136,27 @@ describeIf(
               fillRequiredEutaxonomyNonFinancialsFields();
               const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
 
-              cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).click();
+              cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+                cy.get('#dataPointIsAvailableSwitch').click();
+              });
               cy.get(`${revenueSelectorPrefix} input[name="value"]`).type('250700');
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="currency"]`), 1);
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="quality"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="currency"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="dataQuality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${revenueSelectorPrefix} div[name="fileName"]`).eq(0),
+                cy.get(`${revenueSelectorPrefix} div[data-test="dataReport"]`).eq(0),
                 TEST_PDF_FILE_NAME
               );
 
               const capexSelectorPrefix = 'div[name="capex"] div[data-test="totalAmount"]';
 
-              cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).click();
+              cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+                cy.get('#dataPointIsAvailableSwitch').click();
+              });
               cy.get(`${capexSelectorPrefix} input[name="value"]`).type('450700');
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="currency"]`), 10);
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="quality"]`), 1);
+              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="currency"]`), 10);
+              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="dataQuality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${capexSelectorPrefix} div[name="fileName"]`).eq(0),
+                cy.get(`${capexSelectorPrefix} div[data-test="dataReport"]`).eq(0),
                 `${TEST_PDF_FILE_NAME}2`
               );
 

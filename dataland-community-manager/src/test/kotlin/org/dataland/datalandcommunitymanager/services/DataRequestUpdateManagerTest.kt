@@ -94,7 +94,7 @@ class DataRequestUpdateManagerTest {
             DataRequestsFilter(
                 dataType = setOf(dataMetaInformation.dataType),
                 datalandCompanyIds = setOf(dataMetaInformation.companyId),
-                reportingPeriod = dataMetaInformation.reportingPeriod,
+                reportingPeriods = setOf(dataMetaInformation.reportingPeriod),
                 requestStatus = it,
             )
         }
@@ -128,7 +128,7 @@ class DataRequestUpdateManagerTest {
                     DataRequestsFilter(
                         setOf(dataMetaInformation.dataType), null, null,
                         setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
-                        dataMetaInformation.reportingPeriod,
+                        setOf(dataMetaInformation.reportingPeriod),
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                         null, null, null,
                     ),

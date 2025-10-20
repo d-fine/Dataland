@@ -1,10 +1,11 @@
 <template>
-  <Card class="col-12 page-wrapper-card p-3">
+  <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title>New Dataset - Nuclear & Gas</template>
     <template #content>
+      <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading Nuclear & Gas data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -28,17 +29,16 @@
                   :description="'The year for which the data is reported.'"
                   :is-required="true"
                 />
-                <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <Calendar
-                    data-test="reportingPeriod"
-                    v-model="reportingPeriod"
-                    inputId="icon"
-                    :showIcon="true"
-                    view="year"
-                    dateFormat="yy"
-                    validation="required"
-                  />
-                </div>
+                <DatePicker
+                  data-test="reportingPeriod"
+                  v-model="reportingPeriod"
+                  :updateModelType="'date'"
+                  inputId="icon"
+                  :showIcon="true"
+                  view="year"
+                  dateFormat="yy"
+                  validation="required"
+                />
                 <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
             </div>
@@ -59,9 +59,7 @@
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
-                      </div>
+                      <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
                     <div class="col-9 formFields">
                       <FormKit
@@ -97,7 +95,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postNuclearAndGasDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -124,6 +122,7 @@
   </Card>
 </template>
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -132,8 +131,9 @@ import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
+import Tag from 'primevue/tag';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { nuclearAndGasDataModel } from '@/frameworks/nuclear-and-gas/UploadConfig';
@@ -172,6 +172,7 @@ export default defineComponent({
   },
   name: 'CreateNuclearAndGasDataset',
   components: {
+    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -181,7 +182,8 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    Calendar,
+    Tag,
+    DatePicker,
     NuclearAndGasFormElement,
     UploadReports,
     YesNoExtendedDataPointFormField,
@@ -233,8 +235,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId;
-    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    this.templateDataId = this.route.query.templateDataId ?? null;
+    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
     if (
       (this.templateDataId && typeof this.templateDataId === 'string') ||
       (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
@@ -375,3 +377,110 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+
+  .title {
+    margin: 0.25rem 0;
+  }
+
+  p {
+    margin: 0.25rem;
+  }
+
+  .formFields {
+    background: var(--upload-form-bg);
+    padding: var(--spacing-lg);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid var(--input-separator);
+    }
+  }
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+</style>

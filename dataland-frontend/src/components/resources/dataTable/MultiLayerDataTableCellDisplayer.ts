@@ -1,5 +1,5 @@
 import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
-import { type DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
 import { type DataPointDisplay } from '@/utils/DataPoint';
 
 export enum MLDTDisplayComponentName {

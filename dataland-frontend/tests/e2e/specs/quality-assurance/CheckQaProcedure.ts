@@ -41,13 +41,13 @@ describeIf(
       });
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
+        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });
     });
 
     it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
-      const data = getPreparedFixture('lighweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+      const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
@@ -88,7 +88,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   const companyName = storedCompany.companyInformation.companyName;
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, 'PENDING');
+  testDatasetPresentWithCorrectStatus(companyName, 'Pending');
 
   safeLogout();
   login(reviewer_name, reviewer_pw);
@@ -98,22 +98,22 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
-    .get('.qa-review-company-name')
+    .get('[data-test="qa-review-company-name"]')
     .should('contain', companyName);
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
-  cy.get('[data-test="qaRejectButton"').should('exist');
+  cy.get('[data-test="qaRejectButton"]').should('exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
-  cy.get('span[class=p-inputswitch-slider]').should('exist');
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-inputswitch-checked');
+  cy.get('.p-toggleswitch-slider').should('exist');
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-toggleswitch-checked');
 
-  cy.get('[data-test="qaApproveButton"').should('exist').click();
+  cy.get('[data-test="qaApproveButton"]').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, 'APPROVED');
+  testDatasetPresentWithCorrectStatus(companyName, 'Accepted');
 }
 
 /**
@@ -139,12 +139,12 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.contains('td', dataMetaInfo.dataId).click();
 
   validateThatViewPageIsInReviewMode();
-  cy.get('[data-test="qaRejectButton"').should('exist').click();
+  cy.get('[data-test="qaRejectButton"]').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'REJECTED');
+  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'Rejected');
 
   cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as('getUploadedDataset');
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
@@ -189,7 +189,7 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
     .find('.data-test-company-name')
     .should('contain', companyName);
 
-  cy.get('[data-test="datasets-table"]').get('span[data-test="qa-status"]').should('contain', status);
+  cy.get('[data-test="datasets-table"]').find('[data-test="qa-status"]').should('contain', status);
 }
 
 /**
@@ -198,8 +198,9 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
 function safeLogout(): void {
   cy.intercept('**/api-keys/getApiKeyMetaInfoForUser', { body: [] }).as('getApiKeyMetaInfoForUser');
   cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
-  cy.get("div[id='profile-picture-dropdown-toggle']").click();
-  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.get('[data-test="user-profile-toggle"]').click();
+  cy.get('a:contains("LOG OUT")').click();
+  cy.wait(Cypress.env('short_timeout_in_ms') as number);
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.contains('a', 'Login');
+  cy.get("[data-test='login-dataland-button']").should('exist');
 }

@@ -12,8 +12,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,7 +31,7 @@ import java.util.UUID
 class BulkDataRequestManagerTest {
     private lateinit var bulkDataRequestManager: BulkDataRequestManager
     private lateinit var mockBulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
-    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
     private lateinit var mockMetaDataController: MetaDataControllerApi
     private lateinit var mockEntityManager: EntityManager
 
@@ -54,7 +54,7 @@ class BulkDataRequestManagerTest {
     @BeforeEach
     fun setUpBulkDataRequestManager() {
         mockBulkDataRequestEmailMessageBuilder = mock<BulkDataRequestEmailMessageBuilder>()
-        mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
+        mockCommunityManagerDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockMetaDataController = mock<MetaDataControllerApi>()
         mockEntityManager = mock<EntityManager>()
 
@@ -62,7 +62,7 @@ class BulkDataRequestManagerTest {
             BulkDataRequestManager(
                 mock<DataRequestLogger>(),
                 mockBulkDataRequestEmailMessageBuilder,
-                mockDataRequestProcessingUtils,
+                mockCommunityManagerDataRequestProcessingUtils,
                 mockMetaDataController,
                 mockEntityManager,
                 proxyPrimaryUrl,
@@ -70,8 +70,8 @@ class BulkDataRequestManagerTest {
         TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
-    private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
-        val utilsMock = mock<DataRequestProcessingUtils>()
+    private fun createDataRequestProcessingUtilsMock(): CommunityManagerDataRequestProcessingUtils {
+        val utilsMock = mock<CommunityManagerDataRequestProcessingUtils>()
         whenever(
             utilsMock.storeDataRequestEntityAsOpen(
                 userId = anyString(),
@@ -103,19 +103,19 @@ class BulkDataRequestManagerTest {
 
     private fun assertResponse(
         expectedAccepted: List<ResourceResponse>? = emptyList(),
-        expectedAlreadyExistingNonFinal: List<ResourceResponse>? = emptyList(),
+        expectedAlreadyExistingRequests: List<ResourceResponse>? = emptyList(),
         expectedAlreadyExistingDatasets: List<ResourceResponse>? = emptyList(),
         expectedRejected: List<String>? = emptyList(),
     ) {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAccepted, response.acceptedDataRequests)
-        assertEquals(expectedAlreadyExistingNonFinal, response.alreadyExistingNonFinalRequests)
+        assertEquals(expectedAlreadyExistingRequests, response.alreadyExistingRequests)
         assertEquals(expectedAlreadyExistingDatasets, response.alreadyExistingDatasets)
         assertEquals(expectedRejected, response.rejectedCompanyIdentifiers)
     }
 
     private fun setupEmptyMocks() {
-        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+        whenever(mockCommunityManagerDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
         whenever(mockMetaDataController.retrieveMetaDataOfActiveDatasets(any())).thenReturn(emptyList)
         val mockQuery = mock<Query>()
@@ -179,7 +179,7 @@ class BulkDataRequestManagerTest {
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
             .thenReturn(mockQuery)
 
-        assertResponse(expectedAlreadyExistingNonFinal = expectedAlreadyExistingDataRequest)
+        assertResponse(expectedAlreadyExistingRequests = expectedAlreadyExistingDataRequest)
     }
 
     @Test
@@ -200,7 +200,7 @@ class BulkDataRequestManagerTest {
             ),
         )
 
-        val expectedAlreadyExistingDataSetsResponse =
+        val expectedAlreadyExistingDatasetsResponse =
             listOf(
                 ResourceResponse(
                     userProvidedIdentifier = dummyUserProvidedCompanyId,
@@ -212,14 +212,14 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        assertResponse(expectedAlreadyExistingDatasets = expectedAlreadyExistingDataSetsResponse)
+        assertResponse(expectedAlreadyExistingDatasets = expectedAlreadyExistingDatasetsResponse)
     }
 
     @Test
     fun `process bulk data request with no valid company identifiers data`() {
         setupEmptyMocks()
 
-        whenever(mockDataRequestProcessingUtils.performIdentifierValidation(anyList()))
+        whenever(mockCommunityManagerDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(emptyMap(), listOf(dummyUserProvidedCompanyId)))
 
         val expectedRejectedCompanyIdentifiers = listOf(dummyUserProvidedCompanyId)

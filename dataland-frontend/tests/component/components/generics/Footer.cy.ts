@@ -1,8 +1,8 @@
-//@ts-nocheck
 import TheFooter from '@/components/generics/TheFooter.vue';
 
 describe('Component test for the footer', () => {
   it('Check if essential elements are present', () => {
+    //@ts-ignore
     cy.mountWithPlugins(TheFooter, {});
 
     cy.get('footer').should('exist');
@@ -19,8 +19,8 @@ describe('Component test for the footer', () => {
       { href: '/terms', text: 'LEGAL' },
     ];
 
-    essentialLinks.forEach((link) => {
+    for (const link of essentialLinks) {
       cy.get(`footer a[href='${link.href}']`).should('contain.text', link.text);
-    });
+    }
   });
 });

@@ -68,7 +68,7 @@ class PortfolioService
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             logger.info("Retrieve all portfolios for user with userId: $userId. CorrelationId: $correlationId.")
-            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
         }
 
         /**
@@ -107,7 +107,7 @@ class PortfolioService
                 "By order of admin with userId $adminId, retrieve all portfolios for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
-            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
         }
 
         /**
@@ -144,7 +144,7 @@ class PortfolioService
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
 
-            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(portfolio)
+            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(portfolio)
 
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
@@ -177,7 +177,7 @@ class PortfolioService
                     portfolio.monitoredFrameworks,
                 )
 
-            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
+            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
 
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }

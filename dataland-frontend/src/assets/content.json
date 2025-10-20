@@ -6,13 +6,12 @@
       "sections": [
         {
           "title": "Welcome to Dataland",
-          "text": ["This is the main introduction of our homepage."],
-          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"]
+          "text": ["This is the main introduction of our homepage."]
         },
         {
           "title": "Intro",
           "text": ["Liberate Data - ", "Empower Autonomy.  ", "The alternative to data monopolies."],
-          "image": ["/static/logos/Dataland_D_svg_Logo.svg"],
+          "image": ["/static/logos/gfx_logo_d_orange_S.svg"],
           "cards": [
             {
               "icon": "/static/icons/Search.svg",
@@ -199,21 +198,25 @@
           ],
           "cards": [
             {
-              "title": "VSME",
-              "text": "Captures companies' progress on material sustainability issues, enabling them to respond to capital providers and stakeholders efficiently and proportionally.",
-              "date": "14th of August"
-            },
-            {
-              "title": "LkSG",
-              "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
-            },
-            {
               "title": "EU Taxonomy",
               "text": "The EU Taxonomy Regulation supports companies to capture their environmentally sustainable economic activities."
             },
             {
               "title": "SFDR",
               "text": "SFDR helps investors to properly assess how sustainability risks are integrated in the investment decision process."
+            },
+            {
+              "title": "PCAF",
+              "text": "The PCAF standard provides guidance on how to classify, calculate, and report financed emissions."
+            },
+            {
+              "title": "LkSG",
+              "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
+            },
+            {
+              "title": "VSME",
+              "text": "Captures companies' progress on material sustainability issues, enabling them to respond to capital providers and stakeholders efficiently and proportionally.",
+              "date": "14th of August"
             }
           ]
         },

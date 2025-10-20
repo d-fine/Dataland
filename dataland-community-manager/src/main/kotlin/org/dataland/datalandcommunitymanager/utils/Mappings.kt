@@ -10,4 +10,5 @@ val readableFrameworkNameMapping: Map<DataTypeEnum, String> =
         DataTypeEnum.lksg to "LkSG",
         DataTypeEnum.sfdr to "SFDR",
         DataTypeEnum.vsme to "VSME",
+        DataTypeEnum.pcaf to "PCAF",
     )

@@ -11,7 +11,7 @@ describe('As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, '0')).join('');
 
   it('Checks that the Dataland password-policy gets respected', () => {
-    cy.visitAndCheckAppMount('/').get("button[name='signup_dataland_button']").click();
+    cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
 
     const typePasswordAndExpectError = (password: string, errorMessageSubstring: string): void => {
@@ -35,7 +35,7 @@ describe('As a user I want to be able to register for an account and be able to 
   it('Checks that registering works', () => {
     cy.task('setEmail', email);
     cy.task('setPassword', randomHexPassword);
-    cy.visitAndCheckAppMount('/').get("button[name='signup_dataland_button']").click();
+    cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
     cy.get('#firstName').should('exist').type(firstName, { force: true });
     cy.get('#lastName').should('exist').type(lastName, { force: true });
@@ -102,8 +102,8 @@ describe('As a user I want to be able to register for an account and be able to 
           }
           login(returnEmail, returnPassword);
           cy.visitAndCheckAppMount('/companies');
-          cy.get("div[id='profile-picture-dropdown-toggle']").click();
-          cy.get("a[id='profile-picture-dropdown-settings-button']").click();
+          cy.get("[data-test='user-profile-toggle']").click();
+          cy.get('.p-menu-item-link').contains('USER SETTINGS').click();
           // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(100);
           cy.get("button:contains('Account security')").should('exist').click();
@@ -118,7 +118,7 @@ describe('As a user I want to be able to register for an account and be able to 
             .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
             .invoke('text')
             .then((text) => {
-              const totpKey = text.replace(/\s/g, '');
+              const totpKey = text.replaceAll(/\s/g, '');
               cy.get("input[id='totp']").type(authenticator.generate(totpKey));
               cy.get("input[id='saveTOTPBtn']").click();
               cy.get(`button:contains('${firstName} ${lastName}')`).click();

@@ -1,8 +1,8 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
+import org.dataland.datalandbatchmanager.service.CompanyInformationParser
 import org.dataland.datalandbatchmanager.service.CompanyUploader
-import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.junit.jupiter.api.BeforeAll
@@ -20,7 +20,7 @@ import java.io.File
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NorthDataIngestorTest {
     private val mockNorthDataAccessor = mock(NorthDataAccessor::class.java)
-    private val mockCsvParser = mock(CsvParser::class.java)
+    private val mockCompanyInformationParser = mock(CompanyInformationParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
 
     private val dummyLei = "dummyLei"
@@ -64,10 +64,10 @@ class NorthDataIngestorTest {
 
         val mockFile = mock(File::class.java)
         val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
-        `when`(mockCsvParser.getCsvStreamFromNorthDataZipFile(any() ?: mockFile)).thenReturn(emptyBufferedReader)
-        `when`(mockCsvParser.readNorthDataFromBufferedReader(emptyBufferedReader)).thenReturn(infoIterable)
+        `when`(mockCompanyInformationParser.getCsvStreamFromNorthDataZipFile(any() ?: mockFile)).thenReturn(emptyBufferedReader)
+        `when`(mockCompanyInformationParser.readNorthDataFromBufferedReader(emptyBufferedReader)).thenReturn(infoIterable)
 
-        val northDataIngestor = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
+        val northDataIngestor = NorthdataDataIngestor(mockCompanyUploader, mockCompanyInformationParser)
         northDataIngestor.processNorthdataFile(mockNorthDataAccessor::getFullGoldenCopy)
 
         uploadsForCombinationsOfStatusAndIdentifiers.forEach {

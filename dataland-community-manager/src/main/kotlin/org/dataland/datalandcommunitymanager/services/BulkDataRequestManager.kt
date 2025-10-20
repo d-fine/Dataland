@@ -13,8 +13,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestRe
 import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -31,7 +31,7 @@ import java.util.UUID
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageBuilder,
-    @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val utils: CommunityManagerDataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
@@ -160,7 +160,7 @@ class BulkDataRequestManager(
      * @param dataDimensions List of data dimensions to filter the requests.
      * @param userId The ID of the user for whom to retrieve the active requests.
      */
-    fun getActiveRequests(
+    fun getExistingRequests(
         dataDimensions: List<DatasetDimensions>,
         userId: String,
     ): List<DataRequestEntity> {
@@ -170,18 +170,14 @@ class BulkDataRequestManager(
             }
 
         val queryToExecute =
-            """WITH history AS (SELECT *, ROW_NUMBER()
-                OVER (PARTITION BY data_request_id ORDER BY creation_timestamp DESC) AS num_row FROM request_status_history)
-                SELECT d.* FROM data_requests d
-                JOIN (SELECT * FROM history
-                WHERE num_row = 1 AND request_status IN ('Open', 'Answered')) h
-                ON d.data_request_id = h.data_request_id
+            """SELECT * FROM data_requests d
                 WHERE (d.dataland_company_id, d.data_type, d.reporting_period) IN ($formattedTuples)
                 AND d.user_id = '$userId'"""
 
         return if (dataDimensions.isNotEmpty()) {
             val query = entityManager.createNativeQuery(queryToExecute, DataRequestEntity::class.java)
-            return (query.resultList as List<DataRequestEntity>)
+            return query.resultList
+                .filterIsInstance<DataRequestEntity>()
         } else {
             emptyList()
         }
@@ -199,7 +195,7 @@ class BulkDataRequestManager(
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
         val userId = DatalandAuthentication.fromContext().userId
-        val existingRequests = getActiveRequests(validDataDimensions, userId)
+        val existingRequests = getExistingRequests(validDataDimensions, userId)
         val existingDataRequestsResponse =
             existingRequests.map {
                 val (userProvidedCompanyId, companyName) =
@@ -339,7 +335,7 @@ class BulkDataRequestManager(
         correlationId: String,
     ): BulkDataRequestResponse {
         val requestsToProcess = acceptedRequestCombinations.toMutableList()
-        val existingNonFinalRequests =
+        val existingRequests =
             processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
         val acceptedRequests =
             storeDataRequests(
@@ -353,7 +349,7 @@ class BulkDataRequestManager(
         val bulkRequestResponse =
             BulkDataRequestResponse(
                 acceptedDataRequests = acceptedRequests,
-                alreadyExistingNonFinalRequests = existingNonFinalRequests,
+                alreadyExistingRequests = existingRequests,
                 alreadyExistingDatasets = existingDatasetsResponse,
                 rejectedCompanyIdentifiers = rejectedIdentifiers,
             )

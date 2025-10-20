@@ -79,7 +79,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import {
   type YesNo,
   type Activity,
@@ -197,48 +197,46 @@ export default defineComponent({
       naceCodes: activity.naceCodes,
     }));
 
-    this.mainColumnData = this.listOfRowContents
-      .map((col) => [
-        ...createKpiGroupData(col, this.kpiKeyOfTable),
-        ...createActivityGroupData<number>(
-          col.activityName as string,
-          'substantialContributionCriteria',
-          {
-            substantialContributionToClimateChangeMitigationInPercent:
-              col.substantialContributionToClimateChangeMitigationInPercent,
-            substantialContributionToClimateChangeAdaptationInPercent:
-              col.substantialContributionToClimateChangeAdaptationInPercent,
-            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-              col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-            substantialContributionToTransitionToACircularEconomyInPercent:
-              col.substantialContributionToTransitionToACircularEconomyInPercent,
-            substantialContributionToPollutionPreventionAndControlInPercent:
-              col.substantialContributionToPollutionPreventionAndControlInPercent,
-            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-              col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-          },
-          formatPercentageNumberAsString
-        ),
-        ...createActivityGroupData<YesNo>(
-          col.activityName as string,
-          'dnshCriteria',
-          {
-            dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
-            dnshToClimateChangeAdaptation: col.dnshToClimateChangeAdaptation,
-            dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
-              col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
-            dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
-            dnshToPollutionPreventionAndControl: col.dnshToPollutionPreventionAndControl,
-            dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
-              col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
-          },
-          (value: YesNo) => (value ? `${value}` : '')
-        ),
-        ...createMinimumSafeguardsGroupData(col),
-        ...createEnablingActivityGroupData(col),
-        ...createTransitionalActivityGroupData(col),
-      ])
-      .flat();
+    this.mainColumnData = this.listOfRowContents.flatMap((col) => [
+      ...createKpiGroupData(col, this.kpiKeyOfTable),
+      ...createActivityGroupData<number>(
+        col.activityName as string,
+        'substantialContributionCriteria',
+        {
+          substantialContributionToClimateChangeMitigationInPercent:
+            col.substantialContributionToClimateChangeMitigationInPercent,
+          substantialContributionToClimateChangeAdaptationInPercent:
+            col.substantialContributionToClimateChangeAdaptationInPercent,
+          substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+            col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+          substantialContributionToTransitionToACircularEconomyInPercent:
+            col.substantialContributionToTransitionToACircularEconomyInPercent,
+          substantialContributionToPollutionPreventionAndControlInPercent:
+            col.substantialContributionToPollutionPreventionAndControlInPercent,
+          substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+            col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+        },
+        formatPercentageNumberAsString
+      ),
+      ...createActivityGroupData<YesNo>(
+        col.activityName as string,
+        'dnshCriteria',
+        {
+          dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
+          dnshToClimateChangeAdaptation: col.dnshToClimateChangeAdaptation,
+          dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
+            col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
+          dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
+          dnshToPollutionPreventionAndControl: col.dnshToPollutionPreventionAndControl,
+          dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
+            col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
+        },
+        (value: YesNo) => (value ? `${value}` : '')
+      ),
+      ...createMinimumSafeguardsGroupData(col),
+      ...createEnablingActivityGroupData(col),
+      ...createTransitionalActivityGroupData(col),
+    ]);
 
     this.mainColumnGroups = [
       { key: '_kpi', label: '', colspan: this.findMaxColspanForGroup('_kpi') },
@@ -443,3 +441,15 @@ function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity
   ];
 }
 </script>
+<style scoped>
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+</style>

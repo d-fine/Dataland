@@ -1,73 +1,86 @@
 <template data-test="downloadModal">
-  <div class="download-content d-flex flex-column align-items-center">
-    <FormKit type="form" class="formkit-wrapper" :actions="false">
-      <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">Framework</b>
-      </label>
-      <FormKit
+  <div class="download-content d-flex flex-column">
+    <div>
+      <p class="header-styling">Framework</p>
+      <PrimeSelect
+        class="component-styling"
         :options="availableFrameworks"
         v-model="selectedFramework"
+        option-label="label"
+        option-value="value"
+        label="Framework"
         data-test="frameworkSelector"
         type="select"
-        name="frameworkSelector"
-        @input="onFrameworkChange"
+        :highlightOnSelect="false"
+        @change="onFrameworkChange"
       />
-      <p v-show="showFrameworksError" class="text-danger" data-test="frameworkError">Please select Framework.</p>
-      <label for="reportingYearSelector">
-        <b style="margin-bottom: 8px; font-weight: normal">Reporting period</b>
-      </label>
-      <div class="flex flex-wrap gap-2 py-2">
-        <ToggleChipFormInputs
-          :key="selectedFramework || 'no-framework'"
-          name="listOfReportingPeriods"
-          :selectedOptions="selectableReportingPeriodOptions"
-          :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
-          data-test="listOfReportingPeriods"
-          class="toggle-chip-group"
-        />
-      </div>
-      <p v-show="showReportingPeriodError" class="text-danger" data-test="reportingYearError">
+      <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
+        Please select a framework.
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">Reporting Period</p>
+      <ToggleChipFormInputs
+        :key="selectedFramework || 'no-framework'"
+        name="listOfReportingPeriods"
+        :selectedOptions="selectableReportingPeriodOptions"
+        :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
+        data-test="listOfReportingPeriods"
+        class="toggle-chip-group"
+      />
+      <Message
+        v-if="showReportingPeriodError"
+        severity="error"
+        variant="simple"
+        size="small"
+        data-test="reportingYearError"
+      >
         Please select a reporting period.
-      </p>
-      <label for="fileTypeSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
-      </label>
-      <FormKit
+      </Message>
+    </div>
+    <div>
+      <p class="header-styling">File type</p>
+      <PrimeSelect
         v-model="selectedFileType"
         type="select"
-        name="fileTypeSelector"
         data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
+        option-label="label"
+        option-value="value"
         placeholder="Select a file type"
         @change="showFileTypeError = false"
+        :highlightOnSelect="false"
+        fluid
       />
-      <p v-show="showFileTypeError" class="text-danger" data-test="fileTypeError">Please select a file type.</p>
-      <div class="flex align-content-start align-items-center">
-        <InputSwitch
+      <Message v-if="showFileTypeError" severity="error" variant="simple" size="small" data-test="fileTypeError">
+        Please select a file type.
+      </Message>
+    </div>
+    <div>
+      <div class="toggle-switch-wrapper">
+        <ToggleSwitch
           v-model="keepValuesOnly"
-          class="form-field vertical-middle"
           data-test="valuesOnlySwitch"
           @change="!keepValuesOnly ? (includeAlias = false) : includeAlias"
         />
-        <span data-test="portfolioExportValuesOnlyToggleCaption" class="ml-2"> Values only </span>
+        <p data-test="portfolioExportValuesOnlyToggleCaption">Values only</p>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3" style="margin-bottom: 2rem; display: block">
+      <div class="dataland-info-text small">
         Download only data values. Turn off to include additional details, e.g. comment, data source, etc. Only
         applicable for CSV and Excel file types.
-      </span>
-      <div class="flex align-content-start align-items-center">
-        <InputSwitch
-          v-model="includeAlias"
-          class="form-field vertical-middle"
-          data-test="includeAliasSwitch"
-          @change="includeAlias ? (keepValuesOnly = true) : keepValuesOnly"
-        />
-        <span data-test="portfolioExportIncludeAliasToggleCaption" class="ml-2"> Shorten field names </span>
       </div>
-      <span class="gray-text font-italic text-xs ml-0 mb-3">
-        Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
-      </span>
-    </FormKit>
+    </div>
+    <div class="toggle-switch-wrapper">
+      <ToggleSwitch
+        v-model="includeAlias"
+        data-test="includeAliasSwitch"
+        @change="includeAlias ? (keepValuesOnly = true) : keepValuesOnly"
+      />
+      <p data-test="portfolioExportIncludeAliasToggleCaption">Shorten field names</p>
+    </div>
+    <div class="dataland-info-text small">
+      Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
+    </div>
     <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
       {{ dialogRef?.data?.downloadErrors }}
     </Message>
@@ -90,12 +103,13 @@ import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, DOWNLOADABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
+import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -119,7 +133,6 @@ const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
-const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
 const fileTypeSelectionOptions = computed(() => {
@@ -130,9 +143,9 @@ const fileTypeSelectionOptions = computed(() => {
 });
 
 const availableFrameworks = computed(() => {
-  const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
+  const frameworks = new Set(reportingPeriodsPerFramework.value.keys());
 
-  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
+  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.has(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));
@@ -144,15 +157,25 @@ onMounted(() => {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
-  if (selectedFramework.value) {
-    onFrameworkChange(selectedFramework.value);
+  if (!selectedFramework.value) {
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onModalOpen();
+  updateReportingPeriod();
 });
+
+/**
+ * Handles changing framework selections
+ * @param event - SelectChangeEvent from PrimeSelect
+ */
+function onFrameworkChange(event: SelectChangeEvent): void {
+  resetErrors();
+  selectedFramework.value = event.value as DataTypeEnum;
+  updateReportingPeriod();
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
@@ -164,35 +187,22 @@ function resetErrors(): void {
 }
 
 /**
- * Handles changing framework selections
- * @param framework selected framework by user
+ * Handles changing framework selections by updating the reporting periods accordingly
  */
-function onFrameworkChange(framework: string | undefined): void {
-  resetErrors();
+function updateReportingPeriod(): void {
+  const reportingPeriods = selectedFramework.value
+    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
+    : [];
 
-  const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
-
-  selectedFramework.value = framework as DataTypeEnum;
-
-  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
-    value: reportingPeriods.includes(period.toString()),
+  allReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
+    value: reportingPeriods.includes(period),
   }));
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
-}
-
-/**
- * Sets predefined framework for default
- */
-function onModalOpen(): void {
-  if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
-  }
-  onFrameworkChange(selectedFramework.value);
 }
 
 /**
@@ -235,8 +245,22 @@ function checkIfShowErrors(): void {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/scss/variables.scss';
+<style scoped>
+.toggle-switch-wrapper {
+  display: flex;
+  align-items: center;
+  align-content: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.header-styling {
+  font-weight: var(--font-weight-bold);
+}
+
+.component-styling {
+  margin-bottom: var(--spacing-xs);
+  width: 100%;
+}
 
 .download-content {
   width: 20em;
@@ -247,21 +271,11 @@ function checkIfShowErrors(): void {
   display: flex;
   flex-direction: column;
 }
+
 .toggle-chip-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
-
-  .chip {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-    flex: 1 1 auto;
-    max-width: 5rem;
-    text-align: center;
-  }
 }
 </style>

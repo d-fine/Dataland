@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import java.text.SimpleDateFormat
 
@@ -20,23 +19,6 @@ object TransformationUtils {
     const val COMPANY_NAME_HEADER = "Company Name"
     const val REPORTING_PERIOD_HEADER = "Reporting Period"
     private const val NODE_FILTER = ".referencedReports."
-
-    /**
-     * Method to extract the mapping of LEI to ISIN from the given company data
-     * @param companyData the company data containing the LEI and ISINs
-     * @return a list of mappings from LEI to ISIN (empty list if no LEI or ISINs are present)
-     */
-    fun getLeiToIsinMapping(companyData: CompanyInformation): List<Map<String, String>> {
-        val lei = companyData.identifiers[LEI_IDENTIFIER] ?: emptyList()
-        val isins = companyData.identifiers[ISIN_IDENTIFIER] ?: emptyList()
-        val leiToIsinData = mutableListOf(mapOf<String, String>())
-        if (lei.isNotEmpty()) {
-            isins.forEach { isin ->
-                leiToIsinData.add(mapOf(LEI_HEADER to lei.first(), ISIN_HEADER to isin))
-            }
-        }
-        return leiToIsinData
-    }
 
     /**
      * Gets the headers from the transformation rules and legacy rules

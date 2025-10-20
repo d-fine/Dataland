@@ -1,36 +1,27 @@
 <template>
-  <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
+  <div :data-test="dataTest" class="mb-3 p-0 -ml-2">
     <div data-test="toggleDataPointWrapper">
-      <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
-        <InputSwitch
+      <div class="px-2 py-3 vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
+        <ToggleSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
-          @click="handleToggleClick"
           v-model="dataPointIsAvailable"
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
       </div>
       <div class="px-2 pt-3" v-if="isYesNoVariant">
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
-        <FormKit
-          type="checkbox"
-          name="name"
-          v-model="checkboxValue"
-          :options="options"
-          :outer-class="{
-            'yes-no-radio': true,
-          }"
-          :inner-class="{
-            'formkit-inner': false,
-          }"
-          :input-class="{
-            'formkit-input': false,
-            'p-radiobutton': true,
-          }"
-          :ignore="true"
-          :plugins="[disabledOnMoreThanOne]"
-          @input="updateCurrentValue($event)"
-        />
+        <div class="yes-no-checkboxes">
+          <div v-for="(labelText, value) in options" :key="value" class="yes-no-option">
+            <Checkbox
+              v-model="checkboxValue"
+              :inputId="`yes-no-${value}`"
+              :value="value"
+              @change="updateYesNoValue()"
+            />
+            <label :for="`yes-no-${value}`">{{ labelText }}</label>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -39,7 +30,7 @@
         <FormKit
           type="text"
           name="value"
-          v-model="currentValue"
+          v-model="yesNoValue"
           :placeholder="placeholder"
           :validation="validation"
           :validation-label="validationLabel"
@@ -131,14 +122,14 @@
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
 import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Checkbox from 'primevue/checkbox';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
-import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
@@ -147,7 +138,7 @@ import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export default defineComponent({
   name: 'ExtendedDataPointFormField',
-  components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, UploadFormHeader, FormKit, ToggleSwitch, Checkbox },
   inject: {
     injectReportsNameAndReferences: {
       from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
@@ -177,6 +168,7 @@ export default defineComponent({
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
+      yesNoValue: undefined as string | undefined,
     };
   },
   mounted() {
@@ -226,17 +218,35 @@ export default defineComponent({
   },
   watch: {
     currentValue(newVal: string) {
-      if (!this.firstAssignmentWhileEditModeWasDone) {
+      if (this.firstAssignmentWhileEditModeWasDone) {
+        return;
+      } else {
         this.setCheckboxValue(newVal);
         this.firstAssignmentWhileEditModeWasDone = true;
-      } else {
+      }
+    },
+
+    checkboxValue(newArr: string[]) {
+      if (newArr.length > 1) {
+        const last = newArr.at(-1);
+        if (last === undefined) return;
+        this.checkboxValue = [last];
+        this.yesNoValue = last;
         return;
       }
+
+      if (newArr.length === 1) {
+        const [only] = newArr;
+        if (this.yesNoValue === only) return;
+
+        this.yesNoValue = only;
+        return;
+      }
+      this.yesNoValue = undefined;
     },
   },
   methods: {
     validatePageNumber,
-    disabledOnMoreThanOne,
 
     /**
      * A function that rewrite value to select the appropriate checkbox
@@ -248,25 +258,51 @@ export default defineComponent({
       }
     },
     /**
-     * Toggle dataPointIsAvailable variable value
-     */
-    handleToggleClick(): void {
-      this.dataPointIsAvailable = !this.dataPointIsAvailable;
-    },
-    /**
      * updateCurrentValue
-     * @param checkboxValue checkboxValue
      */
-    updateCurrentValue(checkboxValue: string[] | undefined) {
-      if (checkboxValue && checkboxValue[0]) {
+    updateYesNoValue() {
+      if (this.checkboxValue.length) {
         this.dataPointIsAvailable = true;
-        this.currentValue = checkboxValue[0];
       } else {
         this.dataPointIsAvailable = false;
-        this.currentValue = undefined;
-        this.dataPoint = {};
+        this.yesNoValue = undefined;
       }
     },
   },
 });
 </script>
+<style scoped>
+.vertical-middle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.yes-no-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.yes-no-checkboxes {
+  display: flex; /* lay children out in a row */
+  gap: 7rem; /* space between each checkbox+label */
+  align-items: center; /* vertical align if labels differ in height */
+}
+
+.yes-no-checkboxes input[type='checkbox']:hover {
+  /* pointer cursor on the box itself */
+  cursor: pointer;
+}
+
+.yes-no-checkboxes label {
+  /* smooth transition if you like */
+  transition: background-color 0.2s ease;
+}
+
+.yes-no-checkboxes label:hover {
+  /* pointer + background on hover */
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>

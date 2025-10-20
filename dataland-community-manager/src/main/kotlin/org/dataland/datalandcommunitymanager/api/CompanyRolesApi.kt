@@ -63,7 +63,7 @@ interface CompanyRolesApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')" +
-            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole, #userId)",
     )
     fun assignCompanyRole(
         @CompanyRoleParameterRequired
@@ -132,7 +132,7 @@ interface CompanyRolesApi {
         @RequestParam("userId", required = false)
         @Parameter(
             description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
             required = false,
         )
         userId: UUID? = null,
@@ -162,7 +162,7 @@ interface CompanyRolesApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN')" +
-            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole, #userId)",
     )
     fun removeCompanyRole(
         @Parameter(

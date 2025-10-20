@@ -1,10 +1,10 @@
 package org.dataland.datalandbatchmanager.service
 
-import org.apache.commons.io.FileUtils
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.IsinLeiMappingData
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.Locale
@@ -16,18 +16,16 @@ import kotlin.time.measureTime
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param gleifParser reads in the xml file from GLEIF and creates GleifCompanyInformation objects
  */
 @Suppress("LongParameterList")
 @Component
 class GleifGoldenCopyIngestor(
+    @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
-    @Autowired private val gleifParser: CsvParser,
+    @Autowired private val gleifParser: CompanyInformationParser,
     @Autowired private val companyUploader: CompanyUploader,
-    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Autowired private val relationshipExtractor: RelationshipExtractor,
-    @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
-    private val savedIsinMappingFile: File,
 ) {
     companion object {
         const val UPLOAD_THREAD_POOL_SIZE = 32
@@ -95,43 +93,51 @@ class GleifGoldenCopyIngestor(
     }
 
     /**
+     * Extracts the ISIN-LEI mapping from the given file
+     * @param file the file containing the ISIN-LEI mapping data
+     * @return a list of IsinLeiMappingData objects
+     */
+    fun extractIsinLeiMapping(file: File): List<IsinLeiMappingData> {
+        val csvLines = file.readLines()
+        return csvLines.drop(1).map { line ->
+            val parts = line.split(",")
+            IsinLeiMappingData(
+                isin = parts[1].trim(),
+                lei = parts[0].trim(),
+            )
+        }
+    }
+
+    /**
      * Starting point for ISIN mapping file handling
-     * @param doFullIsinUpdate if true, processes full ISIN mapping file instead of using delta
      */
     @Synchronized
-    fun processIsinMappingFile(doFullIsinUpdate: Boolean = false) {
+    fun processIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
-        val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
+        val newMappingFile = File.createTempFile("gleif_mapping_update", ".xml")
         val duration =
             measureTime {
                 gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
-                val deltaMapping: Map<String, Set<String>> =
-                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L || doFullIsinUpdate) {
-                        isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
-                    } else {
-                        isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
-                    }
-                val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
-                FileUtils.copyFile(newMappingFile, newPersistentFile)
+                val isinLeiMappingData = extractIsinLeiMapping(newMappingFile)
+                logger.info("Extracted ${isinLeiMappingData.size} ISIN-LEI mappings from file $newMappingFile.")
+                isinLeiDataControllerApi.postIsinLeiMapping(isinLeiMappingData)
                 if (!newMappingFile.delete()) {
                     logger.error("failed to delete temporary mapping file $newMappingFile")
                 }
-                companyUploader.updateIsins(deltaMapping)
-                replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
             }
         logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
 
     private fun uploadCompanies(zipFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifIterable = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream)
+        val gleifDataStream = gleifParser.getXmlStreamFromZip(zipFile)
+        val gleifRecords = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream).leiRecords
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
             uploadThreadPool
                 .submit {
                     StreamSupport
-                        .stream(gleifIterable.spliterator(), true)
+                        .stream(gleifRecords.spliterator(), true)
                         .forEach {
                             companyUploader.uploadOrPatchSingleCompany(
                                 GleifCompanyCombinedInformation(
@@ -153,19 +159,4 @@ class GleifGoldenCopyIngestor(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
                 )
             }
-
-    /**
-     * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
-     * @param newMappingFile latest version of the LEI-ISIN mapping file
-     */
-    fun replaceOldMappingFile(newMappingFile: File) {
-        try {
-            newMappingFile.copyTo(savedIsinMappingFile, true)
-            if (!newMappingFile.delete()) {
-                logger.error("failed to delete file $newMappingFile")
-            }
-        } catch (e: FileSystemException) {
-            logger.error("Error while replacing the old mapping file: ${e.message}")
-        }
-    }
 }

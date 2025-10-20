@@ -36,11 +36,16 @@ function convertHighImpactClimateToListForModal(
     const value = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh;
     const revenueValue = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue;
 
-    if (!value && !revenueValue) {
+    if ((!value && !revenueValue) || !naceCodeType) {
+      continue;
+    }
+
+    const sector = HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys];
+    if (!sector) {
       continue;
     }
     listForModal.push({
-      sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys],
+      sector,
       energyConsumption: {
         value: `${value?.value ? value.value.toString() + ' GWh' : 'No data provided'}`,
         dataSource: value?.dataSource,

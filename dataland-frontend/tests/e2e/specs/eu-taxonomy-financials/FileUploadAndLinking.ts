@@ -17,23 +17,6 @@ describeIf(
   },
   function () {
     const uploadReports = new UploadReports('referencedReports');
-    /**
-     * Clicks the report dropdown in a datapoint and selects a report.
-     * @param fullLabelOfDatapoint determines the datapoint of which the dropdown will be clicked
-     * @param reportName determines the report that will be chosen from the dropdown
-     */
-    function selectReportForDatapoint(fullLabelOfDatapoint: string, reportName: string): void {
-      selectItemFromDropdownByValue(
-        cy
-          .get('h5')
-          .contains(fullLabelOfDatapoint + ' Report')
-          .parent()
-          .parent()
-          .parent()
-          .find(`[name="fileName"]`),
-        reportName
-      );
-    }
 
     it('Check if the files upload works as expected', () => {
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
@@ -59,17 +42,26 @@ describeIf(
 
         uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
 
-        cy.get('div.form-field:contains("Assurance")').find('div.p-dropdown').click();
-        cy.get('.p-dropdown-item').contains('None').click();
+        cy.get('div.form-field:contains("Assurance")').find('div.p-select').click();
+        cy.get('.p-select-option').contains('None').click();
 
-        cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').click();
-        selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);
+        cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').within(() => {
+          cy.get('#dataPointIsAvailableSwitch').click();
+        });
+        selectItemFromDropdownByValue(
+          cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
+          TEST_PDF_FILE_NAME
+        );
 
         cy.get(
           'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
-        ).click();
-        selectReportForDatapoint(
-          'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)',
+        ).within(() => {
+          cy.get('#dataPointIsAvailableSwitch').click();
+        });
+        selectItemFromDropdownByValue(
+          cy
+            .get(`[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"]`)
+            .find(`[data-test="dataReport"]`),
           `${TEST_PDF_FILE_NAME}2`
         );
 
@@ -97,7 +89,7 @@ describeIf(
         checkIfLinkedReportsAreDownloadable(storedCompanyId);
         gotoEditForm(storedCompanyId, true);
         uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
-        cy.get('.p-dialog.p-component [data-pc-section="closebutton"]').click();
+        cy.get('.p-dialog-header').find('button[data-pc-name="pcclosebutton"]').click();
         cy.get('.p-dialog.p-component').should('not.exist');
 
         uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {

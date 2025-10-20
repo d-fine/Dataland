@@ -13,43 +13,62 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
+/**
+ * Asserts the number of rows with actual data the result table has
+ * @param expectedNumber represents the expectation
+ */
+function assertNumberOfSearchResults(expectedNumber: number): void {
+  cy.get('tr[data-pc-section="bodyrow"]').should('have.length', expectedNumber);
+}
+
+/**
+ * Asserts that there is a search result with the expected email address as requester email address
+ * @param emailAddress is the expected email address
+ */
+function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
+  cy.contains('td', emailAddress);
+}
+
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
   let mockRequestsLarge: ExtendedStoredDataRequest[];
   const chunkSize = 100;
 
   /**
+   * A collection of fields of extended stored data requests that can be filtered by.
+   */
+  type FilterParameters = {
+    userEmailAddress: string;
+    framework: DataTypeEnum;
+    requestStatus: RequestStatus;
+    accessStatus: AccessStatus;
+    adminComment: string;
+    requestPriority: RequestPriority;
+    companyName: string | undefined;
+    reportingPeriod: string | undefined;
+  };
+
+  /**
    * Generates one ExtendedStoredDataRequest type object
-   * @param userEmailAddress of the requesting user
-   * @param framework for which data has been requested
-   * @param requestStatus of the data request
-   * @param accessStatus of the data request
-   * @param adminComment of the data request
-   * @param requestPriority of the data request
+   * @param filterParameters contains all parameters that can be set. If companyName and/or reportingPeriod
+   * is undefined, a random value will be chosen using faker
    * @returns the generated ExtendedStoredDataRequest
    */
-  function generateExtendedStoredDataRequest(
-    userEmailAddress: string,
-    framework: DataTypeEnum,
-    requestStatus: RequestStatus,
-    accessStatus: AccessStatus,
-    adminComment: string,
-    requestPriority: RequestPriority
-  ): ExtendedStoredDataRequest {
+  function generateExtendedStoredDataRequest(filterParameters: FilterParameters): ExtendedStoredDataRequest {
     return {
       dataRequestId: crypto.randomUUID(),
       userId: crypto.randomUUID(),
-      userEmailAddress: userEmailAddress,
+      userEmailAddress: filterParameters.userEmailAddress,
       creationTimestamp: Date.now(),
-      dataType: framework,
-      reportingPeriod: faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
+      dataType: filterParameters.framework,
+      reportingPeriod: filterParameters.reportingPeriod ?? faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
       datalandCompanyId: crypto.randomUUID(),
-      companyName: faker.company.name(),
+      companyName: filterParameters.companyName ?? faker.company.name(),
       lastModifiedDate: Date.now(),
-      requestStatus: requestStatus,
-      accessStatus: accessStatus,
-      adminComment: adminComment,
-      requestPriority: requestPriority,
+      requestStatus: filterParameters.requestStatus,
+      accessStatus: filterParameters.accessStatus,
+      adminComment: filterParameters.adminComment,
+      requestPriority: filterParameters.requestPriority,
     };
   }
 
@@ -63,41 +82,58 @@ describe('Component test for the admin-requests-overview page', () => {
   const commentGamma = 'Another test comment';
   const commentDelta = 'The last test comment';
   const commentSearchTerm = commentBeta.substring(0, 3);
+  const companyNameAlpha = 'Fun company';
+  const companyNameBeta = 'Funny company';
+  const companyNameGamma = 'Serious company';
+  const companyNameDelta = 'Neutral company';
+  const companyNameSearchTerm = companyNameAlpha.substring(0, 3);
+  const reportingPeriodAlpha = '2020';
+  const reportingPeriodBeta = '2021';
+  const reportingPeriodGamma = '2022';
+  const reportingPeriodDelta = '2023';
 
   before(function () {
     mockRequests = [
-      generateExtendedStoredDataRequest(
-        mailAlpha,
-        DataTypeEnum.Lksg,
-        RequestStatus.Open,
-        AccessStatus.Public,
-        commentAlpha,
-        RequestPriority.Urgent
-      ),
-      generateExtendedStoredDataRequest(
-        mailBeta,
-        DataTypeEnum.EutaxonomyFinancials,
-        RequestStatus.Answered,
-        AccessStatus.Declined,
-        commentGamma,
-        RequestPriority.High
-      ),
-      generateExtendedStoredDataRequest(
-        mailGamma,
-        DataTypeEnum.Vsme,
-        RequestStatus.Answered,
-        AccessStatus.Declined,
-        commentGamma,
-        RequestPriority.High
-      ),
-      generateExtendedStoredDataRequest(
-        mailDelta,
-        DataTypeEnum.Sfdr,
-        RequestStatus.Resolved,
-        AccessStatus.Public,
-        commentDelta,
-        RequestPriority.Low
-      ),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailAlpha,
+        framework: DataTypeEnum.Lksg,
+        requestStatus: RequestStatus.Open,
+        accessStatus: AccessStatus.Public,
+        adminComment: commentAlpha,
+        requestPriority: RequestPriority.Urgent,
+        companyName: companyNameAlpha,
+        reportingPeriod: reportingPeriodAlpha,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailBeta,
+        framework: DataTypeEnum.EutaxonomyFinancials,
+        requestStatus: RequestStatus.Answered,
+        accessStatus: AccessStatus.Declined,
+        adminComment: commentBeta,
+        requestPriority: RequestPriority.High,
+        companyName: companyNameBeta,
+        reportingPeriod: reportingPeriodBeta,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailGamma,
+        framework: DataTypeEnum.Vsme,
+        requestStatus: RequestStatus.Answered,
+        accessStatus: AccessStatus.Declined,
+        adminComment: commentGamma,
+        requestPriority: RequestPriority.High,
+        companyName: companyNameGamma,
+        reportingPeriod: reportingPeriodGamma,
+      }),
+      generateExtendedStoredDataRequest({
+        userEmailAddress: mailDelta,
+        framework: DataTypeEnum.Sfdr,
+        requestStatus: RequestStatus.Resolved,
+        accessStatus: AccessStatus.Public,
+        adminComment: commentDelta,
+        requestPriority: RequestPriority.Low,
+        companyName: companyNameDelta,
+        reportingPeriod: reportingPeriodDelta,
+      }),
     ];
     mockRequestsLarge = [];
     for (let num = 1; num <= 104; num++) {
@@ -116,7 +152,16 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent,
       ]);
       mockRequestsLarge.push(
-        generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
+        generateExtendedStoredDataRequest({
+          userEmailAddress: email,
+          framework: dataType,
+          requestStatus: requestStatus,
+          accessStatus: AccessStatus.Public,
+          adminComment: comment,
+          requestPriority: requestPriority,
+          companyName: undefined,
+          reportingPeriod: undefined,
+        })
       );
     }
   });
@@ -143,11 +188,11 @@ describe('Component test for the admin-requests-overview page', () => {
     })(AdminAllRequestsOverview);
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
-    mockRequests.forEach((extendedStoredDataRequest) => {
+    for (const extendedStoredDataRequest of mockRequests) {
       if (extendedStoredDataRequest.userEmailAddress) {
         assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
       }
-    });
+    }
     return mountedComponent;
   }
 
@@ -167,22 +212,6 @@ describe('Component test for the admin-requests-overview page', () => {
       }),
     })(AdminAllRequestsOverview);
     assertNumberOfSearchResults(chunkSize);
-  }
-
-  /**
-   * Asserts the number of rows with actual data the result table has
-   * @param expectedNumber represents the expectation
-   */
-  function assertNumberOfSearchResults(expectedNumber: number): void {
-    cy.get('tr[data-pc-section="bodyrow"]').should('have.length', expectedNumber);
-  }
-
-  /**
-   * Asserts that there is a search result with the expected email address as requester email address
-   * @param emailAddress is the expected email address
-   */
-  function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
-    cy.contains('td', emailAddress);
   }
 
   /**
@@ -268,7 +297,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept(
       `**/community/requests/numberOfRequests?requestPriority=${priorityToFilterFor}`,
       expectedNumberOfRequests.toString()
-    ).as('fetchFrameworkFilteredNumberOfRequests');
+    ).as('fetchPriorityFilteredNumberOfRequests');
 
     cy.get(`div[data-test="request-priority-picker"]`).click();
     cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
@@ -277,6 +306,31 @@ describe('Component test for the admin-requests-overview page', () => {
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
+  }
+
+  /**
+   * Validates if filtering via reporting period dropdown filter works as expected
+   */
+  function validateReportingPeriodFilter(): void {
+    const reportingPeriodToFilterFor = '2023';
+    const mockResponse = [mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchReportingPeriodFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?reportingPeriods=${reportingPeriodToFilterFor}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchReportingPeriodFilteredNumberOfRequests');
+
+    cy.get(`div[data-test="reporting-period-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
+    cy.get(`li[aria-label="${reportingPeriodToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
@@ -289,15 +343,38 @@ describe('Component test for the admin-requests-overview page', () => {
       `**/community/requests?adminComment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
     ).as('fetchCommentFilteredRequests');
-    cy.intercept(`**/community/requests/numberOfRequests?adminComment=last`, expectedNumberOfRequests.toString()).as(
-      'fetchCommentFilteredNumberOfRequests'
-    );
+    cy.intercept(
+      `**/community/requests/numberOfRequests?adminComment=${commentSearchTerm}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchCommentFilteredNumberOfRequests');
 
     cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
     assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
+  /**
+   * Validates if filtering via company search string works as expected
+   */
+  function validateCompanySearchStringFilter(): void {
+    const mockResponse = [mockRequests[0], mockRequests[1]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?companySearchString=${companyNameSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchCompanySearchStringFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?companySearchString=${companyNameSearchTerm}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchCompanySearchStringFilteredNumberOfRequests');
+
+    cy.get(`input[data-test="company-search-string-searchbar"]`).type(companyNameSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
@@ -397,14 +474,24 @@ describe('Component test for the admin-requests-overview page', () => {
     validateRequestStatusFilter();
   });
 
-  it('Filtering for request priority works as exprected', () => {
+  it('Filtering for request priority works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestPriorityFilter();
+  });
+
+  it('Filtering for reporting period works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateReportingPeriodFilter();
   });
 
   it('Filtering for an admin comment works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateAdminCommentFilter();
+  });
+
+  it('Filtering for a company search string works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateCompanySearchStringFilter();
   });
 
   it('A combined filter works as expected and is also de-selectable', () => {
@@ -427,8 +514,8 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Check the functionality of the rowClick event', () => {
     cy.spy(router, 'push').as('routerPush');
     mountAdminAllRequestsPageWithMocks().then(() => {
-      const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
-
+      const lastMockRequest = mockRequests.at(-1);
+      const dataRequestIdOfLastElement = lastMockRequest!.dataRequestId;
       cy.get('[data-test=requests-datatable]').within(() => {
         cy.get('tr:last').click();
       });

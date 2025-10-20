@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CompanyInformationComponent from '@/components/pages/CompanyInformation.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type CompanyInformation, type VsmeData } from '@clients/backend';
@@ -75,6 +74,7 @@ describe('Component tests for the company info sheet', function (): void {
   it('Check visibility of company information', function () {
     mockRequestsOnMounted();
     cy.spy(router, 'push').as('routerPush');
+    //@ts-ignore
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
       router,
@@ -82,7 +82,7 @@ describe('Component tests for the company info sheet', function (): void {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,
       });
-      cy.get('[data-test="lei-visible"]').should('have.text', companyInformationForTest.identifiers['Lei'][0]);
+      cy.get('[data-test="lei-visible"]').should('have.text', companyInformationForTest.identifiers['Lei']![0]);
       cy.get('[data-test="headquarter-visible"]').should('have.text', companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should('have.text', companyInformationForTest.sector);
       cy.get('[data-test="parent-visible"]').should('have.text', dummyParentCompanyName).click();

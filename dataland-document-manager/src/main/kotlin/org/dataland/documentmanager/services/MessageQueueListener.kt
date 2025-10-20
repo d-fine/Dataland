@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional
 class MessageQueueListener(
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -108,7 +106,7 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-        val message = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val message = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString)
         val documentId = message.dataId
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")

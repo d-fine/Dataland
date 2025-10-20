@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.GlobalAuth
@@ -173,7 +174,11 @@ class UserServiceTest {
         val requests =
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 ApiAwait.waitForData {
-                    apiAccessor.requestControllerApi.getDataRequests(datalandCompanyId = dummyCompanyId)
+                    apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
+                        RequestSearchFilterString(
+                            companyId = dummyCompanyId,
+                        ),
+                    )
                 }
             }
 

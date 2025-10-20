@@ -34,10 +34,11 @@
         </div>
 
         <div v-if="expiryTimeDropdown === 'custom'" class="col-7 text-right">
-          <Calendar
+          <DatePicker
             data-test="expiryDatePicker"
             inputId="icon"
             v-model="customDate"
+            :updateModelType="'date'"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             :minDate="minDate"
@@ -79,7 +80,7 @@
 import PrimeButton from 'primevue/button';
 import { defineComponent, type PropType } from 'vue';
 import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
-import Calendar from 'primevue/calendar';
+import DatePicker from 'primevue/datepicker';
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from '@/utils/DataFormatUtils';
 import UserRolesBadges from '@/components/resources/apiKey/UserRolesBadges.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -88,7 +89,7 @@ import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from '@/DatalandSe
 
 export default defineComponent({
   name: 'CreateApiKeyCard',
-  components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
+  components: { PrimeButton, Dropdown, DatePicker, UserRolesBadges },
   props: {
     userRoles: {
       type: Array as PropType<string[]>,
@@ -99,8 +100,8 @@ export default defineComponent({
     expiryTimeDays: null as null | number,
     expiryTimeDropdown: '',
     isExpiryDateValid: true,
-    minDate: new Date(new Date().getTime() + MS_PER_DAY),
-    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
+    minDate: new Date(Date.now() + MS_PER_DAY),
+    maxDate: new Date(Date.now() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
 
     customDateInMilliseconds: null as null | number,
     days: [
@@ -126,7 +127,7 @@ export default defineComponent({
           ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
       } else {
-        this.expiryTimeDays = parseInt(event.value);
+        this.expiryTimeDays = Number.parseInt(event.value);
       }
       this.isExpiryDateValid = true;
     },

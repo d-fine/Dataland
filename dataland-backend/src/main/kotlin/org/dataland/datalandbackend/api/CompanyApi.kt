@@ -42,8 +42,9 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
-const val COMPANY_SEARCH_STRING_DESCRIPTION =
-    "Search string used for substring matching. Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
+const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
+    "${GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION} " +
+        "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -64,6 +65,16 @@ interface CompanyApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully added company."),
+            ApiResponse(
+                responseCode = "400",
+                description =
+                    "Company could not be added. Please check that the strings specified in companyContactDetails are " +
+                        "valid email addresses, that there is no repetition among specified identifiers of the same kind, " +
+                        "that all specified identifiers are new and that you did not specify more than one LEI.",
+                content = [
+                    Content(schema = Schema()),
+                ],
+            ),
         ],
     )
     @PostMapping(
@@ -104,7 +115,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -159,7 +174,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getNumberOfCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -194,7 +213,11 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String,
         @RequestParam(defaultValue = "100") resultLimit: Int,
@@ -295,11 +318,14 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyById(
         @CompanyIdParameterRequired
-        @PathVariable("companyId") companyId: String,
+        @PathVariable("companyId")
+        companyId: String,
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company information for one specific company identified by its company Id
+     * A method to update company information for one specific company identified by its company ID.
+     * Do NOT use this to fix broken ISIN-LEI table entries with null company (it will not work). Instead,
+     * do a full GLEIF update.
      * @param companyId identifier of the company in Dataland
      * @param companyInformationPatch includes the company information
      * @return updated information about the company
@@ -330,7 +356,8 @@ interface CompanyApi {
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company information entirely
+     * A method to update company information entirely. Do NOT use this to fix broken ISIN-LEI table entries with
+     * null company (it will not work). Instead, do a full GLEIF update.
      * @param companyId identifier of the company in Dataland
      * @param companyInformation includes the company information
      * @return updated information about the company

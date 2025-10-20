@@ -1,7 +1,7 @@
 <template>
   <div v-if="status == 'LoadingDatasets'" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Loading {{ frameworkDisplayName }} Data...</p>
-    <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+    <DatalandProgressSpinner />
   </div>
   <div v-show="status == 'DisplayingDatasets'">
     <p v-if="inReviewMode">
@@ -55,6 +55,7 @@
 </template>
 
 <script setup generic="FrameworkDataType" lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PrimeButton from 'primevue/button';
 import MultiLayerDataTable from '@/components/resources/dataTable/MultiLayerDataTable.vue';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
@@ -237,10 +238,10 @@ async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
       )
     ).data;
 
-    const alreadyFetchedDataIds = rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId);
+    const alreadyFetchedDataIds = new Set(rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId));
 
     metaInfoOfAvailableButInaccessibleDataset.value = allMetaInfoOfAvailableDatasets.filter(
-      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.includes(metaInfoOfAvailableDataset.dataId)
+      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.has(metaInfoOfAvailableDataset.dataId)
     );
   }
 }
@@ -264,3 +265,12 @@ function openModalToDisplayInaccessibleDatasets(): void {
   });
 }
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+</style>

@@ -2,32 +2,35 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <DatalandProgressSpinner />
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
-      <div class="company-details__headline">
+      <div class="company-title-row">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div
-            class="p-badge badge-light-green outline rounded"
-            data-test="verifiedCompanyOwnerBadge"
+          <Tag
             v-if="hasCompanyOwner"
-          >
-            <span class="material-icons-outlined fs-sm">verified</span>
-            Verified Company Owner
-          </div>
+            data-test="verifiedCompanyOwnerBadge"
+            value="Verified Company Owner"
+            icon="pi pi-check-circle"
+            severity="success"
+          />
         </div>
         <div class="right-elements">
           <PrimeButton
             v-if="authenticated"
-            class="primary-button"
-            aria-label="Add company to your portfolios"
+            icon="pi pi-plus"
+            label="ADD TO PORTFOLIO"
             @click="openPortfolioModal"
             data-test="addCompanyToPortfoliosButton"
-          >
-            <i class="pi pi-plus pr-2" />Add to a portfolio
-          </PrimeButton>
-          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
+          />
+          <PrimeButton
+            v-if="showSingleDataRequestButton"
+            icon="pi pi-file"
+            label="REQUEST DATA"
+            @click="handleSingleDataRequest"
+            data-test="singleDataRequestButton"
+          />
         </div>
       </div>
 
@@ -40,29 +43,39 @@
         @close-dialog="onCloseDialog"
       />
 
-      <div class="company-details__separator" />
-
-      <div class="company-details__info-holder">
-        <div class="company-details__info">
-          <span>Sector: </span>
-          <span class="font-semibold" data-test="sector-visible">{{ displaySector }}</span>
+      <div class="company-info-row">
+        <div>
+          <span class="company-info-title">Sector:</span>
+          <span class="company-info-content" data-test="sector-visible">{{ displaySector }}</span>
         </div>
-        <div class="company-details__info">
-          <span>Headquarter: </span>
-          <span class="font-semibold" data-test="headquarter-visible">{{ companyInformation.headquarters }}</span>
+        <div>
+          <span class="company-info-title">Headquarter:</span>
+          <span class="company-info-content" data-test="headquarter-visible">{{
+            companyInformation.headquarters
+          }}</span>
         </div>
-        <div class="company-details__info">
-          <span>LEI: </span>
-          <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
+        <div>
+          <span class="company-info-title">LEI:</span>
+          <span class="company-info-content" data-test="lei-visible">{{ displayLei }}</span>
         </div>
-        <div class="company-details__info">
-          <span>Parent Company: </span>
-          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
-            <a class="link" style="display: inline-flex" data-test="parent-visible" @click="visitParentCompany()">
-              {{ parentCompany?.companyName }}</a
-            ></span
-          >
-          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
+        <div>
+          <span class="company-info-title">Parent Company: </span>
+          <PrimeButton
+            v-if="hasParentCompany"
+            :label="parentCompany?.companyName"
+            variant="link"
+            data-test="parent-visible"
+            @click="visitParentCompany"
+            :pt="{
+              root: {
+                style: 'padding-left: 0;',
+              },
+              label: {
+                style: 'font-weight: var(--font-weight-semibold);',
+              },
+            }"
+          />
+          <span v-else data-test="parent-visible" class="font-semibold">—</span>
         </div>
       </div>
     </div>
@@ -73,23 +86,24 @@
 </template>
 
 <script setup lang="ts">
-import { ApiClientProvider } from '@/services/ApiClients';
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils';
-import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
-import { CompanyRole } from '@clients/communitymanager';
-import PrimeButton from 'primevue/button';
-import router from '@/router';
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
+import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { getErrorMessage } from '@/utils/ErrorMessageUtils';
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
+import { CompanyRole } from '@clients/communitymanager';
 import type { BasePortfolio } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { type NavigationFailure } from 'vue-router';
+import { computed, inject, onMounted, ref, watch } from 'vue';
+import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const authenticated = inject<boolean>('authenticated');
@@ -157,6 +171,23 @@ function fetchDataForThisPage(): void {
   } catch (error) {
     console.error('Error fetching data for new company:', error);
   }
+}
+
+/**
+ * Handles the click event of the single data request button.
+ * Navigates to the single data request page with the companyId and preSelectedFramework as query parameters.
+ * @returns a router push to the single data request page
+ */
+function handleSingleDataRequest(): Promise<NavigationFailure | void | undefined> {
+  const currentRoute: RouteLocationNormalizedLoaded = router.currentRoute.value;
+  const dataType = currentRoute.params.dataType;
+  const preSelectedFramework = dataType ? (dataType as DataTypeEnum) : '';
+  return router.push({
+    path: `/singledatarequest/${props.companyId}`,
+    query: {
+      preSelectedFramework: preSelectedFramework,
+    },
+  });
 }
 
 /**
@@ -232,7 +263,7 @@ async function getParentCompany(parentCompanyLei: string): Promise<void> {
       1
     );
     if (companyIdAndNames.length > 0) {
-      parentCompany.value = companyIdAndNames[0];
+      parentCompany.value = companyIdAndNames[0]!;
       hasParentCompany.value = true;
     } else {
       hasParentCompany.value = false;
@@ -280,62 +311,43 @@ async function setCompanyOwnershipStatus(): Promise<void> {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-@use '@/assets/scss/variables';
-
+<style scoped>
 .inline-loading {
-  width: 450px;
+  width: 28rem;
 }
 
-.rounded {
-  border-radius: 0.5rem;
-}
-
-.company-details {
+.company-title-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 
-  &__headline {
+  .left-elements,
+  .right-elements {
     display: flex;
-    justify-content: space-between;
     flex-direction: row;
+    justify-items: end;
     align-items: center;
-  }
-
-  &__separator {
-    @media only screen and (max-width: newVariables.$small) {
-      width: 100%;
-      border-bottom: #e0dfde 1px solid;
-      margin-bottom: 0.5rem;
-    }
-  }
-
-  &__info-holder {
-    display: flex;
-    flex-direction: row;
-    @media only screen and (max-width: newVariables.$small) {
-      flex-direction: column;
-    }
-  }
-
-  &__info {
-    padding-top: 0.3rem;
-    @media only screen and (min-width: newVariables.$small) {
-      padding-right: 40px;
-    }
+    gap: var(--spacing-lg);
   }
 }
 
-.left-elements,
-.right-elements {
+.company-info-row {
   display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: var(--spacing-md);
   align-items: center;
-}
+  width: 100%;
 
-.fs-sm {
-  font-size: variables.$fs-sm;
-  margin-right: 0.25rem;
+  .company-info-title {
+    padding-right: var(--spacing-xs);
+  }
+
+  .company-info-content {
+    font-weight: var(--font-weight-semibold);
+    padding-left: 0;
+  }
 }
 </style>

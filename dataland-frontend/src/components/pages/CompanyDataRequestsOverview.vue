@@ -1,202 +1,173 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="5">
-      <TheContent class="min-h-screen paper-section relative">
-        <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
+  <TheContent class="min-h-screen relative">
+    <div v-if="waitingForData || storedDataRequests.length > 0">
+      <div class="search-bar-and-filters-container">
+        <IconField class="request-company-search-bar-container">
+          <InputIcon class="pi pi-search" />
+          <InputText
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by requester"
+            variant="filled"
+            fluid
+          />
+        </IconField>
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedFrameworks"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="Search frameworks"
+        />
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedAccessStatus"
+          :available-items="availableAccessStatus"
+          filter-name="Access Status"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="access status"
+        />
+        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      </div>
+
+      <div class="col-12 text-left p-3">
+        <div class="card">
+          <DataTable
+            :value="displayedData"
+            style="cursor: pointer"
+            :rowHover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            :total-records="numberOfFilteredRequests"
+            id="my-company-requests-overview-table"
           >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="requested-Datasets-searchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by requester"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedAccessStatus"
-                ref="frameworkFilter"
-                :available-items="availableAccessStatus"
-                filter-name="Access Status"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="access status"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <div class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
+            <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
+              <template #body="slotProps">
+                {{ slotProps.data.userEmailAddress }}
+              </template>
+            </Column>
+            <Column header="FRAMEWORK" :sortable="true" field="dataType">
+              <template #body="slotProps">
+                <div>
+                  {{ getFrameworkTitle(slotProps.data.dataType) }}
+                </div>
+                <div
+                  data-test="framework-subtitle"
+                  v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
-              </div>
-            </span>
-          </div>
-          <div class="col-12 text-left p-3">
-            <div class="card">
-              <DataTable
-                :value="displayedData"
-                style="cursor: pointer"
-                :rowHover="true"
-                :loading="waitingForData"
-                data-test="requested-Datasets-table"
-                paginator
-                paginator-position="bottom"
-                :rows="datasetsPerPage"
-                :total-records="numberOfFilteredRequests"
-                id="my-company-requests-overview-table"
-              >
-                <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.userEmailAddress }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" :sortable="true" field="dataType">
-                  <template #body="slotProps">
-                    <div>
-                      {{ getFrameworkTitle(slotProps.data.dataType) }}
-                    </div>
-                    <div
-                      data-test="framework-subtitle"
-                      v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                      style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                    >
-                      <br />
-                      {{ getFrameworkSubtitle(slotProps.data.dataType) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
-                  <template #body="slotProps">
-                    <div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                    </div></template
-                  >
-                </Column>
-                <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
-                  <template #body="slotProps"
-                    ><div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
-                  <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
-                  <template #body="slotProps">
-                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
-                      {{ slotProps.data.accessStatus }}
-                    </div>
-                  </template>
-                </Column>
-                <Column field="resolve" header="">
-                  <template #body="slotProps">
-                    <div
-                      v-if="slotProps.data.accessStatus == AccessStatus.Pending"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <div class="button-container">
-                        <PrimeButton
-                          class="uppercase p-button p-button-sm"
-                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                        >
-                          <i class="material-icons"> done </i>
-                          <span class="d-letters pl-2"> Grant </span>
-                        </PrimeButton>
-                        <PrimeButton
-                          class="uppercase p-button-outlined p-button-sm mr-3"
-                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Decline </span>
-                        </PrimeButton>
-                      </div>
-                    </div>
-                    <div
-                      v-if="slotProps.data.accessStatus == AccessStatus.Granted"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <div class="button-container">
-                        <PrimeButton
-                          class="uppercase p-button-outlined p-button-sm mr-3"
-                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                        >
-                          <i class="material-icons"> clear </i>
-                          <span class="d-letters pl-2"> Revoke </span>
-                        </PrimeButton>
-                      </div>
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
-            </div>
-          </div>
+                  <br />
+                  {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+              <template #body="slotProps">
+                {{ slotProps.data.reportingPeriod }}
+              </template>
+            </Column>
+            <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
+              <template #body="slotProps">
+                <div>
+                  {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
+              <template #body="slotProps">
+                <div>
+                  {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
+              <template #body="slotProps">
+                <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
+                  {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
+              <template #body="slotProps">
+                <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
+                  {{ slotProps.data.accessStatus }}
+                </div>
+              </template>
+            </Column>
+            <Column field="resolve" header="">
+              <template #body="slotProps">
+                <div
+                  v-if="slotProps.data.accessStatus == AccessStatus.Pending"
+                  class="text-right text-primary no-underline font-bold"
+                >
+                  <div class="button-container">
+                    <PrimeButton
+                      icon="pi pi-check"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
+                      label="Grant"
+                    />
+                    <PrimeButton
+                      icon="pi pi-times"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
+                      label="Decline"
+                    />
+                  </div>
+                </div>
+                <div
+                  v-if="slotProps.data.accessStatus == AccessStatus.Granted"
+                  class="text-right text-primary no-underline font-bold"
+                >
+                  <div>
+                    <PrimeButton
+                      class="button-container"
+                      icon="pi pi-ban"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
+                      label="Revoke"
+                    />
+                  </div>
+                </div>
+              </template>
+            </Column>
+          </DataTable>
         </div>
-        <div v-if="!waitingForData && storedDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have no data requests yet.</p>
-          </div>
-        </div>
-      </TheContent>
-    </DatasetsTabMenu>
-    <TheFooter />
-  </AuthenticationWrapper>
+      </div>
+    </div>
+    <div v-if="!waitingForData && storedDataRequests.length == 0">
+      <div class="d-center-div text-center px-7 py-4">
+        <p class="font-medium text-xl">You have no data requests yet.</p>
+      </div>
+    </div>
+  </TheContent>
 </template>
 
 <script lang="ts">
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestStatus,
-  retrieveAvailableAccessStatus,
+  retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { AccessStatus, type CompanyRoleAssignment, type ExtendedStoredDataRequest } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type CompanyRoleAssignmentExtended,
+  type ExtendedStoredDataRequest,
+} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import { defineComponent, inject, ref } from 'vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -207,23 +178,20 @@ export default defineComponent({
   },
   components: {
     PrimeButton,
-    AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
-    DatasetsTabMenu,
-    TheFooter,
     TheContent,
-    TheHeader,
     DataTable,
     Column,
     InputText,
+    InputIcon,
+    IconField,
   },
 
   setup() {
     return {
-      frameworkFilter: ref(),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments'),
     };
   },
 
@@ -246,7 +214,7 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableAccessStatus = retrieveAvailableAccessStatus();
+    this.availableAccessStatus = retrieveAvailableAccessStatuses();
     this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
   },
   watch: {
@@ -290,7 +258,7 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
-            const response = await apiClientProvider.apiClients.requestController.getDataRequests(
+            const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
               undefined,
               undefined,
               undefined,
@@ -375,7 +343,7 @@ export default defineComponent({
         this.datasetsPerPage * this.currentPage,
         this.datasetsPerPage * (1 + this.currentPage)
       );
-      window.scrollTo({
+      globalThis.scrollTo({
         top: 0,
         behavior: 'smooth',
       });
@@ -413,10 +381,9 @@ export default defineComponent({
     async updateAccessStatus(requestId: string, newAccessStatus: AccessStatus) {
       try {
         if (this.getKeycloakPromise) {
-          await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
-            requestId,
-            { accessStatus: newAccessStatus }
-          );
+          await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).apiClients.communityManagerRequestController.patchDataRequest(requestId, { accessStatus: newAccessStatus });
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();
         }
@@ -430,5 +397,30 @@ export default defineComponent({
 <style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.text-primary {
+  color: var(--main-color);
+}
+
+.search-bar-and-filters-container {
+  margin-top: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-lg);
+  z-index: 100;
+  display: flex;
+  gap: var(--spacing-md);
+
+  .request-company-search-bar-container {
+    width: 25%;
+  }
 }
 </style>

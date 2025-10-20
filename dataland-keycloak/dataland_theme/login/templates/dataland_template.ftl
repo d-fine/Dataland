@@ -18,8 +18,8 @@
         <!-- Back button -->
 
         <a href="<#compress><#nested "backUrl"></#compress>" class="cursor-pointer flex align-items-center absolute ml-3 mt-3 no-underline" id="back_button">
-            <span class="material-icons text-primary">arrow_back_ios</span>
-            <span class="text-primary font-semibold d-letters"><#compress><#nested "backName"></#compress></span>
+            <span class="material-icons" style="color: var(--orange-400);">arrow_back_ios</span>
+            <span class="font-semibold d-letters" style="color: var(--orange-400);"><#compress><#nested "backName"></#compress></span>
         </a>
 
 

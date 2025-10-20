@@ -12,21 +12,21 @@ describe('As a user I expect to be redirected to the login page if I am unauthen
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
   ];
 
-  pages.forEach((page) => {
+  for (const page of pages) {
     it(`Test Login Redirect for ${page}`, () => {
       cy.visit(page);
       cy.get('input[name=login]').should('exist').url().should('contain', 'keycloak');
     });
-  });
+  }
 });
 
 describe('As an unauthenticated user I expect to be redirected to the page I started the login process on', () => {
   const pages = ['/companies/:companyID'];
 
-  pages.forEach((page) => {
+  for (const page of pages) {
     it(`Test Login Redirect to ${page}`, () => {
       cy.visitAndCheckAppMount(page);
-      cy.get('button.login-button[name="login_dataland_button"]').should('exist').click();
+      cy.get("[data-test='login-dataland-button']").should('exist').click();
 
       loginWithCredentials();
 
@@ -36,7 +36,7 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
 
     it(`Test Register Redirect to ${page}`, () => {
       cy.visitAndCheckAppMount(page);
-      cy.get('button.registration-button[name="signup_dataland_button"]').should('exist').click();
+      cy.get("[data-test='signup-dataland-button']").should('exist').click();
 
       cy.contains('button', 'LOGIN TO ACCOUNT').should('exist').should('be.visible').click();
 
@@ -45,5 +45,5 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
       cy.url().should('eq', getBaseUrl() + page);
       logout();
     });
-  });
+  }
 });

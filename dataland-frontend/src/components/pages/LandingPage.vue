@@ -1,5 +1,4 @@
 <template>
-  <TheNewHeader :landingPage="landingPage" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheQuotes :sections="landingPage?.sections" />
@@ -9,7 +8,6 @@
     <TheJoinCampaign :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
   </main>
-  <TheFooter :isLightVersion="false" />
 </template>
 
 <script setup lang="ts">
@@ -19,15 +17,13 @@ import { useDialog } from 'primevue/usedialog';
 import SessionDialog from '@/components/general/SessionDialog.vue';
 import { SessionDialogMode } from '@/utils/SessionTimeoutUtils';
 
-import TheNewHeader from '@/components/generics/TheNewHeader.vue';
-import TheIntro from '@/components/resources/newLandingPage/TheIntro.vue';
-import TheQuotes from '@/components/resources/newLandingPage/TheQuotes.vue';
-import TheBrands from '@/components/resources/newLandingPage/TheBrands.vue';
-import TheStruggle from '@/components/resources/newLandingPage/TheStruggle.vue';
-import TheHowItWorks from '@/components/resources/newLandingPage/TheHowItWorks.vue';
-import TheJoinCampaign from '@/components/resources/newLandingPage/TheJoinCampaign.vue';
-import TheGetInTouch from '@/components/resources/newLandingPage/TheGetInTouch.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
+import TheIntro from '@/components/resources/landingPage/TheIntro.vue';
+import TheQuotes from '@/components/resources/landingPage/TheQuotes.vue';
+import TheBrands from '@/components/resources/landingPage/TheBrands.vue';
+import TheStruggle from '@/components/resources/landingPage/TheStruggle.vue';
+import TheHowItWorks from '@/components/resources/landingPage/TheHowItWorks.vue';
+import TheJoinCampaign from '@/components/resources/landingPage/TheJoinCampaign.vue';
+import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 
@@ -61,12 +57,10 @@ const openLogoutModal = (): void => {
 };
 </script>
 
-<style lang="scss" scoped>
-@use '@/assets/scss/newVariables';
-
+<style scoped>
 main {
   margin-top: 132px;
-  @media only screen and (max-width: newVariables.$small) {
+  @media only screen and (max-width: 768px) {
     margin-top: 52px;
   }
 }

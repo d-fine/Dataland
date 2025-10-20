@@ -11,7 +11,7 @@ import {
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -86,7 +86,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (interception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetApproved();
+                    isDatasetAccepted();
                     const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
                     return new NuclearAndGasDataControllerApi(new Configuration({ accessToken: token }))
                       .getCompanyAssociatedNuclearAndGasData(dataMetaInformationOfReuploadedDataset.dataId)

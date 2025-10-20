@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -262,13 +263,13 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionsSet: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDatasetDimensions>,
             correlationId: String,
-        ): Map<BasicDataDimensions, String> =
+        ): Map<BasicDatasetDimensions, String> =
             dataDimensionsSet
                 .associateWith {
                     metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
-                        getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
+                        getPublicDataset(dataId, DataType.valueOf(it.framework), correlationId).data
                     } ?: ""
                 }.filterNot { it.value.isEmpty() }
 
@@ -287,9 +288,9 @@ class DataManager
             val mapOfDataDimensionsWithDataAsString =
                 getDatasetData(
                     metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
-                        BasicDataDimensions(
+                        BasicDatasetDimensions(
                             companyId = searchFilter.companyId,
-                            dataType = it.dataType,
+                            framework = it.dataType,
                             reportingPeriod = it.reportingPeriod,
                         )
                     },
@@ -299,8 +300,8 @@ class DataManager
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
             }
 
-            return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
-                metaInfos[dataDimension]?.let { metaInfo ->
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (datasetDimensions, dataString) ->
+                metaInfos[datasetDimensions.toBasicDataDimensions()]?.let { metaInfo ->
                     PlainDataAndMetaInformation(
                         metaInfo = metaInfo.toApiModel(),
                         data = dataString,

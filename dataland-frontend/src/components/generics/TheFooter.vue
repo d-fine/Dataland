@@ -139,7 +139,7 @@ const openAccordions = ref<Record<string, boolean>>({});
  * Reads from the 'openAccordions' record if the accordion with the title passed as input is open or not
  * @param title
  */
-const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
+const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title]! : false);
 
 /**
  * Toggles the open state of an accordion section. If the accordion section
@@ -151,25 +151,23 @@ function toggleAccordion(title: string): void {
   openAccordions.value[title] = !openAccordions.value[title];
 }
 
-const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
+const isSmallScreen: Ref<boolean> = ref(globalThis.innerWidth < 768);
 
 const updateScreenSize = (): void => {
-  isSmallScreen.value = window.innerWidth < 768;
+  isSmallScreen.value = globalThis.innerWidth < 768;
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateScreenSize);
+  globalThis.addEventListener('resize', updateScreenSize);
   updateScreenSize();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateScreenSize);
+  globalThis.removeEventListener('resize', updateScreenSize);
 });
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables';
-
 * {
   margin: 0;
   font-style: normal;
@@ -178,7 +176,7 @@ onUnmounted(() => {
 }
 
 .footer {
-  background-color: var(--basic-dark);
+  background-color: var(--p-gray-950);
   color: var(--default-neutral-white);
   padding: 6rem 4rem 3rem;
 
@@ -336,7 +334,7 @@ onUnmounted(() => {
 
   // Modifier class for light version
   &--light {
-    background-color: #f6f5f0;
+    background-color: var(--p-surface-100);
     color: #0b191f;
 
     .footer {
@@ -364,7 +362,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .footer {
     &__row--top {
       display: flex;
@@ -378,7 +376,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .footer {
     padding: 4rem 1.5rem 2.5rem;
 

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.DataAccessControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -15,12 +15,12 @@ import java.util.UUID
 /**
  * Service to execute access to private data checks to decide whether a user can access a resource or not
  * @param dataMetaInformationManager required here to find companyIds for dataIds
- * @param requestManager gets the access status for a dataset from the community manager
+ * @param dataAccessControllerApi gets the access status for a dataset from the community manager
  */
 @Service("PrivateDataAccessChecker")
 class PrivateDataAccessChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired private val requestManager: RequestControllerApi,
+    @Autowired private val dataAccessControllerApi: DataAccessControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -33,7 +33,7 @@ class PrivateDataAccessChecker(
         val metaDataEntity = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val userId = DatalandAuthentication.fromContext().userId
         return try {
-            requestManager.hasAccessToDataset(
+            dataAccessControllerApi.hasAccessToDataset(
                 UUID.fromString(metaDataEntity.company.companyId),
                 metaDataEntity.dataType, metaDataEntity.reportingPeriod,
                 UUID.fromString(userId),
@@ -65,7 +65,7 @@ class PrivateDataAccessChecker(
         val userId = DatalandAuthentication.fromContext().userId
         metaDataEntities.forEach { metaDataEntity ->
             try {
-                requestManager.hasAccessToDataset(
+                dataAccessControllerApi.hasAccessToDataset(
                     UUID.fromString(companyId),
                     metaDataEntity.dataType, metaDataEntity.reportingPeriod,
                     UUID.fromString(userId),

@@ -20,75 +20,6 @@
     }
   ],
   "paths": {
-    "/user-validation/email": {
-      "post": {
-        "tags": [
-          "user-validation-controller"
-        ],
-        "summary": "Validate an email address and obtain user-related information from an email address.",
-        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
-        "operationId": "postEmailAddressValidation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailAddress"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully validated the posted email address.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KeycloakUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The posted string does not have the format of an email address."
-          },
-          "403": {
-            "description": "You do not have permission to query user information based on email addresses."
-          },
-          "404": {
-            "description": "No Dataland user is registered under this email address."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/requests/single": {
       "post": {
         "tags": [
@@ -224,6 +155,75 @@
         ]
       }
     },
+    "/emails/validation": {
+      "post": {
+        "tags": [
+          "email-address-controller"
+        ],
+        "summary": "Validate an email address and obtain user-related information from an email address.",
+        "description": "Based on an email address, learn if there is a Dataland user with that email address and if so, obtain their Dataland user ID, first and last name.",
+        "operationId": "postEmailAddressValidation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAddress"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully validated the posted email address and returned user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeycloakUserInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The posted string does not have the format of an email address."
+          },
+          "403": {
+            "description": "You do not have permission to query user information based on email addresses."
+          },
+          "404": {
+            "description": "No Dataland user is registered under this email address."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/company-role-assignments/{role}/{companyId}/{userId}": {
       "post": {
         "tags": [
@@ -245,7 +245,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -329,7 +329,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -403,7 +403,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -473,7 +473,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -537,7 +537,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -721,7 +721,7 @@
     "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
       "head": {
         "tags": [
-          "request-controller"
+          "data-access-controller"
         ],
         "summary": "This head request checks whether the logged-in user has access to dataset.",
         "description": "This head request checks whether the logged-in user has access to dataset.",
@@ -730,7 +730,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -741,7 +741,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "type": "string"
@@ -751,7 +751,7 @@
           {
             "name": "reportingPeriod",
             "in": "path",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": true,
             "schema": {
               "type": "string"
@@ -820,7 +820,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -833,6 +833,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -908,24 +909,41 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Inc."
           },
           {
             "name": "chunkSize",
@@ -1060,7 +1078,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1073,6 +1091,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1148,24 +1167,41 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
-              "type": "string"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "companySearchString",
+            "in": "query",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers. Must be at least 3 characters after trimming.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Inc."
           }
         ],
         "responses": {
@@ -1223,7 +1259,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1236,6 +1272,7 @@
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
                   "lksg",
+                  "pcaf",
                   "vsme"
                 ]
               }
@@ -1244,7 +1281,7 @@
           {
             "name": "reportingPeriod",
             "in": "query",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1306,6 +1343,78 @@
         ]
       }
     },
+    "/emails/{companyId}/recommended-users": {
+      "get": {
+        "tags": [
+          "email-address-controller"
+        ],
+        "summary": "Get users by company-associated subdomains.",
+        "description": "Returns all users whose email address contains one of the subdomains listed in the associatedSubdomains field of the corresponding CompanyInformation object.",
+        "operationId": "getUsersByCompanyAssociatedSubdomains",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users with matching email subdomains.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeycloakUserInfo"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query."
+          },
+          "404": {
+            "description": "The specified company does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/company-role-assignments": {
       "get": {
         "tags": [
@@ -1327,7 +1436,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1572,47 +1681,6 @@
   },
   "components": {
     "schemas": {
-      "EmailAddress": {
-        "required": [
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "The email address of the Dataland user in question.",
-            "example": "test@example.com"
-          }
-        }
-      },
-      "KeycloakUserInfo": {
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "The email address of the Dataland user in question.",
-            "example": "test@example.com"
-          },
-          "id": {
-            "type": "string",
-            "description": "The Dataland user ID of the user in question.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "The first name of the Dataland user in question.",
-            "example": "Jane"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "The last name of the Dataland user in question.",
-            "example": "Doe"
-          }
-        }
-      },
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
@@ -1629,13 +1697,14 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ]
           },
@@ -1664,12 +1733,12 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1763,6 +1832,7 @@
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
                 "lksg",
+                "pcaf",
                 "vsme"
               ]
             }
@@ -1789,7 +1859,7 @@
         "required": [
           "acceptedDataRequests",
           "alreadyExistingDatasets",
-          "alreadyExistingNonFinalRequests",
+          "alreadyExistingRequests",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
@@ -1801,9 +1871,9 @@
               "$ref": "#/components/schemas/ResourceResponse"
             }
           },
-          "alreadyExistingNonFinalRequests": {
+          "alreadyExistingRequests": {
             "type": "array",
-            "description": "Contains information about all already existing data requests that are \"Open\" or \"Answered\".",
+            "description": "Contains information about all already existing data requests.",
             "items": {
               "$ref": "#/components/schemas/ResourceResponse"
             }
@@ -1849,12 +1919,12 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "resourceId": {
@@ -1869,13 +1939,54 @@
           }
         }
       },
+      "EmailAddress": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          }
+        }
+      },
+      "KeycloakUserInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the Dataland user in question.",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the Dataland user in question.",
+            "example": "Doe"
+          }
+        }
+      },
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "CompanyOwner",
-          "DataUploader",
           "MemberAdmin",
-          "Member"
+          "Member",
+          "CompanyOwner",
+          "DataUploader"
         ]
       },
       "CompanyRoleAssignment": {
@@ -1891,7 +2002,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
@@ -1934,8 +2045,8 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -2023,17 +2134,17 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
@@ -2174,17 +2285,17 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -2235,24 +2346,25 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ]
           },
           "reportingPeriod": {
             "type": "string",
-            "description": "The reporting period the document belongs to (e.g. a fiscal year).",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {
@@ -2280,7 +2392,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {

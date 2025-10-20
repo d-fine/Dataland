@@ -35,12 +35,19 @@ class DocumentControllerApiAccessor {
             File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
         )
 
-    fun uploadAllTestDocumentsAndAssurePersistence() {
+    fun uploadAllTestDocumentsAndAssurePersistence(): List<String> {
         val documentIds = mutableListOf<String>()
         testFiles.forEach { file ->
             documentIds.add(uploadDocumentAsUser(file).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
+        return documentIds
+    }
+
+    fun uploadSingleTestDocumentAndAssurePersistence(): String {
+        val documentId = uploadDocumentAsUser(testFiles.first()).documentId
+        executeDocumentExistenceCheckWithRetries(documentId)
+        return documentId
     }
 
     private fun executeDocumentExistenceCheckWithRetries(documentId: String) {

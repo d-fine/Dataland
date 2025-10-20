@@ -216,6 +216,60 @@
         ]
       }
     },
+    "/portfolios/support": {
+      "post": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Request support for creating a portfolio.",
+        "description": "Request support for creating a portfolio on Dataland.",
+        "operationId": "postSupportRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully requested support.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/": {
       "get": {
         "tags": [
@@ -967,6 +1021,25 @@
           }
         }
       },
+      "SupportRequestData": {
+        "required": [
+          "message",
+          "topic"
+        ],
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "The topic of the request for help.",
+            "example": "Find company identifiers."
+          },
+          "message": {
+            "type": "string",
+            "description": "The help request message to dataland.",
+            "example": "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
+          }
+        }
+      },
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
@@ -1061,7 +1134,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
