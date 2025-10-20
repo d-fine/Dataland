@@ -191,7 +191,7 @@ class DatalandUserServiceSpringbootTest
                 }
 
                 verify(mockPortfolioBulkDataRequestService)
-                    .postBulkDataRequestIfMonitored(
+                    .createBulkDataRequestsForPortfolioIfMonitored(
                         check {
                             assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
                             assertTrue(it.isMonitored)
