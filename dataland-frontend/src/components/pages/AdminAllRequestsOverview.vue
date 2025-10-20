@@ -1,271 +1,265 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="6">
-      <TheContent class="min-h-screen paper-section relative">
-        <div>
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  :disabled="waitingForData"
-                  data-test="email-searchbar"
-                  v-model="searchBarInputEmail"
-                  placeholder="Search by Requester"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  :disabled="waitingForData"
-                  data-test="comment-searchbar"
-                  v-model="searchBarInputComment"
-                  placeholder="Search by Comment"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                :disabled="waitingForData"
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="framework-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Frameworks"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <FrameworkDataSearchDropdownFilter
-                :disabled="waitingForData"
-                v-model="selectedRequestStatus"
-                ref="frameworkFilter"
-                :available-items="availableRequestStatus"
-                filter-name="Request Status"
-                data-test="request-status-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Request Status"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <FrameworkDataSearchDropdownFilter
-                :disabled="waitingForData"
-                v-model="selectedPriority"
-                ref="frameworkFilter"
-                :available-items="availablePriority"
-                filter-name="Priority"
-                data-test="request-priority-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Priority"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <span class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </span>
+  <TheContent class="min-h-screen relative">
+    <div class="search-container-first-line">
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="company-search-string-searchbar"
+          v-model="searchBarInputCompanySearchString"
+          placeholder="Search by Company Name or Identifier"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
 
-              <PrimeButton
-                :disabled="waitingForData"
-                class="d-letters ml-auto pl-3 pr-3"
-                :style="{ fontSize: '14px', margin: '20px' }"
-                name="trigger-filtering-requests"
-                data-test="trigger-filtering-requests"
-                @click="getAllRequestsForFilters"
-              >
-                FILTER REQUESTS
-              </PrimeButton>
-            </span>
-            <span class="align-content-start flex items-center justify-start">
-              <span class="flex align-items-center ml-auto" :style="{ marginRight: '20px' }">
-                <span>{{ numberOfRequestsInformation }}</span>
-              </span>
-            </span>
-          </div>
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="email-searchbar"
+          v-model="searchBarInputEmail"
+          placeholder="Search by Requester"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
 
-          <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">Loading...</p>
-            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-          </div>
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="comment-searchbar"
+          v-model="searchBarInputComment"
+          placeholder="Search by Comment"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
+    </div>
 
-          <div class="col-12 text-left p-3">
-            <div class="card">
-              <DataTable
-                v-if="currentDataRequests && currentDataRequests.length > 0"
-                v-show="!waitingForData"
-                ref="dataTable"
-                data-test="requests-datatable"
-                :value="currentDataRequests"
-                :paginator="true"
-                :lazy="true"
-                :total-records="totalRecords"
-                :rows="rowsPerPage"
-                :first="firstRowIndex"
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                :alwaysShowPaginator="false"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                @row-click="onRowClick($event)"
-                @page="onPage($event)"
-                class="table-cursor"
-                id="admin-request-overview-data"
-                :rowHover="true"
-                style="cursor: pointer"
-              >
-                <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
-                  <template #body="slotProps">
-                    {{ slotProps.data.userEmailAddress }}
-                  </template>
-                </Column>
-                <Column header="COMPANY" field="companyName" :sortable="false">
-                  <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" :sortable="false" field="dataType">
-                  <template #body="slotProps">
-                    <div>
-                      {{ getFrameworkTitle(slotProps.data.dataType) }}
-                    </div>
-                    <div
-                      data-test="framework-subtitle"
-                      v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                      style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                    >
-                      <br />
-                      {{ getFrameworkSubtitle(slotProps.data.dataType) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
-                  <template #body="slotProps">
-                    {{ slotProps.data.dataRequestId }}
-                  </template>
-                </Column>
-                <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
-                  <template #body="slotProps">
-                    <div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                    </div></template
-                  >
-                </Column>
-                <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
-                  <template #body="slotProps"
-                    ><div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
-                  <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
-                  <template #body="slotProps">
-                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
-                      {{ slotProps.data.accessStatus }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
-                  <template #body="slotProps">
-                    <div :class="priorityBadgeClass(slotProps.data.requestPriority)" style="display: inline-flex">
-                      {{ convertCamelCaseToWordsWithSpaces(slotProps.data.requestPriority) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
-                  <template #body="slotProps">
-                    <div>
-                      {{ slotProps.data.adminComment }}
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
-              <div v-if="!waitingForData && currentDataRequests.length == 0">
-                <div class="d-center-div text-center px-7 py-4">
-                  <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
-                </div>
+    <div class="search-container-last-line">
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedFrameworks"
+        ref="frameworkFilter"
+        :available-items="availableFrameworks"
+        filter-name="Framework"
+        data-test="framework-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Frameworks"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} frameworks"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedRequestStatuses"
+        ref="frameworkFilter"
+        :available-items="availableRequestStatuses"
+        filter-name="Request Status"
+        data-test="request-status-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Request Status"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} request status"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedPriorities"
+        ref="frameworkFilter"
+        :available-items="availablePriorities"
+        filter-name="Priority"
+        data-test="request-priority-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Priority"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} request priorities"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedReportingPeriods"
+        ref="frameworkFilter"
+        :available-items="availableReportingPeriods"
+        filter-name="Reporting Period"
+        data-test="reporting-period-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Reporting Period"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} reporting periods"
+      />
+      <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      <PrimeButton
+        :disabled="waitingForData"
+        data-test="trigger-filtering-requests"
+        @click="getAllRequestsForFilters"
+        label="FILTER REQUESTS "
+      />
+    </div>
+    <div class="message-container">
+      <Message class="info-message" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
+    </div>
+
+    <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+      <p class="font-medium text-xl">Loading...</p>
+      <DatalandProgressSpinner />
+    </div>
+
+    <div class="col-12 text-left p-3">
+      <div class="card">
+        <DataTable
+          v-if="currentDataRequests && currentDataRequests.length > 0"
+          v-show="!waitingForData"
+          ref="dataTable"
+          data-test="requests-datatable"
+          :value="currentDataRequests"
+          :paginator="true"
+          :lazy="true"
+          :total-records="totalRecords"
+          :rows="rowsPerPage"
+          :first="firstRowIndex"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          @row-click="onRowClick($event)"
+          @page="onPage($event)"
+          class="table-cursor"
+          id="admin-request-overview-data"
+          :rowHover="true"
+          style="cursor: pointer"
+        >
+          <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.userEmailAddress }}
+            </template>
+          </Column>
+          <Column header="COMPANY" field="companyName" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.companyName }}
+            </template>
+          </Column>
+          <Column header="FRAMEWORK" :sortable="false" field="dataType">
+            <template #body="slotProps">
+              <div>
+                {{ getFrameworkTitle(slotProps.data.dataType) }}
               </div>
-            </div>
+              <div
+                data-test="framework-subtitle"
+                v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              >
+                <br />
+                {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.reportingPeriod }}
+            </template>
+          </Column>
+          <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.dataRequestId }}
+            </template>
+          </Column>
+          <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
+            <template #body="slotProps">
+              <div>
+                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
+            <template #body="slotProps">
+              <div>
+                {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
+            </template>
+          </Column>
+          <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
+            </template>
+          </Column>
+          <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
+            </template>
+          </Column>
+          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
+            <template #body="slotProps">
+              <div>
+                {{ slotProps.data.adminComment }}
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+        <div v-if="!waitingForData && currentDataRequests.length == 0">
+          <div class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
           </div>
         </div>
-      </TheContent>
-    </DatasetsTabMenu>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
-  </AuthenticationWrapper>
+      </div>
+    </div>
+  </TheContent>
 </template>
 
 <script lang="ts">
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import { defineComponent, inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import {
-  convertCamelCaseToWordsWithSpaces,
-  frameworkHasSubTitle,
-  getFrameworkSubtitle,
-  getFrameworkTitle,
-} from '@/utils/StringFormatter';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {
+  retrieveAvailableFrameworks,
+  retrieveAvailablePriorities,
+  retrieveAvailableRequestStatuses,
+  retrieveAvailableReportingPeriods,
+} from '@/utils/RequestsOverviewPageUtils';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import type { DataTypeEnum } from '@clients/backend';
 import {
   type ExtendedStoredDataRequest,
   type GetDataRequestsDataTypeEnum,
-  type RequestStatus,
   type RequestPriority,
+  type RequestStatus,
 } from '@clients/communitymanager';
-import InputText from 'primevue/inputtext';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass, priorityBadgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
-import {
-  retrieveAvailableFrameworks,
-  retrieveAvailableRequestStatus,
-  retrieveAvailablePriority,
-} from '@/utils/RequestsOverviewPageUtils';
-import type { DataTypeEnum } from '@clients/backend';
-import router from '@/router';
+import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
+import Column from 'primevue/column';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
+import { defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
+    DatalandProgressSpinner,
+    DatalandTag,
     PrimeButton,
-    AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
-    DatasetsTabMenu,
-    TheFooter,
     TheContent,
-    TheHeader,
     DataTable,
     Column,
+    IconField,
     InputText,
+    InputIcon,
+    Message,
   },
 
   setup() {
@@ -277,9 +271,6 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
       currentChunkIndex: 0,
@@ -287,21 +278,24 @@ export default defineComponent({
       rowsPerPage: 100,
       firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
-      footerContent,
       searchBarInputEmail: '',
       searchBarInputComment: '',
+      searchBarInputCompanySearchString: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableRequestStatus: [] as Array<SelectableItem>,
-      selectedRequestStatus: [] as Array<SelectableItem>,
-      availablePriority: [] as Array<SelectableItem>,
-      selectedPriority: [] as Array<SelectableItem>,
+      availableRequestStatuses: [] as Array<SelectableItem>,
+      selectedRequestStatuses: [] as Array<SelectableItem>,
+      availablePriorities: [] as Array<SelectableItem>,
+      selectedPriorities: [] as Array<SelectableItem>,
+      availableReportingPeriods: [] as Array<SelectableItem>,
+      selectedReportingPeriods: [] as Array<SelectableItem>,
     };
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableRequestStatus = retrieveAvailableRequestStatus();
-    this.availablePriority = retrieveAvailablePriority();
+    this.availableRequestStatuses = retrieveAvailableRequestStatuses();
+    this.availablePriorities = retrieveAvailablePriorities();
+    this.availableReportingPeriods = retrieveAvailableReportingPeriods();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
   },
   computed: {
@@ -324,12 +318,16 @@ export default defineComponent({
       this.selectedFrameworks = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
-    selectedRequestStatus(newSelected) {
-      this.selectedRequestStatus = newSelected;
+    selectedRequestStatuses(newSelected) {
+      this.selectedRequestStatuses = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
-    selectedPriority(newSelected) {
-      this.selectedPriority = newSelected;
+    selectedPriorities(newSelected) {
+      this.selectedPriorities = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
+    },
+    selectedReportingPeriods(newSelected) {
+      this.selectedReportingPeriods = newSelected;
       this.setChunkAndFirstRowIndexToZero();
     },
     searchBarInputEmail(newSearch: string) {
@@ -340,13 +338,12 @@ export default defineComponent({
       this.searchBarInputComment = newSearch;
       this.setChunkAndFirstRowIndexToZero();
     },
+    searchBarInputCompanySearchString(newSearch: string) {
+      this.searchBarInputCompanySearchString = newSearch;
+      this.setChunkAndFirstRowIndexToZero();
+    },
   },
   methods: {
-    convertCamelCaseToWordsWithSpaces,
-    priorityBadgeClass,
-    badgeClass,
-    accessStatusBadgeClass,
-    getRequestStatusLabel,
     frameworkHasSubTitle,
     getFrameworkTitle,
     getFrameworkSubtitle,
@@ -361,18 +358,23 @@ export default defineComponent({
         this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
       );
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
-        this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
+        this.selectedRequestStatuses.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
       const selectedPriorityAsSet = new Set<RequestPriority>(
-        this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
+        this.selectedPriorities.map((selectableItem) => selectableItem.displayName as RequestPriority)
+      );
+      const selectedReportingPeriodAsSet = new Set<string>(
+        this.selectedReportingPeriods.map((selectableItem) => selectableItem.displayName)
       );
       try {
         if (this.getKeycloakPromise) {
           const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
           const commentFilter = this.searchBarInputComment === '' ? undefined : this.searchBarInputComment;
+          const companySearchStringFilter =
+            this.searchBarInputCompanySearchString === '' ? undefined : this.searchBarInputCompanySearchString;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
-            await apiClientProvider.apiClients.requestController.getDataRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
@@ -380,14 +382,15 @@ export default defineComponent({
               selectedRequestStatusesAsSet,
               undefined,
               selectedPriorityAsSet,
+              selectedReportingPeriodAsSet,
               undefined,
-              undefined,
+              companySearchStringFilter,
               this.datasetsPerPage,
               this.currentChunkIndex
             )
           ).data;
           this.totalRecords = (
-            await apiClientProvider.apiClients.requestController.getNumberOfRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
@@ -395,8 +398,9 @@ export default defineComponent({
               selectedRequestStatusesAsSet,
               undefined,
               selectedPriorityAsSet,
+              selectedReportingPeriodAsSet,
               undefined,
-              undefined
+              companySearchStringFilter
             )
           ).data;
         }
@@ -412,10 +416,12 @@ export default defineComponent({
     resetFilterAndSearchBar() {
       this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
-      this.selectedRequestStatus = [];
-      this.selectedPriority = [];
+      this.selectedRequestStatuses = [];
+      this.selectedPriorities = [];
+      this.selectedReportingPeriods = [];
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
+      this.searchBarInputCompanySearchString = '';
       void this.getAllRequestsForFilters();
     },
 
@@ -424,7 +430,7 @@ export default defineComponent({
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
+      globalThis.scrollTo(0, 0);
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
@@ -452,3 +458,55 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+%search-container-base {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.search-container-first-line {
+  @extend %search-container-base;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm) var(--spacing-lg);
+
+  .search-bar {
+    width: 20%;
+  }
+}
+
+.search-container-last-line {
+  @extend %search-container-base;
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+
+  .search-filter {
+    width: 20%;
+    text-align: left;
+  }
+
+  > :last-child {
+    margin-left: auto;
+  }
+}
+
+.message-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-bottom: var(--spacing-lg);
+
+  .info-message {
+    margin: 0 var(--spacing-lg);
+  }
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+</style>

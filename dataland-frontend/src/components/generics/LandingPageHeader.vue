@@ -1,0 +1,112 @@
+<template>
+  <header class="header" role="banner">
+    <div class="header__logo">
+      <router-link to="/" aria-label="Go to the Landing Page" aria-current="page">
+        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland banner logo" />
+      </router-link>
+    </div>
+    <nav class="header__navigation">
+      <Button
+        to="/"
+        class="header__link"
+        :class="{ 'active-link': isActiveHome }"
+        label="HOME"
+        variant="text"
+        @click="router.push('/')"
+      />
+      <Button
+        to="/"
+        class="header__link"
+        :class="{ 'active-link': isActiveAbout }"
+        label="ABOUT"
+        variant="text"
+        @click="router.push('/about')"
+      />
+    </nav>
+    <AuthSection :is-landing-page="true" />
+  </header>
+</template>
+
+<script setup lang="ts">
+import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import Button from 'primevue/button';
+import router from '@/router';
+
+const route = useRoute();
+
+const isActiveHome = computed(() => route.path === '/');
+const isActiveAbout = computed(() => route.path === '/about');
+</script>
+
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 46px;
+  margin: 16px;
+  position: fixed;
+  width: calc(100% - 32px);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  box-sizing: border-box;
+
+  &__logo {
+    img {
+      width: 143px;
+      height: auto;
+    }
+  }
+
+  &__navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 2em;
+  }
+
+  &__link {
+    color: var(--p-highlight-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+
+    &:hover,
+    &.active-link {
+      color: var(--p-primary-color);
+      border-bottom: 2px solid var(--p-primary-color);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    flex-direction: column;
+
+    .header__logo {
+      img {
+        width: 79px;
+      }
+    }
+
+    .header__navigation {
+      display: none;
+    }
+  }
+}
+</style>

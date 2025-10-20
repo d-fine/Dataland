@@ -1,5 +1,5 @@
 # basis image from grafana aaloy
-FROM grafana/alloy:v1.8.2@sha256:8fad63014ac2d69dd5e21e51ec1639bb6f52b43402ff8ca96125ea874b7f6422
+FROM grafana/alloy:v1.10.2@sha256:bcf27f18c4402869af112fb39e35e1db3804a404686f4caa20bdf77814219223
 
 COPY ./dataland-alloy/config /etc/alloy
 RUN apt-get update && apt-get install -y curl

@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <OverlayPanel ref="overlayPanel">
+  <Popover ref="popover">
     <div class="d-nace-treeview-container">
       <h2 v-if="filteredTreeValues.length <= 0">No results</h2>
       <Tree
@@ -38,7 +38,7 @@
               :binary="true"
               data-test="NaceCodeSelectorCheckbox"
             ></Checkbox>
-            <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
+            <div :style="{ visibility: !selectedChildrenCounter.get(slotProps.node.key) ? 'hidden' : 'visible' }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
             </div>
             <span>{{ slotProps.node.label }}</span>
@@ -46,15 +46,15 @@
         </template>
       </Tree>
     </div>
-  </OverlayPanel>
+  </Popover>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
 import Tree from 'primevue/tree';
-import { type TreeNode } from 'primevue/treenode';
+import type { TreeNode } from 'primevue/treenode';
 import InputText from 'primevue/inputtext';
-import OverlayPanel from 'primevue/overlaypanel';
+import Popover from 'primevue/popover';
 import Checkbox from 'primevue/checkbox';
 
 import { filterNodes, naceCodeMap, naceCodeTree } from '@/components/forms/parts/elements/derived/NaceCodeTree';
@@ -78,10 +78,10 @@ export default defineComponent({
       default: false,
     },
   },
-  components: { Tree, OverlayPanel, InputText, Checkbox },
+  components: { Tree, Popover, InputText, Checkbox },
   setup() {
     return {
-      overlayPanel: ref<OverlayPanel>(),
+      popover: ref<Popover>(),
     };
   },
   methods: {
@@ -90,7 +90,7 @@ export default defineComponent({
      * @param event the onclick event
      */
     inputFocused(event: Event) {
-      this.overlayPanel?.show(event);
+      this.popover?.show(event);
     },
     /**
      * Handles the click event of the selection checkboxes
@@ -124,16 +124,16 @@ export default defineComponent({
       const childrenCounterPopulator = (node: TreeNode): void => {
         const children = node.children ?? [];
         let localSum = 0;
-        children.forEach((child) => {
+        for (const child of children) {
           if (selectedTreeNodeSet.has(assertDefined(child.key))) localSum++;
           childrenCounterPopulator(child);
           localSum += assertDefined(newSelectedChildrenCounter.get(assertDefined(child.key)));
-        });
+        }
         newSelectedChildrenCounter.set(assertDefined(node.key), localSum);
       };
-      naceCodeTree.forEach((treeNode) => {
+      for (const treeNode of naceCodeTree) {
         childrenCounterPopulator(treeNode);
-      });
+      }
       this.selectedChildrenCounter = newSelectedChildrenCounter;
     },
     /**
@@ -190,17 +190,35 @@ export default defineComponent({
         const newlySelectedValues = new Set(newValue);
         const currentlySelectedValues = [...this.selectedTreeNodes];
 
-        currentlySelectedValues.forEach((element) => {
+        for (const element of currentlySelectedValues) {
           if (!newlySelectedValues.has(element)) {
             this.selectedTreeNodes.delete(element);
           }
-        });
+        }
 
-        newlySelectedValues.forEach((it) => {
+        for (const it of newlySelectedValues) {
           this.selectedTreeNodes.add(it);
-        });
+        }
       },
     },
   },
 });
 </script>
+
+<style scoped>
+.d-nace-treeview-container {
+  height: 400px;
+  min-width: 200px;
+  overflow: auto;
+}
+
+.d-nace-focus {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.d-nace-chipview {
+  max-width: 66%;
+}
+</style>

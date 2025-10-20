@@ -1,4 +1,6 @@
 import { getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { PortfolioControllerApi } from '@clients/userservice';
+import { Configuration } from '@clients/backend';
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
@@ -7,10 +9,10 @@ export function logout(): void {
     .as('apikey')
     .visitAndCheckAppMount('/api-key')
     .wait('@apikey', { timeout: Cypress.env('short_timeout_in_ms') as number });
-  cy.get("div[id='profile-picture-dropdown-toggle']").click();
-  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.get("[data-test='user-profile-toggle']").click();
+  cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
-  cy.get("a[aria-label='Login to account']").should('exist').should('be.visible');
+  cy.get("[data-test='login-dataland-button']").should('exist').should('be.visible');
 }
 
 let globalJwt = '';
@@ -23,12 +25,10 @@ let globalJwt = '';
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept({ url: 'https://www.youtube.com/**' }, { forceNetworkError: false }).as('youtube');
-  cy.intercept({ times: 1, url: '/api/companies*' }).as('getCompanies');
-  cy.intercept({ times: 1, url: '/api/companies/numberOfCompanies**' }).as('numberOfCompanies');
+  cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
-  cy.visitAndCheckAppMount('/')
-    .get("a[aria-label='Login to account']", { timeout: Cypress.env('long_timeout_in_ms') as number })
-    .click();
+  cy.visitAndCheckAppMount('/');
+  cy.get("[data-test='login-dataland-button']", { timeout: Cypress.env('long_timeout_in_ms') as number }).click();
 
   loginWithCredentials(username, password);
 
@@ -43,11 +43,23 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .click();
   }
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/companies');
-  cy.wait('@getCompanies', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
+  let urlToRedirectTo = getBaseUrl() + '/companies';
+  if (!otpGenerator) {
+    let doesUserHavePortfolios = false;
+    getKeycloakToken(username, password).then(async (token) => {
+      const allUserPortfolios = await new PortfolioControllerApi(
+        new Configuration({ accessToken: token })
+      ).getAllPortfolioNamesForCurrentUser();
+      doesUserHavePortfolios = allUserPortfolios.data.length > 0;
+    });
+    if (doesUserHavePortfolios) {
+      urlToRedirectTo = getBaseUrl() + '/portfolios';
+    }
+  }
+  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
+  cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
     globalJwt = interception.request.headers['authorization'] as string;
   });
-  cy.wait('@numberOfCompanies');
 }
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.

@@ -1,24 +1,11 @@
 <template>
-  <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
-    <template v-if="!useMobileView">
-      <div class="headline">
-        <BackButton />
-      </div>
+  <div class="container" data-test="company-info-sheet">
+    <CompaniesOnlySearchBar
+      v-if="!useMobileView"
+      @select-company="router.push(`/companies/${$event.companyId}`)"
+      wrapper-class-additions="w-8 mt-2"
+    />
 
-      <CompaniesOnlySearchBar
-        v-if="showSearchBar"
-        @select-company="router.push(`/companies/${$event.companyId}`)"
-        wrapper-class-additions="w-8 mt-2"
-      />
-    </template>
-    <template v-else>
-      <div class="mobile-header">
-        <BackButton label="" data-test-marker="back-button-mobile" />
-        <div class="mobile-header__title" data-test="mobile-header-title">
-          {{ mobileTitle }}
-        </div>
-      </div>
-    </template>
     <CompanyInformationBanner
       :companyId="companyId"
       :show-single-data-request-button="showSingleDataRequestButton"
@@ -26,38 +13,19 @@
       class="w-12"
     />
   </div>
-  <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`" data-test="sheet-attached">
-    <div class="mobile-header">
-      <BackButton label="" data-test-marker="back-button-mobile-attached-sheet" />
-      <div class="mobile-header__title">
-        {{ mobileTitle }}
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-import BackButton from '@/components/general/BackButton.vue';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import { type CompanyInformation } from '@clients/backend';
-import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import router from '@/router';
+import { type CompanyInformation } from '@clients/backend';
+import { inject, ref } from 'vue';
 
-const injectedMobileView = inject<{ value: boolean }>('useMobileView');
-const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
-
-const sheet = ref<HTMLDivElement>();
-const attachedSheet = ref<HTMLDivElement>();
-
-const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
+const { companyId, showSingleDataRequestButton } = defineProps({
   companyId: {
     type: String,
     required: true,
-  },
-  showSearchBar: {
-    type: Boolean,
-    default: true,
   },
   showSingleDataRequestButton: {
     type: Boolean,
@@ -65,7 +33,10 @@ const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
   },
 });
 
+const useMobileView = inject<boolean>('useMobileView', false);
+
 const emit = defineEmits(['fetchedCompanyInformation']);
+const companyName = ref<string>();
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
@@ -75,66 +46,17 @@ function onFetchedCompanyInformation(companyInfo: CompanyInformation): void {
   companyName.value = companyInfo.companyName;
   emit('fetchedCompanyInformation', companyInfo);
 }
-
-const companyName = ref<string>();
-const mobileTitle = computed<string>(() => {
-  const genericTitle = 'Company Overview';
-  if (isCollapsed.value) {
-    return companyName.value ?? genericTitle;
-  } else {
-    return genericTitle;
-  }
-});
-
-const sheetRect = ref<DOMRect>();
-const attachedSheetHeight = ref<number>();
-
-/**
- * Sets the value of sheetRect and mobilHeaderHeight
- */
-function onScroll(): void {
-  sheetRect.value = sheet.value!.getBoundingClientRect();
-  attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', onScroll);
-});
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll);
-});
-const isCollapsed = computed<boolean>(() => {
-  if (useMobileView.value && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
-    if (sheetRect.value.bottom <= attachedSheetHeight.value) {
-      return true;
-    }
-  }
-  return false;
-});
 </script>
 
 <style scoped lang="scss">
-.sheet {
+.container {
   width: 100%;
   background-color: var(--surface-0);
-  box-shadow: 0 4px 4px 0 #00000005;
   padding: 0.5rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: start;
-
-  &--attached {
-    width: 100%;
-    background-color: var(--surface-0);
-    box-shadow: 0 4px 4px 0 #00000005;
-    padding: 0.5rem 1rem 1rem;
-    position: fixed;
-    top: 0;
-  }
-}
-
-.visuals-hidden {
-  visibility: hidden;
+  gap: 0;
 }
 
 .headline {
@@ -143,18 +65,5 @@ const isCollapsed = computed<boolean>(() => {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.mobile-header {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  text-align: center;
-
-  &__title {
-    width: 100%;
-    text-align: center;
-    font-weight: bold;
-  }
 }
 </style>

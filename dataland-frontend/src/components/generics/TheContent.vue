@@ -9,3 +9,10 @@ export default {
   name: 'TheContent',
 };
 </script>
+<style scoped>
+.d-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

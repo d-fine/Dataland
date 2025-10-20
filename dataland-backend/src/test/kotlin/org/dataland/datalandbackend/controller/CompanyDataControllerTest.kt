@@ -5,18 +5,25 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
+import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -25,14 +32,25 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.util.UUID
+import java.util.stream.Stream
 import kotlin.reflect.jvm.javaMethod
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
@@ -41,12 +59,15 @@ import kotlin.reflect.jvm.javaMethod
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
-    @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+    @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
     @Autowired private val dataPointUtils: DataPointUtils,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
+    @MockitoBean private val dataPointMetaInformationRepository = mock<DataPointMetaInformationRepository>()
+
+    @MockitoBean private val specificationClient = mock<SpecificationControllerApi>()
     lateinit var companyController: CompanyDataController
 
     @BeforeEach
@@ -55,39 +76,49 @@ internal class CompanyDataControllerTest(
             CompanyDataController(
                 companyAlterationManager,
                 companyQueryManager,
-                companyIdentifierRepositoryInterface,
+                companyIdentifierManager,
                 companyBaseManager,
                 dataPointUtils,
             )
     }
 
-    private final val testLei = "testLei"
-    private final val testChildLei = "testChildLei"
-    val companyWithTestLei =
-        CompanyInformation(
-            companyName = "Test Company",
-            companyAlternativeNames = null,
-            companyContactDetails = null,
-            companyLegalForm = null,
-            countryCode = "DE",
-            headquarters = "Berlin",
-            headquartersPostalCode = "8",
-            sector = null,
-            sectorCodeWz = null,
-            website = null,
-            isTeaserCompany = null,
-            identifiers =
-                mapOf(
-                    IdentifierType.Lei to listOf(testLei),
-                ),
-            parentCompanyLei = null,
-        )
-    val companyWithParent =
-        companyWithTestLei.copy(
-            companyName = "Test Company Child",
-            identifiers = mapOf(IdentifierType.Lei to listOf(testChildLei)),
-            parentCompanyLei = testLei,
-        )
+    companion object {
+        private const val TEST_LEI = "testLei"
+        private const val TEST_CHILD_LEI = "testChildLei"
+
+        val companyWithTestLei =
+            CompanyInformation(
+                companyName = "Test Company",
+                companyAlternativeNames = null,
+                companyContactDetails = null,
+                companyLegalForm = null,
+                countryCode = "DE",
+                headquarters = "Berlin",
+                headquartersPostalCode = "8",
+                fiscalYearEnd = null,
+                reportingPeriodShift = null,
+                sector = null,
+                sectorCodeWz = null,
+                website = null,
+                isTeaserCompany = null,
+                identifiers = mapOf(IdentifierType.Lei to listOf(TEST_LEI)),
+                parentCompanyLei = null,
+            )
+
+        val companyWithParent =
+            companyWithTestLei.copy(
+                companyName = "Test Company Child",
+                identifiers = mapOf(IdentifierType.Lei to listOf(TEST_CHILD_LEI)),
+                parentCompanyLei = TEST_LEI,
+            )
+
+        @JvmStatic
+        fun invalidReportingPeriodShiftObjects(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(CompanyInformationPatch(reportingPeriodShift = 100)),
+                Arguments.of(companyWithTestLei.copy(reportingPeriodShift = 100)),
+            )
+    }
 
     fun postCompany(company: CompanyInformation = companyWithTestLei): String =
         companyController
@@ -103,7 +134,7 @@ internal class CompanyDataControllerTest(
         val expectedCompanyId = postCompany()
         assertEquals(
             expectedCompanyId,
-            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
+            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, TEST_LEI).body!!.companyId,
         )
         assertThrows<ResourceNotFoundApiException> {
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
@@ -134,6 +165,17 @@ internal class CompanyDataControllerTest(
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidReportingPeriodShiftObjects")
+    fun `reportingPeriodShift validator triggers for bad value`(testObject: Any) {
+        val violations = validator.validate(testObject)
+
+        assertFalse(violations.isEmpty())
+        val violation = violations.find { it.propertyPath.toString() == "reportingPeriodShift" }
+        assertEquals("reportingPeriodShift", violation?.propertyPath.toString())
+        assertEquals(REPORTING_PERIOD_SHIFT_ERROR_MESSAGE, violation?.message)
     }
 
     @Test
@@ -211,7 +253,7 @@ internal class CompanyDataControllerTest(
         assertEquals(basicChildCompanyInformationList?.size, 1)
         assertEquals(basicChildCompanyInformationList?.get(0)?.companyId, childCompanyId)
         assertEquals(basicChildCompanyInformationList?.get(0)?.companyName, companyWithParent.companyName)
-        assertEquals(basicChildCompanyInformationList?.get(0)?.lei, testChildLei)
+        assertEquals(basicChildCompanyInformationList?.get(0)?.lei, TEST_CHILD_LEI)
     }
 
     @Test
@@ -230,5 +272,29 @@ internal class CompanyDataControllerTest(
 
         assertEquals(listOf("ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm"), resultLEICodes)
         assertEquals(listOf("Company A", "Company B"), resultCompanyNames)
+    }
+
+    @Test
+    fun `getAggregatedFrameworkDataSummary does not count datasets with only shared fields`() {
+        val testDataPointTypeName = "extendedDateFiscalYearEnd"
+        mockSecurityContext()
+        doReturn(
+            mock<FrameworkSpecification> {
+                on { schema } doReturn
+                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$testDataPointTypeName\",\"ref\":\"dummy\"}}}}"
+            },
+        ).whenever(specificationClient).getFrameworkSpecification(any<String>())
+        doReturn(
+            listOf(
+                mock<DataPointMetaInformationEntity> {
+                    on { reportingPeriod } doReturn "2023"
+                },
+            ),
+        ).whenever(dataPointMetaInformationRepository)
+            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), any<String>())
+
+        val testCompanyId = UUID.randomUUID().toString()
+        val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
+        assertEquals(0, result.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
     }
 }

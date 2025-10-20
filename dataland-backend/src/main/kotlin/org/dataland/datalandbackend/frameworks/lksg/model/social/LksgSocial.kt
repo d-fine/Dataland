@@ -24,6 +24,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.social.withholdingAdeq
 /**
  * The data-model for the Social section
  */
+@Suppress("MaxLineLength")
 data class LksgSocial(
     @field:Valid()
     val childLabor: LksgSocialChildLabor? = null,

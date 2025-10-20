@@ -35,15 +35,15 @@ export function sortDatasetsByReportingPeriod<T>(
  * @returns 1 if the first reporting period should be sorted after to the second one else -1
  */
 export function compareReportingPeriods(firstReportingPeriod: string, secondReportingPeriod: string): number {
-  if (!isNaN(Number(firstReportingPeriod)) && !isNaN(Number(secondReportingPeriod))) {
+  if (!Number.isNaN(Number(firstReportingPeriod)) && !Number.isNaN(Number(secondReportingPeriod))) {
     if (Number(firstReportingPeriod) < Number(secondReportingPeriod)) {
       return 1;
     } else {
       return -1;
     }
-  } else if (!isNaN(Number(firstReportingPeriod))) {
+  } else if (!Number.isNaN(Number(firstReportingPeriod))) {
     return -1;
-  } else if (!isNaN(Number(secondReportingPeriod))) {
+  } else if (!Number.isNaN(Number(secondReportingPeriod))) {
     return 1;
   } else if (firstReportingPeriod > secondReportingPeriod) {
     return 1;

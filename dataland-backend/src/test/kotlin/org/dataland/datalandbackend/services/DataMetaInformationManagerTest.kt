@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -20,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@DefaultMocks
 class DataMetaInformationManagerTest(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyManager: CompanyAlterationManager,

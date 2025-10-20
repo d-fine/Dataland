@@ -74,13 +74,13 @@ describe('Component tests for the view data request page', function (): void {
   /**
    * Mocks the api-manager answer for basic company information
    */
-  function interceptUserActiveDatasetOnMounted(hasActiveDataSet: boolean): void {
+  function interceptUserActiveDatasetOnMounted(hasActiveDataset: boolean): void {
     const dummyMetaData = {
       companyId: dummyCompanyId,
       dataType: dummyFramework,
     };
     cy.intercept(`**/api/metadata?**`, {
-      body: hasActiveDataSet ? [dummyMetaData] : [],
+      body: hasActiveDataset ? [dummyMetaData] : [],
       status: 200,
     });
   }
@@ -235,8 +235,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="reopenModal"]').within(() => {
       cy.get('[data-test="reopenMessage"]').should('be.visible');
       cy.get('[data-test="reopenMessage"]').type('Make the test work, please!');
-      cy.get('[data-test="reopenButton"]').should('be.visible');
-      cy.get('[data-test="reopenButton"]').contains('REOPEN REQUEST').click();
+      cy.get('[data-test="reopenRequestButton"]').should('be.visible');
+      cy.get('[data-test="reopenRequestButton"]').contains('REOPEN REQUEST').click();
     });
     cy.get('[data-test="reopenModal"]').should('not.exist');
     cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();
@@ -262,11 +262,11 @@ describe('Component tests for the view data request page', function (): void {
         'Once a data request is withdrawn, it will be removed from your data request list.' +
           ' The company owner will not be notified anymore.'
       ).should('exist');
-      cy.contains('Withdraw Request').should('exist');
-      cy.contains('Withdraw request').click();
+      cy.contains('WITHDRAW REQUEST').should('exist');
+      cy.contains('WITHDRAW REQUEST').click();
     });
-    cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
-    cy.get('[data-test="successModal"]').should('not.exist');
+    cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
+    cy.get('[data-test="success-modal"]').should('not.exist');
   });
 
   it('Check view data request page for open request with data and check the routing to data view page', function () {

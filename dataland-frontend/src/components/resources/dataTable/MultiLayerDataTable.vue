@@ -1,7 +1,7 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table class="p-datatable-table w-full" :aria-label="ariaLabel">
+      <table class="p-datatable-table" :aria-label="ariaLabel">
         <thead class="p-datatable-thead">
           <tr class="border-bottom-table">
             <th class="horizontal-headers-size">
@@ -189,3 +189,12 @@ const props = defineProps<{
   hideEmptyFields: boolean;
 }>();
 </script>
+<style scoped>
+.info-icon {
+  cursor: help;
+}
+
+.border-bottom-table {
+  border-bottom: 1px solid var(--table-border);
+}
+</style>

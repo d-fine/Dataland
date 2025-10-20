@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -59,7 +58,9 @@ class DataPointManager
             bypassQa: Boolean,
             correlationId: String,
         ): DataPointMetaInformation {
-            dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
+            val castedDataPointObject =
+                dataPointValidator
+                    .validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
             logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 
@@ -74,7 +75,7 @@ class DataPointManager
 
             val dataPointMetaInformation =
                 storeDataPoint(
-                    uploadedDataPoint = uploadedDataPoint,
+                    uploadedDataPoint = uploadedDataPoint.copy(dataPoint = objectMapper.writeValueAsString(castedDataPointObject)),
                     dataPointId = dataPointId,
                     uploaderUserId = uploaderUserId,
                     correlationId = correlationId,
@@ -129,7 +130,7 @@ class DataPointManager
          */
         @Transactional(readOnly = true)
         fun retrieveDataPoints(
-            dataPointIds: List<String>,
+            dataPointIds: Collection<String>,
             correlationId: String,
         ): Map<String, UploadedDataPoint> {
             logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
@@ -146,7 +147,7 @@ class DataPointManager
                         "Data point not found",
                         "No data point with the id: $dataPointId could be found in the data store.",
                     )
-                if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                if (!metaInfo.isDataPointViewableByUser(DatalandAuthentication.fromContextOrNull())) {
                     throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
                 }
                 val dataPointType = metaInfo.dataPointType
@@ -188,20 +189,17 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
-
-        /**
-         * Retrieves the currently active data points for a list of specific data point dimensions
-         * @param dataPointDimensions the data dimensions to retrieve the data points for
-         * @return the id of the currently active data point
-         */
-        @Transactional(readOnly = true)
-        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
-            val dataPointIds = mutableListOf<String>()
-            dataPointDimensions.forEach {
-                val dataPointId = metaDataManager.getCurrentlyActiveDataId(it) ?: return@forEach
-                dataPointIds.add(dataPointId)
-            }
-            return dataPointIds
+        ): UploadedDataPoint {
+            val uploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
+            return uploadedDataPoint.copy(
+                dataPoint =
+                    objectMapper.writeValueAsString(
+                        dataPointValidator.validateDataPoint(
+                            uploadedDataPoint.dataPointType,
+                            uploadedDataPoint.dataPoint,
+                            correlationId,
+                        ),
+                    ),
+            )
         }
     }

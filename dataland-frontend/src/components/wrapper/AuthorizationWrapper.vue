@@ -4,7 +4,7 @@
     class="d-center-div text-center px-7 py-4"
   >
     <p class="font-medium text-xl">Checking for user roles...</p>
-    <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+    <DatalandProgressSpinner />
   </div>
   <div v-if="(hasUserRequiredKeycloakRole && !isFrameworkPrivate) || isUserCompanyOwnerOrUploader">
     <slot></slot>
@@ -16,7 +16,7 @@
       !isUserCompanyOwnerOrUploader &&
       (!hasUserRequiredKeycloakRole || isFrameworkPrivate)
     "
-    class="paper-section flex"
+    class="flex"
   >
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
@@ -38,7 +39,7 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 
 export default defineComponent({
   name: 'AuthorizationWrapper',
-  components: { TheContent, MiddleCenterDiv },
+  components: { DatalandProgressSpinner, TheContent, MiddleCenterDiv },
   data() {
     return {
       hasUserRequiredKeycloakRole: null as boolean | null,
@@ -94,3 +95,12 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+</style>

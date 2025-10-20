@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
@@ -20,52 +21,63 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the sfdr framework endpoints
- * @param myDataManager data manager to be used
- * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ * @param datasetStorageService service to handle data storage
+ * @param dataMetaInformationManager service for retrieving data meta-information
+ * @param dataExportService service for handling data export to CSV and JSON
+ * @param objectMapper the mapper to transform strings into classes and vice versa
+ * @param companyQueryManager service to retrieve company information
  */
 @RequestMapping("/data/sfdr")
 @RestController
-class SfdrDataController(
-    @Autowired var myDataManager: AssembledDataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myDataExportService: DataExportService,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<SfdrData>(
-        myDataManager,
-        myMetaDataManager,
-        myDataExportService,
-        myObjectMapper,
-        SfdrData::class.java,
-    ) {
-    @Operation(operationId = "getCompanyAssociatedSfdrData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
-        super.getCompanyAssociatedData(dataId)
+class SfdrDataController
+    @Autowired
+    constructor(
+        datasetStorageService: AssembledDataManager,
+        dataMetaInformationManager: DataMetaInformationManager,
+        dataExportService: DataExportService,
+        companyQueryManager: CompanyQueryManager,
+        objectMapper: ObjectMapper,
+    ) : DataController<SfdrData>(
+            datasetStorageService,
+            dataMetaInformationManager,
+            dataExportService,
+            objectMapper,
+            companyQueryManager,
+            SfdrData::class.java,
+        ) {
+        @Operation(operationId = "getCompanyAssociatedSfdrData")
+        override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
+            super.getCompanyAssociatedData(dataId)
 
-    @Operation(operationId = "getCompanyAssociatedSfdrDataByDimensions")
-    override fun getCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-    ): ResponseEntity<CompanyAssociatedData<SfdrData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+        @Operation(operationId = "getCompanyAssociatedSfdrDataByDimensions")
+        override fun getCompanyAssociatedDataByDimensions(
+            reportingPeriod: String,
+            companyId: String,
+        ): ResponseEntity<CompanyAssociatedData<SfdrData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-    @Operation(operationId = "postCompanyAssociatedSfdrData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<SfdrData>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+        @Operation(operationId = "postCompanyAssociatedSfdrData")
+        override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<SfdrData>,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-    @Operation(operationId = "exportCompanyAssociatedSfdrDataByDimensions")
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriod: String,
-        companyId: String,
-        exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> = super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
+        @Operation(operationId = "exportCompanyAssociatedSfdrDataByDimensions")
+        override fun exportCompanyAssociatedDataByDimensions(
+            reportingPeriods: List<String>,
+            companyIds: List<String>,
+            exportFileType: ExportFileType,
+            keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
+        ): ResponseEntity<InputStreamResource> =
+            super
+                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
 
-    @Operation(operationId = "getAllCompanySfdrData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> =
-        super
-            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-}
+        @Operation(operationId = "getAllCompanySfdrData")
+        override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showOnlyActive: Boolean,
+            reportingPeriod: String?,
+        ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> =
+            super
+                .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }

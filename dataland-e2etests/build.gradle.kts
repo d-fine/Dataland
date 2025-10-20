@@ -32,6 +32,7 @@ dependencies {
     implementation(Spring.boot.web)
     testImplementation(Spring.boot.test)
     testImplementation(libs.awaitility)
+    implementation(libs.poi.ooxml)
 }
 
 tasks.withType<Test> {
@@ -167,6 +168,30 @@ tasks.register("generateUserServiceClient", org.openapitools.generator.gradle.pl
     )
 }
 
+tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the data sourcing service."
+    group = "clients"
+    val dataSourcingServiceClientDestinationPackage = "org.dataland.dataSourcingService.openApiClient"
+    input = project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/data-sourcing-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(dataSourcingServiceClientDestinationPackage)
+    modelPackage.set("$dataSourcingServiceClientDestinationPackage.model")
+    apiPackage.set("$dataSourcingServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     description = "Task to generate clients for the community manager service."
     group = "clients"
@@ -205,6 +230,7 @@ tasks.register("generateClients") {
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateUserServiceClient")
+    dependsOn("generateDataSourcingServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -223,6 +249,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/qa-service/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/user-service/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
 }
 
 ktlint {

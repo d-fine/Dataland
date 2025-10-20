@@ -13,6 +13,7 @@ enum class FrameworkGenerationFeatures {
     UploadPage,
     FakeFixtures,
     DataPointSpecifications,
+    Translations,
     ;
 
     companion object {
@@ -20,7 +21,7 @@ enum class FrameworkGenerationFeatures {
 
         /**
          * Returns a set of all features except the ones specified.
-         * @param without the features to excludes
+         * @param without the features to exclude
          */
         fun allExcept(vararg without: FrameworkGenerationFeatures): Set<FrameworkGenerationFeatures> = ENTRY_SET - without.toSet()
     }

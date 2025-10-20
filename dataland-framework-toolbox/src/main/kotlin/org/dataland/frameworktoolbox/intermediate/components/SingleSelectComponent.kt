@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_SINGLE_SELECT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -51,6 +52,10 @@ open class SingleSelectComponent(
             documentSupport = documentSupport,
             name = identifier,
             type = enum.getTypeReference(isNullable),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_SINGLE_SELECT_COMPONENT),
+            ),
         )
     }
 
@@ -91,19 +96,19 @@ open class SingleSelectComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val componentName =
-            if (uploadMode == UploadMode.Dropdown) {
-                uploadMode.component
-            } else {
-                when (documentSupport) {
-                    is NoDocumentSupport -> uploadMode.component
-                    is ExtendedDocumentSupport -> "RadioButtonsExtendedDataPointFormField"
-
-                    else ->
-                        throw IllegalArgumentException(
-                            "SingleSelectComponent ${uploadMode.component} does not " +
-                                "support document support $documentSupport",
-                        )
-                }
+            when (documentSupport) {
+                is NoDocumentSupport -> uploadMode.component
+                is ExtendedDocumentSupport ->
+                    if (uploadMode == UploadMode.Dropdown) {
+                        "Extended${uploadMode.component}"
+                    } else {
+                        "RadioButtonsExtendedDataPointFormField"
+                    }
+                else ->
+                    throw IllegalArgumentException(
+                        "SingleSelectComponent ${uploadMode.component} does not " +
+                            "support document support $documentSupport",
+                    )
             }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(

@@ -61,7 +61,7 @@ export default defineComponent({
      */
     integer(node: FormKitNode): boolean {
       const fieldValue = node.value as string;
-      return !isNaN(parseInt(fieldValue)) && parseInt(fieldValue) == parseFloat(fieldValue);
+      return !Number.isNaN(Number.parseInt(fieldValue)) && Number.parseInt(fieldValue) == Number.parseFloat(fieldValue);
     },
     /**
      * Emits an event when the currentValue has been changed

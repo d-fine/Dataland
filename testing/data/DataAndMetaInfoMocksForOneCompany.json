@@ -1,13 +1,13 @@
 [
 	{
 		"metaInfo": {
-			"dataId": "06a7547f-0650-4899-ba25-13f327a2c045",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "27d06a75-47f0-4650-8899-a2513f327a2c",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-financials",
 			"reportingPeriod": "2015",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 9061,
+			"uploadTime": 4499,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -15,13 +15,13 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "fd2b8269-3383-4855-8844-7eee548cc545",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "be4fd2b8-2693-4383-9855-8447eee548cc",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-financials",
 			"reportingPeriod": "2016",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 3478,
+			"uploadTime": 6555,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -29,13 +29,13 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "d91c74f3-1d78-44a4-b9a5-fba366643b49",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "58d91c74-f31d-4784-9a49-a5fba366643b",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-non-financials",
 			"reportingPeriod": "2017",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 6280,
+			"uploadTime": 9266,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -43,13 +43,13 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "c81e6c95-c987-4690-bef6-32391ea546e6",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "a1c81e6c-95c9-4876-b90e-f632391ea546",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-non-financials",
 			"reportingPeriod": "2018",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 2556,
+			"uploadTime": 4626,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -57,13 +57,13 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "0b04850a-517c-4977-8b7c-c8a54a6a69ee",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "450b0485-0a51-47c9-b77b-7cc8a54a6a69",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-non-financials",
 			"reportingPeriod": "2019",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 2058,
+			"uploadTime": 4664,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -71,13 +71,13 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "69b42915-2f0a-4689-955a-6ae2f6c4bdb8",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "369b4291-52f0-4a68-a955-a6ae2f6c4bdb",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "eutaxonomy-non-financials",
 			"reportingPeriod": "2020",
 			"currentlyActive": true,
 			"qaStatus": "Accepted",
-			"uploadTime": 6507,
+			"uploadTime": 6424,
 			"uploaderUserId": null,
 			"ref": "https://dataland.com/"
 		},
@@ -85,8 +85,8 @@
 	},
 	{
 		"metaInfo": {
-			"dataId": "11b04584-c2d2-4eed-a52f-e18d3024af4a",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"dataId": "511b0458-4c2d-42ee-ad52-fe18d3024af4",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "lksg",
 			"reportingPeriod": "2021",
 			"currentlyActive": true,
@@ -100,7 +100,7 @@
 	{
 		"metaInfo": {
 			"dataId": "6116d4bc-e15f-4d83-81c0-d0c0e595cee3",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "lksg",
 			"reportingPeriod": "2022",
 			"currentlyActive": true,
@@ -114,7 +114,7 @@
 	{
 		"metaInfo": {
 			"dataId": "2b80933c-af8c-4835-9d47-1d886f70c9e8",
-			"companyId": "8d486cdd-0b3f-454e-9ea4-c478e165aad2",
+			"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
 			"dataType": "sfdr",
 			"reportingPeriod": "2023",
 			"currentlyActive": true,

@@ -1,0 +1,57 @@
+package org.dataland.datasourcingservice.services
+
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
+
+/**
+ * Service class for handling request queries.
+ */
+@Service("RequestQueryManager")
+class RequestQueryManager(
+    @Autowired private val requestRepository: RequestRepository,
+) {
+    /**
+     * Search for requests based on optional filters.
+     * @param requestSearchFilter to filter by
+     * @return list of matching StoredRequest objects
+     */
+    @Transactional(readOnly = true)
+    fun searchRequests(
+        requestSearchFilter: RequestSearchFilter<UUID>,
+        chunkSize: Int = 100,
+        chunkIndex: Int = 0,
+    ): List<StoredRequest> =
+        requestRepository
+            .findByListOfIdsAndFetchDataSourcingEntity(
+                requestRepository
+                    .searchRequests(
+                        requestSearchFilter,
+                        PageRequest.of(
+                            chunkIndex,
+                            chunkSize,
+                            Sort.by(
+                                Sort.Order.desc("creationTimestamp"),
+                                Sort.Order.asc("companyId"),
+                                Sort.Order.desc("reportingPeriod"),
+                                Sort.Order.asc("state"),
+                            ),
+                        ),
+                    ).content,
+            ).map { it.toStoredDataRequest() }
+
+    /**
+     * Get the number of requests that match the optional filters.
+     * @param requestSearchFilter to filter by
+     * @return the number of matching requests
+     */
+    @Transactional(readOnly = true)
+    fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
+        requestRepository.getNumberOfRequests(requestSearchFilter)
+}

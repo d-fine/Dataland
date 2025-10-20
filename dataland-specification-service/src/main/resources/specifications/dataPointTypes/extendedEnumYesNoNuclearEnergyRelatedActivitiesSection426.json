@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoNuclearEnergyRelatedActivitiesSection426",
+  "name" : "Nuclear Energy related Activities (Section 4.26)",
+  "businessDefinition" : "The undertaking carries out, funds, or has exposures to research, development, demonstration and deployment of innovative electricity generation facilities that produce energy from nuclear processes with minimal waste from the fuel cycle.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "nuclear-and-gas" ],
+  "constraints" : null
+}

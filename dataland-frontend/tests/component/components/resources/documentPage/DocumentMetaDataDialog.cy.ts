@@ -19,8 +19,8 @@ describe('Component test for the Document Meta Data Dialog', () => {
       documentMetaInfoEntityFromFixture = jsonContent;
       dummyDocumentId = documentMetaInfoEntityFromFixture.documentId;
       sampleDocumentCategory = documentMetaInfoEntityFromFixture.documentCategory!;
-      dummyCompanyId1 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[0];
-      dummyCompanyId2 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[1];
+      dummyCompanyId1 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[0]!;
+      dummyCompanyId2 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[1]!;
       samplePublicationDate = documentMetaInfoEntityFromFixture.publicationDate!;
       sampleReportingPeriod = documentMetaInfoEntityFromFixture.reportingPeriod!;
     });

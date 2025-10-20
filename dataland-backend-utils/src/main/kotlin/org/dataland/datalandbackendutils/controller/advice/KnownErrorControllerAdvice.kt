@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.lang.StringBuilder
 
 /**
@@ -62,7 +63,7 @@ class KnownErrorControllerAdvice(
         )
 
     /**
-     * Handles AccessDeniedException errors. These occur i.e. if the user does not have permissions to perform an action
+     * Handles AccessDeniedException errors. These occur e.g., if the user does not have permissions to perform an action
      */
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
     fun handleAccessDeniedException(ex: org.springframework.security.access.AccessDeniedException): ResponseEntity<ErrorResponse> =
@@ -88,6 +89,21 @@ class KnownErrorControllerAdvice(
                 errorType = "route-not-found",
                 summary = "Route not found",
                 message = "The requested route ${ex.requestURL} could not be located",
+                httpStatus = HttpStatus.NOT_FOUND,
+            ),
+            ex,
+        )
+
+    /**
+     * Handles NoResourceFoundException errors (another kind of 404 errors).
+     */
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(ex: NoResourceFoundException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
+            ErrorDetails(
+                errorType = "no-resource-found",
+                summary = "Resource not found",
+                message = "The requested resource could not be located",
                 httpStatus = HttpStatus.NOT_FOUND,
             ),
             ex,

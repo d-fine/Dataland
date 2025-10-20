@@ -1,36 +1,56 @@
 <template>
-  <div class="text-primary">
-    <a
+  <div data-test="download-link-component">
+    <PrimeButton
+      v-if="isUserLoggedIn"
+      variant="text"
       @click="handleDocumentDownload()"
-      class="cursor-pointer"
-      :class="fontStyle"
-      :title="documentDownloadInfo.downloadName"
       :data-test="'download-link-' + documentDownloadInfo.downloadName"
-      style="display: grid; grid-template-columns: fit-content(100%) max-content max-content 1.5em"
     >
       <span
-        class="underline pl-1"
-        style="overflow: hidden; text-overflow: ellipsis"
+        class="document-name"
         :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
+        :title="documentDownloadInfo.downloadName"
         >{{ label ?? documentDownloadInfo.downloadName }}</span
       >
-      <span class="underline ml-1 pl-1">{{ suffix ?? '' }}</span>
-      <span class="pr-2">
+      <span>{{ suffix ?? '' }}</span>
+      <span>
         <i
-          v-if="showIcon"
-          class="pi pi-download pl-1"
+          v-if="showIcon && (percentCompleted === 0 || percentCompleted === undefined)"
+          class="pi pi-download"
           data-test="download-icon"
-          aria-hidden="true"
-          style="font-size: 12px; margin: auto"
-        />
+        ></i>
+        <i
+          v-else-if="showIcon && percentCompleted > 0 && percentCompleted < 100"
+          class="pi pi-spin pi-spinner"
+          data-test="spinner-icon"
+          style="margin-left: var(--spacing-xs)"
+        ></i>
+
+        <span v-if="percentCompleted > 0 && percentCompleted < 100" data-test="percentage-text">
+          ({{ percentCompleted }}%)
+        </span>
       </span>
-      <DownloadProgressSpinner :percent-completed="percentCompleted" />
-    </a>
+    </PrimeButton>
+    <span
+      v-else
+      :class="fontStyle"
+      :title="documentDownloadInfo.downloadName"
+      :data-test="'download-text-' + documentDownloadInfo.downloadName"
+    >
+      <span
+        class="document-name"
+        :data-test="'Report-Download-' + documentDownloadInfo.downloadName"
+        :title="documentDownloadInfo.downloadName"
+      >
+        {{ label ?? documentDownloadInfo.downloadName }}
+      </span>
+      <span>{{ suffix ?? '' }}</span>
+    </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, onMounted, type Ref, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 import {
@@ -39,11 +59,14 @@ import {
   downloadIsInProgress,
   type DocumentDownloadInfo,
 } from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import PrimeButton from 'primevue/button';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const percentCompleted = createNewPercentCompletedRef();
+const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
+
+const isUserLoggedIn = ref<undefined | boolean>(undefined);
 
 const props = defineProps({
   label: String,
@@ -56,6 +79,14 @@ const props = defineProps({
   fontStyle: String,
 });
 
+onMounted(() => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      isUserLoggedIn.value = keycloak.authenticated;
+    })
+    .catch((error) => console.error(error));
+});
+
 const handleDocumentDownload = async (): Promise<void> => {
   if (downloadIsInProgress(percentCompleted.value)) return;
   await downloadDocument(props.documentDownloadInfo, getKeycloakPromise, percentCompleted);
@@ -66,5 +97,11 @@ const handleDocumentDownload = async (): Promise<void> => {
 div {
   white-space: nowrap;
   max-width: 100%;
+}
+.document-name {
+  display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -1,47 +1,31 @@
-import { checkButton, checkImage, checkAnchorByContent } from '@ct/testUtils/ExistenceChecks';
-import NewLandingPage from '@/components/pages/NewLandingPage.vue';
+import LandingPage from '@/components/pages/LandingPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
 import { type Page, type Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 
 describe('Component test for the landing page', () => {
   it('Check if essential elements are present', () => {
-    cy.mountWithPlugins(NewLandingPage, {
+    cy.mountWithPlugins(LandingPage, {
       keycloak: minimalKeycloakMock({
         authenticated: false,
       }),
     }).then(() => {
-      validateTheHeader();
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
       validateQuotesSection();
       validateHowItWorksSection();
 
-      assertFrameworkPanelExists('Pathways to Paris');
+      assertFrameworkPanelExists('VSME');
       assertFrameworkPanelExists('LkSG');
       assertFrameworkPanelExists('EU Taxonomy');
       assertFrameworkPanelExists('SFDR');
-      cy.get('button.joincampaign__button').should('exist');
-      cy.get('button.getintouch__text-button').should('exist');
-      checkNewFooter();
-
-      setMobileDeviceViewport();
-      validateTheHeader();
+      cy.get('[data-test="join-campaign-button"]').should('exist');
+      cy.get('[data-test="get-in-touch-button"]').should('exist');
     });
   });
 });
-
-/**
- * Validates the elements of the top bar
- */
-function validateTheHeader(): void {
-  checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  checkButton('signup_dataland_button', 'Sign Up');
-  checkAnchorByContent('Login');
-}
 
 /**
  * Validates the elements of the intro section
@@ -61,35 +45,23 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
-  expect(images?.length).to.eq(32);
-  images?.forEach((image, index) => {
-    const filename = image.split('/').slice(-1)[0];
+  expect(images?.length).to.eq(33);
+  for (const [index, image] of (images ?? []).entries()) {
+    const filename = image.split('/').at(-1)!;
     checkImage(`Brand ${index + 1}`, filename);
-  });
+  }
 }
 
 /**
- * Check the new footer for long-term sustainability.
+ * Checks if an image is present
+ * @param alternativeText the "alt" identifier of the image
+ * @param fileName the file the image is expected to display
  */
-function checkNewFooter(): void {
-  cy.get('footer').should('exist');
-
-  cy.get('.footer__logo').should('exist');
-
-  const currentYear = new Date().getFullYear();
-  const expectedCopyrightText = `Copyright © ${currentYear} Dataland`;
-
-  cy.get('.footer__copyright').should('contain.text', expectedCopyrightText);
-
-  const essentialLinks = [
-    { href: '/imprint', text: 'IMPRINT' },
-    { href: '/dataprivacy', text: 'DATA PRIVACY' },
-    { href: '/terms', text: 'LEGAL' },
-  ];
-
-  essentialLinks.forEach((link) => {
-    cy.get(`footer a[href='${link.href}']`).should('contain.text', link.text);
-  });
+function checkImage(alternativeText: string, fileName: string): void {
+  cy.get(`img[alt="${alternativeText}"]`)
+    .should('be.visible')
+    .should('have.attr', 'src')
+    .should('match', new RegExp(`.*/${fileName}$`));
 }
 
 /**
@@ -111,7 +83,9 @@ function getLandingPageSection(sectionTitle: string): Section {
  * @returns the filename of the found image
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
-  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split('/').slice(-1)[0];
+  const landingPageSection = assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]);
+  const singleImage = landingPageSection.split('/').at(-1)!;
+  return singleImage;
 }
 
 /**
@@ -145,9 +119,10 @@ function validateStruggleSection(): void {
       title: 'High Price',
     },
   ];
+
   cy.get('.struggle__cell').each((element, index) => {
-    checkImage(struggleCellContent[index].title, struggleCellContent[index].imageFilename);
-    cy.wrap(element).should('contain.text', struggleCellContent[index].title);
+    checkImage(struggleCellContent[index]!.title, struggleCellContent[index]!.imageFilename);
+    cy.wrap(element).should('contain.text', struggleCellContent[index]!.title);
   });
 }
 

@@ -33,7 +33,7 @@ class DataRequestUpdateUtilsTest {
     }
 
     private lateinit var dataRequestUpdateUtils: DataRequestUpdateUtils
-    private val mockDataRequestProcessingUtils = mock<DataRequestProcessingUtils>()
+    private val mockCommunityManagerDataRequestProcessingUtils = mock<CommunityManagerDataRequestProcessingUtils>()
     private val mockDataRequestLogger = mock<DataRequestLogger>()
     private val mockCompanyInfoService = mock<CompanyInfoService>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
@@ -52,14 +52,14 @@ class DataRequestUpdateUtilsTest {
         dummyDataRequestEntity =
             DataRequestEntity(
                 userId = "",
-                dataType = "p2p",
+                dataType = "sfdr",
                 notifyMeImmediately = true,
                 reportingPeriod = "",
                 datalandCompanyId = "",
                 creationTimestamp = 0L,
             )
         reset(
-            mockDataRequestProcessingUtils,
+            mockCommunityManagerDataRequestProcessingUtils,
             mockDataRequestLogger,
             mockCompanyInfoService,
             mockCompanyRolesManager,
@@ -68,7 +68,7 @@ class DataRequestUpdateUtilsTest {
         )
         dataRequestUpdateUtils =
             DataRequestUpdateUtils(
-                mockDataRequestProcessingUtils,
+                mockCommunityManagerDataRequestProcessingUtils,
                 mockDataRequestLogger,
                 mockCompanyInfoService,
                 mockCompanyRolesManager,

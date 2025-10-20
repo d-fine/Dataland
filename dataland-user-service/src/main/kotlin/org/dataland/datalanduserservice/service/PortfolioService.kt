@@ -5,8 +5,11 @@ import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -18,6 +21,7 @@ import java.util.UUID
 class PortfolioService
     @Autowired
     constructor(
+        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
         private val portfolioRepository: PortfolioRepository,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
@@ -64,23 +68,68 @@ class PortfolioService
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             logger.info("Retrieve all portfolios for user with userId: $userId. CorrelationId: $correlationId.")
-            return portfolioRepository.getAllByUserId(userId).map { it.toBasePortfolio() }
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
         }
 
         /**
-         * Retrieve portfolio for user by portfolioId
+         * Retrieve portfolio by portfolioId. Unless the user calling this is an admin, it only returns
+         * the portfolio if it belongs to the calling user.
          */
         @Transactional(readOnly = true)
-        fun getPortfolioForUser(portfolioId: String): BasePortfolio {
+        fun getPortfolio(portfolioId: String): BasePortfolio {
             val userId = DatalandAuthentication.fromContext().userId
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             val correlationId = UUID.randomUUID().toString()
             logger.info(
                 "Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
+            return if (userIsAdmin) {
+                portfolioRepository
+                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
+                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+            } else {
+                portfolioRepository
+                    .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+            }
+        }
+
+        /**
+         * Retrieve all portfolios for a user specified by his or her userId. Should only be called
+         * by admin users.
+         */
+        @Transactional(readOnly = true)
+        fun getAllPortfoliosForUserById(userId: String): List<BasePortfolio> {
+            val adminId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+            logger.info(
+                "By order of admin with userId $adminId, retrieve all portfolios for user with userId: $userId." +
+                    " CorrelationId: $correlationId.",
+            )
+            return portfolioRepository.getAllByUserIdOrderByCreationTimestampAsc(userId).map { it.toBasePortfolio() }
+        }
+
+        /**
+         * Retrieve a paginated list of all portfolios that exist on Dataland. Should only be called
+         * by admin users.
+         */
+        @Transactional(readOnly = true)
+        fun getAllPortfolios(
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): List<BasePortfolio> {
+            val adminId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+            logger.info(
+                "By order of admin with userId $adminId, retrieve the chunk with index $chunkIndex and size " +
+                    "up to $chunkSize of all portfolios on Dataland. CorrelationId: $correlationId.",
+            )
             return portfolioRepository
-                .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
+                .findAll(
+                    PageRequest.of(chunkIndex, chunkSize, Sort.by("lastUpdateTimestamp").descending()),
+                ).content
+                .map { it.toBasePortfolio() }
         }
 
         /**
@@ -94,6 +143,9 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
+
+            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(portfolio)
+
             return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
 
@@ -110,12 +162,24 @@ class PortfolioService
                 "Replace portfolio with portfolioId: $portfolioId for user with userId: ${portfolio.userId}." +
                     " CorrelationId: $correlationId.",
             )
+
             val originalPortfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
-            return portfolioRepository
-                .save(portfolio.toPortfolioEntity(portfolioId, originalPortfolio.creationTimestamp))
-                .toBasePortfolio()
+
+            val updatedPortfolioEntity =
+                portfolio.toPortfolioEntity(
+                    portfolioId,
+                    originalPortfolio.creationTimestamp,
+                    portfolio.lastUpdateTimestamp,
+                    portfolio.isMonitored,
+                    portfolio.startingMonitoringPeriod,
+                    portfolio.monitoredFrameworks,
+                )
+
+            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
+
+            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
 
         /**

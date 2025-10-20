@@ -1,0 +1,46 @@
+{
+  "id" : "extendedNuclearAndGasNonEligibleComponent",
+  "name" : "Eligible but not aligned denominator data point with an extended source",
+  "businessDefinition" : "Proportion of Taxonomy-non-eligible Economic Activity in the Denominator of the applicable KPI.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasNonEligible>",
+  "schema" : {
+    "value" : {
+      "taxonomyNonEligibleShareNAndG426" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG427" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG428" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG429" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG430" : "BigDecimal",
+      "taxonomyNonEligibleShareNAndG431" : "BigDecimal",
+      "taxonomyNonEligibleShareOtherActivities" : "BigDecimal",
+      "taxonomyNonEligibleShare" : "BigDecimal"
+    },
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
+  "example" : {
+    "value" : {
+      "taxonomyNonEligibleShareNAndG426" : 1.1,
+      "taxonomyNonEligibleShareNAndG427" : 1.2,
+      "taxonomyNonEligibleShareNAndG428" : 0.6,
+      "taxonomyNonEligibleShareNAndG429" : 0.5,
+      "taxonomyNonEligibleShareNAndG430" : 2.8,
+      "taxonomyNonEligibleShareNAndG431" : 1.2,
+      "taxonomyNonEligibleShareOtherActivities" : 1.9,
+      "taxonomyNonEligibleShare" : 9.3
+    },
+    "quality" : "Reported",
+    "comment" : "",
+    "dataSource" : {
+      "page" : "126",
+      "tagName" : null,
+      "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
+      "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
+      "publicationDate" : "2025-03-02"
+    }
+  }
+}
