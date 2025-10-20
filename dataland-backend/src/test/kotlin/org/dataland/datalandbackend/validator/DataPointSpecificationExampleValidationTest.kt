@@ -173,8 +173,8 @@ class DataPointSpecificationExampleValidationTest
          *
          * This functions removes differences if one of the following conditions is met:
          *  a) The expected value indicates a list type (e.g., "List<SomeType>") and the actual value is a non-empty array of value nodes.
-         *  b) The expected value is null and the path indicates an array index > 0.
-         *     This happens, when the schema defines an array (see case a) and the example provides more than one element.
+         *  b) The expected value is a null JSON node (not Kotlin null) and the path indicates an array index > 0. This happens, when the
+         *     schema defines an array and the example provides more than one element (i.e. multiple aligned activities).
          *
          * @param differences The list of JSON differences to filter.
          */
