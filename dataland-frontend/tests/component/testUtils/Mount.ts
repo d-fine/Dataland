@@ -41,7 +41,7 @@ interface DatalandMountOptions {
  */
 export function getMountingFunction(additionalOptions: DatalandMountOptions = {}): typeof mount {
   /*
-    This file defines a alternative mounting function that also includes many creature comforts
+    This file defines an alternative mounting function that also includes many creature comforts
     (mounting of plugins, mocking router, mocking keycloak, ....)
     However, the underlying type definition of the mount function is very complex (> 100 LOC).
     Therefore, we decided to create this un-checked meta-function.
@@ -52,16 +52,18 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     options.global = options.global ?? {};
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];
-    options.global.plugins.push(createPinia());
-    options.global.plugins.push([
-      PrimeVue,
-      {
-        theme: {
-          preset: DatalandPreset,
+    options.global.plugins.push(
+      createPinia(),
+      [
+        PrimeVue,
+        {
+          theme: {
+            preset: DatalandPreset,
+          },
         },
-      },
-    ]);
-    options.global.plugins.push(DialogService);
+      ],
+      DialogService
+    );
     options.global.provide = options.global.provide ?? {};
 
     let componentForMounting = component;
@@ -94,19 +96,20 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
       options.global.provide.authenticated = additionalOptions.keycloak.authenticated;
     }
 
-    options.global.plugins.push({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      install(app: any) {
-        app.use(assertDefined(options.router));
+    options.global.plugins.push(
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        install(app: any) {
+          app.use(assertDefined(options.router));
+        },
       },
-    });
-
-    options.global.plugins.push({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      install(app: any) {
-        app.use(plugin, defaultConfig);
-      },
-    });
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        install(app: any) {
+          app.use(plugin, defaultConfig);
+        },
+      }
+    );
 
     return mount(componentForMounting, options);
   };

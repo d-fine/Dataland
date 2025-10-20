@@ -137,7 +137,13 @@ onMounted(() => {
  * @param newValue changed monitoring state.
  */
 function onMonitoringToggled(newValue: boolean): void {
-  if (!newValue) {
+  if (newValue) {
+    selectedStartingYear.value = previousStartingYear.value;
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+      ...option,
+      isActive: previousFrameworks.value.has(option.value),
+    }));
+  } else {
     previousStartingYear.value = selectedStartingYear.value;
     previousFrameworks.value = new Set(
       availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
@@ -148,14 +154,7 @@ function onMonitoringToggled(newValue: boolean): void {
       ...option,
       isActive: false,
     }));
-
     resetErrors();
-  } else {
-    selectedStartingYear.value = previousStartingYear.value;
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
-      ...option,
-      isActive: previousFrameworks.value.has(option.value),
-    }));
   }
 }
 

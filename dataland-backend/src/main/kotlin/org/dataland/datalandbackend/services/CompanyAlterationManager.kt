@@ -117,6 +117,8 @@ class CompanyAlterationManager
                     companyLegalForm = companyInformation.companyLegalForm,
                     headquarters = companyInformation.headquarters,
                     headquartersPostalCode = companyInformation.headquartersPostalCode,
+                    fiscalYearEnd = companyInformation.fiscalYearEnd,
+                    reportingPeriodShift = companyInformation.reportingPeriodShift,
                     sector = companyInformation.sector,
                     sectorCodeWz = companyInformation.sectorCodeWz,
                     identifiers = mutableListOf(),
@@ -125,6 +127,7 @@ class CompanyAlterationManager
                     isTeaserCompany = companyInformation.isTeaserCompany ?: false,
                     website = companyInformation.website,
                     parentCompanyLei = companyInformation.parentCompanyLei,
+                    associatedSubdomains = companyInformation.associatedSubdomains,
                 )
 
             return newCompanyEntity

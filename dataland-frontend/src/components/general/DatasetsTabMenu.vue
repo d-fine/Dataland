@@ -42,7 +42,8 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, type Ref, watchEffect } from 'vue';
+import { inject, onMounted, ref, type Ref, computed, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 import router from '@/router';
 
 interface TabInfo {
@@ -52,29 +53,29 @@ interface TabInfo {
 }
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const currentTabIndex = ref<number>(0);
+const route = useRoute();
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
 const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments');
-const { initialTabIndex } = defineProps<{
-  initialTabIndex: number;
-}>();
 
 const tabs = ref<Array<TabInfo>>([
+  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'COMPANIES', route: '/companies', isVisible: true },
   { label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { label: 'QA', route: '/qualityassurance', isVisible: false },
   { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
   { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
 ]);
 
+const currentTabIndex = computed(() => {
+  return (route.meta.initialTabIndex as number) ?? -1;
+});
+
 onMounted(() => {
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
-  currentTabIndex.value = initialTabIndex ?? 0;
 });
 
 watchEffect(() => {
@@ -85,8 +86,9 @@ watchEffect(() => {
  * Handles the tab change event.
  */
 function onTabChange(newIndex: number | string): void {
-  const route = tabs.value[newIndex as number].route;
-  router.push(route).catch((err) => {
+  const tab = tabs.value[newIndex as number];
+  if (!tab) return;
+  router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
 }
@@ -98,7 +100,7 @@ function onTabChange(newIndex: number | string): void {
 function setVisibilityForTabWithQualityAssurance(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise)
     .then((hasUserReviewerRights) => {
-      tabs.value[3].isVisible = hasUserReviewerRights;
+      tabs.value[3]!.isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
 }
@@ -113,7 +115,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
-    tabs.value[5].isVisible = companyOwnershipAssignments.length > 0;
+    tabs.value[5]!.isVisible = companyOwnershipAssignments.length > 0;
   }
 }
 
@@ -124,7 +126,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
 function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
-      tabs.value[6].isVisible = hasUserAdminRights;
+      tabs.value[6]!.isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }

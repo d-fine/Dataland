@@ -33,17 +33,16 @@
                   :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
                   :is-required="true"
                 />
-                <div class="lg:col-4 md:col-6 col-12 pl-0">
-                  <DatePicker
-                    data-test="reportingPeriod"
-                    v-model="reportingPeriod"
-                    inputId="icon"
-                    :showIcon="true"
-                    view="year"
-                    dateFormat="yy"
-                    validation="required"
-                  />
-                </div>
+                <DatePicker
+                  data-test="reportingPeriod"
+                  v-model="reportingPeriod"
+                  :updateModelType="'date'"
+                  inputId="icon"
+                  :showIcon="true"
+                  view="year"
+                  dateFormat="yy"
+                  validation="required"
+                />
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
@@ -283,8 +282,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId;
-    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    this.templateDataId = this.route.query.templateDataId ?? null;
+    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
     if (
       (this.templateDataId && typeof this.templateDataId === 'string') ||
       (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
@@ -435,11 +434,13 @@ export default defineComponent({
     cursor: pointer;
     margin: 0 10px 0 0;
   }
+
   input[type='checkbox'] {
     background-color: var(--input-text-bg);
     border: 2px solid var(--input-checked-color);
     border-radius: 2px;
   }
+
   input[type='radio'],
   input[type='checkbox']::before,
   input[type='radio']::before {
@@ -451,15 +452,18 @@ export default defineComponent({
     margin-top: -2px;
     display: none;
   }
+
   input[type='checkbox']::before {
     border-style: solid;
     border-color: var(--input-text-bg);
   }
+
   input[type='radio']::before,
   input[type='checkbox']:checked::before,
   input[type='radio']:checked::before {
     display: block;
   }
+
   label[data-checked='true'] input[type='radio']::before {
     display: block;
   }
@@ -484,6 +488,7 @@ export default defineComponent({
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+
     .form-field:not(:last-child) {
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;

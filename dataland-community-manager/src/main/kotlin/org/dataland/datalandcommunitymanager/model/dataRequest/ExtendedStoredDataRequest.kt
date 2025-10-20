@@ -27,8 +27,8 @@ data class ExtendedStoredDataRequest(
     )
     val dataRequestId: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
     @field:Schema(
@@ -43,7 +43,7 @@ data class ExtendedStoredDataRequest(
     val creationTimestamp: Long,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val dataType: String,
     @field:Schema(

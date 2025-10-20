@@ -1,22 +1,24 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.BulkDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.UUID.randomUUID
 
 /**
- * Service to publish Bulk Data Requests Messages upon Portfolio or Monitoring status changes.
- * Currently restricted to Requests up to 2024. If required, change UPPER_BOUND accordingly.
+ * Service to post Bulk Data Requests upon Portfolio or Monitoring status changes.
+ * Currently restricted to Requests up to 2025. If required, change UPPER_BOUND accordingly.
  */
 @Service
 class PortfolioBulkDataRequestService
     @Autowired
     constructor(
-        private val publisher: MessageQueuePublisherService,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
+        private val requestControllerApi: RequestControllerApi,
     ) {
         companion object {
             const val UPPER_BOUND = 2025
@@ -25,7 +27,7 @@ class PortfolioBulkDataRequestService
         /**
          * Publishes Bulk Data Request Messages for monitored portfolios.
          */
-        fun publishBulkDataRequestMessageIfMonitored(portfolio: BasePortfolio) {
+        fun postBulkDataRequestMessageIfMonitored(portfolio: BasePortfolio) {
             if (!portfolio.isMonitored) {
                 return
             }
@@ -33,13 +35,13 @@ class PortfolioBulkDataRequestService
             val monitoringPeriods = getMonitoringPeriods(portfolio.startingMonitoringPeriod)
 
             if ("eutaxonomy" in portfolio.monitoredFrameworks) {
-                publishFinancialBulkDataRequestMessage(enrichedPortfolio, monitoringPeriods)
-                publishNonFinancialBulkDataRequestMessage(enrichedPortfolio, monitoringPeriods)
-                publishFinancialAndNonFinancialBulkDataRequestMessage(enrichedPortfolio, monitoringPeriods)
+                postFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
+                postNonFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
+                postFinancialAndNonFinancialBulkDataRequest(enrichedPortfolio, monitoringPeriods)
             }
 
             if ("sfdr" in portfolio.monitoredFrameworks) {
-                publishSfdrBulkDataRequestMessage(enrichedPortfolio, monitoringPeriods)
+                postSfdrBulkDataRequest(enrichedPortfolio, monitoringPeriods)
             }
         }
 
@@ -77,52 +79,51 @@ class PortfolioBulkDataRequestService
         }
 
         /**
-         * Publishes Bulk Data Request Messages based on the company sector
+         * Post a Bulk Data Request based on the company sector
          * @param enrichedPortfolio: enrichment of the given portfolio
          * @param reportingPeriods: the monitoring periods
          * @param selector: the getter function for (non)-financial company Ids
          * @param monitoredFrameworks: the chosen frameworks
          */
-        private fun publishBulkDataRequestMessage(
+        private fun postBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             reportingPeriods: Set<String>,
             selector: (EnrichedPortfolio) -> Set<String>,
             monitoredFrameworks: Set<String>,
         ) {
-            val portfolioId = enrichedPortfolio.portfolioId
             val companyIds = selector(enrichedPortfolio)
-            val correlationId = randomUUID().toString()
             if (companyIds.isEmpty()) {
                 return
             }
 
-            publisher.publishPortfolioUpdate(
-                portfolioId,
-                companyIds,
-                monitoredFrameworks,
-                reportingPeriods,
-                correlationId,
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    companyIdentifiers = companyIds,
+                    dataTypes = monitoredFrameworks,
+                    reportingPeriods = reportingPeriods,
+                ),
+                userId = DatalandAuthentication.fromContext().userId,
             )
         }
 
         /**
-         * Publishes EU Taxonomy Bulk Data Request Messages for "financials" companies
+         * Post EU Taxonomy Bulk Data Requests for "financials" companies
          */
-        private fun publishFinancialBulkDataRequestMessage(
+        private fun postFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) = publishBulkDataRequestMessage(
+        ) = postBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getFinancialsCompanyIds,
             setOf(DataTypeEnum.eutaxonomyMinusFinancials.value, DataTypeEnum.nuclearMinusAndMinusGas.value),
         )
 
         /**
-         * Publishes EU Taxonomy Bulk Data Request Messages for non-"financials" companies
+         * Post EU Taxonomy Bulk Data Requests for non-"financials" companies
          */
-        private fun publishNonFinancialBulkDataRequestMessage(
+        private fun postNonFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) = publishBulkDataRequestMessage(
+        ) = postBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getNonFinancialsCompanyIds,
             setOf(
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
@@ -131,12 +132,12 @@ class PortfolioBulkDataRequestService
         )
 
         /**
-         * Publishes EU Taxonomy Bulk Data Request Messages for companies without sector
+         * Post EU Taxonomy Bulk Data Requests for companies without sector
          */
-        private fun publishFinancialAndNonFinancialBulkDataRequestMessage(
+        private fun postFinancialAndNonFinancialBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) = publishBulkDataRequestMessage(
+        ) = postBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getUnsectorizedCompanyIds,
             setOf(
                 DataTypeEnum.eutaxonomyMinusFinancials.value,
@@ -146,13 +147,13 @@ class PortfolioBulkDataRequestService
         )
 
         /**
-         * Publishes SFDR Bulk Data Request Messages for all companies
+         * Post SFDR Bulk Data Requests for all companies
          */
 
-        private fun publishSfdrBulkDataRequestMessage(
+        private fun postSfdrBulkDataRequest(
             enrichedPortfolio: EnrichedPortfolio,
             monitoringPeriods: Set<String>,
-        ) = publishBulkDataRequestMessage(
+        ) = postBulkDataRequest(
             enrichedPortfolio, monitoringPeriods, ::getAllCompanyIds,
             setOf(
                 DataTypeEnum.sfdr.value,

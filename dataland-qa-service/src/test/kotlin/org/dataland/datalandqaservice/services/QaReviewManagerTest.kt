@@ -86,7 +86,7 @@ class QaReviewManagerTest {
         doReturn(mock<QaReviewEntity>()).whenever(mockQaReviewRepository).save(any<QaReviewEntity>())
         doReturn(listOf(mockQaReviewEntity))
             .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataSet(any(), any(), any())
+            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
     }
 
     /**

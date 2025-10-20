@@ -1,6 +1,6 @@
 import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE, DATA_REQUESTS_REPORTING_PERIODS } from '@/utils/Constants';
+import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
@@ -18,7 +18,7 @@ export function customCompareForRequestStatus(a: RequestStatus, b: RequestStatus
   sortOrderRequestStatus[RequestStatus.Resolved] = 3;
   sortOrderRequestStatus[RequestStatus.Closed] = 4;
   sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
-  if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * sortOrder;
+  if (sortOrderRequestStatus[a]! <= sortOrderRequestStatus[b]!) return -1 * sortOrder;
   return sortOrder;
 }
 
@@ -85,7 +85,7 @@ export function retrieveAvailablePriorities(): Array<SelectableItem> {
  * @returns array of SelectableItem
  */
 export function retrieveAvailableReportingPeriods(): Array<SelectableItem> {
-  return DATA_REQUESTS_REPORTING_PERIODS.map((reportingPeriod) => {
+  return ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS.map((reportingPeriod) => {
     return {
       displayName: reportingPeriod,
       disabled: false,

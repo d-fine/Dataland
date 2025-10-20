@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -51,7 +50,7 @@ interface DataAccessApi {
         @PathVariable("companyId") companyId: UUID,
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
         )
         @PathVariable("dataType") dataType: String,
         @Parameter(
@@ -60,8 +59,8 @@ interface DataAccessApi {
         )
         @PathVariable("reportingPeriod") reportingPeriod: String,
         @Parameter(
-            description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
-            example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
         )
         @PathVariable("userId") userId: UUID,
     )

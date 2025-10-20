@@ -5,13 +5,23 @@ import {
   type BasicCompanyInformation,
   MetaDataControllerApi,
 } from '@clients/backend';
-import { type RouteHandler } from 'cypress/types/net-stubbing';
 
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export interface UploadIds {
   companyId: string;
   dataId: string;
+}
+
+interface InterceptRequest {
+  headers: Record<string, string>;
+  url: string;
+  query: Record<string, string>;
+  continue: (callback: (response: InterceptResponse) => void) => void;
+}
+
+interface InterceptResponse {
+  statusCode: number;
 }
 
 /**
@@ -41,17 +51,17 @@ export async function searchBasicCompanyInformationForDataType(
 export async function countCompaniesAndDatasetsForDataType(
   token: string,
   dataType: DataTypeEnum
-): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
+): Promise<{ numberOfCompaniesForDataType: number; numberOfDatasetsForDataType: number }> {
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
-  let numberOfDataSetsForDataType = 0;
+  let numberOfDatasetsForDataType = 0;
   const metaDataController = new MetaDataControllerApi(new Configuration({ accessToken: token }));
   for (const basicCompanyInfo of basicCompanyInformations) {
-    numberOfDataSetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
+    numberOfDatasetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
       .length;
   }
 
   return {
-    numberOfDataSetsForDataType,
+    numberOfDatasetsForDataType: numberOfDatasetsForDataType,
     numberOfCompaniesForDataType: basicCompanyInformations.length,
   };
 }
@@ -61,10 +71,10 @@ export async function countCompaniesAndDatasetsForDataType(
  * response has a status code greater or equal 500, and throws an error depending on the allow-flag
  */
 export function interceptAllAndCheckFor500Errors(): void {
-  const handler: RouteHandler = (incomingRequest) => {
+  const handler = (incomingRequest: InterceptRequest): void => {
     const is500ResponseAllowed = incomingRequest.headers['DATALAND-ALLOW-5XX'] === 'true';
     delete incomingRequest.headers['DATALAND-ALLOW-5XX'];
-    incomingRequest.continue((response) => {
+    incomingRequest.continue((response: InterceptResponse) => {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
         assert(
           false,
@@ -81,7 +91,7 @@ export function interceptAllAndCheckFor500Errors(): void {
  * Intercepts all data upload requests to the backend and sets the bypassQa flag
  */
 export function interceptAllDataPostsAndBypassQaIfPossible(): void {
-  const handler: RouteHandler = (incomingRequest) => {
+  const handler = (incomingRequest: InterceptRequest): void => {
     const isQaRequired = incomingRequest.headers['REQUIRE-QA'] === 'true';
     delete incomingRequest.headers['REQUIRE-QA'];
     if (isQaRequired) {
@@ -93,7 +103,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     if (authorizationHeader === undefined) {
       return;
     }
-    const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1];
+    const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1]!;
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
     if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_REVIEWER)) {
       incomingRequest.query['bypassQa'] = 'true';

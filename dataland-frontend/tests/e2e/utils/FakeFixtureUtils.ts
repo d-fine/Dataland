@@ -170,7 +170,7 @@ export class Generator {
     let documentIndex = 0;
     for (const reportName of availableReportNames) {
       referencedReports[reportName] = {
-        fileReference: fixtureDocumentIds[documentIndex++],
+        fileReference: fixtureDocumentIds[documentIndex++]!,
         fileName: reportName,
         publicationDate: this.valueOrNull(generatePastDate()),
       };

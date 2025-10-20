@@ -1,20 +1,20 @@
-import { type Configuration } from '@clients/backend/configuration';
-import { DocumentControllerApi } from '@clients/documentmanager';
-import { QaControllerApi } from '@clients/qaservice';
-import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
+import * as backendApis from '@clients/backend/api';
+import { type Configuration } from '@clients/backend/configuration';
 import {
   CompanyRolesControllerApi,
   type CompanyRolesControllerApiInterface,
-  RequestControllerApi,
-  type RequestControllerApiInterface,
+  EmailAddressControllerApi,
+  RequestControllerApi as CommunityManagerRequestControllerApi,
 } from '@clients/communitymanager';
+import { RequestControllerApi } from '@clients/datasourcingservice';
+import { DocumentControllerApi } from '@clients/documentmanager';
+import { EmailControllerApi } from '@clients/emailservice';
+import { QaControllerApi } from '@clients/qaservice';
+import { PortfolioControllerApi } from '@clients/userservice';
+import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import * as backendApis from '@clients/backend/api';
-import { EmailControllerApi } from '@clients/emailservice';
-import { PortfolioControllerApi } from '@clients/userservice';
-import { UserValidationControllerApi } from '@clients/communitymanager';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -26,12 +26,13 @@ interface ApiBackendClients {
 interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
-  requestController: RequestControllerApiInterface;
+  requestController: RequestControllerApi;
+  communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
-  userValidationController: UserValidationControllerApi;
+  emailAddressController: EmailAddressControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -86,12 +87,13 @@ export class ApiClientProvider {
     return {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
-      requestController: this.getClientFactory('/community')(RequestControllerApi),
+      requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
+      communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
-      userValidationController: this.getClientFactory('/community')(UserValidationControllerApi),
+      emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
     };
   }
 

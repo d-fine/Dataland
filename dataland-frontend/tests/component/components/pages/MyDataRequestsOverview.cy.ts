@@ -58,10 +58,7 @@ before(function () {
       RequestStatus.Answered,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.Sfdr,
       '2022',
@@ -70,10 +67,7 @@ before(function () {
       RequestStatus.Open,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyFinancials,
       '3021',
@@ -82,10 +76,7 @@ before(function () {
       RequestStatus.Resolved,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyNonFinancials,
       '2021',
@@ -94,10 +85,7 @@ before(function () {
       RequestStatus.Open,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.Sfdr,
       '1021',
@@ -119,7 +107,7 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
     const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
-    sortingColumHeader.forEach((value) => {
+    for (const value of sortingColumHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
@@ -136,7 +124,7 @@ describe('Component tests for the data requests search page', function (): void 
         .parent()
         .invoke('index')
         .should('eq', 0);
-    });
+    }
   });
 
   it('Check page when there are no requested datasets', function (): void {
@@ -150,8 +138,8 @@ describe('Component tests for the data requests search page', function (): void 
       router: router,
     }).then(() => {
       cy.get('[data-test="requested-datasets-table"]').should('not.exist');
-      cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
+      cy.get('[data-test="myPortfoliosButton"]').should('exist').should('be.visible').click();
+      cy.get('@routerPush').should('have.been.calledWith', '/portfolios');
     });
   });
 
@@ -168,9 +156,9 @@ describe('Component tests for the data requests search page', function (): void 
     });
 
     cy.get('[data-test="requested-datasets-table"]').should('exist');
-    expectedHeaders.forEach((value) => {
+    for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
-    });
+    }
     cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
@@ -200,13 +188,13 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
 
-    expectedCompanys.forEach((value) => {
+    for (const value of expectedCompanys) {
       cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
-    });
+    }
     cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('DummyName').should('not.exist');
-    expectedReportingPeriods.forEach((value) => {
+    for (const value of expectedReportingPeriods) {
       cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
-    });
+    }
     cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
   });
 
@@ -259,13 +247,13 @@ describe('Component tests for the data requests search page', function (): void 
         .contains('LkSG')
         .click();
       cy.get('[data-test="requested-datasets-frameworks"]').click();
-      expectedFrameworkNameSubstrings.forEach((value) => {
+      for (const value of expectedFrameworkNameSubstrings) {
         cy.get(`table tbody:contains(${value})`).should('not.exist');
-      });
+      }
       cy.get('[data-test="reset-filter"]').should('exist').click();
-      expectedFrameworkNameSubstrings.forEach((value) => {
+      for (const value of expectedFrameworkNameSubstrings) {
         cy.get(`table tbody:contains(${value})`).should('exist');
-      });
+      }
       cy.get(`table tbody:contains("SME")`).should('not.exist');
     });
   });

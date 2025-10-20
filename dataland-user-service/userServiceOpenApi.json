@@ -915,6 +915,7 @@
             "example": "My Portfolio"
           },
           "companyIds": {
+            "minItems": 1,
             "uniqueItems": true,
             "type": "array",
             "description": "A list of company IDs that are contained in the portfolio.",
@@ -1133,7 +1134,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {

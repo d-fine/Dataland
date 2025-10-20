@@ -2,7 +2,7 @@
 import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
-import { PcafGenerator } from '@e2e/fixtures/frameworks/pcaf/PcafGenerator';
+import { PcafGenerator } from '@e2e/fixtures/frameworks/pcaf/PcafGenerator.ts';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import {
   PcafGeneralCompanyCompanyExchangeStatusOptions,
@@ -63,6 +63,24 @@ export function generatePcafData(nullProbability = DEFAULT_PROBABILITY): PcafDat
       },
     },
     environmental: {
+      greenhouseGasEmissions: {
+        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+    },
+    companyValueEstimation: {
+      listedCompany: {
+        marketCapitalizationInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        minoritiesInterestInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+      unlistedCompany: {
+        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+    },
+    environmentalEstimation: {
       greenhouseGasEmissions: {
         scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),

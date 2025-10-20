@@ -102,15 +102,7 @@ export default defineComponent({
       if (!reports) {
         return false;
       }
-      let reportsFound = false;
-      reports.forEach((report, index) => {
-        if (index != indexOfNewestReport) {
-          if (report) {
-            reportsFound = true;
-          }
-        }
-      });
-      return reportsFound;
+      return reports.some((report, index) => index !== indexOfNewestReport && !!report);
     },
   },
 });

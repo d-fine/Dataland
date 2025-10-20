@@ -36,8 +36,8 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-spring-boot2:2.3.0")
     implementation("io.github.resilience4j:resilience4j-ratelimiter:2.3.0")
     implementation("io.github.resilience4j:resilience4j-retry:2.3.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.5")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.5")
 }
 
 tasks.test {
@@ -85,23 +85,23 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
-tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    description = "Task to generate clients for the community manager service."
+tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the data sourcing service."
     group = "clients"
-    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    val dataSourcingServiceClientDestinationPackage = "org.dataland.dataSourcingService.openApiClient"
     input =
         project
-            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
+            .file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json")
             .path
     outputDir.set(
         layout.buildDirectory
-            .dir("clients/community-manager")
+            .dir("clients/data-sourcing-service")
             .get()
             .toString(),
     )
-    packageName.set(communityManagerClientDestinationPackage)
-    modelPackage.set("$communityManagerClientDestinationPackage.model")
-    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    packageName.set(dataSourcingServiceClientDestinationPackage)
+    modelPackage.set("$dataSourcingServiceClientDestinationPackage.model")
+    apiPackage.set("$dataSourcingServiceClientDestinationPackage.api")
     generatorName.set("kotlin")
 
     additionalProperties.set(
@@ -121,7 +121,7 @@ tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateBackendClient")
-    dependsOn("generateCommunityManagerClient")
+    dependsOn("generateDataSourcingServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -135,7 +135,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
-    main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
 }
 
 ktlint {

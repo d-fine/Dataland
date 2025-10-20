@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.exceptions.DuplicateIdentifierApiException
 import org.dataland.datalandbackend.model.companies.CompanyInformation
@@ -7,7 +8,8 @@ import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
-import org.dataland.datalandbackend.utils.BaseIntegrationTest
+import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -15,7 +17,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
+@DefaultMocks
 class CompanyAlterationManagerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var companyAlterationManager: CompanyAlterationManager
@@ -82,12 +91,15 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
     fun `patchCompany should correctly update basic company information while preserving original values if null is provided`() {
         val newAlternativeNames = listOf("Updated Alt Name 1", "Updated Alt Name 2")
         val newCompanyContactDetails = listOf("new@company.com", "another_new@company.com")
+        val newFiscalYearEnd = LocalDate.of(2025, 6, 30)
         val patch =
             CompanyInformationPatch(
                 companyName = newName,
                 headquarters = newHeadquarters,
                 companyAlternativeNames = newAlternativeNames,
                 companyContactDetails = newCompanyContactDetails,
+                fiscalYearEnd = newFiscalYearEnd,
+                reportingPeriodShift = null,
                 sectorCodeWz = null,
             )
 
@@ -182,7 +194,8 @@ class CompanyAlterationManagerTest : BaseIntegrationTest() {
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Isin to originalIsin)))
         }
-        val newCompany = companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
+        val newCompany =
+            companyAlterationManager.addCompany(newMinimalCompany.copy(identifiers = mapOf(IdentifierType.Lei to newLei)))
         assertThrows<DuplicateIdentifierApiException> {
             companyAlterationManager.patchCompany(newCompany.companyId, patch = patch)
         }

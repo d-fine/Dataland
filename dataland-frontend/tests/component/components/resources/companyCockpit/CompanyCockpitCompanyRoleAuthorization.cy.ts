@@ -27,7 +27,7 @@ describe('Component test for the authorization of company cockpit components', (
     cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      companyInformationForTest = lksgFixtures[0].companyInformation;
+      companyInformationForTest = lksgFixtures[0]!.companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -40,7 +40,7 @@ describe('Component test for the authorization of company cockpit components', (
   it('Check the Vsme summary panel behaviour if the user is company owner', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
-    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+    for (const keycloakRole of KEYCLOAK_ROLES) {
       mockRequestsOnMounted(
         hasCompanyAtLeastOneOwner,
         companyInformationForTest,
@@ -49,7 +49,7 @@ describe('Component test for the authorization of company cockpit components', (
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyRoleAssignmentsOfUser);
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
       validateVsmeFrameworkSummaryPanel(true);
-    });
+    }
   });
 
   it('Users Page is visible for a Company Member', () => {

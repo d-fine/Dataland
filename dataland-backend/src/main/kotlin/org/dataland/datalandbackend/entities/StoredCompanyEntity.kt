@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import java.time.LocalDate
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -41,6 +42,10 @@ data class StoredCompanyEntity(
     var headquarters: String,
     @Column(name = "headquarters_postal_code")
     var headquartersPostalCode: String?,
+    @Column(name = "fiscal_year_end")
+    var fiscalYearEnd: LocalDate?,
+    @Column(name = "reporting_period_shift")
+    var reportingPeriodShift: Int?,
     @Column(name = "sector")
     var sector: String?,
     @Column(name = "sector_code_wz")
@@ -58,6 +63,10 @@ data class StoredCompanyEntity(
     var isTeaserCompany: Boolean,
     @Column(name = "website")
     var website: String?,
+    @ElementCollection
+    @Column(name = "company_associated_subdomains")
+    @OrderBy("asc")
+    var associatedSubdomains: List<String>?,
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(): StoredCompany {
@@ -73,6 +82,8 @@ data class StoredCompanyEntity(
                     companyContactDetails = companyContactDetails,
                     headquarters = headquarters,
                     headquartersPostalCode = headquartersPostalCode,
+                    fiscalYearEnd = fiscalYearEnd,
+                    reportingPeriodShift = reportingPeriodShift,
                     sector = sector,
                     sectorCodeWz = sectorCodeWz,
                     identifiers = identifierMap,
@@ -80,6 +91,7 @@ data class StoredCompanyEntity(
                     isTeaserCompany = isTeaserCompany,
                     website = website,
                     parentCompanyLei = parentCompanyLei,
+                    associatedSubdomains = associatedSubdomains,
                 ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel() }.toMutableList(),
         )
@@ -140,25 +152,42 @@ data class StoredCompanyEntity(
     }
 
     /**
-     * Updates this [StoredCompanyEntity] according to the contant of the applied [CompanyInformationPatch].
+     * Calls setter on newValue as long as newValue is not null.
+     * @param newValue the new value to set
+     * @param setter the setter function to call
+     */
+    fun <T> updateIfNotNull(
+        newValue: T?,
+        setter: (T) -> Unit,
+    ) {
+        newValue?.let { setter(it) }
+    }
+
+    /**
+     * Updates this [StoredCompanyEntity] according to the content of the applied [CompanyInformationPatch].
      * @param patch the [CompanyInformationPatch] containing the new values to apply.
      */
     fun applyPatch(
         storedCompanyEntity: StoredCompanyEntity,
         patch: CompanyInformationPatch,
     ) {
-        patch.companyName?.let { storedCompanyEntity.companyName = it }
-        patch.companyAlternativeNames?.let { storedCompanyEntity.companyAlternativeNames = it.toMutableList() }
-        patch.companyContactDetails?.let { storedCompanyEntity.companyContactDetails = it.toMutableList() }
-        patch.companyLegalForm?.let { storedCompanyEntity.companyLegalForm = it }
-        patch.headquarters?.let { storedCompanyEntity.headquarters = it }
-        patch.headquartersPostalCode?.let { storedCompanyEntity.headquartersPostalCode = it }
-        patch.sector?.let { storedCompanyEntity.sector = it }
-        patch.sectorCodeWz?.let { storedCompanyEntity.sectorCodeWz = it }
-        patch.countryCode?.let { storedCompanyEntity.countryCode = it }
-        patch.website?.let { storedCompanyEntity.website = it }
-        patch.isTeaserCompany?.let { storedCompanyEntity.isTeaserCompany = it }
-        patch.parentCompanyLei?.let { storedCompanyEntity.parentCompanyLei = it }
+        updateIfNotNull(patch.companyName) { storedCompanyEntity.companyName = it }
+        updateIfNotNull(patch.companyAlternativeNames) {
+            storedCompanyEntity.companyAlternativeNames = it.toMutableList()
+        }
+        updateIfNotNull(patch.companyContactDetails) { storedCompanyEntity.companyContactDetails = it.toMutableList() }
+        updateIfNotNull(patch.companyLegalForm) { storedCompanyEntity.companyLegalForm = it }
+        updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
+        updateIfNotNull(patch.headquartersPostalCode) { storedCompanyEntity.headquartersPostalCode = it }
+        updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it }
+        updateIfNotNull(patch.reportingPeriodShift) { storedCompanyEntity.reportingPeriodShift = it }
+        updateIfNotNull(patch.sector) { storedCompanyEntity.sector = it }
+        updateIfNotNull(patch.sectorCodeWz) { storedCompanyEntity.sectorCodeWz = it }
+        updateIfNotNull(patch.countryCode) { storedCompanyEntity.countryCode = it }
+        updateIfNotNull(patch.website) { storedCompanyEntity.website = it }
+        updateIfNotNull(patch.isTeaserCompany) { storedCompanyEntity.isTeaserCompany = it }
+        updateIfNotNull(patch.parentCompanyLei) { storedCompanyEntity.parentCompanyLei = it }
+        updateIfNotNull(patch.associatedSubdomains) { storedCompanyEntity.associatedSubdomains = it }
 
         val patchedIdentifiers = patch.identifiers ?: emptyMap()
         this.removeIdentifiers(findNonIsinIdentifiersToRemove(patchedIdentifiers))
@@ -197,6 +226,8 @@ data class StoredCompanyEntity(
         this.companyLegalForm = put.companyLegalForm
         this.headquarters = put.headquarters
         this.headquartersPostalCode = put.headquartersPostalCode
+        this.fiscalYearEnd = put.fiscalYearEnd
+        this.reportingPeriodShift = put.reportingPeriodShift
         this.sector = put.sector
         this.sectorCodeWz = put.sectorCodeWz
         this.countryCode = put.countryCode

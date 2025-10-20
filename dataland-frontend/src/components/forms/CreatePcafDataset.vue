@@ -30,6 +30,7 @@
             <DatePicker
               input-id="reporting-period-picker"
               v-model="reportingPeriod"
+              :updateModelType="'date'"
               :showIcon="true"
               view="year"
               dateFormat="yy"
@@ -82,7 +83,7 @@
 
       <div class="sidebar">
         <PrimeButton
-          type="submit"
+          type="button"
           data-test="submitButton"
           label="ADD DATA"
           :disabled="isJustClicked"
@@ -146,7 +147,6 @@ import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import { computed, inject, onMounted, provide, ref } from 'vue';
 import { type LocationQueryValue, useRoute } from 'vue-router';
-import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const props = defineProps({
@@ -165,8 +165,8 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
+const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
+const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 const waitingForData = ref(false);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -282,11 +282,11 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
       );
       const documents = response.data;
 
-      documents.forEach((doc: DocumentMetaInfoResponse) => {
+      for (const doc of documents) {
         if (doc.documentName && doc.documentId) {
           documentsObject[doc.documentName] = doc.documentId;
         }
-      });
+      }
 
       namesAndReferencesOfAllCompanyReportsForTheDataset.value = documentsObject;
 

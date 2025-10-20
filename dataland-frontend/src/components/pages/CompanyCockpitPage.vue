@@ -1,5 +1,4 @@
 <template>
-  <TheHeader v-if="!useMobileView" />
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
@@ -34,17 +33,8 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
-    <Dialog v-model:visible="showSuccess" header="Success" :modal="true">
-      <div style="text-align: center; padding: 8px 0">
-        <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
-        <div style="margin-top: 8px">Changes successfully saved.</div>
-      </div>
-      <template #footer>
-        <Button label="OK" @click="showSuccess = false" />
-      </template>
-    </Dialog>
+    <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
   </TheContent>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -52,9 +42,7 @@ import { ref, reactive, watch, onMounted, inject } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import CompanyDatasetsPane from '@/components/resources/companyCockpit/CompanyDatasetsPane.vue';
 import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
@@ -64,8 +52,6 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
 
 import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -75,6 +61,7 @@ import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } f
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 const props = defineProps<{ companyId: string }>();
 
@@ -85,7 +72,6 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
 );
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const useMobileView = inject<Ref<boolean>>('useMobileView', ref(false));
 const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users'>('datasets');
@@ -98,9 +84,9 @@ const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
+for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
   latestDocuments[`latest${category}`] = [];
-});
+}
 
 const roles = Object.values(CompanyRole);
 

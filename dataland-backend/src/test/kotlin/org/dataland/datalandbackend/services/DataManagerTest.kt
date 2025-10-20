@@ -35,7 +35,7 @@ open class DataManagerTest(
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
-                objectMapper, dataMetaInformationManager,
+                dataMetaInformationManager,
                 dataManager, sourceabilityDataManager,
             )
     }

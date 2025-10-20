@@ -161,7 +161,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           const response = await new ApiClientProvider(
             this.getKeycloakPromise()
-          ).apiClients.requestController.getDataRequestById(this.dataRequestId);
+          ).apiClients.communityManagerRequestController.getDataRequestById(this.dataRequestId);
           this.messageHistory = response.data.messageHistory;
         }
       } catch (error) {
@@ -239,7 +239,7 @@ export default defineComponent({
           'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         if (e instanceof AxiosError) {
           const responseMessages = (e.response?.data as ErrorResponse)?.errors;
-          errorMessage = responseMessages ? responseMessages[0].message : e.message;
+          errorMessage = responseMessages?.[0]?.message ?? e.message;
         }
         this.openSuccessModal(errorMessage, false);
         return;
@@ -296,6 +296,7 @@ export default defineComponent({
 .no-line-height {
   line-height: 0;
 }
+
 .tab-menu button {
   border: none;
   background-color: transparent;
@@ -311,6 +312,7 @@ export default defineComponent({
   border-bottom: 2px solid var(--p-primary-color);
   color: var(--p-primary-color);
 }
+
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
@@ -322,6 +324,7 @@ export default defineComponent({
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
+
 .separator {
   width: 100%;
   border-bottom: #e0dfde solid 1px;

@@ -2,7 +2,7 @@
 import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
-import { NuclearAndGasGenerator } from '@e2e/fixtures/frameworks/nuclear-and-gas/NuclearAndGasGenerator';
+import { NuclearAndGasGenerator } from '@e2e/fixtures/frameworks/nuclear-and-gas/NuclearAndGasGenerator.ts';
 import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import { type NuclearAndGasData } from '@clients/backend';
 

@@ -1,235 +1,223 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initialTabIndex="6">
-      <TheContent class="min-h-screen relative">
-        <div class="search-container-first-line">
-          <IconField class="search-bar">
-            <InputIcon class="pi pi-search" />
-            <InputText
-              data-test="company-search-string-searchbar"
-              v-model="searchBarInputCompanySearchString"
-              placeholder="Search by Company Name or Identifier"
-              fluid
-              variant="filled"
-              :disabled="waitingForData"
-            />
-          </IconField>
+  <TheContent class="min-h-screen relative">
+    <div class="search-container-first-line">
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="company-search-string-searchbar"
+          v-model="searchBarInputCompanySearchString"
+          placeholder="Search by Company Name or Identifier"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
 
-          <IconField class="search-bar">
-            <InputIcon class="pi pi-search" />
-            <InputText
-              data-test="email-searchbar"
-              v-model="searchBarInputEmail"
-              placeholder="Search by Requester"
-              fluid
-              variant="filled"
-              :disabled="waitingForData"
-            />
-          </IconField>
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="email-searchbar"
+          v-model="searchBarInputEmail"
+          placeholder="Search by Requester"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
 
-          <IconField class="search-bar">
-            <InputIcon class="pi pi-search" />
-            <InputText
-              data-test="comment-searchbar"
-              v-model="searchBarInputComment"
-              placeholder="Search by Comment"
-              fluid
-              variant="filled"
-              :disabled="waitingForData"
-            />
-          </IconField>
-        </div>
+      <IconField class="search-bar">
+        <InputIcon class="pi pi-search" />
+        <InputText
+          data-test="comment-searchbar"
+          v-model="searchBarInputComment"
+          placeholder="Search by Comment"
+          fluid
+          variant="filled"
+          :disabled="waitingForData"
+        />
+      </IconField>
+    </div>
 
-        <div class="search-container-last-line">
-          <FrameworkDataSearchDropdownFilter
-            :disabled="waitingForData"
-            v-model="selectedFrameworks"
-            ref="frameworkFilter"
-            :available-items="availableFrameworks"
-            filter-name="Framework"
-            data-test="framework-picker"
-            id="framework-filter"
-            filter-placeholder="Search by Frameworks"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} frameworks"
-          />
-          <FrameworkDataSearchDropdownFilter
-            :disabled="waitingForData"
-            v-model="selectedRequestStatuses"
-            ref="frameworkFilter"
-            :available-items="availableRequestStatuses"
-            filter-name="Request Status"
-            data-test="request-status-picker"
-            id="framework-filter"
-            filter-placeholder="Search by Request Status"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} request status"
-          />
-          <FrameworkDataSearchDropdownFilter
-            :disabled="waitingForData"
-            v-model="selectedPriorities"
-            ref="frameworkFilter"
-            :available-items="availablePriorities"
-            filter-name="Priority"
-            data-test="request-priority-picker"
-            id="framework-filter"
-            filter-placeholder="Search by Priority"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} request priorities"
-          />
-          <FrameworkDataSearchDropdownFilter
-            :disabled="waitingForData"
-            v-model="selectedReportingPeriods"
-            ref="frameworkFilter"
-            :available-items="availableReportingPeriods"
-            filter-name="Reporting Period"
-            data-test="reporting-period-picker"
-            id="framework-filter"
-            filter-placeholder="Search by Reporting Period"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} reporting periods"
-          />
-          <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
-          <PrimeButton
-            :disabled="waitingForData"
-            data-test="trigger-filtering-requests"
-            @click="getAllRequestsForFilters"
-            label="FILTER REQUESTS "
-          />
-        </div>
-        <div class="message-container">
-          <Message class="info-message" variant="simple" severity="secondary">{{
-            numberOfRequestsInformation
-          }}</Message>
-        </div>
+    <div class="search-container-last-line">
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedFrameworks"
+        ref="frameworkFilter"
+        :available-items="availableFrameworks"
+        filter-name="Framework"
+        data-test="framework-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Frameworks"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} frameworks"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedRequestStatuses"
+        ref="frameworkFilter"
+        :available-items="availableRequestStatuses"
+        filter-name="Request Status"
+        data-test="request-status-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Request Status"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} request status"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedPriorities"
+        ref="frameworkFilter"
+        :available-items="availablePriorities"
+        filter-name="Priority"
+        data-test="request-priority-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Priority"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} request priorities"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedReportingPeriods"
+        ref="frameworkFilter"
+        :available-items="availableReportingPeriods"
+        filter-name="Reporting Period"
+        data-test="reporting-period-picker"
+        id="framework-filter"
+        filter-placeholder="Search by Reporting Period"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} reporting periods"
+      />
+      <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      <PrimeButton
+        :disabled="waitingForData"
+        data-test="trigger-filtering-requests"
+        @click="getAllRequestsForFilters"
+        label="FILTER REQUESTS "
+      />
+    </div>
+    <div class="message-container">
+      <Message class="info-message" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
+    </div>
 
-        <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-          <p class="font-medium text-xl">Loading...</p>
-          <DatalandProgressSpinner />
-        </div>
+    <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+      <p class="font-medium text-xl">Loading...</p>
+      <DatalandProgressSpinner />
+    </div>
 
-        <div class="col-12 text-left p-3">
-          <div class="card">
-            <DataTable
-              v-if="currentDataRequests && currentDataRequests.length > 0"
-              v-show="!waitingForData"
-              ref="dataTable"
-              data-test="requests-datatable"
-              :value="currentDataRequests"
-              :paginator="true"
-              :lazy="true"
-              :total-records="totalRecords"
-              :rows="rowsPerPage"
-              :first="firstRowIndex"
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-              :alwaysShowPaginator="false"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              @row-click="onRowClick($event)"
-              @page="onPage($event)"
-              class="table-cursor"
-              id="admin-request-overview-data"
-              :rowHover="true"
-              style="cursor: pointer"
-            >
-              <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
-                <template #body="slotProps">
-                  {{ slotProps.data.userEmailAddress }}
-                </template>
-              </Column>
-              <Column header="COMPANY" field="companyName" :sortable="false">
-                <template #body="slotProps">
-                  {{ slotProps.data.companyName }}
-                </template>
-              </Column>
-              <Column header="FRAMEWORK" :sortable="false" field="dataType">
-                <template #body="slotProps">
-                  <div>
-                    {{ getFrameworkTitle(slotProps.data.dataType) }}
-                  </div>
-                  <div
-                    data-test="framework-subtitle"
-                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                  >
-                    <br />
-                    {{ getFrameworkSubtitle(slotProps.data.dataType) }}
-                  </div>
-                </template>
-              </Column>
-              <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
-                <template #body="slotProps">
-                  {{ slotProps.data.reportingPeriod }}
-                </template>
-              </Column>
-              <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
-                <template #body="slotProps">
-                  {{ slotProps.data.dataRequestId }}
-                </template>
-              </Column>
-              <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
-                <template #body="slotProps">
-                  <div>
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                  </div>
-                </template>
-              </Column>
-              <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
-                <template #body="slotProps">
-                  <div>
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                  </div>
-                </template>
-              </Column>
-              <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
-                <template #body="slotProps">
-                  <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" />
-                </template>
-              </Column>
-              <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
-                <template #body="slotProps">
-                  <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
-                </template>
-              </Column>
-              <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
-                <template #body="slotProps">
-                  <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
-                </template>
-              </Column>
-              <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
-                <template #body="slotProps">
-                  <div>
-                    {{ slotProps.data.adminComment }}
-                  </div>
-                </template>
-              </Column>
-            </DataTable>
-            <div v-if="!waitingForData && currentDataRequests.length == 0">
-              <div class="d-center-div text-center px-7 py-4">
-                <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
+    <div class="col-12 text-left p-3">
+      <div class="card">
+        <DataTable
+          v-if="currentDataRequests && currentDataRequests.length > 0"
+          v-show="!waitingForData"
+          ref="dataTable"
+          data-test="requests-datatable"
+          :value="currentDataRequests"
+          :paginator="true"
+          :lazy="true"
+          :total-records="totalRecords"
+          :rows="rowsPerPage"
+          :first="firstRowIndex"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          @row-click="onRowClick($event)"
+          @page="onPage($event)"
+          class="table-cursor"
+          id="admin-request-overview-data"
+          :rowHover="true"
+          style="cursor: pointer"
+        >
+          <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.userEmailAddress }}
+            </template>
+          </Column>
+          <Column header="COMPANY" field="companyName" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.companyName }}
+            </template>
+          </Column>
+          <Column header="FRAMEWORK" :sortable="false" field="dataType">
+            <template #body="slotProps">
+              <div>
+                {{ getFrameworkTitle(slotProps.data.dataType) }}
               </div>
-            </div>
+              <div
+                data-test="framework-subtitle"
+                v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              >
+                <br />
+                {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.reportingPeriod }}
+            </template>
+          </Column>
+          <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
+            <template #body="slotProps">
+              {{ slotProps.data.dataRequestId }}
+            </template>
+          </Column>
+          <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
+            <template #body="slotProps">
+              <div>
+                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
+            <template #body="slotProps">
+              <div>
+                {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
+            </template>
+          </Column>
+          <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
+            </template>
+          </Column>
+          <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
+            <template #body="slotProps">
+              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
+            </template>
+          </Column>
+          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
+            <template #body="slotProps">
+              <div>
+                {{ slotProps.data.adminComment }}
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+        <div v-if="!waitingForData && currentDataRequests.length == 0">
+          <div class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
           </div>
         </div>
-      </TheContent>
-    </DatasetsTabMenu>
-    <TheFooter />
-  </AuthenticationWrapper>
+      </div>
+    </div>
+  </TheContent>
 </template>
 
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
@@ -264,12 +252,8 @@ export default defineComponent({
     DatalandProgressSpinner,
     DatalandTag,
     PrimeButton,
-    AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
-    DatasetsTabMenu,
-    TheFooter,
     TheContent,
-    TheHeader,
     DataTable,
     Column,
     IconField,
@@ -390,7 +374,7 @@ export default defineComponent({
             this.searchBarInputCompanySearchString === '' ? undefined : this.searchBarInputCompanySearchString;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
-            await apiClientProvider.apiClients.requestController.getDataRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
@@ -406,7 +390,7 @@ export default defineComponent({
             )
           ).data;
           this.totalRecords = (
-            await apiClientProvider.apiClients.requestController.getNumberOfRequests(
+            await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
@@ -446,7 +430,7 @@ export default defineComponent({
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
+      globalThis.scrollTo(0, 0);
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
@@ -502,7 +486,7 @@ export default defineComponent({
     text-align: left;
   }
 
-  &:last-child {
+  > :last-child {
     margin-left: auto;
   }
 }

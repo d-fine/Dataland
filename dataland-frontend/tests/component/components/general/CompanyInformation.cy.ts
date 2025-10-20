@@ -82,7 +82,7 @@ describe('Component tests for the company info sheet', function (): void {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,
       });
-      cy.get('[data-test="lei-visible"]').should('have.text', companyInformationForTest.identifiers['Lei'][0]);
+      cy.get('[data-test="lei-visible"]').should('have.text', companyInformationForTest.identifiers['Lei']![0]);
       cy.get('[data-test="headquarter-visible"]').should('have.text', companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should('have.text', companyInformationForTest.sector);
       cy.get('[data-test="parent-visible"]').should('have.text', dummyParentCompanyName).click();

@@ -3,8 +3,6 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import content from '@/assets/content.json';
 import { type Page, type Section } from '@/types/ContentTypes';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 
 describe('Component test for the landing page', () => {
   it('Check if essential elements are present', () => {
@@ -13,7 +11,6 @@ describe('Component test for the landing page', () => {
         authenticated: false,
       }),
     }).then(() => {
-      validateTheHeader();
       validateIntroSection();
       validateBrandsSection();
       validateStruggleSection();
@@ -26,22 +23,9 @@ describe('Component test for the landing page', () => {
       assertFrameworkPanelExists('SFDR');
       cy.get('[data-test="join-campaign-button"]').should('exist');
       cy.get('[data-test="get-in-touch-button"]').should('exist');
-      checkFooter();
-
-      setMobileDeviceViewport();
-      validateTheHeader();
     });
   });
 });
-
-/**
- * Validates the elements of the top bar
- */
-function validateTheHeader(): void {
-  checkImage('Dataland banner logo', getSingleImageNameInSection('Welcome to Dataland'));
-  cy.get(`[data-test="signup-dataland-button"]`).should('be.visible').should('contain.text', 'SIGN UP');
-  cy.get(`[data-test="login-dataland-button"]`).should('be.visible').should('contain.text', 'LOGIN');
-}
 
 /**
  * Validates the elements of the intro section
@@ -62,10 +46,10 @@ function validateIntroSection(): void {
 function validateBrandsSection(): void {
   const images = getLandingPageSection('Brands').image;
   expect(images?.length).to.eq(33);
-  images?.forEach((image, index) => {
-    const filename = image.split('/').slice(-1)[0];
+  for (const [index, image] of (images ?? []).entries()) {
+    const filename = image.split('/').at(-1)!;
     checkImage(`Brand ${index + 1}`, filename);
-  });
+  }
 }
 
 /**
@@ -99,7 +83,9 @@ function getLandingPageSection(sectionTitle: string): Section {
  * @returns the filename of the found image
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
-  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split('/').slice(-1)[0];
+  const landingPageSection = assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]);
+  const singleImage = landingPageSection.split('/').at(-1)!;
+  return singleImage;
 }
 
 /**
@@ -133,9 +119,10 @@ function validateStruggleSection(): void {
       title: 'High Price',
     },
   ];
+
   cy.get('.struggle__cell').each((element, index) => {
-    checkImage(struggleCellContent[index].title, struggleCellContent[index].imageFilename);
-    cy.wrap(element).should('contain.text', struggleCellContent[index].title);
+    checkImage(struggleCellContent[index]!.title, struggleCellContent[index]!.imageFilename);
+    cy.wrap(element).should('contain.text', struggleCellContent[index]!.title);
   });
 }
 
