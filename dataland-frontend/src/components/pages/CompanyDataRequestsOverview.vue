@@ -78,7 +78,7 @@
             <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
               <template #body="slotProps">
                 <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                  {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
+                  {{ getRequestStatusLabel(slotProps.data.state) }}
                 </div>
               </template>
             </Column>
@@ -158,7 +158,7 @@ async function getStoredCompanyRequestDataList() {
     const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
     const dataRequestsPromises = companyIDs.map(async (companyId) => {
       try {
-        const response = await apiClientProvider.apiClients.requestController.searchRequests(companyId);
+        const response = await apiClientProvider.apiClients.requestController.searchRequests();
         return response.data;
       } catch (error) {
         console.error(`Error fetching data for companyId ${companyId}:`, error);
