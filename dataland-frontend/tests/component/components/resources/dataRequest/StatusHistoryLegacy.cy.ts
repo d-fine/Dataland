@@ -1,4 +1,4 @@
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import StatusHistory from '@/components/resources/dataRequest/StatusHistoryLegacy.vue';
 import { AccessStatus, RequestStatus, type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
