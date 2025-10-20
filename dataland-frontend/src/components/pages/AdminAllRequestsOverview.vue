@@ -54,16 +54,16 @@
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
-        v-model="selectedRequestStatuses"
+        v-model="selectedRequestStates"
         ref="frameworkFilter"
-        :available-items="availableRequestStatuses"
-        filter-name="Request Status"
+        :available-items="availableRequestStates"
+        filter-name="Request State"
         data-test="request-status-picker"
         id="framework-filter"
-        filter-placeholder="Search by Request Status"
+        filter-placeholder="Search by Request State"
         class="search-filter"
         :max-selected-labels="1"
-        selected-items-label="{0} request status"
+        selected-items-label="{0} request states"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -97,6 +97,8 @@
         data-test="trigger-filtering-requests"
         @click="getAllRequestsForFilters"
         label="FILTER REQUESTS "
+        icon="pi pi-filter"
+        style="width: fit-content"
       />
     </div>
     <div class="message-container">
@@ -163,7 +165,7 @@
           </Column>
           <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
             <template #body="slotProps">
-              {{ slotProps.data.dataRequestId }}
+              {{ slotProps.data.id }}
             </template>
           </Column>
           <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
@@ -180,14 +182,9 @@
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
+          <Column header="REQUEST STATE" :sortable="false" field="requestState">
             <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
-            </template>
-          </Column>
-          <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
+              <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded />
             </template>
           </Column>
           <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
@@ -258,8 +255,8 @@ const searchBarInputCompanySearchString = ref('');
 
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-const availableRequestStatuses = ref<SelectableItem[]>([]);
-const selectedRequestStatuses = ref<SelectableItem[]>([]);
+const availableRequestStates = ref<SelectableItem[]>([]);
+const selectedRequestStates = ref<SelectableItem[]>([]);
 const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
@@ -286,7 +283,7 @@ function setChunkAndFirstRowIndexToZero() {
 watch(
   [
     selectedFrameworks,
-    selectedRequestStatuses,
+    selectedRequestStates,
     selectedPriorities,
     selectedReportingPeriods,
     searchBarInputEmail,
@@ -298,7 +295,7 @@ watch(
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableRequestStatuses.value = retrieveAvailableRequestStates();
+  availableRequestStates.value = retrieveAvailableRequestStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   getAllRequestsForFilters();
@@ -309,11 +306,11 @@ onMounted(() => {
  */
 async function getAllRequestsForFilters() {
   waitingForData.value = true;
-  const selectedFrameworksAsSet = new Set<DataTypeEnum>(
-    selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType)
+  const selectedFrameworksAsSet = new Set<string>(
+      selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType.toString())
   );
-  const selectedRequestStatusesAsSet = new Set<RequestState>(
-    selectedRequestStatuses.value.map((selectableItem) => selectableItem.displayName as RequestState)
+  const selectedRequestStatesAsSet = new Set<RequestState>(
+    selectedRequestStates.value.map((selectableItem) => selectableItem.displayName as RequestState)
   );
   const selectedPriorityAsSet = new Set<RequestPriority>(
     selectedPriorities.value.map((selectableItem) => selectableItem.displayName as RequestPriority)
@@ -329,12 +326,18 @@ async function getAllRequestsForFilters() {
       const companySearchStringFilter = searchBarInputCompanySearchString.value || undefined;
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
 
+      const frameworksForApi = setToApiString(selectedFrameworksAsSet);
+      const requestStatesForApi = setToApiString(selectedRequestStatesAsSet);
+      const reportingPeriodsForApi = setToApiString(selectedReportingPeriodAsSet);
+
       const [dataResponse] = await Promise.all([
         apiClientProvider.apiClients.requestController.searchRequests(
             companySearchStringFilter,
-
-
-
+            frameworksForApi,
+            reportingPeriodsForApi,
+            selectedRequestStatesAsSet,
+            undefined,
+            undefined,
         ),
       ]);
 
@@ -354,13 +357,23 @@ async function getAllRequestsForFilters() {
 function resetFilterAndSearchBar() {
   currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
-  selectedRequestStatuses.value = [];
+  selectedRequestStates.value = [];
   selectedPriorities.value = [];
   selectedReportingPeriods.value = [];
   searchBarInputEmail.value = '';
   searchBarInputComment.value = '';
   searchBarInputCompanySearchString.value = '';
   void getAllRequestsForFilters();
+}
+
+/**
+ * Converts a set of strings to a comma-separated string for API usage.
+ * Returns undefined if the set is empty.
+ * @param set The set of strings to convert.
+ * @returns A comma-separated string or undefined.
+ */
+function setToApiString(set: Set<string>): string | undefined {
+  return set.size ? Array.from(set).join(',') : undefined;
 }
 
 /**
