@@ -135,7 +135,12 @@ object JsonComparator {
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
-            !options.ignoreValues && valuesDiffer(expected, actual) -> {
+            expected.isValueNode && actual.isValueNode -> {
+                if (!options.ignoreValues && valuesDiffer(expected, actual)) {
+                    differenceList.add(JsonDiff(currentPath, expected, actual))
+                }
+            }
+            valuesDiffer(expected, actual) -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
             }
             else -> {

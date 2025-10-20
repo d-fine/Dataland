@@ -164,9 +164,35 @@ class DataPointSpecificationExampleValidationTest
                     schema,
                     example,
                     JsonComparator.JsonComparisonOptions(ignoreValues = true, fullyNullObjectsAreEqualToNull = false),
-                ).filter { !it.path.matches(Regex(".+\\[[0-9][1-9]*\\]$")) }
-            assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDifferences)
+                )
+            assertEquals(emptyList<JsonComparator.JsonDiff>(), filterExpectedListDifferences(jsonDifferences))
         }
+
+        /**
+         * Filters out expected differences related to lists and nulls in arrays.
+         *
+         * This functions removes differences if one of the following conditions is met:
+         *  a) The expected value indicates a list type (e.g., "List<SomeType>") and the actual value is a non-empty array of value nodes.
+         *  b) The expected value is null and the path indicates an array index > 0.
+         *     This happens, when the schema defines an array (see case a) and the example provides more than one element.
+         *
+         * @param differences The list of JSON differences to filter.
+         */
+        private fun filterExpectedListDifferences(differences: List<JsonComparator.JsonDiff>): List<JsonComparator.JsonDiff> =
+            differences.filterNot { diff ->
+                (
+                    diff.expected.toString().matches(Regex("\"List<[^>]+>\"")) &&
+                        diff.actual?.isArray ?: false &&
+                        diff.actual!!.size() > 0 &&
+                        diff.actual!!
+                            .values()
+                            .asSequence()
+                            .all { it.isValueNode }
+                ) ||
+                    (
+                        diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
+                    )
+            }
 
         @MockitoBean
         private lateinit var companyRoleChecker: CompanyRoleChecker
