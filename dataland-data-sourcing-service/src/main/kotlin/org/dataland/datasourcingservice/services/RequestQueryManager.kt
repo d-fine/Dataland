@@ -2,7 +2,6 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
@@ -27,18 +26,14 @@ class RequestQueryManager
     ) {
         /**
          * Search for requests based on optional filters.
-         * @param companyId to filter by
-         * @param dataType to filter by
-         * @param reportingPeriod to filter by
-         * @param state to filter by
+         * @param requestSearchFilter to filter by
+         * @param chunkSize size of the result chunk
+         * @param chunkIndex index of the result chunk
          * @return list of matching StoredRequest objects
          */
         @Transactional
         fun searchRequests(
-            companyId: UUID?,
-            dataType: String?,
-            reportingPeriod: String?,
-            state: RequestState?,
+            requestSearchFilter: RequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<ExtendedStoredRequest> =
@@ -46,10 +41,7 @@ class RequestQueryManager
                 .findByListOfIdsAndFetchDataSourcingEntity(
                     requestRepository
                         .searchRequests(
-                            companyId,
-                            dataType,
-                            reportingPeriod,
-                            state,
+                            requestSearchFilter,
                             PageRequest.of(
                                 chunkIndex,
                                 chunkSize,
