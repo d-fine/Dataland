@@ -47,22 +47,22 @@ class Lksg {
             }
         }
 
-        val fixedDataSetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataset)
-        val fixedDataSetWithAllSortedRiskPositions =
+        val fixedDatasetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataset)
+        val fixedDatasetWithAllSortedRiskPositions =
             sortDatasetsInSecondTest(
-                listOf(fixedDataSetWithSortedComplaintsRisks),
+                listOf(fixedDatasetWithSortedComplaintsRisks),
             )[0]
 
-        return fixedDataSetWithAllSortedRiskPositions
+        return fixedDatasetWithAllSortedRiskPositions
     }
 
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataset[0])
+        val fixedDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataset[0])
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOf(fixedDataSet),
+                listOf(fixedDataset),
                 apiAccessor::lksgUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -76,7 +76,7 @@ class Lksg {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(sortDatasetsInFirstTest(fixedDataSet), downloadedAssociatedData.data)
+        assertEquals(sortDatasetsInFirstTest(fixedDataset), downloadedAssociatedData.data)
     }
 
     @Test
@@ -136,31 +136,31 @@ class Lksg {
         return datasetWithSortedIdentifiedRisks
     }
 
-    private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
+    private fun sortDatasetsInFirstTest(fixedDataset: LksgData): LksgData {
         val firstSorting =
-            fixedDataSet.copy(
+            fixedDataset.copy(
                 general =
-                    fixedDataSet.general.copy(
+                    fixedDataset.general.copy(
                         productionSpecific =
-                            fixedDataSet.general.productionSpecific?.copy(
+                            fixedDataset.general.productionSpecific?.copy(
                                 specificProcurement =
-                                    fixedDataSet.general.productionSpecific
+                                    fixedDataset.general.productionSpecific
                                         ?.specificProcurement
                                         ?.sorted(),
                             ),
                     ),
                 governance =
-                    fixedDataSet.governance?.copy(
+                    fixedDataset.governance?.copy(
                         riskManagementOwnOperations =
-                            fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                            fixedDataset.governance?.riskManagementOwnOperations?.copy(
                                 identifiedRisks =
-                                    fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
+                                    fixedDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
                                         { it.riskPosition },
                             ),
                         generalViolations =
-                            fixedDataSet.governance?.generalViolations?.copy(
+                            fixedDataset.governance?.generalViolations?.copy(
                                 humanRightsOrEnvironmentalViolationsDefinition =
-                                    fixedDataSet.governance
+                                    fixedDataset.governance
                                         ?.generalViolations
                                         ?.humanRightsOrEnvironmentalViolationsDefinition
                                         ?.sortedBy { it.riskPosition },

@@ -14,10 +14,12 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -44,6 +46,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DefaultMocks
 internal class DataControllerTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
@@ -80,7 +83,7 @@ internal class DataControllerTest {
 
     lateinit var dataController: LksgDataController
 
-    private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
+    private val testDataDimensions = BasicDatasetDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
     @BeforeEach
     fun setup() {
@@ -185,7 +188,7 @@ internal class DataControllerTest {
     fun `test that resource not found error is thrown if combination of reportingPeriod and companyId and dataType does not exist`() {
         doReturn(null)
             .whenever(mockDataMetaInformationManager)
-            .getActiveDatasetIdByDataDimensions(any<BasicDataDimensions>())
+            .getActiveDatasetIdByDataDimensions(any<BasicDatasetDimensions>())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedDataByDimensions(
@@ -198,7 +201,7 @@ internal class DataControllerTest {
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as Set<BasicDataDimensions>
+            val argument = invocation.arguments[0] as Set<BasicDatasetDimensions>
             argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =

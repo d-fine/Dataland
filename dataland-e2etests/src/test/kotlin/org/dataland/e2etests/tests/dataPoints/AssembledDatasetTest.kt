@@ -156,7 +156,7 @@ class AssembledDatasetTest {
     }
 
     @Test
-    fun `ensure that accepting an assembled dataset also accepts all datapoints`() {
+    fun `ensure that accepting an assembled dataset also accepts all data points`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = false)
 
@@ -355,8 +355,7 @@ class AssembledDatasetTest {
         )
 
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val activeSfdrDataset =
-                this.getSfdrDataset(companyId, dummyReportingPeriod)
+            val activeSfdrDataset = this.getSfdrDataset(companyId, dummyReportingPeriod)
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social
@@ -377,8 +376,7 @@ class AssembledDatasetTest {
             dummyReportingPeriod,
         )
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val activeSfdrDataset =
-                this.getSfdrDataset(companyId, dummyReportingPeriod)
+            val activeSfdrDataset = this.getSfdrDataset(companyId, dummyReportingPeriod)
 
             val currencyDataPoint =
                 activeSfdrDataset.data.social

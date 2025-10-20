@@ -17,10 +17,10 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureToNotBeAManufacturingCompany,
     generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15,
     generateFixtureToContainProcurementCategories,
-    generateFixtureForSixLksgDataSetsInDifferentYears,
+    generateFixtureForSixLksgDatasetsInDifferentYears,
     generateOneLksgDatasetWithOnlyNulls,
-    generateFixtureForSixLksgDataSetsInDifferentYears,
-    generateFixtureForOneLksgDataSetWithProductionSites,
+    generateFixtureForSixLksgDatasetsInDifferentYears,
+    generateFixtureForOneLksgDatasetWithProductionSites,
     generateFixtureToContainSubcontractingCountries,
     generateFixtureWithBrokenFileReference,
   ];
@@ -127,7 +127,7 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
  * Sets the company name and the date in the fixture data to a specific string
  * @returns the manipulated fixture data
  */
-function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgData> {
+function generateFixtureForSixLksgDatasetsInDifferentYears(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0]!;
   newFixture.companyInformation.companyName = 'six-lksg-data-sets-in-different-years';
   if (newFixture.t.general?.masterData?.dataDate) newFixture.t.general.masterData.dataDate = '2022-01-01';
@@ -141,7 +141,7 @@ function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgDa
  * sets exactly two production sites for the "listOfProductionSites" field.
  * @returns the manipulated fixture data
  */
-function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<LksgData> {
+function generateFixtureForOneLksgDatasetWithProductionSites(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0]!;
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
 

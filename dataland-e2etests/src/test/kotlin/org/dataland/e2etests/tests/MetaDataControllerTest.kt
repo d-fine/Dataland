@@ -117,7 +117,7 @@ class MetaDataControllerTest {
     ) {
         val dataTypeUploaded = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val dataTypeNotUploaded = DataTypeEnum.eutaxonomyMinusFinancials
-        val initialNumberOfDataSets =
+        val initialNumberOfDatasets =
             listOf(dataTypeUploaded, dataTypeNotUploaded).associateWith {
                 apiAccessor.getNumberOfDataMetaInfo(
                     showOnlyActive = showOnlyActive,
@@ -125,7 +125,7 @@ class MetaDataControllerTest {
                 )
             }
         val expectedSizeOfDataMetaInfoForUploadedDataType =
-            initialNumberOfDataSets.getValue(dataTypeUploaded) + expectedDataMetaInfoSizeChange
+            initialNumberOfDatasets.getValue(dataTypeUploaded) + expectedDataMetaInfoSizeChange
         postCompanyWithDataAndVerifyMetaInfoSearchResultSizeUsingFilters(
             dataType = dataTypeUploaded,
             expectedSizeOfDataMetaInfoSearchResult = expectedSizeOfDataMetaInfoForUploadedDataType,
@@ -140,7 +140,7 @@ class MetaDataControllerTest {
         }
 
         assertEquals(
-            initialNumberOfDataSets[dataTypeNotUploaded],
+            initialNumberOfDatasets[dataTypeNotUploaded],
             apiAccessor.getNumberOfDataMetaInfo(dataType = dataTypeNotUploaded, showOnlyActive = showOnlyActive),
         )
     }
