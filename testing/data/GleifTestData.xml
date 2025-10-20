@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><lei:LEIData xmlns:lei="http://www.gleif.org/data/schema/leidata/2016" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <lei:LEIHeader>
+        <lei:ContentDate>2025-08-11T08:06:04Z</lei:ContentDate>
+        <lei:FileContent>GLEIF_FULL_PUBLISHED</lei:FileContent>
+        <lei:RecordCount>3031885</lei:RecordCount>
+    </lei:LEIHeader>
+    <lei:LEIRecords>
+        <lei:LEIRecord xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xmlns:lei="http://www.gleif.org/data/schema/leidata/2016"
+                       xmlns:gleif="http://www.gleif.org/data/schema/golden-copy/extensions/1.0">
+            <lei:LEI>DummyLei</lei:LEI>
+            <lei:Entity>
+                <lei:LegalName xml:lang="en">CompanyName</lei:LegalName>
+                <lei:OtherEntityNames>
+                    <lei:OtherEntityName xml:lang="en" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy english alternative language legal name 1</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy english alternative language legal name 2</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="zh" type="ALTERNATIVE_LANGUAGE_LEGAL_NAME">Dummy non-english alternative language legal name</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="PREVIOUS_LEGAL_NAME">Dummy previous legal name</lei:OtherEntityName>
+                    <lei:OtherEntityName xml:lang="en" type="TRADING_OR_OPERATING_NAME">Dummy trading or operating name</lei:OtherEntityName>
+                </lei:OtherEntityNames>
+                <lei:TransliteratedOtherEntityNames>
+                    <lei:TransliteratedOtherEntityName xml:lang="en" type="PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME">Dummy preferred ascii transliterated legal name</lei:TransliteratedOtherEntityName>
+                    <lei:TransliteratedOtherEntityName xml:lang="en" type="AUTO_ASCII_TRANSLITERATED_LEGAL_NAME">Dummy auto ascii transliterated legal name</lei:TransliteratedOtherEntityName>
+                </lei:TransliteratedOtherEntityNames>
+                <lei:HeadquartersAddress xml:lang="en">
+                    <lei:City>CompanyCity</lei:City>
+                    <lei:Region>non-used-field</lei:Region>
+                    <lei:Country>CompanyCountry</lei:Country>
+                    <lei:PostalCode>CompanyPostalCode</lei:PostalCode>
+                </lei:HeadquartersAddress>
+                <lei:RegistrationAuthority>
+                    <lei:RegistrationAuthorityID>non-used-field</lei:RegistrationAuthorityID>
+                    <lei:RegistrationAuthorityEntityID>non-used-field</lei:RegistrationAuthorityEntityID>
+                </lei:RegistrationAuthority>
+            </lei:Entity>
+        </lei:LEIRecord>
+</lei:LEIRecords>
+        </lei:LEIData>

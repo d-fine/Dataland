@@ -1,157 +1,148 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initialTabIndex="4">
-      <TheContent class="min-h-screen relative">
-        <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div class="container">
-            <IconField id="company-search-bar" class="company-search">
-              <InputIcon class="pi pi-search" />
-              <InputText
-                data-test="requested-datasets-searchbar"
-                v-model="searchBarInput"
-                placeholder="Search by company name"
-                fluid
-                variant="filled"
-              />
-            </IconField>
+  <TheContent class="min-h-screen relative">
+    <div v-if="waitingForData || storedDataRequests.length > 0">
+      <div class="container">
+        <IconField id="company-search-bar" class="company-search">
+          <InputIcon class="pi pi-search" />
+          <InputText
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by company name"
+            fluid
+            variant="filled"
+          />
+        </IconField>
 
-            <FrameworkDataSearchDropdownFilter
-              v-model="selectedFrameworks"
-              ref="frameworkFilter"
-              :available-items="availableFrameworks"
-              filter-name="Framework"
-              data-test="requested-datasets-frameworks"
-              id="framework-filter"
-              filter-placeholder="Search frameworks"
-              class="search-filter"
-              :max-selected-labels="1"
-              selected-items-label="{0} frameworks selected"
-            />
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedFrameworks"
+          ref="frameworkFilter"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          id="framework-filter"
+          filter-placeholder="Search frameworks"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} frameworks selected"
+        />
 
-            <FrameworkDataSearchDropdownFilter
-              v-model="selectedAccessStatus"
-              ref="accessStatusFilter"
-              :available-items="availableAccessStatus"
-              filter-name="Access Status"
-              data-test="requested-datasets-access-status"
-              id="access-status-filter"
-              filter-placeholder="access status"
-              class="search-filter"
-              :max-selected-labels="1"
-              selected-items-label="{0} status selected"
-            />
-            <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
-          </div>
+        <FrameworkDataSearchDropdownFilter
+          v-model="selectedAccessStatus"
+          ref="accessStatusFilter"
+          :available-items="availableAccessStatus"
+          filter-name="Access Status"
+          data-test="requested-datasets-access-status"
+          id="access-status-filter"
+          filter-placeholder="access status"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} status selected"
+        />
+        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      </div>
 
-          <div class="col-12 text-left p-3">
-            <div class="card">
-              <DataTable
-                :value="displayedData"
-                style="cursor: pointer"
-                :row-hover="true"
-                :loading="waitingForData"
-                data-test="requested-datasets-table"
-                paginator
-                paginator-position="bottom"
-                :rows="datasetsPerPage"
-                lazy
-                :total-records="numberOfFilteredRequests"
-                @page="onPage"
-                @sort="onSort"
-                @row-click="onRowClick"
-                id="my-data-requests-overview-table"
-              >
-                <Column header="COMPANY" field="companyName" :sortable="true">
-                  <template #body="{ data }">{{ data.companyName }}</template>
-                </Column>
-                <Column header="FRAMEWORK" field="dataType" :sortable="true">
-                  <template #body="{ data }">
-                    <div>{{ getFrameworkTitle(data.dataType) }}</div>
-                    <div
-                      v-if="frameworkHasSubTitle(data.dataType)"
-                      data-test="framework-subtitle"
-                      style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                    >
-                      <br />
-                      {{ getFrameworkSubtitle(data.dataType) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-                  <template #body="{ data }">{{ data.reportingPeriod }}</template>
-                </Column>
-                <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
-                  <template #body="{ data }">
-                    {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
-                  </template>
-                </Column>
-                <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
-                  <template #body="{ data }">
-                    {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
-                  </template>
-                </Column>
-                <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
-                  <template #body="{ data }">
-                    <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
-                  </template>
-                </Column>
-                <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
-                  <template #body="{ data }">
-                    <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
-                  </template>
-                </Column>
-                <Column field="resolve" header="">
-                  <template #body="{ data }">
-                    <div
-                      v-if="data.requestStatus === RequestStatus.Answered"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve"
-                        >RESOLVE</span
-                      >
-                      <span class="ml-3">&gt;</span>
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
-            </div>
-          </div>
+      <div class="col-12 text-left p-3">
+        <div class="card">
+          <DataTable
+            :value="displayedData"
+            style="cursor: pointer"
+            :row-hover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            lazy
+            :total-records="numberOfFilteredRequests"
+            @page="onPage"
+            @sort="onSort"
+            @row-click="onRowClick"
+            id="my-data-requests-overview-table"
+          >
+            <Column header="COMPANY" field="companyName" :sortable="true">
+              <template #body="{ data }">{{ data.companyName }}</template>
+            </Column>
+            <Column header="FRAMEWORK" field="dataType" :sortable="true">
+              <template #body="{ data }">
+                <div>{{ getFrameworkTitle(data.dataType) }}</div>
+                <div
+                  v-if="frameworkHasSubTitle(data.dataType)"
+                  data-test="framework-subtitle"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                >
+                  <br />
+                  {{ getFrameworkSubtitle(data.dataType) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+              <template #body="{ data }">{{ data.reportingPeriod }}</template>
+            </Column>
+            <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
+              <template #body="{ data }">
+                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
+              </template>
+            </Column>
+            <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
+              <template #body="{ data }">
+                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+              </template>
+            </Column>
+            <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
+              <template #body="{ data }">
+                <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
+              </template>
+            </Column>
+            <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
+              <template #body="{ data }">
+                <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
+              </template>
+            </Column>
+            <Column field="resolve" header="">
+              <template #body="{ data }">
+                <div
+                  v-if="data.requestStatus === RequestStatus.Answered"
+                  class="text-right text-primary no-underline font-bold"
+                >
+                  <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
+                  <span class="ml-3">&gt;</span>
+                </div>
+              </template>
+            </Column>
+          </DataTable>
         </div>
+      </div>
+    </div>
 
-        <div v-if="!waitingForData && storedDataRequests.length === 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have not requested data yet.</p>
-            <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <PrimeButton
-              label="BULK DATA REQUEST"
-              icon="pi pi-plus-circle"
-              data-test="bulkDataRequestButton"
-              @click="goToBulkDataRequestPage"
-            />
-          </div>
-        </div>
-      </TheContent>
-    </DatasetsTabMenu>
-    <TheFooter />
-  </AuthenticationWrapper>
+    <div v-if="!waitingForData && storedDataRequests.length === 0">
+      <div class="d-center-div text-center px-7 py-4">
+        <p class="font-medium text-xl">You have not requested data yet.</p>
+        <p class="font-medium text-xl">Individual data requests can be made for each company from its cockpit page.</p>
+        <p class="font-medium text-xl">
+          Alternatively, become a premium user and create a portfolio for automatic request creation.
+        </p>
+        <PrimeButton
+          label="MANAGE YOUR PORTFOLIOS"
+          icon="pi pi-plus-circle"
+          data-test="myPortfoliosButton"
+          @click="goToMyPortfoliosPage"
+        />
+      </div>
+    </div>
+  </TheContent>
 </template>
 
 <script setup lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestStatus,
-  retrieveAvailableAccessStatus,
+  retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
@@ -198,7 +189,7 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableAccessStatus.value = retrieveAvailableAccessStatus();
+  availableAccessStatus.value = retrieveAvailableAccessStatuses();
   await getStoredRequestDataList();
 });
 
@@ -212,8 +203,8 @@ watch(searchBarInput, (newSearch) => {
 /**
  * Navigates to the bulk data request page.
  */
-function goToBulkDataRequestPage(): void {
-  void vueRouter.push('/bulkdatarequest');
+function goToMyPortfoliosPage(): void {
+  void vueRouter.push('/portfolios');
 }
 
 /**
@@ -228,7 +219,7 @@ async function getStoredRequestDataList(): Promise<void> {
       storedDataRequests.value = (
         await new ApiClientProvider(
           getKeycloakPromise()
-        ).apiClients.requestController.getDataRequestsForRequestingUser()
+        ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {
@@ -323,7 +314,7 @@ function updateCurrentDisplayedData(): void {
 
   displayedData.value = data.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1));
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  globalThis.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**

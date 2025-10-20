@@ -1,5 +1,4 @@
 <template>
-  <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
@@ -96,7 +95,6 @@
     </div>
     <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
   </TheContent>
-  <TheFooter />
 </template>
 
 <script setup lang="ts">
@@ -108,8 +106,6 @@ import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleRepo
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
@@ -148,7 +144,6 @@ const props = defineProps<{
   companyID: string;
   dataType: DataTypeEnum;
   singleDataMetaInfoToDisplay?: DataMetaInformation;
-  viewInPreviewMode?: boolean;
 }>();
 
 const emit = defineEmits(['updateActiveDataMetaInfoForChosenFramework']);
@@ -183,11 +178,11 @@ provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDatas
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
-  activeDataForCurrentCompanyAndFramework.value.forEach((item) => {
+  for (const item of activeDataForCurrentCompanyAndFramework.value) {
     if (item.metaInfo.dataType === chosenDataTypeInDropdown.value) {
       set.add(item.metaInfo.reportingPeriod);
     }
-  });
+  }
   return Array.from(set).sort();
 });
 
@@ -377,7 +372,7 @@ async function editDataset(event: Event): Promise<void> {
     await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
   } else if (availableReportingPeriods.value.length > 1) {
     reportingPeriodsOverlayPanel.value?.toggle(event);
-  } else if (availableReportingPeriods.value.length === 1) {
+  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
     await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
   }
 }

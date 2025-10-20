@@ -139,7 +139,7 @@ const openAccordions = ref<Record<string, boolean>>({});
  * Reads from the 'openAccordions' record if the accordion with the title passed as input is open or not
  * @param title
  */
-const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
+const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title]! : false);
 
 /**
  * Toggles the open state of an accordion section. If the accordion section
@@ -151,19 +151,19 @@ function toggleAccordion(title: string): void {
   openAccordions.value[title] = !openAccordions.value[title];
 }
 
-const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
+const isSmallScreen: Ref<boolean> = ref(globalThis.innerWidth < 768);
 
 const updateScreenSize = (): void => {
-  isSmallScreen.value = window.innerWidth < 768;
+  isSmallScreen.value = globalThis.innerWidth < 768;
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateScreenSize);
+  globalThis.addEventListener('resize', updateScreenSize);
   updateScreenSize();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateScreenSize);
+  globalThis.removeEventListener('resize', updateScreenSize);
 });
 </script>
 

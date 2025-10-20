@@ -10,6 +10,67 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
 
+/**
+ * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
+ * format, and the url includes the search term
+ * @param inputValue the text to enter into the search bar
+ */
+function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
+  const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(' '));
+  cy.get('input[id=search-bar-input]').should('not.be.disabled').click({ force: true });
+  cy.get('input[id=search-bar-input]').type(inputValue);
+  cy.get('input[id=search-bar-input]').should('have.value', inputValue);
+  cy.get('input[id=search-bar-input]').type('{enter}');
+  cy.get('input[id=search-bar-input]').should('have.value', inputValue);
+  cy.url({ decode: true }).should('include', '/companies?input=' + inputValueUntilFirstSpace);
+}
+
+/**
+ * Verifies that the tooltip of the Lei in the search table header contains the expected text
+ */
+function checkPermIdToolTip(): void {
+  const expectedTextInToolTip = 'The Legal Entity Identifier (LEI)';
+  cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseenter', 'center');
+  cy.get('.p-tooltip').should('be.visible').contains(expectedTextInToolTip);
+  cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseleave');
+  cy.get('.p-tooltip').should('not.exist');
+}
+
+/**
+ * Verifies that the view button redirects to the view framework data page
+ */
+function clickFirstSearchResult(): void {
+  cy.get('[data-test="viewButton"]').first().click();
+}
+
+/**
+ * Returns the first company from the fake fixture that has at least one alternative name
+ * @returns the matching company from the fake fixtures
+ */
+function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> {
+  return assertDefined(
+    companiesWithEuTaxonomyFinancialsData.find((it) => {
+      return (
+        it.companyInformation.companyAlternativeNames != undefined &&
+        it.companyInformation.companyAlternativeNames.length > 0
+      );
+    })
+  );
+}
+
+/**
+ * Asserts that the company name is unique in the search results. If it is not unique, the test will fail.
+ * @param testCompany the company that was searched for
+ */
+function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
+  cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
+    if (items.length !== 1)
+      throw new Error(
+        `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
+      );
+  });
+}
+
 before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyFinancialsData').then(function (jsonContent) {
     companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
@@ -25,21 +86,6 @@ describeIf(
     executionEnvironments: executionEnvironments,
   },
   () => {
-    /**
-     * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
-     * format, and the url includes the search term
-     * @param inputValue the text to enter into the search bar
-     */
-    function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
-      const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(' '));
-      cy.get('input[id=search-bar-input]').should('not.be.disabled').click({ force: true });
-      cy.get('input[id=search-bar-input]').type(inputValue);
-      cy.get('input[id=search-bar-input]').should('have.value', inputValue);
-      cy.get('input[id=search-bar-input]').type('{enter}');
-      cy.get('input[id=search-bar-input]').should('have.value', inputValue);
-      cy.url({ decode: true }).should('include', '/companies?input=' + inputValueUntilFirstSpace);
-    }
-
     describeIf(
       'Tests for LEI tooltip and that company can be found -- only executed on database reset',
       {
@@ -51,32 +97,14 @@ describeIf(
           'Check Lei tooltip, execute company search by name, check result table and assure VIEW button works',
           { scrollBehavior: false },
           () => {
-            /**
-             * Verifies that the tooltip of the Lei in the search table header contains the expected text
-             */
-            function checkPermIdToolTip(): void {
-              const expectedTextInToolTip = 'The Legal Entity Identifier (LEI)';
-              cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseenter', 'center');
-              cy.get('.p-tooltip').should('be.visible').contains(expectedTextInToolTip);
-              cy.get('[data-test="lei-tooltip-tag"]').trigger('mouseleave');
-              cy.get('.p-tooltip').should('not.exist');
-            }
-
-            /**
-             * Verifies that the view button redirects to the view framework data page
-             */
-            function clickFirstSearchResult(): void {
-              cy.get('[data-test="viewButton"]').first().click();
-            }
-
             cy.visitAndCheckAppMount('/companies');
             verifySearchResultTableExists();
-            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0].companyInformation.companyName;
+            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation.companyName;
             checkPermIdToolTip();
             executeCompanySearchWithStandardSearchBar(testCompanyName);
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);
-            cy.get('[data-test="back-button"]').should('be.visible').click({ force: true });
+            cy.go('back');
             cy.get('input[id=search-bar-input]').should('contain.value', testCompanyName);
             clickFirstSearchResult();
             cy.get('h1[data-test="companyNameTitle"]').should('have.text', testCompanyName);
@@ -85,12 +113,13 @@ describeIf(
 
         it('Execute a company Search by identifier and assure that the company is found', () => {
           cy.visitAndCheckAppMount('/companies');
-          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
+          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation;
           const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
-            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0)
+            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it]!.length > 0)
           );
-          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
+          const singleCompanyIdentifier =
+            testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues]![0]!;
           const expectedCompanyName = testCompanyInformation.companyName;
           executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
@@ -98,24 +127,9 @@ describeIf(
       }
     );
 
-    /**
-     * Returns the first company from the fake fixture that has at least one alternative name
-     * @returns the matching company from the fake fixtures
-     */
-    function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> {
-      return assertDefined(
-        companiesWithEuTaxonomyFinancialsData.find((it) => {
-          return (
-            it.companyInformation.companyAlternativeNames != undefined &&
-            it.companyInformation.companyAlternativeNames.length > 0
-          );
-        })
-      );
-    }
-
     it('Search for company by its alternative name', () => {
       const testCompany = getCompanyWithAlternativeName();
-      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
+      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0]!;
       cy.visitAndCheckAppMount('/companies');
       executeCompanySearchWithStandardSearchBar(searchValue);
     });
@@ -128,7 +142,7 @@ describeIf(
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+              `/companies/${basicCompanyInformations[0]!.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
             );
             cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
             cy.get('input[id=company_search_bar_standard]')
@@ -140,22 +154,10 @@ describeIf(
       });
     });
 
-    /**
-     * Asserts that the company name is unique in the search results. If it is not unique, the test will fail.
-     * @param testCompany the company that was searched for
-     */
-    function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
-      cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
-        if (items.length !== 1)
-          throw new Error(
-            `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
-          );
-      });
-    }
-
     it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
+
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
@@ -174,6 +176,9 @@ describeIf(
               `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
             );
             cy.get('.p-autocomplete-list-container').should('exist');
+            cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
+            cy.get('input[id=search-bar-input]').should('be.focused');
+            cy.wait(Cypress.env('short_timeout_in_ms') as number);
             cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
@@ -184,15 +189,11 @@ describeIf(
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
-            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
-            assertSearchedCompanyNameIsUnique(testCompany);
-
-            cy.get('.p-autocomplete-option')
-              .eq(0)
-              .should('contain.text', testCompany.companyName)
-              .click({ force: true });
-
-            validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
+            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany!.companyName}`);
+            assertSearchedCompanyNameIsUnique(testCompany!);
+            const testCompanyName = testCompany!.companyName;
+            cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
+            validateCompanyCockpitPage(testCompanyName, testCompany!.companyId);
           }
         );
       });

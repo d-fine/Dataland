@@ -108,7 +108,7 @@ export default defineComponent({
       return this.contactsAsString
         .split(',')
         .map((rawEmail) => rawEmail.trim())
-        .filter((email) => email);
+        .filter(Boolean);
     },
   },
   mounted() {

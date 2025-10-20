@@ -12,7 +12,7 @@
         data-test="frameworkSelector"
         type="select"
         :highlightOnSelect="false"
-        @input="onFrameworkChange"
+        @change="onFrameworkChange"
       />
       <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
         Please select a framework.
@@ -106,10 +106,10 @@ import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/gen
 import ToggleSwitch from 'primevue/toggleswitch';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, DOWNLOADABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
-import PrimeSelect from 'primevue/select';
+import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
 
 const emit = defineEmits<{
   (emit: 'closeDownloadModal'): void;
@@ -133,7 +133,6 @@ const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
-const ALL_REPORTING_PERIODS = [2025, 2024, 2023, 2022, 2021, 2020];
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
 const fileTypeSelectionOptions = computed(() => {
@@ -144,9 +143,9 @@ const fileTypeSelectionOptions = computed(() => {
 });
 
 const availableFrameworks = computed(() => {
-  const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
+  const frameworks = new Set(reportingPeriodsPerFramework.value.keys());
 
-  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
+  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.has(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));
@@ -158,15 +157,25 @@ onMounted(() => {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
-  if (selectedFramework.value) {
-    onFrameworkChange(selectedFramework.value);
+  if (!selectedFramework.value) {
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  onModalOpen();
+  updateReportingPeriod();
 });
+
+/**
+ * Handles changing framework selections
+ * @param event - SelectChangeEvent from PrimeSelect
+ */
+function onFrameworkChange(event: SelectChangeEvent): void {
+  resetErrors();
+  selectedFramework.value = event.value as DataTypeEnum;
+  updateReportingPeriod();
+}
 
 /**
  * Reset errors when either framework, reporting period or file type changes
@@ -178,35 +187,22 @@ function resetErrors(): void {
 }
 
 /**
- * Handles changing framework selections
- * @param framework selected framework by user
+ * Handles changing framework selections by updating the reporting periods accordingly
  */
-function onFrameworkChange(framework: string | undefined): void {
-  resetErrors();
+function updateReportingPeriod(): void {
+  const reportingPeriods = selectedFramework.value
+    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
+    : [];
 
-  const reportingPeriods = framework ? (reportingPeriodsPerFramework.value.get(framework) ?? []) : [];
-
-  selectedFramework.value = framework as DataTypeEnum;
-
-  allReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
-    value: reportingPeriods.includes(period.toString()),
+  allReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
+    value: reportingPeriods.includes(period),
   }));
 
-  selectableReportingPeriodOptions.value = ALL_REPORTING_PERIODS.map((period) => ({
-    name: period.toString(),
+  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    name: period,
     value: false,
   }));
-}
-
-/**
- * Sets predefined framework for default
- */
-function onModalOpen(): void {
-  if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
-  }
-  onFrameworkChange(selectedFramework.value);
 }
 
 /**

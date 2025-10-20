@@ -16,7 +16,7 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
      * @param companyRole to check for
      * @param companyId to check for
      * @param userId to check for
-     * @returns a list of the matching company role assignments
+     * @return a list of the matching company role assignments
      */
     @Query(
         "SELECT roleAssignment FROM CompanyRoleAssignmentEntity roleAssignment " +
@@ -29,6 +29,20 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
         userId: String?,
         companyRole: CompanyRole?,
     ): List<CompanyRoleAssignmentEntity>
+
+    /**
+     * Finds a company role assignment for a specific user, company and one of the provided roles.
+     * Since a user can only have one role per company, there can only be at most one matching result.
+     * @param companyId to check for
+     * @param userId to check for
+     * @param companyRoles to check for
+     * @return the matching company role assignment or null if none found
+     */
+    fun findByCompanyIdAndUserIdAndCompanyRoleIsIn(
+        companyId: String,
+        userId: String,
+        companyRoles: List<CompanyRole>,
+    ): CompanyRoleAssignmentEntity?
 
     /** Deletes all company role assignments for a specific user and company
      * @param companyId to delete the assignments for

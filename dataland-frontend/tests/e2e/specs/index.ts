@@ -1,7 +1,7 @@
-const testGroupingDisabled = isNaN(Cypress.env('TEST_GROUP') as number);
+const testGroupingDisabled = Number.isNaN(Cypress.env('TEST_GROUP') as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parseInt(Cypress.env('TEST_GROUP') as string);
+  cypressTestGroup = Number.parseInt(Cypress.env('TEST_GROUP') as string);
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.env('SINGLE_POPULATE') === true;
@@ -37,12 +37,14 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./sfdr');
   require('./lksg');
   require('./company-cockpit');
+  require('./user-experience');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-financials');
   require('./eu-taxonomy-non-financials');
   require('./vsme');
+  require('./pcaf');
   require('./company-ownership');
 }
 

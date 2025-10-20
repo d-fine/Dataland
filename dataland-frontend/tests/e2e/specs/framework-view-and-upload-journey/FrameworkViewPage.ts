@@ -12,6 +12,107 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+/**
+ * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
+ * in the search results table.
+ * @param frameworkQueryParam The query param set as framework filter
+ * @param searchStringQueryParam The query param set as search string
+ */
+function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
+  frameworkQueryParam: string,
+  searchStringQueryParam: string
+): void {
+  cy.intercept({ url: '/api/companies*', times: 2 }).as('searchCompanies');
+  cy.intercept({ url: '/api/companies/meta-information' }).as('fetchFilters');
+  cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+  verifySearchResultTableExists();
+  cy.wait('@searchCompanies');
+  cy.wait('@fetchFilters');
+  cy.get('[data-test="viewButton"]').first().click();
+}
+
+/**
+ * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
+ * @param companyName to type into the search bar
+ * @param isOnViewPage determines if cypress is expected to be on the view page
+ */
+function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
+  const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search-bar-input';
+  cy.intercept({
+    url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
+    times: 1,
+  }).as('autocompleteSuggestions');
+  cy.get(searchBarSelector).click();
+  cy.get(searchBarSelector).type(companyName, { force: true });
+  cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
+  const companySelector = '.p-autocomplete-option';
+  cy.get(companySelector).first().click({ force: true });
+}
+
+/**
+ * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
+ * "should"-operation on that HTML element
+ * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
+ * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
+ */
+function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
+  cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
+}
+
+/**
+ * Validates if the container which displays a specific status of the current dataset is present and contains
+ * the expected text.
+ * It also validates if the corresponding button in that container contains the expected text.
+ * @param expectedTextInContainer The expected disclaimer text in the display-status-container
+ * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
+ * @returns a Cypress Chainable containing the button of the display-status-container
+ */
+function validateDisplayStatusContainerAndGetButton(
+  expectedTextInContainer: string,
+  expectedButtonText: string
+): Cypress.Chainable {
+  return cy
+    .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
+    .find(`button > span:contains(${expectedButtonText})`);
+}
+
+/**
+ * Validates if all the column headers equal the passed values
+ * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
+ */
+function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
+  cy.get('.p-column-title').each((element, index, elements) => {
+    expect(elements).to.have.length(expectedColumnHeaders.length + 1);
+    if (index == 0) {
+      expect(element.text()).to.equal('KPIs');
+    } else {
+      expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
+    }
+  });
+}
+
+/**
+ * Validates if all the Data Date rows on the LkSG panel equal the passed values
+ * @param expectedDataDates The expected values in the row of the Data Date field
+ */
+function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
+  for (let i = 0; i < expectedDataDates.length; i++) {
+    getCellValueContainer('Data Date', i).should('have.text', expectedDataDates[i]);
+  }
+}
+
+/**
+ * Checks if none of the currently three possible error-blocks on the view-page are rendered.
+ *
+ */
+function validateNoErrorMessagesAreShown(): void {
+  getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
+}
+
 describeIf(
   'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
     'and to navigate between those pages as well as the available datasets for one specific company',
@@ -65,43 +166,6 @@ describeIf(
     }
 
     /**
-     * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
-     * in the search results table.
-     * @param frameworkQueryParam The query param set as framework filter
-     * @param searchStringQueryParam The query param set as search string
-     */
-    function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-      frameworkQueryParam: string,
-      searchStringQueryParam: string
-    ): void {
-      cy.intercept({ url: '/api/companies*', times: 2 }).as('searchCompanies');
-      cy.intercept({ url: '/api/companies/meta-information' }).as('fetchFilters');
-      cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-      verifySearchResultTableExists();
-      cy.wait('@searchCompanies');
-      cy.wait('@fetchFilters');
-      cy.get('[data-test="viewButton"]').first().click();
-    }
-
-    /**
-     * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
-     * @param companyName to type into the search bar
-     * @param isOnViewPage determines if cypress is expected to be on the view page
-     */
-    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
-      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search-bar-input';
-      cy.intercept({
-        url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
-        times: 1,
-      }).as('autocompleteSuggestions');
-      cy.get(searchBarSelector).click();
-      cy.get(searchBarSelector).type(companyName, { force: true });
-      cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
-      const companySelector = '.p-autocomplete-option';
-      cy.get(companySelector).first().click({ force: true });
-    }
-
-    /**
      * Validates that the view-page is currently set to the expected framework by checking the url and the
      * chosen option in the frameworks-dropdown.
      * @param expectedChosenFramework The framework wich is expected to be currently set
@@ -142,28 +206,6 @@ describeIf(
     }
 
     /**
-     * Checks if none of the currently three possible error-blocks on the view-page are rendered.
-     *
-     */
-    function validateNoErrorMessagesAreShown(): void {
-      getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
-    }
-
-    /**
-     * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
-     * "should"-operation on that HTML element
-     * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
-     * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
-     */
-    function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
-      cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
-    }
-
-    /**
      * Opens the framework dropdown and selects the framework passed as input if it is found
      * @param frameworkToSelect The framework/item that shall be selected
      */
@@ -172,55 +214,6 @@ describeIf(
       cy.get(`${dropdownItemsSelector}:contains(${humanizeStringOrNumber(frameworkToSelect)})`).click({
         force: true,
       });
-    }
-
-    /**
-     * Clicks the back button on the page.
-     */
-    function clickBackButton(): void {
-      cy.get('[data-test="back-button"]').click();
-    }
-
-    /**
-     * Validates if the container which displays a specific status of the current dataset is present and contains
-     * the expected text.
-     * It also validates if the corresponding button in that container contains the expected text.
-     * @param expectedTextInContainer The expected disclaimer text in the display-status-container
-     * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
-     * @returns a Cypress Chainable containing the button of the display-status-container
-     */
-    function validateDisplayStatusContainerAndGetButton(
-      expectedTextInContainer: string,
-      expectedButtonText: string
-    ): Cypress.Chainable {
-      return cy
-        .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
-        .find(`button > span:contains(${expectedButtonText})`);
-    }
-
-    /**
-     * Validates if all the column headers equal the passed values
-     * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
-     */
-    function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
-      cy.get('.p-column-title').each((element, index, elements) => {
-        expect(elements).to.have.length(expectedColumnHeaders.length + 1);
-        if (index == 0) {
-          expect(element.text()).to.equal('KPIs');
-        } else {
-          expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
-        }
-      });
-    }
-
-    /**
-     * Validates if all the Data Date rows on the LkSG panel equal the passed values
-     * @param expectedDataDates The expected values in the row of the Data Date field
-     */
-    function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
-      for (let i = 0; i < expectedDataDates.length; i++) {
-        getCellValueContainer('Data Date', i).should('have.text', expectedDataDates[i]);
-      }
     }
 
     /**
@@ -282,7 +275,7 @@ describeIf(
               token,
               companyIdOfAlpha,
               '2019',
-              getPreparedFixture('lighweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
+              getPreparedFixture('lightweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
             );
           });
       });
@@ -384,7 +377,7 @@ describeIf(
       validateChosenFramework(DataTypeEnum.Lksg);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      clickBackButton();
+      cy.go('back');
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Sfdr);
@@ -410,7 +403,7 @@ describeIf(
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
 
-      clickBackButton();
+      cy.go('back');
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
@@ -440,7 +433,7 @@ describeIf(
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22', '2022-07-30']);
       cy.contains('This dataset is superseded').should('not.exist');
       getElementAndAssertExistence('datasetDisplayStatusContainer', 'not.exist');
-      clickBackButton();
+      cy.go('back');
 
       cy.url().should(
         'contain',
@@ -450,7 +443,7 @@ describeIf(
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
       validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL');
-      clickBackButton();
+      cy.go('back');
 
       cy.url().should(
         'contain',

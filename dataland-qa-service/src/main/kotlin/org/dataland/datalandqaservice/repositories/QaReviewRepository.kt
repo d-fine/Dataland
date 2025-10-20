@@ -59,7 +59,7 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
                 " ORDER BY entry.timestamp DESC" +
                 " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
-    fun getSortedAndFilteredQaReviewMetadataSet(
+    fun getSortedAndFilteredQaReviewMetadataset(
         @Param("searchFilter") searchFilter: QaSearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,

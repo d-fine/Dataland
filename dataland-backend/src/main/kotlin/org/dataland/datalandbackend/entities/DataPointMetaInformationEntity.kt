@@ -52,12 +52,12 @@ data class DataPointMetaInformationEntity(
      * (c) the user is an admin or a reviewer
      * This function checks these conditions.
      */
-    fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
+    fun isDataPointViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
         this.qaStatus == QaStatus.Accepted ||
             this.uploaderUserId == viewingUser?.userId ||
-            isDatasetViewableByUserViaRole(viewingUser?.roles ?: emptySet())
+            isDataPointViewableByUserViaRole(viewingUser?.roles ?: emptySet())
 
-    private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
+    private fun isDataPointViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
     override fun toApiModel(): DataPointMetaInformation =
@@ -74,7 +74,7 @@ data class DataPointMetaInformationEntity(
 
     /**
      * Converts the entity into the basic data dimension object
-     * return a BasicDataDimensions object
+     * @return a BasicDataDimensions object
      */
     fun toBasicDataDimensions(framework: String? = null): BasicDataDimensions =
         BasicDataDimensions(

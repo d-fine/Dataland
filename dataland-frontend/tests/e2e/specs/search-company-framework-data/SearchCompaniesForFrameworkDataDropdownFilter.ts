@@ -35,8 +35,9 @@ before(function () {
  * @returns inputString the string without parenthesis
  */
 function escapeParenthesisInRegExp(inputString: string): string {
-  return inputString.replace(/[()]/g, '\\$&');
+  return inputString.replaceAll(/[()]/g, String.raw`\$&`);
 }
+
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
@@ -94,7 +95,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Checks that the country-code filter synchronises between the search bar and the drop down and works',
         { scrollBehavior: false },
         () => {
-          const demoCompanyToTestFor = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
+          const demoCompanyToTestFor = companiesWithEuTaxonomyFinancialsData[0]!.companyInformation;
           const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyFinancialsData.find(
             (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
           )!.companyInformation;
@@ -111,7 +112,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get('#country-filter').click();
           cy.get('input[placeholder="Search countries"]').type(`${demoCompanyToTestForCountryName}`);
           cy.get('li')
-            .contains(RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
+            .contains(new RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
             .click();
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
@@ -148,7 +149,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get('#sector-filter').click();
           cy.get('input[placeholder="Search sectors"]').type(`${demoCompanyToTestFor.sector!}`);
           cy.get('li')
-            .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
+            .contains(new RegExp(`^${demoCompanyToTestFor.sector!}$`))
             .click();
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
@@ -172,20 +173,31 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
-      cy.get('#framework-filter').click();
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.get('#framework-filter').click();
-      cy.get('div.p-multiselect-overlay').find('li.p-multiselect-option').first().click();
+      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.get('[id="framework-filter"]').click();
+      cy.get('div.p-multiselect-overlay')
+        .should('be.visible')
+        .and('contain.text', humanizeStringOrNumber(frameworkOne))
+        .find('li.p-multiselect-option')
+        .first()
+        .should('be.visible')
+        .and('not.have.class', 'p-disabled')
+        .click();
       verifySearchResultTableExists();
       cy.get('div.p-multiselect-overlay').should('not.exist');
     }
@@ -207,9 +219,9 @@ describe('As a user, I expect the search functionality on the /companies page to
           'option, and check that the company appears in the autocomplete suggestions and in the ' +
           'search results, if no framework filter is set.',
         () => {
-          const preFix = 'ThisCompanyHasNoDataSet';
+          const preFix = 'ThisCompanyHasNoDataset';
           const companyName = preFix + companyNameMarker;
-          const sector = 'SectorWithNoDataSet';
+          const sector = 'SectorWithNoDataset';
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
@@ -230,6 +242,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Upload a company without uploading framework data for it, assure that its sector does not appear as filter ' +
           'option, and check if the company neither appears in the autocomplete suggestions nor in the ' +
           'search results, if at least one framework filter is set.',
+        { scrollBehavior: false },
         () => {
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
@@ -238,7 +251,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
-          cy.get('#framework-filter').click();
+          cy.get('#framework-filter').should('be.visible').click();
           cy.get('div.p-multiselect-overlay')
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
@@ -308,7 +321,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
-            const sfdrFixture = companiesWithSfdrData[0];
+            const sfdrFixture = companiesWithSfdrData[0]!;
             void uploadCompanyAndFrameworkDataForPublicToolboxFramework(
               SfdrBaseFrameworkDefinition,
               token,

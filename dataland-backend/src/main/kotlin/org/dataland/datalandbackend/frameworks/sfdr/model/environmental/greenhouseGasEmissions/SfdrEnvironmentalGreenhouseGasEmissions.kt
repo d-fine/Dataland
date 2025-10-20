@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
 /**
@@ -12,9 +13,10 @@ import java.math.BigDecimal
  */
 @Suppress("MaxLineLength")
 data class SfdrEnvironmentalGreenhouseGasEmissions(
+    @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).""",
+        description = """Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -46,9 +48,10 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     )
     @field:Valid()
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -63,9 +66,10 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     )
     @field:Valid()
     val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -131,6 +135,7 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     )
     @field:Valid()
     val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).""",

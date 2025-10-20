@@ -1,96 +1,297 @@
 <template>
   <Card
     data-test="company-roles-card"
-    :pt="{
-      root: {
-        style: 'width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);',
-      },
-    }"
+    style="width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl)"
   >
     <template #title>
       <i :class="group?.icon" />
       {{ group?.title }}
+      <Button
+        icon="pi pi-info-circle"
+        variant="text"
+        data-test="info-icon"
+        rounded
+        @click="showInfoBox"
+        title="Show Info"
+        :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
+      />
+      <Button
+        v-if="roleHasUsers && allowedToEditRoles"
+        icon="pi pi-plus"
+        variant="text"
+        :label="`ADD ${group?.title.toUpperCase()}`"
+        data-test="add-user-button"
+        @click="showAddUserDialog = true"
+        style="float: right"
+        :disabled="!allowedToEditSpecificRole(role)"
+      />
     </template>
-
     <template #subtitle>
       <Message
+        v-if="showInfoMessage"
         severity="info"
-        closable
-        :pt="{
-          root: {
-            style: 'margin-top: var(--spacing-xs);',
-          },
-        }"
+        :closable="true"
+        @close="hideInfoBox"
+        style="margin-top: var(--spacing-xs); min-height: 3rem"
+        data-test="info-message"
       >
         {{ group?.info }}
       </Message>
     </template>
 
     <template #content>
-      <DataTable :value="rowsForRole" tableStyle="min-width: 50rem;">
-        <Column field="firstName" header="First Name" style="width: 20%" />
-        <Column field="lastName" header="Last Name" style="width: 20%" />
-        <Column field="email" header="Email" style="width: 25%" />
-        <Column field="userId" header="User ID" style="width: 35%" />
+      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem">
+        <Column field="firstName" header="First Name" style="width: 20%" sortable />
+        <Column field="lastName" header="Last Name" style="width: 20%" sortable />
+        <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
+        <Column field="userId" header="User ID" style="width: 30%" />
+        <Column v-if="allowedToEditRoles" :exportable="false" header="" style="width: 5%; text-align: right">
+          <template #body="slotProps">
+            <Button
+              icon="pi pi-ellipsis-v"
+              variant="text"
+              rounded
+              @click="(e) => openRowMenu(e, slotProps.data)"
+              data-test="dialog-button"
+              :disabled="!allowedToEditSpecificRole(role)"
+            />
+          </template>
+        </Column>
       </DataTable>
+      <Button
+        v-if="!roleHasUsers && allowedToEditRoles"
+        icon="pi pi-plus"
+        variant="text"
+        :label="`ADD ${group?.title.toUpperCase()}`"
+        @click="showAddUserDialog = true"
+        data-test="add-user-button"
+        style="display: flex; margin: var(--spacing-xs) auto 0"
+        :disabled="!allowedToEditSpecificRole(role)"
+      />
+      <Menu ref="rowMenu" :model="rowMenuItems" :popup="true" data-test="dialog-menu" />
     </template>
   </Card>
+
+  <!-- Change Role Modal -->
+  <Dialog
+    v-model:visible="showChangeRoleDialog"
+    v-if="allowedToEditRoles"
+    header="Change User's Role"
+    data-test="change-user-role-dialog"
+    :modal="true"
+    :closable="true"
+  >
+    <Message
+      severity="info"
+      icon="pi pi-info-circle"
+      style="
+        margin-top: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-weight: var(--font-weight-medium);
+      "
+    >
+      Changing the role will remove the previous one.
+    </Message>
+    <span>
+      Change role for:
+      <span style="font-weight: var(--font-weight-medium)">
+        {{ roleTargetText }}
+      </span>
+    </span>
+    <Listbox
+      v-model="selectedRole"
+      :options="groups"
+      optionLabel="title"
+      optionValue="role"
+      :optionDisabled="isOptionDisabled"
+      style="margin-top: var(--spacing-md)"
+      :pt="{
+        listContainer: {
+          style: 'max-height: unset;',
+        },
+      }"
+    >
+      <template #option="{ option }">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <i :class="option.icon" style="font-size: 1.25rem; line-height: 1"></i>
+          <div>
+            <div style="font-weight: var(--font-weight-medium)">{{ option.title }}</div>
+            <div style="font-size: var(--font-size-sm); opacity: 0.8">{{ option.description }}</div>
+          </div>
+        </div>
+      </template>
+    </Listbox>
+    <template #footer>
+      <Button
+        label="Change Role"
+        :disabled="selectedRole === null"
+        @click="onChangeRoleClick"
+        data-test="change-role-button"
+      />
+    </template>
+  </Dialog>
+
+  <!-- Remove User Modal -->
+  <Dialog v-model:visible="showRemoveUserDialog" :header="`Remove Company Role`" :modal="true" :closable="true">
+    <span>You're about to remove the user:</span><br />
+    <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
+    <template #footer>
+      <Button label="Remove User" @click="confirmRemoveUser" data-test="remove-user-button" />
+    </template>
+  </Dialog>
+
+  <!-- Add User Modal -->
+  <Dialog
+    v-model:visible="showAddUserDialog"
+    :header="`Add ${group?.title}`"
+    :modal="true"
+    :closable="true"
+    :style="{ backgroundColor: 'var(--p-surface-50)' }"
+  >
+    <AddUserDialog
+      ref="addUserDialog"
+      :companyId="companyId"
+      :role="role"
+      :existingUsers="rowsForRole"
+      :currentUserId="currentUserId"
+      @users-added="handleUsersAdded"
+      @confirmation-is-required-for-add-users="
+        showSelfRoleChangeModal = true;
+        typeOfConfirmDialog = ConfirmDialogType.AddUsers;
+      "
+    />
+  </Dialog>
+
+  <!-- Self Role Change Confirmation Modal -->
+  <Dialog v-model:visible="showSelfRoleChangeModal" header="Confirm Role Change" :modal="true" :closable="true">
+    <span>
+      You are about to change your own role. This will remove your old role and is not reversible.<br />
+      Are you sure you want to continue?
+    </span>
+    <template #footer>
+      <Button
+        label="Cancel"
+        data-test="cancel-self-role-change-button"
+        @click="
+          showSelfRoleChangeModal = false;
+          showChangeRoleDialog = false;
+          showAddUserDialog = false;
+        "
+      />
+      <Button label="Confirm" data-test="confirm-self-role-change-button" @click="onConfirmSelfRoleChange" />
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed, onMounted, inject } from 'vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
+import Listbox from 'primevue/listbox';
+import Menu from 'primevue/menu';
+import Message from 'primevue/message';
+
 import type Keycloak from 'keycloak-js';
 import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { CompanyRole } from '@clients/communitymanager';
 
-import Card from 'primevue/card';
-import Message from 'primevue/message';
+import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { useStorage } from '@vueuse/core';
+
+type CompanyRoleDetails = {
+  role: CompanyRole;
+  title: string;
+  icon: string;
+  info: string;
+  description: string;
+};
+
+type TableRow = { userId: string; email: string; firstName: string; lastName: string };
+
+type MenuItem = { label: string; command: () => void };
+type MenuAPI = { toggle: (e: MouseEvent) => void };
+type MenuInstance = ComponentPublicInstance<MenuAPI>;
+
+const rowMenu = ref<MenuInstance | null>(null);
+const activeRow = ref<TableRow | null>(null);
 
 const props = defineProps<{
   companyId: string;
   role: CompanyRole;
+  userRole?: CompanyRole | null;
 }>();
 
-// Injected dependencies
+const emit = defineEmits<(e: 'users-changed', message: string) => void>();
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
 
-const roleGroups = [
+const showChangeRoleDialog = ref(false);
+const showRemoveUserDialog = ref(false);
+const showAddUserDialog = ref(false);
+const showSelfRoleChangeModal = ref(false);
+const addUserDialog = ref<{ handleAddUser: () => Promise<void> } | null>(null);
+
+enum ConfirmDialogType {
+  ChangeRole = 'change-role',
+  AddUsers = 'add-users',
+}
+const typeOfConfirmDialog = ref<ConfirmDialogType | null>(null);
+
+const selectedUser = ref<TableRow | null>(null);
+const selectedRole = ref<CompanyRole | null>(null);
+let currentUserId: string | undefined = undefined;
+
+const isGlobalAdmin = ref(false);
+const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
+
+const groups: CompanyRoleDetails[] = [
   {
     role: CompanyRole.MemberAdmin,
     title: 'Admins',
     icon: 'pi pi-shield',
     info: 'The User Admin has the rights to add or remove other user admins and members. Admins manage other users and can control who has access to what data or features within Dataland.',
+    description: 'Manage users and roles.',
   },
   {
     role: CompanyRole.Member,
     title: 'Members',
     icon: 'pi pi-users',
     info: 'Members have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
+    description: 'Unlimited access to data requests.',
   },
   {
     role: CompanyRole.CompanyOwner,
     title: 'Company Owners',
     icon: 'pi pi-crown',
-    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland. The company owner is also the one accountable for the KYC process.",
+    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland.",
+    description: 'Highest authority with complete platform control.',
   },
   {
     role: CompanyRole.DataUploader,
     title: 'Uploaders',
     icon: 'pi pi-cloud-upload',
     info: 'Uploaders have the responsibility of ensuring all relevant data is uploaded to the platform for analysis and interpretation.',
+    description: "Responsible for providing company's datasets.",
   },
-] as const;
+];
 
-const group = computed(() => roleGroups.find((g) => g.role === props.role));
+const group = computed(() => groups.find((g) => g.role === props.role));
 
-const rowsForRole = computed(() =>
+const rowsForRole = computed<TableRow[]>(() =>
   companyUserInformation.value
     .filter((u) => u.companyId === props.companyId && u.companyRole === props.role)
     .map((u) => ({
@@ -101,26 +302,203 @@ const rowsForRole = computed(() =>
     }))
 );
 
+const emailColumnWidth = computed(() => (allowedToEditRoles.value ? '25%' : '30%'));
+
+const roleTargetText = computed(() => {
+  const u = selectedUser.value;
+  if (!u) return '';
+  const first = u.firstName?.trim();
+  const last = u.lastName?.trim();
+  return first && last ? `${first} ${last}, ${u.email}` : (u.email ?? '');
+});
+
+const rowMenuItems = computed<MenuItem[]>(() =>
+  activeRow.value
+    ? [
+        {
+          label: 'Change User’s Role',
+          command: (): void => {
+            selectedUser.value = activeRow.value!;
+            selectedRole.value = null;
+            showChangeRoleDialog.value = true;
+          },
+        },
+        {
+          label: 'Remove User',
+          command: (): void => {
+            selectedUser.value = activeRow.value!;
+            showRemoveUserDialog.value = true;
+          },
+        },
+      ]
+    : []
+);
+
+// In the future if an endpoint exists this map should be fetched from the backend
+const roleModificationPermissionsMap: Record<CompanyRole, CompanyRole[]> = {
+  [CompanyRole.CompanyOwner]: Object.values(CompanyRole),
+  [CompanyRole.DataUploader]: [],
+  [CompanyRole.MemberAdmin]: [CompanyRole.MemberAdmin, CompanyRole.Member],
+  [CompanyRole.Member]: [],
+};
+
+const roleHasUsers = computed(() => rowsForRole.value.length > 0);
+
+const allowedToEditRoles = computed(() => {
+  if (isGlobalAdmin.value) return true;
+  if (!props.userRole) return false;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole];
+  return Array.isArray(allowedRoles) && allowedRoles.length > 0;
+});
+
 /**
- * Uses the dataland API to retrieve information about the company users identified by the local
- * companyId object.
+ * Determines if the current user is allowed to edit a specific role.
+ * Uses the same logic as SecurityUtilsService.roleModificationPermissionsMap.
+ * @param role - The CompanyRole to check permissions for.
+ * @returns True if the user can edit the specified role, false otherwise.
+ */
+function allowedToEditSpecificRole(role: CompanyRole): boolean {
+  if (isGlobalAdmin.value) return true;
+  if (!props.userRole) return false;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole] || [];
+  return Array.isArray(allowedRoles) && allowedRoles.includes(role);
+}
+
+/**
+ * Determines if a role option should be disabled in the role selection list.
+ * Uses the same logic as SecurityUtilsService.roleModificationPermissionsMap.
+ * @param opt - The role option to check, containing a CompanyRole.
+ */
+function isOptionDisabled(opt: { role: CompanyRole }): boolean {
+  if (opt.role === props.role) return true;
+  if (isGlobalAdmin.value) return false;
+  if (!props.userRole) return true;
+  const allowedRoles = roleModificationPermissionsMap[props.userRole] || [];
+  return !allowedRoles.includes(opt.role);
+}
+
+/**
+ * Opens the context menu for a specific row in the company roles table.
+ * @param e - The mouse event that triggered the menu opening.
+ * @param row - The table row data containing user information (userId, email, firstName, lastName).
+ */
+function openRowMenu(e: MouseEvent, row: TableRow): void {
+  activeRow.value = row;
+  rowMenu.value?.toggle(e);
+}
+
+/**
+ * Hides the info box
+ */
+function hideInfoBox(): void {
+  showInfoMessage.value = false;
+}
+
+/**
+ * Shows the info box
+ */
+function showInfoBox(): void {
+  showInfoMessage.value = true;
+}
+
+/**
+ * Fetches the company user information for the current role and company.
  */
 async function getCompanyUserInformation(): Promise<void> {
+  const keycloakPromise = await getKeycloakPromise();
+  const userDetails = await keycloakPromise.loadUserProfile();
+  currentUserId = userDetails.id;
   if (!props.companyId) return;
   try {
-    const companyRolesControllerApi = apiClientProvider.apiClients.companyRolesController;
-    const data = await companyRolesControllerApi.getExtendedCompanyRoleAssignments(
-      props.role,
-      props.companyId,
-      undefined
-    );
-    companyUserInformation.value = data.data;
+    const api = apiClientProvider.apiClients.companyRolesController;
+    const res = await api.getExtendedCompanyRoleAssignments(props.role, props.companyId, undefined);
+    companyUserInformation.value = res.data;
   } catch (error) {
     console.error('Failed to load company users:', error);
   }
 }
 
+/**
+ * Determines if the role of the currently selected user is being changed.
+ */
+function isRoleOfCurrentUserBeingChanged(): boolean {
+  return selectedUser.value?.userId === currentUserId;
+}
+
+/**
+ * Handles the event when the "Change Role" button is clicked.
+ */
+async function onChangeRoleClick(): Promise<void> {
+  if (isRoleOfCurrentUserBeingChanged()) {
+    showSelfRoleChangeModal.value = true;
+    typeOfConfirmDialog.value = ConfirmDialogType.ChangeRole;
+  } else {
+    await confirmChangeRole();
+  }
+}
+
+/**
+ * Confirms and processes the role change for the selected user.
+ */
+async function confirmChangeRole(): Promise<void> {
+  if (!selectedUser.value || selectedRole.value == null) return;
+  try {
+    const api = apiClientProvider.apiClients.companyRolesController;
+    await api.assignCompanyRole(selectedRole.value, props.companyId, selectedUser.value.userId);
+    showChangeRoleDialog.value = false;
+    await getCompanyUserInformation();
+    emit('users-changed', 'User role successfully changed.');
+  } catch (err) {
+    console.error('Failed to change role:', err);
+  }
+}
+
+/**
+ * Confirms and processes the removal of the selected user from the role.
+ */
+async function confirmRemoveUser(): Promise<void> {
+  if (!selectedUser.value) return;
+  try {
+    const api = apiClientProvider.apiClients.companyRolesController;
+    await api.removeCompanyRole(props.role, props.companyId, selectedUser.value.userId);
+    showRemoveUserDialog.value = false;
+    await getCompanyUserInformation();
+    emit('users-changed', 'User successfully removed.');
+  } catch (err) {
+    console.error('Failed to remove user:', err);
+  }
+}
+
+/**
+ * Handles the event when users are added through the AddUserDialog.
+ * @param message - Optional success message to emit
+ */
+async function handleUsersAdded(message?: string): Promise<void> {
+  showAddUserDialog.value = false;
+  await getCompanyUserInformation();
+  emit('users-changed', message || 'User(s) successfully added.');
+}
+
+/**
+ * Handles the confirm action in the self role change modal.
+ * Calls the appropriate function depending on the dialog type.
+ */
+async function onConfirmSelfRoleChange(): Promise<void> {
+  if (typeOfConfirmDialog.value === ConfirmDialogType.ChangeRole) {
+    await confirmChangeRole();
+  } else if (typeOfConfirmDialog.value === ConfirmDialogType.AddUsers) {
+    await addUserDialog.value?.handleAddUser();
+    showSelfRoleChangeModal.value = false;
+    showAddUserDialog.value = false;
+  }
+}
+
+watch([(): string => props.companyId, (): CompanyRole => props.role], async function () {
+  await getCompanyUserInformation();
+});
+
 onMounted(async () => {
+  isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   await getCompanyUserInformation();
 });
 </script>

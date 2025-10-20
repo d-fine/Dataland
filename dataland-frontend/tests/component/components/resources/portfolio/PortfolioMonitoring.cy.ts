@@ -109,9 +109,9 @@ describe('Portfolio Monitoring Modal', function () {
   it('dropdown lists all years in order', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('[data-test="listOfReportingPeriods"]').find('.p-select-dropdown').click();
-    ['2024', '2023', '2022', '2021', '2020', '2019'].forEach((year) => {
+    for (const year of ['2024', '2023', '2022', '2021', '2020', '2019']) {
       cy.contains(year).should('exist');
-    });
+    }
   });
 
   it('updates selectedStartingYear when dropdown changes', () => {

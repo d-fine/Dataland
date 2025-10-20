@@ -5,7 +5,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -27,7 +26,6 @@ class RequestControllerTest {
     private val mockSingleDataRequestManager = mock<SingleDataRequestManager>()
     private val mockDataRequestQueryManager = mock<DataRequestQueryManager>()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
-    private val mockDataAccessManager = mock<DataAccessManager>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val requestController =
         RequestController(
@@ -35,7 +33,6 @@ class RequestControllerTest {
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
             mockDataRequestUpdateManager,
-            mockDataAccessManager,
             mockCompanyRolesManager,
         )
 
@@ -46,7 +43,6 @@ class RequestControllerTest {
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
             mockDataRequestUpdateManager,
-            mockDataAccessManager,
             mockCompanyRolesManager,
         )
     }

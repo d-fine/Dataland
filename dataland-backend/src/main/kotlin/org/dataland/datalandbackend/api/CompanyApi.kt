@@ -42,8 +42,9 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
-const val COMPANY_SEARCH_STRING_DESCRIPTION =
-    "Search string used for substring matching. Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
+const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
+    "${GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION} " +
+        "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -114,7 +115,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -169,7 +174,11 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getNumberOfCompanies(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam
@@ -204,7 +213,11 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam
-        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String,
         @RequestParam(defaultValue = "100") resultLimit: Int,

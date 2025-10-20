@@ -85,6 +85,7 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
+import { PORTFOLIO_MONITORING_REPORTING_PERIODS } from '@/utils/Constants.ts';
 
 type MonitoringOption = {
   value: string;
@@ -92,10 +93,9 @@ type MonitoringOption = {
   isActive: boolean;
 };
 
-const reportingYears = [2024, 2023, 2022, 2021, 2020, 2019];
-const reportingPeriodsOptions = reportingYears.map((year) => ({
-  label: year.toString(),
-  value: year,
+const reportingPeriodsOptions = PORTFOLIO_MONITORING_REPORTING_PERIODS.map((yearString) => ({
+  label: yearString,
+  value: +yearString,
 }));
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -137,7 +137,13 @@ onMounted(() => {
  * @param newValue changed monitoring state.
  */
 function onMonitoringToggled(newValue: boolean): void {
-  if (!newValue) {
+  if (newValue) {
+    selectedStartingYear.value = previousStartingYear.value;
+    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+      ...option,
+      isActive: previousFrameworks.value.has(option.value),
+    }));
+  } else {
     previousStartingYear.value = selectedStartingYear.value;
     previousFrameworks.value = new Set(
       availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
@@ -148,14 +154,7 @@ function onMonitoringToggled(newValue: boolean): void {
       ...option,
       isActive: false,
     }));
-
     resetErrors();
-  } else {
-    selectedStartingYear.value = previousStartingYear.value;
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
-      ...option,
-      isActive: previousFrameworks.value.has(option.value),
-    }));
   }
 }
 

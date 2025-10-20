@@ -238,10 +238,10 @@ async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
       )
     ).data;
 
-    const alreadyFetchedDataIds = rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId);
+    const alreadyFetchedDataIds = new Set(rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId));
 
     metaInfoOfAvailableButInaccessibleDataset.value = allMetaInfoOfAvailableDatasets.filter(
-      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.includes(metaInfoOfAvailableDataset.dataId)
+      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.has(metaInfoOfAvailableDataset.dataId)
     );
   }
 }

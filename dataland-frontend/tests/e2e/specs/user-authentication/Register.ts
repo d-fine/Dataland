@@ -118,7 +118,7 @@ describe('As a user I want to be able to register for an account and be able to 
             .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
             .invoke('text')
             .then((text) => {
-              const totpKey = text.replace(/\s/g, '');
+              const totpKey = text.replaceAll(/\s/g, '');
               cy.get("input[id='totp']").type(authenticator.generate(totpKey));
               cy.get("input[id='saveTOTPBtn']").click();
               cy.get(`button:contains('${firstName} ${lastName}')`).click();

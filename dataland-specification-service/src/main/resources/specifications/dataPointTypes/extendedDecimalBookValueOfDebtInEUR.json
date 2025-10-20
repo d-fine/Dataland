@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalBookValueOfDebtInEUR",
+  "name" : "Book value of debt",
+  "businessDefinition" : "Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "pcaf" ],
+  "constraints" : [ "min:0" ]
+}

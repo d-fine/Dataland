@@ -2,6 +2,25 @@ import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.
 import { type BasePortfolio } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
+/**
+ * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
+ * using Cypress and the default mocked authentication context.
+ *
+ * @param {object} dialogRef - The mock dialog reference to inject into the component.
+ * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
+ *
+ * @returns {void}
+ */
+function mountComponent(dialogRef: object): void {
+  // @ts-ignore
+  cy.mountWithPlugins(AddCompanyToPortfolios, {
+    keycloak: minimalKeycloakMock({}),
+    global: {
+      provide: { dialogRef },
+    },
+  });
+}
+
 describe('Tests for AddCompanyToPortfolios Component', () => {
   const companyId = 'COMP-123';
   const mockPortfolios: BasePortfolio[] = [
@@ -71,60 +90,34 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     },
   });
 
-  /**
-   * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
-   * using Cypress and the default mocked authentication context.
-   *
-   * @param {object} dialogRef - The mock dialog reference to inject into the component.
-   * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
-   *
-   * @returns {void}
-   */
-  function mountComponent(dialogRef: object): void {
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfolios, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: { dialogRef },
-      },
-    });
-  }
-
   it('shows empty selection state for a new portfolio', () => {
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-option.p-highlight').should('not.exist');
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-list .p-listbox-option.p-highlight').should('not.exist');
     cy.get('[data-test="saveButton"]').should('contain.text', 'Add company').and('be.disabled');
   });
 
   it('disables button and shows "No available options" for empty portfolio list', () => {
     mountComponent(getMockDialogRef([]));
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-empty-message')
-      .should('be.visible')
-      .and('contain.text', 'No available options')
-      .invoke('hide'); //overlay needs to be hidden; otherwise multiselect hidden and not selectable
-    cy.get('.p-multiselect').click();
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-empty-message').should('be.visible').and('contain.text', 'No available options');
     cy.get('[data-test="saveButton"]').should('be.disabled');
   });
 
   it('applies highlight and focus styles correctly when selecting multiple portfolios', () => {
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-option').eq(0).click(); // One
-    cy.get('.p-multiselect-option').eq(1).click(); // Two
-    cy.get('.p-multiselect-option').eq(2).click(); // Three
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-option').eq(0).click(); // One
+    cy.get('.p-listbox-option').eq(1).click(); // Two
+    cy.get('.p-listbox-option').eq(2).click(); // Three
 
-    cy.get('.p-multiselect-option').eq(2).should('have.class', 'p-focus');
-    cy.get('.p-multiselect-option').eq(0).should('not.have.class', 'p-focus');
-    cy.get('.p-multiselect-option').eq(1).should('not.have.class', 'p-focus');
+    cy.get('.p-listbox-option').eq(2).should('have.class', 'p-focus');
+    cy.get('.p-listbox-option').eq(0).should('not.have.class', 'p-focus');
+    cy.get('.p-listbox-option').eq(1).should('not.have.class', 'p-focus');
 
-    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
-    cy.get('.p-multiselect-list-container').invoke('hide');
-    cy.get('.p-multiselect').click();
     cy.get('[data-test="saveButton"]').should('be.enabled');
   });
 
@@ -142,12 +135,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
 
     mountComponent(mockDialogRef);
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-option').eq(0).click();
-    cy.get('.p-multiselect-option').eq(1).click();
-    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
-    cy.get('.p-multiselect-list-container').invoke('hide');
-    cy.get('.p-multiselect').click();
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-option').eq(0).click();
+    cy.get('.p-listbox-option').eq(1).click();
 
     cy.get('[data-test="saveButton"]').click();
 
@@ -171,11 +161,8 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
 
     mountComponent(getMockDialogRef());
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-option').first().click();
-    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
-    cy.get('.p-multiselect-list-container').invoke('hide');
-    cy.get('.p-multiselect').click();
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-option').first().click();
     cy.get('[data-test="saveButton"]').click();
     cy.wait('@replacePortfolio');
 
@@ -193,11 +180,8 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
 
     mountComponent(getMockDialogRef(mockPortfolios, closeStub));
 
-    cy.get('.p-multiselect').should('exist').click();
-    cy.get('.p-multiselect-option').first().click();
-    //overlay needs to be hidden; otherwise multiselect hidden and not selectable
-    cy.get('.p-multiselect-list-container').invoke('hide');
-    cy.get('.p-multiselect').click();
+    cy.get('.p-listbox').should('exist');
+    cy.get('.p-listbox-option').first().click();
     cy.get('[data-test="saveButton"]').click();
 
     cy.wait('@addCompany').then(() => {
