@@ -37,6 +37,10 @@ class PortfolioBulkDataRequestService
          * @param basePortfolio The BasePortfolio for which to create bulk data requests.
          */
         fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
+            logger.info(
+                "Updating company reporting info for ${basePortfolio.companyIds.size} unique company ids for" +
+                    " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
+            )
             companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
             postBulkDataRequestIfMonitored(basePortfolio)
         }
@@ -196,7 +200,8 @@ class PortfolioBulkDataRequestService
                 userId = userId,
             )
             logger.info(
-                "Bulk request posted for user $userId: frameworks=$frameworks, periods=$reportingPeriods, companies=$companyIds",
+                "Bulk request posted for user $userId: frameworks=$frameworks, periods=$reportingPeriods " +
+                    "and ${companyIds.size} unique company ids.",
             )
         }
     }
