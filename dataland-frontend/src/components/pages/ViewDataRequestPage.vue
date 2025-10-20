@@ -1,5 +1,5 @@
 <template>
-  <TheContent class="min-h-screen flex sheet">
+  <TheContent>
     <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
       <h1 class="text-left">Data Request</h1>
     </div>
@@ -19,14 +19,11 @@
     />
 
     <PrimeDialog
-        id="resubmitModal"
-        :dismissableMask="true"
         :modal="true"
         v-model:visible="resubmitModalIsVisible"
         :closable="true"
         style="text-align: left; height: fit-content; width: 22rem"
         data-test="resubmit-modal"
-        class="modal pl-2"
         header="Resubmit Request"
     >
       <div class="message">
