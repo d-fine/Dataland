@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,4 +91,13 @@ class RequestQueryManager
                 UUID.fromString(userId),
             )
         }
+
+        /**
+         * Get the number of requests that match the optional filters.
+         * @param requestSearchFilter to filter by
+         * @return the number of matching requests
+         */
+        @Transactional(readOnly = true)
+        fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
+            requestRepository.getNumberOfRequests(requestSearchFilter)
     }
