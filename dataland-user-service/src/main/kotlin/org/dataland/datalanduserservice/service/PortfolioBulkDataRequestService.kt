@@ -83,7 +83,7 @@ class PortfolioBulkDataRequestService
          *
          * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
          */
-        fun postBulkDataRequestIfMonitored(basePortfolio: BasePortfolio) {
+        private fun postBulkDataRequestIfMonitored(basePortfolio: BasePortfolio) {
             if (!basePortfolio.isMonitored) return
 
             val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.companyIds)
