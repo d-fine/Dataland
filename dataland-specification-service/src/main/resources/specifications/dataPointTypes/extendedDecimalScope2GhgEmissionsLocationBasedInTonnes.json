@@ -1,8 +1,8 @@
 {
   "id" : "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes",
   "name" : "Scope 2 GHG emissions (location-based)",
-  "businessDefinition" : "Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).",
+  "businessDefinition" : "Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "frameworkOwnership" : [ "pcaf", "sfdr" ],
+  "constraints" : [ "min:0" ]
 }

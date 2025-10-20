@@ -1,6 +1,6 @@
-import type Keycloak from 'keycloak-js';
-import { type AccessStatus, RequestStatus, type RequestPriority } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
+import { type AccessStatus, RequestStatus } from '@clients/communitymanager';
+import type Keycloak from 'keycloak-js';
 
 /**
  * Patches the RequestStatus of a StoredDataRequest
@@ -25,23 +25,23 @@ export async function patchDataRequest(
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
-        dataRequestId,
-        {
-          requestStatus: requestStatus,
-          accessStatus: accessStatus,
-          contacts: contacts,
-          message: message,
-          notifyMeImmediately: notifyMeImmediately,
-          requestStatusChangeReason: requestStatusChangeReason,
-        }
-      );
+      await new ApiClientProvider(
+        keycloakPromiseGetter()
+      ).apiClients.communityManagerRequestController.patchDataRequest(dataRequestId, {
+        requestStatus: requestStatus,
+        accessStatus: accessStatus,
+        contacts: contacts,
+        message: message,
+        notifyMeImmediately: notifyMeImmediately,
+        requestStatusChangeReason: requestStatusChangeReason,
+      });
     }
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
+
 /**
  * Defines the color of p-badge
  * @param requestStatus status of a request
@@ -65,6 +65,7 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return 'p-badge outline rounded';
   }
 }
+
 /**
  * Defines the color of p-badge
  * @param accessStatus access status of a request
@@ -84,26 +85,6 @@ export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
       return 'p-badge badge-brown outline rounded';
     default:
       return 'p-badge outline rounded';
-  }
-}
-
-/**
- * Defines the color of p-badge
- * @param priority priority of a request
- * @returns p-badge class
- */
-export function priorityBadgeClass(priority: RequestPriority): string {
-  switch (priority) {
-    case 'Low':
-      return 'p-badge badge-blue outline rounded';
-    case 'Baseline':
-      return 'p-badge badge-yellow outline rounded';
-    case 'High':
-      return 'p-badge badge-orange outline rounded';
-    case 'Urgent':
-      return 'p-badge badge-red outline rounded';
-    default:
-      return 'p-badge badge-blue outline rounded';
   }
 }
 

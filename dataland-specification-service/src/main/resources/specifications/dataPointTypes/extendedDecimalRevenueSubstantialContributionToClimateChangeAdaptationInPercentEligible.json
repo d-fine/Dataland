@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentEligible",
+  "name" : "Substantial Contribution to Climate Change Adaptation In Percent - Eligible",
+  "businessDefinition" : "Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

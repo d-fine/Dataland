@@ -30,7 +30,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -52,7 +52,7 @@ jobs:
     needs:
       - rebuild-docker-images
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -105,7 +105,7 @@ jobs:
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -118,7 +118,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
+      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
         with:
           distribution: temurin
           java-version: 21
@@ -136,6 +136,7 @@ jobs:
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           BACKEND_DB_PASSWORD: ${{ secrets.BACKEND_DB_PASSWORD }}
           API_KEY_MANAGER_DB_PASSWORD: ${{ secrets.API_KEY_MANAGER_DB_PASSWORD }}
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${{ secrets.DATA_SOURCING_SERVICE_DB_PASSWORD }}
           INTERNAL_STORAGE_DB_PASSWORD: ${{ secrets.INTERNAL_STORAGE_DB_PASSWORD }}
           DOCUMENT_MANAGER_DB_PASSWORD: ${{ secrets.DOCUMENT_MANAGER_DB_PASSWORD }}
           QA_SERVICE_DB_PASSWORD: ${{ secrets.QA_SERVICE_DB_PASSWORD }}
@@ -148,6 +149,8 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_BATCH_MANAGER_CLIENT_SECRET }}
+          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_API_KEY_MANAGER_CLIENT_SECRET }}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET }}
           DATALAND_QA_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_QA_SERVICE_CLIENT_SECRET }}
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET }}
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET }}
@@ -222,7 +225,7 @@ jobs:
       matrix:
         testGroup: [ 1,2,3,4 ]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -236,13 +239,13 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Download frontend API clients
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/

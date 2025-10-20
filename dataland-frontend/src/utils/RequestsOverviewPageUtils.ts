@@ -1,6 +1,6 @@
 import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
@@ -18,7 +18,7 @@ export function customCompareForRequestStatus(a: RequestStatus, b: RequestStatus
   sortOrderRequestStatus[RequestStatus.Resolved] = 3;
   sortOrderRequestStatus[RequestStatus.Closed] = 4;
   sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
-  if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * sortOrder;
+  if (sortOrderRequestStatus[a]! <= sortOrderRequestStatus[b]!) return -1 * sortOrder;
   return sortOrder;
 }
 
@@ -45,10 +45,10 @@ export function retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
  * Gets list with all available access status
  * @returns array of SelectableItem
  */
-export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
-  return Object.values(AccessStatus).map((status) => {
+export function retrieveAvailableAccessStatuses(): Array<SelectableItem> {
+  return Object.values(AccessStatus).map((accessStatus) => {
     return {
-      displayName: status,
+      displayName: accessStatus,
       disabled: false,
     };
   });
@@ -58,10 +58,10 @@ export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
  * Gets list with all available request status
  * @returns array of SelectableItem
  */
-export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
-  return Object.values(RequestStatus).map((status) => {
+export function retrieveAvailableRequestStatuses(): Array<SelectableItem> {
+  return Object.values(RequestStatus).map((requestStatus) => {
     return {
-      displayName: status,
+      displayName: requestStatus,
       disabled: false,
     };
   });
@@ -69,12 +69,25 @@ export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
 
 /**
  * Gets list with all available request priorities
- * @returns array of PrioritySelectableItem
+ * @returns array of SelectableItem
  */
-export function retrieveAvailablePriority(): Array<SelectableItem> {
-  return Object.values(RequestPriority).map((status) => {
+export function retrieveAvailablePriorities(): Array<SelectableItem> {
+  return Object.values(RequestPriority).map((priority) => {
     return {
-      displayName: status,
+      displayName: priority,
+      disabled: false,
+    };
+  });
+}
+
+/**
+ * Gets list with all available reporting periods
+ * @returns array of SelectableItem
+ */
+export function retrieveAvailableReportingPeriods(): Array<SelectableItem> {
+  return ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS.map((reportingPeriod) => {
+    return {
+      displayName: reportingPeriod,
       disabled: false,
     };
   });

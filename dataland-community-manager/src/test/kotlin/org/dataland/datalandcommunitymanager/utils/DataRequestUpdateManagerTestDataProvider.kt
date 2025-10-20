@@ -17,11 +17,12 @@ import java.util.stream.Stream
 class DataRequestUpdateManagerTestDataProvider {
     val dummyRequestChangeReason = "dummy reason"
     val dummyCompanyId = "dummyCompanyId"
+    val nuclearAndGas = "nuclear-and-gas"
 
     fun getDummyNonSourceableInfo() =
         SourceabilityInfo(
             companyId = dummyCompanyId,
-            dataType = DataTypeEnum.p2p,
+            dataType = DataTypeEnum.nuclearMinusAndMinusGas,
             reportingPeriod = "dummyPeriod",
             isNonSourceable = true,
             reason = dummyRequestChangeReason,
@@ -30,7 +31,7 @@ class DataRequestUpdateManagerTestDataProvider {
     fun getDummySourceableInfo() =
         SourceabilityInfo(
             companyId = "",
-            dataType = DataTypeEnum.p2p,
+            dataType = DataTypeEnum.nuclearMinusAndMinusGas,
             reportingPeriod = "",
             isNonSourceable = false,
             reason = dummyRequestChangeReason,
@@ -40,7 +41,7 @@ class DataRequestUpdateManagerTestDataProvider {
         DataMetaInformation(
             dataId = UUID.randomUUID().toString(),
             companyId = dummyCompanyId,
-            dataType = DataTypeEnum.p2p,
+            dataType = DataTypeEnum.nuclearMinusAndMinusGas,
             uploadTime = 0,
             reportingPeriod = "dummyPeriod",
             currentlyActive = false,
@@ -68,20 +69,30 @@ class DataRequestUpdateManagerTestDataProvider {
         Stream.of(
             Arguments.of("lksg", RequestStatus.Open, RequestStatus.Answered),
             Arguments.of("vsme", RequestStatus.Open, RequestStatus.Answered),
-            Arguments.of("p2p", RequestStatus.Open, RequestStatus.NonSourceable),
+            Arguments.of(nuclearAndGas, RequestStatus.Open, RequestStatus.NonSourceable),
             Arguments.of("eu-taxonomy-financials", RequestStatus.Open, RequestStatus.Withdrawn),
             Arguments.of("sfdr", RequestStatus.Withdrawn, RequestStatus.Open),
         )
 
+    fun getStreamOfArgumentsToTestFlagResetBehavior(): Stream<Arguments> {
+        val argumentsList = mutableListOf<Arguments>()
+        RequestStatus.entries.forEach { entry1 ->
+            RequestStatus.entries.forEach { entry2 ->
+                argumentsList.add(Arguments.of(entry1, entry2))
+            }
+        }
+        return argumentsList.stream()
+    }
+
     fun getDummyDataRequestEntities() =
         listOf(
             DataRequestEntity(
-                userId = "4321", dataType = "p2p", notifyMeImmediately = true,
+                userId = "4321", dataType = nuclearAndGas, notifyMeImmediately = true,
                 reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                 datalandCompanyId = dummyCompanyId,
             ),
             DataRequestEntity(
-                userId = "1234", dataType = "p2p", notifyMeImmediately = false,
+                userId = "1234", dataType = nuclearAndGas, notifyMeImmediately = false,
                 reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                 datalandCompanyId = dummyCompanyId,
             ),
@@ -111,12 +122,12 @@ class DataRequestUpdateManagerTestDataProvider {
     fun getDummyChildCompanyDataRequestEntities() =
         listOf(
             DataRequestEntity(
-                userId = "1234", dataType = "p2p", notifyMeImmediately = true,
+                userId = "1234", dataType = nuclearAndGas, notifyMeImmediately = true,
                 reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                 datalandCompanyId = "dummyChildCompanyId1",
             ),
             DataRequestEntity(
-                userId = "1234", dataType = "p2p", notifyMeImmediately = false,
+                userId = "1234", dataType = nuclearAndGas, notifyMeImmediately = false,
                 reportingPeriod = "dummyPeriod", creationTimestamp = 0,
                 datalandCompanyId = "dummyChildCompanyId2",
             ),

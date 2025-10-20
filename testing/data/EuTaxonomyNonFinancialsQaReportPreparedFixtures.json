@@ -2,36 +2,30 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "South Delfina",
+			"headquarters": "Fort Nicoton",
 			"headquartersPostalCode": null,
-			"sector": "AI",
+			"sector": "mindshare",
 			"identifiers": {
 				"Lei": [
-					"omTyvQDE5Z1L6mJBKfNv"
+					"3D7fYT2k4KpYCrC5S46I"
 				],
 				"Isin": [
-					"Gtm1nKMi5pP1",
-					"V20MgZQ02J6T"
+					"0cVwTI0AdFLS"
 				],
 				"PermId": [],
-				"Ticker": [
-					"ejmnuKI"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"gxAuxOLkF"
-				],
-				"CompanyRegistrationNumber": [
-					"nqthNxMIURtELxM"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PW",
-			"companyContactDetails": [
-				"Dalton51@example.com"
+			"countryCode": "HT",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Beier and Sons",
+				"Prosacco, Robel and Herzog"
 			],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://terrible-godparent.net/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://poor-reservation.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -99,6 +93,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2023"
 	}
 ]

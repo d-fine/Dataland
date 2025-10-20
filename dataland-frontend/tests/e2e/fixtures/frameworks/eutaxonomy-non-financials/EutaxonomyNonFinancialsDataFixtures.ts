@@ -2,7 +2,7 @@
 import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
-import { EutaxonomyNonFinancialsGenerator } from '@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator';
+import { EutaxonomyNonFinancialsGenerator } from '@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator.ts';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import {
   EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions,
@@ -48,7 +48,7 @@ export function generateEutaxonomyNonFinancialsData(
       nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       euTaxonomyActivityLevelReporting: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
-      numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       oecdGuidelinesForMultinationalEnterprisesCompliancePolicy: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomYesNo()

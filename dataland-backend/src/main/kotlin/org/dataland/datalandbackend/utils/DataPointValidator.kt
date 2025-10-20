@@ -7,6 +7,7 @@ import jakarta.validation.Validator
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -53,14 +54,14 @@ class DataPointValidator
             dataPointType: String,
             dataPoint: String,
             correlationId: String,
-        ) {
+        ): Any {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
             val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
             val dataPointBaseTypeId = dataPointTypeSpecification.dataPointBaseType.id
             val constraints = dataPointTypeSpecification.constraints
             val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
-            validateConsistency(dataPoint, validationClass, correlationId, constraints)
+            return validateConsistency(dataPoint, validationClass, correlationId, constraints)
         }
 
         /**
@@ -108,11 +109,12 @@ class DataPointValidator
             className: String,
             correlationId: String,
             constraints: List<String>? = null,
-        ) {
+        ): Any {
             assertClassNameIsAuthorized(className, correlationId)
             val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
             constraints?.let { validateConstraints(dataPointObject as BaseDataPoint<*>, constraints) }
+            return dataPointObject
         }
 
         /**

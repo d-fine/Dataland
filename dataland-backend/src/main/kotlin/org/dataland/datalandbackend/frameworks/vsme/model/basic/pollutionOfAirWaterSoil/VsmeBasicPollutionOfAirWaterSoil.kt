@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.frameworks.vsme.custom.VsmePollutionEmission
 /**
  * The data-model for the PollutionOfAirWaterSoil section
  */
+@Suppress("MaxLineLength")
 data class VsmeBasicPollutionOfAirWaterSoil(
     val pollutionEmission: List<VsmePollutionEmission?>? = null,
 )

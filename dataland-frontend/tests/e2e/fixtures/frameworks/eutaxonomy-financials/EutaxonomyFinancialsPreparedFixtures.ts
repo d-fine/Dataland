@@ -11,12 +11,12 @@ import {
  * @returns the prepared fixtures
  */
 export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureData<EutaxonomyFinancialsData>> {
-  const preparedFixtures = [];
-  preparedFixtures.push(generateFixtureWithNoNullFields());
-  preparedFixtures.push(generateLightweightEuTaxoFinancialsFixture());
-  preparedFixtures.push(generateEmptyReferencedReportsFixture());
-  preparedFixtures.push(generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest());
-  return preparedFixtures;
+  return [
+    generateFixtureWithNoNullFields(),
+    generateLightweightEuTaxoFinancialsFixture(),
+    generateEmptyReferencedReportsFixture(),
+    generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(),
+  ];
 }
 
 /**
@@ -24,7 +24,7 @@ export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureDat
  * @returns the fixture
  */
 function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'eutaxonomy-financials-dataset-with-no-null-fields';
   return newFixture;
 }
@@ -34,15 +34,15 @@ function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData
  * @returns the fixture
  */
 function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
-  const fullDataSet = generateEutaxonomyFinancialsData(0);
-  newFixture.companyInformation.companyName = 'lighweight-eu-taxo-financials-dataset';
-  newFixture.t.general = fullDataSet.general;
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0]!;
+  const fullDataset = generateEutaxonomyFinancialsData(0);
+  newFixture.companyInformation.companyName = 'lightweight-eu-taxo-financials-dataset';
+  newFixture.t.general = fullDataset.general;
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
-      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+      fullDataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
-    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+    throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
   return newFixture;
 }
@@ -52,12 +52,12 @@ function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFin
  * @returns the fixture
  */
 function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0]!;
   newFixture.companyInformation.companyName = 'TestForIncompleteReferencedReport';
   if (newFixture.t.general?.general?.referencedReports) {
     newFixture.t.general.general.referencedReports = null;
   } else {
-    throw Error('Could not set referenced reports to null due to missing parent-object.');
+    throw new Error('Could not set referenced reports to null due to missing parent-object.');
   }
   return newFixture;
 }
@@ -68,23 +68,23 @@ function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancia
  * @returns the fixture
  */
 function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureData<EutaxonomyFinancialsData> {
-  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
-  const fullDataSet = generateEutaxonomyFinancialsData(0);
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0]!;
+  const fullDataset = generateEutaxonomyFinancialsData(0);
   newFixture.companyInformation.companyName = 'minimalistic-all-field-types-dataset-for-blanket-test';
-  newFixture.t.general = fullDataSet.general;
+  newFixture.t.general = fullDataset.general;
 
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
-      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+      fullDataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   } else {
-    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+    throw new Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
   }
 
   if (newFixture.t.creditInstitution?.turnoverBasedGreenAssetRatioStock) {
     newFixture.t.creditInstitution.turnoverBasedGreenAssetRatioStock.substantialContributionToClimateChangeAdaptationInPercentEligible =
-      fullDataSet.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
+      fullDataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
   } else {
-    throw Error(
+    throw new Error(
       'Could not set substantialContributionToClimateChangeAdaptationInPercentEligible due to missing parent-object.'
     );
   }

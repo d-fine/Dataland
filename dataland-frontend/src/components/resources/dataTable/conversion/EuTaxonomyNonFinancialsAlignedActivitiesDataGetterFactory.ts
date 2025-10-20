@@ -1,7 +1,5 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 
@@ -9,43 +7,49 @@ import { type EuTaxonomyAlignedActivity } from '@clients/backend';
 import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
 import { euTaxonomyNonFinancialsModalColumnHeaders } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
+import { createModalDisplayObject } from '@/utils/CreateModalDisplayObject.ts';
 
 /**
  * Formats a EuTaxonomyAlignedActivities component for display in the table using a modal
- * @param input the input to display
+ * @param alignedActivities the input to display
  * @param fieldLabel the label of the containing field
+ * @param kpiType the type of KPI (revenue, capex, opex) to determine the appropriate column headers
  * @returns the display-value for the table
  */
 export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
-  input: ExtendedDataPoint<EuTaxonomyAlignedActivity[]> | null | undefined,
-  fieldLabel: string
+  alignedActivities: ExtendedDataPoint<EuTaxonomyAlignedActivity[]> | null | undefined,
+  fieldLabel: string,
+  kpiType: 'revenue' | 'capex' | 'opex' = 'revenue'
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
+  if (!alignedActivities) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-      displayValue: {
-        label: `Show ${input.value?.length} activit${(input.value?.length ?? 0 > 1) ? 'ies' : 'y'}`,
-        modalComponent: AlignedActivitiesDataTable,
-        modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            listOfRowContents: input.value,
-            kpiKeyOfTable: 'alignedActivities',
-            columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
-            dataPointDisplay: {
-              dataSource: input.dataSource,
-              comment: input.comment,
-              quality: input.quality,
-            },
-          },
-        },
-      },
-    };
   }
+
+  const typeLabels = {
+    revenue: 'Revenue',
+    capex: 'CapEx',
+    opex: 'OpEx',
+  };
+
+  const tableKey = kpiType; // use 'revenue', 'capex', or 'opex' directly
+
+  const adjustedHeaders = {
+    ...euTaxonomyNonFinancialsModalColumnHeaders.alignedActivities,
+    [kpiType]: typeLabels[kpiType],
+    [`${kpiType}Percent`]: `${typeLabels[kpiType]} (%)`,
+  };
+
+  const customColumnHeaders = {
+    ...euTaxonomyNonFinancialsModalColumnHeaders,
+    [tableKey]: adjustedHeaders,
+  };
+
+  return createModalDisplayObject({
+    activities: alignedActivities,
+    fieldLabel,
+    kpiType,
+    tableKey,
+    columnHeaders: customColumnHeaders,
+    modalComponent: AlignedActivitiesDataTable,
+  });
 }

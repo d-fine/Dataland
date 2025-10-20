@@ -1,26 +1,11 @@
 <template>
   <div class="form-field">
-    <div class="">
-      <UploadFormHeader :label="label" :description="description" :is-required="required" />
-      <FormKit
-        type="checkbox"
-        name="name"
-        v-model="checkboxValue"
-        :options="options"
-        :outer-class="{
-          'yes-no-radio': true,
-        }"
-        :inner-class="{
-          'formkit-inner': false,
-        }"
-        :input-class="{
-          'formkit-input': false,
-          'p-radiobutton': true,
-        }"
-        :ignore="true"
-        :plugins="[disabledOnMoreThanOne]"
-        @input="updateCurrentValue($event)"
-      />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <div class="yes-no-checkboxes">
+      <div v-for="(labelText, value) in options" :key="value" class="yes-no-option">
+        <Checkbox v-model="checkboxValue" :inputId="`yes-no-${value}`" :value="value" @change="updateYesNoValue()" />
+        <label :for="`yes-no-${value}`">{{ labelText }}</label>
+      </div>
     </div>
 
     <div v-if="showDataPointFields">
@@ -28,7 +13,7 @@
         <FormKit
           type="text"
           name="value"
-          v-model="currentValue"
+          v-model="yesNoValue"
           :validation="validation"
           :validation-label="validationLabel"
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
@@ -54,17 +39,17 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent } from 'vue';
+import Checkbox from 'primevue/checkbox';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
 import { type DocumentToUpload } from '@/utils/FileUploadUtils';
 import { type BaseDataPoint } from '@/utils/DataPoint';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { isValidFileName } from '@/utils/DataSource';
 
 export default defineComponent({
   name: 'BaseDataPointFormField',
-  components: { UploadFormHeader, UploadDocumentsForm },
+  components: { UploadFormHeader, UploadDocumentsForm, Checkbox },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
@@ -91,6 +76,7 @@ export default defineComponent({
       isValidFileName: isValidFileName,
       currentValue: null,
       checkboxValue: [] as Array<string>,
+      yesNoValue: undefined as string | undefined,
     };
   },
   computed: {
@@ -114,9 +100,23 @@ export default defineComponent({
     currentValue(newVal: string) {
       this.setCheckboxValue(newVal);
     },
+
+    checkboxValue(newArr: string[]) {
+      if (newArr.length > 1) {
+        const last = newArr.at(-1);
+        this.checkboxValue = [last];
+        this.yesNoValue = last;
+      } else if (newArr.length === 1) {
+        const [only] = newArr;
+        if (this.yesNoValue !== only) {
+          this.yesNoValue = only;
+        }
+      } else {
+        this.yesNoValue = undefined;
+      }
+    },
   },
   methods: {
-    disabledOnMoreThanOne,
     /**
      * A function that rewrite value to select the appropriate checkbox
      * @param newCheckboxValue value after changing value that must be reflected in checkboxes
@@ -124,6 +124,17 @@ export default defineComponent({
     setCheckboxValue(newCheckboxValue: string) {
       if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
+      }
+    },
+    /**
+     * updateCurrentValue
+     */
+    updateYesNoValue() {
+      if (this.checkboxValue.length) {
+        this.dataPointIsAvailable = true;
+      } else {
+        this.dataPointIsAvailable = false;
+        this.yesNoValue = undefined;
       }
     },
 
@@ -147,18 +158,35 @@ export default defineComponent({
         this.fileNamesForPrefill = [this.documentName];
       }
     },
-    /**
-     * updateCurrentValue
-     * @param checkboxValue checkboxValue
-     */
-    updateCurrentValue(checkboxValue: [string]) {
-      if (checkboxValue[0]) {
-        this.dataPointIsAvailable = true;
-        this.baseDataPoint.value = checkboxValue[0].toString();
-      } else {
-        this.dataPointIsAvailable = false;
-      }
-    },
   },
 });
 </script>
+<style scoped>
+.yes-no-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.yes-no-checkboxes {
+  display: flex; /* lay children out in a row */
+  gap: 7rem; /* space between each checkbox+label */
+  align-items: center; /* vertical align if labels differ in height */
+}
+
+.yes-no-checkboxes input[type='checkbox']:hover {
+  /* pointer cursor on the box itself */
+  cursor: pointer;
+}
+
+.yes-no-checkboxes label {
+  /* smooth transition if you like */
+  transition: background-color 0.2s ease;
+}
+
+.yes-no-checkboxes label:hover {
+  /* pointer + background on hover */
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>

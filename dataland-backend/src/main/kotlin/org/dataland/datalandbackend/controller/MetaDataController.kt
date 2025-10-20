@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -44,6 +45,7 @@ class MetaDataController(
     @Autowired val sourceabilityDataManager: SourceabilityDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
     @Autowired val dataPointUtils: DataPointUtils,
+    @Autowired val dataAvailabilityChecker: DataAvailabilityChecker,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -211,5 +213,11 @@ class MetaDataController(
         val activeDimensionsFromDatasets = dataMetaInformationManager.getActiveDataDimensionsFromDatasets(dataDimensionFilter)
         val activeDimensionsFromDataPoints = dataPointUtils.getActiveDataDimensionsFromDataPoints(dataDimensionFilter)
         return ResponseEntity.ok((activeDimensionsFromDatasets + activeDimensionsFromDataPoints).distinct())
+    }
+
+    override fun retrieveMetaDataOfActiveDatasets(dataDimensions: List<BasicDataDimensions>): ResponseEntity<List<DataMetaInformation>> {
+        val foundMetaInformation = dataAvailabilityChecker.getMetaDataOfActiveDatasets(dataDimensions.map { it.toBasicDatasetDimensions() })
+        foundMetaInformation.forEach { it.addRef(proxyPrimaryUrl) }
+        return ResponseEntity.ok(foundMetaInformation)
     }
 }

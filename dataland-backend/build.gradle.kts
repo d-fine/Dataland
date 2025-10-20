@@ -52,11 +52,16 @@ dependencies {
     implementation(libs.json)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
     kapt(Spring.boot.configurationProcessor)
+    implementation("org.apache.poi:poi:5.4.1")
+    implementation("org.apache.poi:poi-ooxml:5.4.1")
 }
 
 openApi {
@@ -69,6 +74,8 @@ openApi {
 }
 
 tasks.test {
+    maxParallelForks = 1
+
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
@@ -88,7 +95,7 @@ jacoco {
 tasks.register<Copy>("getTestData") {
     description = "Task to copy required testing data."
     group = "verification"
-    from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
+    from("$rootDir/testing/data/CompanyInformationWithLksgData.json")
     into(
         layout.buildDirectory
             .dir("resources/test")
@@ -99,11 +106,6 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 gitProperties {
@@ -281,8 +283,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 sourceSets {

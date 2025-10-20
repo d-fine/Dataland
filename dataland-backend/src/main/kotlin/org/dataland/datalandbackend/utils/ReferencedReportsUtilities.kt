@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.contains
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -9,9 +8,9 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -19,9 +18,7 @@ import java.time.LocalDate
  * Utilities for handling referenced reports in a specification schema.
  */
 @Service
-class ReferencedReportsUtilities(
-    @Autowired private val objectMapper: ObjectMapper,
-) {
+class ReferencedReportsUtilities {
     companion object {
         private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
 
@@ -34,6 +31,7 @@ class ReferencedReportsUtilities(
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val objectMapper = JsonUtils.defaultObjectMapper
 
     /**
      * Parses the referenced reports from a JSON leaf.
@@ -113,11 +111,13 @@ class ReferencedReportsUtilities(
                 allCompanyReports.add(foundReport)
             }
         } else {
-            val fields = contentNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(jsonField.value), allCompanyReports)
-            }
+            contentNode
+                .fieldNames()
+                .asSequence()
+                .map { fieldName -> fieldName to contentNode.get(fieldName) }
+                .forEach { (_, value) ->
+                    getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
+                }
         }
     }
 
@@ -188,14 +188,16 @@ class ReferencedReportsUtilities(
                 (jsonNode as ObjectNode).put(FILE_NAME_FIELD, fileReferenceToFileName[fileReference])
             }
         } else {
-            val fields = jsonNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                updateJsonNodeWithDataFromReferencedReports(
-                    jsonField.value, fileReferenceToPublicationDate,
-                    fileReferenceToFileName, jsonField.key,
-                )
-            }
+            jsonNode
+                .fieldNames()
+                .asSequence()
+                .map { fieldName -> fieldName to jsonNode.get(fieldName) }
+                .forEach { (key, value) ->
+                    updateJsonNodeWithDataFromReferencedReports(
+                        value, fileReferenceToPublicationDate,
+                        fileReferenceToFileName, key,
+                    )
+                }
         }
     }
 

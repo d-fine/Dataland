@@ -1,0 +1,112 @@
+{
+  "id" : "extendedNuclearAndGasEligibleButNotAlignedComponent",
+  "name" : "Eligible but not aligned denominator data point with an extended source",
+  "businessDefinition" : "Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity in the Denominator of the applicable KPI.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint<org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasEligibleButNotAligned>",
+  "schema" : {
+    "value" : {
+      "taxonomyEligibleButNotAlignedShareNAndG426" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG427" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG428" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG429" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG430" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG431" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShareOtherActivities" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      },
+      "taxonomyEligibleButNotAlignedShare" : {
+        "mitigationAndAdaptation" : "BigDecimal",
+        "mitigation" : "BigDecimal",
+        "adaptation" : "BigDecimal"
+      }
+    },
+    "quality" : "QualityOptions",
+    "comment" : "String",
+    "dataSource" : {
+      "page" : "String",
+      "tagName" : "String",
+      "fileName" : "String",
+      "fileReference" : "String",
+      "publicationDate" : "LocalDate"
+    }
+  },
+  "example" : {
+    "value" : {
+      "taxonomyEligibleButNotAlignedShareNAndG426" : {
+        "mitigationAndAdaptation" : 1.2,
+        "mitigation" : 1.3,
+        "adaptation" : 1.1
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG427" : {
+        "mitigationAndAdaptation" : 2.2,
+        "mitigation" : 1.4,
+        "adaptation" : 1.2
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG428" : {
+        "mitigationAndAdaptation" : 2,
+        "mitigation" : 1,
+        "adaptation" : 1
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG429" : {
+        "mitigationAndAdaptation" : null,
+        "mitigation" : null,
+        "adaptation" : null
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG430" : {
+        "mitigationAndAdaptation" : 1.3,
+        "mitigation" : 3.4,
+        "adaptation" : 1.5
+      },
+      "taxonomyEligibleButNotAlignedShareNAndG431" : {
+        "mitigationAndAdaptation" : 1.2,
+        "mitigation" : 1.5,
+        "adaptation" : 1.6
+      },
+      "taxonomyEligibleButNotAlignedShareOtherActivities" : {
+        "mitigationAndAdaptation" : 2.2,
+        "mitigation" : 2.1,
+        "adaptation" : 2
+      },
+      "taxonomyEligibleButNotAlignedShare" : {
+        "mitigationAndAdaptation" : 10.1,
+        "mitigation" : 10.7,
+        "adaptation" : 8.4
+      }
+    },
+    "quality" : "Reported",
+    "comment" : "",
+    "dataSource" : {
+      "page" : "125-126",
+      "tagName" : null,
+      "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
+      "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
+      "publicationDate" : "2025-03-02"
+    }
+  }
+}

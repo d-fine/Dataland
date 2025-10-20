@@ -1,11 +1,28 @@
 package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.validator.MinimumTrimmedSize
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AccessStatusParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AdminCommentParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestUserEmailAddressParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodsParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterNonRequired
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
@@ -26,12 +43,16 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
+const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
+const val COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION =
+    "${GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION} " +
+        "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
+
 /**
- * Defines the restful dataland-community-manager API regarding.
+ * Defines the restful dataland-community-manager API regarding data requests.
  */
 @RequestMapping("/requests")
 @SecurityRequirement(name = "default-bearer-auth")
@@ -99,9 +120,18 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAggregatedOpenDataRequests(
-        @RequestParam dataTypes: Set<DataTypeEnum>? = null,
-        @RequestParam reportingPeriod: String? = null,
-        @RequestParam aggregatedPriority: AggregatedRequestPriority? = null,
+        @RequestParam
+        @DataTypeParameterNonRequired
+        dataTypes: Set<DataTypeEnum>? = null,
+        @RequestParam
+        @ReportingPeriodParameterNonRequired
+        reportingPeriod: String? = null,
+        @RequestParam
+        @Parameter(
+            description = CommunityManagerOpenApiDescriptionsAndExamples.AGGREGATED_DATA_REQUEST_PRIORITY_DESCRIPTION,
+            required = false,
+        )
+        aggregatedPriority: AggregatedRequestPriority? = null,
     ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>>
 
     /**
@@ -112,12 +142,15 @@ interface RequestApi {
      */
     @Operation(
         summary = "Send a single request",
-        description = "A single of data requests for specific frameworks and companies is being sent.",
+        description = "A single data request for a specific framework, a company, and one or multiple reporting periods is triggered.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully processed a single data request."),
-            ApiResponse(responseCode = "403", description = "Only admins can impersonate another user."),
+            ApiResponse(
+                responseCode = "403", description = "Only admins can impersonate another user.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @PostMapping(
@@ -130,6 +163,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
         @RequestParam(required = false)
+        @UserIdParameterNonRequired
         userId: String? = null,
     ): ResponseEntity<SingleDataRequestResponse>
 
@@ -151,6 +185,7 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId)")
     fun getDataRequestById(
+        @DataRequestIdParameterRequired
         @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredDataRequest>
 
@@ -178,6 +213,7 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
+        @DataRequestIdParameterRequired
         @PathVariable("dataRequestId") dataRequestId: UUID,
         @Valid @RequestBody
         dataRequestPatch: DataRequestPatch,
@@ -192,7 +228,7 @@ interface RequestApi {
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
      * @param accessStatus If set, only the requests with an access status in accessStatus are returned
      * @param requestPriority If set, only the requests with this priority are returned
-     * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
+     * @param reportingPeriods If set, only the requests with one of these reportingPeriods are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
      * @param chunkSize Limits the number of returned requests
      * @param chunkIndex The index of the chunked requests
@@ -216,17 +252,53 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getDataRequests(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam userId: String?,
-        @RequestParam emailAddress: String?,
-        @RequestParam adminComment: String?,
-        @RequestParam requestStatus: Set<RequestStatus>?,
-        @RequestParam accessStatus: Set<AccessStatus>?,
-        @RequestParam requestPriority: Set<RequestPriority>?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam datalandCompanyId: String?,
-        @RequestParam(defaultValue = "100") chunkSize: Int,
-        @RequestParam(defaultValue = "0") chunkIndex: Int,
+        @RequestParam(required = false)
+        @DataTypeParameterNonRequired
+        dataType: Set<DataTypeEnum>?,
+        @RequestParam(required = false)
+        @UserIdParameterNonRequired
+        userId: String?,
+        @RequestParam(required = false)
+        @DataRequestUserEmailAddressParameterNonRequired
+        emailAddress: String?,
+        @RequestParam(required = false)
+        @AdminCommentParameterNonRequired
+        adminComment: String?,
+        @RequestParam(required = false)
+        @RequestStatusParameterNonRequired
+        requestStatus: Set<RequestStatus>?,
+        @RequestParam(required = false)
+        @AccessStatusParameterNonRequired
+        accessStatus: Set<AccessStatus>?,
+        @RequestParam(required = false)
+        @RequestPriorityParameterNonRequired
+        requestPriority: Set<RequestPriority>?,
+        @RequestParam(required = false)
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>?,
+        @RequestParam(required = false)
+        @CompanyIdParameterNonRequired
+        datalandCompanyId: String?,
+        @RequestParam(required = false)
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        companySearchString: String?,
+        @RequestParam(defaultValue = "100")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /** A method to count data requests based on specific filters.
@@ -238,7 +310,7 @@ interface RequestApi {
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
      * @param accessStatus If set, only the requests with an access status in accessStatus are counted
      * @param requestPriority If set, only the requests with this priority are counted
-     * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
+     * @param reportingPeriods If set, only the requests with one of these reportingPeriods are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
      * @return The number of requests that match the filter
      */
@@ -260,45 +332,40 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getNumberOfRequests(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam userId: String?,
-        @RequestParam emailAddress: String?,
-        @RequestParam adminComment: String?,
-        @RequestParam requestStatus: Set<RequestStatus>?,
-        @RequestParam accessStatus: Set<AccessStatus>?,
-        @RequestParam requestPriority: Set<RequestPriority>?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam datalandCompanyId: String?,
+        @RequestParam(required = false)
+        @DataTypeParameterNonRequired
+        dataType: Set<DataTypeEnum>?,
+        @RequestParam(required = false)
+        @UserIdParameterNonRequired
+        userId: String?,
+        @RequestParam(required = false)
+        @DataRequestUserEmailAddressParameterNonRequired
+        emailAddress: String?,
+        @RequestParam(required = false)
+        @AdminCommentParameterNonRequired
+        adminComment: String?,
+        @RequestParam(required = false)
+        @RequestStatusParameterNonRequired
+        requestStatus: Set<RequestStatus>?,
+        @RequestParam(required = false)
+        @AccessStatusParameterNonRequired
+        accessStatus: Set<AccessStatus>?,
+        @RequestParam(required = false)
+        @RequestPriorityParameterNonRequired
+        requestPriority: Set<RequestPriority>?,
+        @RequestParam(required = false)
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>?,
+        @RequestParam(required = false)
+        @CompanyIdParameterNonRequired
+        datalandCompanyId: String?,
+        @RequestParam(required = false)
+        @Parameter(
+            description = COMPANY_SEARCH_STRING_DESCRIPTION_WITH_MIN_LENGTH_SPECIFICATION,
+            required = false,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+        )
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        companySearchString: String?,
     ): ResponseEntity<Int>
-
-    /**
-     * A method to check if the logged-in user can access a specific dataset.
-     * The dataset is specified by a companyId, dataType and a reportingPeriod.
-     * @param companyId of the company for which the user might have the role
-     * @param dataType of the corresponding framework
-     * @param reportingPeriod of the dataset
-     */
-    @Operation(
-        summary = "This head request checks whether the logged-in user has access to dataset.",
-        description = "This head request checks whether the logged-in user has access to dataset.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "The user can access the dataset."),
-            ApiResponse(
-                responseCode = "404",
-                description = "Either the specified dataset does not exist or the user cannot access the dataset.",
-            ),
-        ],
-    )
-    @RequestMapping(
-        method = [RequestMethod.HEAD],
-        value = ["/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}"],
-    )
-    fun hasAccessToDataset(
-        @PathVariable("companyId") companyId: UUID,
-        @PathVariable("dataType") dataType: String,
-        @PathVariable("reportingPeriod") reportingPeriod: String,
-        @PathVariable("userId") userId: UUID,
-    )
 }

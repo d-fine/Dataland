@@ -3,6 +3,7 @@ package org.dataland.datalanddataexporter.services
 import ApiRetryException
 import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
@@ -10,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.createDirectories
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.getTimestamp
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.readTransformationConfig
@@ -24,7 +26,6 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsiste
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfLegacyRulesAndTransformationRules
 import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentAndLegacyHeaders
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsv
 import org.slf4j.LoggerFactory
@@ -42,6 +43,7 @@ class CsvExporter(
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val sfdrDataControllerApi: SfdrDataControllerApi,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -69,17 +71,26 @@ class CsvExporter(
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val legacyRules = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
         val headers = getCurrentAndLegacyHeaders(transformationRules, legacyRules)
-        val dataIds = getAllSfdrDataIds()
+        val dataDimensions = getAllAvailableSfdrDataDimensions()
 
-        dataIds.forEach { dataId ->
+        dataDimensions.forEach { dataDimension ->
             try {
-                val (deltaCsvData, deltaIsinData) = getSfdrDataForSingleDataId(dataId, transformationRules, legacyRules)
+                val (deltaCsvData, deltaIsinData) =
+                    getSfdrDataForSingleDataDimension(
+                        dataDimension,
+                        transformationRules,
+                        legacyRules,
+                    )
                 csvData.add(deltaCsvData)
                 isinData.addAll(deltaIsinData)
             } catch (e: ApiRetryException) {
-                logger.error("Common API error occurred for data ID: $dataId. Error: ${e.message}. Skipping this ID.")
+                logger.error(
+                    "Common API error occurred for data dimension: $dataDimension. Error: ${e.message}. Skipping this data dimension.",
+                )
             } catch (e: IllegalArgumentException) {
-                logger.error("IllegalArgumentException for data ID: $dataId. Error: ${e.message}. Skipping this ID.")
+                logger.error(
+                    "IllegalArgumentException for data dimension: $dataDimension. Error: ${e.message}. Skipping this data dimension.",
+                )
             }
         }
 
@@ -87,26 +98,38 @@ class CsvExporter(
     }
 
     /**
-     * Gets the SFDR data for a single dataId and its associated LEI to ISIN mapping
-     * @return A list of SFDR data IDs
+     * Gets the SFDR data for a single data dimension and its associated LEI to ISIN mapping
+     * @return A pair containing the csvData and the isinData
      */
-    fun getSfdrDataForSingleDataId(
-        dataId: String,
+    fun getSfdrDataForSingleDataDimension(
+        dataDimension: BasicDataDimensions,
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
     ): Pair<Map<String, String>, List<Map<String, String>>> {
-        logger.info("Exporting data with ID: $dataId")
+        logger.info("Exporting data dimension: $dataDimension")
 
         val csvData = mutableMapOf<String, String>()
 
-        val companyAssociatedData = retryOnCommonApiErrors { sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId) }
-        val companyData = retryOnCommonApiErrors { companyDataControllerApi.getCompanyById(companyAssociatedData.companyId) }
+        val companyAssociatedData =
+            retryOnCommonApiErrors {
+                sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(
+                    dataDimension.reportingPeriod,
+                    dataDimension.companyId,
+                )
+            }
+        val companyData =
+            retryOnCommonApiErrors { companyDataControllerApi.getCompanyById(companyAssociatedData.companyId) }
 
         val data = convertDataToJson(companyAssociatedData)
 
-        validateConsistency(data, transformationRules, legacyRules, dataId)
+        validateConsistency(data, transformationRules, legacyRules, dataDimension)
 
-        val isinData = getLeiToIsinMapping(companyData.companyInformation)
+        val lei = companyData.companyInformation.identifiers[LEI_IDENTIFIER]?.firstOrNull()
+        val isinData = mutableListOf<Map<String, String>>()
+        if (lei != null) {
+            val isins = retryOnCommonApiErrors { isinLeiDataControllerApi.getIsinsByLei(lei) }
+            isinData += isins.map { isin -> mapOf(LEI_HEADER to lei, ISIN_HEADER to isin) }
+        }
         csvData += mapJsonToCsv(data, transformationRules)
         csvData += mapJsonToLegacyCsv(data, legacyRules)
         csvData += getCompanyRelatedData(companyAssociatedData, companyData)
@@ -117,22 +140,25 @@ class CsvExporter(
     /**
      * Checks the consistency of the JSON data with the transformation rules.
      * @param data The JSON node
-     * @param transformationRules The transformation rules
-     * @param legacyRules The transformation rules
-     * @param dataId The dataId
+     * @param transformationRules The transformation rules for the current data
+     * @param legacyRules The rules for providing legacy data
+     * @param dataDimension The data dimension associated with the given data
      */
     private fun validateConsistency(
         data: JsonNode,
         transformationRules: Map<String, String>,
         legacyRules: Map<String, String>,
-        dataId: String,
+        dataDimension: BasicDataDimensions,
     ) {
         try {
             checkConsistencyOfDataAndTransformationRules(data, transformationRules)
             checkConsistencyOfLegacyRulesAndTransformationRules(transformationRules, legacyRules)
         } catch (exception: IllegalArgumentException) {
-            logger.error("Validate consistency failed for data ID: $dataId.")
-            throw IllegalArgumentException("Consistency check failed for data with ID $dataId: ${exception.message}", exception)
+            logger.error("Validate consistency failed for data dimension: $dataDimension.")
+            throw IllegalArgumentException(
+                "Consistency check failed for data dimension $dataDimension: ${exception.message}",
+                exception,
+            )
         }
     }
 
@@ -160,14 +186,22 @@ class CsvExporter(
     }
 
     /**
-     * Gets all SFDR data IDs from the metadata endpoint in the backend.
-     * @return A list of SFDR data IDs
+     * Gets all SFDR data dimensions from the metadata endpoint in the backend.
+     * @return A list of data dimensions
      */
-    fun getAllSfdrDataIds(): List<String> {
-        val dataIds = mutableListOf<String>()
+    fun getAllAvailableSfdrDataDimensions(): List<BasicDataDimensions> {
+        val dataDimensions = mutableListOf<BasicDataDimensions>()
         val metaData = metaDataControllerApi.getListOfDataMetaInfo(dataType = DataTypeEnum.sfdr)
-        metaData.forEach { dataIds.add(it.dataId) }
-        return dataIds
+        metaData.forEach {
+            dataDimensions.add(
+                BasicDataDimensions(
+                    companyId = it.companyId,
+                    dataType = "sfdr",
+                    reportingPeriod = it.reportingPeriod,
+                ),
+            )
+        }
+        return dataDimensions
     }
 
     /**

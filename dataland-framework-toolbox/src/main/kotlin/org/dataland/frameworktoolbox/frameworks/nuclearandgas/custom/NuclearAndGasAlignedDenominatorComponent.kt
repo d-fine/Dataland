@@ -3,13 +3,17 @@ package org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_DENOMINATOR_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -27,41 +31,27 @@ class NuclearAndGasAlignedDenominatorComponent(
         "org.dataland.datalandbackend.frameworks.nuclearandgas.custom.NuclearAndGasAlignedDenominator"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        fullyQualifiedNameOfKotlinType,
-                        false,
-                    ),
-                ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_NUCLEAR_AND_GAS_ALIGNED_DENOMINATOR_COMPONENT),
             ),
         )
     }
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addQaPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            TypeReference(
-                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        "org.dataland.datalandbackend.openApiClient.model." +
-                            "ExtendedDataPointNuclearAndGasAlignedDenominator",
-                        isNullable,
-                    ),
-                ),
-            ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
         )
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NuclearAndGasFormElement",
@@ -73,7 +63,7 @@ class NuclearAndGasAlignedDenominatorComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, \"${
+                    "${getTypescriptFieldAccessor()}, \"${
                         StringEscapeUtils.escapeEcmaScript(
                             label,
                         )
@@ -90,11 +80,19 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.randomExtendedDataPoint(" +
                 "dataGenerator.generateNuclearAndGasAlignedDenominator())",
+        )
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "NuclearAndGasAlignedDenominatorComponent",
         )
     }
 }

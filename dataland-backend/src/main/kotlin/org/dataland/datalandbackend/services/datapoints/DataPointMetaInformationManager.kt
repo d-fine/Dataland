@@ -42,7 +42,7 @@ class DataPointMetaInformationManager
          * @return meta info about data behind the dataId
          */
         @Transactional(readOnly = true)
-        fun getDataPointMetaInformationByIds(dataPointIds: List<String>): List<DataPointMetaInformationEntity> =
+        fun getDataPointMetaInformationByIds(dataPointIds: Collection<String>): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
 
         /**
@@ -168,16 +168,15 @@ class DataPointMetaInformationManager
          * @param companyId the company to filter for
          * @return the reporting periods with at least one active data point
          */
-        fun getReportingPeriodsWithActiveDataPoints(
+        fun getActiveDataPointMetaInformation(
             dataPointTypes: Set<String>,
             companyId: String,
-        ): Set<String> =
+        ): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface
                 .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
                     dataPointTypes = dataPointTypes,
                     companyId = companyId,
-                ).map { it.reportingPeriod }
-                .toSet()
+                )
 
         /**
          * Method to get the latest upload time of active data points given a set of data point types for a specific company
@@ -208,7 +207,7 @@ class DataPointMetaInformationManager
         fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
                 companyIds = dataDimensionFilter.companyIds,
-                dataPointTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
+                dataPointTypes = dataDimensionFilter.dataTypes,
                 reportingPeriods = dataDimensionFilter.reportingPeriods,
             )
     }

@@ -1,7 +1,13 @@
-// @ts-nocheck
+import type { DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
-import { type DataMetaInformation, DataTypeEnum, type LksgData, QaStatus } from '@clients/backend';
+import {
+  type CompanyInformation,
+  type DataMetaInformation,
+  DataTypeEnum,
+  type LksgData,
+  QaStatus,
+} from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import router from '@/router';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -48,13 +54,13 @@ describe('Component test for the view multiple dataset display base component', 
     });
     cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockDataAndMetaInfo.metaInfo]);
 
+    //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
       props: {
         companyId: mockDataAndMetaInfo.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
         reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
-        viewInPreviewMode: false,
       },
     });
 
@@ -76,6 +82,7 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept(`/api/data/lksg/companies/mock-company-id*`, [mockedData2024, mockedData2023]);
 
     cy.spy(router, 'push').as('routerPush');
+    //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,
@@ -83,10 +90,9 @@ describe('Component test for the view multiple dataset display base component', 
       void mounted.wrapper.setProps({
         companyId: mockedData2023.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
-        viewInPreviewMode: false,
       });
     });
-    cy.get('[data-test="editDatasetButton"]').find('.material-icons-outlined').should('exist').click();
+    cy.get('[data-test="editDatasetButton"]').should('exist').click();
     cy.get('[data-test="select-reporting-period-dialog"]')
       .should('exist')
       .get('[data-test="reporting-periods"]')
@@ -112,10 +118,10 @@ export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
   cy.wait(100);
   cy.get('span').contains(toggledFieldName).should('not.exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-inputswitch-checked').click();
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-inputswitch-checked');
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-toggleswitch-checked').click();
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-toggleswitch-checked');
   cy.get('span').contains(toggledFieldName).should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').click();
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-inputswitch-checked');
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-toggleswitch-checked');
   cy.get('span').contains(toggledFieldName).should('not.exist');
 }

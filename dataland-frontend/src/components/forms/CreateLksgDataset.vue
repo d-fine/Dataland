@@ -1,10 +1,11 @@
 <template>
-  <Card class="col-12 page-wrapper-card p-3">
+  <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title>New Dataset - LkSG</template>
     <template #content>
+      <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -36,9 +37,7 @@
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
-                      </div>
+                      <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
 
                     <div class="col-9 formFields">
@@ -74,7 +73,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <SubmitSideBar>
+        <SubmitSideBar class="jumpLinks">
           <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
@@ -101,9 +100,11 @@
   </Card>
 </template>
 <script setup lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
+import Tag from 'primevue/tag';
 import { computed, inject, onMounted, provide, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -148,17 +149,13 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId;
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod;
+const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
+const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 
-const yearOfDataDate = computed({
-  get(): string {
+const yearOfDataDate = computed<string | undefined>({
+  get() {
     const currentDate = companyAssociatedLksgData.value.data?.general?.masterData?.dataDate;
-    if (currentDate === undefined) {
-      return '';
-    } else {
-      return currentDate.split('-')[0];
-    }
+    return currentDate ? currentDate.split('-')[0] : undefined;
   },
   set() {
     // IGNORED
@@ -282,3 +279,100 @@ provide(
 
 provide('listOfFilledKpis', listOfFilledKpis);
 </script>
+<style scoped>
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.uploadFormWrapper {
+  input[type='checkbox'],
+  input[type='radio'] {
+    display: grid;
+    place-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+  }
+  input[type='checkbox'] {
+    background-color: var(--input-text-bg);
+    border: 2px solid var(--input-checked-color);
+    border-radius: 2px;
+  }
+
+  input[type='radio'],
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 5px;
+    height: 7px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type='checkbox']::before {
+    border-style: solid;
+    border-color: var(--input-text-bg);
+  }
+  input[type='radio']::before,
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    display: block;
+  }
+  label[data-checked='true'] input[type='radio']::before {
+    display: block;
+  }
+
+  .title {
+    margin: 0.25rem 0;
+  }
+
+  p {
+    margin: 0.25rem;
+  }
+
+  .formFields {
+    background: var(--upload-form-bg);
+    padding: var(--spacing-lg);
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.jumpLinks {
+  left: auto;
+  right: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0.5rem 0;
+
+      a {
+        color: var(--jumpLinks-color);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--jumpLinks-hover);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+</style>

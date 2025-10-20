@@ -3,12 +3,15 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_EU_TAXONOMY_ALIGNED_ACTIVITIES_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -29,11 +32,11 @@ class EuTaxonomyAlignedActivitiesComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, \"${
+                    "${getTypescriptFieldAccessor()}, \"${
                         StringEscapeUtils.escapeEcmaScript(
                             label,
                         )
-                    }\")",
+                    }\", \"" + getTypescriptFieldAccessor().split(".")[1].dropLast(1) + "\")",
                 setOf(
                     TypeScriptImport(
                         "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable",
@@ -46,24 +49,23 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
             TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
-                isNullable,
+                "kotlin.collections.MutableList",
+                true,
                 listOf(
                     TypeReference(
-                        "kotlin.collections.MutableList",
-                        isNullable,
-                        listOf(
-                            TypeReference(
-                                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
-                                    ".custom.EuTaxonomyAlignedActivity",
-                                false,
-                            ),
-                        ),
+                        "org.dataland.datalandbackend.frameworks" +
+                            ".eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity",
+                        false,
                     ),
                 ),
+            ),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                EXAMPLE_PLAIN_EU_TAXONOMY_ALIGNED_ACTIVITIES_COMPONENT,
             ),
         )
     }
@@ -86,7 +88,7 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val fixtureExpression =
             if (isNullable) {
                 "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
@@ -103,5 +105,13 @@ class EuTaxonomyAlignedActivitiesComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         return // is built by hand
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "EuTaxonomyAlignedActivitiesComponent",
+        )
     }
 }

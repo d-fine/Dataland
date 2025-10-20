@@ -1,6 +1,4 @@
 <template>
-  <TheHeader :showUserProfileDropdown="false" />
-
   <TheContent class="container">
     <main>
       <div>
@@ -22,28 +20,20 @@
       </div>
     </main>
   </TheContent>
-
-  <TheNewFooter :is-light-version="true" :sections="footerPageSections" class="footer" />
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import PrimeButton from 'primevue/button';
-import type Keycloak from 'keycloak-js';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheNewFooter from '@/components/generics/TheNewFooter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type { Content, Page } from '@/types/ContentTypes';
-import contentData from '@/assets/content.json';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'UnsubscribeFromMailsPage',
   components: {
     TheContent,
-    TheNewFooter,
-    TheHeader,
     PrimeButton,
   },
 
@@ -61,10 +51,7 @@ export default defineComponent({
   },
 
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     return {
-      footerPageSections: footerPage?.sections,
       isUnsubscribed: false,
       message: '',
     };
@@ -137,5 +124,9 @@ h1,
   @media only screen and (max-width: 768px) {
     top: 60vh;
   }
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

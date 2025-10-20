@@ -34,11 +34,11 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
 ): void {
   const referencedReports = findAllValuesForKey(dataModel, 'fileName');
   const unusedReports: string[] = [];
-  uploadedReports.forEach((report) => {
-    if (!referencedReports.some((refReport) => refReport === report)) {
+  for (const report of uploadedReports) {
+    if (!referencedReports.includes(report)) {
       unusedReports.push(report);
     }
-  });
+  }
   if (unusedReports.length >= 1) {
     const uploadReportComponent = document.getElementById('uploadReports');
     if (uploadReportComponent) {
@@ -70,21 +70,15 @@ export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
  */
 export function validatePageNumber(node: FormKitNode): boolean {
   const pageNumber = node.value;
-  if (typeof pageNumber == 'string') {
-    const match = RegExp(regexPageNumber).exec(pageNumber);
-    if (match === null) {
-      return false;
-    }
-    const firstNumber = Number(match[1]);
-    const secondNumber = match[2] !== undefined ? Number(match[2]) : undefined;
-    if (secondNumber !== undefined) {
-      return firstNumber < secondNumber;
-    } else {
-      return true;
-    }
-  } else {
-    return false;
-  }
+  if (typeof pageNumber !== 'string') return false;
+
+  const match = regexPageNumber.exec(pageNumber);
+  if (!match) return false;
+
+  const firstNumber = Number(match[1]);
+  const secondNumber = match[2] === undefined ? undefined : Number(match[2]);
+
+  return secondNumber === undefined || firstNumber < secondNumber;
 }
 
 // This RegEx should be kept consistent with the regex used in the backend and defined by EmailUtils.kt

@@ -1,6 +1,6 @@
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type BasicCompanyInformation } from '@clients/backend';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { faker } from '@faker-js/faker';
 
@@ -10,9 +10,9 @@ before(function () {
   cy.fixture('DataSearchStoredCompanyMocks').then(function (jsonContent) {
     const mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
     const customCompanyName = 'ABCDEFG' + highlightedSubString + 'HIJKLMNOP';
-    modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
+    modifiedMockDataSearchResponse = mockDataSearchResponse.slice(0, 4);
     modifiedMockDataSearchResponse[0] = {
-      ...modifiedMockDataSearchResponse[0],
+      ...modifiedMockDataSearchResponse[0]!,
       companyName: customCompanyName,
     };
   });
@@ -23,7 +23,7 @@ before(function () {
  * @param input to type
  */
 function typeIntoSearchBar(input: string): void {
-  cy.get('input[id=framework_data_search_bar_standard]').type(input);
+  cy.get('input[id=search-bar-input]').type(input);
 }
 
 /**
@@ -39,7 +39,7 @@ function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
  * @param isPanelExpectedToExist decides whether the panel is expected to be displayed or not
  */
 function validateAutocompletePanel(isPanelExpectedToExist: boolean): void {
-  cy.get('div.p-autocomplete-panel').should(isPanelExpectedToExist ? 'exist' : 'not.exist');
+  cy.get('div.p-autocomplete-list-container').should(isPanelExpectedToExist ? 'exist' : 'not.exist');
 }
 
 describe('Component tests for the search bar on the company search page', () => {
@@ -49,7 +49,7 @@ describe('Component tests for the search bar on the company search page', () => 
     typeIntoSearchBar(highlightedSubString);
     cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number });
     validateAutocompletePanel(true);
-    cy.get('.p-autocomplete-item')
+    cy.get('.p-autocomplete-option')
       .eq(0)
       .get("span[class='font-semibold']")
       .contains(highlightedSubString)
@@ -81,7 +81,7 @@ describe('Component tests for the search bar on the company search page', () => 
     validateSearchStringWarning(false);
     validateAutocompletePanel(true);
 
-    cy.get(`input[id="framework_data_search_bar_standard"]`).clear();
+    cy.get(`input[id="search-bar-input"]`).clear();
     validateSearchStringWarning(false);
     validateAutocompletePanel(false);
   });

@@ -70,18 +70,19 @@ export const sfdrDataModel = [
     subcategories: [
       {
         name: 'greenhouseGasEmissions',
-        label: 'Greenhouse gas emissions ',
+        label: 'Greenhouse gas emissions',
         fields: [
           {
             name: 'scope1GhgEmissionsInTonnes',
             label: 'Scope 1 GHG emissions',
             description:
-              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope2GhgEmissionsInTonnes',
@@ -98,23 +99,25 @@ export const sfdrDataModel = [
             name: 'scope2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 2 GHG emissions (location-based)',
             description:
-              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 2 GHG emissions (market-based)',
             description:
-              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope1And2GhgEmissionsInTonnes',
@@ -159,6 +162,7 @@ export const sfdrDataModel = [
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'scope3UpstreamGhgEmissionsInTonnes',
@@ -227,32 +231,33 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'enterpriseValue',
+            name: 'enterpriseValueInEUR',
             label: 'Enterprise Value',
             description:
-              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
 
-            component: 'CurrencyDataPointFormField',
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: 'totalRevenue',
+            name: 'totalRevenueInEUR',
             label: 'Total Revenue',
             description:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
+              "Total revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
 
-            component: 'CurrencyDataPointFormField',
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: 'carbonFootprintInTonnesPerMillionEURRevenue',
+            name: 'carbonFootprintInTonnesPerMillionEUREnterpriseValue',
             label: 'Carbon footprint',
-            description:
-              'Tonnes of GHG emissions per million units of the enterprise value (in the same currency as total revenue).',
+            description: 'Tonnes of GHG emissions per million EUR enterprise value.',
 
-            unit: 'Tonnes / €M Revenue',
+            unit: 'Tonnes / €M Enterprise Value',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
@@ -261,7 +266,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityInTonnesPerMillionEURRevenue',
             label: 'GHG intensity',
             description:
-              'Tonnes of GHG emissions per million units of revenue (in the same currency as total revenue), preferably calculated using the location-based method and the equity share approach for emissions.',
+              'Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -272,7 +277,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope1InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 1',
             description:
-              'Tonnes of scope 1 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
+              'Tonnes of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -283,7 +288,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope2InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 2',
             description:
-              'Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
+              'Tonnes of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -294,7 +299,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope3InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 3',
             description:
-              'Tonnes of scope 3 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
+              'Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -305,7 +310,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 4',
             description:
-              'Tonnes of scope 4 GHG emissions per million units of revenue (in the same currency as total revenue). As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
+              'Tonnes of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -316,7 +321,7 @@ export const sfdrDataModel = [
             name: 'fossilFuelSectorExposure',
             label: 'Fossil Fuel Sector Exposure',
             description:
-              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).',
+              'Does the company derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels? (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -423,7 +428,7 @@ export const sfdrDataModel = [
           {
             name: 'applicableHighImpactClimateSectors',
             label: 'Applicable High Impact Climate Sectors',
-            description: 'Sector applicable activities.',
+            description: 'Please select any sector(s) applicable activities (NACE Codes A-H, L).',
 
             component: 'HighImpactClimateSectorsFormField',
             required: false,
@@ -535,7 +540,7 @@ export const sfdrDataModel = [
             name: 'primaryForestAndWoodedLandOfNativeSpeciesExposure',
             label: 'Primary Forest And Wooded Land Of Native Species Exposure',
             description:
-              'Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.',
+              'Does the company have sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments? Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -545,7 +550,7 @@ export const sfdrDataModel = [
             name: 'protectedAreasExposure',
             label: 'Protected Areas Exposure',
             description:
-              'Sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions. For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.',
+              'Does the company have sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions? For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -555,7 +560,7 @@ export const sfdrDataModel = [
             name: 'rareOrEndangeredEcosystemsExposure',
             label: 'Rare Or Endangered Ecosystems Exposure',
             description:
-              'Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).',
+              'Does the company have sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated? For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -565,7 +570,7 @@ export const sfdrDataModel = [
             name: 'highlyBiodiverseGrasslandExposure',
             label: 'Highly Biodiverse Grassland Exposure',
             description:
-              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.',
+              'Does the company have sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status?',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -575,7 +580,7 @@ export const sfdrDataModel = [
             name: 'manufactureOfAgrochemicalPesticidesProducts',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             description:
-              'Involvement in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
+              'Is the company involved in manufacture of pesticides and other agrochemical products? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -585,7 +590,7 @@ export const sfdrDataModel = [
             name: 'landDegradationDesertificationSoilSealingExposure',
             label: 'Land Degradation Desertification Soil Sealing Exposure',
             description:
-              'Involvement in activities, which cause land degradation, desertification or soil sealing. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.',
+              'Is the company involved in activities, which cause land degradation, desertification or soil sealing? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -595,7 +600,7 @@ export const sfdrDataModel = [
             name: 'sustainableAgriculturePolicy',
             label: 'Sustainable Agriculture Policy',
             description:
-              'Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.',
+              'Does the company have sustainable land or agriculture practices or policies? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.) If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -605,7 +610,7 @@ export const sfdrDataModel = [
             name: 'sustainableOceansAndSeasPolicy',
             label: 'Sustainable Oceans And Seas Policy',
             description:
-              'Existence of sustainable oceans or seas practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.',
+              'Does the company have sustainable oceans or seas practices or policies? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.) If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -615,7 +620,7 @@ export const sfdrDataModel = [
             name: 'threatenedSpeciesExposure',
             label: 'Threatened Species Exposure',
             description:
-              'Operations, which affect threatened species. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .',
+              'Does the company have operations, which affect threatened species? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -625,7 +630,7 @@ export const sfdrDataModel = [
             name: 'biodiversityProtectionPolicy',
             label: 'Biodiversity Protection Policy',
             description:
-              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2 .',
+              'Does the company have a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -635,7 +640,7 @@ export const sfdrDataModel = [
             name: 'deforestationPolicy',
             label: 'Deforestation Policy',
             description:
-              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.',
+              'Does the company have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -687,7 +692,7 @@ export const sfdrDataModel = [
             name: 'relativeWaterUsageInCubicMetersPerMillionEURRevenue',
             label: 'Relative Water Usage',
             description:
-              'Amount in cubic meters of fresh water used per million units of revenue (in the same currency as the total revenue). See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
+              'Amount in cubic meters of fresh water used per million EUR revenue. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1.',
 
             unit: 'Cubic Meters / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -699,7 +704,7 @@ export const sfdrDataModel = [
             name: 'waterManagementPolicy',
             label: 'Water Management Policy',
             description:
-              'Existence of policies and procedures for water management. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.',
+              'Does the company have policies and procedures for water management? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.) If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -709,7 +714,7 @@ export const sfdrDataModel = [
             name: 'highWaterStressAreaExposure',
             label: 'High Water Stress Area Exposure',
             description:
-              'Sites (partly) located in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
+              'Does the company have sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy? See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -791,7 +796,7 @@ export const sfdrDataModel = [
             name: 'carbonReductionInitiatives',
             label: 'Carbon Reduction Initiatives',
             description:
-              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.',
+              'Does the company have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.) If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -814,7 +819,7 @@ export const sfdrDataModel = [
           {
             name: 'humanRightsLegalProceedings',
             label: 'Human Rights Legal Proceedings',
-            description: 'Involvement in Human Rights related legal proceedings.',
+            description: 'Has the company been involved in Human Rights related legal proceedings?',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -823,7 +828,7 @@ export const sfdrDataModel = [
           {
             name: 'iloCoreLabourStandards',
             label: 'ILO Core Labour Standards',
-            description: 'Abidance by the ILO Core Labour Standards.',
+            description: 'Does the company abide by the ILO Core Labour Standards?',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -832,7 +837,7 @@ export const sfdrDataModel = [
           {
             name: 'environmentalPolicy',
             label: 'Environmental Policy',
-            description: 'Existence of an environmental policy.',
+            description: 'Does the company have an environmental policy? If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -841,7 +846,7 @@ export const sfdrDataModel = [
           {
             name: 'corruptionLegalProceedings',
             label: 'Corruption Legal Proceedings',
-            description: 'Involvement in corruption-related legal proceedings.',
+            description: 'Has the company been involved in corruption-related legal proceedings?',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -851,7 +856,7 @@ export const sfdrDataModel = [
             name: 'transparencyDisclosurePolicy',
             label: 'Transparency Disclosure Policy',
             description:
-              'Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
+              'Does the company have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -861,7 +866,7 @@ export const sfdrDataModel = [
             name: 'humanRightsDueDiligencePolicy',
             label: 'Human Rights Due Diligence Policy',
             description:
-              'Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.',
+              'Does the company have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -871,7 +876,7 @@ export const sfdrDataModel = [
             name: 'policyAgainstChildLabour',
             label: 'Policy against Child Labour',
             description:
-              'Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.',
+              'Does the company have policies in place to abolish all forms of child labour? If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -881,7 +886,7 @@ export const sfdrDataModel = [
             name: 'policyAgainstForcedLabour',
             label: 'Policy against Forced Labour',
             description:
-              'Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.',
+              'Does the company have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -891,7 +896,7 @@ export const sfdrDataModel = [
             name: 'policyAgainstDiscriminationInTheWorkplace',
             label: 'Policy against Discrimination in the Workplace',
             description:
-              'Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.',
+              'Does the company have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -900,7 +905,8 @@ export const sfdrDataModel = [
           {
             name: 'iso14001Certificate',
             label: 'ISO 14001 Certificate',
-            description: 'The company is ISO 14001 certified.',
+            description:
+              'Is the company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -910,7 +916,7 @@ export const sfdrDataModel = [
             name: 'policyAgainstBriberyAndCorruption',
             label: 'Policy against Bribery and Corruption',
             description:
-              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.',
+              'Does the company have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -920,7 +926,7 @@ export const sfdrDataModel = [
             name: 'fairBusinessMarketingAdvertisingPolicy',
             label: 'Fair Business Marketing Advertising Policy',
             description:
-              'Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.',
+              'Does the company have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -930,7 +936,7 @@ export const sfdrDataModel = [
             name: 'technologiesExpertiseTransferPolicy',
             label: 'Technologies Expertise Transfer Policy',
             description:
-              'Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.',
+              'Does the company have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -940,7 +946,7 @@ export const sfdrDataModel = [
             name: 'fairCompetitionPolicy',
             label: 'Fair Competition Policy',
             description:
-              'Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.',
+              'Does the company have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -950,7 +956,7 @@ export const sfdrDataModel = [
             name: 'violationOfTaxRulesAndRegulation',
             label: 'Violation Of Tax Rules And Regulation',
             description:
-              'Are you involved in violations of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
+              'Is the company involved in a violation of OECD Guidelines for Multinational Enterprises for Taxation? In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -960,7 +966,7 @@ export const sfdrDataModel = [
             name: 'unGlobalCompactPrinciplesCompliancePolicy',
             label: 'UN Global Compact Principles Compliance Policy',
             description:
-              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+              'Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -970,7 +976,7 @@ export const sfdrDataModel = [
             name: 'oecdGuidelinesForMultinationalEnterprisesGrievanceHandling',
             label: 'OECD Guidelines For Multinational Enterprises Grievance Handling',
             description:
-              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+              'Does the company have grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1077,7 +1083,7 @@ export const sfdrDataModel = [
             name: 'controversialWeaponsExposure',
             label: 'Controversial Weapons Exposure',
             description:
-              'Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.',
+              'Is the company involved in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons? See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1087,7 +1093,7 @@ export const sfdrDataModel = [
             name: 'workplaceAccidentPreventionPolicy',
             label: 'Workplace Accident Prevention Policy',
             description:
-              'Existence of a workplace accident prevention policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.',
+              'Does the company have a workplace accident prevention policy? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1119,7 +1125,7 @@ export const sfdrDataModel = [
             name: 'supplierCodeOfConduct',
             label: 'Supplier Code Of Conduct',
             description:
-              'Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.',
+              'Does the company have a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.) If yes, please share the document with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1129,7 +1135,7 @@ export const sfdrDataModel = [
             name: 'grievanceHandlingMechanism',
             label: 'Grievance Handling Mechanism',
             description:
-              'Existence of a grievance/complaints handling mechanism related to employee matters. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.',
+              'Does the company have a grievance/complaints handling mechanism related to employee matters? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1139,7 +1145,7 @@ export const sfdrDataModel = [
             name: 'whistleblowerProtectionPolicy',
             label: 'Whistleblower Protection Policy',
             description:
-              'Existence of a policy on the protection of whistleblowers. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.',
+              'Does the company have a policy on the protection of whistleblowers? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1188,7 +1194,7 @@ export const sfdrDataModel = [
             name: 'securitiesNotCertifiedAsGreen',
             label: 'Securities Not Certified As Green',
             description:
-              'Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?',
+              'Does the company have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1204,7 +1210,7 @@ export const sfdrDataModel = [
             name: 'humanRightsPolicy',
             label: 'Human Rights Policy',
             description:
-              'Existence of a human rights policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.',
+              'Does the company have a human rights policy? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.) If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1214,7 +1220,7 @@ export const sfdrDataModel = [
             name: 'humanRightsDueDiligence',
             label: 'Human Rights Due Diligence',
             description:
-              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
+              'Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1224,7 +1230,7 @@ export const sfdrDataModel = [
             name: 'traffickingInHumanBeingsPolicy',
             label: 'Trafficking In Human Beings Policy',
             description:
-              'Existence of a policy against trafficking in human beings. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.',
+              'Does the company have a policy against trafficking in human beings? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.)  If yes, please share the policy with us.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1234,7 +1240,7 @@ export const sfdrDataModel = [
             name: 'reportedChildLabourIncidents',
             label: 'Reported Child Labour Incidents',
             description:
-              'Number of reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
+              'Does the company have reported incidents of child labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1244,7 +1250,7 @@ export const sfdrDataModel = [
             name: 'reportedForcedOrCompulsoryLabourIncidents',
             label: 'Reported Forced Or Compulsory Labour Incidents',
             description:
-              'Number of reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
+              'Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,

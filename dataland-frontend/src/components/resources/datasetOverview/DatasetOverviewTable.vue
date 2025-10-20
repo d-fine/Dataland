@@ -24,7 +24,7 @@
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <DatasetStatusBadge :dataset-status="data.status" />
+          <DatalandTag :severity="data.status" :value="data.status" data-test="qa-status" />
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
@@ -34,19 +34,23 @@
       </Column>
       <Column field="companyName" header="" class="w-2 d-bg-white d-datatable-column-right">
         <template #header>
-          <span class="w-12 p-input-icon-left p-input-icon-right">
-            <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6 pr-6" />
-            <i v-if="loading" class="pi pi-spin pi-spinner right-0 mr-3" aria-hidden="true"></i>
-          </span>
+          <IconField class="w-12">
+            <InputIcon class="pi pi-search" />
+            <InputText v-model="searchBarInput" placeholder="Search table" fluid />
+            <InputIcon v-if="loading" class="pi pi-spin pi-spinner" aria-hidden="true" />
+          </IconField>
         </template>
         <template #body="{ data }">
-          <router-link :to="getTableRowLinkTarget(data)" class="text-primary no-underline font-bold">
-            <div class="text-right">
-              <span>VIEW</span>
-              <span class="ml-3">></span>
-            </div>
-          </router-link>
+          <div class="text-right">
+            <PrimeButton
+              label="VIEW"
+              iconPos="right"
+              icon="pi pi-angle-right"
+              variant="link"
+              data-test="view-dataset-button"
+              @click="goToDataset(data)"
+            />
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -72,8 +76,11 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DatasetTableInfo } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import InputText from 'primevue/inputtext';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
 import router from '@/router';
+import DatalandTag from '@/components/general/DatalandTag.vue';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'DatasetOverviewTable',
@@ -81,7 +88,10 @@ export default defineComponent({
     this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
   },
   components: {
-    DatasetStatusBadge,
+    PrimeButton,
+    IconField,
+    InputIcon,
+    DatalandTag,
     DataTable,
     Column,
     InputText,
@@ -119,6 +129,15 @@ export default defineComponent({
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
     },
+    /**
+     * Navigates to the specified dataset's details page based on the provided dataset information.
+     *
+     * @param {DatasetTableInfo} datasetTableInfo - Object containing information about the dataset table to navigate to.
+     * @return {void} Does not return a value.
+     */
+    goToDataset(datasetTableInfo: DatasetTableInfo) {
+      void router.push(this.getTableRowLinkTarget(datasetTableInfo));
+    },
 
     /**
      * Filter the given datasets for the search string in the company name
@@ -151,3 +170,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.text-primary {
+  color: var(--main-color);
+}
+</style>

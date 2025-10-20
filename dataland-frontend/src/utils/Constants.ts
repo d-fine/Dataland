@@ -11,15 +11,35 @@ export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
 );
 export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
-const MAIN_FRAMEWORKS = ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas', 'sfdr'];
+const MAIN_FRAMEWORKS = new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas', 'sfdr']);
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  MAIN_FRAMEWORKS.includes(framework)
+  MAIN_FRAMEWORKS.has(framework)
 );
 export const ALL_FRAMEWORKS_IN_DISPLAYED_ORDER = [...MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER];
 ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
+export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
+  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+);
+
+export const DOWNLOADABLE_DATA_REPORTING_PERIODS = ['2025', '2024', '2023', '2022', '2021', '2020'];
+export const ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS = ['2025', '2024', '2023', '2022', '2021', '2020'];
+export const FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020'];
+export const PORTFOLIO_MONITORING_REPORTING_PERIODS = ['2024', '2023', '2022', '2021', '2020', '2019'];
+
+// - Portfolio related settings
+
+export const MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE = 100;
 
 // - Keycloak and session management related settings
 

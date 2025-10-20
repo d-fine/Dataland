@@ -93,7 +93,7 @@ class QaEventListenerQaService
                     RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.DATASET_QA -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
                         val messagePayload =
-                            MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
+                            MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload)
                         MessageQueueUtils.validateDataId(messagePayload.dataId)
 
                         qaReviewManager.addDatasetToQaReviewRepository(
@@ -106,7 +106,7 @@ class QaEventListenerQaService
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         val messagePayload =
-                            MessageQueueUtils.readMessagePayload<DataMetaInfoPatchPayload>(payload, objectMapper)
+                            MessageQueueUtils.readMessagePayload<DataMetaInfoPatchPayload>(payload)
                         MessageQueueUtils.validateDataId(messagePayload.dataId)
 
                         messagePayload.uploaderUserId?.let {
@@ -154,7 +154,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
-            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString)
             val documentId = message.resourceId
 
             if (documentId.isEmpty()) {
@@ -213,7 +213,7 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
-                val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+                val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload).dataId
                 MessageQueueUtils.validateDataId(deletedDataId)
 
                 val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(deletedDataId)!!
@@ -271,7 +271,7 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DATA_MIGRATED)
             MessageQueueUtils.rejectMessageOnException {
-                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload).dataId
                 assembledDataMigrationManager.migrateStoredDatasetToAssembledDataset(dataId, correlationId)
             }
         }
@@ -303,7 +303,7 @@ class QaEventListenerQaService
                 val allParsedMessages =
                     messages.map {
                         MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
-                        val payload = it.readMessagePayload<DataPointUploadedPayload>(objectMapper)
+                        val payload = it.readMessagePayload<DataPointUploadedPayload>()
                         val correlationId = it.getCorrelationId()
                         DataPointQaReviewManager.DataPointUploadedMessageWithCorrelationId(payload, correlationId)
                     }

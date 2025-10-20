@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_LIST_OF_STRING_BASE_DATA_POINT_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -36,7 +37,11 @@ class ListOfStringBaseDataPointComponent(
                     ),
                 ),
             ),
-            SimpleDocumentSupport.getJvmAnnotations(),
+            SimpleDocumentSupport.getJvmAnnotations() +
+                getSchemaAnnotationWithSuppressMaxLineLength(
+                    uploadPageExplanation,
+                    getExample(EXAMPLE_PLAIN_LIST_OF_STRING_BASE_DATA_POINT_COMPONENT),
+                ),
         )
     }
 

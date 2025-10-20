@@ -1,6 +1,5 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
@@ -23,8 +22,12 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -33,13 +36,16 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
+    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
+    private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
     private lateinit var portfolioService: PortfolioService
     private lateinit var mockAuthentication: DatalandAuthentication
 
     private val dummyCorrelationId = UUID.randomUUID().toString()
     private val dummyPortfolioId = UUID.randomUUID()
     private val dummyUserId = "userId"
+    private val adminUserId = "adminUserId"
     private val dummyCompanyId = "companyId"
 
     private val dummyPortfolio = buildPortfolio(portfolioName = "Portfolio", userId = dummyUserId)
@@ -48,21 +54,29 @@ class PortfolioServiceTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioRepository)
-        this.resetSecurityContext()
+        resetSecurityContext(
+            dummyUserId,
+            setOf(DatalandRealmRole.ROLE_USER),
+        ) // will sometimes be overwritten at the beginning of a test
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any<PortfolioEntity>())
+        doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
+        doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
     }
 
     /**
-     * Setting the security context to use dataland dummy user with role ROLE_USER
+     * Setting the security context to use the specified userId and set of roles.
      */
-    private fun resetSecurityContext() {
+    private fun resetSecurityContext(
+        userId: String,
+        roles: Set<DatalandRealmRole>,
+    ) {
         mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
                 "username",
-                dummyUserId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
+                userId,
+                roles,
             )
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -82,7 +96,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolios for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         assertEquals(2, portfolioService.getAllPortfoliosForUser().size)
         assertEquals(
             listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
@@ -95,9 +109,60 @@ class PortfolioServiceTest {
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
+        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
+            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
         assertEquals(
             dummyPortfolio,
-            portfolioService.getPortfolioForUser(dummyPortfolio.portfolioId),
+            portfolioReturned,
+        )
+    }
+
+    @Test
+    fun `verify that dummy user cannot access admin portfolios`() {
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByUserIdAndPortfolioId(adminUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        assertThrows<PortfolioNotFoundApiException> {
+            portfolioService.getPortfolio(dummyPortfolio.portfolioId)
+        }
+        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
+            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        )
+        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
+    }
+
+    @Test
+    fun `verify that admin can access dummy user portfolio`() {
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
+        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
+            any(), any(),
+        )
+        verify(mockPortfolioRepository, times(1)).getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+        assertEquals(
+            dummyPortfolio,
+            portfolioReturned,
         )
     }
 
@@ -108,8 +173,32 @@ class PortfolioServiceTest {
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioService.getPortfolioForUser(dummyPortfolioId.toString())
+            portfolioService.getPortfolio(dummyPortfolioId.toString())
         }
+    }
+
+    @Test
+    fun `verify that portfolios can be retrieved for a user by his or her ID`() {
+        doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
+            .whenever(mockPortfolioRepository)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
+        val portfolioList = portfolioService.getAllPortfoliosForUserById(dummyUserId)
+        assertEquals(2, portfolioList.size)
+        assertEquals(
+            listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
+            portfolioList.map { it.portfolioId },
+        )
+    }
+
+    @Test
+    fun `verify that getAllPortfolios redirects to the repository with the correct pagination parameters`() {
+        portfolioService.getAllPortfolios(50, 3)
+        verify(mockPortfolioRepository).findAll(
+            PageRequest.of(
+                3, 50, Sort.by("lastUpdateTimestamp").descending(),
+            ),
+        )
     }
 
     @Test
@@ -141,6 +230,7 @@ class PortfolioServiceTest {
 
         assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
         assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
     }
 
     @Test
@@ -162,7 +252,7 @@ class PortfolioServiceTest {
     fun `verify that retrieving all portfolio names for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolio.toPortfolioEntity(), dummyPortfolio2.toPortfolioEntity()))
             .whenever(mockPortfolioRepository)
-            .getAllByUserId(dummyUserId)
+            .getAllByUserIdOrderByCreationTimestampAsc(dummyUserId)
         val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
         val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
         assertEquals(expectedPortfolioNames, portfolioNames)
@@ -175,15 +265,15 @@ class PortfolioServiceTest {
         portfolioId: String? = null,
         portfolioName: String,
         userId: String,
-        companyIds: MutableSet<String>? = null,
-        dataTypes: Set<DataTypeEnum>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
-        frameworks = dataTypes ?: setOf(DataTypeEnum.sfdr),
+        companyIds = setOf(dummyCompanyId),
+        isMonitored = false,
+        startingMonitoringPeriod = null,
+        monitoredFrameworks = emptySet(),
     )
 }

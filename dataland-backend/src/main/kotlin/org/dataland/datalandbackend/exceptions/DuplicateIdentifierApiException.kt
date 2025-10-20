@@ -23,7 +23,7 @@ class DuplicateIdentifierApiException(
             metaInformation =
                 duplicateIdentifiers?.map {
                     mapOf(
-                        "companyId" to it.company!!.companyId,
+                        "companyId" to it.company.companyId,
                         "identifierType" to it.identifierType,
                         "identifierValue" to it.identifierValue,
                     )

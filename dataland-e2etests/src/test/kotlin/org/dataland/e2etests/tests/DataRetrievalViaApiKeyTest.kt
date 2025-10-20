@@ -4,6 +4,7 @@ import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
 import org.dataland.e2etests.auth.GlobalAuth
@@ -11,6 +12,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -60,8 +62,8 @@ class DataRetrievalViaApiKeyTest {
         val expectedRolesForUserType = technicalUser.roles
         val rolesInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakRoles
         assertEquals(
-            expectedRolesForUserType,
-            rolesInReceivedApiKeyMetaInfo,
+            expectedRolesForUserType.sorted(),
+            rolesInReceivedApiKeyMetaInfo?.sorted(),
             "The Keycloak roles in the received API key meta info were $rolesInReceivedApiKeyMetaInfo and " +
                 "do not equal the expected Keycloak roles $expectedRolesForUserType for the technical" +
                 "user type $technicalUser",
@@ -125,6 +127,7 @@ class DataRetrievalViaApiKeyTest {
                                 expectedStoredCompany
                                     .companyInformation.companyContactDetails
                                     ?.sorted(),
+                            associatedSubdomains = emptyList(),
                         ),
             ),
             downloadedStoredCompany,
@@ -152,13 +155,15 @@ class DataRetrievalViaApiKeyTest {
         val downloadedCompanyAssociatedEuTaxoDataNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
-        assertEquals(
+
+        val ignoredKeys = setOf("publicationDate")
+        assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
                 reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
             downloadedCompanyAssociatedEuTaxoDataNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -182,6 +187,7 @@ class DataRetrievalViaApiKeyTest {
                                 expectedStoredCompany
                                     .companyInformation.companyContactDetails
                                     ?.sorted(),
+                            associatedSubdomains = emptyList(),
                         ),
             ),
             downloadedStoredCompany,
@@ -321,8 +327,8 @@ class DataRetrievalViaApiKeyTest {
             val apiKeyAndMetaInfo = apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(userType)
             val apiKeyMetaInfoFromEndpoint = apiKeyHelper.getApiKeyMetaInformationForTechnicalUser(userType)
             assertEquals(
-                apiKeyAndMetaInfo.apiKeyMetaInfo,
-                apiKeyMetaInfoFromEndpoint,
+                apiKeyAndMetaInfo.apiKeyMetaInfo.copy(keycloakRoles = apiKeyAndMetaInfo.apiKeyMetaInfo.keycloakRoles?.sorted()),
+                apiKeyMetaInfoFromEndpoint.copy(keycloakRoles = apiKeyMetaInfoFromEndpoint.keycloakRoles?.sorted()),
                 "The API key meta info from the generation process does not equal the API key meta info that is " +
                     "returned for the respective keycloak user.",
             )

@@ -2,19 +2,14 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-09-21",
+				"dataDate": "2024-06-25",
 				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-03-10",
+				"fiscalYearEnd": "2024-07-26",
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "AnnualReport",
-						"publicationDate": "2023-11-23"
-					},
-					"IntegratedReport": {
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-04-26"
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-05-25"
 					}
 				}
 			}
@@ -22,16 +17,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 7610,
+					"value": 3312,
 					"dataSource": {
-						"page": "400-419",
-						"fileName": "AnnualReport",
+						"page": "526-1202",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "models",
+						"tagName": "schemas",
 						"publicationDate": null
 					},
-					"comment": "transmit bluetooth capacitor",
-					"quality": "Incomplete"
+					"comment": "connect multi-byte array",
+					"quality": "NoDataFound"
 				}
 			}
 		},
@@ -40,26 +35,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "324",
-						"fileName": "AnnualReport",
+						"page": "1075",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "ROI",
+						"tagName": "experiences",
 						"publicationDate": null
 					},
-					"comment": "hack optical microchip",
-					"quality": "Reported"
+					"comment": "navigate virtual bus",
+					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
-					"value": "No",
+					"value": "Yes",
 					"dataSource": {
-						"page": "642-1241",
-						"fileName": "IntegratedReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "convergence",
+						"page": "996-1087",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "experiences",
 						"publicationDate": null
 					},
-					"comment": "bypass cross-platform port",
-					"quality": "Audited"
+					"comment": "connect bluetooth array",
+					"quality": "Reported"
 				}
 			}
 		}

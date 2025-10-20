@@ -27,7 +27,7 @@ class ExternalStorageController(
         correlationId: String,
     ): ResponseEntity<String> {
         logger.info("Selecting data from EuroDaT storage with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(eurodatDataStore.selectPrivateDataSet(dataId, correlationId))
+        return ResponseEntity.ok(eurodatDataStore.selectPrivateDataset(dataId, correlationId))
     }
 
     override fun selectBlobById(

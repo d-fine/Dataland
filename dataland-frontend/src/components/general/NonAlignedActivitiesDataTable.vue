@@ -28,7 +28,7 @@
 import { defineComponent } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
 import { type EuTaxonomyAlignedActivity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from '@/utils/Formatter';
@@ -36,8 +36,8 @@ import { formatAmountWithCurrency, formatPercentageNumberAsString } from '@/util
 type NonAlignedActivityFieldValueObject = {
   activity: string;
   naceCodes: string[];
-  revenue: string;
-  revenuePercent: string;
+  kpi: string;
+  kpiPercent: string;
 };
 
 type MainColumnDefinition = {
@@ -77,15 +77,15 @@ export default defineComponent({
     this.mainColumnDefinitions = [
       { field: 'activity', header: this.humanizeHeaderName('activityName') },
       { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes') },
-      { field: 'revenue', header: this.humanizeHeaderName('revenue') },
-      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent') },
+      { field: 'kpi', header: this.humanizeHeaderName('kpi') },
+      { field: 'kpiPercent', header: this.humanizeHeaderName('kpiPercent') },
     ];
 
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
       activity: activity.activityName as string,
       naceCodes: activity.naceCodes as string[],
-      revenue: formatAmountWithCurrency(activity.share?.absoluteShare),
-      revenuePercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
+      kpi: formatAmountWithCurrency(activity.share?.absoluteShare),
+      kpiPercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     }));
   },
   methods: {
@@ -113,3 +113,15 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+</style>

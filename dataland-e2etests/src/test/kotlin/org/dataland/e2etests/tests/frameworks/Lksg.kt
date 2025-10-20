@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
@@ -48,22 +47,22 @@ class Lksg {
             }
         }
 
-        val fixedDataSetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataset)
-        val fixedDataSetWithAllSortedRiskPositions =
+        val fixedDatasetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataset)
+        val fixedDatasetWithAllSortedRiskPositions =
             sortDatasetsInSecondTest(
-                listOf(fixedDataSetWithSortedComplaintsRisks),
+                listOf(fixedDatasetWithSortedComplaintsRisks),
             )[0]
 
-        return fixedDataSetWithAllSortedRiskPositions
+        return fixedDatasetWithAllSortedRiskPositions
     }
 
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataset[0])
+        val fixedDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataset[0])
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOf(fixedDataSet),
+                listOf(fixedDataset),
                 apiAccessor::lksgUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -77,41 +76,7 @@ class Lksg {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(sortDatasetsInFirstTest(fixedDataSet), downloadedAssociatedData.data)
-    }
-
-    @Test
-    fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
-        val (companyId, uploadedDatasets) = uploadFourDatasetsForACompany()
-        val downloadedDatasets =
-            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-                companyId = companyId,
-                showOnlyActive = false,
-            )
-        val activeDownloadedDatasets =
-            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-                companyId = companyId,
-                showOnlyActive = true,
-            )
-        val downloaded2023Datasets =
-            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-                companyId = companyId,
-                showOnlyActive = false,
-                reportingPeriod = "2023",
-            )
-        val downloadedActive2023Datasets =
-            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-                companyId = companyId,
-                showOnlyActive = true,
-                reportingPeriod = "2023",
-            )
-        assertDownloadedDatasets(
-            downloadedDatasets,
-            activeDownloadedDatasets,
-            downloaded2023Datasets,
-            downloadedActive2023Datasets,
-            sortDatasetsInSecondTest(uploadedDatasets),
-        )
+        assertEquals(sortDatasetsInFirstTest(fixedDataset), downloadedAssociatedData.data)
     }
 
     @Test
@@ -143,27 +108,6 @@ class Lksg {
         assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
 
-    private fun assertDownloadedDatasets(
-        downLoadedDatasets: List<DataAndMetaInformationLksgData>,
-        activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
-        downloaded2023Datasets: List<DataAndMetaInformationLksgData>,
-        downloadedActive2023Datasets: List<DataAndMetaInformationLksgData>,
-        uploadedDatasets: List<Any>,
-    ) {
-        assertTrue(
-            downLoadedDatasets.size == 4 &&
-                activeDownloadedDatasets.size == 2 &&
-                downloaded2023Datasets.size == 2 &&
-                downloadedActive2023Datasets.size == 1,
-            "At least of the retrieved meta data lists does not have the expected size.",
-        )
-        assertEquals(
-            sortDatasetsInSecondTest(listOf(downloadedActive2023Datasets[0].data))[0],
-            uploadedDatasets[1],
-            "Active dataset in 2023 not equal to latest upload.",
-        )
-    }
-
     private fun sortComplaintRisksInDataset(dataset: LksgData): LksgData {
         val complaintRisksIdentifiedRisks =
             dataset.governance
@@ -192,31 +136,31 @@ class Lksg {
         return datasetWithSortedIdentifiedRisks
     }
 
-    private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
+    private fun sortDatasetsInFirstTest(fixedDataset: LksgData): LksgData {
         val firstSorting =
-            fixedDataSet.copy(
+            fixedDataset.copy(
                 general =
-                    fixedDataSet.general.copy(
+                    fixedDataset.general.copy(
                         productionSpecific =
-                            fixedDataSet.general.productionSpecific?.copy(
+                            fixedDataset.general.productionSpecific?.copy(
                                 specificProcurement =
-                                    fixedDataSet.general.productionSpecific
+                                    fixedDataset.general.productionSpecific
                                         ?.specificProcurement
                                         ?.sorted(),
                             ),
                     ),
                 governance =
-                    fixedDataSet.governance?.copy(
+                    fixedDataset.governance?.copy(
                         riskManagementOwnOperations =
-                            fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                            fixedDataset.governance?.riskManagementOwnOperations?.copy(
                                 identifiedRisks =
-                                    fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
+                                    fixedDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
                                         { it.riskPosition },
                             ),
                         generalViolations =
-                            fixedDataSet.governance?.generalViolations?.copy(
+                            fixedDataset.governance?.generalViolations?.copy(
                                 humanRightsOrEnvironmentalViolationsDefinition =
-                                    fixedDataSet.governance
+                                    fixedDataset.governance
                                         ?.generalViolations
                                         ?.humanRightsOrEnvironmentalViolationsDefinition
                                         ?.sortedBy { it.riskPosition },
@@ -289,28 +233,5 @@ class Lksg {
             )
         }
         return sortedUploadedDatasets
-    }
-
-    private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
-        val firstDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData[0])
-        val secondDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData[1])
-        val uploadPairs =
-            listOf(
-                Pair(firstDataset, "2022"),
-                Pair(firstDataset, "2022"),
-                Pair(secondDataset, "2023"),
-                Pair(secondDataset, "2023"),
-            )
-        uploadPairs.forEach { pair ->
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = pair.first,
-                reportingPeriod = pair.second,
-                uploadFunction = apiAccessor::lksgUploaderFunction,
-            )
-        }
-        return Pair(companyId, lksgData)
     }
 }

@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_PLAIN_DECIMAL_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -24,7 +25,7 @@ open class DecimalComponent(
     var maximumValue: Long? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
+        val annotations = getAnnotationsWithMinMax(getExample(EXAMPLE_PLAIN_DECIMAL_COMPONENT), minimumValue, maximumValue)
 
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,

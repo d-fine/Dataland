@@ -1,6 +1,14 @@
 <template>
   <DynamicDialog />
-  <router-view />
+  <component
+    v-if="route.meta.requiresAuthentication !== undefined"
+    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+  >
+    <LandingPageHeader v-if="useLandingPageHeader" />
+    <TheHeader v-else />
+    <router-view />
+  </component>
+  <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
 </template>
 
 <script lang="ts">
@@ -17,17 +25,24 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { type CompanyRoleAssignment } from '@clients/communitymanager';
+import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { useRoute } from 'vue-router';
+
+import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
+import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
-  windowWidth.value = window.innerWidth;
+  windowWidth.value = globalThis.innerWidth;
 };
 export default defineComponent({
   name: 'app',
-  components: { DynamicDialog },
+  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {
@@ -38,8 +53,17 @@ export default defineComponent({
 
       apiClientProvider: undefined as ApiClientProvider | undefined,
 
-      companyRoleAssignments: undefined as Array<CompanyRoleAssignment> | undefined,
+      companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
     };
+  },
+
+  setup() {
+    const route = useRoute();
+    const dialog = useDialog();
+    const useLandingPageHeader = computed(() => {
+      return route.meta.useLandingPageHeader ?? !route.meta.requiresAuthentication;
+    });
+    return { route, useLandingPageHeader, dialog };
   },
 
   computed: {
@@ -79,7 +103,7 @@ export default defineComponent({
       apiClientProvider: computed(() => {
         return this.apiClientProvider;
       }),
-      useMobileView: computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
+      useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
     };
   },
 
@@ -88,10 +112,10 @@ export default defineComponent({
   },
 
   mounted() {
-    window.addEventListener('resize', storeWindowWidth);
+    globalThis.addEventListener('resize', storeWindowWidth);
   },
   unmounted() {
-    window.removeEventListener('resize', storeWindowWidth);
+    globalThis.removeEventListener('resize', storeWindowWidth);
   },
 
   methods: {
@@ -118,7 +142,7 @@ export default defineComponent({
       return keycloak
         .init({
           onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: window.location.origin + '/static/silent-check-sso.html',
+          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
           pkceMethod: 'S256',
         })
         .then((authenticated) => {
@@ -142,7 +166,7 @@ export default defineComponent({
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+        void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
       }
     },
 
@@ -151,9 +175,10 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      void getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
-        (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
+    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
+        resolvedKeycloakPromise,
+        apiClientProvider
       );
     },
 
@@ -172,7 +197,7 @@ export default defineComponent({
      * Else the text changes and tells the user that the session was closed.
      */
     openSessionWarningModal(): void {
-      this.$dialog.open(SessionDialog, {
+      this.dialog.open(SessionDialog, {
         props: {
           modal: true,
           closable: false,

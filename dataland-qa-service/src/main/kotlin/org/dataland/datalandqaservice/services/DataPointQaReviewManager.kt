@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -15,6 +16,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
+import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -34,6 +37,7 @@ class DataPointQaReviewManager
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
         private val qaReviewManager: QaReviewManager,
+        private val specificationClient: SpecificationControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -92,8 +96,8 @@ class DataPointQaReviewManager
             initialQaStatus: CopyQaStatusFromDataset,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataSetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
-            if (dataSetQaReviewEntity == null) {
+            val datasetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
+            if (datasetQaReviewEntity == null) {
                 logger.warn(
                     "Could not find QA review entity for dataset ${initialQaStatus.datasetId} " +
                         "- Setting DataPoint status to Pending (correlationID: $correlationId)",
@@ -110,9 +114,9 @@ class DataPointQaReviewManager
                 companyName = message.companyName,
                 dataPointType = message.dataPointType,
                 reportingPeriod = message.reportingPeriod,
-                timestamp = dataSetQaReviewEntity.timestamp,
-                qaStatus = dataSetQaReviewEntity.qaStatus,
-                triggeringUserId = dataSetQaReviewEntity.triggeringUserId,
+                timestamp = datasetQaReviewEntity.timestamp,
+                qaStatus = datasetQaReviewEntity.qaStatus,
+                triggeringUserId = datasetQaReviewEntity.triggeringUserId,
                 comment = "Status copied from stored dataset during migration.",
             )
         }
@@ -302,26 +306,69 @@ class DataPointQaReviewManager
 
         /**
          * Retrieve all QA review information items matching the provided filters in descending order by timestamp.
-         * Results are paginated using [chunkSize] and [chunkIndex].
+         * Results are paginated using [chunkSize] and [offset].
          * @param searchFilter the filter to apply containing the company ID, data point identifier, reporting period and the QA status
-         * @param onlyLatest if true, only the latest entry for each dataId is returned
+         * @param showOnlyActive if true, only active data points are returned
          * @param chunkSize the number of results to return
-         * @param chunkIndex the index to start the result set from
-         *
+         * @param offset the index to start the result set from
          */
         fun getFilteredDataPointQaReviewInformation(
             searchFilter: DataPointQaReviewItemFilter,
-            onlyLatest: Boolean? = true,
-            chunkSize: Int? = 10,
-            chunkIndex: Int? = 0,
-        ): List<DataPointQaReviewInformation> =
-            if (onlyLatest == true) {
-                dataPointQaReviewRepository
-                    .findByFilterLatestOnly(searchFilter, chunkSize, chunkIndex)
-                    .map { it.toDataPointQaReviewInformation() }
-            } else {
-                dataPointQaReviewRepository
-                    .findByFilter(searchFilter, chunkSize, chunkIndex)
-                    .map { it.toDataPointQaReviewInformation() }
+            showOnlyActive: Boolean,
+            chunkSize: Int,
+            offset: Int,
+        ): List<DataPointQaReviewInformation> {
+            val schemaOfFramework =
+                getFrameworkSpecificationOrNull(searchFilter.dataTypeList?.singleOrNull())
+                    ?: return queryReviewItems(searchFilter, showOnlyActive, chunkSize, offset)
+            return queryReviewItems(
+                searchFilter
+                    .copy(dataTypeList = DataPointUtils.getDataPointTypes(schemaOfFramework).toList()),
+                showOnlyActive, chunkSize, offset,
+            )
+        }
+
+        /**
+         * Retrieves the framework specification schema for a given data type or null if dataType is not a framework
+         * @param dataType the type of framework for which to retrieve the specification
+         * @return the framework specification schema as string or null if dataType is null or specification cannot be retrieved
+         */
+        private fun getFrameworkSpecificationOrNull(dataType: String?): String? {
+            if (dataType == null) {
+                return null
             }
+            return try {
+                specificationClient.getFrameworkSpecification(dataType).schema
+            } catch (_: ClientException) {
+                null
+            }
+        }
+
+        /**
+         * Searches for QA review information based on a search filter. Inactive data points may be excluded.
+         * @param searchFilter filter containing information on the companyID, dataType, reportingPeriod and qaStatus
+         * @param showOnlyActive if true, only active Data points are returned
+         * @param chunkSize the number of results to return
+         * @param offset the index to start the result set from
+         * @return A list of all datapoint of the type 'DataPointQaReviewInformation' containing als data points,
+         *         which suffice the given filter.
+         */
+        private fun queryReviewItems(
+            searchFilter: DataPointQaReviewItemFilter,
+            showOnlyActive: Boolean,
+            chunkSize: Int,
+            offset: Int,
+        ): List<DataPointQaReviewInformation> {
+            val filteredQaDataPoints =
+                if (!showOnlyActive) {
+                    dataPointQaReviewRepository
+                        .findByFilter(searchFilter, chunkSize, offset)
+                } else if (searchFilter.qaStatus in listOf(QaStatus.Pending, QaStatus.Rejected)) {
+                    emptyList()
+                } else {
+                    dataPointQaReviewRepository
+                        .findByFilterShowOnlyActive(searchFilter, chunkSize, offset)
+                }
+            return filteredQaDataPoints.map { it.toDataPointQaReviewInformation() }
+        }
     }

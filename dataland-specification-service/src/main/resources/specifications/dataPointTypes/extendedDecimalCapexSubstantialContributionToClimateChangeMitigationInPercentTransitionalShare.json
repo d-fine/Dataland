@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentTransitionalShare",
+  "name" : "Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share",
+  "businessDefinition" : "Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

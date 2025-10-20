@@ -11,7 +11,6 @@ import {
   generateSfdrQaReportPreparedFixtures,
 } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
-import { generateAdditionalCompanyInformationLinkedQaReports } from '@e2e/fixtures/custom_mocks/AdditionalCompanyInformationQaPreparedFixtures';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes';
 
@@ -67,10 +66,6 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/EuTaxonomyNonFinancialsQaReportPreparedFixtures.json',
     JSON.stringify(generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(), null, '\t')
-  );
-  fs.writeFileSync(
-    '../testing/data/AdditionalCompanyInformationQaReportPreparedFixtures.json',
-    JSON.stringify(generateAdditionalCompanyInformationLinkedQaReports(), null, '\t')
   );
   fs.writeFileSync(
     '../testing/data/SfdrLinkedDataAndQaReportPreparedFixtures.json',
