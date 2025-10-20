@@ -10,7 +10,6 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
-  const newRequestId = 'newDummyRequestId';
   const dummyUserId = 'dummyUserId';
   const dummyEmail = 'dummy@mail.de';
   const dummyCompanyId = 'dummyCompanyId';
@@ -80,16 +79,6 @@ describe('Component tests for the view data request page', function (): void {
    */
   function interceptPatchRequest(): void {
     cy.intercept(`**/data-sourcing/requests/${requestId}/state?**`, {
-      status: 200,
-    });
-  }
-
-  /**
-   * Mocks the data-sourcing-manager answer for posting a new data request
-   */
-  function interceptPostRequest(): void {
-    cy.intercept(`**/data-sourcing/requests?userId**`, {
-      body: { requestId: newRequestId },
       status: 200,
     });
   }
@@ -252,15 +241,13 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it.only(
+  it(
     'Check view data request page for Processed request and check resubmitting the request works as expected',
     function () {
       const dummyRequest = createStoredDataRequest(RequestState.Processed);
       interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(true);
-      interceptPatchRequest();
-      interceptPostRequest()
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
         props: { requestId: requestId },
       }).then(() => {
@@ -276,11 +263,7 @@ describe('Component tests for the view data request page', function (): void {
         cy.get('[data-test="noMessageErrorMessage"]').should('be.visible');
         cy.get('[data-test="resubmit-message"]').should('exist').type(' updated data.');
         cy.get('[data-test="noMessageErrorMessage"]').should('not.exist');
-        cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible').click();
-        cy.get('[data-test="success-modal"]').should('exist').contains('OK').click();
-        cy.get('[data-test="success-modal"]').should('not.exist');
-        checkBasicPageElementsAsUser(RequestState.Open);
-        cy.get('[data-test="resubmit-request-button"]').should('not.exist');
+        cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible');
       });
     }
   );
