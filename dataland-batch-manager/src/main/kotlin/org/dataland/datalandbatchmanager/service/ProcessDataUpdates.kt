@@ -153,7 +153,7 @@ class ProcessDataUpdates
         }
 
         @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 50 10 * * *")
+        @Scheduled(cron = "0 */10 * * * *")
         private fun processRequestPriorityUpdates() {
             logger.info("Running scheduled update of request priorities.")
             waitForDataSourcingService()
