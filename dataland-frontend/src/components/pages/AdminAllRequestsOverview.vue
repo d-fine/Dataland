@@ -231,12 +231,6 @@ import {
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type { DataTypeEnum } from '@clients/backend';
-import {
-  type ExtendedStoredDataRequest,
-  type GetDataRequestsDataTypeEnum,
-  type RequestPriority,
-  type RequestStatus,
-} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -245,6 +239,7 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
+import {ExtendedStoredRequest, RequestState} from "@clients/datasourcingservice";
 
 const frameworkFilter = ref();
 const datasetsPerPage = 100;
@@ -255,7 +250,7 @@ const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
 const rowsPerPage = ref(100);
 const firstRowIndex = ref(0);
-const currentDataRequests = ref<ExtendedStoredDataRequest[]>([]);
+const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
 const searchBarInputEmail = ref('');
 const searchBarInputComment = ref('');
 const searchBarInputCompanySearchString = ref('');
@@ -316,8 +311,8 @@ async function getAllRequestsForFilters() {
   const selectedFrameworksAsSet = new Set<DataTypeEnum>(
     selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType)
   );
-  const selectedRequestStatusesAsSet = new Set<RequestStatus>(
-    selectedRequestStatuses.value.map((selectableItem) => selectableItem.displayName as RequestStatus)
+  const selectedRequestStatusesAsSet = new Set<RequestState>(
+    selectedRequestStatuses.value.map((selectableItem) => selectableItem.displayName as RequestState)
   );
   const selectedPriorityAsSet = new Set<RequestPriority>(
     selectedPriorities.value.map((selectableItem) => selectableItem.displayName as RequestPriority)
