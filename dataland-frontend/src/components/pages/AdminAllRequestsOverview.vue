@@ -138,7 +138,7 @@
           </Column>
           <Column header="COMPANY" field="companyName" :sortable="false">
             <template #body="slotProps">
-              {{ slotProps.data.companyName }}
+              {{ slotProps.data.companyId }}
             </template>
           </Column>
           <Column header="FRAMEWORK" :sortable="false" field="dataType">
@@ -240,6 +240,7 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import {ExtendedStoredRequest, RequestState} from "@clients/datasourcingservice";
+import {GetDataRequestsDataTypeEnum} from "@clients/communitymanager";
 
 const frameworkFilter = ref();
 const datasetsPerPage = 100;
@@ -328,37 +329,17 @@ async function getAllRequestsForFilters() {
       const companySearchStringFilter = searchBarInputCompanySearchString.value || undefined;
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
 
-      const [dataResponse, countResponse] = await Promise.all([
-        apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-          selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-          undefined,
-          emailFilter,
-          commentFilter,
-          selectedRequestStatusesAsSet,
-          undefined,
-          selectedPriorityAsSet,
-          selectedReportingPeriodAsSet,
-          undefined,
-          companySearchStringFilter,
-          datasetsPerPage,
-          currentChunkIndex.value
-        ),
-        apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
-          selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-          undefined,
-          emailFilter,
-          commentFilter,
-          selectedRequestStatusesAsSet,
-          undefined,
-          selectedPriorityAsSet,
-          selectedReportingPeriodAsSet,
-          undefined,
-          companySearchStringFilter
+      const [dataResponse] = await Promise.all([
+        apiClientProvider.apiClients.requestController.searchRequests(
+            companySearchStringFilter,
+
+
+
         ),
       ]);
 
       currentDataRequests.value = dataResponse.data;
-      totalRecords.value = countResponse.data;
+     // totalRecords.value = countResponse.data;
     }
   } catch (error) {
     console.error(error);
