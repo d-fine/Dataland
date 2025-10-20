@@ -49,13 +49,13 @@ describe('Component tests for the view data request page', function (): void {
   /**
    * Mocks the api-manager answer for basic company information
    */
-  function interceptUserActiveDatasetOnMounted(hasActiveDataSet: boolean): void {
+  function interceptUserActiveDatasetOnMounted(hasActiveDataset: boolean): void {
     const dummyMetaData = {
       companyId: dummyCompanyId,
       dataType: dummyFramework,
     };
     cy.intercept(`**/api/metadata?**`, {
-      body: hasActiveDataSet ? [dummyMetaData] : [],
+      body: hasActiveDataset ? [dummyMetaData] : [],
       status: 200,
     });
   }

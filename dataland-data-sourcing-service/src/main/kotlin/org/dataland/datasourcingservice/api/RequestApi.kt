@@ -17,6 +17,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -299,7 +300,7 @@ interface RequestApi {
             ApiResponse(
                 responseCode = "400",
                 description = "At least one of your provided filters is not of the correct format.",
-                content = [Content(schema = Schema())],
+                content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
                 responseCode = "403",
@@ -308,37 +309,15 @@ interface RequestApi {
             ),
         ],
     )
-    @GetMapping(produces = ["application/json"])
+    @PostMapping(
+        value = ["/search"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun searchRequests(
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        companyId: String? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        dataType: String? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        reportingPeriod: String? = null,
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
-        )
-        @RequestParam(required = false)
-        requestState: RequestState? = null,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
-            required = false,
-        )
+    fun postRequestSearch(
+        @RequestBody
+        requestSearchFilter: RequestSearchFilter<String>,
         @RequestParam(defaultValue = "100")
         chunkSize: Int,
         @Parameter(
@@ -348,6 +327,40 @@ interface RequestApi {
         @RequestParam(defaultValue = "0")
         chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredRequest>>
+
+    /**
+     * Get the number of requests based on filters.
+     */
+    @Operation(
+        summary = "Get the number of requests based on filters.",
+        description =
+            "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, " +
+                "data type, reporting period or state.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully queried the number of requests."),
+            ApiResponse(
+                responseCode = "400",
+                description = "At least one of your provided filters is not of the correct format.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to query the number of requests.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @PostMapping(
+        value = ["/count"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun postRequestCountQuery(
+        @RequestBody
+        requestSearchFilter: RequestSearchFilter<String>,
+    ): ResponseEntity<Int>
 
     /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list

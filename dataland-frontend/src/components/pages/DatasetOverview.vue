@@ -6,7 +6,7 @@
         icon="pi pi-plus"
         label="NEW DATASET"
         data-test="newDatasetButton"
-        @click="linkToNewDataSet()"
+        @click="linkToNewDataset()"
         :pt="{ root: { style: 'display: flex; margin:var(--spacing-sm)' } }"
       />
     </div>
@@ -70,7 +70,7 @@ export default defineComponent({
     /**
      * Links the current instance or context to a new dataset, establishing a connection or association with it.
      */
-    linkToNewDataSet() {
+    linkToNewDataset() {
       void router.push('/companies/choose');
     },
     /**

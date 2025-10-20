@@ -26,4 +26,10 @@ data class BasicDataPointDimensions(
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
     )
     override val reportingPeriod: String,
-) : DataPointDimensions
+) : DataPointDimensions {
+    /**
+     * Converts the basic data point dimensions object to a basic data dimensions object by dropping the data point type
+     * @return the basic data dimensions object
+     */
+    fun toBaseDimensions(): BasicBaseDimensions = BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod)
+}
