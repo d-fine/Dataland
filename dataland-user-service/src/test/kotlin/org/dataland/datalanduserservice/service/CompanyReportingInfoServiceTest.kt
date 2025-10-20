@@ -79,7 +79,8 @@ class CompanyReportingInfoServiceTest {
                 .`when`<LocalDate> { LocalDate.now() }
                 .thenReturn(today)
             companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId))
-            val companyReportingYearAndSectorInfo = companyReportingInfoService.getCachedReportingYearAndSectorInformation()
+            val companyReportingYearAndSectorInfo =
+                companyReportingInfoService.getCachedReportingYearAndSectorInformation().toMap()
             assertEquals(
                 expectedReportingPeriod,
                 companyReportingYearAndSectorInfo

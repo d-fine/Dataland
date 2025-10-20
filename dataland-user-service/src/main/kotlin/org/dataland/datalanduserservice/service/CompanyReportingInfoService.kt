@@ -90,36 +90,46 @@ class CompanyReportingInfoService
             val storedFiscalYearEnd = storedCompany.companyInformation.fiscalYearEnd
             val reportingPeriodShift = storedCompany.companyInformation.reportingPeriodShift
 
-            if (storedFiscalYearEnd != null && reportingPeriodShift != null) {
-                val today = LocalDate.now()
-                val lowerBoundary = today.minusMonths(THRESHOLD_1_IN_MONTHS)
-                val upperBoundary = today.plusMonths(THRESHOLD_2_IN_MONTHS)
+            // First (early) return: required fields missing.
+            if (storedFiscalYearEnd == null || reportingPeriodShift == null) return null
 
-                val fiscalYearEnd =
-                    listOf(
-                        storedFiscalYearEnd.withYear(lowerBoundary.year),
-                        storedFiscalYearEnd.withYear(upperBoundary.year),
-                    ).firstOrNull {
-                        it.isAfter(lowerBoundary) && it.isBefore(upperBoundary)
-                    }
+            val reportingYear = resolveReportingYear(storedFiscalYearEnd, reportingPeriodShift)
+            val sector = resolveSectorType(storedCompany.companyInformation.sector)
 
-                val reportingYear = fiscalYearEnd?.plusYears(reportingPeriodShift.toLong())?.year
-
-                return if (reportingYear == null) {
-                    null
-                } else {
-                    ReportingPeriodAndSector(
-                        reportingPeriod = reportingYear.toString(),
-                        sector =
-                            when (storedCompany.companyInformation.sector?.lowercase()) {
-                                null -> SectorType.UNKNOWN
-                                SectorType.FINANCIALS.sectorName -> SectorType.FINANCIALS
-                                else -> SectorType.NONFINANCIALS
-                            },
-                    )
-                }
+            // Only one return now for both valid and invalid reportingYear
+            return if (reportingYear != null) {
+                ReportingPeriodAndSector(
+                    reportingPeriod = reportingYear.toString(),
+                    sector = sector,
+                )
             } else {
-                return null
+                null
             }
         }
+
+        private fun resolveReportingYear(
+            fiscalYearEnd: LocalDate,
+            reportingPeriodShift: Int,
+        ): Int? {
+            val today = LocalDate.now()
+            val lowerBoundary = today.minusMonths(THRESHOLD_1_IN_MONTHS)
+            val upperBoundary = today.plusMonths(THRESHOLD_2_IN_MONTHS)
+
+            val candidateFiscalYearEnd =
+                listOf(
+                    fiscalYearEnd.withYear(lowerBoundary.year),
+                    fiscalYearEnd.withYear(upperBoundary.year),
+                ).firstOrNull {
+                    it.isAfter(lowerBoundary) && it.isBefore(upperBoundary)
+                } ?: return null
+
+            return candidateFiscalYearEnd.plusYears(reportingPeriodShift.toLong()).year
+        }
+
+        private fun resolveSectorType(sector: String?): SectorType =
+            when (sector?.lowercase()) {
+                null -> SectorType.UNKNOWN
+                SectorType.FINANCIALS.sectorName -> SectorType.FINANCIALS
+                else -> SectorType.NONFINANCIALS
+            }
     }
