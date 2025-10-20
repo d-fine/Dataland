@@ -2,38 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Lake Kaylinview",
-			"headquartersPostalCode": null,
-			"sector": "solutions",
+			"headquarters": "Kirkland",
+			"headquartersPostalCode": "76207",
+			"sector": "markets",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"sbkazW0HZhVQ",
-					"KT68Clm7WCWn"
+					"I9RUsovUXEmT"
 				],
-				"PermId": [],
-				"Ticker": [
-					"MXsHJZE"
+				"PermId": [
+					"K74wC4ngXt"
 				],
-				"Duns": [
-					"wUDAYlV7K"
-				],
-				"VatNumber": [
-					"AcE5pYc9N"
-				],
-				"CompanyRegistrationNumber": [
-					"YSzD0togEqvWlZB"
-				]
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EH",
+			"countryCode": "KH",
 			"companyContactDetails": [
-				"Kayleigh.Strosin@example.com"
+				"Rick.Tremblay93@example.com",
+				"Helmer88@example.com",
+				"Adelia_Gutmann91@example.com",
+				"Wayne28@example.com"
 			],
 			"companyAlternativeNames": [
-				"Powlowski Inc"
+				"Okuneva - Ritchie"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://ambitious-teriyaki.biz/",
+			"companyLegalForm": null,
+			"website": "https://mindless-hydrolyse.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -50,6 +46,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	}
 ]

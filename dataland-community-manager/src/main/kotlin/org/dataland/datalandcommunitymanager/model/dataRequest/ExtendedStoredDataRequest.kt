@@ -1,5 +1,8 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 
 /**
@@ -18,18 +21,67 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  * @param adminComment the admin comment of the data request
  */
 data class ExtendedStoredDataRequest(
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_ID_EXAMPLE,
+    )
     val dataRequestId: String,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    )
     val userId: String,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+    )
     var userEmailAddress: String?,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.CREATION_TIMESTAMP_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.CREATION_TIMESTAMP_EXAMPLE,
+    )
     val creationTimestamp: Long,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
+    )
     val dataType: String,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+    )
     val reportingPeriod: String,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+    )
     val datalandCompanyId: String,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+    )
     val companyName: String,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.LAST_MODIFIED_DATE_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.LAST_MODIFIED_DATE_EXAMPLE,
+    )
     val lastModifiedDate: Long,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_STATUS_DESCRIPTION,
+    )
     val requestStatus: RequestStatus,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
+    )
     val accessStatus: AccessStatus,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
+    )
     val requestPriority: RequestPriority,
+    @field:Schema(
+        description = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
+    )
     var adminComment: String?,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String, userEmailAddress: String?) : this(

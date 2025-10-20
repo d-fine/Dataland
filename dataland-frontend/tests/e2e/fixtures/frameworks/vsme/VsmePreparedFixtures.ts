@@ -10,7 +10,7 @@ import { VsmeGenerator } from '@e2e/fixtures/frameworks/vsme/VsmeGenerator';
  */
 export function generateVsmePreparedFixtures(): Array<FixtureData<VsmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureToIdentifyItAsNoNullFields(generateVsmeFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToIdentifyItAsNoNullFields(generateVsmeFixtures(1, 0)[0]!));
   return preparedFixtures;
 }
 

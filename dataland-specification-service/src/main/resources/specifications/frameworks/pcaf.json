@@ -1,0 +1,54 @@
+{
+  "id" : "pcaf",
+  "name" : "PCAF",
+  "businessDefinition" : "Partnership for Carbon Accounting Financials",
+  "referencedReportJsonPath" : null,
+  "schema" : {
+    "general" : {
+      "general" : {
+        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+      },
+      "company" : {
+        "mainPcafSector" : "customEnumPcafMainSector",
+        "companyExchangeStatus" : "customEnumCompanyExchangeStatus"
+      }
+    },
+    "companyValue" : {
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "extendedDecimalMarketCapitalizationInEUR",
+        "bookValueOfDebtInEUR" : "extendedDecimalBookValueOfDebtInEUR",
+        "minoritiesInterestInEUR" : "extendedDecimalMinoritiesInterestInEUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityAndDebtInEUR" : "extendedDecimalTotalEquityAndDebtInEUR"
+      }
+    },
+    "environmental" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "extendedDecimalScope1GhgEmissionsInTonnes",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
+        "scope3GhgEmissionsInTonnes" : "extendedDecimalScope3GhgEmissionsInTonnes"
+      }
+    },
+    "companyValueEstimation" : {
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "extendedDecimalEstimatedMarketCapitalizationInEUR",
+        "bookValueOfDebtInEUR" : "extendedDecimalEstimatedBookValueOfDebtInEUR",
+        "minoritiesInterestInEUR" : "extendedDecimalEstimatedMinoritiesInterestInEUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityAndDebtInEUR" : "extendedDecimalEstimatedTotalEquityAndDebtInEUR"
+      }
+    },
+    "environmentalEstimation" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "extendedDecimalEstimatedScope1GhgEmissionsInTonnes",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalEstimatedScope2GhgEmissionsMarketBasedInTonnes",
+        "scope3GhgEmissionsInTonnes" : "extendedDecimalEstimatedScope3GhgEmissionsInTonnes"
+      }
+    }
+  }
+}

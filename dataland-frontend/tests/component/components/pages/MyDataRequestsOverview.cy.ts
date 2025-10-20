@@ -1,13 +1,13 @@
+import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
+import router from '@/router';
+import { DataTypeEnum } from '@clients/backend';
 import {
   AccessStatus,
   type ExtendedStoredDataRequest,
   RequestPriority,
   RequestStatus,
 } from '@clients/communitymanager';
-import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { DataTypeEnum } from '@clients/backend';
-import router from '@/router';
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'STATUS'];
@@ -51,17 +51,14 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.P2p,
+      DataTypeEnum.Lksg,
       '2020',
       'companyAnswered',
       'compA',
       RequestStatus.Answered,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.Sfdr,
       '2022',
@@ -70,10 +67,7 @@ before(function () {
       RequestStatus.Open,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyFinancials,
       '3021',
@@ -82,10 +76,7 @@ before(function () {
       RequestStatus.Resolved,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyNonFinancials,
       '2021',
@@ -94,12 +85,9 @@ before(function () {
       RequestStatus.Open,
       AccessStatus.Pending,
       RequestPriority.Low
-    )
-  );
-
-  mockDataRequests.push(
+    ),
     buildExtendedStoredDataRequest(
-      DataTypeEnum.EsgDatenkatalog,
+      DataTypeEnum.Sfdr,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
@@ -119,9 +107,9 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
     const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
-    sortingColumHeader.forEach((value) => {
+    for (const value of sortingColumHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
-      cy.get('[data-test="requested-Datasets-table"]')
+      cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
         .find('td')
         .contains('a-company-that-will-always-be-sorted-to-top')
@@ -129,14 +117,14 @@ describe('Component tests for the data requests search page', function (): void 
         .invoke('index')
         .should('eq', 0);
       cy.get(`table th:contains(${value})`).should('exist').click();
-      cy.get('[data-test="requested-Datasets-table"]')
+      cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
         .find('td')
         .contains('z-company-that-will-always-be-sorted-to-bottom')
         .parent()
         .invoke('index')
         .should('eq', 0);
-    });
+    }
   });
 
   it('Check page when there are no requested datasets', function (): void {
@@ -149,9 +137,9 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
-      cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
+      cy.get('[data-test="requested-datasets-table"]').should('not.exist');
+      cy.get('[data-test="myPortfoliosButton"]').should('exist').should('be.visible').click();
+      cy.get('@routerPush').should('have.been.calledWith', '/portfolios');
     });
   });
 
@@ -167,18 +155,18 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
 
-    cy.get('[data-test="requested-Datasets-table"]').should('exist');
-    expectedHeaders.forEach((value) => {
+    cy.get('[data-test="requested-datasets-table"]').should('exist');
+    for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
-    });
-    cy.get('[data-test="requested-Datasets-searchbar"]')
+    }
+    cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
       .type(inputValue)
       .should('have.value', inputValue)
       .invoke('attr', 'placeholder')
       .should('contain', placeholder);
-    cy.get('[data-test="requested-Datasets-frameworks"]').should('exist');
+    cy.get('[data-test="requested-datasets-frameworks"]').should('exist');
   });
 
   it('Check the content of the data table', function (): void {
@@ -200,14 +188,14 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
     });
 
-    expectedCompanys.forEach((value) => {
-      cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains(value).should('exist');
-    });
-    cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains('DummyName').should('not.exist');
-    expectedReportingPeriods.forEach((value) => {
-      cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains(value).should('exist');
-    });
-    cy.get('[data-test="requested-Datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
+    for (const value of expectedCompanys) {
+      cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
+    }
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('DummyName').should('not.exist');
+    for (const value of expectedReportingPeriods) {
+      cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
+    }
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
   });
 
   it('Check existence and functionality of searchbar and resolve button', function (): void {
@@ -221,13 +209,13 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-searchbar"]')
+      cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
         .type('companyNotAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('not.exist');
-      cy.get('[data-test="requested-Datasets-searchbar"]')
+      cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
@@ -238,15 +226,11 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check filter functionality and reset button', function (): void {
-    const expectedFrameworks = [
-      'WWF',
+    const expectedFrameworkNameSubstrings = [
       'SFDR',
       'EU Taxonomy',
-      'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'ESG Datenkatalog',
-      'für Corporate Schuldscheindarlehen',
     ];
 
     cy.intercept('**community/requests/user', {
@@ -256,20 +240,24 @@ describe('Component tests for the data requests search page', function (): void 
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then((mounted) => {
-      void mounted.wrapper.setData({
-        selectedFrameworks: [],
-      });
-      expectedFrameworks.forEach((value) => {
+    }).then(() => {
+      cy.get('[data-test="requested-datasets-frameworks"]')
+        .click()
+        .get('.p-multiselect-option')
+        .contains('LkSG')
+        .click();
+      cy.get('[data-test="requested-datasets-frameworks"]').click();
+      for (const value of expectedFrameworkNameSubstrings) {
         cy.get(`table tbody:contains(${value})`).should('not.exist');
-      });
-      cy.get('[data-test=reset-filter]').should('exist').click();
-      expectedFrameworks.forEach((value) => {
+      }
+      cy.get('[data-test="reset-filter"]').should('exist').click();
+      for (const value of expectedFrameworkNameSubstrings) {
         cy.get(`table tbody:contains(${value})`).should('exist');
-      });
+      }
       cy.get(`table tbody:contains("SME")`).should('not.exist');
     });
   });
+
   it('Check the functionality of rowClick event', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,
@@ -280,7 +268,7 @@ describe('Component tests for the data requests search page', function (): void 
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
-      cy.get('[data-test="requested-Datasets-table"]').within(() => {
+      cy.get('[data-test="requested-datasets-table"]').within(() => {
         cy.get('tr:last').click();
       });
       cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);

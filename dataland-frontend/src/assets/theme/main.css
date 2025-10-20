@@ -1,0 +1,83 @@
+@import '@/assets/scss/theme.scss';
+@import '@/assets/scss/forms.scss';
+@import '@/assets/scss/colors.scss';
+@import '@/assets/scss/units.scss';
+
+:root {
+  --font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --spacing-none: 0rem;
+  --spacing-xxxs: 0.125rem;
+  --spacing-xxs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  --spacing-xxxl: 4rem;
+  --spacing-xxxxl: 5rem;
+
+  /* MEDIA BREAKPOINTS */
+  --breakpoint-small: 768px;
+  --breakpoint-medium: 1024px;
+  --breakpoint-large: 1440px;
+  --breakpoint-extra-large: 1800px;
+
+  /* Formkit Style Override */
+  --fk-font-family: var(--font-family);
+  --fk-color-primary: var(--input-checked-color);
+  --fk-border-radius: 0;
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: unset;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-family) sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+}
+
+.dataland-info-text {
+  color: var(--p-gray-600);
+  font-style: italic;
+
+  &.small {
+    font-size: var(--font-size-xs);
+  }
+
+  &.normal {
+    font-size: var(--font-size-base);
+  }
+}

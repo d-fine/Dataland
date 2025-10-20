@@ -1,158 +1,115 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="0">
-      <TheContent class="min-h-screen paper-section relative">
-        <div
-          id="searchBarAndFiltersContainer"
-          class="w-full bg-white pt-4"
-          :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
-          ref="searchBarAndFiltersContainer"
-        >
-          <FrameworkDataSearchBar
-            id="frameworkDataSearchBar"
-            ref="frameworkDataSearchBar"
-            class="pl-4 m-0"
-            v-model="currentSearchBarInput"
-            :filter="currentCombinedFilter"
-            :chunk-size="rowsPerPage"
-            :current-page="currentPage"
-            :searchBarId="searchBarId"
-            :emit-search-results-array="true"
-            @search-confirmed="handleSearchConfirmed"
-            @companies-received="handleCompanyQuery"
+  <TheContent class="min-h-screen relative">
+    <div
+      id="searchBarAndFiltersContainer"
+      class="search-bar-and-filters-container"
+      :class="{ 'collapsed-search-container': isSearchBarContainerCollapsed }"
+    >
+      <FrameworkDataSearchBar
+        id="frameworkDataSearchBar"
+        ref="frameworkDataSearchBar"
+        v-model="currentSearchBarInput"
+        :filter="currentCombinedFilter"
+        :chunk-size="rowsPerPage"
+        :current-page="currentPage"
+        :emit-search-results-array="true"
+        @search-confirmed="handleSearchConfirmed"
+        @companies-received="handleCompanyQuery"
+      />
+
+      <div class="search-filters-panel">
+        <div>
+          <FrameworkDataSearchFilters
+            id="frameworkDataSearchFilters"
+            class="col-8"
+            ref="frameworkDataSearchFilters"
+            v-model:selected-country-codes="currentFilteredCountryCodes"
+            v-model:selected-frameworks="currentFilteredFrameworks"
+            v-model:selected-sectors="currentFilteredSectors"
           />
-
-          <div
-            id="searchFiltersPanel"
-            class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-            :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
-          >
-            <div class="flex" id="searchFiltersContainer">
-              <div
-                id="scrolledSearchToggler"
-                :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
-              >
-                <span class="mr-3 font-semibold">Search Data for Companies</span>
-                <PrimeButton
-                  name="search_bar_collapse"
-                  icon="pi pi-search"
-                  class="p-button-rounded surface-ground border-none m-2"
-                  @click="toggleSearchBar"
-                >
-                  <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-                </PrimeButton>
-              </div>
-
-              <FrameworkDataSearchFilters
-                id="frameworkDataSearchFilters"
-                class="ml-3"
-                ref="frameworkDataSearchFilters"
-                :show-heading="!pageScrolled || searchBarToggled"
-                v-model:selected-country-codes="currentFilteredCountryCodes"
-                v-model:selected-frameworks="currentFilteredFrameworks"
-                v-model:selected-sectors="currentFilteredSectors"
-              />
-            </div>
-
-            <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <BulkDataRequestButton />
-              <NewDatasetButton v-if="hasUserUploaderRights" />
-              <span>{{ currentlyVisiblePageText }}</span>
-            </div>
-          </div>
         </div>
 
-        <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
-          <p class="font-medium text-xl">Loading...</p>
-          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <div v-if="!isSearchBarContainerCollapsed" class="button-container">
+          <PrimeButton
+            v-if="hasUserUploaderRights"
+            icon="pi pi-plus"
+            label="NEW DATASET"
+            @click="linkToNewDatasetPage()"
+            data-test="newDatasetButton"
+          />
+          <span>{{ currentlyVisiblePageText }}</span>
         </div>
+      </div>
+    </div>
 
-        <FrameworkDataSearchResults
-          v-if="!waitingForDataToDisplay"
-          ref="searchResults"
-          :total-records="totalRecords"
-          :previous-records="previousRecords"
-          :rows-per-page="rowsPerPage"
-          :data="resultsArray"
-          @page-update="handlePageUpdate"
-        />
-      </TheContent>
-    </DatasetsTabMenu>
-    <TheFooter :is-light-version="true" :sections="footerContent" />
-  </AuthenticationWrapper>
+    <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
+      <p class="font-medium text-xl">Loading...</p>
+      <DatalandProgressSpinner />
+    </div>
+
+    <FrameworkDataSearchResults
+      v-if="!waitingForDataToDisplay"
+      ref="searchResults"
+      :total-records="totalRecords"
+      :previous-records="previousRecords"
+      :rows-per-page="rowsPerPage"
+      :data="resultsArray"
+      @page-update="handlePageUpdate"
+    />
+  </TheContent>
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import PrimeButton from 'primevue/button';
-import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { defineComponent, inject, ref } from 'vue';
-import { type DataTypeEnum, type BasicCompanyInformation } from '@clients/backend';
 import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
-import { parseQueryParamArray } from '@/utils/QueryParserUtils';
+import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
+import router from '@/router';
 import { arraySetEquals } from '@/utils/ArrayUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-import type Keycloak from 'keycloak-js';
-import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
-import router from '@/router';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { parseQueryParamArray } from '@/utils/QueryParserUtils';
+import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject, ref } from 'vue';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
 export default defineComponent({
   setup() {
     return {
-      searchBarAndFiltersContainer: ref<Element>(),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       searchResults: ref(),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   name: 'SearchCompaniesForFrameworkData',
   components: {
-    NewDatasetButton,
-    BulkDataRequestButton,
-    DatasetsTabMenu,
+    DatalandProgressSpinner,
     FrameworkDataSearchFilters,
-    AuthenticationWrapper,
-    TheHeader,
     TheContent,
     FrameworkDataSearchBar,
-    PrimeButton,
     FrameworkDataSearchResults,
-    TheFooter,
+    PrimeButton,
   },
   created() {
-    window.addEventListener('scroll', this.windowScrollHandler);
+    globalThis.addEventListener('scroll', () => this.handleScroll());
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
     this.scanQueryParams(this.route);
+    this.handleScroll();
   },
   data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
-      searchBarToggled: false,
-      pageScrolled: false,
       route: useRoute(),
-      footerContent,
       resultsArray: [] as Array<BasicCompanyInformation>,
-      latestScrollPosition: 0,
       currentSearchBarInput: '',
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
@@ -163,17 +120,12 @@ export default defineComponent({
         sectorFilter: [],
         countryCodeFilter: [],
       } as FrameworkDataSearchFilterInterface,
-      scrollEmittedByToggleSearchBar: false,
-      hiddenSearchBarHeight: 0,
-      searchBarId: 'search_bar_top',
+      isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
       currentPage: 0,
       totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
-      windowScrollHandler: (): void => {
-        this.handleScroll();
-      },
       hasUserUploaderRights: null as null | boolean,
     };
   },
@@ -203,30 +155,34 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
-      if (!this.waitingForDataToDisplay) {
-        if (totalSearchResults === 0) {
-          return 'No results';
-        } else {
-          const startIndex = this.currentPage * this.rowsPerPage;
-          const endIndex =
-            startIndex + (this.rowsPerPage - 1) >= totalSearchResults
-              ? totalSearchResults - 1
-              : startIndex + (this.rowsPerPage - 1);
-          return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
-        }
-      } else {
+      if (this.waitingForDataToDisplay) {
         return 'loading...';
+      } else if (totalSearchResults === 0) {
+        return 'No results';
+      } else {
+        const startIndex = this.currentPage * this.rowsPerPage;
+        const endIndex =
+          startIndex + (this.rowsPerPage - 1) >= totalSearchResults
+            ? totalSearchResults - 1
+            : startIndex + (this.rowsPerPage - 1);
+        return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
       }
     },
   },
   methods: {
+    /**
+     * Redirects to the new dataset page
+     */
+    linkToNewDatasetPage() {
+      void router.push('/companies/choose');
+    },
     /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
      * @param pageNumber the new page index
      */
     handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
+      if (pageNumber !== this.currentPage) {
         this.waitingForDataToDisplay = true;
         this.currentPage = pageNumber;
         this.previousRecords = this.currentPage * this.rowsPerPage;
@@ -237,30 +193,17 @@ export default defineComponent({
      * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
      */
     handleScroll() {
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
-      const windowScrollY = window.scrollY;
-      if (this.scrollEmittedByToggleSearchBar) {
-        this.scrollEmittedByToggleSearchBar = false;
-      } else {
-        if (this.searchBarToggled) {
-          this.searchBarToggled = false;
-          this.searchBarId = 'search_bar_top';
-          window.scrollBy(0, this.hiddenSearchBarHeight);
-        }
-        if (this.latestScrollPosition > windowScrollY) {
-          //ScrollUP event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop >= 60;
+      const y = window.scrollY || document.documentElement.scrollTop;
+      const collapseAt = 160;
+      const expandAt = 20;
+      const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
 
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        } else {
-          //ScrollDOWN event
-          this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 152;
-
-          this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
-        }
+      if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
+        this.isSearchBarContainerCollapsed = shouldCollapse;
+        this.frameworkDataSearchBar?.closeOverlay();
       }
+
+      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
     },
     /**
      * Parses the framework filter query parameters.
@@ -285,10 +228,7 @@ export default defineComponent({
      */
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
       const queryCountryCodes = route.query.countryCode;
-      if (queryCountryCodes) {
-        return parseQueryParamArray(queryCountryCodes);
-      }
-      return [];
+      return queryCountryCodes ? parseQueryParamArray(queryCountryCodes) : [];
     },
     /**
      * Parses the sector-filter query parameters.
@@ -297,10 +237,7 @@ export default defineComponent({
      */
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
       const querySectors = route.query.sector;
-      if (querySectors) {
-        return parseQueryParamArray(querySectors);
-      }
-      return [];
+      return querySectors ? parseQueryParamArray(querySectors) : [];
     },
     /**
      * Parses the search term query parameter
@@ -309,10 +246,7 @@ export default defineComponent({
      */
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
       const queryInput = route.query.input as string;
-      if (queryInput) {
-        return queryInput;
-      }
-      return '';
+      return queryInput || '';
     },
     /**
      * Updates the combined filter object if any of the local filters no longer match the combined filter object.
@@ -374,16 +308,13 @@ export default defineComponent({
 
       if (chunkIndex == 0) this.handlePageUpdate(0);
       this.waitingForDataToDisplay = false;
-      this.searchBarToggled = false;
 
       const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
-
       const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
-
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
-
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
+
       return router.push({
         name: 'Search Companies for Framework Data',
         query: {
@@ -403,32 +334,61 @@ export default defineComponent({
       this.waitingForDataToDisplay = true;
       this.currentSearchBarInput = companyNameFilter;
     },
-    /**
-     * Expands the searchbar that got collapsed when the user scrolled down
-     */
-    async toggleSearchBar() {
-      this.searchBarToggled = true;
-      this.scrollEmittedByToggleSearchBar = true;
-      if (this.searchBarAndFiltersContainer) {
-        this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer.clientHeight;
-      }
-      window.scrollBy(0, -this.hiddenSearchBarHeight);
-      await this.$nextTick();
-      this.searchBarId = 'search_bar_scrolled';
-    },
   },
   unmounted() {
-    window.removeEventListener('scroll', this.windowScrollHandler);
+    globalThis.removeEventListener('scroll', () => this.handleScroll());
   },
 });
 </script>
 
 <style scoped>
-.d-search-toggle {
-  z-index: 99;
-  top: 4rem;
+.search-filters-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
-.d-search-filters-panel {
-  height: 5rem;
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.search-bar-and-filters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 0;
+  width: 100%;
+  padding: var(--spacing-lg) 0 var(--spacing-xs) var(--spacing-lg);
+  background-color: var(--p-surface-0);
+  position: sticky;
+  top: var(--spacing-xxxl);
+  z-index: 10;
+  contain: paint;
+  will-change: padding-top;
+}
+
+.search-bar-and-filters-container #frameworkDataSearchBar {
+  width: 70%;
+}
+
+.collapsed-search-container {
+  flex-direction: row;
+  align-items: end;
+  padding-top: 0;
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+.button-container {
+  padding: 0 var(--spacing-xs);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
 }
 </style>

@@ -1,0 +1,17 @@
+{
+  "companyName": "Fantasy Company",
+  "headquarters": "Vienna",
+  "identifiers": {},
+  "countryCode": "AT",
+  "companyAlternativeNames": null,
+  "companyContactDetails": [
+    "test@fantasy.at"
+  ],
+  "companyLegalForm": null,
+  "headquartersPostalCode": null,
+  "sector": null,
+  "sectorCodeWz": null,
+  "isTeaserCompany": null,
+  "website": null,
+  "parentCompanyLei": null
+}

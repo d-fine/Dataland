@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -77,12 +78,12 @@ class DataMetaInformationManager(
      * Method to retrieve the dataset ID of the active dataset for a given set of [dataDimensions]
      * @param dataDimensions the data dimensions for which to retrieve the active dataset ID
      */
-    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDataDimensions): String? =
+    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDatasetDimensions): String? =
         dataMetaInformationRepository
             .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
                 reportingPeriod = dataDimensions.reportingPeriod,
                 companyId = dataDimensions.companyId,
-                dataType = dataDimensions.dataType,
+                dataType = dataDimensions.framework,
             )?.dataId
 
     /**
@@ -124,7 +125,7 @@ class DataMetaInformationManager(
         val dataMetaInformationEntities =
             dataMetaInformationRepository.getBulkActiveDatasets(
                 companyIds = dataDimensionFilter.companyIds,
-                dataTypes = dataDimensionFilter.dataTypesOrDataPointTypes,
+                dataTypes = dataDimensionFilter.dataTypes,
                 reportingPeriods = dataDimensionFilter.reportingPeriods,
             )
         return dataMetaInformationEntities.map { it.toBasicDataDimensions() }

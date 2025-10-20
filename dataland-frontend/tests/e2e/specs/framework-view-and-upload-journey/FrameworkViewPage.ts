@@ -3,23 +3,115 @@ import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cyp
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import {
-  DataTypeEnum,
-  type EutaxonomyFinancialsData,
-  type LksgData,
-  type SfdrData,
-  type PathwaysToParisData,
-} from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type LksgData, type SfdrData } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {
-  uploadFrameworkDataForLegacyFramework,
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+/**
+ * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
+ * in the search results table.
+ * @param frameworkQueryParam The query param set as framework filter
+ * @param searchStringQueryParam The query param set as search string
+ */
+function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
+  frameworkQueryParam: string,
+  searchStringQueryParam: string
+): void {
+  cy.intercept({ url: '/api/companies*', times: 2 }).as('searchCompanies');
+  cy.intercept({ url: '/api/companies/meta-information' }).as('fetchFilters');
+  cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+  verifySearchResultTableExists();
+  cy.wait('@searchCompanies');
+  cy.wait('@fetchFilters');
+  cy.get('[data-test="viewButton"]').first().click();
+}
+
+/**
+ * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
+ * @param companyName to type into the search bar
+ * @param isOnViewPage determines if cypress is expected to be on the view page
+ */
+function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
+  const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search-bar-input';
+  cy.intercept({
+    url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
+    times: 1,
+  }).as('autocompleteSuggestions');
+  cy.get(searchBarSelector).click();
+  cy.get(searchBarSelector).type(companyName, { force: true });
+  cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
+  const companySelector = '.p-autocomplete-option';
+  cy.get(companySelector).first().click({ force: true });
+}
+
+/**
+ * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
+ * "should"-operation on that HTML element
+ * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
+ * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
+ */
+function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
+  cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
+}
+
+/**
+ * Validates if the container which displays a specific status of the current dataset is present and contains
+ * the expected text.
+ * It also validates if the corresponding button in that container contains the expected text.
+ * @param expectedTextInContainer The expected disclaimer text in the display-status-container
+ * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
+ * @returns a Cypress Chainable containing the button of the display-status-container
+ */
+function validateDisplayStatusContainerAndGetButton(
+  expectedTextInContainer: string,
+  expectedButtonText: string
+): Cypress.Chainable {
+  return cy
+    .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
+    .find(`button > span:contains(${expectedButtonText})`);
+}
+
+/**
+ * Validates if all the column headers equal the passed values
+ * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
+ */
+function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
+  cy.get('.p-column-title').each((element, index, elements) => {
+    expect(elements).to.have.length(expectedColumnHeaders.length + 1);
+    if (index == 0) {
+      expect(element.text()).to.equal('KPIs');
+    } else {
+      expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
+    }
+  });
+}
+
+/**
+ * Validates if all the Data Date rows on the LkSG panel equal the passed values
+ * @param expectedDataDates The expected values in the row of the Data Date field
+ */
+function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
+  for (let i = 0; i < expectedDataDates.length; i++) {
+    getCellValueContainer('Data Date', i).should('have.text', expectedDataDates[i]);
+  }
+}
+
+/**
+ * Checks if none of the currently three possible error-blocks on the view-page are rendered.
+ *
+ */
+function validateNoErrorMessagesAreShown(): void {
+  getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
+  getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
+}
 
 describeIf(
   'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
@@ -29,10 +121,9 @@ describeIf(
   },
   function (): void {
     const uniqueCompanyMarker = Date.now().toString();
-    const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
+    const nameOfCompanyAlpha = 'company-alpha-with-three-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-      humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
       'Documents',
@@ -72,46 +163,6 @@ describeIf(
             cy.wrap($element).click({ force: true });
           }
         });
-    }
-
-    /**
-     * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
-     * in the search results table.
-     * @param frameworkQueryParam The query param set as framework filter
-     * @param searchStringQueryParam The query param set as search string
-     */
-    function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-      frameworkQueryParam: string,
-      searchStringQueryParam: string
-    ): void {
-      cy.intercept({ url: '/api/companies*', times: 2 }).as('searchCompanies');
-      cy.intercept({ url: '/api/companies/meta-information' }).as('fetchFilters');
-      cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-      verifySearchResultTableExists();
-      cy.wait('@searchCompanies');
-      cy.wait('@fetchFilters');
-      const companySelector = 'span:contains(VIEW)';
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(100);
-      cy.get(companySelector).first().click();
-    }
-
-    /**
-     * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
-     * @param companyName to type into the search bar
-     * @param isOnViewPage determines if cypress is expected to be on the view page
-     */
-    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
-      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
-      cy.intercept({
-        url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
-        times: 1,
-      }).as('autocompleteSuggestions');
-      cy.get(searchBarSelector).click();
-      cy.get(searchBarSelector).type(companyName, { force: true });
-      cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
-      const companySelector = '.p-autocomplete-item';
-      cy.get(companySelector).first().click({ force: true });
     }
 
     /**
@@ -155,28 +206,6 @@ describeIf(
     }
 
     /**
-     * Checks if none of the currently three possible error-blocks on the view-page are rendered.
-     *
-     */
-    function validateNoErrorMessagesAreShown(): void {
-      getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
-    }
-
-    /**
-     * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
-     * "should"-operation on that HTML element
-     * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
-     * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
-     */
-    function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
-      cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
-    }
-
-    /**
      * Opens the framework dropdown and selects the framework passed as input if it is found
      * @param frameworkToSelect The framework/item that shall be selected
      */
@@ -185,55 +214,6 @@ describeIf(
       cy.get(`${dropdownItemsSelector}:contains(${humanizeStringOrNumber(frameworkToSelect)})`).click({
         force: true,
       });
-    }
-
-    /**
-     * Clicks the back button on the page.
-     */
-    function clickBackButton(): void {
-      cy.get('[data-test="back-button"]').click();
-    }
-
-    /**
-     * Validates if the container which displays a specific status of the current dataset is present and contains
-     * the expected text.
-     * It also validates if the corresponding button in that container contains the expected text.
-     * @param expectedTextInContainer The expected disclaimer text in the display-status-container
-     * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
-     * @returns a Cypress Chainable containing the button of the display-status-container
-     */
-    function validateDisplayStatusContainerAndGetButton(
-      expectedTextInContainer: string,
-      expectedButtonText: string
-    ): Cypress.Chainable {
-      return cy
-        .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
-        .find(`button > span:contains(${expectedButtonText})`);
-    }
-
-    /**
-     * Validates if all the column headers equal the passed values
-     * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
-     */
-    function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
-      cy.get('.p-column-title').each((element, index, elements) => {
-        expect(elements).to.have.length(expectedColumnHeaders.length + 1);
-        if (index == 0) {
-          expect(element.text()).to.equal('KPIs');
-        } else {
-          expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
-        }
-      });
-    }
-
-    /**
-     * Validates if all the Data Date rows on the LkSG panel equal the passed values
-     * @param expectedDataDates The expected values in the row of the Data Date field
-     */
-    function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
-      for (let i = 0; i < expectedDataDates.length; i++) {
-        getCellValueContainer('Data Date', i).should('have.text', expectedDataDates[i]);
-      }
     }
 
     /**
@@ -295,16 +275,7 @@ describeIf(
               token,
               companyIdOfAlpha,
               '2019',
-              getPreparedFixture('lighweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
-            );
-          })
-          .then(() => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.P2p,
-              token,
-              companyIdOfAlpha,
-              '2015',
-              p2pFixtures[0].t
+              getPreparedFixture('lightweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
             );
           });
       });
@@ -316,8 +287,8 @@ describeIf(
      */
     function uploadCompanyBetaAndData(): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
-          .then(async (storedCompany) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
+          async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
             return uploadFrameworkDataForPublicToolboxFramework(
               LksgBaseFrameworkDefinition,
@@ -326,30 +297,18 @@ describeIf(
               '2015',
               getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
             );
-          })
-          .then(async () => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.P2p,
-              token,
-              companyIdOfBeta,
-              '2014',
-              p2pFixtures[1].t
-            );
-          });
+          }
+        );
       });
     }
 
     let euTaxoFinancialPreparedFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
-    let p2pFixtures: Array<FixtureData<PathwaysToParisData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
-      });
-      cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {
-        p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       });
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -382,14 +341,14 @@ describeIf(
         ' redirects the user to the company cockpit',
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, nameOfCompanyAlpha);
 
         cy.get('[data-test=toggleShowAll]').scrollIntoView();
         cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
-        validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
+        validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
-        validateChosenFramework(DataTypeEnum.P2p);
+        validateChosenFramework(DataTypeEnum.Lksg);
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
         validateChosenFramework(DataTypeEnum.Sfdr);
@@ -406,10 +365,10 @@ describeIf(
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      selectFrameworkInDropdown(DataTypeEnum.P2p);
+      selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.P2p);
+      validateChosenFramework(DataTypeEnum.Sfdr);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -418,10 +377,10 @@ describeIf(
       validateChosenFramework(DataTypeEnum.Lksg);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      clickBackButton();
+      cy.go('back');
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.P2p);
+      validateChosenFramework(DataTypeEnum.Sfdr);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
@@ -444,7 +403,7 @@ describeIf(
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
 
-      clickBackButton();
+      cy.go('back');
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
@@ -457,7 +416,7 @@ describeIf(
       cy.contains('2023-04-18').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
-      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active').click();
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'VIEW ACTIVE').click();
 
       cy.url().should(
         'contain',
@@ -466,7 +425,7 @@ describeIf(
       cy.contains('2023-06-22').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
-      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All').click();
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL').click();
 
       cy.url().should('contain', `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
       cy.contains('2022-07-30').should('exist');
@@ -474,7 +433,7 @@ describeIf(
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22', '2022-07-30']);
       cy.contains('This dataset is superseded').should('not.exist');
       getElementAndAssertExistence('datasetDisplayStatusContainer', 'not.exist');
-      clickBackButton();
+      cy.go('back');
 
       cy.url().should(
         'contain',
@@ -483,8 +442,8 @@ describeIf(
       cy.contains('2022-07-30').should('not.exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
-      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All');
-      clickBackButton();
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'VIEW ALL');
+      cy.go('back');
 
       cy.url().should(
         'contain',
@@ -493,7 +452,7 @@ describeIf(
       cy.contains('2023-04-18').should('exist');
       validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
       validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
-      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active');
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'VIEW ACTIVE');
     });
 
     it(

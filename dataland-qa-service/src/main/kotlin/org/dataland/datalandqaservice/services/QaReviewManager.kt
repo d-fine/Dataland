@@ -97,7 +97,7 @@ class QaReviewManager(
         val offset = (chunkIndex) * (chunkSize)
         val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return qaReviewRepository
-            .getSortedAndFilteredQaReviewMetadataSet(
+            .getSortedAndFilteredQaReviewMetadataset(
                 QaSearchFilter(
                     dataTypes = dataTypes,
                     reportingPeriods = reportingPeriods,
@@ -304,7 +304,7 @@ class QaReviewManager(
             )
 
         return qaReviewRepository
-            .getSortedAndFilteredQaReviewMetadataSet(searchFilter)
+            .getSortedAndFilteredQaReviewMetadataset(searchFilter)
             .maxByOrNull { it.timestamp }
             ?.dataId
     }

@@ -13,7 +13,7 @@ export function getBasePrivateFrameworkDefinition(
 ): BasePrivateFrameworkDefinition<object> | undefined {
   for (const key in PrivateFrameworkDefinitions) {
     const frameworkDefinition = PrivateFrameworkDefinitions[key];
-    if (frameworkDefinition.identifier === identifier) {
+    if (frameworkDefinition?.identifier === identifier) {
       return frameworkDefinition;
     }
   }

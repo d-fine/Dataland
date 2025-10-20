@@ -1,17 +1,16 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import NuclearAndGasDataTable from '@/components/general/NuclearAndGasDataTable.vue';
-import { isNonEligible } from '@/utils/NuclearAndGasUtils';
 import type {
   ExtendedDataPointNuclearAndGasAlignedDenominator,
   ExtendedDataPointNuclearAndGasAlignedNumerator,
   ExtendedDataPointNuclearAndGasEligibleButNotAligned,
   ExtendedDataPointNuclearAndGasNonEligible,
 } from '@clients/backend';
+import { buildDisplayValueWhenDataPointMetaInfoIsAvailable } from '@/components/resources/dataTable/conversion/DataPoints';
 
 export const nuclearAndGasModalColumnHeaders = {
   nuclearAndGasAlignedOrEligible: {
@@ -43,41 +42,51 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!nuclearAndGasExtendedDataPoint?.value) {
+  if (
+    !nuclearAndGasExtendedDataPoint ||
+    (!nuclearAndGasExtendedDataPoint.value &&
+      !nuclearAndGasExtendedDataPoint.dataSource &&
+      !nuclearAndGasExtendedDataPoint.comment &&
+      !nuclearAndGasExtendedDataPoint.quality)
+  ) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
-    let activityCount: number;
+  }
 
-    if (isNonEligible(nuclearAndGasExtendedDataPoint.value)) {
-      activityCount = Object.values(nuclearAndGasExtendedDataPoint.value).filter((value) => value !== null).length;
-    } else {
-      activityCount = Object.values(nuclearAndGasExtendedDataPoint.value).filter(
-        (field) => field && Object.values(field).some((value) => value !== null)
-      ).length;
-    }
+  if (!nuclearAndGasExtendedDataPoint.value) {
+    return {
+      displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+      displayValue: buildDisplayValueWhenDataPointMetaInfoIsAvailable(
+        MLDTDisplayObjectForEmptyString,
+        fieldLabel,
+        nuclearAndGasExtendedDataPoint
+      ),
+    };
+  }
 
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
-      displayValue: {
-        label: `Show ${activityCount} activit${activityCount > 1 ? 'ies' : 'y'}`,
-        modalComponent: NuclearAndGasDataTable,
-        modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            columnHeaders: nuclearAndGasModalColumnHeaders,
-            input: nuclearAndGasExtendedDataPoint.value,
-            dataPointDisplay: {
-              dataSource: nuclearAndGasExtendedDataPoint.dataSource,
-              comment: nuclearAndGasExtendedDataPoint.comment,
-              quality: nuclearAndGasExtendedDataPoint.quality,
-            },
+  return {
+    displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
+    displayValue: {
+      label: `Show Table`,
+      modalComponent: NuclearAndGasDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          columnHeaders: nuclearAndGasModalColumnHeaders,
+          input: nuclearAndGasExtendedDataPoint.value,
+          dataPointDisplay: {
+            dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+            comment: nuclearAndGasExtendedDataPoint.comment,
+            quality: nuclearAndGasExtendedDataPoint.quality,
           },
         },
       },
-    };
-  }
+      dataSource: nuclearAndGasExtendedDataPoint.dataSource,
+      comment: nuclearAndGasExtendedDataPoint.comment ?? undefined,
+      quality: nuclearAndGasExtendedDataPoint.quality ?? undefined,
+    },
+  };
 }

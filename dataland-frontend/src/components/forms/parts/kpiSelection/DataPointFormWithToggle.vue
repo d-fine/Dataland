@@ -1,7 +1,7 @@
 <template>
   <DataPointHeader :name="kpiNameMappings[name]" />
   <div data-test="dataPointToggle" class="form-field vertical-middle">
-    <InputSwitch
+    <ToggleSwitch
       data-test="dataPointToggleButton"
       inputId="dataPointIsAvailableSwitch"
       @click="dataPointAvailableToggle"
@@ -155,7 +155,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
@@ -168,7 +168,7 @@ import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/util
 
 export default defineComponent({
   name: 'DataPointFormWithToggle',
-  components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, ToggleSwitch },
   emits: ['dataPointAvailableToggle'],
   data: () => ({
     pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
@@ -194,7 +194,13 @@ export default defineComponent({
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
-      if (!newValue) {
+      if (newValue) {
+        this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
+        this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
+        this.currentValue = this.valueBeforeDataPointWasDisabled;
+        this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
+      } else {
         this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
         this.valueBeforeDataPointWasDisabled = this.currentValue;
         this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
@@ -205,12 +211,6 @@ export default defineComponent({
         this.currentReportValue = '';
         this.currentPageValue = '';
         this.currentQualityValue = null;
-      } else {
-        this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
-        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
-        this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
-        this.currentValue = this.valueBeforeDataPointWasDisabled;
-        this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
       }
     },
   },
@@ -272,3 +272,14 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.next-to-each-other {
+  display: flex;
+  gap: 1rem;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+</style>

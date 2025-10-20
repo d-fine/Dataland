@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
@@ -41,12 +43,48 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getInfoOnDatasets(
-        @RequestParam dataTypes: Set<DataTypeEnum>?,
-        @RequestParam reportingPeriods: Set<String>?,
-        @RequestParam companyName: String?,
-        @RequestParam(defaultValue = "Pending") qaStatus: QaStatus,
-        @RequestParam(defaultValue = "10") chunkSize: Int,
-        @RequestParam(defaultValue = "0") chunkIndex: Int,
+        @RequestParam
+        @Parameter(
+            name = "dataTypes",
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataTypeEnum>?,
+        @RequestParam
+        @Parameter(
+            name = "reportingPeriods",
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriods: Set<String>?,
+        @RequestParam
+        @Parameter(
+            name = "companyName",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            required = false,
+        )
+        companyName: String?,
+        @RequestParam(defaultValue = "Pending")
+        @Parameter(
+            name = "qaStatus",
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        qaStatus: QaStatus,
+        @RequestParam(defaultValue = "10")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>>
 
     /**
@@ -76,6 +114,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getQaReviewResponseByDataId(
+        @Parameter(
+            name = "dataId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataId") dataId: UUID,
     ): ResponseEntity<QaReviewResponse>
 
@@ -100,10 +144,34 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeQaStatus(
+        @Parameter(
+            name = "dataId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataId") dataId: String,
-        @RequestParam qaStatus: QaStatus,
-        @RequestParam comment: String? = null,
-        @RequestParam overwriteDataPointQaStatus: Boolean = false,
+        @RequestParam
+        @Parameter(
+            name = "qaStatus",
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = true,
+        )
+        qaStatus: QaStatus,
+        @RequestParam
+        @Parameter(
+            name = "comment",
+            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+            required = false,
+        )
+        comment: String? = null,
+        @RequestParam
+        @Parameter(
+            name = "overwriteDataPointQaStatus",
+            description = BackendOpenApiDescriptionsAndExamples.OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        overwriteDataPointQaStatus: Boolean = false,
     )
 
     /** A method to count open reviews based on specific filters.
@@ -130,9 +198,29 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getNumberOfPendingDatasets(
-        @RequestParam dataTypes: Set<DataTypeEnum>?,
-        @RequestParam reportingPeriods: Set<String>?,
-        @RequestParam companyName: String?,
+        @RequestParam
+        @Parameter(
+            name = "dataTypes",
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataTypes: Set<DataTypeEnum>?,
+        @RequestParam
+        @Parameter(
+            name = "reportingPeriods",
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriods: Set<String>?,
+        @RequestParam
+        @Parameter(
+            name = "companyName",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            required = false,
+        )
+        companyName: String?,
     ): ResponseEntity<Int>
 
     /**
@@ -153,18 +241,54 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getDataPointQaReviewInformation(
-        @RequestParam companyId: String?,
-        @RequestParam dataPointType: String?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam qaStatus: QaStatus?,
+        @RequestParam
         @Parameter(
-            description =
-                "If set, only show the most recent QA review information for each data point " +
-                    "(independent of whether the data point is active or not).",
+            name = "companyId",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
         )
-        @RequestParam(defaultValue = true.toString()) onlyLatest: Boolean?,
-        @RequestParam(defaultValue = "10") chunkSize: Int?,
-        @RequestParam(defaultValue = "0") chunkIndex: Int?,
+        companyId: String?,
+        @RequestParam
+        @Parameter(
+            name = "dataType",
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            required = false,
+        )
+        dataType: String?,
+        @RequestParam
+        @Parameter(
+            name = "reportingPeriod",
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = false,
+        )
+        reportingPeriod: String?,
+        @RequestParam
+        @Parameter(
+            name = "qaStatus",
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        qaStatus: QaStatus?,
+        @RequestParam(defaultValue = "true")
+        @Parameter(
+            name = "showOnlyActive",
+            description = BackendOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
+        )
+        showOnlyActive: Boolean,
+        @RequestParam(defaultValue = "10")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
@@ -194,6 +318,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
+        @Parameter(
+            name = "dataPointId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataPointId") dataPointId: String,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
@@ -218,9 +348,26 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeDataPointQaStatus(
+        @Parameter(
+            name = "dataPointId",
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
+            required = true,
+        )
         @PathVariable("dataPointId") dataPointId: String,
-        @RequestParam qaStatus: QaStatus,
-        @RequestParam comment: String? = null,
+        @RequestParam
+        @Parameter(
+            name = "qaStatus",
+            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = true,
+        )
+        qaStatus: QaStatus,
+        @RequestParam
+        @Parameter(
+            name = "comment",
+            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+        )
+        comment: String? = null,
     )
 
     /**

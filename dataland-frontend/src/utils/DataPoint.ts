@@ -27,18 +27,20 @@ export type DataPointDisplay = {
  */
 export function getFilledKpis(dataResponseData: object): string[] {
   const listOfFilledKpis: string[] = [];
-  Object.values(dataResponseData).forEach((category) => {
-    if (category && typeof category === 'object') {
-      Object.values(category as ObjectType).forEach((subCategory) => {
-        if (subCategory && typeof subCategory === 'object') {
-          Object.keys(subCategory).forEach((kpi) => {
-            if (subCategory[kpi as keyof typeof subCategory]) {
-              listOfFilledKpis.push(kpi);
-            }
-          });
+
+  for (const category of Object.values(dataResponseData)) {
+    if (!category || typeof category !== 'object') continue;
+
+    for (const subCategory of Object.values(category as ObjectType)) {
+      if (!subCategory || typeof subCategory !== 'object') continue;
+
+      for (const [kpi, value] of Object.entries(subCategory)) {
+        if (value) {
+          listOfFilledKpis.push(kpi);
         }
-      });
+      }
     }
-  });
+  }
+
   return listOfFilledKpis;
 }

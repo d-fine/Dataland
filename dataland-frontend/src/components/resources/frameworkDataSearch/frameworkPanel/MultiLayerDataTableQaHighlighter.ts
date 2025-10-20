@@ -62,11 +62,11 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 ): MLDTSectionConfig<T> {
   const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
   const displayStatusGettersToPassDownToChildren = ((): Array<(dataset: T) => boolean> => {
-    if (!displayStatusGettersOfAllParents) {
-      return [displayStatusGetterOfThisSection];
-    } else {
+    if (displayStatusGettersOfAllParents) {
       displayStatusGettersOfAllParents.push(displayStatusGetterOfThisSection);
       return displayStatusGettersOfAllParents;
+    } else {
+      return [displayStatusGetterOfThisSection];
     }
   })();
 
@@ -124,16 +124,14 @@ function editCellConfigForHighlightingHiddenFields<T>(
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
       const areAllParentSectionsDisplayed = (): boolean => {
-        if (!cellHasAtLeastOneParent) {
-          return true;
-        } else {
+        if (cellHasAtLeastOneParent) {
           for (const showDisplay of displayStatusGettersOfAllParents) {
             if (!showDisplay(dataset)) {
               return false;
             }
           }
-          return true;
         }
+        return true;
       };
       if (
         areAllParentSectionsDisplayed() &&
@@ -166,9 +164,9 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
       if (!!value && 'modalOptions' in value) {
         return !!(
           // prettier-ignore
-          (value.modalOptions?.data?.listOfRowContents?.length ||
-            value.modalOptions?.data?.input ||
-            value.modalOptions?.data?.values?.length)
+          (value.modalOptions?.data?.listOfRowContents?.length ??
+          value.modalOptions?.data?.input ??
+          value.modalOptions?.data?.values?.length)
         );
       } else if (!!value && 'innerContents' in value) {
         return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != '';

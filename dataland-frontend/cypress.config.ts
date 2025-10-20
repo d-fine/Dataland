@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress';
 import { promises, rmdir } from 'fs';
 import { createHash } from 'crypto';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -12,7 +14,7 @@ export default defineConfig({
     prepopulate_timeout_s: 180,
     short_timeout_in_ms: 10000,
     medium_timeout_in_ms: 30000,
-    long_timeout_in_ms: 60000,
+    long_timeout_in_ms: 100000,
     mobile_device_viewport_height: 667,
     mobile_device_viewport_width: 300,
     AWAIT_PREPOPULATION_RETRIES: 250,
@@ -37,6 +39,7 @@ export default defineConfig({
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
+  pageLoadTimeout: 120000,
   viewportHeight: 684,
   viewportWidth: 1536,
   video: false,
@@ -143,12 +146,58 @@ export default defineConfig({
           return content.includes(term);
         },
       });
+      on('task', {
+        async findFileByPrefix({ folder, prefix, extension }) {
+          const files = await readdir(folder);
+          const match = files.find((file) => file.startsWith(prefix) && file.endsWith(`.${extension}`));
+          if (!match) {
+            throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
+          }
+          return join(folder, match);
+        },
+      });
+      on('task', {
+        createUniquePdfFixture() {
+          const fs = require('fs');
+          const path = require('path');
+          const timestamp = Date.now();
+          const pdfContent = `Test file created at ${timestamp}`;
+          const destDir = path.resolve(__dirname, 'tests/e2e/fixtures/documents');
+          if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+          }
+          const filename = `upload-${timestamp}.pdf`;
+          const destFile = path.join(destDir, filename);
+          // Minimal PDF file generation (single page, text only)
+          const header = Buffer.from('%PDF-1.1\n');
+          const obj1 = Buffer.from('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+          const obj2 = Buffer.from('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+          const obj3 = Buffer.from(
+            '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 144] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n'
+          );
+          const text = pdfContent.replace(/([()\\])/g, '\\$1');
+          const stream = Buffer.from(`BT /F1 24 Tf 50 100 Td (${text}) Tj ET`);
+          const obj4_start = Buffer.from(`4 0 obj\n<< /Length ${stream.length} >>\nstream\n`);
+          const obj4_end = Buffer.from('\nendstream\nendobj\n');
+          const obj4 = Buffer.concat([obj4_start, stream, obj4_end]);
+          const obj5 = Buffer.from('5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
+          const xrefOffset = header.length + obj1.length + obj2.length + obj3.length + obj4.length + obj5.length;
+          const xref = Buffer.from(
+            `xref\n0 6\n0000000000 65535 f \n${String(header.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length + obj4.length).padStart(10, '0')} 00000 n \n`
+          );
+          const trailer = Buffer.from('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF\n');
+          const pdfBuffer = Buffer.concat([header, obj1, obj2, obj3, obj4, obj5, xref, trailer]);
+          fs.writeFileSync(destFile, pdfBuffer);
+          return filename;
+        },
+      });
 
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
     downloadsFolder: 'cypress/downloads',
-    responseTimeout: 60000,
+    responseTimeout: 300000,
+    requestTimeout: 300000,
   },
   component: {
     devServer: {

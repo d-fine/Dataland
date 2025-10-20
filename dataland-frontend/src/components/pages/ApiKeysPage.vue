@@ -1,186 +1,173 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-
-    <TheContent class="paper-section flex">
-      <div class="col-12 text-left pb-0">
-        <BackButton />
-        <h1>{{ pageTitle }}</h1>
-      </div>
-      <div class="grid m-0">
-        <MiddleCenterDiv v-if="waitingForData" class="col-12">
-          <div class="col-6 md:col-8 lg:col-12">
-            <p class="font-medium text-xl">Loading Api Key information...</p>
-            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-          </div>
-        </MiddleCenterDiv>
-
-        <MiddleCenterDiv
-          data-test="noApiKeyWelcomeComponent"
-          v-if="!userAlreadyHasApiKey && !waitingForData && pageState !== 'create'"
-          class="col-12"
-        >
-          <div>
-            <img alt="light bulb" src="@/assets/images/elements/bulb_icon.svg" />
-            <p class="font-medium text-xl text-color-third">You have no API Key!</p>
-            <PrimeButton @click="setActivePageState('create')" label="CREATE NEW API KEY" icon="pi pi-plus" />
-          </div>
-        </MiddleCenterDiv>
-
-        <div
-          data-test="CreateApiKeyCard"
-          class="col-12 md:col-7 lg:col-7"
-          v-if="pageState === 'create' && !waitingForData"
-        >
-          <CreateApiKeyCard
-            :userRoles="userRolesAccordingToKeycloak"
-            @cancelCreate="setActivePageState('view')"
-            @generateApiKey="generateApiKey"
-          />
+  <TheContent class="flex">
+    <div class="col-12 text-left pb-0">
+      <h1>{{ pageTitle }}</h1>
+    </div>
+    <div class="grid m-0">
+      <MiddleCenterDiv v-if="waitingForData" class="col-12">
+        <div class="col-6 md:col-8 lg:col-12">
+          <p class="font-medium text-xl">Loading Api Key information...</p>
+          <DatalandProgressSpinner />
         </div>
+      </MiddleCenterDiv>
 
-        <div
-          data-test="apiKeyInfo"
-          class="apiKeyInfo col-12 md:col-7 lg:col-7"
-          v-if="userAlreadyHasApiKey && !waitingForData && pageState === 'view'"
-        >
-          <div class="">
-            <MessageComponent
-              data-test="newKeyHolder"
-              v-if="newKey.length"
-              severity="success"
-              :closable="false"
-              class="border-2"
-            >
-              <template #text-info>
-                <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
-                <div class="my-2">
-                  <div class="p-input-icon-right border-round-sm paper-section pl-1 col-10 fs-lg">
-                    <PrimeTextarea
-                      ref="newKeyHolderRef"
-                      @focus="($event.target as HTMLTextAreaElement).select()"
-                      :autoResize="true"
-                      cols="5"
-                      v-model="newKey"
-                      id="newKeyHolder"
-                      readonly
-                      placeholder="Key goes here"
-                      class="p-inputText p-component col-10"
-                    />
-                    <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button fs-lg" />
-                  </div>
+      <MiddleCenterDiv
+        data-test="noApiKeyWelcomeComponent"
+        v-if="!userAlreadyHasApiKey && !waitingForData && pageState !== 'create'"
+        class="col-12"
+      >
+        <div>
+          <img alt="light bulb" src="@/assets/images/elements/bulb_icon.svg" />
+          <p class="font-medium text-xl text-color-third">You have no API Key!</p>
+          <PrimeButton @click="setActivePageState('create')" label="CREATE NEW API KEY" icon="pi pi-plus" />
+        </div>
+      </MiddleCenterDiv>
+
+      <div
+        data-test="CreateApiKeyCard"
+        class="col-12 md:col-7 lg:col-7"
+        v-if="pageState === 'create' && !waitingForData"
+      >
+        <CreateApiKeyCard
+          :userRoles="userRolesAccordingToKeycloak"
+          @cancelCreate="setActivePageState('view')"
+          @generateApiKey="generateApiKey"
+        />
+      </div>
+
+      <div
+        data-test="apiKeyInfo"
+        class="apiKeyInfo col-12 md:col-7 lg:col-7"
+        v-if="userAlreadyHasApiKey && !waitingForData && pageState === 'view'"
+      >
+        <div class="">
+          <MessageComponent
+            data-test="newKeyHolder"
+            v-if="newKey.length"
+            severity="success"
+            :closable="false"
+            class="border-2"
+          >
+            <template #text-info>
+              <div class="col-12">Make sure to copy your API Key now. You will not be able to access it again.</div>
+              <div class="my-2">
+                <div class="p-input-icon-right border-round-sm pl-1 col-10 fs-lg">
+                  <PrimeTextarea
+                    ref="newKeyHolderRef"
+                    @focus="($event.target as HTMLTextAreaElement).select()"
+                    :autoResize="true"
+                    cols="5"
+                    v-model="newKey"
+                    id="newKeyHolder"
+                    readonly
+                    placeholder="Key goes here"
+                    class="p-inputText p-component col-10"
+                  />
+                  <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button fs-lg" />
                 </div>
-              </template>
-            </MessageComponent>
+              </div>
+            </template>
+          </MessageComponent>
 
-            <MessageComponent data-test="regenerateApiKeyMessage" v-if="!newKey" severity="block" class="border-2">
-              <template #text-info> If you don't have access to your API Key you can generate a new one. </template>
-              <template #action-button>
-                <PrimeButton @click="regenerateConfirmToggle" label="REGENERATE API KEY" />
-              </template>
-            </MessageComponent>
+          <MessageComponent data-test="regenerateApiKeyMessage" v-if="!newKey" severity="block" class="border-2">
+            <template #text-info> If you don't have access to your API Key you can generate a new one. </template>
+            <template #action-button>
+              <PrimeButton @click="regenerateConfirmToggle" label="REGENERATE API KEY" />
+            </template>
+          </MessageComponent>
 
-            <ApiKeyCard
-              :userRoles="userRolesAccordingToApiKey"
-              :expiryDateInMilliseconds="expiryDate"
-              @revokeKey="revokeApiKey"
-            />
-            <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
-              <div>
-                <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
-                <div class="block text-600 mb-2 mt-4 text-left">
-                  You can use the API-Keys as bearer-tokens by including them in the authorization header of any
-                  requests you make to Dataland (i.e., "Authorization: Bearer &lt;API Key&gt;").
-                </div>
+          <ApiKeyCard
+            :userRoles="userRolesAccordingToApiKey"
+            :expiryDateInMilliseconds="expiryDate"
+            @revokeKey="revokeApiKey"
+          />
+          <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
+            <div>
+              <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
+              <div class="block text-600 mb-2 mt-4 text-left">
+                You can use the API-Keys as bearer-tokens by including them in the authorization header of any requests
+                you make to Dataland (i.e., "Authorization: Bearer &lt;API Key&gt;").
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-12 md:col-4 lg:col-4 api-doc">
-          <div class="text-900 font-medium text-xl text-left">API Documentation</div>
-          <div class="api-doc_links">
-            <a href="/api/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Datasets</a>
-            <a href="/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Documents</a>
-            <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Community</a>
-            <a href="/qa/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Quality Assurance</a>
-          </div>
+      <div class="col-12 md:col-4 lg:col-4 api-doc">
+        <div class="text-900 font-medium text-xl text-left">API Documentation</div>
+        <div class="api-doc_links">
+          <a href="/api/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Datasets</a>
+          <a href="/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Documents</a>
+          <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Community</a>
+          <a href="/qa/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Quality Assurance</a>
+          <a href="/users/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Users</a>
         </div>
       </div>
-    </TheContent>
+    </div>
+  </TheContent>
 
-    <PrimeDialog
-      id="regenerateApiKeyModal"
-      :dismissableMask="true"
-      :modal="true"
-      header="Header"
-      footer="Footer"
-      v-model:visible="regenerateConfirmationVisible"
-    >
-      <template #header>
-        <h2 class="m-0">Regenerate API Key</h2>
-      </template>
-      Are you sure you want to Regenerate your API Key?
-      <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
-      <template #footer>
-        <PrimeButton
-          data-test="regenerateApiKeyCancelButton"
-          label="CANCEL"
-          @click="regenerateConfirmToggle"
-          class="p-button-outlined"
-        />
-        <PrimeButton
-          data-test="regenerateApiKeyConfirmButton"
-          label="CONFIRM"
-          @click="
-            () => {
-              setActivePageState('create');
-              regenerateConfirmToggle();
-            }
-          "
-        />
-      </template>
-    </PrimeDialog>
-    <TheFooter :is-light-version="true" :sections="footerContent?.sections" />
-  </AuthenticationWrapper>
+  <PrimeDialog
+    id="regenerateApiKeyModal"
+    :dismissableMask="true"
+    :modal="true"
+    header="Header"
+    footer="Footer"
+    v-model:visible="regenerateConfirmationVisible"
+  >
+    <template #header>
+      <h2 class="m-0">Regenerate API Key</h2>
+    </template>
+    Are you sure you want to Regenerate your API Key?
+    <strong>If you confirm, your previous token will be invalidated and your applications will stop working.</strong>
+    <template #footer>
+      <PrimeButton
+        data-test="regenerateApiKeyCancelButton"
+        label="CANCEL"
+        @click="regenerateConfirmToggle"
+        variant="outlined"
+      />
+      <PrimeButton
+        data-test="regenerateApiKeyConfirmButton"
+        label="CONFIRM"
+        @click="
+          () => {
+            setActivePageState('create');
+            regenerateConfirmToggle();
+          }
+        "
+      />
+    </template>
+  </PrimeDialog>
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
-import PrimeButton from 'primevue/button';
-import TheHeader from '@/components/generics/TheHeader.vue';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
-import BackButton from '@/components/general/BackButton.vue';
+import MessageComponent from '@/components/messages/MessageComponent.vue';
 import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
 import CreateApiKeyCard from '@/components/resources/apiKey/CreateApiKeyCard.vue';
-import MessageComponent from '@/components/messages/MessageComponent.vue';
-import PrimeDialog from 'primevue/dialog';
-import PrimeTextarea from 'primevue/textarea';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
 import { type ApiKeyControllerApiInterface } from '@clients/apikeymanager';
-import TheFooter from '@/components/generics/TheNewFooter.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import PrimeDialog from 'primevue/dialog';
+import PrimeTextarea from 'primevue/textarea';
+import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'ApiKeysPage',
   components: {
-    AuthenticationWrapper,
+    DatalandProgressSpinner,
     TheContent,
-    TheHeader,
     MiddleCenterDiv,
-    BackButton,
     PrimeButton,
     PrimeDialog,
     ApiKeyCard,
     CreateApiKeyCard,
     MessageComponent,
     PrimeTextarea,
-    TheFooter,
   },
   setup() {
     return {
@@ -198,8 +185,6 @@ export default defineComponent({
       expiryDate: undefined as undefined | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
-      content: {} as Content,
-      footerContent: undefined as Page | undefined,
     };
   },
   computed: {
@@ -227,8 +212,6 @@ export default defineComponent({
      * Updates the UI according to the retrieved meta-information.
      */
     async getApiKeyMetaInfoForUser() {
-      this.content = contentData;
-      this.footerContent = this.content.pages.find((page) => page.url === '/');
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
@@ -353,6 +336,55 @@ export default defineComponent({
         text-decoration: underline;
       }
     }
+  }
+}
+
+.p-component {
+  &:disabled {
+    opacity: 0.8;
+  }
+}
+
+.p-component-overlay-enter {
+  animation: p-component-overlay-enter-animation 150ms forwards;
+}
+
+.p-component-overlay-leave {
+  animation: p-component-overlay-leave-animation 150ms forwards;
+}
+
+.p-inputtext {
+  font-family: inherit;
+  color: var(--input-text-color);
+  background: var(--input-text-bg);
+  padding: var(--spacing-sm);
+  border: 0;
+  margin: 0;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  appearance: none;
+  &:enabled:hover {
+    border-color: var(--input-text-border-hover);
+  }
+  &:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #bfd1f6;
+    border-color: var(--input-text-border-hover);
+  }
+  &.p-invalid.p-component {
+    border-color: #ced4da #ced4da #ced4da #e4677e;
+  }
+  &.p-inputtext-sm {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
+  }
+  &.p-inputtext-lg {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-sm);
   }
 }
 </style>

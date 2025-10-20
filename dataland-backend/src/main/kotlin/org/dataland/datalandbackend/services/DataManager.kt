@@ -9,12 +9,12 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param dataManagerUtils holds util methods for handling of data
- * @param companyRoleChecker service for checking company roles
  * @param messageQueuePublications service for publishing messages to the message queue
  */
 @Service("DataManager")
@@ -40,11 +39,9 @@ class DataManager
         private val metaDataManager: DataMetaInformationManager,
         private val storageClient: StorageControllerApi,
         private val dataManagerUtils: DataManagerUtils,
-        private val companyRoleChecker: CompanyRoleChecker,
         private val messageQueuePublications: MessageQueuePublications,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val logMessageBuilder = LogMessageBuilder()
         private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
         /**
@@ -60,9 +57,6 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataset.companyId)) {
-                throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
-            }
             val dataId = IdUtils.generateUUID()
             storeMetaDataFrom(dataId, uploadedDataset, correlationId)
             storeDatasetInTemporaryStoreAndSendUploadMessage(dataId, uploadedDataset, bypassQa, correlationId)
@@ -254,7 +248,7 @@ class DataManager
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             logger.info(
                 "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company.companyId} " +
-                    "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
+                    "and of the reporting period ${metaInformation.reportingPeriod}. Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)
             messageQueuePublications.publishDatasetDeletionMessage(dataId, correlationId)
@@ -269,42 +263,50 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensions: BasicDataDimensions,
+            dataDimensionsSet: Set<BasicDatasetDimensions>,
             correlationId: String,
-        ): String? {
-            val dataId =
-                metaDataManager.getActiveDatasetIdByDataDimensions(dataDimensions)
-                    ?: throw ResourceNotFoundApiException(
-                        summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
-                        message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
-                    )
-            return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
-        }
+        ): Map<BasicDatasetDimensions, String> =
+            dataDimensionsSet
+                .associateWith {
+                    metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
+                        getPublicDataset(dataId, DataType.valueOf(it.framework), correlationId).data
+                    } ?: ""
+                }.filterNot { it.value.isEmpty() }
 
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
         ): List<PlainDataAndMetaInformation> {
+            logger.info("Received request to get all datasets matching a search filter. Correlation Id: $correlationId")
             requireNotNull(searchFilter.companyId) { "Company ID must be provided" }
-            val metaInfos = metaDataManager.searchDataMetaInfo(searchFilter)
+            val metaInfos =
+                metaDataManager.searchDataMetaInfo(searchFilter).associateBy {
+                    BasicDataDimensions(companyId = it.company.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod)
+                }
             val authentication = DatalandAuthentication.fromContextOrNull()
-            val listOfFrameworkDataAndMetaInfo = mutableListOf<PlainDataAndMetaInformation>()
-            metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-                val data =
-                    getDatasetData(
-                        BasicDataDimensions(
-                            companyId = searchFilter.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod,
-                        ),
-                        correlationId,
-                    )
-                requireNotNull(data) { "Data not found for dataId: ${it.dataId}" }
-                listOfFrameworkDataAndMetaInfo.add(
-                    PlainDataAndMetaInformation(
-                        metaInfo = it.toApiModel(),
-                        data = data,
-                    ),
+
+            val mapOfDataDimensionsWithDataAsString =
+                getDatasetData(
+                    metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
+                        BasicDatasetDimensions(
+                            companyId = searchFilter.companyId,
+                            framework = it.dataType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    },
+                    correlationId,
                 )
+            if (mapOfDataDimensionsWithDataAsString.isEmpty()) {
+                logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
             }
-            return listOfFrameworkDataAndMetaInfo
+
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (datasetDimensions, dataString) ->
+                metaInfos[datasetDimensions.toBasicDataDimensions()]?.let { metaInfo ->
+                    PlainDataAndMetaInformation(
+                        metaInfo = metaInfo.toApiModel(),
+                        data = dataString,
+                    )
+                }
+            }
         }
     }

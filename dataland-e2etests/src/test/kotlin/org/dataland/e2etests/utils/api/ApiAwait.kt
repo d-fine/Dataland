@@ -83,4 +83,19 @@ object ApiAwait {
         awaitBase(timeoutInSeconds, retryOnHttpErrors)
             .until(condition)
     }
+
+    /**
+     * Waits for the condition to be asserted.
+     *
+     * @param timeoutInSeconds The maximum time to wait for the condition to be true.
+     * @param retryOnHttpErrors The set of HTTP statuses that are allowed to be thrown by the condition.
+     * @param assertion The assertion to wait for.     *
+     */
+    fun untilAsserted(
+        timeoutInSeconds: Long = 5,
+        retryOnHttpErrors: Set<HttpStatus> = setOf(),
+        assertion: () -> Unit,
+    ) {
+        awaitBase(timeoutInSeconds, retryOnHttpErrors).untilAsserted(assertion)
+    }
 }

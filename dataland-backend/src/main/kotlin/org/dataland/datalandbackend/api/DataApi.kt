@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -9,6 +11,11 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -43,10 +50,15 @@ interface DataApi<T> {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId)")
+    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId, #bypassQa)")
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,
+        @Parameter(
+            name = "bypassQa",
+            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            required = false,
+        )
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation>
 
@@ -70,6 +82,7 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getCompanyAssociatedData(
+        @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 
@@ -94,26 +107,44 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyAssociatedDataByDimensions(
+        @Parameter(
+            name = "reportingPeriod",
+            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            required = true,
+        )
         @RequestParam reportingPeriod: String,
+        @CompanyIdParameterRequired
         @RequestParam companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its [reportingPeriod], [companyId] as a [fileFormat] file.
-     * @param reportingPeriod specifies the reporting period
-     * @param companyId specifies the company
+     * A method to export the CompanyAssociatedData by its [reportingPeriods], [companyIds] as a [exportFileType] file.
+     * @param reportingPeriods specifies the reporting periods
+     * @param companyIds specifies the companies
      * @param exportFileType specifies the file type to export to
-     * @return JSON of companyAssociatedData in form of InputStreamResource
+     * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
+     * @return JSON of companyAssociatedData in the form of InputStreamResource
      */
     @Operation(
-        summary = "Export data for the reportingPeriod and companyId provided.",
+        summary = "Export data for the reportingPeriods and companyIds provided.",
         description =
-            "Export data for the reportingPeriod and companyId provided into a file of the specified format" +
-                "(CSV, Excel-compatible CSV, JSON).",
+            "Export data for the each combination of reportingPeriod and companyId provided into a file of the " +
+                "specified format (CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
+            ApiResponse(
+                responseCode = "204",
+                description = "No data for download available.",
+                content = [Content(mediaType = "")],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Company Id could not be found.",
+                content = [Content(mediaType = "")],
+            ),
         ],
     )
     @GetMapping(
@@ -122,9 +153,39 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataByDimensions(
-        @RequestParam("reportingPeriod") reportingPeriod: String,
-        @RequestParam("companyId") companyId: String,
+        @Parameter(
+            name = "reportingPeriods",
+            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_EXAMPLE,
+            required = true,
+        )
+        @RequestParam("reportingPeriods") reportingPeriods: List<String>,
+        @Parameter(
+            name = "companyIds",
+            description = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_EXAMPLE,
+            required = true,
+        )
+        @RequestParam("companyIds") companyIds: List<String>,
+        @Parameter(
+            name = "fileFormat",
+            description = BackendOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
+            required = true,
+        )
         @RequestParam("fileFormat") exportFileType: ExportFileType,
+        @Parameter(
+            name = "keepValueFieldsOnly",
+            description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(
+            value = "keepValueFieldsOnly",
+            defaultValue = "true",
+        ) keepValueFieldsOnly: Boolean = true,
+        @RequestParam(
+            value = "includeAliases",
+            defaultValue = "true",
+        ) includeAliases: Boolean = true,
     ): ResponseEntity<InputStreamResource>
 
     /**
@@ -150,10 +211,17 @@ interface DataApi<T> {
         value = ["/companies/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getFrameworkDatasetsForCompany(
+        @CompanyIdParameterRequired
         @PathVariable("companyId") companyId: String,
+        @Parameter(
+            name = "showOnlyActive",
+            description = BackendOpenApiDescriptionsAndExamples.SHOW_ONLY_ACTIVE_DESCRIPTION,
+            required = false,
+        )
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
+        @ReportingPeriodParameterNonRequired
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
 }

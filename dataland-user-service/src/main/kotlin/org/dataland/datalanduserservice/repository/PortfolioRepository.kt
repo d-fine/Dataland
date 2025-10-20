@@ -1,6 +1,8 @@
 package org.dataland.datalanduserservice.repository
 
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -13,7 +15,12 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     /**
      * Retrieve all portfolios for userId
      */
-    fun getAllByUserId(userId: String): List<PortfolioEntity>
+    fun getAllByUserIdOrderByCreationTimestampAsc(userId: String): List<PortfolioEntity>
+
+    /**
+     * Get specific portfolio by portfolioId
+     */
+    fun getPortfolioByPortfolioId(portfolioId: UUID): PortfolioEntity?
 
     /**
      * Get specific portfolio by portfolioId for userId
@@ -22,6 +29,11 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
         userId: String,
         portfolioId: UUID,
     ): PortfolioEntity?
+
+    /**
+     * Return a paginated chunk of all portfolios that exist on Dataland.
+     */
+    override fun findAll(pageable: Pageable): Page<PortfolioEntity>
 
     /**
      * Delete specific portfolio by portfolioId for userId

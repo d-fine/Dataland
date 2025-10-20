@@ -43,23 +43,21 @@ const slides = computed(() => aboutPrinciplesSection.value?.cards ?? []);
 const slideWidth = ref(440);
 
 const updateSlideWidth = (): void => {
-  slideWidth.value = window.innerWidth > 768 ? 440 : 320;
+  slideWidth.value = globalThis.innerWidth > 768 ? 440 : 320;
 };
 updateSlideWidth();
 
 onMounted(() => {
-  window.addEventListener('resize', updateSlideWidth);
+  globalThis.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSlideWidth);
+  globalThis.removeEventListener('resize', updateSlideWidth);
 });
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables';
-
 .about-principles {
   padding: 200px 0;
   background-color: var(--grey-tones-100);
@@ -196,7 +194,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(203, 203, 203, 0.24);
-    background-color: #fff;
+    background-color: var(--default-neutral-white);
     cursor: pointer;
 
     &:hover {
@@ -227,7 +225,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: newVariables.$medium) {
+@media only screen and (max-width: 1024px) {
   .about-principles {
     &__title {
       font-size: 40px;
@@ -235,7 +233,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: newVariables.$small) {
+@media only screen and (max-width: 768px) {
   .about-principles {
     padding: 0 0 80px;
     &__wrapper {

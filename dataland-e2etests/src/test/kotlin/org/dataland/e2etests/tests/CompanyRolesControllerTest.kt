@@ -2,7 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
+import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
 import org.dataland.e2etests.UPLOADER_EXTENDED_ROLES
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -19,13 +19,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompanyRolesControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentControllerApiAccessor()
-    val jwtHelper = JwtAuthenticationHelper()
+    private val jwtHelper = JwtAuthenticationHelper()
 
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
     private val dataUploaderUserId = UUID.fromString(TechnicalUser.Uploader.technicalUserId)
@@ -48,14 +50,26 @@ class CompanyRolesControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
 
-        val owners = companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
+        val owners =
+            companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
         companyRolesTestUtils.validateCompanyOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), owners)
-        assertDoesNotThrow { companyRolesTestUtils.hasUserCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId) }
+        assertDoesNotThrow {
+            companyRolesTestUtils.hasUserCompanyRole(
+                CompanyRole.CompanyOwner,
+                firstCompanyId,
+                dataReaderUserId,
+            )
+        }
 
         companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
 
-        val ownersAfterRepost = companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
-        companyRolesTestUtils.validateCompanyOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), ownersAfterRepost)
+        val ownersAfterRepost =
+            companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
+        companyRolesTestUtils.validateCompanyOwnersForCompany(
+            firstCompanyId,
+            listOf(dataReaderUserId),
+            ownersAfterRepost,
+        )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(secondCompanyId, frameworkSampleData, false)
@@ -63,7 +77,8 @@ class CompanyRolesControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
 
-        val ownersAfterDeletion = companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
+        val ownersAfterDeletion =
+            companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
         companyRolesTestUtils.validateCompanyOwnersForCompany(firstCompanyId, listOf(), ownersAfterDeletion)
         val exceptionWhenCheckingIfUserIsCompanyOwner =
             assertThrows<ClientException> {
@@ -98,7 +113,11 @@ class CompanyRolesControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val exceptionWhenPostingCompanyOwner =
             assertThrows<ClientException> {
-                companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, nonExistingCompanyId, dataReaderUserId)
+                companyRolesTestUtils.assignCompanyRole(
+                    CompanyRole.CompanyOwner,
+                    nonExistingCompanyId,
+                    dataReaderUserId,
+                )
             }
         companyRolesTestUtils.assertCompanyNotFoundResponseBodyInCommunityManagerClientException(
             exceptionWhenPostingCompanyOwner,
@@ -107,7 +126,10 @@ class CompanyRolesControllerTest {
 
         val exceptionWhenGettingCompanyOwners =
             assertThrows<ClientException> {
-                companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = nonExistingCompanyId)
+                companyRolesTestUtils.getCompanyRoleAssignments(
+                    CompanyRole.CompanyOwner,
+                    companyId = nonExistingCompanyId,
+                )
             }
         companyRolesTestUtils.assertCompanyNotFoundResponseBodyInCommunityManagerClientException(
             exceptionWhenGettingCompanyOwners,
@@ -116,7 +138,11 @@ class CompanyRolesControllerTest {
 
         val exceptionWhenDeletingCompanyOwner =
             assertThrows<ClientException> {
-                companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, nonExistingCompanyId, dataReaderUserId)
+                companyRolesTestUtils.removeCompanyRole(
+                    CompanyRole.CompanyOwner,
+                    nonExistingCompanyId,
+                    dataReaderUserId,
+                )
             }
         companyRolesTestUtils.assertCompanyNotFoundResponseBodyInCommunityManagerClientException(
             exceptionWhenDeletingCompanyOwner,
@@ -125,7 +151,11 @@ class CompanyRolesControllerTest {
 
         val exceptionWhenCheckingIfUserIsCompanyOwner =
             assertThrows<ClientException> {
-                companyRolesTestUtils.hasUserCompanyRole(CompanyRole.CompanyOwner, nonExistingCompanyId, dataReaderUserId)
+                companyRolesTestUtils.hasUserCompanyRole(
+                    CompanyRole.CompanyOwner,
+                    nonExistingCompanyId,
+                    dataReaderUserId,
+                )
             }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
     }
@@ -163,20 +193,19 @@ class CompanyRolesControllerTest {
         )
     }
 
-    @Test
-    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`() {
+    @ParameterizedTest
+    @EnumSource(value = TechnicalUser::class)
+    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`(user: TechnicalUser) {
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
         assertTrue(REVIEWER_EXTENDED_ROLES.size == 1 || UPLOADER_EXTENDED_ROLES.size == 1)
 
-        for (technicalUser in TechnicalUser.entries) {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-            val isUserKeycloakReviewer = technicalUser.roles.contains(REVIEWER_EXTENDED_ROLES.first())
-            val isUserKeycloakUploader = technicalUser.roles.contains(UPLOADER_EXTENDED_ROLES.first())
-            if (isUserKeycloakReviewer && isUserKeycloakUploader) {
-                assertDoesNotThrow { companyRolesTestUtils.uploadEuTaxoDataWithBypassQa(companyId) }
-            } else {
-                companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
-            }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+        val isUserKeycloakReviewer = user.roles.contains(REVIEWER_EXTENDED_ROLES.first())
+        val isUserKeycloakUploader = user.roles.contains(UPLOADER_EXTENDED_ROLES.first())
+        if (isUserKeycloakReviewer && isUserKeycloakUploader) {
+            assertDoesNotThrow { companyRolesTestUtils.uploadEuTaxoDataWithBypassQa(companyId) }
+        } else {
+            companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
         }
     }
 
@@ -209,7 +238,13 @@ class CompanyRolesControllerTest {
         assertDoesNotThrow { companyRolesTestUtils.hasCompanyAtLeastOneOwner(companyId) }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assertDoesNotThrow { companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId) }
+        assertDoesNotThrow {
+            companyRolesTestUtils.removeCompanyRole(
+                CompanyRole.CompanyOwner,
+                companyId,
+                dataReaderUserId,
+            )
+        }
 
         companyRolesTestUtils.removeBearerTokenFromApiClients()
 
@@ -306,8 +341,19 @@ class CompanyRolesControllerTest {
             companyRolesTestUtils.assignCompanyRole(it, companyIdAlpha, dataReaderUserId)
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-            assertDoesNotThrow { companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.Member, companyId = companyIdAlpha) }
-            assertDoesNotThrow { companyRolesTestUtils.hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId) }
+            assertDoesNotThrow {
+                companyRolesTestUtils.getCompanyRoleAssignments(
+                    CompanyRole.Member,
+                    companyId = companyIdAlpha,
+                )
+            }
+            assertDoesNotThrow {
+                companyRolesTestUtils.hasUserCompanyRole(
+                    CompanyRole.DataUploader,
+                    companyIdAlpha,
+                    dataUploaderUserId,
+                )
+            }
 
             companyRolesTestUtils.tryToUseCompanyRoleGetAndHeadEndpointAndAsserThatItsForbidden(companyIdBeta)
 
@@ -329,32 +375,40 @@ class CompanyRolesControllerTest {
 
     @Test
     fun `assure that existing role assignments are deleted when a user gets assigned a new company role`() {
-        var currentAssignments: List<CompanyRoleAssignment>
+        var currentAssignments: List<CompanyRoleAssignmentExtended>
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         companyRolesTestUtils.assignCompanyRole(CompanyRole.DataUploader, companyId, dataUploaderUserId)
 
-        currentAssignments = companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
+        currentAssignments =
+            companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
-            CompanyRoleAssignment(
+            CompanyRoleAssignmentExtended(
                 companyRole = CompanyRole.DataUploader,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
+                email = "data.uploader@example.com",
+                firstName = "Data",
+                lastName = "Uploader",
             ),
             currentAssignments.first(),
         )
 
         companyRolesTestUtils.assignCompanyRole(CompanyRole.Member, companyId, dataUploaderUserId)
 
-        currentAssignments = companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
+        currentAssignments =
+            companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
-            CompanyRoleAssignment(
+            CompanyRoleAssignmentExtended(
                 companyRole = CompanyRole.Member,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
+                email = "data.uploader@example.com",
+                firstName = "Data",
+                lastName = "Uploader",
             ),
             currentAssignments.first(),
         )

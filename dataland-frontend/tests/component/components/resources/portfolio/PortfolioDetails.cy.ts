@@ -1,13 +1,19 @@
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
+import { KEYCLOAK_ROLE_PREMIUM_USER } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 
 describe('Check the portfolio details view', function (): void {
   let portfolioFixture: EnrichedPortfolio;
+  let largePortfolioFixture: EnrichedPortfolio;
 
   before(function () {
     cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
       portfolioFixture = jsonContent as EnrichedPortfolio;
+    });
+    cy.fixture('largeEnrichedPortfolio.json').then(function (jsonContent) {
+      largePortfolioFixture = jsonContent as EnrichedPortfolio;
     });
   });
 
@@ -18,21 +24,55 @@ describe('Check the portfolio details view', function (): void {
       keycloak: minimalKeycloakMock({}),
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
+      const expectedFirstRow = [
+        'Company Name',
+        'Country',
+        'Sector',
+        'SFDR',
+        'EU Taxonomy Financials',
+        'EU Taxonomy Non-Financials',
+        'EU Taxonomy Nuclear and Gas',
+      ];
+      const expectedSecondRow = [
+        'Apricot Inc.',
+        'Cayman Islands',
+        'ROI',
+        2024,
+        'No data available',
+        'No data available',
+        'No data available',
+      ];
+      const expectedThirdRow = [
+        'Banana LLC',
+        'Bouvet Island',
+        'channels',
+        'No data available',
+        2023,
+        'No data available',
+        'No data available',
+      ];
+      const expectedFourthRow = [
+        'Cherry Co',
+        'Germany',
+        'models',
+        2024,
+        'No data available',
+        'No data available',
+        2023,
+      ];
+      const checkHeadersRow = [
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+        checkHeader,
+      ];
+      const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
       cy.wait('@downloadComplete').then(() => {
-        assertTable('table', [
-          ['Company Name', 'Country', 'Sector', 'Last Reporting Period'],
-          ['Apricot Inc.', 'Cayman Islands', 'ROI', 2024],
-          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Cherry Co', 'Germany', 'models', 2024],
-        ]);
-        cy.get('[data-test="framework-dropdown"]').click();
-        cy.get('[data-pc-section="item"]:contains(SFDR)').click();
-        assertTable('table', [
-          [checkHeader, checkHeader, checkHeader, checkHeader],
-          ['Apricot Inc.', 'Cayman Islands', 'ROI', 'No data available'],
-          ['Banana LLC', 'Bouvet Island', 'channels', 'No data available'],
-          ['Cherry Co', 'Germany', 'models', 'No data available'],
-        ]);
+        assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
+        assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
       });
     });
   });
@@ -61,21 +101,108 @@ describe('Check the portfolio details view', function (): void {
       props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
       cy.wait('@downloadComplete').then(() => {
-        checkFilter('first-child', 'companyNameFilterValue', 'b', 2);
-        checkFilter('nth-child(2)', 'countryCodeFilterValue', 'Germany', 2);
-        checkFilter('nth-child(3)', 'sectorFilterValue', 'o', 3);
-        checkFilter('nth-child(4)', 'latestReportingPeriodeFilterValue', '2024', 3);
+        checkFilter('first-child', 'companyNameFilter', 'b', 2);
+        checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
+        checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
+        checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
+        checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
+        checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
+        checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
+      });
+    });
+  });
+
+  it('Check Monitoring Button for non premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
+      });
+    });
+  });
+  it('Check Monitoring Button and Not Monitored Tag for premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({
+        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
+      }),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio not actively monitored');
+      });
+    });
+  });
+  it('Check Monitored Tag for premium user', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', {
+      ...portfolioFixture,
+      isMonitored: true,
+      startingMonitoringPeiod: '2024',
+      monitoredFrameworks: new Set('sfdr'),
+    }).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({
+        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
+      }),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio actively monitored');
+      });
+    });
+  });
+  it('Check pagination for small portfolios', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: portfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('.p-datatable-paginator-bottom').should('not.exist');
+      });
+    });
+  });
+  it('Check pagination for large portfolios', function (): void {
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', largePortfolioFixture).as('downloadComplete');
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDetails, {
+      keycloak: minimalKeycloakMock({}),
+      props: { portfolioId: largePortfolioFixture.portfolioId },
+    }).then(() => {
+      cy.wait('@downloadComplete').then(() => {
+        cy.get('.p-datatable-paginator-bottom').should('be.visible');
+        cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
+        cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();
+        cy.get('table tr:first-child td:first-child').should(
+          'contain.text',
+          `Company ${MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1}`
+        );
+        cy.get('table tr:first-child th:first-child [data-pc-section="sort"]').click();
+        cy.get('table tr:first-child td:first-child').should('contain.text', `Company 110`);
+        cy.get('[data-pc-section="page"][aria-label="Page 1"]').should('have.attr', 'data-p-active', 'true');
       });
     });
   });
 });
 
 /**
- * Checks of the sort- and column-filter-icons are present in the table header
+ * Checks of the sort- and column filter-icons are present in the table header
  */
 function checkHeader(): void {
   cy.get('[data-pc-section="sort"]').should('be.visible');
-  cy.get('[data-pc-section="columnfilter"]').should('be.visible');
+  cy.get('[data-pc-section="filter"]').should('be.visible');
 }
 
 /**
@@ -83,7 +210,7 @@ function checkHeader(): void {
  * @param selector CSS selector to find the element for switching selection to up/down/off
  * @param companyUp First company in the table when sorting is UP
  * @param companyDown First company in the table when sorting is DOWN
- * @param isAlreadySorted Checks if pre sorting is already in place
+ * @param isAlreadySorted Checks if pre-sorting is already in place
  */
 function checkSort(selector: string, companyUp: string, companyDown: string, isAlreadySorted: boolean = false): void {
   const firstCellSelector = 'table tr:first-child td:first-child';
@@ -109,14 +236,14 @@ function checkSort(selector: string, companyUp: string, companyDown: string, isA
  */
 function checkFilter(columnSelector: string, inputSelector: string, needle: string, matches: number): void {
   const rowsSelector = 'table tr';
-  const filterButtonSelector = `table tr:first-child th:${columnSelector} [data-pc-section="filtermenubutton"]`;
+  const filterButtonSelector = `[data-pc-section="headerrow"] th:${columnSelector} [data-pc-section="filtermenuicon"]`;
   cy.get(rowsSelector).should('have.length', 4);
   cy.get(filterButtonSelector).click();
 
-  if (inputSelector == 'latestReportingPeriodeFilterValue') {
-    cy.get(`[data-test="${inputSelector}"]`).first().click();
+  if (inputSelector == 'companyNameFilter') {
+    cy.get(`[data-test="${inputSelector}Value"]`).type(needle);
   } else {
-    cy.get(`[data-test="${inputSelector}"]`).type(needle);
+    cy.get(`[data-test="${inputSelector}Overlay"]`).contains(needle).click();
   }
   cy.get(filterButtonSelector).click();
   cy.get(rowsSelector).should('have.length', matches);
@@ -132,12 +259,12 @@ function checkFilter(columnSelector: string, inputSelector: string, needle: stri
  *  - A function: The function is evaluated within the table cell.
  *  - null: No check is performed on that cell
  */
-function assertTable(tableSelector: string, expected: (string | number | null | (() => void))[][]): void {
+function assertTable(tableSelector: string, expected: (string | number | undefined | (() => void))[][]): void {
   cy.get(tableSelector + ' tr').each((row, rowIndex) => {
     cy.wrap(row).within(() => {
       cy.get('th, td').each((cell, cellIndex) => {
         const element = cy.wrap(cell);
-        const comparator = expected[rowIndex][cellIndex];
+        const comparator = expected[rowIndex]![cellIndex];
         switch (typeof comparator) {
           case 'string':
           case 'number':

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentAligned",
+  "name" : "Substantial Contribution to Pollution Prevention and Control In Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

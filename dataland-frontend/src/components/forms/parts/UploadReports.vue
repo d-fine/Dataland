@@ -55,7 +55,6 @@
                 :data-test="'remove-' + storedReport.fileName"
                 @click="removeReportFromStoredReports(index)"
                 icon="pi pi-times"
-                class="p-button-edit-reports"
               />
             </div>
           </div>
@@ -85,6 +84,7 @@ export enum FileNameInvalidityReason {
   Duplicate = 'Duplicate',
   ForbiddenCharacter = 'ForbiddenCharacter',
 }
+
 type NameIndexAndReasonOfInvalidFile = {
   fileName: string;
   index: number;
@@ -174,7 +174,10 @@ export default defineComponent({
       const existingFileNamesCollector = new Set<string>();
 
       for (let i = 0; i < this.documentsToUpload.length; i++) {
-        const fileName = this.documentsToUpload[i].fileNameWithoutSuffix;
+        const document = this.documentsToUpload[i];
+        if (!document) continue;
+
+        const fileName = document.fileNameWithoutSuffix;
 
         if (this.hasFileNameForbiddenCharacter(fileName)) {
           nameIndexAndReasonOfInvalidFiles.push({
@@ -184,7 +187,7 @@ export default defineComponent({
           });
         } else if (
           existingFileNamesCollector.has(fileName) ||
-          Object.keys(this.namesAndReferencesOfStoredReports).indexOf(fileName) !== -1
+          Object.keys(this.namesAndReferencesOfStoredReports).includes(fileName)
         ) {
           nameIndexAndReasonOfInvalidFiles.push({
             fileName: fileName,
@@ -243,11 +246,14 @@ export default defineComponent({
       if (sourceOfReferencedReportsForPrefill) {
         for (const key in sourceOfReferencedReportsForPrefill) {
           const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
-          this.alreadyStoredReports.push({
-            fileName: key,
-            fileReference: referencedReport.fileReference,
-            publicationDate: referencedReport.publicationDate,
-          });
+
+          if (referencedReport) {
+            this.alreadyStoredReports.push({
+              fileName: key,
+              fileReference: referencedReport.fileReference,
+              publicationDate: referencedReport.publicationDate,
+            });
+          }
         }
         this.emitReportsUpdatedEvent();
       }
@@ -286,10 +292,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.p-button-edit-reports {
-  width: 1rem;
-  border-radius: 50%;
-  height: 1rem;
-  padding: 12px;
+.display-contents {
+  display: contents;
+}
+
+.bordered-box {
+  border: 2px dotted var(--input-separator);
+  padding: 16px;
 }
 </style>

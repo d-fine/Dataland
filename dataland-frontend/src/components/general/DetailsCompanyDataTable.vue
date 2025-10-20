@@ -34,7 +34,7 @@
 import { defineComponent } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import DataPointDataTableInModal from '@/components/general/DataPointDataTableInModal.vue';
 
@@ -77,7 +77,7 @@ export default defineComponent({
     generateColsNames(): void {
       const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
         for (const key of Object.keys(rowContent)) {
-          if (keyList.indexOf(key) === -1) {
+          if (!keyList.includes(key)) {
             keyList.push(key);
           }
         }

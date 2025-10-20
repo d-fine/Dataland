@@ -5,13 +5,14 @@
     <MiddleCenterDiv v-else>
       <h1 class="text-justify text-base font-normal">
         Checking Log-In status.
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        <DatalandProgressSpinner />
       </h1>
     </MiddleCenterDiv>
   </template>
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -20,7 +21,7 @@ import MobileWarningPage from '@/components/pages/MobileWarningPage.vue';
 
 export default defineComponent({
   name: 'AuthenticationWrapper',
-  components: { MiddleCenterDiv, MobileWarningPage },
+  components: { DatalandProgressSpinner, MiddleCenterDiv, MobileWarningPage },
   props: {
     disableAuthenticationWrapper: {
       type: Boolean,
@@ -29,7 +30,7 @@ export default defineComponent({
   },
   computed: {
     isUserOnMobileDevice(): boolean {
-      const userAgent = window.navigator.userAgent.toLowerCase();
+      const userAgent = globalThis.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
     },
   },

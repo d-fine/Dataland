@@ -4,6 +4,6 @@
   "extends": "./tsconfig.cypress-e2e.json",
   "compilerOptions": {
     "module": "commonjs",
-    "verbatimModuleSyntax": false
+    "moduleResolution": "node"
   }
 }

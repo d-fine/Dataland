@@ -4,7 +4,6 @@
     :dataType="dataType"
     :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    :viewInPreviewMode="viewInPreviewMode"
   >
     <template v-slot:content="slotProps">
       <div v-if="isListOfDataIdsToDisplayFound">
@@ -21,15 +20,6 @@
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
           <div class="col-12">
-            <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.P2p"
-              :frameworkIdentifier="DataTypeEnum.P2p"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-              data-test="MultiLayerDataTableFrameworkPanelP2P"
-            />
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
@@ -71,7 +61,7 @@
 <script lang="ts">
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { defineComponent, inject, type PropType } from 'vue';
-import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -79,8 +69,6 @@ import { type AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
-import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter';
-import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrameworkViewConfiguration,
@@ -90,9 +78,6 @@ import {
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
   computed: {
-    p2pDataModel() {
-      return p2pDataModel;
-    },
     frameworkConfiguration(): FrontendFrameworkDefinition<object> | undefined {
       return this.dataType ? getFrontendFrameworkDefinition(this.dataType) : undefined;
     },
@@ -120,10 +105,6 @@ export default defineComponent({
     reportingPeriod: {
       type: String,
     },
-    viewInPreviewMode: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -135,7 +116,6 @@ export default defineComponent({
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       humanizedDataDescription: humanizeStringOrNumber(this.dataType),
-      DataTypeEnum,
     };
   },
   setup() {
@@ -175,7 +155,6 @@ export default defineComponent({
   },
 
   methods: {
-    convertDataModelToMLDTConfig,
     /**
      * Method to set flags that indicate found data
      */
@@ -228,14 +207,14 @@ export default defineComponent({
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
-        const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
+        const dataMetaInfoForDatasetWithDataIdFromUrl = apiResponse.data;
         if (
-          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
-          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+          dataMetaInfoForDatasetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDatasetWithDataIdFromUrl.dataType != this.dataType
         ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
-          this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
+          this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDatasetWithDataIdFromUrl);
         }
       } catch (error) {
         const axiosError = error as AxiosError;

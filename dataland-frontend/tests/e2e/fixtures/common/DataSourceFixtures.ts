@@ -15,14 +15,14 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
   const singlePageNumberScheme = (): ExtendedDocumentReference => ({
     page: `${startPage}`,
     fileName: chosenReport,
-    fileReference: chosenReportReference.fileReference,
+    fileReference: chosenReportReference!.fileReference,
     tagName: faker.company.buzzNoun(),
     publicationDate: null,
   });
   const pageRangeScheme = (): ExtendedDocumentReference => ({
     page: `${startPage}-${endPage}`,
     fileName: chosenReport,
-    fileReference: chosenReportReference.fileReference,
+    fileReference: chosenReportReference!.fileReference,
     tagName: faker.company.buzzNoun(),
     publicationDate: null,
   });

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { type BaseDataPoint } from '@/utils/DataPoint';

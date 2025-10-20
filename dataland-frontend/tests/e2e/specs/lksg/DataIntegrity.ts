@@ -7,15 +7,55 @@ import {
   DataTypeEnum,
   type LksgData,
   LksgDataControllerApi,
+  type RiskPositionType,
   type StoredCompany,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+
+/**
+ * Defines intercepts and submits data on the lksg upload for the lksg blanket test
+ * @param storedCompany stored company information
+ * @param dataMetaInformation meta data information
+ * @param testCompanyName name of the company
+ */
+function interceptsAndSubmitsDataset(
+  storedCompany: StoredCompany,
+  dataMetaInformation: DataMetaInformation,
+  testCompanyName: string
+): void {
+  cy.intercept('**/api/companies/' + storedCompany.companyId + '/info').as('getCompanyInformation');
+  cy.visitAndCheckAppMount(
+    '/companies/' +
+      storedCompany.companyId +
+      '/frameworks/' +
+      DataTypeEnum.Lksg +
+      '/upload?templateDataId=' +
+      dataMetaInformation.dataId
+  );
+  cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.get('h1').should('contain', testCompanyName);
+  cy.intercept({
+    url: `**/api/data/${DataTypeEnum.Lksg}*`,
+    times: 1,
+  }).as('postCompanyAssociatedData');
+  submitButton.clickButton();
+}
+
+/**
+ * Sorts the riskPositions Array by converting the
+ * elements into strings and explicitly defining a compare function
+ * @param riskPositions an array of risk positions
+ * @returns sorted riskPositions
+ */
+function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
+  return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
+}
 
 describeIf(
   'As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed ' +
@@ -61,7 +101,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetApproved();
+                    isDatasetAccepted();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new LksgDataControllerApi(new Configuration({ accessToken: token }))
@@ -97,48 +137,22 @@ describeIf(
     );
 
     /**
-     * Defines intercepts and submits data on the lksg upload for the lksg blanket test
-     * @param storedCompany stored company information
-     * @param dataMetaInformation meta data information
-     * @param testCompanyName name of the company
-     */
-    function interceptsAndSubmitsDataset(
-      storedCompany: StoredCompany,
-      dataMetaInformation: DataMetaInformation,
-      testCompanyName: string
-    ): void {
-      cy.intercept('**/api/companies/' + storedCompany.companyId + '/info').as('getCompanyInformation');
-      cy.visitAndCheckAppMount(
-        '/companies/' +
-          storedCompany.companyId +
-          '/frameworks/' +
-          DataTypeEnum.Lksg +
-          '/upload?templateDataId=' +
-          dataMetaInformation.dataId
-      );
-      cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-      cy.get('h1').should('contain', testCompanyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Lksg}*`,
-        times: 1,
-      }).as('postCompanyAssociatedData');
-      submitButton.clickButton();
-    }
-
-    /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
      * @param dataset frontend dataset to modify
      * @returns sorted frontend object
      */
     function sortComplaintsRiskObject(dataset: LksgData): LksgData {
-      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
-        element.riskPositions.sort()
-      );
-      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
-        const comparisonA = a.specifiedComplaint;
-        const comparisonB = b.specifiedComplaint;
-        return comparisonA.localeCompare(comparisonB);
-      });
+      const complaintsRiskPosition = dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition;
+      if (complaintsRiskPosition) {
+        for (const element of complaintsRiskPosition) {
+          element.riskPositions = sortRiskPositions(element.riskPositions);
+        }
+        complaintsRiskPosition.sort((a, b) => {
+          const comparisonA = a.specifiedComplaint;
+          const comparisonB = b.specifiedComplaint;
+          return comparisonA.localeCompare(comparisonB);
+        });
+      }
       return dataset;
     }
 

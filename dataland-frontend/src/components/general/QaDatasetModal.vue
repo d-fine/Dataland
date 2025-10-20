@@ -1,11 +1,11 @@
 <template>
-  <MiddleCenterDiv class="w-30 flex-direction-column">
+  <MiddleCenterDiv class="flex-direction-column">
     <div>{{ message }}</div>
     <div v-if="!reviewSubmitted" class="text-center px-7 py-4">
       <p class="font-medium text-xl">Submitting...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <DatalandProgressSpinner />
     </div>
-    <div v-if="reviewSubmitted" class="col-12 text-center">
+    <div v-if="reviewSubmitted" class="submit-message">
       <SuccessMessage
         v-if="reviewSuccessful"
         data-test="qaReviewSubmittedMessage"
@@ -17,16 +17,23 @@
         message="The resource you tried to access is not available. Please close the data pop-up."
         :closable="false"
       />
-      <PrimeButton class="uppercase p-button p-button-sm" @click="closeTheDialog()">
-        <span class="d-letters pl-2">CLOSE</span>
-      </PrimeButton>
+      <PrimeButton
+        @click="closeTheDialog()"
+        label="CLOSE"
+        :pt="{
+          root: {
+            class: 'mx-auto block',
+          },
+        }"
+      />
     </div>
   </MiddleCenterDiv>
 </template>
 
 <script lang="ts">
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { defineComponent, inject } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import PrimeButton from 'primevue/button';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -37,7 +44,7 @@ import FailMessage from '@/components/messages/FailMessage.vue';
 import { QaStatus } from '@clients/backend';
 
 export default defineComponent({
-  components: { PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
+  components: { DatalandProgressSpinner, PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
   inject: ['dialogRef'],
   name: 'QADatasetModal',
   setup() {
@@ -93,23 +100,20 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-pre#dataset-container {
-  background: white;
-  padding: 20px;
-  border: 1px solid black;
+<style scoped>
+.w-30 {
+  width: 30vw;
 }
 
-#accept-button {
-  color: var(--green-700);
-  background: var(--green-100);
-  border: 1px solid var(--green-700);
+.flex-direction-column {
+  flex-direction: column;
 }
 
-#reject-button {
-  color: var(--red-700);
-  background: var(--red-100);
-  border: 1px solid var(--red-700);
+.submit-message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-md);
+  width: 100%;
 }
 </style>

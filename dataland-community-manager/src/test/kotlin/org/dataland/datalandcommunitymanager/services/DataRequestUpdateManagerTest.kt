@@ -80,6 +80,25 @@ class DataRequestUpdateManagerTest {
     private lateinit var dummyChildCompanyDataRequestEntityWithEarlierQaApproval: DataRequestEntity
     private lateinit var dummyDataRequestEntityWithdrawn: DataRequestEntity
 
+    private val requestStatusSets =
+        listOf(
+            setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+            setOf(
+                RequestStatus.Open, RequestStatus.NonSourceable,
+                RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved,
+            ),
+        )
+
+    private val dataRequestFilters =
+        requestStatusSets.map {
+            DataRequestsFilter(
+                dataType = setOf(dataMetaInformation.dataType),
+                datalandCompanyIds = setOf(dataMetaInformation.companyId),
+                reportingPeriods = setOf(dataMetaInformation.reportingPeriod),
+                requestStatus = it,
+            )
+        }
+
     private fun mockRepos() {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
             doReturn(it)
@@ -95,17 +114,13 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyChildCompanyDataRequestEntityWithEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findByDataRequestId(dummyChildCompanyDataRequestEntityWithEarlierQaApproval.dataRequestId)
-        doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
-            .whenever(mockDataRequestRepository)
-            .searchDataRequestEntity(
-                searchFilter =
-                    DataRequestsFilter(
-                        dataType = setOf(dataMetaInformation.dataType),
-                        datalandCompanyIds = setOf(dataMetaInformation.companyId),
-                        reportingPeriod = dataMetaInformation.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                    ),
-            )
+
+        dataRequestFilters.forEach {
+            doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
+                .whenever(mockDataRequestRepository)
+                .searchDataRequestEntity(searchFilter = it)
+        }
+
         doReturn(dummyChildCompanyDataRequestEntities)
             .whenever(mockDataRequestRepository)
             .searchDataRequestEntity(
@@ -113,7 +128,7 @@ class DataRequestUpdateManagerTest {
                     DataRequestsFilter(
                         setOf(dataMetaInformation.dataType), null, null,
                         setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
-                        dataMetaInformation.reportingPeriod,
+                        setOf(dataMetaInformation.reportingPeriod),
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                         null, null, null,
                     ),
@@ -359,7 +374,7 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
         assertThrows<IllegalArgumentException> {
-            dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
+            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
                 dummySourceableInfo,
                 correlationId,
             )
@@ -368,7 +383,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that notification behaviour is as expected when requests are patched from Open to NonSourceable`() {
-        dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyDataRequestEntityWithoutEarlierQaApproval1),
@@ -395,7 +410,7 @@ class DataRequestUpdateManagerTest {
 
     @Test
     fun `validate that patching corresponding requests for a dataset only processes the corresponding requests`() {
-        dataRequestUpdateManager.patchAllRequestsToStatusNonSourceable(
+        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
             dummyNonSourceableInfo,
             correlationId,
         )

@@ -1,7 +1,9 @@
 <template>
-  <TheHeader v-if="!useMobileView" />
-
-  <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <CompanyInfoSheet
+    :company-id="companyId"
+    :show-single-data-request-button="false"
+    @fetchedCompanyInformation="(companyInfo) => (companyName = companyInfo.companyName)"
+  />
   <div class="selection-header">
     <ChangeFrameworkDropdown
       :data-meta-information="dataMetaInformation"
@@ -15,17 +17,27 @@
       :available-items="availableDocumentTypes"
       filter-name="Types"
       data-test="document-type-picker"
-      filter-id="document-type-filter"
+      id="document-type-filter"
       filter-placeholder="Search by document type"
       style="margin: 0 1rem"
     />
-    <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
+    <PrimeButton label="RESET" data-test="reset-filter" variant="link" @click="resetFilter()" />
+    <PrimeButton
+      v-if="allowedToUploadDocuments"
+      label="UPLOAD DOCUMENT"
+      data-test="document-upload-button"
+      icon="pi pi-upload"
+      iconPos="left"
+      :pt="{ root: { style: 'float: right;' } }"
+      @click="showUploadModal = true"
+    />
   </div>
 
-  <TheContent class="paper-section flex flex-col p-3">
+  <TheContent class="flex flex-col p-3">
     <DataTable
       v-if="documentsFiltered && documentsFiltered.length > 0"
       data-test="documents-overview-table"
+      :key="`${refreshDocumentTable}`"
       :value="documentsFiltered"
       :paginator="true"
       :lazy="true"
@@ -53,19 +65,35 @@
       <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
-          <a class="tertiary-button" @click="openMetaInfoDialog(tableRow.data.documentId)">
-            VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
-          </a>
+          <PrimeButton
+            label="VIEW DETAILS"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            variant="link"
+            :pt="{
+              root: { style: { whiteSpace: 'nowrap' } },
+            }"
+            @click="openMetaInfoDialog(tableRow.data.documentId)"
+          />
         </template>
       </Column>
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="tableRow">
-          <DocumentDownloadButton
-            :document-download-info="{
-              downloadName: documentNameOrId(tableRow.data),
-              fileReference: tableRow.data.documentId,
-            }"
-            style="display: grid; grid-template-columns: 8.25em; justify-items: center; grid-template-rows: 1.75em"
+          <PrimeButton
+            :label="
+              activeDownloadId === tableRow.data.documentId && percentCompleted > 0
+                ? `DOWNLOAD (${percentCompleted}%)`
+                : 'DOWNLOAD'
+            "
+            data-test="document-download-button"
+            @click="
+              handleDocumentDownload({
+                fileReference: tableRow.data.documentId,
+                downloadName: documentNameOrId(tableRow.data),
+              })
+            "
+            icon="pi pi-download"
+            :pt="{ root: { style: 'width: 12rem;' } }"
           />
         </template>
       </Column>
@@ -77,45 +105,66 @@
     </div>
   </TheContent>
   <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
-  <TheFooter :is-light-version="true" :sections="footerContent" />
+  <UploadDocumentDialog
+    v-if="showUploadModal"
+    :visible="showUploadModal"
+    :companyId="companyId"
+    @close="showUploadModal = false"
+    @document-uploaded="handleDocumentUpload"
+    @conflict="onDocumentConflict"
+  />
+  <ConflictingDocumentUploadDialog
+    v-if="showConflictModal"
+    :documentId="conflictDocumentId"
+    :companyId="companyId"
+    :companyName="companyName"
+    @close="showConflictModal = false"
+    @document-associated="handleDocumentUpload"
+  />
 </template>
 
 <script setup lang="ts">
-import { type Content, type Page } from '@/types/ContentTypes.ts';
-import contentData from '@/assets/content.json';
-import { inject, onMounted, ref, watch } from 'vue';
-import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import TheContent from '@/components/generics/TheContent.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
+import TheContent from '@/components/generics/TheContent.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { dateStringFormatter } from '@/utils/DataFormatUtils';
+import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
+import { documentNameOrId, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type { DataMetaInformation } from '@clients/backend';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
   type SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
-import { humanizeStringOrNumber, documentNameOrId } from '@/utils/StringFormatter.ts';
-import { dateStringFormatter } from '@/utils/DataFormatUtils';
-import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
-import type { DataMetaInformation } from '@clients/backend';
-import DocumentDownloadButton from '@/components/resources/frameworkDataSearch/DocumentDownloadButton.vue';
+import Column from 'primevue/column';
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
+import { computed, inject, onMounted, type Ref, ref, watch } from 'vue';
+import PrimeButton from 'primevue/button';
+import {
+  createNewPercentCompletedRef,
+  type DocumentDownloadInfo,
+  downloadDocument,
+} from '@/components/resources/frameworkDataSearch/FileDownloadUtils.ts';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { CompanyRole } from '@clients/communitymanager';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils.ts';
+// eslint-disable-next-line no-restricted-imports
+import UploadDocumentDialog from '../resources/companyCockpit/UploadDocumentDialog.vue';
+// eslint-disable-next-line no-restricted-imports
+import ConflictingDocumentUploadDialog from '../resources/companyCockpit/ConflictingDocumentUploadDialog.vue';
 
 const props = defineProps<{
   companyId: string;
 }>();
 
-const content: Content = contentData;
-const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-const footerContent = footerPage?.sections;
+const companyName = ref<string>('');
 const waitingForData = ref(true);
-const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
 const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrieveAvailableDocumentCategories());
@@ -125,9 +174,10 @@ const firstRowIndex = ref(0);
 const currentPage = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
+const refreshDocumentTable = ref(0); // incrementing this value will force re-rendering document table
 const dataMetaInformation = ref<DataMetaInformation[]>([]);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -135,6 +185,31 @@ watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
+
+const percentCompleted = (createNewPercentCompletedRef() ?? ref(0)) as Ref<number>;
+const activeDownloadId = ref<string | null>(null);
+
+const isGlobalAdmin = ref(false);
+const isUserCompanyOwnerOrUploader = ref(false);
+
+const allowedToUploadDocuments = computed(() => {
+  return isGlobalAdmin.value || isUserCompanyOwnerOrUploader.value;
+});
+
+const showUploadModal = ref(false);
+const showConflictModal = ref(false);
+const conflictDocumentId = ref<string>('');
+
+/**
+ * Checks if the user is allowed to upload documents
+ */
+async function checkIfUserIsAllowedToUploadDocuments(): Promise<void> {
+  isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+  const companyAssignment = assignments.find((assignment) => assignment.companyId === props.companyId);
+  const userRole = companyAssignment ? companyAssignment.companyRole : null;
+  isUserCompanyOwnerOrUploader.value = userRole === CompanyRole.CompanyOwner || userRole === CompanyRole.DataUploader;
+}
 
 /**
  * Get list of documents using the filter for document category
@@ -161,6 +236,23 @@ async function getAllDocumentsForFilters(): Promise<void> {
 }
 
 /**
+ * Handles the download of documents
+ */
+async function handleDocumentDownload(documentDownloadInfo: DocumentDownloadInfo): Promise<void> {
+  activeDownloadId.value = documentDownloadInfo.fileReference;
+  await downloadDocument(documentDownloadInfo, getKeycloakPromise, percentCompleted);
+  activeDownloadId.value = null;
+}
+
+/**
+ * Handles the refresh of the page after upload of documents
+ */
+async function handleDocumentUpload(): Promise<void> {
+  await getAllDocumentsForFilters();
+  refreshDocumentTable.value++;
+}
+
+/**
  * Resets filter
  */
 function resetFilter(): void {
@@ -179,7 +271,7 @@ function updateCurrentDisplayedData(sort: boolean = true): void {
     rowsPerPage * currentPage.value,
     rowsPerPage * (1 + currentPage.value)
   );
-  window.scrollTo({
+  globalThis.scrollTo({
     top: 0,
     behavior: 'smooth',
   });
@@ -257,17 +349,20 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
-onMounted(() => {
+/**
+ * Handles document conflict
+ */
+function onDocumentConflict(documentId: string): void {
+  showUploadModal.value = false;
+  conflictDocumentId.value = documentId;
+  showConflictModal.value = true;
+}
+
+onMounted(async () => {
+  await checkIfUserIsAllowedToUploadDocuments();
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 </script>
-
-<style>
-/** This is used to turn off the search bar in the FrameworkDataSearchDropdownFilter, because there are only 4 elements here. **/
-.p-multiselect-header {
-  display: none !important;
-}
-</style>
 
 <style scoped lang="scss">
 .selection-header {
@@ -288,19 +383,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: start;
-}
-
-.styled-box {
-  padding: 0.5rem 0.75rem;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #5a4f36;
-  border-radius: 8px;
-  margin-left: 15px;
-  margin-top: 5px;
-  background: #5a4f36;
-  color: white;
-  width: 200px;
 }
 
 .text-content-wrapper {

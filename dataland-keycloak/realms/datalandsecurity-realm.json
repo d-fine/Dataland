@@ -375,6 +375,8 @@
       "dataland-batch-manager": [],
       "dataland-community-manager": [],
       "dataland-email-service": [],
+      "dataland-api-key-manager" : [],
+      "dataland-data-sourcing-service" : [],
       "dataland-document-manager": [],
       "dataland-data-exporter": [],
       "dataland-user-service": [],
@@ -533,6 +535,9 @@
       "id": "136a9394-4873-4a61-a25b-65b1e8e7cc2f",
       "createdTimestamp": 1673357193251,
       "username": "data_admin",
+      "email": "data.admin@example.com",
+      "firstName": "Data",
+      "lastName": "Admin",
       "enabled": true,
       "totp": false,
       "emailVerified": true,
@@ -558,6 +563,9 @@
       "id": "f7a02ff1-0dab-4e10-a908-7d775c1014ae",
       "createdTimestamp": 1684915574777,
       "username": "data_reviewer",
+      "email": "data.reviewer@example.com",
+      "firstName": "Data",
+      "lastName": "Reviewer",
       "enabled": true,
       "totp": false,
       "emailVerified": true,
@@ -583,6 +591,9 @@
       "id": "68129cce-52e5-473e-bec9-90046eebc619",
       "createdTimestamp": 1707483673877,
       "username": "data_premium_user",
+      "email": "data.premium-user@example.com",
+      "firstName": "Data",
+      "lastName": "PremiumUser",
       "enabled": true,
       "totp": false,
       "emailVerified": true,
@@ -608,6 +619,9 @@
       "id": "c5ef10b1-de23-4a01-9005-e62ea226ee83",
       "createdTimestamp": 1655881231268,
       "username": "data_uploader",
+      "email": "data.uploader@example.com",
+      "firstName": "Data",
+      "lastName": "Uploader",
       "enabled": true,
       "totp": false,
       "emailVerified": true,
@@ -633,6 +647,9 @@
       "id": "18b67ecc-1176-4506-8414-1e81661017ca",
       "createdTimestamp": 1655881254758,
       "username": "data_reader",
+      "email": "data.reader@example.com",
+      "firstName": "Data",
+      "lastName": "Reader",
       "enabled": true,
       "totp": false,
       "emailVerified": true,
@@ -746,6 +763,53 @@
         "TERMS_AND_CONDITIONS"
       ],
       "realmRoles": [
+        "default-roles-datalandsecurity"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "0a11ef41-af33-487f-9328-26478360d22b",
+      "username": "service-account-dataland-api-key-manager",
+      "emailVerified": false,
+      "createdTimestamp": 1754559311,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "dataland-api-key-manager",
+      "disableableCredentialTypes": [],
+      "requiredActions": [
+        "TERMS_AND_CONDITIONS"
+      ],
+      "realmRoles": [
+        "default-roles-datalandsecurity"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "08077d9f-97cc-4b3f-9543-c1803752652d",
+      "username": "service-account-dataland-data-sourcing-service",
+      "emailVerified": false,
+      "createdTimestamp": 1754559311,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "dataland-data-sourcing-service",
+      "disableableCredentialTypes": [],
+      "requiredActions": [
+        "TERMS_AND_CONDITIONS"
+      ],
+      "realmRoles": [
+        "ROLE_ADMIN",
         "default-roles-datalandsecurity"
       ],
       "clientRoles": {
@@ -1490,6 +1554,206 @@
         },
         {
           "id": "7ebad941-ca90-4734-a2cc-aacc60b9529a",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "5224c9c9-d1c3-4d33-9ea9-bb3042814527",
+      "clientId": "dataland-api-key-manager",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}",
+      "redirectUris": [
+        "/*"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "client.secret.creation.time": "1754559311",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "6f8973e6-2662-4e10-9f83-f0fa1da3e630",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "f5dba6e4-03c7-4f73-bf65-4b0d737dedcf",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "client_id",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "4afc86f0-e9c3-4558-b87a-d107b40731e1",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "5e1b4d57-21f9-4b5e-922f-d11f69b2c575",
+      "clientId": "dataland-data-sourcing-service",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}",
+      "redirectUris": [
+        "/*"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "client.secret.creation.time": "1754559311",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "2a1c0e94-66d7-43e1-bdc5-2cc6a2a7213d",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "38829e62-35a8-498a-8706-8be7e0a603ad",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "client_id",
+            "introspection.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "4796befe-3da1-430b-a65c-b31d7fcaf0f6",
           "name": "Client IP Address",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usersessionmodel-note-mapper",

@@ -13,49 +13,260 @@ import java.math.BigDecimal
 /**
  * The data-model for the EnergyPerformance section
  */
+@Suppress("MaxLineLength")
 data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val renewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val renewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Schema(example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE)
     val applicableHighImpactClimateSectors: Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val totalHighImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionCrudeOilInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionNaturalGasInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionLigniteInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionCoalInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionNuclearEnergyInGWh: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
     @field:Valid()
     val nonRenewableEnergyConsumptionOtherInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 )

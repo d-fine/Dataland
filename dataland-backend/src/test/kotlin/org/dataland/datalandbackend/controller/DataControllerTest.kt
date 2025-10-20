@@ -3,20 +3,28 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
+import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,12 +33,12 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
@@ -38,20 +46,24 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-internal class DataControllerTest(
-    @Autowired
-    private val dataExportService: DataExportService,
-) {
+@DefaultMocks
+internal class DataControllerTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
+    private val mockDataPointUtils = mock<DataPointUtils>()
+    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val mockCompanyQueryManager = mock<CompanyQueryManager>()
+    private val dataExportService =
+        DataExportService(mockDataPointUtils, mockReferencedReportsUtils, mockSpecificationApi)
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
-    private final val testDataType = DataType.valueOf("eutaxonomy-non-financials")
+    private final val testDataType = DataType.valueOf("lksg")
     private final val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    private final val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+    private final val someEuTaxoData = testDataProvider.getLksgDataset()
     private val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
     private final val testUserId = "testuser"
@@ -69,9 +81,9 @@ internal class DataControllerTest(
     private final val otherUserAcceptedDataMetaInformationEntity =
         buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
-    lateinit var dataController: EutaxonomyNonFinancialsDataController
+    lateinit var dataController: LksgDataController
 
-    private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
+    private val testDataDimensions = BasicDatasetDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
     @BeforeEach
     fun setup() {
@@ -104,10 +116,11 @@ internal class DataControllerTest(
             .getDatasetData(any(), any(), any())
 
         dataController =
-            EutaxonomyNonFinancialsDataController(
+            LksgDataController(
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
+                mockCompanyQueryManager,
                 objectMapper,
             )
     }
@@ -130,15 +143,42 @@ internal class DataControllerTest(
     @ParameterizedTest
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality does not throw an error`(exportFileType: ExportFileType) {
-        doReturn(someEuTaxoDataAsString)
-            .whenever(mockDataManager)
-            .getDatasetData(any<BasicDataDimensions>(), any())
+        val mockCompanyValidationResult =
+            mock<CompanyIdentifierValidationResult> {
+                on { companyInformation } doReturn mock<BasicCompanyInformation>()
+            }
+        doReturn(listOf(mockCompanyValidationResult))
+            .whenever(mockCompanyQueryManager)
+            .validateCompanyIdentifiers(any())
+        doAnswer { invocation ->
+            val argument = invocation.arguments[0] as Set<*>
+            argument.associateWith { someEuTaxoDataAsString }
+        }.whenever(mockDataManager).getDatasetData(any(), any())
+        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
             dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriod = testReportingPeriod,
-                companyId = testCompanyId,
+                reportingPeriods = listOf(testReportingPeriod),
+                companyIds = listOf(testCompanyId),
+                exportFileType = exportFileType,
+            )
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(ExportFileType::class)
+    fun `test that the export functionality returns 404 if all input companyIds are invalid`(exportFileType: ExportFileType) {
+        val mockCompanyValidationResult =
+            mock<CompanyIdentifierValidationResult> { on { companyInformation } doReturn null }
+        doReturn(listOf(mockCompanyValidationResult))
+            .whenever(mockCompanyQueryManager)
+            .validateCompanyIdentifiers(any())
+        this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.exportCompanyAssociatedDataByDimensions(
+                reportingPeriods = listOf(testReportingPeriod),
+                companyIds = listOf(testCompanyId),
                 exportFileType = exportFileType,
             )
         }
@@ -148,7 +188,7 @@ internal class DataControllerTest(
     fun `test that resource not found error is thrown if combination of reportingPeriod and companyId and dataType does not exist`() {
         doReturn(null)
             .whenever(mockDataMetaInformationManager)
-            .getActiveDatasetIdByDataDimensions(any<BasicDataDimensions>())
+            .getActiveDatasetIdByDataDimensions(any<BasicDatasetDimensions>())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedDataByDimensions(
@@ -160,13 +200,24 @@ internal class DataControllerTest(
 
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
-        doReturn(someEuTaxoDataAsString).whenever(mockDataManager).getDatasetData(eq(testDataDimensions), any())
+        doAnswer { invocation ->
+            val argument = invocation.arguments[0] as Set<BasicDatasetDimensions>
+            argument.associateWith { someEuTaxoDataAsString }
+        }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =
             dataController.getCompanyAssociatedDataByDimensions(
                 reportingPeriod = testReportingPeriod,
                 companyId = testCompanyId,
             )
         Assertions.assertEquals(someEuTaxoData, response.body!!.data)
+    }
+
+    @Test
+    fun `verify that polling data by company ID and reporting period throws an error if no data is available`() {
+        doReturn(emptyMap<BasicDataDimensions, String>()).whenever(mockDataManager).getDatasetData(any(), any())
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getCompanyAssociatedDataByDimensions(testReportingPeriod, testCompanyId)
+        }
     }
 
     private fun buildDataMetaInformationEntity(

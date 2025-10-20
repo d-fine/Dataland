@@ -163,14 +163,14 @@ export class Generator {
    * @returns a random non-empty set of reports
    */
   generateReferencedReports(): ReferencedDocuments {
-    const availableReportNames = pickSubsetOfElements(possibleReports);
+    const availableReportNames = pickSubsetOfElements(possibleReports, 1, 2);
     const fixtureDocumentIds = getAllFakeFixtureDocumentIds();
 
     const referencedReports: ReferencedDocuments = {};
     let documentIndex = 0;
     for (const reportName of availableReportNames) {
       referencedReports[reportName] = {
-        fileReference: fixtureDocumentIds[documentIndex++],
+        fileReference: fixtureDocumentIds[documentIndex++]!,
         fileName: reportName,
         publicationDate: this.valueOrNull(generatePastDate()),
       };

@@ -145,7 +145,7 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
  * @param datapointProperties the properties of the datapoint-wrapper
  * @returns the built displayValue object
  */
-function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
+export function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
   inputValue: AvailableMLDTDisplayObjectTypes,
   fieldLabel: string,
   datapointProperties: DatapointProperties | undefined | null

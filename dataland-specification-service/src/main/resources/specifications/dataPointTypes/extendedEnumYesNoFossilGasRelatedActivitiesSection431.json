@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoFossilGasRelatedActivitiesSection431",
+  "name" : "Fossil Gas related Activities (Section 4.31)",
+  "businessDefinition" : "The undertaking carries out, funds, or has exposures to construction, refurbishment and operation of heat generation facilities that produce heat/cool using fossil gaseous fuels.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "nuclear-and-gas" ],
+  "constraints" : null
+}

@@ -1,150 +1,116 @@
 <template>
-  <AuthenticationWrapper>
-    <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="2">
-      <TheContent class="min-h-screen paper-section relative">
-        <TabView v-model:activeIndex="currentIndex" @tab-change="onTabChange" :scrollable="true" data-test="portfolios">
-          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId">
-            <template #header>
-              <div class="p-tabview-header" :title="portfolio.portfolioName">{{ portfolio.portfolioName }}</div>
-            </template>
-            <PortfolioDetails
-              :portfolioId="portfolio.portfolioId"
-              @update:portfolio-overview="getPortfolios"
-              :data-test="`portfolio-${portfolio.portfolioName}`"
-            />
-          </TabPanel>
-          <TabPanel>
-            <template #header>
-              <div @click="addNewPortfolio" data-test="addNewPortfolio">
-                <i class="pi pi-plus pr-2" /> New Portfolio
-              </div>
-            </template>
-            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
-          </TabPanel>
-        </TabView>
-      </TheContent>
-      <TheFooter :is-light-version="true" :sections="footerSections" />
-    </DatasetsTabMenu>
-  </AuthenticationWrapper>
+  <TheContent class="min-h-screen relative">
+    <Tabs
+      :value="currentPortfolioId || 'no-portfolios-available'"
+      :scrollable="true"
+      data-test="portfolios"
+      @update:value="onTabChange"
+    >
+      <div class="tabs-container">
+        <TabList>
+          <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+            <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
+              {{ portfolio.portfolioName }}
+            </div>
+          </Tab>
+        </TabList>
+        <PrimeButton label="ADD NEW PORTFOLIO" @click="addNewPortfolio" icon="pi pi-plus" data-test="add-portfolio" />
+      </div>
+      <TabPanels>
+        <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+          <PortfolioDetails
+            :portfolioId="portfolio.portfolioId"
+            @update:portfolio-overview="getPortfolios"
+            :data-test="`portfolio-${portfolio.portfolioName}`"
+          />
+        </TabPanel>
+        <TabPanel value="no-portfolios-available">
+          <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  </TheContent>
 </template>
 
 <script setup lang="ts">
-import contentData from '@/assets/content.json';
-import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import type { Content, Section } from '@/types/ContentTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { BasePortfolioName } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Tab from 'primevue/tab';
+import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
-import TabView, { type TabViewChangeEvent } from 'primevue/tabview';
+import TabPanels from 'primevue/tabpanels';
+import Tabs from 'primevue/tabs';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { inject, onMounted, ref } from 'vue';
+import { useSessionStorage } from '@vueuse/core';
+
+/**
+ * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
+ * It includes functionality to add new portfolios, and to switch between existing ones.
+ */
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 
-const currentIndex = ref(0);
+const SESSION_STORAGE_KEY = 'last-selected-portfolio-id';
+const currentPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
 const portfolioNames = ref<BasePortfolioName[]>([]);
 
-const content: Content = contentData;
-const footerSections: Section[] | undefined = content.pages.find((page) => page.url === '/')?.sections;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const route = useRoute();
-const router = useRouter();
-
 onMounted(() => {
-  void getPortfolios();
-});
-
-/**
- * If currentIndex changes, retrieve portfolio for new index.
- * For the watcher not to get batched with tabChange event, we need to set option flush: 'post'.
- */
-watch(
-  currentIndex,
-  (newIndex) => {
-    if (portfolioNames.value.length > 0 && newIndex < portfolioNames.value.length) {
-      const name = encodeURI(portfolioNames.value[newIndex].portfolioName);
-      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
-    }
-  },
-  { flush: 'post' }
-);
-
-/**
- * If current name changes, retrieve portfolio for new name.
- */
-watch(
-  () => route.params.portfolioName,
-  (newName) => {
-    const newIndex = portfolioNames.value.findIndex((p) => decodeURI(p.portfolioName) === newName);
-    if (newIndex !== -1) {
-      currentIndex.value = newIndex;
-    }
-  }
-);
-
-/**
- * If page is revisited, retrieve last watched portfolio.
- */
-watch(portfolioNames, (newPortfolios) => {
-  if (newPortfolios.length > 0) {
-    let name = route.params.portfolioName as string | undefined;
-
-    if (!name) {
-      name = localStorage.getItem('lastPortfolioName') ?? '';
-    }
-    const matchedIndex = newPortfolios.findIndex((p) => decodeURI(p.portfolioName) === name);
-    if (matchedIndex !== -1) {
-      currentIndex.value = matchedIndex;
-      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: name } });
-    } else {
-      currentIndex.value = 0;
-      const fallbackName = decodeURI(newPortfolios[0].portfolioName);
-      void router.replace({ name: 'Portfolio Overview', params: { portfolioName: fallbackName } });
-    }
-  }
+  void getPortfolios().then(() => setCurrentPortfolioId());
 });
 
 /**
  * Retrieve all portfolios for the currently logged-in user.
  */
 async function getPortfolios(): Promise<void> {
-  return apiClientProvider.apiClients.portfolioController
-    .getAllPortfolioNamesForCurrentUser()
-    .then((response) => {
-      portfolioNames.value = response.data;
-    })
-    .catch((reason) => console.error(reason));
-}
-
-/**
- * Called when currently active portfolio is changed.
- */
-function onTabChange(event: TabViewChangeEvent): void {
-  currentIndex.value = event.index;
-
-  const selectedPortfolio = portfolioNames.value[event.index];
-  if (selectedPortfolio) {
-    const name = encodeURI(selectedPortfolio.portfolioName);
-    localStorage.setItem('lastPortfolioName', name);
-    void router.push({ name: 'Portfolio Overview', params: { portfolioName: name } });
+  try {
+    const response = await apiClientProvider.apiClients.portfolioController.getAllPortfolioNamesForCurrentUser();
+    portfolioNames.value = response.data;
+    setCurrentPortfolioId();
+  } catch (error) {
+    console.log(error);
   }
 }
 
 /**
+ * Sets the current portfolio ID based on the following priority:
+ * 1. If a portfolioId is provided (e.g. after creating a new portfolio), use it if valid.
+ * 2. If not, and a session-stored portfolioId exists, use it if valid.
+ * 3. If none of the above are valid, fall back to the first portfolio in the list.
+ */
+function setCurrentPortfolioId(portfolioId?: string): void {
+  if (portfolioNames.value.length === 0) {
+    currentPortfolioId.value = undefined;
+    return;
+  }
+
+  if (portfolioId && portfolioNames.value.some((portfolio) => portfolio.portfolioId === portfolioId)) {
+    currentPortfolioId.value = portfolioId;
+    return;
+  }
+
+  if (
+    currentPortfolioId.value &&
+    portfolioNames.value.some((portfolio) => portfolio.portfolioId === currentPortfolioId.value)
+  ) {
+    return;
+  }
+
+  currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
+}
+
+/**
  * Opens the PortfolioDialog, reloads all portfolios and
- * sets the newly created one as the active tab by updating currentIndex.
+ * sets the newly created one as the active tab by updating currentPortfolioId.
  */
 function addNewPortfolio(): void {
   dialog.open(PortfolioDialog, {
@@ -153,22 +119,42 @@ function addNewPortfolio(): void {
       modal: true,
     },
     onClose(options) {
-      const portfolioName = options?.data as BasePortfolioName;
-      if (portfolioName) {
+      const basePortfolioName = options?.data as BasePortfolioName;
+      if (basePortfolioName) {
         void getPortfolios().then(() => {
-          currentIndex.value = portfolioNames.value.findIndex(
-            (portfolio) => portfolio.portfolioId == portfolioName.portfolioId
+          setCurrentPortfolioId(
+            portfolioNames.value.find((portfolio) => portfolio.portfolioId == basePortfolioName.portfolioId)
+              ?.portfolioId
           );
         });
       }
     },
   });
 }
+
+/**
+ * Handles the tab change event by changing the currentPortfolioId.
+ * @param value The value of the tab aka the portfolioId of the selected portfolio.
+ */
+function onTabChange(value: string | number): void {
+  setCurrentPortfolioId(String(value));
+}
 </script>
 
-<style scoped lang="scss">
-.p-tabview-header {
-  max-width: 15em;
+<style scoped>
+.tabs-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: space-between;
+  padding-right: var(--spacing-md);
+}
+
+.tabview-header {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  max-width: 15rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

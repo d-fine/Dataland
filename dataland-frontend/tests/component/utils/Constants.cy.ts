@@ -4,16 +4,15 @@ import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFramewo
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
-  it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 3]).to.equal(
-      DataTypeEnum.Vsme
-    );
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 2]).to.equal(
-      DataTypeEnum.EsgDatenkatalog
-    );
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 1]).to.equal(
-      DataTypeEnum.Heimathafen
-    );
+  it('Check for the correct order of the frameworks', () => {
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER).to.have.length(7);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0]).to.equal(DataTypeEnum.Sfdr);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1]).to.equal(DataTypeEnum.EutaxonomyFinancials);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2]).to.equal(DataTypeEnum.EutaxonomyNonFinancials);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[3]).to.equal(DataTypeEnum.NuclearAndGas);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[4]).to.equal(DataTypeEnum.Lksg);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[5]).to.equal(DataTypeEnum.Pcaf);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[6]).to.equal(DataTypeEnum.Vsme);
   });
 
   it('Check if the frameworks in the Constants are in sync with the framework registries', () => {
@@ -22,16 +21,8 @@ describe('Unit test for the data type sorting in the Constants', () => {
      * @param frameworkIdentifiers as input to filter
      * @returns the filtered list of framework identifiers
      */
-    function removeFrameworksWithNoToolboxSupport(frameworkIdentifiers: string[]): string[] {
-      const nonToolboxSupportedFrameworkIdentifiers = [DataTypeEnum.P2p.toString()];
-      return frameworkIdentifiers.filter(
-        (frameworkIdentifier) => !nonToolboxSupportedFrameworkIdentifiers.includes(frameworkIdentifier)
-      );
-    }
 
-    const allToolboxSupportedFrameworksConstant = removeFrameworksWithNoToolboxSupport(
-      ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER
-    );
+    const allToolboxSupportedFrameworksConstant = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 
     const frameworkIdentifiersFromPrivateRegistry = getAllPrivateFrameworkIdentifiers();
     const frameworkIdentifiersFromPublicAndPrivateRegistries = [

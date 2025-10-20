@@ -1,10 +1,29 @@
-// @ts-nocheck
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
-import { type DatasetTableInfo, DatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
-import { DataTypeEnum } from '@clients/backend';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { type DatasetTableInfo, ExtendedQaStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { DataTypeEnum } from '@clients/backend';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import router from '@/router';
+
+/**
+ * Mounts the DatasetOverviewTable with all dataset table entries passed to it
+ * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
+ */
+function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
+  const keycloakMock = minimalKeycloakMock({
+    userId: 'Mock-User-Id',
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
+  });
+  //@ts-ignore
+  cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
+    keycloak: keycloakMock,
+  }).then((mocked) => {
+    void mocked.wrapper.setProps({
+      datasetTableInfos: mockDatasetTableInfos,
+    });
+  });
+}
 
 describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyAlpha = 'Imaginary-Corporate';
@@ -28,27 +47,9 @@ describe('Component test for DatasetOverviewTable', () => {
       dataType: dataType,
       companyName: companyName,
       dataReportingPeriod: '2023',
-      status: DatasetStatus.QaApproved,
+      status: ExtendedQaStatus.Accepted,
       uploadTimeInMs: 1672527600000, // 1.1.2023 00:00:00:0000
     };
-  }
-
-  /**
-   * Mounts the DatasetOverviewTable with all dataset table entries passed to it
-   * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
-   */
-  function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
-    const keycloakMock = minimalKeycloakMock({
-      userId: 'Mock-User-Id',
-      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
-    });
-    cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
-      keycloak: keycloakMock,
-    }).then((mocked) => {
-      void mocked.wrapper.setProps({
-        datasetTableInfos: mockDatasetTableInfos,
-      });
-    });
   }
 
   it('Check if the table rows look as expected', () => {
@@ -57,8 +58,10 @@ describe('Component test for DatasetOverviewTable', () => {
       nameOfCompanyAlpha,
       humanizeStringOrNumber(dataTypeOfDatasetForAlpha),
       '2023',
-      'APPROVED',
+      'Accepted',
     ];
+    const routerPushMock = cy.stub();
+    cy.stub(router, 'push').callsFake(routerPushMock);
     cy.get('tbody td').should((elements) => {
       expect(elements.length).to.equal(6);
     });
@@ -66,24 +69,26 @@ describe('Component test for DatasetOverviewTable', () => {
       if (index < expectedRowContents.length) {
         expect(element.text()).to.equal(expectedRowContents[index]);
       } else if (index == 4) {
-        expect(Date.parse(element.text()).toString()).not.to.equal(NaN.toString());
+        expect(Date.parse(element.text()).toString()).not.to.equal(Number.NaN.toString());
       } else if (index == 5) {
         expect(element.text()).to.contain('VIEW');
       }
     });
-    cy.get('tbody td a').should(
-      'have.attr',
-      'href',
-      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
-    );
+    cy.get('[data-test="view-dataset-button"]').contains('VIEW').click();
+
+    cy.then(() => {
+      expect(routerPushMock).to.have.been.calledWith(
+        `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
+      );
+    });
   });
 
   it('Validates the layout of the table header', () => {
     prepareSimpleDatasetOverviewTable([]);
     const expectedHeaders = ['COMPANY', 'DATA FRAMEWORK', 'SUBMISSION DATE', 'REPORTING PERIOD', 'STATUS'];
-    expectedHeaders.forEach((value) => {
+    for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
-    });
+    }
     cy.get('th').each((element) => {
       if (!expectedHeaders.includes(element.text())) {
         expect(element.html()).to.contain('<input');

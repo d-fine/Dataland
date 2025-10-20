@@ -29,26 +29,30 @@
         </div>
       </template>
       <template #content="{ files, messages }">
-        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error">{{ msg }} </FileSelectMessage>
-        <div v-show="files.length > 0" data-test="files-to-upload">
+        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error" closable>{{ msg }} </FileSelectMessage>
+        <div v-show="files.length > 0" data-test="files-to-upload" style="width: 100%">
           <div
             v-for="(selectedFile, index) of files"
             :key="selectedFile.name + index"
-            class="flex w-full align-items-center file-upload-item"
             :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
+            style="display: flex; justify-content: space-between; margin: var(--spacing-xs) 0"
           >
-            <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
-            <div v-if="selectedFile.size > 0" data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
-              {{ formatBytesUserFriendly(selectedFile.size, 1) }}
-            </div>
-            <div v-else data-test="currently-uploaded-text" class="mx-2 text-black-alpha-50">Currently uploaded</div>
+            <span data-test="files-to-upload-title" class="file-name">
+              {{ selectedFile.name }}
+            </span>
+            <div style="display: flex; gap: var(--spacing-md)">
+              <div v-if="selectedFile.size > 0" data-test="files-to-upload-size" class="file-size">
+                {{ formatBytesUserFriendly(selectedFile.size, 1) }}
+              </div>
+              <div v-else data-test="currently-uploaded-text" class="file-size">Currently uploaded</div>
 
-            <PrimeButton
-              data-test="files-to-upload-remove"
-              icon="pi pi-times"
-              @click="removeDocumentsFromDocumentsToUpload([index])"
-              class="p-button-rounded"
-            />
+              <PrimeButton
+                data-test="files-to-upload-remove"
+                icon="pi pi-times"
+                @click="removeDocumentsFromDocumentsToUpload([index])"
+                rounded
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -147,10 +151,10 @@ export default defineComponent({
     removeDocumentsFromDocumentsToUpload(indexesOfFilesToRemove: number[]) {
       indexesOfFilesToRemove.sort((a, b) => b - a);
       const sortedIndexes = [...indexesOfFilesToRemove];
-      [...new Set(sortedIndexes)].forEach((indexOfFileToRemove) => {
+      for (const indexOfFileToRemove of new Set(sortedIndexes)) {
         ((this.$refs.fileUpload as FileUpload)?.remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
-      });
+      }
       this.emitUpdatedDocumentsSelectionEvent();
     },
 
@@ -172,11 +176,10 @@ export default defineComponent({
      */
     prefillFileUpload() {
       if (this.fileNamesForPrefill) {
-        this.fileNamesForPrefill.forEach((name) => {
+        for (const name of this.fileNamesForPrefill) {
           const dummyFile = new File([] as BlobPart[], name as string);
-
           ((this.$refs.fileUpload as FileUpload)?.files as File[])?.push(dummyFile);
-        });
+        }
       }
     },
   },

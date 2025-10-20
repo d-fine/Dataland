@@ -68,6 +68,7 @@ services:
       - backend-db
       - keycloak-db
       - api-key-manager-db
+      - data-sourcing-service-db
       - internal-storage-db
       - document-manager-db
       - qa-service-db
@@ -77,7 +78,7 @@ services:
       - grafana
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5441:5433-5441"
+      - "127.0.0.1:5433-5442:5433-5442"
       - "127.0.0.1:5672:5672"
     logging:
       <<: *loki-logging
@@ -96,6 +97,7 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -113,6 +115,41 @@ services:
       PGUSER: api_key_manager
     logging:
       <<: *loki-logging
+  data-sourcing-service:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - internal
+          - data-sourcing-service-db
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        expose:
+          - "8080"
+        depends_on:
+          - data-sourcing-service-db
+        <<: *uncritical-constants-env
+        environment:
+          <<: *rabbit-mq-user-and-pass
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        logging:
+          <<: *loki-logging
+  data-sourcing-service-db:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - data-sourcing-service-db
+        image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+        volumes:
+          - data_sourcing_service_data:/var/lib/postgresql/data
+        environment:
+          POSTGRES_DB: data_sourcing_service
+          POSTGRES_USER: data_sourcing_service
+          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          PGUSER: data_sourcing_service
+        logging:
+          <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -190,6 +227,7 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   e2etests:
@@ -227,7 +265,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.10.0@sha256:990d0ab35ae15d8a322ee1eeaf4f7cf14e367d3d0ee2f472704b7b3df4c9e7c1
+    image: node:23.11.1@sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544
     networks:
       internal:
         aliases:
@@ -346,6 +384,8 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
@@ -371,6 +411,7 @@ services:
       - keycloak-db
       - backend-db
       - api-key-manager-db
+      - data-sourcing-service-db
       - internal
       - internal-storage-db
       - document-manager-db
@@ -387,6 +428,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -499,6 +541,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
     environment:
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
+      GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
       GET_ALL_NORTHDATA_COMPANIES_FLAG_FILE: /config/perform_northdata_full_golden_copy_download_flag
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
@@ -544,6 +587,8 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
+    command:
+      -c max_stack_depth=7680kB
     logging:
       <<: *loki-logging
   specification-service:
@@ -641,7 +686,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:7062a2109c4b51f3c792c7ea01e83ed12ef9a980886e3b3d380a7d2e5f6ce3f5
+    image: postgres:alpine@sha256:d5f196a551b5cef1c70853c6dd588f456d16ca4ea733e3f31c75bc1ae2f65f3f
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -733,6 +778,7 @@ networks:
   keycloak-db:
   backend-db:
   api-key-manager-db:
+  data-sourcing-service-db:
   internal-storage-db:
   document-manager-db:
   qa-service-db:
@@ -747,6 +793,8 @@ volumes:
   backend_data:
     driver: local
   api_key_manager_data:
+    driver: local
+  data_sourcing_service_data:
     driver: local
   internal_storage_data:
     driver: local

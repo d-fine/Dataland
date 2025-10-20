@@ -40,3 +40,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.header-separator {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid #e0dfde;
+}
+</style>

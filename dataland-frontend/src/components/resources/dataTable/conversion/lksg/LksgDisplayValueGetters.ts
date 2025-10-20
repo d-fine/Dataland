@@ -68,11 +68,9 @@ function generateReadableCombinationOfNumberOfSuppliersAndCountries(numberOfSupp
 }): string[] {
   return Object.entries(numberOfSuppliersPerCountryCode).map(([countryCode, numberOfSuppliers]) => {
     const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
-    if (numberOfSuppliers != undefined) {
-      return `${numberOfSuppliers} suppliers from ${countryName}`;
-    } else {
-      return `There are suppliers from ${countryName}`;
-    }
+    return numberOfSuppliers === undefined
+      ? `There are suppliers from ${countryName}`
+      : `${numberOfSuppliers} suppliers from ${countryName}`;
   });
 }
 
@@ -111,9 +109,9 @@ function convertLksgProcumentTypeToListForModal(
         lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}
       ),
       totalProcurementInPercent:
-        lksgProcurementCategory.shareOfTotalProcurementInPercent != null
-          ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
-          : '',
+        lksgProcurementCategory.shareOfTotalProcurementInPercent === null
+          ? ''
+          : formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent),
     });
   }
   return listForModal;
@@ -221,10 +219,10 @@ export function formatLksgSubcontractingCompaniesForDisplay(
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
-  if (!input) {
-    return MLDTDisplayObjectForEmptyString;
-  } else {
+  if (input) {
     convertedValueForModal = convertLksgSubcontractingCompaniesToListForModal(input);
+  } else {
+    return MLDTDisplayObjectForEmptyString;
   }
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -315,9 +313,7 @@ export function formatLksgRisksOrViolationsForDisplay(
   input: LksgRiskOrViolationAssessment[] | null | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
-    return MLDTDisplayObjectForEmptyString;
-  } else {
+  if (input) {
     const convertedValueForModal = convertLksgRiskOrViolationPositionForDisplay(input);
 
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -339,6 +335,8 @@ export function formatLksgRisksOrViolationsForDisplay(
         },
       },
     };
+  } else {
+    return MLDTDisplayObjectForEmptyString;
   }
 }
 
@@ -377,9 +375,7 @@ export function formatLksgGrievanceMechanismsForDisplay(
   input: LksgGrievanceAssessmentMechanism[] | null | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
-    return MLDTDisplayObjectForEmptyString;
-  } else {
+  if (input) {
     const humanizedInput = convertLksGrievanceMechanismsForDisplay(input);
 
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -401,5 +397,7 @@ export function formatLksgGrievanceMechanismsForDisplay(
         },
       },
     };
+  } else {
+    return MLDTDisplayObjectForEmptyString;
   }
 }

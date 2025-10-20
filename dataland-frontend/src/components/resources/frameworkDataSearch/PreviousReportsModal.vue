@@ -67,4 +67,36 @@ export default defineComponent({
 a:link {
   color: var(--yellow-700);
 }
+
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+
+.dataland-dialog {
+  padding: 0.1rem 1.5rem 1rem;
+  background-color: white;
+}
+
+.dataland-dialog-sm {
+  min-width: 360px;
+  max-width: 360px;
+  width: 360px;
+}
 </style>

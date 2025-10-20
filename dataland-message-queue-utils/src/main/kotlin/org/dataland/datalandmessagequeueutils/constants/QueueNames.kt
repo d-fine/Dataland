@@ -14,4 +14,6 @@ object QueueNames {
     const val QA_SERVICE_DATASET_MIGRATION = "qa-service.migrateDatasets"
     const val BACKEND_DATA_PERSISTED = "backend.removeDataFromMemory"
     const val BACKEND_DATA_POINT_QA_STATUS_UPDATED = "backend.updateDataPointQaStatus"
+    const val USER_SERVICE_PORTFOLIO_UPDATE = "user-service.updatePortfolio"
+    const val DATA_SOURCING_SERVICE_DATASET_QA_STATUS_UPDATE = "data-sourcing-service.datasetQaStatusUpdate"
 }

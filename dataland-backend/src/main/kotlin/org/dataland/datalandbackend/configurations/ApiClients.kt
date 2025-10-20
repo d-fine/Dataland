@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.DataAccessControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -26,6 +27,14 @@ class ApiClients(
     fun getCompanyRolesApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyRolesControllerApi = CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the DataAccessControllerApi of the community manager
+     */
+    @Bean
+    fun getDataAccessControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): DataAccessControllerApi = DataAccessControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
