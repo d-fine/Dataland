@@ -73,4 +73,7 @@ data class RequestSearchFilter<IdType>(
             ),
     )
     val requestPriorities: Set<RequestPriority>? = null,
+    val emailAddress: String? = null,
+    val adminComment: String? = null,
+    val companySearchString: String? = null,
 )
