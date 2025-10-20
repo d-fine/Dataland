@@ -27,6 +27,21 @@ class PortfolioBulkDataRequestService
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
+         * Creates Bulk Data Requests for a specific portfolio.
+         *
+         * This function is called when a portfolio is created or its monitoring status changes,
+         * or when a company is added to the portfolio.
+         * It updates the company reporting year and sector information for the companies in the portfolio,
+         * and then publishes appropriate Bulk Data Requests if the portfolio is monitored.
+         *
+         * @param basePortfolio The BasePortfolio for which to create bulk data requests.
+         */
+        fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
+            companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
+            postBulkDataRequestIfMonitored(basePortfolio)
+        }
+
+        /**
          * Schedules and executes the creation of Bulk Data Requests for all monitored portfolios in the system.
          *
          * This function runs automatically at 2:00 a.m. daily (server time).
