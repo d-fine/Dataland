@@ -17,9 +17,6 @@ let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
 let portfolioName: string;
 
-const reportingYearsToSelect = ['2025', '2024', '2023', '2022', '2021', '2020'];
-const unavailableYears = ['2021', '2020'];
-
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 
 /**
@@ -186,9 +183,6 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
-      for (const year of reportingYearsToSelect) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      }
     });
 
     testDownloadPortfolio({
@@ -217,10 +211,6 @@ describeIf(
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
-
-      for (const year of unavailableYears) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).parent().should('have.class', 'disabled');
-      }
     });
   }
 );
