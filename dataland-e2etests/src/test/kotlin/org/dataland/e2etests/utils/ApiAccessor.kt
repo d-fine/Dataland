@@ -90,34 +90,34 @@ class ApiAccessor {
 
     fun euTaxonomyFinancialsUploaderFunction(
         companyId: String,
-        data: EutaxonomyFinancialsData,
-        period: String,
+        euTaxonomyFinancialsData: EutaxonomyFinancialsData,
+        reportingPeriod: String,
         bypassQa: Boolean = true,
     ) = dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEutaxonomyFinancialsData(
-        CompanyAssociatedDataEutaxonomyFinancialsData(companyId, period, data), bypassQa,
+        CompanyAssociatedDataEutaxonomyFinancialsData(companyId, reportingPeriod, euTaxonomyFinancialsData), bypassQa,
     )
 
     fun lksgUploaderFunction(
         companyId: String,
         lksgData: LksgData,
-        period: String,
+        reportingPeriod: String,
         bypassQa: Boolean = true,
     ) = dataControllerApiForLksgData.postCompanyAssociatedLksgData(
-        CompanyAssociatedDataLksgData(companyId, period, lksgData), bypassQa,
+        CompanyAssociatedDataLksgData(companyId, reportingPeriod, lksgData), bypassQa,
     )
 
     fun sfdrUploaderFunction(
         companyId: String,
         sfdrData: SfdrData,
-        period: String,
+        reportingPeriod: String,
         bypassQa: Boolean = true,
     ) = dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-        CompanyAssociatedDataSfdrData(companyId, period, sfdrData), bypassQa,
+        CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData), bypassQa,
     )
 
     /**
-     * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in [companyInfo].
-     * The upload function is provided. Handles authentication and QA as needed. Returns all [UploadInfo] produced.
+     * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in
+     * [companyInfo] via [frameworkDataUploadFunction].
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         companyInfo: List<CompanyInformation>,
@@ -128,11 +128,11 @@ class ApiAccessor {
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val storedCompanies = companyInfo.map { companyDataControllerApi.postCompany(it) }
+        val storedCompanyInfos = companyInfo.map { companyDataControllerApi.postCompany(it) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
         val listOfUploadInfo = mutableListOf<UploadInfo>()
         for (frameworkDataset in frameworkDatasets) {
-            companyInfo.zip(storedCompanies).forEach { (input, stored) ->
+            companyInfo.zip(storedCompanyInfos).forEach { (input, stored) ->
                 ApiAwait.waitForSuccess(UPLOAD_TIMEOUT_IN_S) {
                     val receivedDataMetaInformation =
                         frameworkDataUploadFunction(
@@ -172,19 +172,28 @@ class ApiAccessor {
         reportingPeriod: String,
         bypassQa: Boolean = true,
     ): DataMetaInformation {
-        fun <T> upload(
-            provider: FrameworkTestDataProvider<T>,
-            uploader: (String, T, String, Boolean) -> DataMetaInformation,
-        ) = uploadSingleFrameworkDataset(companyId, provider.getTData(1).first(), reportingPeriod, uploader, bypassQa)
+        fun <T> uploadDataset(
+            testDataProvider: FrameworkTestDataProvider<T>,
+            frameworkDataUploaderFunction: (String, T, String, Boolean) -> DataMetaInformation,
+        ) = uploadSingleFrameworkDataset(
+            companyId,
+            testDataProvider.getTData(1).first(),
+            reportingPeriod,
+            frameworkDataUploaderFunction,
+            bypassQa,
+        )
 
         return when (dataType) {
-            DataTypeEnum.lksg -> upload(testDataProviderForLksgData, ::lksgUploaderFunction)
-            DataTypeEnum.sfdr -> upload(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            DataTypeEnum.lksg -> uploadDataset(testDataProviderForLksgData, ::lksgUploaderFunction)
+            DataTypeEnum.sfdr -> uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
-                upload(testDataProviderForEuTaxonomyDataForNonFinancials, ::euTaxonomyNonFinancialsUploaderFunction)
+                uploadDataset(
+                    testDataProviderForEuTaxonomyDataForNonFinancials,
+                    ::euTaxonomyNonFinancialsUploaderFunction,
+                )
 
             DataTypeEnum.eutaxonomyMinusFinancials ->
-                upload(testDataProviderEuTaxonomyForFinancials, ::euTaxonomyFinancialsUploaderFunction)
+                uploadDataset(testDataProviderEuTaxonomyForFinancials, ::euTaxonomyFinancialsUploaderFunction)
 
             else -> throw IllegalArgumentException("Datatype $dataType not integrated into ApiAccessor.")
         }
@@ -306,7 +315,8 @@ class ApiAccessor {
     ): UploadInfo? {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         if (lei.isNullOrEmpty() && isins.isNullOrEmpty() && permId.isNullOrEmpty()) return null
-        val testCompanyInformation = generalTestDataProvider.generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
+        val testCompanyInformation =
+            generalTestDataProvider.generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
