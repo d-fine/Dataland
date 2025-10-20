@@ -1,5 +1,5 @@
 <template>
-  <div data-test="stateHistoryContainer">
+  <div data-test="stateHistoryContainer" style="pointer-events: none; z-index: 0;">
     <DataTable
         :value="props.stateHistory"
         data-test="stateHistoryTable"

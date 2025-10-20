@@ -265,7 +265,7 @@ describe('Component tests for the view data request page', function (): void {
       cy.contains('WITHDRAW REQUEST').should('exist');
       cy.contains('WITHDRAW REQUEST').click();
     });
-    cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('CLOSE').click();
+    cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
     cy.get('[data-test="success-modal"]').should('not.exist');
   });
 

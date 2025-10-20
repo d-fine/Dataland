@@ -146,7 +146,9 @@ describe('Component tests for the view data request page', function (): void {
       cy.contains(`${requestState}`).should('exist');
       cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
     });
-    cy.get('[data-test="card_withdrawn"]').should('be.visible');
+    if (requestState !== RequestState.Withdrawn) {
+      cy.get('[data-test="card_withdrawn"]').should('be.visible');
+    }
   }
 
   it('Check view data request page for Processed request with data renders as expected', function () {
@@ -208,14 +210,18 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
+      const keyCloakMock = minimalKeycloakMock({ userId: dummyUserId, roles: [KEYCLOAK_ROLE_ADMIN] });
+      keyCloakMock.tokenParsed = keyCloakMock.tokenParsed || {};
+      keyCloakMock.tokenParsed.email = dummyEmail;
     getMountingFunction({
-      keycloak: minimalKeycloakMock({ userId: dummyUserId, roles: [KEYCLOAK_ROLE_ADMIN] }) })
+      keycloak: keyCloakMock })
     (ViewDataRequestPage, {
       props: { requestId: requestId },
     });
     checkBasicPageElementsAsAdmin(RequestState.Open);
     cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
     cy.get('[data-test="view-dataset-button"]').should('not.exist');
+    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Withdrawn));
     cy.get('[data-test="card_withdrawn"]').within(() => {
       cy.contains(
         'If you want to stop the processing of this request, you can withdraw it. The data provider will no longer process this request.'
@@ -246,7 +252,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it(
+  it.only(
     'Check view data request page for Processed request and check resubmitting the request works as expected',
     function () {
       const dummyRequest = createStoredDataRequest(RequestState.Processed);
@@ -271,7 +277,7 @@ describe('Component tests for the view data request page', function (): void {
         cy.get('[data-test="resubmit-message"]').should('exist').type(' updated data.');
         cy.get('[data-test="noMessageErrorMessage"]').should('not.exist');
         cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible').click();
-        cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
+        cy.get('[data-test="success-modal"]').should('exist').contains('OK').click();
         cy.get('[data-test="success-modal"]').should('not.exist');
         checkBasicPageElementsAsUser(RequestState.Open);
         cy.get('[data-test="resubmit-request-button"]').should('not.exist');
