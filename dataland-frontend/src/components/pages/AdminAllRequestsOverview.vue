@@ -140,7 +140,7 @@
           </Column>
           <Column header="COMPANY" field="companyName" :sortable="false">
             <template #body="slotProps">
-              {{ slotProps.data.companyId }}
+              {{ slotProps.data.companyName }}
             </template>
           </Column>
           <Column header="FRAMEWORK" :sortable="false" field="dataType">
