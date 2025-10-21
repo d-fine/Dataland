@@ -75,7 +75,6 @@ openApi {
 
 tasks.test {
     useJUnitPlatform()
-    maxParallelForks = 1
 
     extensions.configure(JacocoTaskExtension::class) {
         setDestinationFile(
