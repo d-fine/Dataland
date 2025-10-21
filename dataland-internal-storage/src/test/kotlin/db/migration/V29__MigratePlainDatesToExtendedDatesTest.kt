@@ -1,31 +1,47 @@
 package db.migration
 
-import db.migration.utils.TestUtils
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
 class V29__MigratePlainDatesToExtendedDatesTest {
+    private val objectMapper = ObjectMapper()
+
     @Test
-    fun `check conversion of plainDateFiscalYearEnd to extendedDateFiscalYearEnd`() {
-        TestUtils().testMigrationOfSingleDatapoint(
-            "plainDateFiscalYearEnd",
-            "extendedDateFiscalYearEnd",
-            "V29/dummy_data_point.json",
-            "V29/dummy_data_point.json",
-        ) { dataPoint ->
-            dataPoint.dataPointType = "extendedDateFiscalYearEnd"
-        }
+    fun `check that plain data is converted to extended format with correct field order`() {
+        val migration = V29__MigratePlainDatesToExtendedDates()
+        val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("2024-03-22"))
+
+        val result = migration.convertToExtendedFormat(plainData)
+
+        val deserializedData = objectMapper.readValue(result, String::class.java)
+        val jsonNode = objectMapper.readTree(deserializedData)
+
+        val fieldNames = jsonNode.fieldNames().asSequence().toList()
+        assertEquals(listOf("value", "quality", "comment", "dataSource"), fieldNames)
+        assertEquals("2024-03-22", jsonNode.get("value").asText())
+        assertTrue(jsonNode.get("quality").isNull)
+        assertTrue(jsonNode.get("comment").isNull)
+        assertTrue(jsonNode.get("dataSource").isNull)
     }
 
     @Test
-    fun `check conversion of plainEnumFiscalYearDeviation to extendedEnumFiscalYearDeviation`() {
-        TestUtils().testMigrationOfSingleDatapoint(
-            "plainEnumFiscalYearDeviation",
-            "extendedEnumFiscalYearDeviation",
-            "V29/dummy_data_point.json",
-            "V29/dummy_data_point.json",
-        ) { dataPoint ->
-            dataPoint.dataPointType = "extendedEnumFiscalYearDeviation"
-        }
+    fun `check that plain enum is converted to extended format with correct field order`() {
+        val migration = V29__MigratePlainDatesToExtendedDates()
+        val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("NoDeviation"))
+
+        val result = migration.convertToExtendedFormat(plainData)
+
+        val deserializedData = objectMapper.readValue(result, String::class.java)
+        val jsonNode = objectMapper.readTree(deserializedData)
+
+        val fieldNames = jsonNode.fieldNames().asSequence().toList()
+        assertEquals(listOf("value", "quality", "comment", "dataSource"), fieldNames)
+        assertEquals("NoDeviation", jsonNode.get("value").asText())
+        assertTrue(jsonNode.get("quality").isNull)
+        assertTrue(jsonNode.get("comment").isNull)
+        assertTrue(jsonNode.get("dataSource").isNull)
     }
 }

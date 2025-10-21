@@ -18,6 +18,15 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
             "plainEnumFiscalYearDeviation" to "extendedEnumFiscalYearDeviation",
         )
 
+    @Suppress("MagicNumber")
+    private val firstParamIndex = 1
+
+    @Suppress("MagicNumber")
+    private val secondParamIndex = 2
+
+    @Suppress("MagicNumber")
+    private val thirdParamIndex = 3
+
     override fun migrate(context: Context?) {
         val metaTable = "data_point_meta_information"
         val uuidTable = "data_point_uuid_map"
@@ -61,13 +70,6 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
 
         if (uuidResultSet.next()) {
             plainToExtendedMappings.forEach { (plainType, extendedType) ->
-                deleteConflictingPlainUuidMappings(
-                    context,
-                    uuidTable,
-                    identifierColumn,
-                    plainType,
-                    extendedType,
-                )
                 migratePlainToExtended(
                     context,
                     uuidTable,
@@ -90,7 +92,6 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
      * @param extendedType the extended value to migrate to
      * @return a set of conflicting DataPointTuples
      */
-    @Suppress("MagicNumber")
     fun findConflictingTuples(
         context: Context,
         tableName: String,
@@ -115,8 +116,8 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
                 """.trimIndent(),
             )
 
-        query.setString(1, plainType)
-        query.setString(2, extendedType)
+        query.setString(firstParamIndex, plainType)
+        query.setString(secondParamIndex, extendedType)
 
         val results = query.executeQuery()
         val conflicts = mutableSetOf<DataPointTuple>()
@@ -146,7 +147,6 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
      * @param conflicts set of tuples to deactivate
      * @return count of deactivated rows
      */
-    @Suppress("MagicNumber")
     fun deactivateConflictingPlainDataPoints(
         context: Context,
         tableName: String,
@@ -169,9 +169,9 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
         var totalDeactivated = 0
 
         conflicts.forEach { conflict ->
-            updateStatement.setString(1, plainType)
-            updateStatement.setString(2, conflict.companyId)
-            updateStatement.setString(3, conflict.reportingPeriod)
+            updateStatement.setString(firstParamIndex, plainType)
+            updateStatement.setString(secondParamIndex, conflict.companyId)
+            updateStatement.setString(thirdParamIndex, conflict.reportingPeriod)
             totalDeactivated += updateStatement.executeUpdate()
         }
 
@@ -190,7 +190,6 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
      * @param plainType the plain value to migrate from
      * @param extendedType the extended value to migrate to
      */
-    @Suppress("MagicNumber")
     fun migratePlainToExtended(
         context: Context,
         tableName: String,
@@ -203,50 +202,12 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
                 "UPDATE $tableName SET $columnName = ? WHERE $columnName = ?",
             )
 
-        updateStatement.setString(1, extendedType)
-        updateStatement.setString(2, plainType)
+        updateStatement.setString(firstParamIndex, extendedType)
+        updateStatement.setString(secondParamIndex, plainType)
         val count = updateStatement.executeUpdate()
 
         updateStatement.close()
         logger.info("Migrated $count rows in $tableName from $plainType to $extendedType")
-    }
-
-    /**
-     * Deletes plain uuid mappings where extended version already exists to prevent conflicts.
-     * Only applicable to data_point_uuid_map table which has unique constraint on (dataset_id, data_point_identifier).
-     *
-     * @param context the Flyway context
-     * @param tableName name of the table to delete from
-     * @param columnName type/identifier column
-     * @param plainType the plain value to delete
-     * @param extendedType the extended value to check for existence
-     */
-    @Suppress("MagicNumber")
-    fun deleteConflictingPlainUuidMappings(
-        context: Context,
-        tableName: String,
-        columnName: String,
-        plainType: String,
-        extendedType: String,
-    ) {
-        val deleteStatement =
-            context.connection.prepareStatement(
-                """
-                DELETE FROM $tableName
-                WHERE $columnName = ?
-                AND dataset_id IN (
-                    SELECT dataset_id FROM $tableName
-                    WHERE $columnName = ?
-                )
-                """.trimIndent(),
-            )
-
-        deleteStatement.setString(1, plainType)
-        deleteStatement.setString(2, extendedType)
-        val count = deleteStatement.executeUpdate()
-
-        deleteStatement.close()
-        logger.info("Deleted $count conflicting plain uuid mappings from $tableName for $plainType")
     }
 
     /**
