@@ -1653,6 +1653,21 @@
             "items": {
               "$ref": "#/components/schemas/RequestPriority"
             }
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "companySearchString": {
+            "type": "string",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers.",
+            "example": "Inc."
           }
         }
       },

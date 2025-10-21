@@ -38,13 +38,6 @@ class RequestQueryManager
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<ExtendedStoredRequest>? {
-            val emailMatchingUserIds =
-                filter.emailAddress?.let {
-                    setupEmailAddressFilter(it)
-                }
-
-            val companyIdsMatchingSearchString = companyIdsMatchingSearchString(filter.companySearchString)
-
             val extendedStoredDataRequests =
                 requestRepository
                     .findByListOfIdsAndFetchDataSourcingEntity(
@@ -61,8 +54,8 @@ class RequestQueryManager
                                         Sort.Order.asc("state"),
                                     ),
                                 ),
-                                companyIds = companyIdsMatchingSearchString,
-                                userIds = emailMatchingUserIds,
+                                companyIds = companyIdsMatchingSearchString(filter.companySearchString),
+                                userIds = setupEmailAddressFilter(filter.emailAddress),
                             ).content,
                     ).map { entity ->
                         val dto = entity.toExtendedStoredRequest()
@@ -91,10 +84,12 @@ class RequestQueryManager
          * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
          * is true. The keycloakApiService is required to get the user ids for the email addresses.
          */
-        private fun setupEmailAddressFilter(emailAddress: String): List<String> {
-            val userInfoList = keycloakUserService.searchUsers(emailAddress)
-            return userInfoList.map { it.userId }.toList()
-        }
+        private fun setupEmailAddressFilter(emailAddress: String?): List<String>? =
+            emailAddress
+                ?.let {
+                    keycloakUserService.searchUsers(it)
+                }?.map { it.userId }
+                ?.toList()
 
         /**
          * Search for requests based on userId
@@ -132,5 +127,9 @@ class RequestQueryManager
          */
         @Transactional(readOnly = true)
         fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
-            requestRepository.getNumberOfRequests(requestSearchFilter)
+            requestRepository.getNumberOfRequests(
+                requestSearchFilter,
+                companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
+                userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
+            )
     }
