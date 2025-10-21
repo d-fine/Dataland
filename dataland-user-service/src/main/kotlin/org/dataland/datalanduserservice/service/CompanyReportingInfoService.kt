@@ -52,7 +52,12 @@ class CompanyReportingInfoService
                 val storedCompany = companyDataControllerApi.getCompanyById(companyId)
                 getCompanyReportingYearInfoForCompany(storedCompany)?.let {
                     reportingYearsAndSectors[companyId] = it
-                } ?: companyIdsWithoutReportingYearInfo.add(companyId)
+                }
+                if ((storedCompany.companyInformation.fiscalYearEnd == null) ||
+                    (storedCompany.companyInformation.reportingPeriodShift == null)
+                ) {
+                    companyIdsWithoutReportingYearInfo.add(companyId)
+                }
             }
             logger.info(
                 "Found ${reportingYearsAndSectors.size} companies with reporting year info," +
