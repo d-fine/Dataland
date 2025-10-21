@@ -15,7 +15,7 @@ class V10__RenamePcafDatapoints : BaseJavaMigration() {
                     null, null, "data_point_meta_information", null,
                 ).next()
         ) {
-            val statement = context!!.connection.createStatement()
+            val statement = context.connection.createStatement()
             statement.execute(
                 "UPDATE data_point_meta_information SET data_point_type = 'extendedEnumPcafMainSector'" +
                     " WHERE data_point_type = 'customEnumPcafMainSector';",

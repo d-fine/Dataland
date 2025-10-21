@@ -25,7 +25,7 @@ import org.dataland.specificationservice.openApiClient.api.SpecificationControll
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
-import org.junit.Assert.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -165,8 +165,22 @@ class DataPointSpecificationExampleValidationTest
                     example,
                     JsonComparator.JsonComparisonOptions(ignoreValues = true, fullyNullObjectsAreEqualToNull = false),
                 )
-            assertEquals(emptyList<JsonComparator.JsonDiff>(), filterExpectedListDifferences(jsonDifferences))
+            Assertions.assertEquals(
+                emptyList<JsonComparator.JsonDiff>(),
+                filterExpectedListDifferences(jsonDifferences),
+            )
         }
+
+        private fun isDifferenceCausedByArraySpecification(diff: JsonComparator.JsonDiff) =
+            diff.actual?.let { actual ->
+                diff.expected.toString().matches(Regex("\"List<[^>]+>\"")) &&
+                    actual.isArray &&
+                    actual.size() > 0 &&
+                    actual.values().asSequence().all { it.isValueNode }
+            } ?: false
+
+        private fun isDifferenceCauseByDifferingArrayLengths(diff: JsonComparator.JsonDiff) =
+            diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
 
         /**
          * Filters out expected differences related to lists and nulls in arrays.
@@ -180,18 +194,7 @@ class DataPointSpecificationExampleValidationTest
          */
         private fun filterExpectedListDifferences(differences: List<JsonComparator.JsonDiff>): List<JsonComparator.JsonDiff> =
             differences.filterNot { diff ->
-                (
-                    diff.expected.toString().matches(Regex("\"List<[^>]+>\"")) &&
-                        diff.actual?.isArray ?: false &&
-                        diff.actual!!.size() > 0 &&
-                        diff.actual!!
-                            .values()
-                            .asSequence()
-                            .all { it.isValueNode }
-                ) ||
-                    (
-                        diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
-                    )
+                isDifferenceCausedByArraySpecification(diff) || isDifferenceCauseByDifferingArrayLengths(diff)
             }
 
         @MockitoBean
@@ -241,7 +244,7 @@ class DataPointSpecificationExampleValidationTest
             val response = dataPointManager.processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
             val downloadedDataPoint = dataPointManager.retrieveDataPoint(response.dataPointId, "correlationId")
 
-            assertEquals(
+            Assertions.assertEquals(
                 emptyList<JsonComparator.JsonDiff>(),
                 compareJsonStrings(uploadedDataPoint.dataPoint, downloadedDataPoint.dataPoint),
             )
@@ -284,9 +287,8 @@ class DataPointSpecificationExampleValidationTest
                 schema.isArray -> {
                     val array = objectMapper.createArrayNode()
                     val schemaElement = schema.firstOrNull()
-                    val exampleArray = example
-                    if (exampleArray.isArray && schemaElement != null) {
-                        exampleArray.forEach { exampleElement ->
+                    if (example.isArray && schemaElement != null) {
+                        example.forEach { exampleElement ->
                             array.add(buildJsonFromSchemaWithExample(schemaElement, exampleElement, objectMapper))
                         }
                     }

@@ -5,13 +5,18 @@ import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
 class V29__RenameAndFixPcafEntriesTest {
+    companion object {
+        const val ORIGINAL_JSON = "V29/original.json"
+        const val EXPECTED_JSON = "V29/expected.json"
+    }
+
     @Test
     fun `check migration of customEnumPcafMainSector`() {
         TestUtils().testMigrationOfSingleDatapoint(
             "customEnumPcafMainSector",
             "extendedEnumPcafMainSector",
-            "V29/original.json",
-            "V29/expected.json",
+            ORIGINAL_JSON,
+            EXPECTED_JSON,
             V29__RenameAndFixPcafEntries()::updateDataTableEntity,
         )
     }
@@ -21,8 +26,8 @@ class V29__RenameAndFixPcafEntriesTest {
         TestUtils().testMigrationOfSingleDatapoint(
             "customEnumCompanyExchangeStatus",
             "extendedEnumCompanyExchangeStatus",
-            "V29/original.json",
-            "V29/expected.json",
+            ORIGINAL_JSON,
+            EXPECTED_JSON,
             V29__RenameAndFixPcafEntries()::updateDataTableEntity,
         )
     }
@@ -32,8 +37,8 @@ class V29__RenameAndFixPcafEntriesTest {
         TestUtils().testMigrationOfSingleDatapoint(
             "dummy",
             "dummy",
-            "V29/original.json",
-            "V29/expected.json",
+            ORIGINAL_JSON,
+            EXPECTED_JSON,
             V29__RenameAndFixPcafEntries()::updateDataTableEntity,
         )
     }
