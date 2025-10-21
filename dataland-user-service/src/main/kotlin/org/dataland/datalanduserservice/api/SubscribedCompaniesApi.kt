@@ -50,7 +50,10 @@ interface SubscribedCompaniesApi {
                     ),
                 ],
             ),
-            ApiResponse(responseCode = "403", description = "Access denied. Only reviewers can access this endpoint."),
+            ApiResponse(
+                responseCode = "403", description = "Access denied. Only reviewers can access this endpoint.",
+                content = [Content(array = ArraySchema())],
+            ),
         ],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
