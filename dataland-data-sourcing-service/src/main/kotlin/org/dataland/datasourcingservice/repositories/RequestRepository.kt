@@ -69,7 +69,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
         pageable: Pageable,
         companyIds: List<String>? = null,
         userIds: List<String>? = null
-    ): List<RequestEntity>
+    ): Page<UUID>
 
     /**
      * Find all RequestEntity instances by a list of ids and fetch all lazily loaded fields.

@@ -1,10 +1,8 @@
 package org.dataland.datasourcingservice.services
 
-import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
@@ -52,21 +50,24 @@ constructor(
 
         val extendedStoredDataRequests =
             requestRepository
-                .searchRequests(
-                    searchFilter = filter,
-                    PageRequest.of(
-                        chunkIndex,
-                        chunkSize,
-                        Sort.by(
-                            Sort.Order.desc("creationTimestamp"),
-                            Sort.Order.asc("companyId"),
-                            Sort.Order.desc("reportingPeriod"),
-                            Sort.Order.asc("state"),
-                        ),
-                    ),
-                    companyIds = companyIdsMatchingSearchString,
+                .findByListOfIdsAndFetchDataSourcingEntity(
+                    requestRepository
+                        .searchRequests(
+                            searchFilter = filter,
+                            PageRequest.of(
+                                chunkIndex,
+                                chunkSize,
+                                Sort.by(
+                                    Sort.Order.desc("creationTimestamp"),
+                                    Sort.Order.asc("companyId"),
+                                    Sort.Order.desc("reportingPeriod"),
+                                    Sort.Order.asc("state"),
+                                ),
+                            ),
+                            companyIds = companyIdsMatchingSearchString,
+                        ).content,
                 ).map { entity ->
-                    val dto = entity.toExtendedStoredDataRequest()
+                    val dto = entity.toExtendedStoredRequest()
                     dto.copy(
                         companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
                         userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,
@@ -97,8 +98,8 @@ constructor(
         emailAddress: String,
         keycloakUserControllerApiService: KeycloakUserService
     ): List<KeycloakUserInfo> =
-            emailAddress
-                .let { keycloakUserControllerApiService.searchUsers(it) }
+        emailAddress
+            .let { keycloakUserControllerApiService.searchUsers(it) }
 
     /**
      * Search for requests based on userId
@@ -110,7 +111,7 @@ constructor(
         requestRepository
             .findByUserId(userId)
             .map { entity ->
-                val dto = entity.toExtendedStoredDataRequest()
+                val dto = entity.toExtendedStoredRequest()
                 dto.copy(
                     companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
                     userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,

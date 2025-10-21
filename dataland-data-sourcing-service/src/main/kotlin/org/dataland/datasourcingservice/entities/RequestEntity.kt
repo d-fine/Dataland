@@ -75,7 +75,7 @@ class RequestEntity(
     /**
      * Converts this RequestEntity to a ExtendedStoredDataRequest.
      */
-    fun toExtendedStoredDataRequest(): ExtendedStoredRequest =
+    fun toExtendedStoredRequest(): ExtendedStoredRequest =
         ExtendedStoredRequest(
             id = id.toString(),
             companyId = companyId.toString(),
