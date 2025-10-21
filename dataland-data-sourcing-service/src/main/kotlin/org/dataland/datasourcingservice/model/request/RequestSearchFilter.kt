@@ -2,6 +2,8 @@ package org.dataland.datasourcingservice.model.request
 
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
@@ -73,7 +75,43 @@ data class RequestSearchFilter<IdType>(
             ),
     )
     val requestPriorities: Set<RequestPriority>? = null,
+
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+    )
     val emailAddress: String? = null,
+
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
+    )
     val adminComment: String? = null,
+
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
+    )
     val companySearchString: String? = null,
-)
+) {
+    val shouldFilterByEmailAddress: Boolean
+        get() = emailAddress?.isNotEmpty() ?: false
+
+    var userIdsMatchingEmailAddress: Set<String>? = null
+
+    /**
+     * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
+     * is true. The keycloakUserControllerApiService is required to get the user ids for the email addresses.
+     */
+    fun setupEmailAddressFilter(keycloakUserControllerApiService: KeycloakUserService): List<KeycloakUserInfo> {
+        val userInfoList =
+            emailAddress
+                ?.takeIf { shouldFilterByEmailAddress }
+                ?.let { keycloakUserControllerApiService.searchUsers(it) }
+
+        userIdsMatchingEmailAddress = userInfoList?.map { it.userId }?.toSet()
+
+        return userInfoList ?: emptyList()
+    }
+}
+

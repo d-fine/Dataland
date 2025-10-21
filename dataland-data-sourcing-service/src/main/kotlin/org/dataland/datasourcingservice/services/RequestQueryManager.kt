@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import kotlin.collections.map
 
 /**
  * Service class for handling request queries.
@@ -25,60 +26,80 @@ constructor(
     private val companyDataController: CompanyDataControllerApi,
     private val keycloakUserService: KeycloakUserService,
 ) {
+
     /**
-     * Search for requests based on optional filters.
-     * @param requestSearchFilter to filter by
-     * @param chunkSize size of the result chunk
-     * @param chunkIndex index of the result chunk
-     * @return list of matching StoredRequest objects
+     * Method to get all data requests based on filters.
+     * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
+     * @param filter the search filter containing relevant search parameters
+     * @param chunkIndex the index of the chunked results which should be returned
+     * @param chunkSize the size of entries per chunk which should be returned
+     * @return all filtered data requests
      */
     @Transactional
     fun searchRequests(
-        requestSearchFilter: RequestSearchFilter<UUID>,
-
+        filter: RequestSearchFilter<UUID>,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<ExtendedStoredRequest> =
-        requestRepository
-            .findByListOfIdsAndFetchDataSourcingEntity(
-                requestRepository
-                    .searchRequests(
-                        requestSearchFilter,
-                        PageRequest.of(
-                            chunkIndex,
-                            chunkSize,
-                            Sort.by(
-                                Sort.Order.desc("creationTimestamp"),
-                                Sort.Order.asc("companyId"),
-                                Sort.Order.desc("reportingPeriod"),
-                                Sort.Order.asc("state"),
-                            ),
-                        ),
-                    ).content,
-            ).map { entity ->
-                val dto = entity.toExtendedStoredDataRequest()
-                dto.copy(
-                    companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
-                    userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,
-                )
-            }
+    ): List<ExtendedStoredRequest>? {
 
-        /**
-         * Search for requests based on userId
-         * @param userId to filter by
-         * @return list of matching ExtendedStoredRequest objects
-         */
-        @Transactional
-        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> =
+        filter.setupEmailAddressFilter(keycloakUserService)
+
+        val companyIdsMatchingSearchString = companyIdsMatchingSearchString(filter.companySearchString)
+
+        val extendedStoredDataRequests =
             requestRepository
-                .findByUserId(userId)
-                .map { entity ->
+                .searchRequests(
+                    searchFilter = filter,
+                    PageRequest.of(
+                        chunkIndex,
+                        chunkSize,
+                        Sort.by(
+                            Sort.Order.desc("creationTimestamp"),
+                            Sort.Order.asc("companyId"),
+                            Sort.Order.desc("reportingPeriod"),
+                            Sort.Order.asc("state"),
+                        ),
+                    ),
+                    companyIds = companyIdsMatchingSearchString,
+                ).map { entity ->
                     val dto = entity.toExtendedStoredDataRequest()
                     dto.copy(
                         companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
                         userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,
                     )
                 }
+
+        return extendedStoredDataRequests
+    }
+
+    private fun companyIdsMatchingSearchString(companySearchString: String?): List<String>? =
+        if (companySearchString != null) {
+            companyDataController
+                .getCompanies(
+                    searchString = companySearchString,
+                    chunkIndex = 0,
+                    chunkSize = Int.MAX_VALUE,
+                ).map { it.companyId }
+        } else {
+            null
+        }
+
+    /**
+     * Search for requests based on userId
+     * @param userId to filter by
+     * @return list of matching ExtendedStoredRequest objects
+     */
+    @Transactional
+    fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> =
+        requestRepository
+            .findByUserId(userId)
+            .map { entity ->
+                val dto = entity.toExtendedStoredDataRequest()
+                dto.copy(
+                    companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
+                    userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,
+                )
+            }
 
     /**
      * Get requests for requesting user
@@ -91,12 +112,13 @@ constructor(
             UUID.fromString(userId),
         )
     }
-/**
-         * Get the number of requests that match the optional filters.
-         * @param requestSearchFilter to filter by
-         * @return the number of matching requests
-         */
-        @Transactional(readOnly = true)
-        fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
-            requestRepository.getNumberOfRequests(requestSearchFilter)
-    }
+
+    /**
+     * Get the number of requests that match the optional filters.
+     * @param requestSearchFilter to filter by
+     * @return the number of matching requests
+     */
+    @Transactional(readOnly = true)
+    fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
+        requestRepository.getNumberOfRequests(requestSearchFilter)
+}
