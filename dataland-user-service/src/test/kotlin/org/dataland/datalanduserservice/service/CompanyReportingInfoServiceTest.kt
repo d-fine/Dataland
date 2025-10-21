@@ -33,11 +33,21 @@ class CompanyReportingInfoServiceTest {
             )
     }
 
+    /**
+     * Provides parameters for the parameterized test of getCompanyReportingYearInfoForCompany.
+     *
+     * Each argument set includes:
+     * - fiscalYearEnd: The fiscal year-end date of the company.
+     * - reportingPeriodShift: The reporting period shift value.
+     * - today: The current date to simulate.
+     * - expectedReportingPeriod: The expected reporting period
+     *
+     * @return A stream of arguments for the parameterized test.
+     */
     companion object {
         @JvmStatic
         fun paramStream(): Stream<Arguments> =
             Stream.of(
-                // fiscalYearEnd, reportingPeriodShift, today, expectedReportingPeriod
                 Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
                 Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 12, 1), 2025),
                 Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
@@ -94,8 +104,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `resetData clears cache and set`() {
-        // Arrange
+    fun `test resetData clears cache`() {
         val companyId = "123"
         val today = LocalDate.of(2025, 12, 1)
         val testCompanyInformation =
@@ -131,7 +140,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `sector string maps to FINANCIALS`() {
+    fun `sector string 'financials' maps to FINANCIALS sector type`() {
         val companyId = "sec1"
         val info = validCompanyInfo().copy(sector = "financials")
         val today = LocalDate.of(2025, 1, 5)
@@ -148,7 +157,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `sector string maps to NONFINANCIALS`() {
+    fun `sector string other than 'financials' maps to NONFINANCIALS sector type`() {
         val companyId = "sec2"
         val today = LocalDate.of(2025, 1, 5)
         val info = validCompanyInfo().copy(sector = "randomsector")
@@ -164,7 +173,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `null sector string leads to UNKNOWN`() {
+    fun `null sector string leads to UNKNOWN sector type`() {
         val companyId = "sec3"
         val info = validCompanyInfo().copy(sector = null)
         val today = LocalDate.of(2025, 1, 5)
