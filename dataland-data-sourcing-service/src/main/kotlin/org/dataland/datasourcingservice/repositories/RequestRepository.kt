@@ -1,10 +1,7 @@
 package org.dataland.datasourcingservice.repositories
 
-import okhttp3.Request
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
-import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -30,8 +27,8 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request FROM RequestEntity request " +
-                "LEFT JOIN FETCH request.dataSourcingEntity " +
-                "WHERE request.id = :id",
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
+            "WHERE request.id = :id",
     )
     fun findByIdAndFetchDataSourcingEntity(id: UUID): RequestEntity?
 
@@ -53,22 +50,24 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request.id FROM RequestEntity request " +
-                "WHERE " +
-                "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-                "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-                "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
-                "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
-                "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-                "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-                "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
-                "((:#{#searchFilter.adminComment} IS NULL OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
-                "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
+            "WHERE " +
+            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
+            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
+            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+            "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
+            "((:#{#searchFilter.adminComment} IS NULL " +
+            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
+            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
     )
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
         companyIds: List<String>? = null,
-        userIds: List<String>? = null
+        userIds: List<String>? = null,
     ): Page<UUID>
 
     /**
@@ -76,9 +75,9 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request FROM RequestEntity request " +
-                "LEFT JOIN FETCH request.dataSourcingEntity " +
-                "WHERE " +
-                "(request.id IN :requestIds)",
+            "LEFT JOIN FETCH request.dataSourcingEntity " +
+            "WHERE " +
+            "(request.id IN :requestIds)",
     )
     fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
 
@@ -100,16 +99,16 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT COUNT(request) FROM RequestEntity request " +
-                "WHERE " +
-                "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-                "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-                "(" +
-                "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
-                "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
-                ") AND " +
-                "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-                "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-                "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
+            "WHERE " +
+            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "(" +
+            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
+            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
+            ") AND " +
+            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
     )
     fun getNumberOfRequests(searchFilter: RequestSearchFilter<UUID>): Int
 }
