@@ -127,7 +127,7 @@ commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.14.0" }
 
 # PDFBox
-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.5" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
 
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
@@ -148,7 +148,7 @@ awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" 
 json = { group = "org.json", name = "json", version = "20250517" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.0" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.1" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
