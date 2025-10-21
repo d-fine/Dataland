@@ -1,6 +1,8 @@
 package org.dataland.datasourcingservice.services
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
@@ -42,7 +44,9 @@ constructor(
         chunkIndex: Int = 0,
     ): List<ExtendedStoredRequest>? {
 
-        filter.setupEmailAddressFilter(keycloakUserService)
+        if (filter.emailAddress != null) {
+            setupEmailAddressFilter(filter.emailAddress, keycloakUserService)
+        }
 
         val companyIdsMatchingSearchString = companyIdsMatchingSearchString(filter.companySearchString)
 
@@ -83,6 +87,18 @@ constructor(
         } else {
             null
         }
+
+    /**
+     * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
+     * is true. The keycloakUserControllerApiService is required to get the user ids for the email addresses.
+     */
+
+    private fun setupEmailAddressFilter(
+        emailAddress: String,
+        keycloakUserControllerApiService: KeycloakUserService
+    ): List<KeycloakUserInfo> =
+            emailAddress
+                .let { keycloakUserControllerApiService.searchUsers(it) }
 
     /**
      * Search for requests based on userId

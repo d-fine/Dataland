@@ -62,12 +62,13 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
                 "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
                 "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
                 "((:#{#searchFilter.adminComment} IS NULL OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
-                "((:#{#searchFilter.userIdsMatchingEmailAddress == null} = TRUE) OR request.userId IN :#{#searchFilter.userIdsMatchingEmailAddress})",
+                "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
     )
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
-        companyIds: List<String>? = null
+        companyIds: List<String>? = null,
+        userIds: List<String>? = null
     ): List<RequestEntity>
 
     /**

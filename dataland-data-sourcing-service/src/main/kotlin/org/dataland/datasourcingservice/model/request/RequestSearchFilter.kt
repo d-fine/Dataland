@@ -93,25 +93,4 @@ data class RequestSearchFilter<IdType>(
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
     )
     val companySearchString: String? = null,
-) {
-    val shouldFilterByEmailAddress: Boolean
-        get() = emailAddress?.isNotEmpty() ?: false
-
-    var userIdsMatchingEmailAddress: Set<String>? = null
-
-    /**
-     * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
-     * is true. The keycloakUserControllerApiService is required to get the user ids for the email addresses.
-     */
-    fun setupEmailAddressFilter(keycloakUserControllerApiService: KeycloakUserService): List<KeycloakUserInfo> {
-        val userInfoList =
-            emailAddress
-                ?.takeIf { shouldFilterByEmailAddress }
-                ?.let { keycloakUserControllerApiService.searchUsers(it) }
-
-        userIdsMatchingEmailAddress = userInfoList?.map { it.userId }?.toSet()
-
-        return userInfoList ?: emptyList()
-    }
-}
-
+)
