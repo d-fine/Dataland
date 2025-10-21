@@ -31,7 +31,7 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
-  it('shows validation errors when both inputs are missing', function () {
+  it('shows validation errors when framework is missing', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 
     cy.get('[data-test="saveChangesButton"]').click();
@@ -41,7 +41,7 @@ describe('Portfolio Monitoring Modal', function () {
       .should('be.visible');
   });
 
-  it('submits successfully framework is selected', function () {
+  it('submits successfully if framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 
     cy.get('.framework-switch-group')
