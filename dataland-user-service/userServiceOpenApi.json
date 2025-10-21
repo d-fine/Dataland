@@ -485,18 +485,7 @@
             "description": "List of companyIDs with incomplete FYE information."
           },
           "403": {
-            "description": "Access denied. Only reviewers can access this endpoint.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Access denied. Only reviewers can access this endpoint."
           },
           "default": {
             "description": "An error occurred",
