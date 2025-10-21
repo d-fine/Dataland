@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Answers
+import org.mockito.MockedStatic
 import org.mockito.Mockito.mockStatic
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -64,6 +65,10 @@ class CompanyReportingInfoServiceTest {
         today: LocalDate,
         expectedReportingPeriod: Int?,
     ) {
+        val mockedStatic = mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS)
+        mockedStatic
+            .`when`<LocalDate> { LocalDate.now() }
+            .thenReturn(today)
         val testCompanyInformation =
             CompanyInformation(
                 companyName = "testCompany",
@@ -83,30 +88,25 @@ class CompanyReportingInfoServiceTest {
             )
         whenever(mockCompanyDataControllerApi.getCompanyById(testStoredCompany.companyId))
             .thenReturn(testStoredCompany)
-
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic
-                .`when`<LocalDate> { LocalDate.now() }
-                .thenReturn(today)
-            companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId))
-            val companyReportingYearAndSectorInfo =
-                companyReportingInfoService.getCachedReportingYearAndSectorInformation()
-            assertEquals(
-                expectedReportingPeriod,
-                companyReportingYearAndSectorInfo
-                    .filter { it.key == testStoredCompany.companyId }
-                    .values
-                    .firstOrNull()
-                    ?.reportingPeriod
-                    ?.toInt(),
-            )
-        }
+        companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId))
+        val companyReportingYearAndSectorInfo =
+            companyReportingInfoService.getCachedReportingYearAndSectorInformation()
+        assertEquals(
+            expectedReportingPeriod,
+            companyReportingYearAndSectorInfo
+                .filter { it.key == testStoredCompany.companyId }
+                .values
+                .firstOrNull()
+                ?.reportingPeriod
+                ?.toInt(),
+        )
+        mockedStatic.close()
     }
 
     @Test
     fun `test resetData clears cache`() {
         val companyId = "123"
-        val today = LocalDate.of(2025, 12, 1)
+        val mockedStatic = mockLocalDateNow()
         val testCompanyInformation =
             CompanyInformation(
                 companyName = "testCompany",
@@ -124,68 +124,57 @@ class CompanyReportingInfoServiceTest {
                 dataRegisteredByDataland = emptyList(),
             )
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(testCompany)
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic
-                .`when`<LocalDate> { LocalDate.now() }
-                .thenReturn(today)
 
-            companyReportingInfoService.updateCompanies(listOf(companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId))
 
-            assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isNotEmpty())
-        }
+        assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isNotEmpty())
         companyReportingInfoService.resetData()
 
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isEmpty())
         assertTrue(companyReportingInfoService.getCachedCompanyIdsWithoutReportingYearInfo().isEmpty())
+        mockedStatic.close()
     }
 
     @Test
     fun `sector string 'financials' maps to FINANCIALS sector type`() {
         val companyId = "sec1"
         val info = validCompanyInfo().copy(sector = "financials")
-        val today = LocalDate.of(2025, 1, 5)
+        val mockedStatic = mockLocalDateNow()
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
-
-            companyReportingInfoService.updateCompanies(listOf(companyId))
-        }
+        companyReportingInfoService.updateCompanies(listOf(companyId))
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.FINANCIALS, entry?.sector)
+        mockedStatic.close()
     }
 
     @Test
     fun `sector string other than 'financials' maps to NONFINANCIALS sector type`() {
         val companyId = "sec2"
-        val today = LocalDate.of(2025, 1, 5)
+        val mockedStatic = mockLocalDateNow()
         val info = validCompanyInfo().copy(sector = "randomsector")
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
-            companyReportingInfoService.updateCompanies(listOf(companyId))
-        }
+        companyReportingInfoService.updateCompanies(listOf(companyId))
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.NONFINANCIALS, entry?.sector)
+        mockedStatic.close()
     }
 
     @Test
     fun `null sector string leads to UNKNOWN sector type`() {
         val companyId = "sec3"
         val info = validCompanyInfo().copy(sector = null)
-        val today = LocalDate.of(2025, 1, 5)
+        val mockedStatic = mockLocalDateNow()
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
-            companyReportingInfoService.updateCompanies(listOf(companyId))
-        }
+        companyReportingInfoService.updateCompanies(listOf(companyId))
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.UNKNOWN, entry?.sector)
+        mockedStatic.close()
     }
 
     @Test
@@ -205,6 +194,13 @@ class CompanyReportingInfoServiceTest {
         companyReportingInfoService.updateCompanies(emptyList())
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isEmpty())
         assertTrue(companyReportingInfoService.getCachedCompanyIdsWithoutReportingYearInfo().isEmpty())
+    }
+
+    private fun mockLocalDateNow(): MockedStatic<LocalDate> {
+        val today = LocalDate.of(2025, 12, 1)
+        val mockedStatic = mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS)
+        mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
+        return mockedStatic
     }
 
     private fun validCompanyInfo() =
