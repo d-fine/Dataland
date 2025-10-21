@@ -30,18 +30,18 @@ class PortfolioMonitoringValidator : ConstraintValidator<MonitoringIsValid, Port
         value: PortfolioMonitoring?,
         context: ConstraintValidatorContext,
     ): Boolean {
-        val parametersNotSetIfMonitored = (
+        val frameworksNotSetIfMonitored = (
             value?.isMonitored == true &&
                 (
                     value.monitoredFrameworks == emptySet<String>()
                 )
         )
-        val parametersSetIfNotMonitored = (
+        val frameworksSetIfNotMonitored = (
             value?.isMonitored == false &&
                 (
                     value.monitoredFrameworks != emptySet<String>()
                 )
         )
-        return !(parametersNotSetIfMonitored || parametersSetIfNotMonitored)
+        return !(frameworksNotSetIfMonitored || frameworksSetIfNotMonitored)
     }
 }
