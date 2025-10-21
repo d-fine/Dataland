@@ -6,6 +6,7 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -16,6 +17,7 @@ import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Controller for the requests endpoint
@@ -37,7 +39,7 @@ class RequestController
                 bulkDataRequestManager.processBulkDataRequest(
                     bulkDataRequest,
                     userId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
+                        ValidationUtils.convertToUUID(it)
                     },
                 ),
             )
@@ -49,14 +51,14 @@ class RequestController
             ResponseEntity.ok(
                 requestCreationService.createRequest(
                     singleRequest,
-                    userId?.let { ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it) },
+                    userId?.let { ValidationUtils.convertToUUID(it) },
                 ),
             )
 
         override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.getRequest(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                    ValidationUtils.convertToUUID(
                         dataRequestId,
                     ),
                 ),
@@ -69,7 +71,7 @@ class RequestController
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.patchRequestState(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                    ValidationUtils.convertToUUID(
                         dataRequestId,
                     ),
                     requestState, adminComment,
@@ -83,7 +85,7 @@ class RequestController
         ): ResponseEntity<StoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.patchRequestPriority(
-                    ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(dataRequestId),
+                    ValidationUtils.convertToUUID(dataRequestId),
                     requestPriority,
                     adminComment,
                 ),
@@ -93,26 +95,43 @@ class RequestController
             ResponseEntity
                 .ok(
                     existingRequestsManager.retrieveRequestHistory(
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(
+                        ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),
                     ),
                 )
 
-        override fun searchRequests(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: RequestState?,
+        private fun convertToSearchFilterWithUUIDs(requestSearchFilterWithStrings: RequestSearchFilter<String>): RequestSearchFilter<UUID> =
+            RequestSearchFilter<UUID>(
+                companyId =
+                    requestSearchFilterWithStrings.companyId?.let {
+                        ValidationUtils.convertToUUID(it)
+                    },
+                dataTypes = requestSearchFilterWithStrings.dataTypes,
+                reportingPeriods = requestSearchFilterWithStrings.reportingPeriods,
+                userId =
+                    requestSearchFilterWithStrings.userId?.let {
+                        ValidationUtils.convertToUUID(
+                            it,
+                        )
+                    },
+                requestStates = requestSearchFilterWithStrings.requestStates,
+                requestPriorities = requestSearchFilterWithStrings.requestPriorities,
+            )
+
+        override fun postRequestSearch(
+            requestSearchFilter: RequestSearchFilter<String>,
             chunkSize: Int,
             chunkIndex: Int,
         ): ResponseEntity<List<StoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    companyId?.let {
-                        ValidationUtils.convertToUUIDOrThrowResourceNotFoundApiException(it)
-                    },
-                    dataType, reportingPeriod, requestState, chunkSize, chunkIndex,
+                    convertToSearchFilterWithUUIDs(requestSearchFilter), chunkSize, chunkIndex,
                 ),
+            )
+
+        override fun postRequestCountQuery(requestSearchFilter: RequestSearchFilter<String>): ResponseEntity<Int> =
+            ResponseEntity.ok(
+                requestQueryManager.getNumberOfRequests(convertToSearchFilterWithUUIDs(requestSearchFilter)),
             )
     }
