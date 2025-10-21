@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 class SubscribedCompaniesController
     @Autowired
     constructor(
-        private val companyReportingInforService: CompanyReportingInfoService,
+        private val companyReportingInfoService: CompanyReportingInfoService,
     ) : SubscribedCompaniesApi {
         override fun getCompaniesWithIncompleteFyeInformation(): ResponseEntity<Set<String>> =
             ResponseEntity
-                .ok(companyReportingInforService.getCachedCompanyIdsWithoutReportingYearInfo())
+                .ok(companyReportingInfoService.getCachedCompanyIdsWithoutReportingYearInfo())
     }
