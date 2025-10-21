@@ -179,7 +179,7 @@ class PortfolioBulkDataRequestService
         }
 
         /**
-         * Post a Bulk Data Request based on the company sector
+         * Post a Bulk Data Request to the Data Sourcing Service.
          * @param userId: the id of the user to whom the portfolio belongs
          * @param companyIds: the company ids to be included in the request
          * @param reportingPeriods: the monitoring periods
