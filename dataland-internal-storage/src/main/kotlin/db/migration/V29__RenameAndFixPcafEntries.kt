@@ -27,8 +27,15 @@ class V29__RenameAndFixPcafEntries : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        renameMap.keys.forEach {
-            migrateDataPointTableEntities(context, it, ::updateDataTableEntity)
+        if (context!!
+                .connection.metaData
+                .getTables(
+                    null, null, "data_point_items", null,
+                ).next()
+        ) {
+            renameMap.keys.forEach {
+                migrateDataPointTableEntities(context, it, ::updateDataTableEntity)
+            }
         }
     }
 }
