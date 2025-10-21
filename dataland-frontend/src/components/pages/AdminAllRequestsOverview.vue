@@ -12,7 +12,6 @@
           :disabled="waitingForData"
         />
       </IconField>
-
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
         <InputText
@@ -24,7 +23,6 @@
           :disabled="waitingForData"
         />
       </IconField>
-
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
         <InputText
@@ -37,7 +35,6 @@
         />
       </IconField>
     </div>
-
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -101,8 +98,9 @@
         style="width: fit-content"
       />
     </div>
-    <div class="message-container">
-      <Message class="info-message" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
+    <div style="display: flex; justify-content: flex-end ; padding: var(--spacing-sm);">
+      <Message  style="text-align: right" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}
+      </Message>
     </div>
 
     <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
@@ -201,8 +199,8 @@
           </Column>
         </DataTable>
         <div v-if="!waitingForData && currentDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
+          <div style="text-align: center">
+            <h2>There are no data requests on Dataland matching your filters.</h2>
           </div>
         </div>
       </div>
@@ -227,7 +225,6 @@ import {
   retrieveAvailableReportingPeriods,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import type { DataTypeEnum } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -280,18 +277,19 @@ function setChunkAndFirstRowIndexToZero() {
   firstRowIndex.value = 0;
 }
 
-watch(
-  [
-    selectedFrameworks,
-    selectedRequestStates,
-    selectedPriorities,
-    selectedReportingPeriods,
-    searchBarInputEmail,
-    searchBarInputComment,
-    searchBarInputCompanySearchString,
-  ],
-  setChunkAndFirstRowIndexToZero
-);
+const filterState = computed(() => ({
+  frameworks: selectedFrameworks.value,
+  requestStates: selectedRequestStates.value,
+  priorities: selectedPriorities.value,
+  reportingPeriods: selectedReportingPeriods.value,
+  email: searchBarInputEmail.value,
+  comment: searchBarInputComment.value,
+  company: searchBarInputCompanySearchString.value,
+}));
+
+watch(filterState, () => {
+  setChunkAndFirstRowIndexToZero();
+});
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
@@ -416,7 +414,6 @@ function onRowClick(event: DataTableRowClickEvent) {
 <style scoped lang="scss">
 %search-container-base {
   margin: 0;
-  width: 100%;
   display: flex;
   gap: var(--spacing-lg);
   align-items: start;
@@ -440,27 +437,5 @@ function onRowClick(event: DataTableRowClickEvent) {
     text-align: left;
   }
 
-  > :last-child {
-    margin-left: auto;
-  }
-}
-
-.message-container {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  margin-bottom: var(--spacing-lg);
-
-  .info-message {
-    margin: 0 var(--spacing-lg);
-  }
-}
-
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
 }
 </style>
