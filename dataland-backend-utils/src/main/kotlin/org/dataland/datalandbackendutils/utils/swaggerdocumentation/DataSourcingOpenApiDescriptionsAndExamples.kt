@@ -49,8 +49,14 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_PRIORITY_DESCRIPTION = "The priority of the data request."
     const val REQUEST_PRIORITY_EXAMPLE = "High"
 
+    const val REQUEST_PRIORITIES_DESCRIPTION = "A list of associated request priorities."
+    const val REQUEST_PRIORITIES_EXAMPLE = "[\"Low\",\"High\"]"
+
     const val REQUEST_STATE_DESCRIPTION = "The current state of the request."
     const val REQUEST_STATE_EXAMPLE = "Open"
+
+    const val REQUEST_STATES_DESCRIPTION = "A list of associated request states."
+    const val REQUEST_STATES_EXAMPLE = "[\"Open\",\"Processing\"]"
 
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
