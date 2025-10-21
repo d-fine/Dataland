@@ -236,7 +236,7 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
-import {ExtendedStoredRequest, RequestState} from "@clients/datasourcingservice";
+import {ExtendedStoredRequest, RequestState, RequestPriority} from "@clients/datasourcingservice";
 import {GetDataRequestsDataTypeEnum} from "@clients/communitymanager";
 
 const frameworkFilter = ref();
@@ -305,19 +305,21 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters() {
-  waitingForData.value = true;
   const selectedFrameworksAsSet = new Set<string>(
-      selectedFrameworks.value.map((selectableItem) => selectableItem.frameworkDataType.toString())
+      selectedFrameworks.value.map((item) => item.frameworkDataType.toString())
   );
   const selectedRequestStatesAsSet = new Set<RequestState>(
-    selectedRequestStates.value.map((selectableItem) => selectableItem.displayName as RequestState)
+      selectedRequestStates.value.map((item) => item.displayName as RequestState)
   );
   const selectedPriorityAsSet = new Set<RequestPriority>(
-    selectedPriorities.value.map((selectableItem) => selectableItem.displayName as RequestPriority)
+      selectedPriorities.value.map((item) => item.displayName as RequestPriority)
   );
   const selectedReportingPeriodAsSet = new Set<string>(
-    selectedReportingPeriods.value.map((selectableItem) => selectableItem.displayName)
+      selectedReportingPeriods.value.map((item) => item.displayName)
   );
+
+  const prioritiesForApi = setToApiString(selectedPriorityAsSet);
+
 
   try {
     if (getKeycloakPromise) {
@@ -331,13 +333,24 @@ async function getAllRequestsForFilters() {
       const reportingPeriodsForApi = setToApiString(selectedReportingPeriodAsSet);
 
       const [dataResponse] = await Promise.all([
-        apiClientProvider.apiClients.requestController.searchRequests(
-            companySearchStringFilter,
-            frameworksForApi,
-            reportingPeriodsForApi,
-            selectedRequestStatesAsSet,
-            undefined,
-            undefined,
+        apiClientProvider.apiClients.requestController.postRequestSearch(
+          {
+            dataTypes: frameworksForApi
+              ? frameworksForApi.split(',').map((dt) => dt as GetDataRequestsDataTypeEnum)
+              : undefined,
+            requestStates: requestStatesForApi
+              ? requestStatesForApi.split(',').map((rs) => rs as RequestState)
+              : undefined,
+            requestPriorities: prioritiesForApi
+              ? prioritiesForApi.split(',')
+              : undefined,
+            reportingPeriods: reportingPeriodsForApi
+              ? reportingPeriodsForApi.split(',')
+              : undefined,
+            requesterEmail: emailFilter,
+            adminComment: commentFilter,
+            companySearchString: companySearchStringFilter,
+          }
         ),
       ]);
 
