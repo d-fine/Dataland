@@ -42,8 +42,8 @@ interface SubscribedCompaniesApi {
                             ArraySchema(
                                 arraySchema =
                                     Schema(
-                                        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
-                                        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+                                        description = GeneralOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+                                        example = GeneralOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
                                     ),
                                 schema = Schema(type = "string"),
                             ),

@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.SectorType
 import org.dataland.datalanduserservice.repository.PortfolioRepository
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Answers
@@ -39,6 +40,14 @@ class PortfolioBulkDataRequestServiceTest {
         private const val NUCLEAR_AND_GAS = "nuclear-and-gas"
         private const val SFDR = "sfdr"
         private const val EUTAXONOMY = "eutaxonomy"
+
+        private val mockLocalDate = mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS)
+
+        @BeforeAll
+        @JvmStatic
+        fun setupMockLocalDate() {
+            mockLocalDate.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
+        }
     }
 
     private val mockCompanyDataApi = mock<CompanyDataControllerApi>()
@@ -107,125 +116,110 @@ class PortfolioBulkDataRequestServiceTest {
     )
 
     @Test
-    fun `does not post request if portfolio is not monitored`() =
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
+    fun `does not post request if portfolio is not monitored`() {
+        stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
+        stubCompanyApi(COMPANY_ID_2, 0, SectorType.FINANCIALS.name)
 
-            stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
-            stubCompanyApi(COMPANY_ID_2, 0, SectorType.FINANCIALS.name)
-
-            val basePortfolio =
-                buildPortfolio(
-                    companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
-                    frameworks = setOf(EUTAXONOMY, SFDR),
-                    isMonitored = false,
-                    portfolioName = "My not monitored test portfolio",
-                )
-            service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
-            verifyNoInteractions(mockRequestApi)
-        }
+        val basePortfolio =
+            buildPortfolio(
+                companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
+                frameworks = setOf(EUTAXONOMY, SFDR),
+                isMonitored = false,
+                portfolioName = "My not monitored test portfolio",
+            )
+        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        verifyNoInteractions(mockRequestApi)
+    }
 
     @Test
-    fun `posts bulk requests for all framework and sector types inside grouping`() =
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
+    fun `posts bulk requests for all framework and sector types inside grouping`() {
+        stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
+        stubCompanyApi(COMPANY_ID_2, -1, "consumer")
+        val basePortfolio =
+            buildPortfolio(
+                companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
+                frameworks = setOf(EUTAXONOMY, SFDR),
+                isMonitored = true,
+                portfolioName = "My monitored test portfolio",
+            )
+        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
 
-            stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
-            stubCompanyApi(COMPANY_ID_2, -1, "consumer")
-            val basePortfolio =
-                buildPortfolio(
-                    companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
-                    frameworks = setOf(EUTAXONOMY, SFDR),
-                    isMonitored = true,
-                    portfolioName = "My monitored test portfolio",
-                )
-            service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
-
-            val expected =
-                listOf(
-                    Triple(setOf(COMPANY_ID_1), setOf(SFDR), setOf("2024")),
-                    Triple(setOf(COMPANY_ID_1), setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS), setOf("2024")),
-                    Triple(setOf(COMPANY_ID_2), setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS), setOf("2023")),
-                    Triple(setOf(COMPANY_ID_2), setOf(SFDR), setOf("2023")),
-                )
-            expected.forEach { (ids, types, periods) ->
-                verify(mockRequestApi).postBulkDataRequest(
-                    argThat<BulkDataRequest> {
-                        companyIdentifiers == ids && dataTypes == types && reportingPeriods == periods
-                    },
-                    eq(USER_ID),
-                )
-            }
-            verifyNoMoreInteractions(mockRequestApi)
-        }
-
-    @Test
-    fun `posts only eutaxonomy when framework does not include sfdr`() =
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
-
-            stubCompanyApi(COMPANY_ID, 0, "nonfinancials")
-            val basePortfolio =
-                buildPortfolio(
-                    companyIds = setOf(COMPANY_ID),
-                    frameworks = setOf(EUTAXONOMY),
-                    isMonitored = true,
-                    portfolioName = "My monitored eutaxonomy test portfolio",
-                )
-            service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        val expected =
+            listOf(
+                Triple(setOf(COMPANY_ID_1), setOf(SFDR), setOf("2024")),
+                Triple(setOf(COMPANY_ID_1), setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS), setOf("2024")),
+                Triple(setOf(COMPANY_ID_2), setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS), setOf("2023")),
+                Triple(setOf(COMPANY_ID_2), setOf(SFDR), setOf("2023")),
+            )
+        expected.forEach { (ids, types, periods) ->
             verify(mockRequestApi).postBulkDataRequest(
                 argThat<BulkDataRequest> {
-                    companyIdentifiers == setOf(COMPANY_ID) &&
-                        dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
-                        reportingPeriods == setOf("2024")
+                    companyIdentifiers == ids && dataTypes == types && reportingPeriods == periods
                 },
                 eq(USER_ID),
             )
-            verifyNoMoreInteractions(mockRequestApi)
         }
+        verifyNoMoreInteractions(mockRequestApi)
+    }
 
     @Test
-    fun `posts only sfdr when framework does not include eutaxonomy`() =
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
-
-            stubCompanyApi(COMPANY_ID, 0, "random")
-            val basePortfolio =
-                buildPortfolio(
-                    companyIds = setOf(COMPANY_ID),
-                    frameworks = setOf(SFDR),
-                    isMonitored = true,
-                    portfolioName = "My monitored sfdr test portfolio",
-                )
-            service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
-            verify(mockRequestApi).postBulkDataRequest(
-                argThat<BulkDataRequest> {
-                    companyIdentifiers == setOf(COMPANY_ID) &&
-                        dataTypes == setOf(SFDR) &&
-                        reportingPeriods == setOf("2024")
-                },
-                eq(USER_ID),
+    fun `posts only eutaxonomy when framework does not include sfdr`() {
+        stubCompanyApi(COMPANY_ID, 0, "nonfinancials")
+        val basePortfolio =
+            buildPortfolio(
+                companyIds = setOf(COMPANY_ID),
+                frameworks = setOf(EUTAXONOMY),
+                isMonitored = true,
+                portfolioName = "My monitored eutaxonomy test portfolio",
             )
-            verifyNoMoreInteractions(mockRequestApi)
-        }
+        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(COMPANY_ID) &&
+                    dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
 
     @Test
-    fun `no requests posted if reporting info not available`() =
-        mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS).use { mockedStatic ->
-            mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(TODAY)
-
-            whenever(mockCompanyDataApi.getCompanyById(COMPANY_ID)).thenReturn(
-                stubCompany(COMPANY_ID, null, 1, "financials"),
+    fun `posts only sfdr when framework does not include eutaxonomy`() {
+        stubCompanyApi(COMPANY_ID, 0, "random")
+        val basePortfolio =
+            buildPortfolio(
+                companyIds = setOf(COMPANY_ID),
+                frameworks = setOf(SFDR),
+                isMonitored = true,
+                portfolioName = "My monitored sfdr test portfolio",
             )
+        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(COMPANY_ID) &&
+                    dataTypes == setOf(SFDR) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
 
-            val basePortfolio =
-                buildPortfolio(
-                    companyIds = setOf(COMPANY_ID),
-                    frameworks = setOf(EUTAXONOMY, SFDR),
-                    isMonitored = true,
-                    portfolioName = "My monitored test portfolio",
-                )
-            service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
-            verifyNoInteractions(mockRequestApi)
-        }
+    @Test
+    fun `no requests posted if reporting info not available`() {
+        whenever(mockCompanyDataApi.getCompanyById(COMPANY_ID)).thenReturn(
+            stubCompany(COMPANY_ID, null, 1, "financials"),
+        )
+
+        val basePortfolio =
+            buildPortfolio(
+                companyIds = setOf(COMPANY_ID),
+                frameworks = setOf(EUTAXONOMY, SFDR),
+                isMonitored = true,
+                portfolioName = "My monitored test portfolio",
+            )
+        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        verifyNoInteractions(mockRequestApi)
+    }
 }
