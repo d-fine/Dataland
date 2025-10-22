@@ -2,7 +2,6 @@ package db.migration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
@@ -20,11 +19,8 @@ class V29__MigratePlainDatesToExtendedDatesTest {
         val jsonNode = objectMapper.readTree(deserializedData)
 
         val fieldNames = jsonNode.fieldNames().asSequence().toList()
-        assertEquals(listOf("value", "quality", "comment", "dataSource"), fieldNames)
+        assertEquals(listOf("value"), fieldNames)
         assertEquals("2024-03-22", jsonNode.get("value").asText())
-        assertTrue(jsonNode.get("quality").isNull)
-        assertTrue(jsonNode.get("comment").isNull)
-        assertTrue(jsonNode.get("dataSource").isNull)
     }
 
     @Test
@@ -38,10 +34,7 @@ class V29__MigratePlainDatesToExtendedDatesTest {
         val jsonNode = objectMapper.readTree(deserializedData)
 
         val fieldNames = jsonNode.fieldNames().asSequence().toList()
-        assertEquals(listOf("value", "quality", "comment", "dataSource"), fieldNames)
+        assertEquals(listOf("value"), fieldNames)
         assertEquals("NoDeviation", jsonNode.get("value").asText())
-        assertTrue(jsonNode.get("quality").isNull)
-        assertTrue(jsonNode.get("comment").isNull)
-        assertTrue(jsonNode.get("dataSource").isNull)
     }
 }

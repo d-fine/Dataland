@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
  * Migration to convert plain date and enum fields to extended format for fiscal year fields.
  * Handles conflicts where both plain and extended versions exist by deactivating the plain version.
  */
-@Suppress("ClassName")
+@Suppress("ClassName", "MagicNumber")
 class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -18,13 +18,8 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
             "plainEnumFiscalYearDeviation" to "extendedEnumFiscalYearDeviation",
         )
 
-    @Suppress("MagicNumber")
     private val firstParamIndex = 1
-
-    @Suppress("MagicNumber")
     private val secondParamIndex = 2
-
-    @Suppress("MagicNumber")
     private val thirdParamIndex = 3
 
     override fun migrate(context: Context?) {
