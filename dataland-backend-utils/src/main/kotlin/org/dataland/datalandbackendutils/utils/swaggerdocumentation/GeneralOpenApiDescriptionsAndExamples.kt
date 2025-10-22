@@ -39,6 +39,9 @@ object GeneralOpenApiDescriptionsAndExamples {
             "This parameter specifies which chunk to return, starting at 0. " +
             "The default value is 0, meaning the first chunk is returned."
 
+    const val COMPANY_ID_DESCRIPTION = "The unique identifier under which a company can be found on Dataland."
+    const val COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+
     const val COMPANY_IDS_DESCRIPTION = "The unique identifiers under which a company can be found on Dataland."
     const val COMPANY_IDS_EXAMPLE = "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\", \"480238a8-a1d6-452c-93b8-5dc75c7dcd64\"]"
 
