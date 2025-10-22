@@ -10,11 +10,11 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class DocumentReferenceServiceTest {
+class DocumentStorageServiceTest {
     private lateinit var mockEntityManager: EntityManager
     private lateinit var mockDataPointQuery: TypedQuery<String>
     private lateinit var mockDatasetQuery: TypedQuery<String>
-    private lateinit var documentReferenceService: DocumentReferenceService
+    private lateinit var documentStorageService: DocumentStorageService
 
     private val documentId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
@@ -37,7 +37,7 @@ class DocumentReferenceServiceTest {
         mockEntityManager = mock<EntityManager>()
         mockDataPointQuery = mock<TypedQuery<String>>()
         mockDatasetQuery = mock<TypedQuery<String>>()
-        documentReferenceService = DocumentReferenceService(mockEntityManager)
+        documentStorageService = DocumentStorageService(mockEntityManager, mock())
     }
 
     @Test
@@ -47,7 +47,7 @@ class DocumentReferenceServiceTest {
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
-        val result = documentReferenceService.getDocumentReferences(documentId, correlationId)
+        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
@@ -60,7 +60,7 @@ class DocumentReferenceServiceTest {
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
-        val result = documentReferenceService.getDocumentReferences(documentId, correlationId)
+        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
@@ -73,7 +73,7 @@ class DocumentReferenceServiceTest {
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
-        val result = documentReferenceService.getDocumentReferences(documentId, correlationId)
+        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
@@ -86,7 +86,7 @@ class DocumentReferenceServiceTest {
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
-        val result = documentReferenceService.getDocumentReferences(documentId, correlationId)
+        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertTrue(result["dataPointIds"]!!.isEmpty())
         assertTrue(result["datasetIds"]!!.isEmpty())

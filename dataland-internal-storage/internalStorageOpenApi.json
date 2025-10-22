@@ -20,6 +20,60 @@
     }
   ],
   "paths": {
+    "/documents/{documentId}/deleteRequest": {
+      "post": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Delete document from blob storage.",
+        "description": "Deletes a document entry from blob storage by document ID.",
+        "operationId": "deleteDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted document.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data/data-points/get-batch": {
       "post": {
         "tags": [
@@ -116,7 +170,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data.",
+            "description": "Successfully retrieved list of data point IDs and dataset IDs.",
             "content": {
               "application/json": {
                 "schema": {

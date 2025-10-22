@@ -1,17 +1,19 @@
 package org.dataland.datalandinternalstorage.services
 
 import jakarta.persistence.EntityManager
+import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Service for handling document reference queries
- * Searches for document IDs in data points and datasets
+ * Service for handling document storage operations
+ * Searches for document IDs in data points and datasets, and handles document deletion
  */
 @Service
-class DocumentReferenceService(
+class DocumentStorageService(
     @Autowired private val entityManager: EntityManager,
+    @Autowired private val blobItemRepository: BlobItemRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -49,5 +51,19 @@ class DocumentReferenceService(
             "dataPointIds" to dataPointIds,
             "datasetIds" to datasetIds,
         )
+    }
+
+    /**
+     * Deletes a document from blob storage
+     *
+     * @param documentId the ID of the document to delete
+     * @param correlationId the correlation ID of the current user process
+     */
+    fun deleteDocument(
+        documentId: String,
+        correlationId: String,
+    ) {
+        logger.info("Deleting document from blob storage. DocumentId: $documentId. Correlation ID: $correlationId")
+        blobItemRepository.deleteById(documentId)
     }
 }
