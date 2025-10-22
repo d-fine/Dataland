@@ -133,6 +133,15 @@ sonar {
                 "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
                 "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
+                // frontend legacy files
+                "dataland-frontend/src/components/general/DatalandTagLegacy.vue," +
+                "dataland-frontend/src/components/pages/AdminAllRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/CompanyDataRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/MyDataRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/ViewDataRequestPageLegacy.vue," +
+                "dataland-frontend/src/components/resources/dataRequest/StatusHistoryLegacy.vue," +
+                "dataland-frontend/src/utils/RequestsOverviewPageUtilsLegacy.ts," +
+                "dataland-frontend/tests/component/components/pages/MyDataRequestsOverviewLegacy.cy.ts," +
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
