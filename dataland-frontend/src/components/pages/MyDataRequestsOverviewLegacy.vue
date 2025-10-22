@@ -5,38 +5,38 @@
         <IconField id="company-search-bar" class="company-search">
           <InputIcon class="pi pi-search" />
           <InputText
-              data-test="requested-datasets-searchbar"
-              v-model="searchBarInput"
-              placeholder="Search by company name"
-              fluid
-              variant="filled"
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by company name"
+            fluid
+            variant="filled"
           />
         </IconField>
 
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedFrameworks"
-            ref="frameworkFilter"
-            :available-items="availableFrameworks"
-            filter-name="Framework"
-            data-test="requested-datasets-frameworks"
-            id="framework-filter"
-            filter-placeholder="Search frameworks"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} frameworks selected"
+          v-model="selectedFrameworks"
+          ref="frameworkFilter"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          id="framework-filter"
+          filter-placeholder="Search frameworks"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} frameworks selected"
         />
 
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedAccessStatus"
-            ref="accessStatusFilter"
-            :available-items="availableAccessStatus"
-            filter-name="Access Status"
-            data-test="requested-datasets-access-status"
-            id="access-status-filter"
-            filter-placeholder="access status"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} status selected"
+          v-model="selectedAccessStatus"
+          ref="accessStatusFilter"
+          :available-items="availableAccessStatus"
+          filter-name="Access Status"
+          data-test="requested-datasets-access-status"
+          id="access-status-filter"
+          filter-placeholder="access status"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} status selected"
         />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
@@ -44,20 +44,20 @@
       <div class="col-12 text-left p-3">
         <div class="card">
           <DataTable
-              :value="displayedData"
-              style="cursor: pointer"
-              :row-hover="true"
-              :loading="waitingForData"
-              data-test="requested-datasets-table"
-              paginator
-              paginator-position="bottom"
-              :rows="datasetsPerPage"
-              lazy
-              :total-records="numberOfFilteredRequests"
-              @page="onPage"
-              @sort="onSort"
-              @row-click="onRowClick"
-              id="my-data-requests-overview-table"
+            :value="displayedData"
+            style="cursor: pointer"
+            :row-hover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            lazy
+            :total-records="numberOfFilteredRequests"
+            @page="onPage"
+            @sort="onSort"
+            @row-click="onRowClick"
+            id="my-data-requests-overview-table"
           >
             <Column header="COMPANY" field="companyName" :sortable="true">
               <template #body="{ data }">{{ data.companyName }}</template>
@@ -66,9 +66,9 @@
               <template #body="{ data }">
                 <div>{{ getFrameworkTitle(data.dataType) }}</div>
                 <div
-                    v-if="frameworkHasSubTitle(data.dataType)"
-                    data-test="framework-subtitle"
-                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  v-if="frameworkHasSubTitle(data.dataType)"
+                  data-test="framework-subtitle"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
                   <br />
                   {{ getFrameworkSubtitle(data.dataType) }}
@@ -101,8 +101,8 @@
             <Column field="resolve" header="">
               <template #body="{ data }">
                 <div
-                    v-if="data.requestStatus === RequestStatus.Answered"
-                    class="text-right text-primary no-underline font-bold"
+                  v-if="data.requestStatus === RequestStatus.Answered"
+                  class="text-right text-primary no-underline font-bold"
                 >
                   <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
                   <span class="ml-3">&gt;</span>
@@ -122,10 +122,10 @@
           Alternatively, become a premium user and create a portfolio for automatic request creation.
         </p>
         <PrimeButton
-            label="MANAGE YOUR PORTFOLIOS"
-            icon="pi pi-plus-circle"
-            data-test="myPortfoliosButton"
-            @click="goToMyPortfoliosPage"
+          label="MANAGE YOUR PORTFOLIOS"
+          icon="pi pi-plus-circle"
+          data-test="myPortfoliosButton"
+          @click="goToMyPortfoliosPage"
         />
       </div>
     </div>
@@ -217,9 +217,9 @@ async function getStoredRequestDataList(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       storedDataRequests.value = (
-          await new ApiClientProvider(
-              getKeycloakPromise()
-          ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
+        await new ApiClientProvider(
+          getKeycloakPromise()
+        ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {
@@ -326,8 +326,8 @@ function updateCurrentDisplayedData(): void {
  * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
  */
 function customCompareForExtendedStoredDataRequests(
-    a: ExtendedStoredDataRequest,
-    b: ExtendedStoredDataRequest
+  a: ExtendedStoredDataRequest,
+  b: ExtendedStoredDataRequest
 ): number {
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';

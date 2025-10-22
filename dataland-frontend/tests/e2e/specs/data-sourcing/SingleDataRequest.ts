@@ -1,17 +1,17 @@
-import { admin_name, admin_pw, premium_user_name, premium_user_pw } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, premium_user_name, premium_user_pw } from '@e2e/utils/Cypress.ts';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 import { type SingleRequest } from '@clients/datasourcingservice';
-import { describeIf } from '@e2e/support/TestUtility';
+import { describeIf } from '@e2e/support/TestUtility.ts';
 import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest';
-import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest.ts';
+import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition.ts';
 
 /**
  * Checks if all expected human-readable labels are visible in the dropdown options

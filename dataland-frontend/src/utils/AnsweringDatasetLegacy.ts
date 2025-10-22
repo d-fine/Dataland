@@ -14,16 +14,16 @@ import { getParentCompanyId } from '@/utils/CompanyInformationLegacy.ts';
  * @return the meta data object if found, else "undefined"
  */
 async function getDataMetaInfo(
-    companyId: string,
-    dataType: string,
-    reportingPeriod: string,
-    apiClientProvider: ApiClientProvider
+  companyId: string,
+  dataType: string,
+  reportingPeriod: string,
+  apiClientProvider: ApiClientProvider
 ): Promise<DataMetaInformation | undefined> {
   const datasets = await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
-      companyId,
-      dataType as DataTypeEnum,
-      true,
-      reportingPeriod
+    companyId,
+    dataType as DataTypeEnum,
+    true,
+    reportingPeriod
   );
   return datasets.data.length > 0 ? datasets.data[0] : undefined;
 }
@@ -34,23 +34,23 @@ async function getDataMetaInfo(
  * @param apiClientProvider the ApiClientProvider to use for the connection
  */
 export async function getAnsweringDataSetUrl(
-    storedDataRequest: StoredDataRequest | ExtendedStoredDataRequest,
-    apiClientProvider: ApiClientProvider
+  storedDataRequest: StoredDataRequest | ExtendedStoredDataRequest,
+  apiClientProvider: ApiClientProvider
 ): Promise<string | undefined> {
   let answeringDataMetaInfo = await getDataMetaInfo(
-      storedDataRequest.datalandCompanyId,
-      storedDataRequest.dataType,
-      storedDataRequest.reportingPeriod,
-      apiClientProvider
+    storedDataRequest.datalandCompanyId,
+    storedDataRequest.dataType,
+    storedDataRequest.reportingPeriod,
+    apiClientProvider
   );
   if (!answeringDataMetaInfo) {
     const parentCompanyId = await getParentCompanyId(storedDataRequest.datalandCompanyId, apiClientProvider);
     if (!parentCompanyId) return;
     answeringDataMetaInfo = await getDataMetaInfo(
-        parentCompanyId,
-        storedDataRequest.dataType,
-        storedDataRequest.reportingPeriod,
-        apiClientProvider
+      parentCompanyId,
+      storedDataRequest.dataType,
+      storedDataRequest.reportingPeriod,
+      apiClientProvider
     );
   }
   if (answeringDataMetaInfo)

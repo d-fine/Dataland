@@ -1,5 +1,5 @@
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
-import {RequestState, StoredRequest} from '@clients/datasourcingservice';
+import { RequestState, StoredRequest } from '@clients/datasourcingservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -7,23 +7,23 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 describe('Component tests for the Request State History', function (): void {
   const dummyCreationTimestamp = 1714315046000;
   const dummyRequest = {
-    id: "dummy-request-id",
-    companyId: "dummy-company-id",
-    reportingPeriod: "2024",
-    dataType: "sfdr",
-    userId: "dummy-user-id",
+    id: 'dummy-request-id',
+    companyId: 'dummy-company-id',
+    reportingPeriod: '2024',
+    dataType: 'sfdr',
+    userId: 'dummy-user-id',
     creationTimeStamp: dummyCreationTimestamp,
     lastModifiedDate: dummyCreationTimestamp,
-    requestPriority: "Low",
+    requestPriority: 'Low',
     state: RequestState.Open,
-    } as StoredRequest;
+  } as StoredRequest;
   const dummyStateHistory = [
     dummyRequest,
     {
       ...dummyRequest,
       lastModifiedDate: dummyCreationTimestamp + 600000,
       state: RequestState.Processing,
-      adminComment: "Processing started",
+      adminComment: 'Processing started',
     },
     {
       ...dummyRequest,
@@ -42,13 +42,12 @@ describe('Component tests for the Request State History', function (): void {
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
     cy.get('[data-test="creationTimestampEntry"]').should('have.length', dummyStateHistory.length);
     dummyStateHistory.forEach((entry, idx) => {
-      cy.get('[data-test="creationTimestampEntry"]').eq(idx)
+      cy.get('[data-test="creationTimestampEntry"]')
+        .eq(idx)
         .should('contain.text', convertUnixTimeInMsToDateString(entry.lastModifiedDate));
-      cy.get('.dataland-inline-tag').eq(idx)
-          .should('contain.text', entry.state);
+      cy.get('.dataland-inline-tag').eq(idx).should('contain.text', entry.state);
       const expectedComment = entry.adminComment || '—';
-      cy.get('[data-test="commentEntry"]').eq(idx)
-          .should('contain.text', expectedComment);
+      cy.get('[data-test="commentEntry"]').eq(idx).should('contain.text', expectedComment);
     });
   });
 });

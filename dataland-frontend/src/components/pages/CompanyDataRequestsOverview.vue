@@ -1,23 +1,23 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <div v-if="waitingForData || storedDataRequests.length > 0">
+    <div>
       <div class="search-bar-and-filters-container">
         <IconField class="request-company-search-bar-container">
           <InputIcon class="pi pi-search" />
           <InputText
-              data-test="requested-datasets-searchbar"
-              v-model="searchBarInput"
-              placeholder="Search by requester"
-              variant="filled"
-              fluid
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by requester"
+            variant="filled"
+            fluid
           />
         </IconField>
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedFrameworks"
-            :available-items="availableFrameworks"
-            filter-name="Framework"
-            data-test="requested-datasets-frameworks"
-            filter-placeholder="Search frameworks"
+          v-model="selectedFrameworks"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="Search frameworks"
         />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
@@ -25,16 +25,16 @@
       <div class="col-12 text-left p-3">
         <div class="card">
           <DataTable
-              :value="displayedData"
-              style="cursor: pointer"
-              :rowHover="true"
-              :loading="waitingForData"
-              data-test="requested-datasets-table"
-              paginator
-              paginator-position="bottom"
-              :rows="datasetsPerPage"
-              :total-records="numberOfFilteredRequests"
-              id="my-company-requests-overview-table"
+            :value="displayedData"
+            style="cursor: pointer"
+            :rowHover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            :total-records="numberOfFilteredRequests"
+            id="my-company-requests-overview-table"
           >
             <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
               <template #body="slotProps">
@@ -47,9 +47,9 @@
                   {{ getFrameworkTitle(slotProps.data.dataType) }}
                 </div>
                 <div
-                    data-test="framework-subtitle"
-                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  data-test="framework-subtitle"
+                  v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
                   <br />
                   {{ getFrameworkSubtitle(slotProps.data.dataType) }}
@@ -103,15 +103,14 @@
 
 <script setup lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter
-  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import {ApiClientProvider} from '@/services/ApiClients';
-import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
-import {type FrameworkSelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import {customCompareForRequestState, retrieveAvailableFrameworks,} from '@/utils/RequestsOverviewPageUtils';
-import {accessStatusBadgeClass, badgeClass, getRequestStatusLabel} from '@/utils/RequestUtilsLegacy';
-import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
-import {type CompanyRoleAssignmentExtended,} from '@clients/communitymanager';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { customCompareForRequestState, retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -119,13 +118,12 @@ import DataTable from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import {inject, onMounted, ref, watch} from 'vue';
-import {ExtendedStoredRequest} from "@clients/datasourcingservice";
+import { inject, onMounted, ref, watch } from 'vue';
+import { ExtendedStoredRequest } from '@clients/datasourcingservice';
 
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const companyRoleAssignments = inject<Array<CompanyRoleAssignmentExtended>>('companyRoleAssignments');
-
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
@@ -154,11 +152,9 @@ async function getStoredCompanyRequestDataList() {
     const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
     const dataRequestsPromises = companyIDs.map(async (companyId) => {
       try {
-        const response = await apiClientProvider.apiClients.requestController.postRequestSearch(
-            {
-              companyId: companyId,
-            }
-        );
+        const response = await apiClientProvider.apiClients.requestController.postRequestSearch({
+          companyId: companyId,
+        });
         return response.data;
       } catch (error) {
         console.error(`Error fetching data for companyId ${companyId}:`, error);
@@ -216,8 +212,7 @@ function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: Extende
     if (aValue > bValue) return sortOrder.value;
   }
 
-  if (a.state != b.state)
-    return customCompareForRequestState(a.state, b.state, sortOrder.value);
+  if (a.state != b.state) return customCompareForRequestState(a.state, b.state, sortOrder.value);
 
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
@@ -230,24 +225,21 @@ function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: Extende
  * Updates the displayedData
  */
 function updateCurrentDisplayedData() {
-  displayedData.value = storedDataRequests.value.filter((dataRequest) =>
-      filterSearchInput(dataRequest.companyName)
-  );
+  displayedData.value = storedDataRequests.value.filter((dataRequest) => filterSearchInput(dataRequest.companyName));
   if (selectedFrameworks.value.length > 0) {
     displayedData.value = displayedData.value.filter((dataRequest) => filterFramework(dataRequest.dataType));
   }
   displayedData.value.sort((a, b) => customCompareForStoredDataRequests(a, b));
   numberOfFilteredRequests.value = displayedData.value.length;
   displayedData.value = displayedData.value.slice(
-      datasetsPerPage * currentPage.value,
-      datasetsPerPage * (1 + currentPage.value)
+    datasetsPerPage * currentPage.value,
+    datasetsPerPage * (1 + currentPage.value)
   );
   globalThis.scrollTo({
     top: 0,
     behavior: 'smooth',
   });
 }
-
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
@@ -267,9 +259,13 @@ watch(searchBarInput, (newSearch: string) => {
   updateCurrentDisplayedData();
 });
 
-watch(() => companyRoleAssignments, () => {
-  void getStoredCompanyRequestDataList();
-}, { deep: true });
+watch(
+  () => companyRoleAssignments,
+  () => {
+    void getStoredCompanyRequestDataList();
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
