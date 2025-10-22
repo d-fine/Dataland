@@ -103,19 +103,15 @@
 
 <script setup lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import {
-  customCompareForRequestState,
-  retrieveAvailableFrameworks,
-} from '@/utils/RequestsOverviewPageUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import {
-  type CompanyRoleAssignmentExtended,
-} from '@clients/communitymanager';
+import FrameworkDataSearchDropdownFilter
+  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import {ApiClientProvider} from '@/services/ApiClients';
+import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
+import {type FrameworkSelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {customCompareForRequestState, retrieveAvailableFrameworks,} from '@/utils/RequestsOverviewPageUtils';
+import {accessStatusBadgeClass, badgeClass, getRequestStatusLabel} from '@/utils/RequestUtilsLegacy';
+import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
+import {type CompanyRoleAssignmentExtended,} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -123,7 +119,7 @@ import DataTable from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import { inject, onMounted, ref, watch } from 'vue';
+import {inject, onMounted, ref, watch} from 'vue';
 import {ExtendedStoredRequest} from "@clients/datasourcingservice";
 
 const datasetsPerPage = 100;
@@ -158,7 +154,11 @@ async function getStoredCompanyRequestDataList() {
     const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
     const dataRequestsPromises = companyIDs.map(async (companyId) => {
       try {
-        const response = await apiClientProvider.apiClients.requestController.searchRequests();
+        const response = await apiClientProvider.apiClients.requestController.postRequestSearch(
+            {
+              companyId: companyId,
+            }
+        );
         return response.data;
       } catch (error) {
         console.error(`Error fetching data for companyId ${companyId}:`, error);
@@ -283,10 +283,6 @@ watch(() => companyRoleAssignments, () => {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 
 .search-bar-and-filters-container {
