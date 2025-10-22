@@ -26,6 +26,8 @@ const val TEST_COMPANY_SEARCH_STRING = "TestCompany"
 const val TEST_COMPANY_NAME = "TestCompany Name"
 const val USER_EMAIL = "testuser@email.com"
 const val USER_EMAIL_SEARCH_STRING = "testuser"
+const val ADMIN_COMMENT = "This is an admin comment."
+const val ADMIN_COMMENT_SEARCH_STRING = "admin comment"
 
 /**
  * Utility class to create and store test data in the database using SpringBootTests.
