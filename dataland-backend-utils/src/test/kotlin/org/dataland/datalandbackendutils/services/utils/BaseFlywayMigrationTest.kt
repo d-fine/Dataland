@@ -68,6 +68,7 @@ abstract class BaseFlywayMigrationTest {
                 .configure()
                 .baselineOnMigrate(true)
                 .baselineVersion(getFlywayBaselineVersion())
+                .target(getFlywayTargetVersion())
                 .dataSource(applicationContext.getBean(DataSource::class.java))
                 .load()
         val migrationResult = flyway.migrate()
@@ -80,7 +81,12 @@ abstract class BaseFlywayMigrationTest {
     abstract fun setupBeforeMigration()
 
     /**
-     * Get the baseline version for Flyway migration
+     * Get the baseline version for the Flyway migration
      */
     abstract fun getFlywayBaselineVersion(): String
+
+    /**
+     * Get the target version for the Flyway migration
+     */
+    abstract fun getFlywayTargetVersion(): String
 }

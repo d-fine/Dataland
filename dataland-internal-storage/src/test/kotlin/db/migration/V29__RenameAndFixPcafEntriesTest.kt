@@ -33,6 +33,8 @@ class V29__RenameAndFixPcafEntriesTest : BaseFlywayMigrationTest() {
 
     override fun getFlywayBaselineVersion(): String = "28"
 
+    override fun getFlywayTargetVersion(): String = "29"
+
     override fun setupBeforeMigration() {
         expectedRenaming.keys
             .map {

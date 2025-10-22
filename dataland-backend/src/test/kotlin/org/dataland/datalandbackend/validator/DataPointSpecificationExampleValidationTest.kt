@@ -179,7 +179,7 @@ class DataPointSpecificationExampleValidationTest
                     actual.values().asSequence().all { it.isValueNode }
             } ?: false
 
-        private fun isDifferenceCauseByDifferingArrayLengths(diff: JsonComparator.JsonDiff) =
+        private fun isDifferenceCausedByDifferingArrayLengths(diff: JsonComparator.JsonDiff) =
             diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
 
         /**
@@ -194,7 +194,7 @@ class DataPointSpecificationExampleValidationTest
          */
         private fun filterExpectedListDifferences(differences: List<JsonComparator.JsonDiff>): List<JsonComparator.JsonDiff> =
             differences.filterNot { diff ->
-                isDifferenceCausedByArraySpecification(diff) || isDifferenceCauseByDifferingArrayLengths(diff)
+                isDifferenceCausedByArraySpecification(diff) || isDifferenceCausedByDifferingArrayLengths(diff)
             }
 
         @MockitoBean

@@ -40,6 +40,8 @@ class V10__RenamePcafDatapointsTest : BaseFlywayMigrationTest() {
 
     override fun getFlywayBaselineVersion(): String = "9"
 
+    override fun getFlywayTargetVersion(): String = "10"
+
     override fun setupBeforeMigration() {
         dummyCompanyId =
             companyAlterationManager
