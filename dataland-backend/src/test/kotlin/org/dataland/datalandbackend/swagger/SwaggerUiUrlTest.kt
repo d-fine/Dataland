@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.swagger
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -10,6 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DefaultMocks
 @AutoConfigureMockMvc
 class SwaggerUiUrlTest {
     @Autowired
