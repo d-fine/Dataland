@@ -1,11 +1,13 @@
 package org.dataland.datasourcingservice.model.request
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import java.util.UUID
 
 /**
  * --- API model ---
@@ -73,22 +75,39 @@ data class RequestSearchFilter<IdType>(
             ),
     )
     val requestPriorities: Set<RequestPriority>? = null,
-
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val emailAddress: String? = null,
-
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
     )
     val adminComment: String? = null,
-
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
     )
     val companySearchString: String? = null,
-)
+) {
+    @JsonIgnore
+    fun convertToSearchFilterWithUUIDs(): RequestSearchFilter<UUID> =
+        RequestSearchFilter<UUID>(
+            companyId =
+                this.companyId?.let {
+                    UUID.fromString(it.toString())
+                },
+            dataTypes = this.dataTypes,
+            reportingPeriods = this.reportingPeriods,
+            userId =
+                this.userId?.let {
+                    UUID.fromString(it.toString())
+                },
+            requestStates = this.requestStates,
+            requestPriorities = this.requestPriorities,
+            adminComment = this.adminComment,
+            emailAddress = this.emailAddress,
+            companySearchString = this.companySearchString,
+        )
+}
