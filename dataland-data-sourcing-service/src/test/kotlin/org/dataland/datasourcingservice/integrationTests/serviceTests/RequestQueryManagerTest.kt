@@ -13,7 +13,6 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
-import org.dataland.datasourcingservice.utils.ADMIN_COMMENT
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.COMPANY_ID_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
@@ -26,13 +25,16 @@ import org.dataland.datasourcingservice.utils.REQUEST_STATE_2
 import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME
 import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.USER_EMAIL
+import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.not
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -58,39 +60,36 @@ class RequestQueryManagerTest
 
         @MockitoBean
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-        private lateinit var mockBasicCompanyInfo: BasicCompanyInformation
-        private lateinit var mockStoredCompany: StoredCompany
-        private lateinit var mockCompanyInformation: CompanyInformation
-        private val firstUser = KeycloakUserInfo(null, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
+        private val firstUser = KeycloakUserInfo(USER_EMAIL, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
+        private val secondUser = mock<KeycloakUserInfo>()
+        private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
+        private val mockBasicCompanyInfo2 = mock<BasicCompanyInformation>()
+        private val storedCompany1 = mock<StoredCompany>()
+        private val storedCompany2 = mock<StoredCompany>()
+        private val companyInfo1 = mock<CompanyInformation>()
+        private val companyInfo2 = mock<CompanyInformation>()
 
-        fun basicMocks() {
-            mockBasicCompanyInfo = mock<BasicCompanyInformation>()
-            mockStoredCompany = mock<StoredCompany>()
-            mockCompanyInformation = mock<CompanyInformation>()
-            doReturn(firstUser).whenever(mockKeycloakUserService).getUser(any())
-            doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(any())
-            doReturn(listOf(mockBasicCompanyInfo))
+        private fun setupMocks() {
+            doReturn(firstUser).whenever(mockKeycloakUserService).getUser(firstUser.userId)
+            doReturn(secondUser).whenever(mockKeycloakUserService).getUser(not(eq(firstUser.userId)))
+            doReturn(null).whenever(secondUser).email
+            doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(USER_EMAIL_SEARCH_STRING)
+            doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo1).companyId
+            doReturn(COMPANY_ID_2).whenever(mockBasicCompanyInfo2).companyId
+            doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
-                .getCompanies(any(), any(), any(), any(), any(), any())
-            doReturn(mockStoredCompany).whenever(mockCompanyDataControllerApi).getCompanyById(any())
-            doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo).companyId
-            doReturn(mockCompanyInformation).whenever(mockStoredCompany).companyInformation
-            doReturn(null).whenever(mockCompanyInformation).companyName
-        }
-
-        fun advancedMocks() {
-            mockBasicCompanyInfo = mock<BasicCompanyInformation>()
-            mockStoredCompany = mock<StoredCompany>()
-            mockCompanyInformation = mock<CompanyInformation>()
-            doReturn(firstUser).whenever(mockKeycloakUserService).getUser(any())
-            doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(any())
-            doReturn(listOf(mockBasicCompanyInfo))
+                .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
+            doReturn(listOf(mockBasicCompanyInfo2))
                 .whenever(mockCompanyDataControllerApi)
-                .getCompanies(any(), any(), any(), any(), any(), any())
-            doReturn(mockStoredCompany).whenever(mockCompanyDataControllerApi).getCompanyById(any())
-            doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo).companyId
-            doReturn(mockCompanyInformation).whenever(mockStoredCompany).companyInformation
-            doReturn(null).whenever(mockCompanyInformation).companyName
+                .getCompanies(eq(null), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
+            doReturn(COMPANY_ID_1).whenever(storedCompany1).companyId
+            doReturn(COMPANY_ID_2).whenever(storedCompany2).companyId
+            doReturn(companyInfo1).whenever(storedCompany1).companyInformation
+            doReturn(companyInfo2).whenever(storedCompany2).companyInformation
+            doReturn(TEST_COMPANY_NAME).whenever(companyInfo1).companyName
+            doReturn(null).whenever(companyInfo2).companyName
+            doReturn(storedCompany1).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_1)
+            doReturn(storedCompany2).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_2)
         }
 
         /**
@@ -100,6 +99,7 @@ class RequestQueryManagerTest
         @BeforeEach
         fun setup() {
             reset(mockKeycloakUserService, mockCompanyDataControllerApi)
+            setupMocks()
             requestEntities =
                 (0..15).map {
                     dataBaseCreationUtils.storeRequest(
@@ -107,6 +107,7 @@ class RequestQueryManagerTest
                         dataType = if (it / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2,
                         reportingPeriod = if (it / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2,
                         state = RequestState.valueOf(if (it % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2),
+                        userId = if (it % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID(),
                     )
                 }
         }
@@ -130,10 +131,15 @@ class RequestQueryManagerTest
             requestState: String?,
             indexString: String,
         ) {
-            basicMocks()
             val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
-                indicesOfExpectedResults.map { requestEntities[it].toExtendedStoredRequest() }
+                indicesOfExpectedResults.map {
+                    val entity = requestEntities[it]
+                    entity.toExtendedStoredRequest().copy(
+                        companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME else null,
+                        userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
+                    )
+                }
             val reportingPeriods = reportingPeriod?.split(';')?.toSet()
             val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
             val actualResults =
@@ -167,47 +173,37 @@ class RequestQueryManagerTest
         @CsvSource(
             value = [
                 // Test companySearchString filter
-                "null, null, null, null, null, $TEST_COMPANY_SEARCH_STRING, 0;1;2;3;4;5;6;7;",
+                "null, $TEST_COMPANY_SEARCH_STRING, 0;1;2;3;4;5;6;7;",
                 // Test emailAddress filter
-                "null, null, null, null, $USER_EMAIL, null, 0;2;4;6;8;10;12;14",
+                "$USER_EMAIL_SEARCH_STRING, null, 0;2;4;6;8;10;12;14",
             ],
             nullValues = ["null"],
         )
         fun `ensure that searching for requests with companySearchString and emailAddress works`(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: String?,
-            emailAddress: String?,
+            emailAddressSearchString: String?,
             companySearchString: String?,
             indexString: String,
         ) {
-            advancedMocks()
             val indicesOfExpectedResults = indexString.split(';').mapNotNull { it.toIntOrNull() }
             val expectedResults =
                 indicesOfExpectedResults.map {
                     val entity = requestEntities[it]
                     entity.toExtendedStoredRequest().copy(
                         companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME else null,
-                        userEmailAddress = if (entity.state.toString() == REQUEST_STATE_1) USER_EMAIL else null,
-                        adminComment = ADMIN_COMMENT,
+                        userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )
                 }
             val actualResults =
                 requestQueryManager.searchRequests(
                     RequestSearchFilter<UUID>(
-                        companyId = companyId?.let { UUID.fromString(it) },
-                        dataTypes = dataType?.let { setOf(it) },
-                        reportingPeriods = reportingPeriod?.let { setOf(it) },
-                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
-                        emailAddress = emailAddress,
+                        emailAddress = emailAddressSearchString,
                         companySearchString = companySearchString,
                     ),
                 )
             Assertions.assertEquals(expectedResults.size, actualResults?.size)
-            expectedResults.forEachIndexed { idx, expected ->
+            expectedResults.forEach { expected ->
                 val actual = actualResults?.find { it.id == expected.id }
-                assert(actual != null) { "Expected result $expected not found in actual results. Actual: $actual" }
+                assert(actual != null) { "Expected result $expected not found in actual results." }
                 Assertions.assertEquals(expected.userEmailAddress, actual?.userEmailAddress)
                 Assertions.assertEquals(expected.adminComment, actual?.adminComment)
                 Assertions.assertEquals(expected.companyName, actual?.companyName)

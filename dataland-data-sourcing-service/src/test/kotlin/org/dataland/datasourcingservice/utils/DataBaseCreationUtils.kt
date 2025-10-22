@@ -22,6 +22,10 @@ const val REQUEST_STATE_1 = "Open"
 const val REQUEST_STATE_2 = "Processing"
 const val DATA_SOURCING_STATE_1 = "Initialized"
 const val DATA_SOURCING_STATE_2 = "DocumentSourcing"
+const val TEST_COMPANY_SEARCH_STRING = "TestCompany"
+const val TEST_COMPANY_NAME = "TestCompany Name"
+const val USER_EMAIL = "testuser@email.com"
+const val USER_EMAIL_SEARCH_STRING = "testuser"
 
 /**
  * Utility class to create and store test data in the database using SpringBootTests.
