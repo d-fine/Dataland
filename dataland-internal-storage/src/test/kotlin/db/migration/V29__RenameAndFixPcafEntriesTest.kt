@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @SpringBootTest(classes = [org.dataland.datalandinternalstorage.DatalandInternalStorage::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -26,6 +27,8 @@ class V29__RenameAndFixPcafEntriesTest : BaseFlywayMigrationTest() {
                 "customEnumCompanyExchangeStatus" to "extendedEnumCompanyExchangeStatus",
                 "other" to "other",
             )
+
+        private lateinit var expectedDataPointTypes: Map<String, String>
     }
 
     @Autowired
@@ -39,8 +42,8 @@ class V29__RenameAndFixPcafEntriesTest : BaseFlywayMigrationTest() {
         expectedRenaming.keys
             .map {
                 DataPointItem(
-                    dataPointId = it,
-                    companyId = "dummy-company-id",
+                    dataPointId = UUID.randomUUID().toString(),
+                    companyId = UUID.randomUUID().toString(),
                     dataPointType = it,
                     reportingPeriod = "2023",
                     dataPoint =
@@ -50,19 +53,23 @@ class V29__RenameAndFixPcafEntriesTest : BaseFlywayMigrationTest() {
                 )
             }.let {
                 dataPointItemRepository.saveAll(it)
+                expectedDataPointTypes =
+                    it.associate { item ->
+                        item.dataPointId to expectedRenaming.getValue(item.dataPointType)
+                    }
             }
     }
 
     @Test
     fun `check correct renaming`() {
-        expectedRenaming.forEach { (oldType, newType) ->
-            val migratedDataPointType = dataPointItemRepository.findById(oldType).get().dataPointType
-            Assertions.assertEquals(newType, migratedDataPointType)
+        expectedDataPointTypes.forEach { (id, expectedType) ->
+            val migratedDataPointType = dataPointItemRepository.findById(id).get().dataPointType
+            Assertions.assertEquals(expectedType, migratedDataPointType)
         }
     }
 
     @Test fun `check removal of provider field`() {
-        expectedRenaming.keys.forEach {
+        expectedDataPointTypes.keys.forEach {
             val migratedDataPoint = dataPointItemRepository.findById(it).get().dataPoint
             defaultObjectMapper.readTree(migratedDataPoint).let { jsonNode ->
                 Assertions.assertFalse(jsonNode.has("provider"))
