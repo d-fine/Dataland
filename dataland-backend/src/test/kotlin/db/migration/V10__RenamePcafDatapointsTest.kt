@@ -7,38 +7,19 @@ import org.dataland.datalandbackend.repositories.DataPointMetaInformationReposit
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
-import org.flywaydb.core.Flyway
+import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.ApplicationContext
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
-import javax.sql.DataSource
 
 @SpringBootTest(classes = [org.dataland.datalandbackend.DatalandBackend::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
-class V10__RenamePcafDatapointsTest : BaseIntegrationTest() {
-    companion object {
-        val myPostgres = postgres.start()
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun enableFlywayMigrations(registry: DynamicPropertyRegistry) {
-            registry.add("spring.flyway.enabled") { "true" }
-        }
-    }
-
-    @Autowired
-    lateinit var applicationContext: ApplicationContext
-
+class V10__RenamePcafDatapointsTest : BaseFlywayMigrationTest() {
     @Autowired
     lateinit var companyAlterationManager: CompanyAlterationManager
 
@@ -57,32 +38,9 @@ class V10__RenamePcafDatapointsTest : BaseIntegrationTest() {
     private lateinit var dummyCompanyId: String
     private lateinit var metaDataBeforeMigration: Map<String, DataPointMetaInformationEntity>
 
-    @BeforeAll
-    fun setupBeforeMigration() {
-        storeUnmigratedTestData()
-        val flyway =
-            Flyway
-                .configure()
-                .baselineOnMigrate(true)
-                .baselineVersion("9")
-                .dataSource(applicationContext.getBean(DataSource::class.java))
-                .load()
-        flyway.migrate()
-    }
+    override fun getFlywayBaselineVersion(): String = "9"
 
-    private fun createDummyMetaData(dataPointType: String) =
-        DataPointMetaInformationEntity(
-            dataPointId = UUID.randomUUID().toString(),
-            companyId = dummyCompanyId,
-            dataPointType = dataPointType,
-            uploaderUserId = "dummy-uploader",
-            uploadTime = System.currentTimeMillis(),
-            reportingPeriod = "2023",
-            currentlyActive = true,
-            qaStatus = QaStatus.Pending,
-        )
-
-    private fun storeUnmigratedTestData() {
+    override fun setupBeforeMigration() {
         dummyCompanyId =
             companyAlterationManager
                 .addCompany(
@@ -100,6 +58,18 @@ class V10__RenamePcafDatapointsTest : BaseIntegrationTest() {
                     dataPointMetaInformationRepository.save(createDummyMetaData(it))
                 }.associateBy { it.dataPointId }
     }
+
+    private fun createDummyMetaData(dataPointType: String) =
+        DataPointMetaInformationEntity(
+            dataPointId = UUID.randomUUID().toString(),
+            companyId = dummyCompanyId,
+            dataPointType = dataPointType,
+            uploaderUserId = "dummy-uploader",
+            uploadTime = System.currentTimeMillis(),
+            reportingPeriod = "2023",
+            currentlyActive = true,
+            qaStatus = QaStatus.Pending,
+        )
 
     @Test
     fun `Verify migration script renames PCAF data points correctly`() {
