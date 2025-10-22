@@ -41,8 +41,8 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
-    implementation(libs.flyway)
-    implementation(libs.flyway.core)
+    testImplementation(libs.flyway)
+    testImplementation(libs.flyway.core)
 }
 
 tasks.test {
