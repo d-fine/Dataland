@@ -40,12 +40,12 @@ interface SubscribedCompaniesApi {
                     Content(
                         array =
                             ArraySchema(
-                                items =
+                                arraySchema =
                                     Schema(
-                                        type = "string",
                                         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
                                         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
                                     ),
+                                schema = Schema(type = "string"),
                             ),
                     ),
                 ],
