@@ -72,18 +72,18 @@ class V10__RenamePcafDatapointsTest : BaseFlywayMigrationTest() {
         )
 
     @Test
-    fun `Verify migration script renames PCAF data points correctly`() {
+    fun `verify migration script renames PCAF data points correctly`() {
         val migratedMetaInfo =
             metaDataBeforeMigration.keys.map {
                 dataPointMetaInformationRepository.findById(it).get()
             }
 
-        migratedMetaInfo.forEach {
+        migratedMetaInfo.forEach { newMetaInfo ->
             val expectation =
-                metaDataBeforeMigration[it.dataPointId].let {
-                    it?.copy(dataPointType = expectedRenaming[it?.dataPointType]!!)
+                metaDataBeforeMigration[newMetaInfo.dataPointId].let { oldMetaInfo ->
+                    oldMetaInfo?.copy(dataPointType = expectedRenaming.getValue(oldMetaInfo.dataPointType))
                 }
-            Assertions.assertEquals(expectation, it)
+            Assertions.assertEquals(expectation, newMetaInfo)
         }
     }
 }

@@ -59,7 +59,7 @@ class V29__RenameAndFixPcafEntriesTest : BaseFlywayMigrationTest() {
         }
     }
 
-    @Test fun `check removal of provider-field`() {
+    @Test fun `check removal of provider field`() {
         expectedRenaming.keys.forEach {
             val migratedDataPoint = dataPointItemRepository.findById(it).get().dataPoint
             defaultObjectMapper.readTree(migratedDataPoint).let { jsonNode ->
