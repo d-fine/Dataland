@@ -5,26 +5,26 @@
         <IconField class="request-company-search-bar-container">
           <InputIcon class="pi pi-search" />
           <InputText
-              data-test="requested-datasets-searchbar"
-              v-model="searchBarInput"
-              placeholder="Search by requester"
-              variant="filled"
-              fluid
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by requester"
+            variant="filled"
+            fluid
           />
         </IconField>
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedFrameworks"
-            :available-items="availableFrameworks"
-            filter-name="Framework"
-            data-test="requested-datasets-frameworks"
-            filter-placeholder="Search frameworks"
+          v-model="selectedFrameworks"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="Search frameworks"
         />
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedAccessStatus"
-            :available-items="availableAccessStatus"
-            filter-name="Access Status"
-            data-test="requested-datasets-frameworks"
-            filter-placeholder="access status"
+          v-model="selectedAccessStatus"
+          :available-items="availableAccessStatus"
+          filter-name="Access Status"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="access status"
         />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
@@ -32,16 +32,16 @@
       <div class="col-12 text-left p-3">
         <div class="card">
           <DataTable
-              :value="displayedData"
-              style="cursor: pointer"
-              :rowHover="true"
-              :loading="waitingForData"
-              data-test="requested-datasets-table"
-              paginator
-              paginator-position="bottom"
-              :rows="datasetsPerPage"
-              :total-records="numberOfFilteredRequests"
-              id="my-company-requests-overview-table"
+            :value="displayedData"
+            style="cursor: pointer"
+            :rowHover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            :total-records="numberOfFilteredRequests"
+            id="my-company-requests-overview-table"
           >
             <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
               <template #body="slotProps">
@@ -54,9 +54,9 @@
                   {{ getFrameworkTitle(slotProps.data.dataType) }}
                 </div>
                 <div
-                    data-test="framework-subtitle"
-                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  data-test="framework-subtitle"
+                  v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                 >
                   <br />
                   {{ getFrameworkSubtitle(slotProps.data.dataType) }}
@@ -99,32 +99,32 @@
             <Column field="resolve" header="">
               <template #body="slotProps">
                 <div
-                    v-if="slotProps.data.accessStatus == AccessStatus.Pending"
-                    class="text-right text-primary no-underline font-bold"
+                  v-if="slotProps.data.accessStatus == AccessStatus.Pending"
+                  class="text-right text-primary no-underline font-bold"
                 >
                   <div class="button-container">
                     <PrimeButton
-                        icon="pi pi-check"
-                        @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
-                        label="Grant"
+                      icon="pi pi-check"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
+                      label="Grant"
                     />
                     <PrimeButton
-                        icon="pi pi-times"
-                        @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
-                        label="Decline"
+                      icon="pi pi-times"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
+                      label="Decline"
                     />
                   </div>
                 </div>
                 <div
-                    v-if="slotProps.data.accessStatus == AccessStatus.Granted"
-                    class="text-right text-primary no-underline font-bold"
+                  v-if="slotProps.data.accessStatus == AccessStatus.Granted"
+                  class="text-right text-primary no-underline font-bold"
                 >
                   <div>
                     <PrimeButton
-                        class="button-container"
-                        icon="pi pi-ban"
-                        @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
-                        label="Revoke"
+                      class="button-container"
+                      icon="pi pi-ban"
+                      @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
+                      label="Revoke"
                     />
                   </div>
                 </div>
@@ -259,17 +259,17 @@ export default defineComponent({
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
             const response = await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                companyId,
-                undefined,
-                undefined
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              companyId,
+              undefined,
+              undefined
             );
             return response.data;
           } catch (error) {
@@ -327,21 +327,21 @@ export default defineComponent({
      */
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests.filter((dataRequest) =>
-          this.filterSearchInput(dataRequest.companyName)
+        this.filterSearchInput(dataRequest.companyName)
       );
       if (this.selectedFrameworks.length > 0) {
         this.displayedData = this.displayedData.filter((dataRequest) => this.filterFramework(dataRequest.dataType));
       }
       if (this.selectedAccessStatus.length > 0) {
         this.displayedData = this.displayedData.filter((dataRequest) =>
-            this.filterAccessStatus(dataRequest.accessStatus)
+          this.filterAccessStatus(dataRequest.accessStatus)
         );
       }
       this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
-          this.datasetsPerPage * this.currentPage,
-          this.datasetsPerPage * (1 + this.currentPage)
+        this.datasetsPerPage * this.currentPage,
+        this.datasetsPerPage * (1 + this.currentPage)
       );
       globalThis.scrollTo({
         top: 0,
@@ -382,7 +382,7 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           await new ApiClientProvider(
-              this.getKeycloakPromise()
+            this.getKeycloakPromise()
           ).apiClients.communityManagerRequestController.patchDataRequest(requestId, { accessStatus: newAccessStatus });
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();

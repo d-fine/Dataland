@@ -38,6 +38,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./lksg');
   require('./company-cockpit');
   require('./user-experience');
+  require('./data-sourcing');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {

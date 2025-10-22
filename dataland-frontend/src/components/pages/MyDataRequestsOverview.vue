@@ -2,105 +2,102 @@
   <TheContent class="min-h-screen relative">
     <div v-if="waitingForData || storedDataRequests.length > 0">
       <div class="container">
-        <IconField class="company-search" >
-          <InputIcon class="pi pi-search"/>
+        <IconField class="company-search">
+          <InputIcon class="pi pi-search" />
           <InputText
-              data-test="requested-datasets-searchbar"
-              v-model="searchBarInput"
-              placeholder="Search by company name"
-              fluid
-              variant="filled"
+            data-test="requested-datasets-searchbar"
+            v-model="searchBarInput"
+            placeholder="Search by company name"
+            fluid
+            variant="filled"
           />
         </IconField>
 
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedFrameworks"
-            ref="frameworkFilter"
-            :available-items="availableFrameworks"
-            filter-name="Framework"
-            data-test="requested-datasets-frameworks"
-            filter-placeholder="Search Frameworks"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} Frameworks selected"
+          v-model="selectedFrameworks"
+          ref="frameworkFilter"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="requested-datasets-frameworks"
+          filter-placeholder="Search Frameworks"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} Frameworks selected"
         />
 
         <FrameworkDataSearchDropdownFilter
-            v-model="selectedState"
-            ref="StateFilter"
-            :available-items="availableState"
-            filter-name="Request State"
-            data-test="requested-datasets-access-status"
-            filter-placeholder="Search State"
-            class="search-filter"
-            :max-selected-labels="1"
-            selected-items-label="{0} States selected"
+          v-model="selectedState"
+          ref="StateFilter"
+          :available-items="availableState"
+          filter-name="Request State"
+          data-test="requested-datasets-access-status"
+          filter-placeholder="Search State"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} States selected"
         />
-        <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter"/>
+        <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
 
       <div class="p-3">
-          <DataTable
-              :value="displayedData"
-              style="cursor: pointer"
-              :row-hover="true"
-              :loading="waitingForData"
-              data-test="requested-datasets-table"
-              paginator
-              paginator-position="bottom"
-              :rows="datasetsPerPage"
-              lazy
-              :total-records="numberOfFilteredRequests"
-              @page="onPage"
-              @sort="onSort"
-              @row-click="onRowClick"
-          >
-            <Column header="COMPANY" field="companyName" :sortable="true">
-              <template #body="{ data }">{{ data.companyName }}</template>
-            </Column>
-            <Column header="FRAMEWORK" field="dataType" :sortable="true">
-              <template #body="{ data }">
-                <div>{{ getFrameworkTitle(data.dataType) }}</div>
-                <div
-                    v-if="frameworkHasSubTitle(data.dataType)"
-                    data-test="framework-subtitle"
-                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                >
-                  <br/>
-                  {{ getFrameworkSubtitle(data.dataType) }}
-                </div>
-              </template>
-            </Column>
-            <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-              <template #body="{ data }">{{ data.reportingPeriod }}</template>
-            </Column>
-            <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
-              <template #body="{ data }">
-                {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
-              </template>
-            </Column>
-            <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
-              <template #body="{ data }">
-                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
-              </template>
-            </Column>
-            <Column header="REQUEST STATE" field="requestState" :sortable="true">
-              <template #body="{ data }">
-                <DatalandTag :severity="data.state" :value="data.state"/>
-              </template>
-            </Column>
-            <Column field="resolve" header="">
-              <template #body="{ data }">
-                <div
-                    v-if="data.state === RequestState.Processed"
-                    class="text-primary no-underline"
-                >
-                  <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
-                  <span class="ml-3">&gt;</span>
-                </div>
-              </template>
-            </Column>
-          </DataTable>
+        <DataTable
+          :value="displayedData"
+          style="cursor: pointer"
+          :row-hover="true"
+          :loading="waitingForData"
+          data-test="requested-datasets-table"
+          paginator
+          paginator-position="bottom"
+          :rows="datasetsPerPage"
+          lazy
+          :total-records="numberOfFilteredRequests"
+          @page="onPage"
+          @sort="onSort"
+          @row-click="onRowClick"
+        >
+          <Column header="COMPANY" field="companyName" :sortable="true">
+            <template #body="{ data }">{{ data.companyName }}</template>
+          </Column>
+          <Column header="FRAMEWORK" field="dataType" :sortable="true">
+            <template #body="{ data }">
+              <div>{{ getFrameworkTitle(data.dataType) }}</div>
+              <div
+                v-if="frameworkHasSubTitle(data.dataType)"
+                data-test="framework-subtitle"
+                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              >
+                <br />
+                {{ getFrameworkSubtitle(data.dataType) }}
+              </div>
+            </template>
+          </Column>
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+            <template #body="{ data }">{{ data.reportingPeriod }}</template>
+          </Column>
+          <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
+            <template #body="{ data }">
+              {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
+            </template>
+          </Column>
+          <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
+            <template #body="{ data }">
+              {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+            </template>
+          </Column>
+          <Column header="REQUEST STATE" field="requestState" :sortable="true">
+            <template #body="{ data }">
+              <DatalandTag :severity="data.state" :value="data.state" />
+            </template>
+          </Column>
+          <Column field="resolve" header="">
+            <template #body="{ data }">
+              <div v-if="data.state === RequestState.Processed" class="text-primary no-underline">
+                <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
+                <span class="ml-3">&gt;</span>
+              </div>
+            </template>
+          </Column>
+        </DataTable>
       </div>
     </div>
 
@@ -112,10 +109,10 @@
           Alternatively, become a premium user and create a portfolio for automatic request creation.
         </p>
         <PrimeButton
-            label="MANAGE YOUR PORTFOLIOS"
-            icon="pi pi-plus-circle"
-            data-test="myPortfoliosButton"
-            @click="goToMyPortfoliosPage"
+          label="MANAGE YOUR PORTFOLIOS"
+          icon="pi pi-plus-circle"
+          data-test="myPortfoliosButton"
+          @click="goToMyPortfoliosPage"
         />
       </div>
     </div>
@@ -125,17 +122,17 @@
 <script setup lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter
-  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 
-import {ApiClientProvider} from '@/services/ApiClients';
-import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
-import {type FrameworkSelectableItem, type SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForRequestState,
-  retrieveAvailableFrameworks, retrieveAvailableRequestStates,
+  retrieveAvailableFrameworks,
+  retrieveAvailableRequestStates,
 } from '@/utils/RequestsOverviewPageUtils';
-import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -147,9 +144,9 @@ import DataTable, {
   type DataTableSortEvent,
 } from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
-import {inject, onMounted, ref, watch} from 'vue';
-import {useRouter} from 'vue-router';
-import {ExtendedStoredRequest, RequestState} from "@clients/datasourcingservice";
+import { inject, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
 const datasetsPerPage = 100;
 
@@ -180,10 +177,9 @@ onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableState.value = retrieveAvailableRequestStates();
   await getStoredRequestDataList();
-
 });
 
-watch([selectedFrameworks, selectedState, waitingForData], () => updateCurrentDisplayedData(), {deep: true});
+watch([selectedFrameworks, selectedState, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
 
 watch(searchBarInput, (newSearch) => {
   searchBarInputFilter.value = newSearch;
@@ -207,9 +203,7 @@ async function getStoredRequestDataList(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       storedDataRequests.value = (
-          await new ApiClientProvider(
-              getKeycloakPromise()
-          ).apiClients.requestController.getRequestsForRequestingUser()
+        await new ApiClientProvider(getKeycloakPromise()).apiClients.requestController.getRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {
@@ -304,7 +298,7 @@ function updateCurrentDisplayedData(): void {
 
   displayedData.value = data.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1));
 
-  globalThis.scrollTo({top: 0, behavior: 'smooth'});
+  globalThis.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
@@ -315,11 +309,7 @@ function updateCurrentDisplayedData(): void {
  * @param {ExtendedStoredRequest} b - The second data request object to compare.
  * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
  */
-function customCompareForExtendedStoredDataRequests(
-    a: ExtendedStoredRequest,
-    b: ExtendedStoredRequest
-):
-    number {
+function customCompareForExtendedStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest): number {
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';
 
@@ -328,8 +318,7 @@ function customCompareForExtendedStoredDataRequests(
     if (aValue > bValue) return sortOrder.value;
   }
 
-  if (a.state !== b.state)
-    return customCompareForRequestState(a.state, b.state, sortOrder.value);
+  if (a.state !== b.state) return customCompareForRequestState(a.state, b.state, sortOrder.value);
 
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;

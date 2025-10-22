@@ -3,7 +3,7 @@ import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/Frame
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import {RequestState} from "@clients/datasourcingservice";
+import { RequestState } from '@clients/datasourcingservice';
 
 /**
  * Compares two request states
@@ -15,7 +15,7 @@ import {RequestState} from "@clients/datasourcingservice";
 export function customCompareForRequestState(a: RequestState, b: RequestState, sortOrder: number): number {
   const sortOrderRequestState: { [key: string]: number } = {};
   sortOrderRequestState[RequestState.Processed] = 1;
-    sortOrderRequestState[RequestState.Processing] = 2;
+  sortOrderRequestState[RequestState.Processing] = 2;
   sortOrderRequestState[RequestState.Open] = 3;
   sortOrderRequestState[RequestState.Withdrawn] = 4;
   if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
