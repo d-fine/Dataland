@@ -2,134 +2,132 @@
   <TheContent class="min-h-screen relative">
     <div class="search-container-first-line">
       <IconField class="search-bar">
-        <InputIcon class="pi pi-search" />
+        <InputIcon class="pi pi-search"/>
         <InputText
-          data-test="company-search-string-searchbar"
-          v-model="searchBarInputCompanySearchString"
-          placeholder="Search by Company Name or Identifier"
-          fluid
-          variant="filled"
-          :disabled="waitingForData"
+            data-test="company-search-string-searchbar"
+            v-model="searchBarInputCompanySearchString"
+            placeholder="Search by Company Name or Identifier"
+            fluid
+            variant="filled"
+            :disabled="waitingForData"
         />
       </IconField>
       <IconField class="search-bar">
-        <InputIcon class="pi pi-search" />
+        <InputIcon class="pi pi-search"/>
         <InputText
-          data-test="email-searchbar"
-          v-model="searchBarInputEmail"
-          placeholder="Search by Requester"
-          fluid
-          variant="filled"
-          :disabled="waitingForData"
+            data-test="email-searchbar"
+            v-model="searchBarInputEmail"
+            placeholder="Search by Requester"
+            fluid
+            variant="filled"
+            :disabled="waitingForData"
         />
       </IconField>
       <IconField class="search-bar">
-        <InputIcon class="pi pi-search" />
+        <InputIcon class="pi pi-search"/>
         <InputText
-          data-test="comment-searchbar"
-          v-model="searchBarInputComment"
-          placeholder="Search by Comment"
-          fluid
-          variant="filled"
-          :disabled="waitingForData"
+            data-test="comment-searchbar"
+            v-model="searchBarInputComment"
+            placeholder="Search by Comment"
+            fluid
+            variant="filled"
+            :disabled="waitingForData"
         />
       </IconField>
     </div>
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedFrameworks"
-        ref="frameworkFilter"
-        :available-items="availableFrameworks"
-        filter-name="Framework"
-        data-test="framework-picker"
-        id="framework-filter"
-        filter-placeholder="Search by Frameworks"
-        class="search-filter"
-        :max-selected-labels="1"
-        selected-items-label="{0} frameworks"
+          :disabled="waitingForData"
+          v-model="selectedFrameworks"
+          ref="frameworkFilter"
+          :available-items="availableFrameworks"
+          filter-name="Framework"
+          data-test="framework-picker"
+          id="framework-filter"
+          filter-placeholder="Search by Frameworks"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} frameworks"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedRequestStates"
-        ref="frameworkFilter"
-        :available-items="availableRequestStates"
-        filter-name="Request State"
-        data-test="request-status-picker"
-        id="framework-filter"
-        filter-placeholder="Search by Request State"
-        class="search-filter"
-        :max-selected-labels="1"
-        selected-items-label="{0} request states"
+          :disabled="waitingForData"
+          v-model="selectedRequestStates"
+          ref="frameworkFilter"
+          :available-items="availableRequestStates"
+          filter-name="Request State"
+          data-test="request-status-picker"
+          id="framework-filter"
+          filter-placeholder="Search by Request State"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} request states"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedPriorities"
-        ref="frameworkFilter"
-        :available-items="availablePriorities"
-        filter-name="Priority"
-        data-test="request-priority-picker"
-        id="framework-filter"
-        filter-placeholder="Search by Priority"
-        class="search-filter"
-        :max-selected-labels="1"
-        selected-items-label="{0} request priorities"
+          :disabled="waitingForData"
+          v-model="selectedPriorities"
+          ref="frameworkFilter"
+          :available-items="availablePriorities"
+          filter-name="Priority"
+          data-test="request-priority-picker"
+          id="framework-filter"
+          filter-placeholder="Search by Priority"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} request priorities"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedReportingPeriods"
-        ref="frameworkFilter"
-        :available-items="availableReportingPeriods"
-        filter-name="Reporting Period"
-        data-test="reporting-period-picker"
-        id="framework-filter"
-        filter-placeholder="Search by Reporting Period"
-        class="search-filter"
-        :max-selected-labels="1"
-        selected-items-label="{0} reporting periods"
+          :disabled="waitingForData"
+          v-model="selectedReportingPeriods"
+          ref="frameworkFilter"
+          :available-items="availableReportingPeriods"
+          filter-name="Reporting Period"
+          data-test="reporting-period-picker"
+          id="framework-filter"
+          filter-placeholder="Search by Reporting Period"
+          class="search-filter"
+          :max-selected-labels="1"
+          selected-items-label="{0} reporting periods"
       />
-      <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter"/>
       <PrimeButton
-        :disabled="waitingForData"
-        data-test="trigger-filtering-requests"
-        @click="getAllRequestsForFilters"
-        label="FILTER REQUESTS "
-        icon="pi pi-filter"
-        style="width: fit-content"
+          :disabled="waitingForData"
+          data-test="trigger-filtering-requests"
+          @click="getAllRequestsForFilters"
+          label="FILTER REQUESTS"
       />
     </div>
-    <div style="display: flex; justify-content: flex-end ; padding: var(--spacing-sm);">
-      <Message  style="text-align: right" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}
+    <div style="display: flex; justify-content: flex-end ; padding-right: var(--spacing-xl);">
+      <Message variant="simple" severity="secondary">{{ numberOfRequestsInformation }}
       </Message>
     </div>
 
     <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
       <p class="font-medium text-xl">Loading...</p>
-      <DatalandProgressSpinner />
+      <DatalandProgressSpinner/>
     </div>
 
     <div class="col-12 text-left p-3">
       <div class="card">
         <DataTable
-          v-if="currentDataRequests && currentDataRequests.length > 0"
-          v-show="!waitingForData"
-          ref="dataTable"
-          data-test="requests-datatable"
-          :value="currentDataRequests"
-          :paginator="true"
-          :lazy="true"
-          :total-records="totalRecords"
-          :rows="rowsPerPage"
-          :first="firstRowIndex"
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-          :alwaysShowPaginator="false"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          @row-click="onRowClick($event)"
-          @page="onPage($event)"
-          class="table-cursor"
-          id="admin-request-overview-data"
-          :rowHover="true"
-          style="cursor: pointer"
+            v-if="currentDataRequests && currentDataRequests.length > 0"
+            v-show="!waitingForData"
+            ref="dataTable"
+            data-test="requests-datatable"
+            :value="currentDataRequests"
+            :paginator="true"
+            :lazy="true"
+            :total-records="totalRecords"
+            :rows="datasetsPerPage"
+            :first="firstRowIndex"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+            :alwaysShowPaginator="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            @row-click="onRowClick($event)"
+            @page="onPage($event)"
+            class="table-cursor"
+            id="admin-request-overview-data"
+            :rowHover="true"
+            style="cursor: pointer"
         >
           <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
             <template #body="slotProps">
@@ -147,11 +145,11 @@
                 {{ getFrameworkTitle(slotProps.data.dataType) }}
               </div>
               <div
-                data-test="framework-subtitle"
-                v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  data-test="framework-subtitle"
+                  v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
               >
-                <br />
+                <br/>
                 {{ getFrameworkSubtitle(slotProps.data.dataType) }}
               </div>
             </template>
@@ -169,7 +167,7 @@
           <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
             <template #body="slotProps">
               <div>
-                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimeStamp) }}
               </div>
             </template>
           </Column>
@@ -182,12 +180,12 @@
           </Column>
           <Column header="REQUEST STATE" :sortable="false" field="requestState">
             <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded />
+              <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded/>
             </template>
           </Column>
           <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
             <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
+              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority"/>
             </template>
           </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
@@ -209,26 +207,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import {ref, computed, watch, onMounted, inject} from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter
+  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import router from '@/router';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {ApiClientProvider} from '@/services/ApiClients';
+import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
+import type {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
   retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
 } from '@/utils/RequestsOverviewPageUtils';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import DataTable, {type DataTablePageEvent, type DataTableRowClickEvent} from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
@@ -316,9 +315,6 @@ async function getAllRequestsForFilters() {
       selectedReportingPeriods.value.map((item) => item.displayName)
   );
 
-  const prioritiesForApi = setToApiString(selectedPriorityAsSet);
-
-
   try {
     if (getKeycloakPromise) {
       const emailFilter = searchBarInputEmail.value || undefined;
@@ -326,34 +322,28 @@ async function getAllRequestsForFilters() {
       const companySearchStringFilter = searchBarInputCompanySearchString.value || undefined;
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
 
-      const frameworksForApi = setToApiString(selectedFrameworksAsSet);
-      const requestStatesForApi = setToApiString(selectedRequestStatesAsSet);
-      const reportingPeriodsForApi = setToApiString(selectedReportingPeriodAsSet);
+      const frameworksForApi = setToApiArray(selectedFrameworksAsSet);
+      const requestStatesForApi = setToApiArray(selectedRequestStatesAsSet);
+      const prioritiesForApi = setToApiArray(selectedPriorityAsSet);
+      const reportingPeriodsForApi = setToApiArray(selectedReportingPeriodAsSet);
 
-      const [dataResponse] = await Promise.all([
-        apiClientProvider.apiClients.requestController.postRequestSearch(
-          {
-            dataTypes: frameworksForApi
-              ? frameworksForApi.split(',').map((dt) => dt as GetDataRequestsDataTypeEnum)
-              : undefined,
-            requestStates: requestStatesForApi
-              ? requestStatesForApi.split(',').map((rs) => rs as RequestState)
-              : undefined,
-            requestPriorities: prioritiesForApi
-              ? prioritiesForApi.split(',')
-              : undefined,
-            reportingPeriods: reportingPeriodsForApi
-              ? reportingPeriodsForApi.split(',')
-              : undefined,
-            requesterEmail: emailFilter,
-            adminComment: commentFilter,
-            companySearchString: companySearchStringFilter,
-          }
-        ),
+      const filters = {
+        dataTypes: frameworksForApi as GetDataRequestsDataTypeEnum[] | undefined,
+        requestStates: requestStatesForApi as RequestState[] | undefined,
+        requestPriorities: prioritiesForApi as RequestPriority[] | undefined,
+        reportingPeriods: reportingPeriodsForApi,
+        emailAddress: emailFilter,
+        adminComment: commentFilter,
+        companySearchString: companySearchStringFilter,
+      };
+
+      const [dataResponse, countResponse] = await Promise.all([
+        apiClientProvider.apiClients.requestController.postRequestSearch(filters),
+        apiClientProvider.apiClients.requestController.postRequestCountQuery(filters),
       ]);
 
       currentDataRequests.value = dataResponse.data;
-     // totalRecords.value = countResponse.data;
+      totalRecords.value = countResponse.data;
     }
   } catch (error) {
     console.error(error);
@@ -383,8 +373,8 @@ function resetFilterAndSearchBar() {
  * @param set The set of strings to convert.
  * @returns A comma-separated string or undefined.
  */
-function setToApiString(set: Set<string>): string | undefined {
-  return set.size ? Array.from(set).join(',') : undefined;
+function setToApiArray<T>(set: Set<T>): T[] | undefined {
+  return set.size ? Array.from(set) : undefined;
 }
 
 /**
@@ -406,7 +396,7 @@ function onPage(event: DataTablePageEvent) {
  * @param event
  */
 function onRowClick(event: DataTableRowClickEvent) {
-  const requestIdOfClickedRow = event.data.dataRequestId;
+  const requestIdOfClickedRow = event.data.id;
   router.push(`/requests/${requestIdOfClickedRow}`);
 }
 </script>
