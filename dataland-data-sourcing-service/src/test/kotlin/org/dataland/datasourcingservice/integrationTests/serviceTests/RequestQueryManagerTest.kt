@@ -115,71 +115,23 @@ class RequestQueryManagerTest
         @ParameterizedTest
         @CsvSource(
             value = [
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${REQUEST_STATE_1}, 0",
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0;1",
-                "null, null, null, ${REQUEST_STATE_1}, 0;2;4;6;8;10;12;14",
-                "null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                "null, null, '${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}', null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                "null, null, null, '${REQUEST_STATE_1};${REQUEST_STATE_2}', 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${REQUEST_STATE_1}, null, null, 0",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, null, null, 0;1",
+                "null, null, null, ${REQUEST_STATE_1}, null, null, 0;2;4;6;8;10;12;14",
+                "null, null, null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "null, null, '${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}', null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "null, null, null, '${REQUEST_STATE_1};${REQUEST_STATE_2}', null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "null, null, null, null, $USER_EMAIL_SEARCH_STRING, null, 0;2;4;6;8;10;12;14",
+                "null, null, null, null, null, $TEST_COMPANY_SEARCH_STRING, 0;1;2;3;4;5;6;7;",
             ],
             nullValues = ["null"],
         )
-        fun `ensure that searching for requests works as intended`(
+        @Suppress("LongParameterList")
+        fun `ensure that searching for requests works for all filter combinations`(
             companyId: String?,
             dataType: String?,
             reportingPeriod: String?,
             requestState: String?,
-            indexString: String,
-        ) {
-            val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
-            val expectedResults =
-                indicesOfExpectedResults.map {
-                    val entity = requestEntities[it]
-                    entity.toExtendedStoredRequest().copy(
-                        companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME else null,
-                        userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
-                    )
-                }
-            val reportingPeriods = reportingPeriod?.split(';')?.toSet()
-            val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
-            val actualResults =
-                requestQueryManager.searchRequests(
-                    RequestSearchFilter<UUID>(
-                        companyId = companyId?.let { UUID.fromString(it) },
-                        dataTypes = dataType?.let { setOf(it) },
-                        reportingPeriods = reportingPeriods,
-                        requestStates = requestStates,
-                    ),
-                )
-            val actualNumberOfResultsAccordingToEndpoint =
-                requestQueryManager.getNumberOfRequests(
-                    RequestSearchFilter<UUID>(
-                        companyId = companyId?.let { UUID.fromString(it) },
-                        dataTypes = dataType?.let { setOf(it) },
-                        reportingPeriods = reportingPeriods,
-                        userId = null,
-                        requestStates = requestStates,
-                        requestPriorities = null,
-                    ),
-                )
-            Assertions.assertEquals(expectedResults.size, actualResults?.size)
-            Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
-            expectedResults.forEach {
-                assert(actualResults?.contains(it) == true) { "Expected result $it not found in actual results. Actual: $actualResults" }
-            }
-        }
-
-        @ParameterizedTest
-        @CsvSource(
-            value = [
-                // Test companySearchString filter
-                "null, $TEST_COMPANY_SEARCH_STRING, 0;1;2;3;4;5;6;7;",
-                // Test emailAddress filter
-                "$USER_EMAIL_SEARCH_STRING, null, 0;2;4;6;8;10;12;14",
-            ],
-            nullValues = ["null"],
-        )
-        fun `ensure that searching for requests with companySearchString and emailAddress works`(
             emailAddressSearchString: String?,
             companySearchString: String?,
             indexString: String,
@@ -193,14 +145,23 @@ class RequestQueryManagerTest
                         userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )
                 }
-            val actualResults =
-                requestQueryManager.searchRequests(
-                    RequestSearchFilter<UUID>(
-                        emailAddress = emailAddressSearchString,
-                        companySearchString = companySearchString,
-                    ),
+            val reportingPeriods = reportingPeriod?.split(';')?.toSet()
+            val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
+            val requestSearchFilter =
+                RequestSearchFilter<UUID>(
+                    companyId = companyId?.let { UUID.fromString(it) },
+                    dataTypes = dataType?.let { setOf(it) },
+                    reportingPeriods = reportingPeriods,
+                    userId = null,
+                    requestStates = requestStates,
+                    requestPriorities = null,
+                    emailAddress = emailAddressSearchString,
+                    companySearchString = companySearchString,
                 )
+            val actualResults = requestQueryManager.searchRequests(requestSearchFilter)
+            val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
             Assertions.assertEquals(expectedResults.size, actualResults?.size)
+            Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
             expectedResults.forEach { expected ->
                 val actual = actualResults?.find { it.id == expected.id }
                 assert(actual != null) { "Expected result $expected not found in actual results." }
