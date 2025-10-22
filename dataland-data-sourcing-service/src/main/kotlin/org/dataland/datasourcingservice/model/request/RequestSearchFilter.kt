@@ -91,6 +91,10 @@ data class RequestSearchFilter<IdType>(
     )
     val companySearchString: String? = null,
 ) {
+    /**
+     * Converts this RequestSearchFilter with String IDs to a RequestSearchFilter with UUID IDs.
+     * @return RequestSearchFilter with UUID IDs
+     */
     @JsonIgnore
     fun convertToSearchFilterWithUUIDs(): RequestSearchFilter<UUID> =
         RequestSearchFilter<UUID>(

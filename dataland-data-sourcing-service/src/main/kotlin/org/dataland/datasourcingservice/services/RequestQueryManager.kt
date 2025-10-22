@@ -48,12 +48,12 @@ class RequestQueryManager
                                 PageRequest.of(
                                     chunkIndex,
                                     chunkSize,
-                                    Sort.by(
-                                        Sort.Order.desc("creationTimestamp"),
-                                        Sort.Order.asc("companyId"),
-                                        Sort.Order.desc("reportingPeriod"),
-                                        Sort.Order.asc("state"),
-                                    ),
+                                    Sort
+                                        .by("creationTimestamp")
+                                        .descending()
+                                        .and(Sort.by("companyId").ascending())
+                                        .and(Sort.by("reportingPeriod").descending())
+                                        .and(Sort.by("state").ascending()),
                                 ),
                                 companyIds = companyIdsMatchingSearchString(filter.companySearchString),
                                 userIds = setupEmailAddressFilter(filter.emailAddress),
