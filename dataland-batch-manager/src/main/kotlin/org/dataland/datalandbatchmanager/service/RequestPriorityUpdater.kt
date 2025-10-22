@@ -5,7 +5,6 @@ import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredReques
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

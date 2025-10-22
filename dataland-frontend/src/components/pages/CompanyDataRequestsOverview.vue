@@ -119,7 +119,7 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
-import { ExtendedStoredRequest } from '@clients/datasourcingservice';
+import { type ExtendedStoredRequest } from '@clients/datasourcingservice';
 
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -140,7 +140,7 @@ const sortOrder = ref(1);
 /**
  * Gets list of storedComapnyDataRequests
  */
-async function getStoredCompanyRequestDataList() {
+async function getStoredCompanyRequestDataList(): Promise<void> {
   waitingForData.value = true;
   storedDataRequests.value = [];
   if (!companyRoleAssignments || !Array.isArray(companyRoleAssignments)) {
@@ -167,11 +167,11 @@ async function getStoredCompanyRequestDataList() {
 }
 
 /**
- * Filterfunction for frameworks
- * @param framework dataland framework
+ * Filter function for frameworks
+ * @param framework Dataland framework
  * @returns checks if given framework is selected
  */
-function filterFramework(framework: string) {
+function filterFramework(framework: string): boolean {
   for (const selectedFramework of selectedFrameworks.value) {
     if (framework == selectedFramework.frameworkDataType) return true;
   }
@@ -179,11 +179,11 @@ function filterFramework(framework: string) {
 }
 
 /**
- * Filterfunction for searchbar
- * @param requesterMail dataland requesterMail
+ * Filter function for searchbar
+ * @param requesterMail Dataland requesterMail
  * @returns checks if given requesterMail contains searchbar text
  */
-function filterSearchInput(requesterMail: string | undefined) {
+function filterSearchInput(requesterMail: string | undefined): boolean {
   const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
   const lowerCaseSearchString = searchBarInputFilter.value.toLowerCase();
   return lowerCaseRequesterMail.includes(lowerCaseSearchString);
@@ -192,7 +192,7 @@ function filterSearchInput(requesterMail: string | undefined) {
 /**
  * Resets selected frameworks and searchBarInput
  */
-function resetFilterAndSearchBar() {
+function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
   searchBarInput.value = '';
 }
@@ -203,7 +203,7 @@ function resetFilterAndSearchBar() {
  * @param b StoredDataRequest to sort
  * @returns result of the comparison
  */
-function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest) {
+function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest): number {
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';
 
@@ -224,7 +224,7 @@ function customCompareForStoredDataRequests(a: ExtendedStoredRequest, b: Extende
 /**
  * Updates the displayedData
  */
-function updateCurrentDisplayedData() {
+function updateCurrentDisplayedData(): void {
   displayedData.value = storedDataRequests.value.filter((dataRequest) => filterSearchInput(dataRequest.companyName));
   if (selectedFrameworks.value.length > 0) {
     displayedData.value = displayedData.value.filter((dataRequest) => filterFramework(dataRequest.dataType));

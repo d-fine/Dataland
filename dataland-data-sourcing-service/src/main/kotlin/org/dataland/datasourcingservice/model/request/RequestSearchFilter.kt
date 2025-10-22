@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.model.request
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
@@ -100,13 +101,13 @@ data class RequestSearchFilter<IdType>(
         RequestSearchFilter<UUID>(
             companyId =
                 this.companyId?.let {
-                    UUID.fromString(it.toString())
+                    convertToUUID(it.toString())
                 },
             dataTypes = this.dataTypes,
             reportingPeriods = this.reportingPeriods,
             userId =
                 this.userId?.let {
-                    UUID.fromString(it.toString())
+                    convertToUUID(it.toString())
                 },
             requestStates = this.requestStates,
             requestPriorities = this.requestPriorities,

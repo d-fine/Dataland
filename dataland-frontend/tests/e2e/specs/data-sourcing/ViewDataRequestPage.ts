@@ -1,6 +1,6 @@
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
-import { CompanyIdAndName } from '@clients/backend';
+import type { CompanyIdAndName } from '@clients/backend';
 import { fetchTestCompanies } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 
 const testYear = '2023';
@@ -10,6 +10,9 @@ let requestId: string;
 
 const apiBaseUrl = getBaseUrl();
 
+/**
+ * Creates a data sourcing request, patches it to 'Processed' state, and visits its page.
+ */
 function createRequestAndPatchItAndVisit(): void {
   getKeycloakToken(admin_name, admin_pw).then((token) => {
     cy.request({

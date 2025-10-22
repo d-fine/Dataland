@@ -146,7 +146,7 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
+import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
 const datasetsPerPage = 100;
 

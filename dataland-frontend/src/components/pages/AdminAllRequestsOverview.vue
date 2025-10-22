@@ -230,8 +230,8 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
-import { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
-import { GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
+import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
+import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const frameworkFilter = ref();
 const datasetsPerPage = 100;
@@ -269,7 +269,10 @@ const numberOfRequestsInformation = computed(() => {
   return '';
 });
 
-function setChunkAndFirstRowIndexToZero() {
+/**
+ * Sets the current chunk index and first row index to zero.
+ */
+function setChunkAndFirstRowIndexToZero(): void {
   currentChunkIndex.value = 0;
   firstRowIndex.value = 0;
 }
@@ -293,13 +296,13 @@ onMounted(() => {
   availableRequestStates.value = retrieveAvailableRequestStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
-  getAllRequestsForFilters();
+  void getAllRequestsForFilters();
 });
 
 /**
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
-async function getAllRequestsForFilters() {
+async function getAllRequestsForFilters(): Promise<void> {
   const selectedFrameworksAsSet = new Set<string>(
     selectedFrameworks.value.map((item) => item.frameworkDataType.toString())
   );
@@ -325,8 +328,8 @@ async function getAllRequestsForFilters() {
 
       const filters = {
         dataTypes: frameworksForApi as GetDataRequestsDataTypeEnum[] | undefined,
-        requestStates: requestStatesForApi as RequestState[] | undefined,
-        requestPriorities: prioritiesForApi as RequestPriority[] | undefined,
+        requestStates: requestStatesForApi,
+        requestPriorities: prioritiesForApi,
         reportingPeriods: reportingPeriodsForApi,
         emailAddress: emailFilter,
         adminComment: commentFilter,
@@ -351,7 +354,7 @@ async function getAllRequestsForFilters() {
 /**
  * Resets all filters and search bars to their initial state and fetches all requests again.
  */
-function resetFilterAndSearchBar() {
+function resetFilterAndSearchBar(): void {
   currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
   selectedRequestStates.value = [];
@@ -377,7 +380,7 @@ function setToApiArray<T>(set: Set<T>): T[] | undefined {
  * Handles the pagination event of the data table.
  * @param event
  */
-function onPage(event: DataTablePageEvent) {
+function onPage(event: DataTablePageEvent): void {
   globalThis.scrollTo(0, 0);
   if (event.page != currentChunkIndex.value) {
     currentChunkIndex.value = event.page;
@@ -391,9 +394,9 @@ function onPage(event: DataTablePageEvent) {
  * Navigates to the request detail page of the clicked request.
  * @param event
  */
-function onRowClick(event: DataTableRowClickEvent) {
+function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = event.data.id;
-  router.push(`/requests/${requestIdOfClickedRow}`);
+  void router.push(`/requests/${requestIdOfClickedRow}`);
 }
 </script>
 

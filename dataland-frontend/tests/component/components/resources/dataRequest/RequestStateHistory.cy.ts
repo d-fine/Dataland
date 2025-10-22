@@ -1,5 +1,5 @@
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
-import { RequestState, StoredRequest } from '@clients/datasourcingservice';
+import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
