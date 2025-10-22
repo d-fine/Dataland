@@ -86,4 +86,28 @@ interface StorageAPI {
         @RequestBody dataIds: List<String>,
         correlationId: String,
     ): ResponseEntity<Map<String, StorableDataPoint>>
+
+/**
+     * A method to check which data is associated to a given document ID
+     * @param documentId the ID of the document
+     * @param correlationId the correlation ID of the data get request
+     * @return ResponseEntity containing associated data points and dataset IDs
+     */
+    @Operation(
+        summary = "Get document references.",
+        description = "Gets data point IDs and dataset IDs that reference this document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data."),
+        ],
+    )
+    @GetMapping(
+        value = ["/documents/{documentId}/references"],
+        produces = ["application/json"],
+    )
+    fun getDocumentReferences(
+        @PathVariable("documentId") documentId: String,
+        correlationId: String,
+    ): ResponseEntity<Map<String, List<String>>>
 }
