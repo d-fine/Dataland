@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DocumentReferenceServiceTest {
@@ -20,19 +19,30 @@ class DocumentReferenceServiceTest {
     private val documentId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
 
+    private val testDataPointId1 = UUID.randomUUID().toString()
+    private val testDataPointId2 = UUID.randomUUID().toString()
+    private val testDataPointId3 = UUID.randomUUID().toString()
+
+    private val testDatasetId1 = UUID.randomUUID().toString()
+    private val testDatasetId2 = UUID.randomUUID().toString()
+    private val testDatasetId3 = UUID.randomUUID().toString()
+
+    companion object {
+        private const val DATA_POINT_QUERY = "SELECT d.dataPointId FROM DataPointItem d WHERE d.dataPoint LIKE :documentId"
+        private const val DATASET_QUERY = "SELECT d.id FROM DataItem d WHERE d.data LIKE :documentId"
+    }
+
     @BeforeEach
     fun setup() {
-        mockEntityManager = mock(EntityManager::class.java)
-        @Suppress("UNCHECKED_CAST")
-        mockDataPointQuery = mock(TypedQuery::class.java) as TypedQuery<String>
-        @Suppress("UNCHECKED_CAST")
-        mockDatasetQuery = mock(TypedQuery::class.java) as TypedQuery<String>
+        mockEntityManager = mock<EntityManager>()
+        mockDataPointQuery = mock<TypedQuery<String>>()
+        mockDatasetQuery = mock<TypedQuery<String>>()
         documentReferenceService = DocumentReferenceService(mockEntityManager)
     }
 
     @Test
     fun `check that getDocumentReferences returns data point IDs when document is found in data points`() {
-        val expectedDataPointIds = listOf("datapoint-1", "datapoint-2", "datapoint-3")
+        val expectedDataPointIds = listOf(testDataPointId1, testDataPointId2, testDataPointId3)
         val expectedDatasetIds = emptyList<String>()
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
@@ -41,13 +51,12 @@ class DocumentReferenceServiceTest {
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
-        verifyQueryExecutions()
     }
 
     @Test
     fun `check that getDocumentReferences returns dataset IDs when document is found in datasets`() {
         val expectedDataPointIds = emptyList<String>()
-        val expectedDatasetIds = listOf("dataset-1", "dataset-2")
+        val expectedDatasetIds = listOf(testDatasetId1, testDatasetId2)
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
@@ -55,13 +64,12 @@ class DocumentReferenceServiceTest {
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
-        verifyQueryExecutions()
     }
 
     @Test
     fun `check that getDocumentReferences returns both data point and dataset IDs when document is found in both`() {
-        val expectedDataPointIds = listOf("datapoint-1", "datapoint-2")
-        val expectedDatasetIds = listOf("dataset-1", "dataset-2", "dataset-3")
+        val expectedDataPointIds = listOf(testDataPointId1, testDataPointId2)
+        val expectedDatasetIds = listOf(testDatasetId1, testDatasetId2, testDatasetId3)
 
         setupMockQueries(expectedDataPointIds, expectedDatasetIds)
 
@@ -69,7 +77,6 @@ class DocumentReferenceServiceTest {
 
         assertEquals(expectedDataPointIds, result["dataPointIds"])
         assertEquals(expectedDatasetIds, result["datasetIds"])
-        verifyQueryExecutions()
     }
 
     @Test
@@ -83,45 +90,28 @@ class DocumentReferenceServiceTest {
 
         assertTrue(result["dataPointIds"]!!.isEmpty())
         assertTrue(result["datasetIds"]!!.isEmpty())
-        verifyQueryExecutions()
     }
 
     private fun setupMockQueries(
         dataPointIds: List<String>,
         datasetIds: List<String>,
     ) {
-        `when`(
+        whenever(
             mockEntityManager.createQuery(
-                "SELECT d.dataPointId FROM DataPointItem d WHERE d.dataPoint LIKE :documentId",
+                DATA_POINT_QUERY,
                 String::class.java,
             ),
         ).thenReturn(mockDataPointQuery)
-        `when`(mockDataPointQuery.setParameter("documentId", "%$documentId%")).thenReturn(mockDataPointQuery)
-        `when`(mockDataPointQuery.resultList).thenReturn(dataPointIds)
+        whenever(mockDataPointQuery.setParameter("documentId", "%$documentId%")).thenReturn(mockDataPointQuery)
+        whenever(mockDataPointQuery.resultList).thenReturn(dataPointIds)
 
-        `when`(
+        whenever(
             mockEntityManager.createQuery(
-                "SELECT d.id FROM DataItem d WHERE d.data LIKE :documentId",
+                DATASET_QUERY,
                 String::class.java,
             ),
         ).thenReturn(mockDatasetQuery)
-        `when`(mockDatasetQuery.setParameter("documentId", "%$documentId%")).thenReturn(mockDatasetQuery)
-        `when`(mockDatasetQuery.resultList).thenReturn(datasetIds)
-    }
-
-    private fun verifyQueryExecutions() {
-        verify(mockEntityManager).createQuery(
-            "SELECT d.dataPointId FROM DataPointItem d WHERE d.dataPoint LIKE :documentId",
-            String::class.java,
-        )
-        verify(mockDataPointQuery).setParameter("documentId", "%$documentId%")
-        verify(mockDataPointQuery).resultList
-
-        verify(mockEntityManager).createQuery(
-            "SELECT d.id FROM DataItem d WHERE d.data LIKE :documentId",
-            String::class.java,
-        )
-        verify(mockDatasetQuery).setParameter("documentId", "%$documentId%")
-        verify(mockDatasetQuery).resultList
+        whenever(mockDatasetQuery.setParameter("documentId", "%$documentId%")).thenReturn(mockDatasetQuery)
+        whenever(mockDatasetQuery.resultList).thenReturn(datasetIds)
     }
 }

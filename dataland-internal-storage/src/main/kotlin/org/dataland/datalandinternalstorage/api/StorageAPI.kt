@@ -99,7 +99,7 @@ interface StorageAPI {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs and dataset IDs."),
         ],
     )
     @GetMapping(
