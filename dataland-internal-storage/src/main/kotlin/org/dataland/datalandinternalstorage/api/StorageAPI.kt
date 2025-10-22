@@ -86,4 +86,51 @@ interface StorageAPI {
         @RequestBody dataIds: List<String>,
         correlationId: String,
     ): ResponseEntity<Map<String, StorableDataPoint>>
+
+    /**
+     * A method to check which data is associated to a given document ID
+     * @param documentId the ID of the document
+     * @param correlationId the correlation ID of the data get request
+     * @return ResponseEntity containing associated data points and dataset IDs
+     */
+    @Operation(
+        summary = "Get document references.",
+        description = "Gets data point IDs and dataset IDs that reference this document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs and dataset IDs."),
+        ],
+    )
+    @GetMapping(
+        value = ["/documents/{documentId}/references"],
+        produces = ["application/json"],
+    )
+    fun getDocumentReferences(
+        @PathVariable("documentId") documentId: String,
+        correlationId: String,
+    ): ResponseEntity<Map<String, List<String>>>
+
+    /**
+     * A method to delete a document from blob storage
+     * @param documentId the ID of the document to delete
+     * @param correlationId the correlation ID of the delete request
+     * @return ResponseEntity with no content on success
+     */
+    @Operation(
+        summary = "Delete document from blob storage.",
+        description = "Deletes a document entry from blob storage by document ID.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully deleted document."),
+        ],
+    )
+    @PostMapping(
+        value = ["/documents/{documentId}/deleteRequest"],
+    )
+    fun deleteDocument(
+        @PathVariable("documentId") documentId: String,
+        correlationId: String,
+    ): ResponseEntity<Unit>
 }
