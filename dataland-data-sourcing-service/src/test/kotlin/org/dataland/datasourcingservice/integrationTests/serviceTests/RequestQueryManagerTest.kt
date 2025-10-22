@@ -13,6 +13,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
+import org.dataland.datasourcingservice.utils.ADMIN_COMMENT
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.COMPANY_ID_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
@@ -22,6 +23,9 @@ import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_1
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_2
+import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME
+import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
+import org.dataland.datasourcingservice.utils.USER_EMAIL
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -57,15 +61,9 @@ class RequestQueryManagerTest
         private lateinit var mockBasicCompanyInfo: BasicCompanyInformation
         private lateinit var mockStoredCompany: StoredCompany
         private lateinit var mockCompanyInformation: CompanyInformation
-        private val firstUser = KeycloakUserInfo(null, "1", "John", "Doe")
+        private val firstUser = KeycloakUserInfo(null, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
 
-        /**
-         * Store 16 requests covering all combinations of the four filter parameters defined above.
-         * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
-         */
-        @BeforeEach
-        fun setup() {
-            reset(mockKeycloakUserService, mockCompanyDataControllerApi)
+        fun basicMocks() {
             mockBasicCompanyInfo = mock<BasicCompanyInformation>()
             mockStoredCompany = mock<StoredCompany>()
             mockCompanyInformation = mock<CompanyInformation>()
@@ -78,7 +76,30 @@ class RequestQueryManagerTest
             doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo).companyId
             doReturn(mockCompanyInformation).whenever(mockStoredCompany).companyInformation
             doReturn(null).whenever(mockCompanyInformation).companyName
+        }
 
+        fun advancedMocks() {
+            mockBasicCompanyInfo = mock<BasicCompanyInformation>()
+            mockStoredCompany = mock<StoredCompany>()
+            mockCompanyInformation = mock<CompanyInformation>()
+            doReturn(firstUser).whenever(mockKeycloakUserService).getUser(any())
+            doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(any())
+            doReturn(listOf(mockBasicCompanyInfo))
+                .whenever(mockCompanyDataControllerApi)
+                .getCompanies(any(), any(), any(), any(), any(), any())
+            doReturn(mockStoredCompany).whenever(mockCompanyDataControllerApi).getCompanyById(any())
+            doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo).companyId
+            doReturn(mockCompanyInformation).whenever(mockStoredCompany).companyInformation
+            doReturn(null).whenever(mockCompanyInformation).companyName
+        }
+
+        /**
+         * Store 16 requests covering all combinations of the four filter parameters defined above.
+         * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
+         */
+        @BeforeEach
+        fun setup() {
+            reset(mockKeycloakUserService, mockCompanyDataControllerApi)
             requestEntities =
                 (0..15).map {
                     dataBaseCreationUtils.storeRequest(
@@ -97,6 +118,8 @@ class RequestQueryManagerTest
                 "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0;1",
                 "null, null, null, ${REQUEST_STATE_1}, 0;2;4;6;8;10;12;14",
                 "null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "null, null, '${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}', null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                "null, null, null, '${REQUEST_STATE_1};${REQUEST_STATE_2}', 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
             ],
             nullValues = ["null"],
         )
@@ -107,17 +130,19 @@ class RequestQueryManagerTest
             requestState: String?,
             indexString: String,
         ) {
+            basicMocks()
             val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
                 indicesOfExpectedResults.map { requestEntities[it].toExtendedStoredRequest() }
-            // add company name and user email to expected results
+            val reportingPeriods = reportingPeriod?.split(';')?.toSet()
+            val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
             val actualResults =
                 requestQueryManager.searchRequests(
                     RequestSearchFilter<UUID>(
                         companyId = companyId?.let { UUID.fromString(it) },
                         dataTypes = dataType?.let { setOf(it) },
-                        reportingPeriods = reportingPeriod?.let { setOf(it) },
-                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
+                        reportingPeriods = reportingPeriods,
+                        requestStates = requestStates,
                     ),
                 )
             val actualNumberOfResultsAccordingToEndpoint =
@@ -125,16 +150,67 @@ class RequestQueryManagerTest
                     RequestSearchFilter<UUID>(
                         companyId = companyId?.let { UUID.fromString(it) },
                         dataTypes = dataType?.let { setOf(it) },
-                        reportingPeriods = reportingPeriod?.let { setOf(it) },
+                        reportingPeriods = reportingPeriods,
                         userId = null,
-                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
+                        requestStates = requestStates,
                         requestPriorities = null,
                     ),
                 )
             Assertions.assertEquals(expectedResults.size, actualResults?.size)
             Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
             expectedResults.forEach {
-                assert(actualResults?.contains(it) == true) { "Expected result $it not found in actual results." }
+                assert(actualResults?.contains(it) == true) { "Expected result $it not found in actual results. Actual: $actualResults" }
+            }
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            value = [
+                // Test companySearchString filter
+                "null, null, null, null, null, $TEST_COMPANY_SEARCH_STRING, 0;1;2;3;4;5;6;7;",
+                // Test emailAddress filter
+                "null, null, null, null, $USER_EMAIL, null, 0;2;4;6;8;10;12;14",
+            ],
+            nullValues = ["null"],
+        )
+        fun `ensure that searching for requests with companySearchString and emailAddress works`(
+            companyId: String?,
+            dataType: String?,
+            reportingPeriod: String?,
+            requestState: String?,
+            emailAddress: String?,
+            companySearchString: String?,
+            indexString: String,
+        ) {
+            advancedMocks()
+            val indicesOfExpectedResults = indexString.split(';').mapNotNull { it.toIntOrNull() }
+            val expectedResults =
+                indicesOfExpectedResults.map {
+                    val entity = requestEntities[it]
+                    entity.toExtendedStoredRequest().copy(
+                        companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME else null,
+                        userEmailAddress = if (entity.state.toString() == REQUEST_STATE_1) USER_EMAIL else null,
+                        adminComment = ADMIN_COMMENT,
+                    )
+                }
+            val actualResults =
+                requestQueryManager.searchRequests(
+                    RequestSearchFilter<UUID>(
+                        companyId = companyId?.let { UUID.fromString(it) },
+                        dataTypes = dataType?.let { setOf(it) },
+                        reportingPeriods = reportingPeriod?.let { setOf(it) },
+                        requestStates = requestState?.let { setOf(RequestState.valueOf(it)) },
+                        emailAddress = emailAddress,
+                        companySearchString = companySearchString,
+                    ),
+                )
+            Assertions.assertEquals(expectedResults.size, actualResults?.size)
+            expectedResults.forEachIndexed { idx, expected ->
+                val actual = actualResults?.find { it.id == expected.id }
+                assert(actual != null) { "Expected result $expected not found in actual results. Actual: $actual" }
+                Assertions.assertEquals(expected.userEmailAddress, actual?.userEmailAddress)
+                Assertions.assertEquals(expected.adminComment, actual?.adminComment)
+                Assertions.assertEquals(expected.companyName, actual?.companyName)
             }
         }
     }
