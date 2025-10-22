@@ -4,6 +4,7 @@ import org.dataland.datalandinternalstorage.api.StorageAPI
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.services.DatabaseBlobDataStore
 import org.dataland.datalandinternalstorage.services.DatabaseStringDataStore
+import org.dataland.datalandinternalstorage.services.DocumentReferenceService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -17,12 +18,14 @@ import java.io.ByteArrayInputStream
  * Implementation of Storage Controller
  * @param stringDataStore a database store for strings
  * @param blobDataStore a database store for blobs
+ * @param documentReferenceService service for handling document reference queries
  */
 @RestController
 @Component("StorageController")
 class StorageController(
     @Autowired val stringDataStore: DatabaseStringDataStore,
     @Autowired val blobDataStore: DatabaseBlobDataStore,
+    @Autowired val documentReferenceService: DocumentReferenceService,
 ) : StorageAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -53,5 +56,13 @@ class StorageController(
     ): ResponseEntity<Map<String, StorableDataPoint>> {
         logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
         return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
+    }
+
+    override fun getDocumentReferences(
+        documentId: String,
+        correlationId: String,
+    ): ResponseEntity<Map<String, List<String>>> {
+        logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
+        return ResponseEntity.ok(documentReferenceService.getDocumentReferences(documentId, correlationId))
     }
 }
