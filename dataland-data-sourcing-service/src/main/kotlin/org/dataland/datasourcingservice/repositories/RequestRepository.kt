@@ -69,8 +69,8 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
-        companyIds: List<String>? = null,
-        userIds: List<String>? = null,
+        companyIds: List<UUID>? = null,
+        userIds: List<UUID>? = null,
     ): Page<UUID>
 
     /**
@@ -116,7 +116,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     )
     fun getNumberOfRequests(
         searchFilter: RequestSearchFilter<UUID>,
-        companyIds: List<String>? = null,
-        userIds: List<String>? = null,
+        companyIds: List<UUID>? = null,
+        userIds: List<UUID>? = null,
     ): Int
 }

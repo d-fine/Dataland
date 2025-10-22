@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
@@ -68,28 +69,33 @@ class RequestQueryManager
             return extendedStoredDataRequests
         }
 
-        private fun companyIdsMatchingSearchString(companySearchString: String?): List<String>? =
+        /**
+         * Get company IDs matching the company search string.
+         * @param companySearchString the company search string
+         * @return list of company IDs matching the search string
+         */
+        private fun companyIdsMatchingSearchString(companySearchString: String?): List<UUID>? =
             if (companySearchString != null) {
                 companyDataController
                     .getCompanies(
                         searchString = companySearchString,
                         chunkIndex = 0,
                         chunkSize = Int.MAX_VALUE,
-                    ).map { it.companyId }
+                    ).map { convertToUUID(it.companyId) }
             } else {
                 null
             }
 
         /**
-         * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
-         * is true. The keycloakApiService is required to get the user ids for the email addresses.
+         * Set up email address filter by searching for user IDs matching the email address search string.
+         * @param emailAddressSearchString the email address search string
+         * @return list of user IDs matching the email address search string
          */
-        private fun setupEmailAddressFilter(emailAddress: String?): List<String>? =
-            emailAddress
+        private fun setupEmailAddressFilter(emailAddressSearchString: String?): List<UUID>? =
+            emailAddressSearchString
                 ?.let {
                     keycloakUserService.searchUsers(it)
-                }?.map { it.userId }
-                ?.toList()
+                }?.map { convertToUUID(it.userId) }
 
         /**
          * Search for requests based on userId
