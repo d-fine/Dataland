@@ -2,11 +2,13 @@ package org.dataland.datalandinternalstorage.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.TypedQuery
+import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
@@ -14,6 +16,7 @@ class DocumentStorageServiceTest {
     private lateinit var mockEntityManager: EntityManager
     private lateinit var mockDataPointQuery: TypedQuery<String>
     private lateinit var mockDatasetQuery: TypedQuery<String>
+    private lateinit var mockBlobItemRepository: BlobItemRepository
     private lateinit var documentStorageService: DocumentStorageService
 
     private val documentId = UUID.randomUUID().toString()
@@ -37,7 +40,8 @@ class DocumentStorageServiceTest {
         mockEntityManager = mock<EntityManager>()
         mockDataPointQuery = mock<TypedQuery<String>>()
         mockDatasetQuery = mock<TypedQuery<String>>()
-        documentStorageService = DocumentStorageService(mockEntityManager, mock())
+        mockBlobItemRepository = mock<BlobItemRepository>()
+        documentStorageService = DocumentStorageService(mockEntityManager, mockBlobItemRepository)
     }
 
     @Test
@@ -90,6 +94,13 @@ class DocumentStorageServiceTest {
 
         assertTrue(result["dataPointIds"]!!.isEmpty())
         assertTrue(result["datasetIds"]!!.isEmpty())
+    }
+
+    @Test
+    fun `check that deleteDocument calls repository deleteById with correct documentId`() {
+        documentStorageService.deleteDocument(documentId, correlationId)
+
+        verify(mockBlobItemRepository).deleteById(documentId)
     }
 
     private fun setupMockQueries(
