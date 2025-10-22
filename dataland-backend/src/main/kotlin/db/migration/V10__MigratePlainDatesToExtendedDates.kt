@@ -18,10 +18,6 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
             "plainEnumFiscalYearDeviation" to "extendedEnumFiscalYearDeviation",
         )
 
-    private val firstParamIndex = 1
-    private val secondParamIndex = 2
-    private val thirdParamIndex = 3
-
     override fun migrate(context: Context?) {
         val metaTable = "data_point_meta_information"
         val uuidTable = "data_point_uuid_map"
@@ -111,8 +107,8 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
                 """.trimIndent(),
             )
 
-        query.setString(firstParamIndex, plainType)
-        query.setString(secondParamIndex, extendedType)
+        query.setString(1, plainType)
+        query.setString(2, extendedType)
 
         val results = query.executeQuery()
         val conflicts = mutableSetOf<DataPointTuple>()
@@ -164,9 +160,9 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
         var totalDeactivated = 0
 
         conflicts.forEach { conflict ->
-            updateStatement.setString(firstParamIndex, plainType)
-            updateStatement.setString(secondParamIndex, conflict.companyId)
-            updateStatement.setString(thirdParamIndex, conflict.reportingPeriod)
+            updateStatement.setString(1, plainType)
+            updateStatement.setString(2, conflict.companyId)
+            updateStatement.setString(3, conflict.reportingPeriod)
             totalDeactivated += updateStatement.executeUpdate()
         }
 
@@ -197,8 +193,8 @@ class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
                 "UPDATE $tableName SET $columnName = ? WHERE $columnName = ?",
             )
 
-        updateStatement.setString(firstParamIndex, extendedType)
-        updateStatement.setString(secondParamIndex, plainType)
+        updateStatement.setString(1, extendedType)
+        updateStatement.setString(2, plainType)
         val count = updateStatement.executeUpdate()
 
         updateStatement.close()

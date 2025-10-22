@@ -6,7 +6,6 @@ import org.flywaydb.core.api.migration.Context
 
 /**
  * Migration to convert plain date and enum fields to extended format for fiscal year fields.
- * Migration comment - re-run
  */
 @Suppress("ClassName")
 class V29__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
