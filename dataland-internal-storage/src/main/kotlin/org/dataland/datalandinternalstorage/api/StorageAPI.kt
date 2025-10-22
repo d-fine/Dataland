@@ -87,7 +87,7 @@ interface StorageAPI {
         correlationId: String,
     ): ResponseEntity<Map<String, StorableDataPoint>>
 
-/**
+    /**
      * A method to check which data is associated to a given document ID
      * @param documentId the ID of the document
      * @param correlationId the correlation ID of the data get request
