@@ -70,7 +70,7 @@ class DataDeletionControllerTest {
         assert(dataMetaInfoAfterDeletionAttempt == dataMetaInfoBeforeDeletionAttempt)
     }
 
-    private fun isDataSetActive(dataId: String): Boolean = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).currentlyActive
+    private fun isDatasetActive(dataId: String): Boolean = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).currentlyActive
 
     @BeforeAll
     fun postTestDocuments() {
@@ -140,7 +140,7 @@ class DataDeletionControllerTest {
         val dataIdFirstUpload = assertDoesNotThrow { firstUploadInfo.getValue("dataId") }
 
         awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdFirstUpload, QaStatus.Accepted) }
-        assert(isDataSetActive(dataIdFirstUpload))
+        assert(isDatasetActive(dataIdFirstUpload))
 
         val dataIdSecondUpload =
             apiAccessor
@@ -151,10 +151,10 @@ class DataDeletionControllerTest {
                     false,
                 ).dataId
         awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdSecondUpload, QaStatus.Accepted) }
-        awaitUntil { isDataSetActive(dataIdSecondUpload) }
-        assert(!isDataSetActive(dataIdFirstUpload))
+        awaitUntil { isDatasetActive(dataIdSecondUpload) }
+        assert(!isDatasetActive(dataIdFirstUpload))
 
         performAndVerifyDeletion(dataIdSecondUpload)
-        awaitUntil { isDataSetActive(dataIdFirstUpload) }
+        awaitUntil { isDatasetActive(dataIdFirstUpload) }
     }
 }

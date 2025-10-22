@@ -200,7 +200,7 @@ class BulkDataRequestManagerTest {
             ),
         )
 
-        val expectedAlreadyExistingDataSetsResponse =
+        val expectedAlreadyExistingDatasetsResponse =
             listOf(
                 ResourceResponse(
                     userProvidedIdentifier = dummyUserProvidedCompanyId,
@@ -212,7 +212,7 @@ class BulkDataRequestManagerTest {
                 ),
             )
 
-        assertResponse(expectedAlreadyExistingDatasets = expectedAlreadyExistingDataSetsResponse)
+        assertResponse(expectedAlreadyExistingDatasets = expectedAlreadyExistingDatasetsResponse)
     }
 
     @Test

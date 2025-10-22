@@ -51,17 +51,17 @@ export async function searchBasicCompanyInformationForDataType(
 export async function countCompaniesAndDatasetsForDataType(
   token: string,
   dataType: DataTypeEnum
-): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
+): Promise<{ numberOfCompaniesForDataType: number; numberOfDatasetsForDataType: number }> {
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
-  let numberOfDataSetsForDataType = 0;
+  let numberOfDatasetsForDataType = 0;
   const metaDataController = new MetaDataControllerApi(new Configuration({ accessToken: token }));
   for (const basicCompanyInfo of basicCompanyInformations) {
-    numberOfDataSetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
+    numberOfDatasetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
       .length;
   }
 
   return {
-    numberOfDataSetsForDataType,
+    numberOfDatasetsForDataType: numberOfDatasetsForDataType,
     numberOfCompaniesForDataType: basicCompanyInformations.length,
   };
 }

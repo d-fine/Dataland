@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -148,7 +147,7 @@ class DataPointManager
                         "Data point not found",
                         "No data point with the id: $dataPointId could be found in the data store.",
                     )
-                if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                if (!metaInfo.isDataPointViewableByUser(DatalandAuthentication.fromContextOrNull())) {
                     throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
                 }
                 val dataPointType = metaInfo.dataPointType
@@ -203,15 +202,4 @@ class DataPointManager
                     ),
             )
         }
-
-        /**
-         * Retrieves the currently active data points for a list of specific data point dimensions
-         * @param dataPointDimensions the data dimensions to retrieve the data points for
-         * @return a map associating each available data point dimension with the id of the currently active data point
-         */
-        @Transactional(readOnly = true)
-        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): Map<BasicDataPointDimensions, String> =
-            dataPointDimensions
-                .associateWith { metaDataManager.getCurrentlyActiveDataId(it) ?: "" }
-                .filterValues { it.isNotEmpty() }
     }

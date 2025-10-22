@@ -1,6 +1,7 @@
 package org.dataland.datalandbackendutils.utils
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
@@ -36,8 +37,9 @@ object ValidationUtils {
      * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
      * @param testString the string to convert
      * @return the UUID corresponding to the string
+     * @throws ResourceNotFoundApiException if the string is not a valid UUID (so there is no resource with such an ID)
      */
-    fun convertToUUIDOrThrowResourceNotFoundApiException(testString: String): UUID =
+    fun convertToUUID(testString: String): UUID =
         try {
             UUID.fromString(testString)
         } catch (_: IllegalArgumentException) {
@@ -46,4 +48,12 @@ object ValidationUtils {
                 message = "The string $testString is not a valid UUID. In particular, the resource requested under it is unknown.",
             )
         }
+
+    /**
+     * Checks if a given base dimension contains valid reporting period and company ID
+     * @param baseDimensions the base dimension to be checked
+     * @return a boolean indicating if it is a valid base dimension or not
+     */
+    fun isBaseDimensions(baseDimensions: BaseDimensions) =
+        isCompanyId(baseDimensions.companyId) && isReportingPeriod(baseDimensions.reportingPeriod)
 }

@@ -33,7 +33,7 @@ async function getDataMetaInfo(
  * @param storedDataRequest the data request whose ansering data set URL shall be found
  * @param apiClientProvider the ApiClientProvider to use for the connection
  */
-export async function getAnsweringDataSetUrl(
+export async function getAnsweringDatasetUrl(
   storedDataRequest: StoredDataRequest | ExtendedStoredDataRequest,
   apiClientProvider: ApiClientProvider
 ): Promise<string | undefined> {

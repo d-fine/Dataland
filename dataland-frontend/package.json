@@ -29,7 +29,7 @@
     "@formkit/vue": "^1.6.9",
     "@ibm/plex": "^6.4.1",
     "@primeuix/themes": "^1.2.5",
-    "@primevue/core": "^4.4.0",
+    "@primevue/core": "^4.4.1",
     "@vueuse/core": "^13.9.0",
     "axios": "^1.12.2",
     "currency-codes": "^2.2.0",
@@ -40,7 +40,7 @@
     "pinia-shared-state": "^1.0.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
-    "primevue": "^4.4.0",
+    "primevue": "^4.4.1",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
   },
@@ -49,7 +49,7 @@
     "@faker-js/faker": "10.0.0",
     "@tsconfig/node24": "24.0.1",
     "@types/markdown-it": "14.1.2",
-    "@types/node": "24.7.0",
+    "@types/node": "24.7.2",
     "@vitejs/plugin-vue": "6.0.1",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.6.0",
@@ -61,8 +61,8 @@
     "dompurify": "3.2.7",
     "eslint": "9.37.0",
     "eslint-plugin-cypress": "5.2.0",
-    "eslint-plugin-jsdoc": "60.8.2",
-    "eslint-plugin-vue": "10.5.0",
+    "eslint-plugin-jsdoc": "60.8.3",
+    "eslint-plugin-vue": "10.5.1",
     "git-commit-id": "2.0.1",
     "lint-staged": "16.2.3",
     "markdown-it": "14.1.0",
@@ -77,6 +77,6 @@
     "vite": "7.1.9",
     "vite-plugin-istanbul": "7.2.0",
     "vue-markdown-render": "2.3.0",
-    "vue-tsc": "3.1.0"
+    "vue-tsc": "3.1.1"
   }
 }
