@@ -314,10 +314,7 @@ interface RequestApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or" +
-                "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
-    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postRequestSearch(
         @RequestBody
         requestSearchFilter: RequestSearchFilter<String>,

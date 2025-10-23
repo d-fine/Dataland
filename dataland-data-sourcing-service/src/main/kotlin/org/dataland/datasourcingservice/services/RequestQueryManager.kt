@@ -7,7 +7,6 @@ import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -67,31 +66,7 @@ constructor(
                     )
                 }
 
-        return hideFieldsForNonAdmins(extendedStoredDataRequests)
-    }
-
-    /** This method checks if a user is an admin
-     * @returns True if user is an admin, else false
-     */
-    fun isUserAdmin(): Boolean {
-        val authenticationContext = DatalandAuthentication.fromContext()
-        return authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN)
-    }
-
-    /** This method hides the admin comment for non admins
-     * @param extendedStoredRequests list of extendedStoredDataRequests to check
-     * @returns all data requests with hidden admin comment if requester is not an admin
-     */
-    private fun hideFieldsForNonAdmins(extendedStoredRequests: List<ExtendedStoredRequest>): List<ExtendedStoredRequest> {
-        val modifiedExtendedStoredDataRequests =
-            extendedStoredRequests.map { request ->
-                if (isUserAdmin()) {
-                    request
-                } else {
-                    request.copy(adminComment = null, userEmailAddress = null, userId = "")
-                }
-            }
-        return modifiedExtendedStoredDataRequests
+        return extendedStoredDataRequests
     }
 
     /**
