@@ -27,11 +27,13 @@ const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
-  import('@/components/pages/CompanyDataRequestsOverview.vue');
+  import('@/components/pages/CompanyDataRequestsOverviewLegacy.vue');
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
 const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/AdminAllRequestsOverview.vue');
+const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
@@ -157,6 +159,15 @@ const routes = [
     path: '/requestoverview',
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
+    meta: {
+      initialTabIndex: 6,
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/requestoverview-legacy',
+    name: 'Admin overview for all requests',
+    component: AdminRequestsOverviewLegacy,
     meta: {
       initialTabIndex: 6,
       requiresAuthentication: true,
