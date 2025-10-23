@@ -161,7 +161,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
     const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
       }
@@ -194,7 +194,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function mountAdminAllRequestsPageWithManyMocks(): void {
     const expectedNumberOfRequests = mockRequestsLarge.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequestsLarge);
       }
@@ -221,7 +221,7 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateEmailAddressFilter(): void {
     const mockResponse = [mockRequests[0], mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (req.body.emailAddress === mailSearchTerm) {
         req.reply(mockResponse);
       }
@@ -247,7 +247,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
         req.reply(mockResponse);
       }
@@ -273,7 +273,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const requestStatusToFilterFor = RequestState.Open;
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStatusToFilterFor)) {
         req.reply(mockResponse);
       }
@@ -298,7 +298,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const priorityToFilterFor = RequestPriority.Urgent;
     const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
         req.reply(mockResponse);
       }
@@ -325,7 +325,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const reportingPeriodToFilterFor = '2023';
     const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
         req.reply(mockResponse);
       }
@@ -351,7 +351,7 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateAdminCommentFilter(): void {
     const mockResponse = [mockRequests[1], mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (req.body.adminComment === commentSearchTerm) {
         req.reply(mockResponse);
       }
@@ -375,7 +375,7 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateCompanySearchStringFilter(): void {
     const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (req.body.companySearchString === companyNameSearchTerm) {
         req.reply(mockResponse);
       }
@@ -402,7 +402,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (
         Array.isArray(req.body.dataTypes) &&
         req.body.dataTypes.includes(frameworkToFilterFor) &&
@@ -433,7 +433,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateDeselectingCombinedFilter(): void {
     const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
       }
@@ -476,7 +476,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateResetButton(): void {
     const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search', (req) => {
+    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
       }
@@ -540,7 +540,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateResetButton();
   });
 
-  it('Check the functionality of the onPage event', () => {
+  it.only('Check the functionality of the onPage event', () => {
     mountAdminAllRequestsPageWithManyMocks();
     validateOnPageEvent();
   });
