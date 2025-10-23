@@ -38,7 +38,7 @@ class RequestQueryManager
             filter: RequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
-        ): List<ExtendedStoredRequest>? {
+        ): List<ExtendedStoredRequest> {
             val pageRequest =
                 PageRequest.of(
                     chunkIndex,

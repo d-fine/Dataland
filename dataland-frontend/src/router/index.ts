@@ -24,6 +24,8 @@ const MyDataRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 
 const PortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/PortfolioOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
+const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/ViewDataRequestPageLegacy.vue');
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
@@ -38,7 +40,6 @@ const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/component
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
-import ViewDataRequestPageLegacy from '@/components/pages/ViewDataRequestPageLegacy.vue';
 
 const routes = [
   {
@@ -166,7 +167,7 @@ const routes = [
   },
   {
     path: '/requestoverview-legacy',
-    name: 'Admin overview for all requests',
+    name: 'Admin overview for all requests (Legacy)',
     component: AdminRequestsOverviewLegacy,
     meta: {
       initialTabIndex: 6,
@@ -202,7 +203,7 @@ const routes = [
   },
   {
     path: '/requests-legacy',
-    name: 'MyDataRequestsOverviewLegacy',
+    name: 'MyDataRequestsOverview (Legacy)',
     component: MyDataRequestsOverviewLegacy,
     meta: {
       initialTabIndex: 4,
