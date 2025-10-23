@@ -206,7 +206,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, watch, onMounted, inject, unref} from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -337,7 +337,11 @@ async function getAllRequestsForFilters(): Promise<void> {
       };
 
       const [dataResponse, countResponse] = await Promise.all([
-        apiClientProvider.apiClients.requestController.postRequestSearch(filters, datasetsPerPage, currentChunkIndex.value),
+        apiClientProvider.apiClients.requestController.postRequestSearch(
+          filters,
+          datasetsPerPage,
+          currentChunkIndex.value
+        ),
         apiClientProvider.apiClients.requestController.postRequestCountQuery(filters),
       ]);
 
