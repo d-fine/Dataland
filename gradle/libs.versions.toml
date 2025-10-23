@@ -148,7 +148,7 @@ awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" 
 json = { group = "org.json", name = "json", version = "20250517" }
 
 # Mailjet
-mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.0" }
+mailjet-client = { group = "com.mailjet", name = "mailjet-client", version = "6.0.1" }
 
 # Flyway
 flyway = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
