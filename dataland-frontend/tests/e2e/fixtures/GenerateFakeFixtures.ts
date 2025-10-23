@@ -36,10 +36,8 @@ async function main(): Promise<void> {
   }
 }
 
-try {
-  await main();
-} catch (error) {
+main().catch((ex) => {
   console.log('Unexpected error during fake-fixture generation');
-  console.log(error);
+  console.log(ex);
   exit(1);
-}
+});
