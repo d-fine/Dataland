@@ -91,7 +91,7 @@ interface RequestApi {
                 responseCode = "403",
                 description =
                     "You were trying to impersonate another Dataland user. Only admins have the right to do so. " +
-                        "To make a request for yourself, leave the userId parameter empty.",
+                            "To make a request for yourself, leave the userId parameter empty.",
                 content = [Content(schema = Schema())],
             ),
         ],
@@ -128,7 +128,7 @@ interface RequestApi {
                 responseCode = "403",
                 description =
                     "The entered request ID does not belong to any of your requests. Only Dataland admins " +
-                        "have the right to query other users' requests.",
+                            "have the right to query other users' requests.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -314,7 +314,10 @@ interface RequestApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+                "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
+    )
     fun postRequestSearch(
         @RequestBody
         requestSearchFilter: RequestSearchFilter<String>,
@@ -335,7 +338,7 @@ interface RequestApi {
         summary = "Get the number of requests based on filters.",
         description =
             "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, " +
-                "data type, reporting period or state.",
+                    "data type, reporting period or state.",
     )
     @ApiResponses(
         value = [

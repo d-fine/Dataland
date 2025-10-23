@@ -1,10 +1,10 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
@@ -67,8 +67,8 @@ class RequestPriorityUpdaterTest {
         requestId: UUID,
         state: RequestState,
         priority: RequestPriority,
-    ): StoredRequest =
-        StoredRequest(
+    ): ExtendedStoredRequest =
+        ExtendedStoredRequest(
             id = requestId.toString(),
             companyId = UUID.randomUUID().toString(),
             userId = userId,
