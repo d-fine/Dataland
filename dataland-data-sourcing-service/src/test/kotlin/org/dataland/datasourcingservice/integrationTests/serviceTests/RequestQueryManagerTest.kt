@@ -115,6 +115,16 @@ class RequestQueryManagerTest
                 }
         }
 
+        data class RequestSearchParams(
+            val companyId: String?,
+            val dataType: String?,
+            val reportingPeriod: String?,
+            val requestState: String?,
+            val emailAddressSearchString: String?,
+            val companySearchString: String?,
+            val adminComment: String?
+        )
+
         @ParameterizedTest
         @CsvSource(
             value = [
@@ -132,14 +142,8 @@ class RequestQueryManagerTest
         )
         @Suppress("LongParameterList")
         fun `ensure that searching for requests works for all filter combinations`(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: String?,
-            emailAddressSearchString: String?,
-            companySearchString: String?,
-            adminCommentSearchString: String?,
-            indexString: String,
+            params: RequestSearchParams,
+            indexString: String
         ) {
             setupParameterizedTest()
             val indicesOfExpectedResults = indexString.split(';').mapNotNull { it.toIntOrNull() }
@@ -151,26 +155,26 @@ class RequestQueryManagerTest
                         userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )
                 }
-            val reportingPeriods = reportingPeriod?.split(';')?.toSet()
-            val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
+            val reportingPeriods = params.reportingPeriod?.split(';')?.toSet()
+            val requestStates = params.requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
             val requestSearchFilter =
                 RequestSearchFilter<UUID>(
-                    companyId = companyId?.let { UUID.fromString(it) },
-                    dataTypes = dataType?.let { setOf(it) },
+                    companyId = params.companyId?.let { UUID.fromString(it) },
+                    dataTypes = params.dataType?.let { setOf(it) },
                     reportingPeriods = reportingPeriods,
                     userId = null,
                     requestStates = requestStates,
                     requestPriorities = null,
-                    emailAddress = emailAddressSearchString,
-                    companySearchString = companySearchString,
-                    adminComment = adminCommentSearchString,
+                    emailAddress = params.emailAddressSearchString,
+                    companySearchString = params.companySearchString,
+                    adminComment = params.adminComment
                 )
             val actualResults = requestQueryManager.searchRequests(requestSearchFilter)
-            val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
-            Assertions.assertEquals(expectedResults.size, actualResults?.size)
-            Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
+            val actualNumberOfResultsAccordingtoEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
+            Assertions.assertEquals(expectedResults.size, actualResults.size)
+            Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingtoEndpoint)
             expectedResults.forEach { expected ->
-                val actual = actualResults?.find { it.id == expected.id }
+                val actual = actualResults.find { it.id == expected.id }
                 assert(actual != null) { "Expected result $expected not found in actual results." }
                 Assertions.assertEquals(expected.userEmailAddress, actual?.userEmailAddress)
                 Assertions.assertEquals(expected.adminComment, actual?.adminComment)
@@ -222,7 +226,7 @@ class RequestQueryManagerTest
             val filter = RequestSearchFilter<UUID>()
             val results = requestQueryManager.searchRequests(filter)
             val sorted =
-                results!!.sortedWith(
+                results.sortedWith(
                     compareByDescending<ExtendedStoredRequest> { it.creationTimeStamp }
                         .thenBy { it.companyId }
                         .thenByDescending { it.reportingPeriod }
