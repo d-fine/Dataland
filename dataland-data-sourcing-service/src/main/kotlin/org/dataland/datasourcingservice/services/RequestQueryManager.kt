@@ -39,34 +39,49 @@ class RequestQueryManager
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<ExtendedStoredRequest>? {
-            val extendedStoredDataRequests =
-                requestRepository
-                    .findByListOfIdsAndFetchDataSourcingEntity(
-                        requestRepository
-                            .searchRequests(
-                                searchFilter = filter,
-                                PageRequest.of(
-                                    chunkIndex,
-                                    chunkSize,
-                                    Sort
-                                        .by("creationTimestamp")
-                                        .descending()
-                                        .and(Sort.by("companyId").ascending())
-                                        .and(Sort.by("reportingPeriod").descending())
-                                        .and(Sort.by("state").ascending()),
-                                ),
-                                companyIds = companyIdsMatchingSearchString(filter.companySearchString),
-                                userIds = setupEmailAddressFilter(filter.emailAddress),
-                            ).content,
-                    ).map { entity ->
-                        val dto = entity.toExtendedStoredRequest()
-                        dto.copy(
-                            companyName = companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
-                            userEmailAddress = keycloakUserService.getUser(entity.userId.toString()).email,
-                        )
-                    }
+            val pageRequest =
+                PageRequest.of(
+                    chunkIndex,
+                    chunkSize,
+                    Sort
+                        .by("creationTimestamp")
+                        .descending()
+                        .and(Sort.by("companyId").ascending())
+                        .and(Sort.by("reportingPeriod").descending())
+                        .and(Sort.by("state").ascending()),
+                )
 
-            return extendedStoredDataRequests
+            val matchingIdsPage =
+                requestRepository.searchRequests(
+                    searchFilter = filter,
+                    pageable = pageRequest,
+                    companyIds = companyIdsMatchingSearchString(filter.companySearchString),
+                    userIds = setupEmailAddressFilter(filter.emailAddress),
+                )
+
+            val ids = matchingIdsPage.content
+            if (ids.isEmpty()) return emptyList()
+
+            val fetchedEntities = requestRepository.findByListOfIdsAndFetchDataSourcingEntity(ids)
+
+            val orderedEntities =
+                ids.mapNotNull { id ->
+                    fetchedEntities.find { it.id == id }
+                }
+
+            return orderedEntities.map { entity ->
+                val dto = entity.toExtendedStoredRequest()
+                dto.copy(
+                    companyName =
+                        companyDataController
+                            .getCompanyById(entity.companyId.toString())
+                            .companyInformation.companyName,
+                    userEmailAddress =
+                        keycloakUserService
+                            .getUser(entity.userId.toString())
+                            .email,
+                )
+            }
         }
 
         /**
