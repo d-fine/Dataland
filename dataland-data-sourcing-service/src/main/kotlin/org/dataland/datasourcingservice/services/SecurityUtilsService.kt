@@ -13,17 +13,17 @@ import kotlin.jvm.optionals.getOrNull
  */
 @Service("SecurityUtilsService")
 class SecurityUtilsService
-@Autowired
-constructor(
-    private val requestRepository: RequestRepository,
-) {
-    /**
-     * Returns true if and only if the currently authenticated user is asking for his/her own request
-     */
-    @Transactional(readOnly = true)
-    fun isUserAskingForOwnRequest(requestId: String): Boolean {
-        val userIdOfRequest = requestRepository.findById(UUID.fromString(requestId)).getOrNull()?.userId ?: return false
-        val userIdRequester = UUID.fromString(SecurityContextHolder.getContext().authentication.name)
-        return userIdOfRequest == userIdRequester
+    @Autowired
+    constructor(
+        private val requestRepository: RequestRepository,
+    ) {
+        /**
+         * Returns true if and only if the currently authenticated user is asking for his/her own request
+         */
+        @Transactional(readOnly = true)
+        fun isUserAskingForOwnRequest(requestId: String): Boolean {
+            val userIdOfRequest = requestRepository.findById(UUID.fromString(requestId)).getOrNull()?.userId ?: return false
+            val userIdRequester = UUID.fromString(SecurityContextHolder.getContext().authentication.name)
+            return userIdOfRequest == userIdRequester
+        }
     }
-}
