@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
@@ -29,7 +30,7 @@ import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.USER_EMAIL
 import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.anyOrNull
@@ -72,6 +73,7 @@ class RequestQueryManagerTest
         private val companyInfo2 = mock<CompanyInformation>()
 
         private fun setupMocks() {
+            reset(mockKeycloakUserService, mockCompanyDataControllerApi)
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(firstUser.userId)
             doReturn(secondUser).whenever(mockKeycloakUserService).getUser(not(eq(firstUser.userId)))
             doReturn(null).whenever(secondUser).email
@@ -98,9 +100,7 @@ class RequestQueryManagerTest
          * Store 16 requests covering all combinations of the four filter parameters defined above.
          * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
          */
-        @BeforeEach
-        fun setup() {
-            reset(mockKeycloakUserService, mockCompanyDataControllerApi)
+        fun setupParameterizedTest() {
             setupMocks()
             requestEntities =
                 (0..15).map {
@@ -141,6 +141,7 @@ class RequestQueryManagerTest
             adminCommentSearchString: String?,
             indexString: String,
         ) {
+            setupParameterizedTest()
             val indicesOfExpectedResults = indexString.split(';').mapNotNull { it.toIntOrNull() }
             val expectedResults =
                 indicesOfExpectedResults.map {
@@ -175,5 +176,58 @@ class RequestQueryManagerTest
                 Assertions.assertEquals(expected.adminComment, actual?.adminComment)
                 Assertions.assertEquals(expected.companyName, actual?.companyName)
             }
+        }
+
+        @Test
+        fun `test sorting of requests works as expected`() {
+            setupMocks()
+            val timestamp = 1760428203000
+            dataBaseCreationUtils.storeRequest(
+                companyId = UUID.fromString(COMPANY_ID_2),
+                dataType = DATA_TYPE_2,
+                reportingPeriod = REPORTING_PERIOD_2,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                userId = UUID.randomUUID(),
+                adminComment = null,
+                creationTimestamp = timestamp,
+            )
+            dataBaseCreationUtils.storeRequest(
+                companyId = UUID.fromString(COMPANY_ID_1),
+                dataType = DATA_TYPE_1,
+                reportingPeriod = REPORTING_PERIOD_1,
+                state = RequestState.valueOf(REQUEST_STATE_1),
+                userId = UUID.randomUUID(),
+                adminComment = null,
+                creationTimestamp = timestamp,
+            )
+            dataBaseCreationUtils.storeRequest(
+                companyId = UUID.fromString(COMPANY_ID_1),
+                dataType = DATA_TYPE_2,
+                reportingPeriod = REPORTING_PERIOD_2,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                userId = UUID.randomUUID(),
+                adminComment = null,
+                creationTimestamp = timestamp + 600000,
+            )
+            dataBaseCreationUtils.storeRequest(
+                companyId = UUID.fromString(COMPANY_ID_2),
+                dataType = DATA_TYPE_1,
+                reportingPeriod = REPORTING_PERIOD_1,
+                state = RequestState.valueOf(REQUEST_STATE_1),
+                userId = UUID.randomUUID(),
+                adminComment = null,
+                creationTimestamp = timestamp + 600000,
+            )
+
+            val filter = RequestSearchFilter<UUID>()
+            val results = requestQueryManager.searchRequests(filter)
+            val sorted =
+                results!!.sortedWith(
+                    compareByDescending<ExtendedStoredRequest> { it.creationTimeStamp }
+                        .thenBy { it.companyId }
+                        .thenByDescending { it.reportingPeriod }
+                        .thenBy { it.state },
+                )
+            Assertions.assertEquals(sorted, results, "Results are not sorted as expected")
         }
     }
