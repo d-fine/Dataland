@@ -396,7 +396,7 @@ function onPage(event: DataTablePageEvent): void {
  */
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = event.data.id;
-  void router.push(`/requests/${requestIdOfClickedRow}`);
+  router.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
 }
 </script>
 

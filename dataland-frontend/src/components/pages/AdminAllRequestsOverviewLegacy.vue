@@ -422,7 +422,7 @@ export default defineComponent({
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
       this.searchBarInputCompanySearchString = '';
-      void this.getAllRequestsForFilters();
+      this.getAllRequestsForFilters().catch((error) => console.error(error));
     },
 
     /**
@@ -434,7 +434,7 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
-        void this.getAllRequestsForFilters();
+        this.getAllRequestsForFilters().catch((error) => console.error(error));
       }
     },
 

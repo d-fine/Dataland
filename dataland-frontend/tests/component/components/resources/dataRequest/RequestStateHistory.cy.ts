@@ -41,13 +41,13 @@ describe('Component tests for the Request State History', function (): void {
 
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
     cy.get('[data-test="creationTimestampEntry"]').should('have.length', dummyStateHistory.length);
-    dummyStateHistory.forEach((entry, idx) => {
+    for (const [idx, entry] of dummyStateHistory.entries()) {
       cy.get('[data-test="creationTimestampEntry"]')
         .eq(idx)
         .should('contain.text', convertUnixTimeInMsToDateString(entry.lastModifiedDate));
       cy.get('.dataland-inline-tag').eq(idx).should('contain.text', entry.state);
       const expectedComment = entry.adminComment || '—';
       cy.get('[data-test="commentEntry"]').eq(idx).should('contain.text', expectedComment);
-    });
+    }
   });
 });

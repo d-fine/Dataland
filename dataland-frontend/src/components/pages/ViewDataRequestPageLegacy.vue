@@ -327,7 +327,7 @@ export default defineComponent({
             );
           }
           this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-          void this.setUserAccessFields();
+          this.setUserAccessFields().catch((error) => console.error(error));
         })
         .catch((error) => console.error(error));
     },

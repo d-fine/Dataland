@@ -148,8 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted } from 'vue';
-import { defineProps } from 'vue';
+import { ref, reactive, inject, onMounted, defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
@@ -394,7 +393,7 @@ function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefine
  */
 function goToNewRequestPage(): void {
   resubmitSuccessModalIsVisible.value = false;
-  void router.push(`/requests/${newRequestId.value}`);
+  void router.push(`/requests/${newRequestId.value}`).catch(console.error);
   requestId.value = newRequestId.value;
   newRequestId.value = '';
   void initializeComponent();

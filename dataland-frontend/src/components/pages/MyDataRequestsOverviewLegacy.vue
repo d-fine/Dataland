@@ -204,7 +204,7 @@ watch(searchBarInput, (newSearch) => {
  * Navigates to the bulk data request page.
  */
 function goToMyPortfoliosPage(): void {
-  void vueRouter.push('/portfolios');
+  vueRouter.push('/portfolios').catch(console.error);
 }
 
 /**
@@ -236,7 +236,7 @@ async function getStoredRequestDataList(): Promise<void> {
  */
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = (event.data as ExtendedStoredDataRequest).dataRequestId;
-  void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
+  vueRouter.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
 }
 
 /**

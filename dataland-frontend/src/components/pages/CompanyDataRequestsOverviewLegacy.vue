@@ -232,7 +232,7 @@ export default defineComponent({
       this.updateCurrentDisplayedData();
     },
     companyRoleAssignments() {
-      void this.getStoredCompanyRequestDataList();
+      this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
     },
   },
   methods: {
