@@ -51,6 +51,8 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
+    testImplementation(libs.testcontainers.postgresql)
 }
 
 openApi {
