@@ -482,7 +482,17 @@
         "operationId": "getCompaniesWithIncompleteFyeInformation",
         "responses": {
           "200": {
-            "description": "List of companyIDs with incomplete FYE information."
+            "description": "List of companyIDs with incomplete FYE information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           },
           "403": {
             "description": "Access denied. Only reviewers can access this endpoint."

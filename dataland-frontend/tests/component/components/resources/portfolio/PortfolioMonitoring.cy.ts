@@ -44,7 +44,7 @@ describe('Portfolio Monitoring Modal', function () {
   it('submits successfully if framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 
-    cy.get('.framework-switch-group')
+    cy.get('[data-test="frameworkSelection"]')
       .first()
       .within(() => {
         cy.get('input[type="checkbox"]').check();
@@ -65,7 +65,7 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('toggle all frameworks on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group').each(($row) => {
+    cy.get('[data-test="frameworkSelection"]').each(($row) => {
       cy.wrap($row).within(() => {
         cy.get('input[type="checkbox"]').check().should('be.checked');
         cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
