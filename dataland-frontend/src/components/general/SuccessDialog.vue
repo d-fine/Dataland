@@ -13,7 +13,18 @@
       <div style="margin-top: 8px">{{ props.message }}</div>
     </div>
     <template #footer>
-      <PrimeButton label="OK" @click="emit('close')" data-test="close-success-modal-button" />
+      <PrimeButton
+        v-if="props.secondaryButtonLabel"
+        :label="props.secondaryButtonLabel"
+        @click="emit('secondary-action')"
+        data-test="secondary-success-modal-button"
+        class="p-button-text"
+      />
+      <PrimeButton
+        :label="props.primaryButtonLabel || 'OK'"
+        @click="emit('close')"
+        data-test="close-success-modal-button"
+      />
     </template>
   </PrimeDialog>
 </template>
@@ -22,10 +33,17 @@
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 
-const props = defineProps<{ visible: boolean; message: string }>();
-const emit = defineEmits(['close']);
+const props = defineProps<{
+  visible: boolean;
+  message: string;
+  primaryButtonLabel?: string;
+  secondaryButtonLabel?: string;
+}>();
 
-/** Close the dialog when it is no longer visible
+const emit = defineEmits(['close', 'secondary-action']);
+
+/**
+ * Close the dialog when it is no longer visible
  */
 function onUpdateVisible(newValue: boolean): void {
   if (!newValue) emit('close');
