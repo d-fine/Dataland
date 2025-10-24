@@ -17,8 +17,8 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 @Suppress("ClassName")
-class V10__MigratePlainDatesToExtendedDatesTest {
-    private val migration = V10__MigratePlainDatesToExtendedDates()
+class V11__MigratePlainDatesToExtendedDatesTest {
+    private val migration = V11__MigratePlainDatesToExtendedDates()
     private val mockContext = mock<Context>()
     private val mockConnection = mock<Connection>()
     private val mockResultSet = mock<ResultSet>()
@@ -78,12 +78,12 @@ class V10__MigratePlainDatesToExtendedDatesTest {
         assertEquals(2, conflicts.size)
         assertTrue(
             conflicts.contains(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
             ),
         )
         assertTrue(
             conflicts.contains(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
             ),
         )
     }
@@ -92,8 +92,8 @@ class V10__MigratePlainDatesToExtendedDatesTest {
     fun `check that conflicting plain data points are deactivated`() {
         val conflicts =
             setOf(
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
-                V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
             )
 
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
@@ -136,9 +136,9 @@ class V10__MigratePlainDatesToExtendedDatesTest {
 
     @Test
     fun `check DataPointTuple equality`() {
-        val tuple1 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
-        val tuple2 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
-        val tuple3 = V10__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2024")
+        val tuple1 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
+        val tuple2 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
+        val tuple3 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2024")
 
         assertEquals(tuple1, tuple2)
         assertTrue(tuple1 != tuple3)

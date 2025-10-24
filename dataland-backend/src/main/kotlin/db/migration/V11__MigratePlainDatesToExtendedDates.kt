@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
  * Handles conflicts where both plain and extended versions exist by deactivating the plain version.
  */
 @Suppress("ClassName", "MagicNumber")
-class V10__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
+class V11__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val plainToExtendedMappings =

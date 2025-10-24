@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @Suppress("ClassName")
-class V29__MigratePlainDatesToExtendedDatesTest {
+class V30__MigratePlainDatesToExtendedDatesTest {
     private val objectMapper = ObjectMapper()
 
     @Test
     fun `check that plain data is converted to extended format with correct field order`() {
-        val migration = V29__MigratePlainDatesToExtendedDates()
+        val migration = V30__MigratePlainDatesToExtendedDates()
         val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("2024-03-22"))
 
         val result = migration.convertToExtendedFormat(plainData)
@@ -25,7 +25,7 @@ class V29__MigratePlainDatesToExtendedDatesTest {
 
     @Test
     fun `check that plain enum is converted to extended format with correct field order`() {
-        val migration = V29__MigratePlainDatesToExtendedDates()
+        val migration = V30__MigratePlainDatesToExtendedDates()
         val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("NoDeviation"))
 
         val result = migration.convertToExtendedFormat(plainData)
