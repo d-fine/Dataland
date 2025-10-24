@@ -58,7 +58,7 @@
     "cypress": "13.17.0",
     "cypress-wait-until": "3.0.2",
     "depcheck": "1.4.7",
-    "dompurify": "3.2.7",
+    "dompurify": "3.3.0",
     "eslint": "9.37.0",
     "eslint-plugin-cypress": "5.2.0",
     "eslint-plugin-jsdoc": "60.8.3",
