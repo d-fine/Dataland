@@ -29,7 +29,7 @@ const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
-  import('@/components/pages/CompanyDataRequestsOverviewLegacy.vue');
+  import('@/components/pages/CompanyDataRequestsOverview.vue');
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');

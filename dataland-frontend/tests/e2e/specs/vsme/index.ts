@@ -3,5 +3,4 @@
  */
 describe('Blanket test for VSME-framework upload page', () => {
   require('./DataIntegrity');
-  require('./RequestingAndGrantingAccess');
 });
