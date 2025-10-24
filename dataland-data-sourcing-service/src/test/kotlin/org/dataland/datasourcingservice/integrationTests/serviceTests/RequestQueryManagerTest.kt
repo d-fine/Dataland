@@ -32,7 +32,7 @@ import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
@@ -115,34 +115,44 @@ class RequestQueryManagerTest
                 }
         }
 
-        @ParameterizedTest
-        @CsvSource(
-            value = [
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${REQUEST_STATE_1}, null, null, null, 0",
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, null, null, null, 0;1",
-                "null, null, null, ${REQUEST_STATE_1}, null, null, null, 0;2;4;6;8;10;12;14",
-                "null, null, null, null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                "null, null, '${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}', null, null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                "null, null, null, '${REQUEST_STATE_1};${REQUEST_STATE_2}', null, null, null, 0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                "null, null, null, null, $USER_EMAIL_SEARCH_STRING, null, null, 0;2;4;6;8;10;12;14",
-                "null, null, null, null, null, $TEST_COMPANY_SEARCH_STRING, null, 0;1;2;3;4;5;6;7;",
-                "null, null, null, null, null, null, ${ADMIN_COMMENT_SEARCH_STRING}, 0;1;2;3;4;5;6;7",
-            ],
-            nullValues = ["null"],
+        data class RequestSearchTestCase(
+            val companyId: String?,
+            val dataType: String?,
+            val reportingPeriod: String?,
+            val requestState: String?,
+            val emailAddressSearchString: String?,
+            val companySearchString: String?,
+            val adminCommentSearchString: String?,
+            val indexString: String,
         )
-        @Suppress("LongParameterList")
-        fun `ensure that searching for requests works for all filter combinations`(
-            companyId: String?,
-            dataType: String?,
-            reportingPeriod: String?,
-            requestState: String?,
-            emailAddressSearchString: String?,
-            companySearchString: String?,
-            adminCommentSearchString: String?,
-            indexString: String,
-        ) {
+
+        companion object {
+            @JvmStatic
+            fun requestSearchTestCases() =
+                listOf(
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, "0"),
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, "0;1"),
+                    RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15"),
+                    RequestSearchTestCase(
+                        null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null,
+                        "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                    ),
+                    RequestSearchTestCase(
+                        null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null,
+                        "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
+                    ),
+                    RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, "0;1;2;3;4;5;6;7"),
+                )
+        }
+
+        @ParameterizedTest
+        @MethodSource("requestSearchTestCases")
+        fun `ensure that searching for requests works for all filter combinations`(testCase: RequestSearchTestCase) {
             setupParameterizedTest()
-            val indicesOfExpectedResults = indexString.split(';').mapNotNull { it.toIntOrNull() }
+            val indicesOfExpectedResults = testCase.indexString.split(';').mapNotNull { it.toIntOrNull() }
             val expectedResults =
                 indicesOfExpectedResults.map {
                     val entity = requestEntities[it]
@@ -151,19 +161,23 @@ class RequestQueryManagerTest
                         userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )
                 }
-            val reportingPeriods = reportingPeriod?.split(';')?.toSet()
-            val requestStates = requestState?.split(';')?.map { RequestState.valueOf(it) }?.toSet()
+            val reportingPeriods = testCase.reportingPeriod?.split(';')?.toSet()
+            val requestStates =
+                testCase.requestState
+                    ?.split(';')
+                    ?.map { RequestState.valueOf(it) }
+                    ?.toSet()
             val requestSearchFilter =
                 RequestSearchFilter<UUID>(
-                    companyId = companyId?.let { UUID.fromString(it) },
-                    dataTypes = dataType?.let { setOf(it) },
+                    companyId = testCase.companyId?.let { UUID.fromString(it) },
+                    dataTypes = testCase.dataType?.let { setOf(it) },
                     reportingPeriods = reportingPeriods,
                     userId = null,
                     requestStates = requestStates,
                     requestPriorities = null,
-                    emailAddress = emailAddressSearchString,
-                    companySearchString = companySearchString,
-                    adminComment = adminCommentSearchString,
+                    emailAddress = testCase.emailAddressSearchString,
+                    companySearchString = testCase.companySearchString,
+                    adminComment = testCase.adminCommentSearchString,
                 )
             val actualResults = requestQueryManager.searchRequests(requestSearchFilter)
             val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
