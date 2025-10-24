@@ -127,21 +127,17 @@ class RequestQueryManagerTest
         )
 
         companion object {
+            val ALL_INDICES = (0..15).joinToString(";")
+
             @JvmStatic
             fun requestSearchTestCases() =
                 listOf(
                     RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, "0"),
                     RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, "0;1"),
                     RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, "0;2;4;6;8;10;12;14"),
-                    RequestSearchTestCase(null, null, null, null, null, null, null, "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15"),
-                    RequestSearchTestCase(
-                        null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null,
-                        "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                    ),
-                    RequestSearchTestCase(
-                        null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null,
-                        "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15",
-                    ),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null, ALL_INDICES),
                     RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, "0;2;4;6;8;10;12;14"),
                     RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
                     RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, "0;1;2;3;4;5;6;7"),
