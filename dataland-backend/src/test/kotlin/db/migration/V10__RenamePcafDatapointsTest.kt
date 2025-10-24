@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
 import org.junit.jupiter.api.Assertions
@@ -19,6 +20,7 @@ import java.util.UUID
 @SpringBootTest(classes = [org.dataland.datalandbackend.DatalandBackend::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
+@DefaultMocks
 class V10__RenamePcafDatapointsTest : BaseFlywayMigrationTest() {
     @Autowired
     lateinit var companyAlterationManager: CompanyAlterationManager
