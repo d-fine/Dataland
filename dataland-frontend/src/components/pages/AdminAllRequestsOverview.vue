@@ -1,5 +1,5 @@
 <template>
-  <TheContent class="min-h-screen relative">
+  <TheContent>
     <div class="search-container-first-line">
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
@@ -100,12 +100,12 @@
       <Message variant="simple" severity="secondary">{{ numberOfRequestsInformation }} </Message>
     </div>
 
-    <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+    <div v-if="waitingForData">
       <p class="font-medium text-xl">Loading...</p>
       <DatalandProgressSpinner />
     </div>
 
-    <div class="col-12 text-left p-3">
+    <div class="text-left p-3">
       <div class="card">
         <DataTable
           v-if="currentDataRequests && currentDataRequests.length > 0"
@@ -146,7 +146,7 @@
               <div
                 data-test="framework-subtitle"
                 v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                style="color: gray; font-size: smaller; line-height: var(--spacing-xs); white-space: nowrap"
               >
                 <br />
                 {{ getFrameworkSubtitle(slotProps.data.dataType) }}
