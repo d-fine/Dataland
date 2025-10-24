@@ -102,7 +102,7 @@ spring-test = { group = "org.springframework", name = "spring-test", version.ref
 postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.7" }
 
 # H2
-h2 = { group = "com.h2database", name = "h2", version = "2.3.232" }
+h2 = { group = "com.h2database", name = "h2", version = "2.4.240" }
 
 # Moshi
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
