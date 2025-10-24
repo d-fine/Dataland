@@ -1,9 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
+import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRightAssignment
 import org.dataland.datalandcommunitymanager.repositories.CompanyRightsRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -18,6 +21,22 @@ class CompanyRightsService(
      * @param companyId The Dataland ID of the company.
      * @return The associated list of company rights.
      */
+    @Transactional(readOnly = true)
     fun getCompanyRights(companyId: UUID): List<CompanyRight> =
         companyRightsRepository.findAllByCompanyId(companyId).map { it.companyRight }
+
+    /**
+     * Assign the specified company right to the specified company.
+     * Does not create a new database entry if the assignment already exists.
+     * @param companyRightAssignment The company right assignment to create.
+     * @return The associated company right assignment in the database.
+     */
+    @Transactional
+    fun assignCompanyRight(companyRightAssignment: CompanyRightAssignment): CompanyRightAssignment {
+        companyRightsRepository.findByIdOrNull(companyRightAssignment) ?: return companyRightAssignment
+        return companyRightsRepository
+            .save(
+                companyRightAssignment.toCompanyRightEntity(),
+            ).toCompanyRightAssignment()
+    }
 }
