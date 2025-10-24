@@ -15,9 +15,11 @@ import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -51,6 +53,7 @@ import java.io.File
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Suppress("LongParameterList")
+@DefaultMocks
 class DataPointSpecificationExampleValidationTest
     @Autowired
     constructor(
@@ -117,9 +120,6 @@ class DataPointSpecificationExampleValidationTest
                     parentCompanyLei = null,
                 )
         }
-
-        @MockitoBean
-        private lateinit var ignored: DocumentControllerApi
 
         @ParameterizedTest(name = "Ensure the datapoint example {0} matches the specification")
         @MethodSource("dataPointBaseTypeTestProvider")

@@ -27,7 +27,7 @@ data class CompanyRoleAssignment(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
 )

@@ -5,8 +5,6 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
 /**
  * Base class for integration tests (service + associated DB) with standardized configuration.
@@ -16,14 +14,12 @@ import org.testcontainers.junit.jupiter.Testcontainers
  * - Enables transactions with rollback, i.e. all data is automatically reset in between tests
  */
 @SpringBootTest
-@Testcontainers
 @Transactional
 @Rollback
 // Suppress is required as detekt wrongfully suggests to convert this class into an object which would break it
 @Suppress("UtilityClassWithPublicConstructor")
 abstract class BaseIntegrationTest {
     companion object {
-        @Container
         @JvmStatic
         val postgres = TestPostgresContainer.postgres
 

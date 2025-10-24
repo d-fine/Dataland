@@ -2,10 +2,12 @@ package org.dataland.datasourcingservice.integrationTests
 
 import org.assertj.core.api.Assertions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -15,7 +17,10 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.UUID
 
-@SpringBootTest
+@SpringBootTest(
+    classes = [DatalandDataSourcingService::class],
+    properties = ["spring.profiles.active=containerized-db"],
+)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class DataSourcingEntityAuditTests
     @Autowired
@@ -23,6 +28,11 @@ class DataSourcingEntityAuditTests
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataSourcingRevisionRepository: DataRevisionRepository,
     ) : BaseIntegrationTest() {
+        @AfterEach
+        fun cleanup() {
+            dataSourcingRepository.deleteAll()
+        }
+
         @Test
         fun `test audit historization of DataSourcingEntity with updated states`() {
             val dataSourcingEntityId = UUID.randomUUID()
