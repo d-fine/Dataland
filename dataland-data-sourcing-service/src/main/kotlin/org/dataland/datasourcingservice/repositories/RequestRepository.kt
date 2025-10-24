@@ -46,6 +46,9 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     /**
      * Return the list of all request ids that match the optional filters.
      * @param searchFilter to filter by
+     * @param pageable Pageable object
+     * @param companyIds list of companyIds matching the company name search string
+     * @param userIds list of userIds matching the user email search string
      * @return list of matching request ids
      */
     @Query(
@@ -53,17 +56,21 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "WHERE " +
             "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
             "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "(" +
-            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
-            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
-            ") AND " +
+            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
+            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
             "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
             "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+            "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
+            "(:#{#searchFilter.adminComment} IS NULL " +
+            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
+            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
     )
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
+        companyIds: List<UUID>? = null,
+        userIds: List<UUID>? = null,
     ): Page<UUID>
 
     /**
@@ -78,11 +85,18 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
     fun findByListOfIdsAndFetchDataSourcingEntity(requestIds: List<UUID>): List<RequestEntity>
 
     /**
+     * Get all requests by userId.
+     * @param userId to filter by
+     * @return list of matching RequestEntity objects
+     */
+
+    fun findByUserId(userId: UUID): List<RequestEntity>
+
+    /**
      * Return the number of requests that match the optional filters.
-     * @param companyId to filter by
-     * @param dataType to filter by
-     * @param reportingPeriod to filter by
-     * @param state to filter by
+     * @param searchFilter to filter by
+     * @param companyIds list of companyIds matching the company name search string
+     * @param userIds list of userIds matching the user email search string
      * @return number of matching requests
      */
     @Query(
@@ -90,13 +104,19 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "WHERE " +
             "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
             "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "(" +
-            "(:#{#searchFilter.reportingPeriods == null} = TRUE) OR " +
-            "request.reportingPeriod IN :#{#searchFilter.reportingPeriods}" +
-            ") AND " +
+            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
+            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
             "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
             "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) OR request.requestPriority IN :#{#searchFilter.requestPriorities})",
+            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+            "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
+            "((:#{#searchFilter.adminComment} IS NULL " +
+            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
+            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
     )
-    fun getNumberOfRequests(searchFilter: RequestSearchFilter<UUID>): Int
+    fun getNumberOfRequests(
+        searchFilter: RequestSearchFilter<UUID>,
+        companyIds: List<UUID>? = null,
+        userIds: List<UUID>? = null,
+    ): Int
 }

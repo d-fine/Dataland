@@ -103,12 +103,12 @@
 import PrimeButton from 'primevue/button';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
-import { patchDataRequest } from '@/utils/RequestUtils';
+import { patchDataRequest } from '@/utils/RequestUtilsLegacy';
 import { type ErrorResponse } from '@clients/backend';
 import { type AccessStatus, RequestStatus, type StoredDataRequestMessageObject } from '@clients/communitymanager';
 import PrimeDialog from 'primevue/dialog';
 import { AxiosError } from 'axios';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
+import EmailDetailsLegacy from '@/components/resources/dataRequest/EmailDetailsLegacy.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 
@@ -119,7 +119,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  components: { EmailDetails, PrimeButton, PrimeDialog },
+  components: { EmailDetails: EmailDetailsLegacy, PrimeButton, PrimeDialog },
   props: {
     dataRequestId: {
       type: String,

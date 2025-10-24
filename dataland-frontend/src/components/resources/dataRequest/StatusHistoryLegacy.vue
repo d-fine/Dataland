@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';

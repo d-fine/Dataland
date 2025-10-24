@@ -1,10 +1,10 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -68,7 +68,7 @@ class RequestPriorityUpdater
         private fun updateRequestPriorities(
             currentPriority: RequestPriority,
             newPriority: RequestPriority,
-            filterCondition: (StoredRequest) -> Boolean,
+            filterCondition: (ExtendedStoredRequest) -> Boolean,
         ) {
             val requests = getAllRequests(currentPriority)
             requests
@@ -87,7 +87,7 @@ class RequestPriorityUpdater
                 }
         }
 
-        private fun getAllRequests(priority: RequestPriority): List<StoredRequest> {
+        private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredRequest> {
             val expectedNumberOfRequests =
                 requestControllerApi.postRequestCountQuery(
                     RequestSearchFilterString(
@@ -98,12 +98,12 @@ class RequestPriorityUpdater
             logger.info(
                 "Found $expectedNumberOfRequests requests with priority $priority to be considered for updating.",
             )
-            val allRequests = mutableListOf<StoredRequest>()
+            val allRequests = mutableListOf<ExtendedStoredRequest>()
 
             var page = 0
 
             while (true) {
-                val requestsWithSpecifiedState =
+                val requestsWithSpecifiedState: Collection<ExtendedStoredRequest> =
                     requestControllerApi.postRequestSearch(
                         requestSearchFilterString =
                             RequestSearchFilterString(

@@ -16,6 +16,7 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
@@ -325,7 +326,7 @@ interface RequestApi {
         )
         @RequestParam(defaultValue = "0")
         chunkIndex: Int,
-    ): ResponseEntity<List<StoredRequest>>
+    ): ResponseEntity<List<ExtendedStoredRequest>>
 
     /**
      * Get the number of requests based on filters.
@@ -360,4 +361,23 @@ interface RequestApi {
         @RequestBody
         requestSearchFilter: RequestSearchFilter<String>,
     ): ResponseEntity<Int>
+
+    /** A method for users to get all their existing data requests.
+     * @return all data requests of the user in a list
+     */
+    @Operation(
+        summary = "Get all stored data requests of the user making the request.",
+        description = "Gets all the stored data request created by the user who is making the request.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data requests for the user."),
+        ],
+    )
+    @GetMapping(
+        value = ["/user"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>>
 }

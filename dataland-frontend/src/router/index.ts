@@ -19,8 +19,13 @@ const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pa
 const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
+const MyDataRequestsOverviewLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/MyDataRequestsOverviewLegacy.vue');
+
 const PortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/PortfolioOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
+const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/ViewDataRequestPageLegacy.vue');
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
@@ -29,6 +34,8 @@ const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pa
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
 const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/AdminAllRequestsOverview.vue');
+const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
@@ -159,6 +166,15 @@ const routes = [
     },
   },
   {
+    path: '/requestoverview-legacy',
+    name: 'Admin overview for all requests (Legacy)',
+    component: AdminRequestsOverviewLegacy,
+    meta: {
+      initialTabIndex: 6,
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: `/qualityassurance`,
     name: 'UI for quality assurance',
     component: QualityAssurance,
@@ -186,10 +202,28 @@ const routes = [
     },
   },
   {
+    path: '/requests-legacy',
+    name: 'MyDataRequestsOverview (Legacy)',
+    component: MyDataRequestsOverviewLegacy,
+    meta: {
+      initialTabIndex: 4,
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: `/requests/:requestId`,
     name: 'Data Request View Page',
     props: true,
     component: ViewDataRequestPage,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/requests-legacy/:requestId`,
+    name: 'Data Request View Page (Legacy)',
+    props: true,
+    component: ViewDataRequestPageLegacy,
     meta: {
       requiresAuthentication: true,
     },

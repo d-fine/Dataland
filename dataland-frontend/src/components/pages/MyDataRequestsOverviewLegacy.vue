@@ -2,7 +2,7 @@
   <TheContent class="min-h-screen relative">
     <div v-if="waitingForData || storedDataRequests.length > 0">
       <div class="container">
-        <IconField class="company-search">
+        <IconField id="company-search-bar" class="company-search">
           <InputIcon class="pi pi-search" />
           <InputText
             data-test="requested-datasets-searchbar"
@@ -19,85 +19,98 @@
           :available-items="availableFrameworks"
           filter-name="Framework"
           data-test="requested-datasets-frameworks"
-          filter-placeholder="Search Frameworks"
+          id="framework-filter"
+          filter-placeholder="Search frameworks"
           class="search-filter"
           :max-selected-labels="1"
-          selected-items-label="{0} Frameworks selected"
+          selected-items-label="{0} frameworks selected"
         />
 
         <FrameworkDataSearchDropdownFilter
-          v-model="selectedState"
-          ref="StateFilter"
-          :available-items="availableState"
-          filter-name="Request State"
+          v-model="selectedAccessStatus"
+          ref="accessStatusFilter"
+          :available-items="availableAccessStatus"
+          filter-name="Access Status"
           data-test="requested-datasets-access-status"
-          filter-placeholder="Search State"
+          id="access-status-filter"
+          filter-placeholder="access status"
           class="search-filter"
           :max-selected-labels="1"
-          selected-items-label="{0} States selected"
+          selected-items-label="{0} status selected"
         />
-        <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
 
-      <div class="p-3">
-        <DataTable
-          :value="displayedData"
-          style="cursor: pointer"
-          :row-hover="true"
-          :loading="waitingForData"
-          data-test="requested-datasets-table"
-          paginator
-          paginator-position="bottom"
-          :rows="datasetsPerPage"
-          lazy
-          :total-records="numberOfFilteredRequests"
-          @page="onPage"
-          @sort="onSort"
-          @row-click="onRowClick"
-        >
-          <Column header="COMPANY" field="companyName" :sortable="true">
-            <template #body="{ data }">{{ data.companyName }}</template>
-          </Column>
-          <Column header="FRAMEWORK" field="dataType" :sortable="true">
-            <template #body="{ data }">
-              <div>{{ getFrameworkTitle(data.dataType) }}</div>
-              <div
-                v-if="frameworkHasSubTitle(data.dataType)"
-                data-test="framework-subtitle"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-              >
-                <br />
-                {{ getFrameworkSubtitle(data.dataType) }}
-              </div>
-            </template>
-          </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-            <template #body="{ data }">{{ data.reportingPeriod }}</template>
-          </Column>
-          <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
-            <template #body="{ data }">
-              {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
-            </template>
-          </Column>
-          <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
-            <template #body="{ data }">
-              {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
-            </template>
-          </Column>
-          <Column header="REQUEST STATE" field="requestState" :sortable="true">
-            <template #body="{ data }">
-              <DatalandTag :severity="data.state" :value="data.state" />
-            </template>
-          </Column>
-          <Column field="resolve" header="">
-            <template #body="{ data }">
-              <div v-if="data.state === RequestState.Processed" class="text-primary no-underline">
-                <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
-                <span class="ml-3">&gt;</span>
-              </div>
-            </template>
-          </Column>
-        </DataTable>
+      <div class="col-12 text-left p-3">
+        <div class="card">
+          <DataTable
+            :value="displayedData"
+            style="cursor: pointer"
+            :row-hover="true"
+            :loading="waitingForData"
+            data-test="requested-datasets-table"
+            paginator
+            paginator-position="bottom"
+            :rows="datasetsPerPage"
+            lazy
+            :total-records="numberOfFilteredRequests"
+            @page="onPage"
+            @sort="onSort"
+            @row-click="onRowClick"
+            id="my-data-requests-overview-table"
+          >
+            <Column header="COMPANY" field="companyName" :sortable="true">
+              <template #body="{ data }">{{ data.companyName }}</template>
+            </Column>
+            <Column header="FRAMEWORK" field="dataType" :sortable="true">
+              <template #body="{ data }">
+                <div>{{ getFrameworkTitle(data.dataType) }}</div>
+                <div
+                  v-if="frameworkHasSubTitle(data.dataType)"
+                  data-test="framework-subtitle"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                >
+                  <br />
+                  {{ getFrameworkSubtitle(data.dataType) }}
+                </div>
+              </template>
+            </Column>
+            <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+              <template #body="{ data }">{{ data.reportingPeriod }}</template>
+            </Column>
+            <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
+              <template #body="{ data }">
+                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
+              </template>
+            </Column>
+            <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
+              <template #body="{ data }">
+                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+              </template>
+            </Column>
+            <Column header="REQUEST STATUS" field="requestStatus" :sortable="true">
+              <template #body="{ data }">
+                <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
+              </template>
+            </Column>
+            <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
+              <template #body="{ data }">
+                <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
+              </template>
+            </Column>
+            <Column field="resolve" header="">
+              <template #body="{ data }">
+                <div
+                  v-if="data.requestStatus === RequestStatus.Answered"
+                  class="text-right text-primary no-underline font-bold"
+                >
+                  <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
+                  <span class="ml-3">&gt;</span>
+                </div>
+              </template>
+            </Column>
+          </DataTable>
+        </div>
       </div>
     </div>
 
@@ -120,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import DatalandTag from '@/components/general/DatalandTag.vue';
+import DatalandTag from '@/components/general/DatalandTagLegacy.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 
@@ -128,11 +141,12 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
-  customCompareForRequestState,
+  customCompareForRequestStatus,
+  retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
-  retrieveAvailableRequestStates,
-} from '@/utils/RequestsOverviewPageUtils';
+} from '@/utils/RequestsOverviewPageUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -146,28 +160,28 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
 const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
-const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
-const displayedData = ref<ExtendedStoredRequest[]>([]);
+const storedDataRequests = ref<ExtendedStoredDataRequest[]>([]);
+const displayedData = ref<ExtendedStoredDataRequest[]>([]);
 const searchBarInput = ref('');
 const searchBarInputFilter = ref('');
 
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
 
-const availableState = ref<SelectableItem[]>([]);
-const selectedState = ref<SelectableItem[]>([]);
+const availableAccessStatus = ref<SelectableItem[]>([]);
+const selectedAccessStatus = ref<SelectableItem[]>([]);
 
 const numberOfFilteredRequests = ref(0);
-const sortField = ref<keyof ExtendedStoredRequest>('state');
+const sortField = ref<keyof ExtendedStoredDataRequest>('requestStatus');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
+const accessStatusFilter = ref();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -175,11 +189,11 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableState.value = retrieveAvailableRequestStates();
+  availableAccessStatus.value = retrieveAvailableAccessStatuses();
   await getStoredRequestDataList();
 });
 
-watch([selectedFrameworks, selectedState, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
+watch([selectedFrameworks, selectedAccessStatus, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
 
 watch(searchBarInput, (newSearch) => {
   searchBarInputFilter.value = newSearch;
@@ -190,7 +204,7 @@ watch(searchBarInput, (newSearch) => {
  * Navigates to the bulk data request page.
  */
 function goToMyPortfoliosPage(): void {
-  void vueRouter.push('/portfolios');
+  vueRouter.push('/portfolios').catch(console.error);
 }
 
 /**
@@ -203,7 +217,9 @@ async function getStoredRequestDataList(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       storedDataRequests.value = (
-        await new ApiClientProvider(getKeycloakPromise()).apiClients.requestController.getRequestsForRequestingUser()
+        await new ApiClientProvider(
+          getKeycloakPromise()
+        ).apiClients.communityManagerRequestController.getDataRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {
@@ -219,8 +235,8 @@ async function getStoredRequestDataList(): Promise<void> {
  * @param {DataTableRowClickEvent} event - The row click event containing data about the clicked row.
  */
 function onRowClick(event: DataTableRowClickEvent): void {
-  const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
-  void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
+  const requestIdOfClickedRow = (event.data as ExtendedStoredDataRequest).dataRequestId;
+  vueRouter.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
 }
 
 /**
@@ -231,7 +247,7 @@ function onRowClick(event: DataTableRowClickEvent): void {
  * @param {DataTableSortEvent} event - The sorting event containing the sort field and sort order.
  */
 function onSort(event: DataTableSortEvent): void {
-  sortField.value = event.sortField as keyof ExtendedStoredRequest;
+  sortField.value = event.sortField as keyof ExtendedStoredDataRequest;
   sortOrder.value = event.sortOrder ?? 1;
   updateCurrentDisplayedData();
 }
@@ -247,13 +263,13 @@ function filterFramework(framework: string): boolean {
 }
 
 /**
- * Determines whether the specified state matches any selected state.
+ * Determines whether the specified access status matches any selected access status.
  *
- * @param {string} state - The state to check.
- * @returns {boolean} True if the specified state matches a selected state, false otherwise.
+ * @param {string} accessStatus - The access status to check.
+ * @returns {boolean} True if the specified access status matches a selected access status, false otherwise.
  */
-function filterState(state: string): boolean {
-  return selectedState.value.some((s) => s.displayName === state);
+function filterAccessStatus(accessStatus: string): boolean {
+  return selectedAccessStatus.value.some((s) => s.displayName === accessStatus);
 }
 
 /**
@@ -268,28 +284,28 @@ function filterSearchInput(companyName: string): boolean {
 
 /**
  * Resets all the filters and the search bar input to their default state.
- * This clears the selected frameworks, selected states, and search input values.
+ * This clears the selected frameworks, selected access statuses, and search input values.
  */
 function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
-  selectedState.value = [];
+  selectedAccessStatus.value = [];
   searchBarInput.value = '';
 }
 
 /**
  * Updates the list of currently displayed data based on filters, sorting, and pagination.
- * Filters the data requests by search input, selected frameworks, and states.
+ * Filters the data requests by search input, selected frameworks, and access statuses.
  * Sorts the filtered data using a custom comparison function.
  * Updates the displayed data and scrolls to the top of the page.
  */
 function updateCurrentDisplayedData(): void {
-  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName!));
+  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName));
 
   if (selectedFrameworks.value.length > 0) {
     data = data.filter((d) => filterFramework(d.dataType));
   }
-  if (selectedState.value.length > 0) {
-    data = data.filter((d) => filterState(d.state));
+  if (selectedAccessStatus.value.length > 0) {
+    data = data.filter((d) => filterAccessStatus(d.accessStatus));
   }
 
   data.sort((a, b) => customCompareForExtendedStoredDataRequests(a, b));
@@ -303,27 +319,31 @@ function updateCurrentDisplayedData(): void {
 
 /**
  * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
- * Compares based on the current sort field, request state, last modified date, and company name.
+ * Compares based on the current sort field, request status, last modified date, and company name.
  *
- * @param {ExtendedStoredRequest} a - The first data request object to compare.
- * @param {ExtendedStoredRequest} b - The second data request object to compare.
+ * @param {ExtendedStoredDataRequest} a - The first data request object to compare.
+ * @param {ExtendedStoredDataRequest} b - The second data request object to compare.
  * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
  */
-function customCompareForExtendedStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest): number {
+function customCompareForExtendedStoredDataRequests(
+  a: ExtendedStoredDataRequest,
+  b: ExtendedStoredDataRequest
+): number {
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';
 
-  if (sortField.value !== 'state') {
+  if (sortField.value !== 'requestStatus') {
     if (aValue < bValue) return -1 * sortOrder.value;
     if (aValue > bValue) return sortOrder.value;
   }
 
-  if (a.state !== b.state) return customCompareForRequestState(a.state, b.state, sortOrder.value);
+  if (a.requestStatus !== b.requestStatus)
+    return customCompareForRequestStatus(a.requestStatus, b.requestStatus, sortOrder.value);
 
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
 
-  return a.companyName! < b.companyName! ? -1 * sortOrder.value : sortOrder.value;
+  return a.companyName < b.companyName ? -1 * sortOrder.value : sortOrder.value;
 }
 
 /**
@@ -340,9 +360,12 @@ function onPage(event: DataTablePageEvent): void {
 
 <style scoped>
 .container {
+  margin: 0;
+  width: 100%;
   padding: var(--spacing-lg);
   display: flex;
   gap: var(--spacing-lg);
+  align-items: start;
 
   .company-search {
     width: 30%;
@@ -352,5 +375,21 @@ function onPage(event: DataTablePageEvent): void {
     width: 13%;
     text-align: left;
   }
+}
+
+#my-data-requests-overview-table tr:hover {
+  cursor: pointer;
+}
+
+.d-center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.text-primary {
+  color: var(--main-color);
 }
 </style>

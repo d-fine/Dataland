@@ -152,8 +152,8 @@ import {
   customCompareForRequestStatus,
   retrieveAvailableAccessStatuses,
   retrieveAvailableFrameworks,
-} from '@/utils/RequestsOverviewPageUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+} from '@/utils/RequestsOverviewPageUtilsLegacy';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import {
   AccessStatus,
@@ -232,7 +232,7 @@ export default defineComponent({
       this.updateCurrentDisplayedData();
     },
     companyRoleAssignments() {
-      void this.getStoredCompanyRequestDataList();
+      this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
     },
   },
   methods: {

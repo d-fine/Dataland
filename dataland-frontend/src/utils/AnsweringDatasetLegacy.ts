@@ -1,7 +1,7 @@
 import type { ExtendedStoredDataRequest, StoredDataRequest } from '@clients/communitymanager';
 import { type ApiClientProvider } from '@/services/ApiClients.ts';
 import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-import { getParentCompanyId } from '@/utils/CompanyInformation.ts';
+import { getParentCompanyId } from '@/utils/CompanyInformationLegacy.ts';
 
 /**
  * Retrieve the meta data object of the active data set identified by the given parameters.
@@ -33,7 +33,7 @@ async function getDataMetaInfo(
  * @param storedDataRequest the data request whose ansering data set URL shall be found
  * @param apiClientProvider the ApiClientProvider to use for the connection
  */
-export async function getAnsweringDatasetUrl(
+export async function getAnsweringDataSetUrl(
   storedDataRequest: StoredDataRequest | ExtendedStoredDataRequest,
   apiClientProvider: ApiClientProvider
 ): Promise<string | undefined> {

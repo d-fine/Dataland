@@ -1,11 +1,16 @@
-import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
+import MyDataRequestsOverviewLegacy from '@/components/pages/MyDataRequestsOverviewLegacy.vue';
 import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
-import { RequestState, type ExtendedStoredRequest, RequestPriority } from '@clients/datasourcingservice';
+import {
+  AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestPriority,
+  RequestStatus,
+} from '@clients/communitymanager';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
-const mockDataRequests: ExtendedStoredRequest[] = [];
-const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'REQUEST STATE'];
+const mockDataRequests: ExtendedStoredDataRequest[] = [];
+const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'STATUS'];
 const dummyRequestId = 'dummyRequestId';
 
 before(function () {
@@ -15,85 +20,93 @@ before(function () {
    * @param reportingPeriod to include in the data request
    * @param companyName to include in the data request
    * @param companyId to include in the data request
-   * @param state to set in the data request
+   * @param requestStatus to set in the data request
+   * @param accessStatus to set in the data request
    * @param requestPriority to set in the data request
    * @returns an extended sorted data request object
    */
-  function buildExtendedStoredRequest(
+  function buildExtendedStoredDataRequest(
     dataType: DataTypeEnum,
     reportingPeriod: string,
     companyName: string,
     companyId: string,
-    state: RequestState,
+    requestStatus: RequestStatus,
+    accessStatus: AccessStatus,
     requestPriority: RequestPriority
-  ): ExtendedStoredRequest {
+  ): ExtendedStoredDataRequest {
     return {
-      id: dummyRequestId,
+      dataRequestId: dummyRequestId,
       userId: 'some-user-id',
-      creationTimeStamp: 1709204495770,
+      creationTimestamp: 1709204495770,
       dataType: dataType,
       reportingPeriod: reportingPeriod,
-      companyId: companyId,
+      datalandCompanyId: companyId,
       companyName: companyName,
       lastModifiedDate: 1709204495770,
-      state: state,
+      requestStatus: requestStatus,
+      accessStatus: accessStatus,
       requestPriority: requestPriority,
     };
   }
 
   mockDataRequests.push(
-    buildExtendedStoredRequest(
+    buildExtendedStoredDataRequest(
       DataTypeEnum.Lksg,
       '2020',
-      'companyProcessed',
+      'companyAnswered',
       'compA',
-      RequestState.Processed,
+      RequestStatus.Answered,
+      AccessStatus.Pending,
       RequestPriority.Low
     ),
-    buildExtendedStoredRequest(
+    buildExtendedStoredDataRequest(
       DataTypeEnum.Sfdr,
       '2022',
-      'companyOpen',
+      'companyNotAnsweredSfdr',
       'someId',
-      RequestState.Open,
+      RequestStatus.Open,
+      AccessStatus.Pending,
       RequestPriority.Low
     ),
-    buildExtendedStoredRequest(
+    buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyFinancials,
-      '9999',
+      '3021',
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
-      RequestState.Withdrawn,
+      RequestStatus.Resolved,
+      AccessStatus.Pending,
       RequestPriority.Low
     ),
-    buildExtendedStoredRequest(
+    buildExtendedStoredDataRequest(
       DataTypeEnum.EutaxonomyNonFinancials,
       '2021',
-      'companyWithdrawn',
+      'companyNotAnsweredEU',
       'someId',
-      RequestState.Withdrawn,
+      RequestStatus.Open,
+      AccessStatus.Pending,
       RequestPriority.Low
     ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.Lksg,
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.Sfdr,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
-      RequestState.Processed,
+      RequestStatus.Answered,
+      AccessStatus.Pending,
       RequestPriority.Low
     )
   );
 });
 describe('Component tests for the data requests search page', function (): void {
   it('Check sorting', function (): void {
-    cy.intercept('**data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
-    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATE'];
+    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
     for (const value of sortingColumHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-datasets-table"]')
@@ -115,12 +128,12 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check page when there are no requested datasets', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: [],
       status: 200,
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
@@ -134,11 +147,11 @@ describe('Component tests for the data requests search page', function (): void 
     const placeholder = 'Search by company name';
     const inputValue = 'A company name';
 
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -158,20 +171,20 @@ describe('Component tests for the data requests search page', function (): void 
 
   it('Check the content of the data table', function (): void {
     const expectedCompanys = [
-      'companyProcessed',
-      'companyOpen',
-      'companyWithdrawn',
+      'companyAnswered',
+      'companyNotAnsweredSfdr',
+      'companyNotAnsweredEU',
       'z-company-that-will-always-be-sorted-to-bottom',
       'a-company-that-will-always-be-sorted-to-top',
     ];
     const expectedReportingPeriods = ['2020', '2021', '2022'];
 
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -186,13 +199,13 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check existence and functionality of searchbar and resolve button', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
@@ -200,13 +213,13 @@ describe('Component tests for the data requests search page', function (): void 
         .should('exist')
         .should('not.be.disabled')
         .clear()
-        .type('companyOpen');
+        .type('companyNotAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('not.exist');
       cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
-        .type('companyProcessed');
+        .type('companyAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
       cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
     });
@@ -220,12 +233,12 @@ describe('Component tests for the data requests search page', function (): void 
       'for non-financial companies',
     ];
 
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       cy.get('[data-test="requested-datasets-frameworks"]')
@@ -246,12 +259,12 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check the functionality of rowClick event', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
+    cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
+    cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
       router: router,
     }).then(() => {
