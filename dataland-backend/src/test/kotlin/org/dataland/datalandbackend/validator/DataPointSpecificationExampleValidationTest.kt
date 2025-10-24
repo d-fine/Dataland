@@ -19,8 +19,6 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
-import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
