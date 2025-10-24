@@ -127,7 +127,7 @@ commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.14.0" }
 
 # PDFBox
-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.5" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
 
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
