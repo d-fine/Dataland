@@ -1,38 +1,33 @@
 <template>
-  <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
+  <div class="portfolio-monitoring-content">
+    <p class="header-styling">Activate Monitoring</p>
+    <ToggleSwitch
+      v-model="isMonitoringActive"
+      data-test="activateMonitoringToggle"
+      @update:modelValue="onMonitoringToggled"
+    />
+
+    <p class="header-styling">Frameworks</p>
     <div>
-      <p class="header-styling">Activate Monitoring</p>
-      <ToggleSwitch
-        class="form-field vertical-middle"
-        v-model="isMonitoringActive"
-        data-test="activateMonitoringToggle"
-        @update:modelValue="onMonitoringToggled"
-      />
-    </div>
-    <div>
-      <p class="header-styling">Frameworks</p>
-      <div class="framework-switch-group">
-        <div
-          v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
-          :key="frameworkMonitoringOption.value"
-          data-test="frameworkSelection"
-        >
-          <div class="framework-toggle-label">
-            <ToggleSwitch
-              v-model="frameworkMonitoringOption.isActive"
-              class="form-field vertical-middle"
-              data-test="valuesOnlySwitch"
-              @change="resetErrors"
-              :disabled="!isMonitoringActive"
-            />
-            <p :for="frameworkMonitoringOption.value" class="">
-              {{ frameworkMonitoringOption.label }}
-            </p>
-          </div>
+      <div
+        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+        :key="frameworkMonitoringOption.value"
+        data-test="frameworkSelection"
+      >
+        <div class="framework-toggle-label">
+          <ToggleSwitch
+            v-model="frameworkMonitoringOption.isActive"
+            data-test="valuesOnlySwitch"
+            @change="resetErrors"
+            :disabled="!isMonitoringActive"
+          />
+          <span>
+            {{ frameworkMonitoringOption.label }}
+          </span>
         </div>
-        <div class="dataland-info-text small">
-          EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
-        </div>
+      </div>
+      <div class="dataland-info-text small">
+        EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
@@ -186,33 +181,20 @@ function prefillModal(): void {
 }
 
 .button-wrapper {
-  width: 100%;
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
 }
 
 .portfolio-monitoring-content {
   width: 20rem;
-  height: 100%;
-  border-radius: var(--spacing-xxs);
-  background-color: white;
   padding: var(--spacing-xs) var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.framework-switch-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .framework-toggle-label {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  padding-bottom: var(--spacing-md);
 }
 </style>
