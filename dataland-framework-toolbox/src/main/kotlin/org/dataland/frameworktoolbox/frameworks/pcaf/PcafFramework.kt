@@ -50,8 +50,8 @@ class PcafFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "customEnumPcafMainSector",
-                            dataPointTypeIdOverwrite = "customEnumPcafMainSector",
+                            "extendedEnumPcafMainSector",
+                            dataPointTypeIdOverwrite = "extendedEnumPcafMainSector",
                         )
                     }
                 }
@@ -60,8 +60,8 @@ class PcafFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "customEnumCompanyExchangeStatus",
-                            dataPointTypeIdOverwrite = "customEnumCompanyExchangeStatus",
+                            "extendedEnumCompanyExchangeStatus",
+                            dataPointTypeIdOverwrite = "extendedEnumCompanyExchangeStatus",
                         )
                     }
                 }

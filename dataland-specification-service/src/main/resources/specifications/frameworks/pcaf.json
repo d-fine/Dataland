@@ -10,8 +10,8 @@
         "fiscalYearEnd" : "extendedDateFiscalYearEnd"
       },
       "company" : {
-        "mainPcafSector" : "customEnumPcafMainSector",
-        "companyExchangeStatus" : "customEnumCompanyExchangeStatus"
+        "mainPcafSector" : "extendedEnumPcafMainSector",
+        "companyExchangeStatus" : "extendedEnumCompanyExchangeStatus"
       }
     },
     "companyValue" : {
