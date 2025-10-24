@@ -41,7 +41,6 @@ class PortfolioBulkDataRequestService
                 "Updating company reporting info for ${basePortfolio.companyIds.size} unique company ids for" +
                     " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
             )
-            companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
             postBulkDataRequestIfMonitored(basePortfolio)
         }
 
@@ -85,6 +84,8 @@ class PortfolioBulkDataRequestService
          */
         private fun postBulkDataRequestIfMonitored(basePortfolio: BasePortfolio) {
             if (!basePortfolio.isMonitored) return
+
+            companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
 
             val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.companyIds)
 
