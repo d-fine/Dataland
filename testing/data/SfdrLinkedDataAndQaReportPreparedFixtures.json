@@ -3,8 +3,12 @@
 		"general": {
 			"general": {
 				"dataDate": "2024-06-25",
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-07-26",
+				"fiscalYearDeviation": {
+					"value": "NoDeviation"
+				},
+				"fiscalYearEnd": {
+					"value": "2024-07-26"
+				},
 				"referencedReports": {
 					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",

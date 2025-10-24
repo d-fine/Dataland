@@ -10,11 +10,12 @@ const createSfdrDataset = {
   fillRequiredFields(): void {
     this.fillDateFieldWithFutureDate('dataDate');
     cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"][value="Deviation"]').click();
+    cy.get('div[data-test="fiscalYearEnd"] [data-test="dataPointToggleButton"]').click();
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
     cy.get(`[data-test="${fieldName}"] button`).should('have.class', 'p-datepicker-dropdown').click();
-    cy.get(`input[name="${fieldName}"]`).should('not.be.visible');
+    cy.get(`[data-test="${fieldName}"] input.formkit-input`).should('not.be.visible');
     cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
     cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   },

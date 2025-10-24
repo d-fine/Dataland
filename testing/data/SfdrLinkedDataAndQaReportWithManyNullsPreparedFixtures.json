@@ -3,8 +3,30 @@
 		"general": {
 			"general": {
 				"dataDate": "2022-01-01",
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2022-12-31",
+				"fiscalYearDeviation": {
+					"value": "NoDeviation",
+					"quality": "Reported",
+					"comment": null,
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
+				"fiscalYearEnd": {
+					"value": "2022-12-31",
+					"quality": "Reported",
+					"comment": null,
+					"dataSource": {
+						"page": "69",
+						"tagName": "",
+						"fileName": "test_report",
+						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
+						"publicationDate": null
+					}
+				},
 				"referencedReports": {
 					"test_report": {
 						"fileReference": "6aab0f0017f590a98d1a466c57e1cd46df9f1d5ecd51f10c3e3217e381d9f629",
