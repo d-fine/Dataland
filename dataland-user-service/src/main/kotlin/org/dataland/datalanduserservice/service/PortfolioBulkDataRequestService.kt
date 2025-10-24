@@ -37,12 +37,13 @@ class PortfolioBulkDataRequestService
          * @param basePortfolio The BasePortfolio for which to create bulk data requests.
          */
         fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
+            if (!basePortfolio.isMonitored) return
             logger.info(
                 "Updating company reporting info for ${basePortfolio.companyIds.size} unique company ids for" +
                     " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
             )
             companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
-            postBulkDataRequestIfMonitored(basePortfolio)
+            postBulkDataRequest(basePortfolio)
         }
 
         /**
@@ -52,7 +53,7 @@ class PortfolioBulkDataRequestService
          * It retrieves all monitored portfolios, updates company reporting year and sector information,
          * and then publishes appropriate Bulk Data Requests for each portfolio.
          *
-         * @see postBulkDataRequestIfMonitored
+         * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 */5 * * * *")
@@ -68,7 +69,7 @@ class PortfolioBulkDataRequestService
             companyReportingInfoService.updateCompanies(allCompanyIds)
             logger.info("Company reporting info update completed.")
             allMonitoredPortfolios.forEach {
-                postBulkDataRequestIfMonitored(it.toBasePortfolio())
+                postBulkDataRequest(it.toBasePortfolio())
             }
 
             logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
@@ -83,9 +84,7 @@ class PortfolioBulkDataRequestService
          *
          * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
          */
-        private fun postBulkDataRequestIfMonitored(basePortfolio: BasePortfolio) {
-            if (!basePortfolio.isMonitored) return
-
+        private fun postBulkDataRequest(basePortfolio: BasePortfolio) {
             val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.companyIds)
 
             groupedCompanyIds.forEach { (key, companyIds) ->
