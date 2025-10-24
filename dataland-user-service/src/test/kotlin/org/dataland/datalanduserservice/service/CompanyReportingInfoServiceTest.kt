@@ -136,7 +136,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `sector string 'financials' maps to FINANCIALS sector type`() {
+    fun `sector string financials maps to FINANCIALS sector type`() {
         val companyId = "sec1"
         val info = validCompanyInfo().copy(sector = "financials")
         val mockedStatic = mockLocalDateNow()
@@ -150,7 +150,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     @Test
-    fun `lower case sector string other than 'financials' maps to NONFINANCIALS sector type`() {
+    fun `lower case sector string other than financials maps to NONFINANCIALS sector type`() {
         val companyId = "sec2"
         val mockedStatic = mockLocalDateNow()
         val info = validCompanyInfo().copy(sector = "randomsector")
