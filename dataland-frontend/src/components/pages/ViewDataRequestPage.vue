@@ -393,7 +393,7 @@ function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefine
  */
 function goToNewRequestPage(): void {
   resubmitSuccessModalIsVisible.value = false;
-  void router.push(`/requests/${newRequestId.value}`).catch(console.error);
+  router.push(`/requests/${newRequestId.value}`).catch(console.error);
   requestId.value = newRequestId.value;
   newRequestId.value = '';
   void initializeComponent();
