@@ -686,7 +686,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:d5f196a551b5cef1c70853c6dd588f456d16ca4ea733e3f31c75bc1ae2f65f3f
+    image: postgres:alpine@sha256:48c8ad3a7284b82be4482a52076d47d879fd6fb084a1cbfccbd551f9331b0e40
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
