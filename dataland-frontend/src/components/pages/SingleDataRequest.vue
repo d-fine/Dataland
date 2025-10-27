@@ -6,7 +6,7 @@
       :show-search-bar="false"
     />
     <h1 data-test="headerLabel" style="text-align: left; padding-left: 1.5rem">Single Data Request</h1>
-    <div v-if="!submitted" class="single-request-form">
+    <div class="single-request-form">
       <Card data-test="reportingPeriods">
         <template #title>
           Select at least one reporting period
@@ -104,26 +104,17 @@
         </div>
       </PrimeDialog>
       <PrimeButton type="submit" label="SUBMIT DATA REQUEST" @click="handleSubmission" class="submit-button" />
-    </div>
-    <div v-else data-test="submittedDiv">
-      <template v-if="submittingSucceeded">
-        <em class="material-icons info-icon green-text">check_circle</em>
-        <h1 class="status-text" data-test="requestStatusText">Submitting your data request was successful.</h1>
-      </template>
-
-      <template v-else>
-        <em class="material-icons info-icon red-text">error</em>
-        <h1 class="status-text" data-test="requestStatusText">The submission of your data request was unsuccessful.</h1>
-        <p>{{ errorMessage }}</p>
-      </template>
-
-      <PrimeButton
-        type="button"
-        @click="goToCompanyPage()"
-        label="BACK TO COMPANY PAGE"
-        class="uppercase p-button-outlined"
-        data-test="backToCompanyPageButton"
+      <SuccessDialog
+        :visible="submittingSucceeded"
+        message="Submitting your data request was successful."
+        primary-button-label="VIEW MY REQUESTS"
+        secondary-button-label="BACK TO COMPANY PAGE"
+        @close="router.push('/requests')"
+        @secondary-action="goToCompanyPage()"
       />
+      <Message v-if="submitted && errorMessage" severity="error">
+        {{ errorMessage }}
+      </Message>
     </div>
   </TheContent>
 </template>
@@ -155,6 +146,7 @@ import PrimeDialog from 'primevue/dialog';
 import PrimeSelect from 'primevue/select';
 import Message from 'primevue/message';
 import { type SingleRequest } from '@clients/datasourcingservice';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -323,7 +315,7 @@ function retrieveFrameworkOptions(): void {
  */
 function goToCompanyPage(): void {
   const thisCompanyId = companyIdentifier.value;
-  void router.push({ path: `/companies/${thisCompanyId}` });
+  router.push({ path: `/companies/${thisCompanyId}` }).catch((error) => console.error(error));
 }
 
 /**
