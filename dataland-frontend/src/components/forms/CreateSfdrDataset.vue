@@ -19,7 +19,7 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfFiscalYearEnd" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -225,9 +225,9 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfDataDate: {
+    yearOfFiscalYearEnd: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
+        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd?.value;
         if (typeof currentDate !== 'string') {
           return '';
         }
