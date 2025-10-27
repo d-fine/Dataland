@@ -36,6 +36,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.not
 import org.mockito.kotlin.reset
@@ -43,12 +44,14 @@ import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @SpringBootTest(
     classes = [DatalandDataSourcingService::class],
     properties = ["spring.profiles.active=containerized-db"],
 )
+@Transactional
 class RequestQueryManagerTest
     @Autowired
     constructor(
@@ -85,7 +88,7 @@ class RequestQueryManagerTest
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
             doReturn(listOf(mockBasicCompanyInfo2))
                 .whenever(mockCompanyDataControllerApi)
-                .getCompanies(eq(null), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
+                .getCompanies(isNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
             doReturn(COMPANY_ID_1).whenever(storedCompany1).companyId
             doReturn(COMPANY_ID_2).whenever(storedCompany2).companyId
             doReturn(companyInfo1).whenever(storedCompany1).companyInformation

@@ -55,16 +55,16 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
         "SELECT request.id FROM RequestEntity request " +
             "WHERE " +
             "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
-            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
+            "((:#{#searchFilter.dataTypes} IS NULL) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "((:#{#companyIds} IS NULL) OR request.companyId IN :#{#companyIds}) AND " +
+            "((:#{#searchFilter.reportingPeriods} IS NULL) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
             "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+            "((:#{#searchFilter.requestStates} IS NULL) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities} IS NULL) " +
             "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
             "(:#{#searchFilter.adminComment} IS NULL " +
             "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
-            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
+            "((:#{#userIds} IS NULL) OR request.userId IN :#{#userIds})",
     )
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
@@ -100,19 +100,19 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      * @return number of matching requests
      */
     @Query(
-        "SELECT COUNT(request) FROM RequestEntity request " +
+        "SELECT request.id FROM RequestEntity request " +
             "WHERE " +
             "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
-            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
+            "((:#{#searchFilter.dataTypes} IS NULL) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+            "((:#{#companyIds} IS NULL) OR request.companyId IN :#{#companyIds}) AND " +
+            "((:#{#searchFilter.reportingPeriods} IS NULL) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
             "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+            "((:#{#searchFilter.requestStates} IS NULL) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+            "((:#{#searchFilter.requestPriorities} IS NULL) " +
             "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
-            "((:#{#searchFilter.adminComment} IS NULL " +
-            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
-            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
+            "(:#{#searchFilter.adminComment} IS NULL " +
+            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
+            "((:#{#userIds} IS NULL) OR request.userId IN :#{#userIds})",
     )
     fun getNumberOfRequests(
         searchFilter: RequestSearchFilter<UUID>,

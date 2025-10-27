@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import kotlin.collections.map
 
 /**
  * Service class for handling request queries.
@@ -28,14 +27,14 @@ class RequestQueryManager
     ) {
         /**
          * Method to get all data requests based on filters.
-         * @param filter the search filter containing relevant search parameters
+         * @param requestSearchFilter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
          * @param chunkSize the size of entries per chunk which should be returned
          * @return all filtered data requests
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun searchRequests(
-            filter: RequestSearchFilter<UUID>,
+            requestSearchFilter: RequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<ExtendedStoredRequest> {
@@ -53,10 +52,10 @@ class RequestQueryManager
 
             val matchingIdsPage =
                 requestRepository.searchRequests(
-                    searchFilter = filter,
+                    searchFilter = requestSearchFilter,
                     pageable = pageRequest,
-                    companyIds = companyIdsMatchingSearchString(filter.companySearchString),
-                    userIds = setupEmailAddressFilter(filter.emailAddress),
+                    companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
+                    userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
                 )
 
             val ids = matchingIdsPage.content
@@ -117,7 +116,7 @@ class RequestQueryManager
          * @param userId to filter by
          * @return list of matching ExtendedStoredRequest objects
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> =
             requestRepository
                 .findByUserId(userId)
@@ -133,7 +132,7 @@ class RequestQueryManager
          * Get requests for requesting user
          * @return list of matching ExtendedStoredRequest objects
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun getRequestsForRequestingUser(): List<ExtendedStoredRequest> {
             val userId = DatalandAuthentication.fromContext().userId
             return getRequestsByUser(
