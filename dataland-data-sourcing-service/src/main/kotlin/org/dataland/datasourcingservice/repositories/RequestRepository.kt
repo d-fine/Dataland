@@ -110,8 +110,8 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
             "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
             "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
-            "((:#{#searchFilter.adminComment} IS NULL " +
-            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) ) AND " +
+            "(:#{#searchFilter.adminComment} IS NULL " +
+            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%')) ) AND " +
             "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
     )
     fun getNumberOfRequests(
