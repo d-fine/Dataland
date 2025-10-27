@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.services.CompanyRightsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Controller for the company rights endpoints.
@@ -23,8 +24,20 @@ class CompanyRightsController(
             ),
         )
 
-    override fun postCompanyRight(companyRightAssignment: CompanyRightAssignment): ResponseEntity<CompanyRightAssignment> =
+    override fun postCompanyRight(companyRightAssignment: CompanyRightAssignment<String>): ResponseEntity<CompanyRightAssignment<String>> =
         ResponseEntity.ok(
-            companyRightsService.assignCompanyRight(companyRightAssignment),
+            companyRightsService.assignCompanyRight(
+                convertToCompanyRightAssignmentWithUUID(
+                    companyRightAssignment,
+                ),
+            ),
+        )
+
+    private fun convertToCompanyRightAssignmentWithUUID(
+        companyRightAssignmentWithString: CompanyRightAssignment<String>,
+    ): CompanyRightAssignment<UUID> =
+        CompanyRightAssignment<UUID>(
+            companyId = ValidationUtils.convertToUUID(companyRightAssignmentWithString.companyId),
+            companyRight = companyRightAssignmentWithString.companyRight,
         )
 }

@@ -88,6 +88,6 @@ interface CompanyRightsApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postCompanyRight(
         @RequestBody
-        companyRightAssignment: CompanyRightAssignment,
-    ): ResponseEntity<CompanyRightAssignment>
+        companyRightAssignment: CompanyRightAssignment<String>,
+    ): ResponseEntity<CompanyRightAssignment<String>>
 }

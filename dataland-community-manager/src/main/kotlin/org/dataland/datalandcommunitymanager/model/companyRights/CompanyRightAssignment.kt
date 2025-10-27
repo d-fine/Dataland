@@ -6,8 +6,8 @@ import java.util.UUID
 /**
  * ID class for the CompanyRightEntity.
  */
-data class CompanyRightAssignment(
-    val companyId: UUID,
+data class CompanyRightAssignment<IdType>(
+    val companyId: IdType,
     val companyRight: CompanyRight,
 ) {
     /**
@@ -15,7 +15,7 @@ data class CompanyRightAssignment(
      */
     fun toCompanyRightEntity(): CompanyRightEntity =
         CompanyRightEntity(
-            companyId = companyId,
+            companyId = UUID.fromString(companyId.toString()),
             companyRight = companyRight,
         )
 }

@@ -1,5 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRightAssignment
 import org.dataland.datalandcommunitymanager.repositories.CompanyRightsRepository
@@ -15,6 +18,7 @@ import java.util.UUID
 @Service
 class CompanyRightsService(
     @Autowired private val companyRightsRepository: CompanyRightsRepository,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
      * Get a list of all rights assigned to a company.
@@ -32,11 +36,22 @@ class CompanyRightsService(
      * @return The associated company right assignment in the database.
      */
     @Transactional
-    fun assignCompanyRight(companyRightAssignment: CompanyRightAssignment): CompanyRightAssignment {
-        companyRightsRepository.findByIdOrNull(companyRightAssignment) ?: return companyRightAssignment
-        return companyRightsRepository
-            .save(
-                companyRightAssignment.toCompanyRightEntity(),
-            ).toCompanyRightAssignment()
+    fun assignCompanyRight(companyRightAssignment: CompanyRightAssignment<UUID>): CompanyRightAssignment<String> {
+        try {
+            companyDataControllerApi.isCompanyIdValid(companyRightAssignment.companyId.toString())
+        } catch (_: ClientException) {
+            throw ResourceNotFoundApiException(
+                summary = "Company not found.",
+                message = "Dataland does not know the company ID ${companyRightAssignment.companyId}.",
+            )
+        }
+        companyRightsRepository.findByIdOrNull(companyRightAssignment) ?: companyRightsRepository.save(
+            companyRightAssignment.toCompanyRightEntity(),
+        )
+
+        return CompanyRightAssignment<String>(
+            companyId = companyRightAssignment.companyId.toString(),
+            companyRight = companyRightAssignment.companyRight,
+        )
     }
 }

@@ -8,7 +8,7 @@ import java.util.UUID
 /**
  * A JPA repository for accessing the company_rights table.
  */
-interface CompanyRightsRepository : JpaRepository<CompanyRightEntity, CompanyRightAssignment> {
+interface CompanyRightsRepository : JpaRepository<CompanyRightEntity, CompanyRightAssignment<UUID>> {
     /**
      * Find all company rights for a given company ID.
      */

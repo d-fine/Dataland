@@ -23,9 +23,9 @@ class CompanyRightEntity(
     /**
      * Convert this CompanyRightEntity to the associated CompanyRightAssignment model object.
      */
-    fun toCompanyRightAssignment(): CompanyRightAssignment =
+    fun toCompanyRightAssignment(): CompanyRightAssignment<String> =
         CompanyRightAssignment(
-            companyId = companyId,
+            companyId = companyId.toString(),
             companyRight = companyRight,
         )
 }
