@@ -4,7 +4,7 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRightEntity
 import java.util.UUID
 
 /**
- * ID class for the CompanyRightEntity.
+ * DTO class for the CompanyRightEntity.
  */
 data class CompanyRightAssignment<IdType>(
     val companyId: IdType,
@@ -15,6 +15,15 @@ data class CompanyRightAssignment<IdType>(
      */
     fun toCompanyRightEntity(): CompanyRightEntity =
         CompanyRightEntity(
+            companyId = UUID.fromString(companyId.toString()),
+            companyRight = companyRight,
+        )
+
+    /**
+     * Convert this CompanyRightAssignment to the associated CompanyRightId.
+     */
+    fun toCompanyRightId(): CompanyRightId =
+        CompanyRightId(
             companyId = UUID.fromString(companyId.toString()),
             companyRight = companyRight,
         )

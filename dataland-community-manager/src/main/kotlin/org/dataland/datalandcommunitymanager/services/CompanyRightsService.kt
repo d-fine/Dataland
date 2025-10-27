@@ -45,7 +45,7 @@ class CompanyRightsService(
                 message = "Dataland does not know the company ID ${companyRightAssignment.companyId}.",
             )
         }
-        companyRightsRepository.findByIdOrNull(companyRightAssignment) ?: companyRightsRepository.save(
+        companyRightsRepository.findByIdOrNull(companyRightAssignment.toCompanyRightId()) ?: companyRightsRepository.save(
             companyRightAssignment.toCompanyRightEntity(),
         )
 
