@@ -28,7 +28,6 @@ class UserServiceTest {
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
             companyIds = companyIds,
             isMonitored = false,
-            startingMonitoringPeriod = "",
             monitoredFrameworks = emptySet(),
         )
 
@@ -130,14 +129,12 @@ class UserServiceTest {
 
     @Test
     fun `portfolio yields expected bulk requests after activating monitoring`() {
-        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val dummyReportingPeriod = "2024"
+        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifierFYEAndReportingShift().actualStoredCompany.companyId
         val portfolioUpload =
             PortfolioUpload(
                 portfolioName = "Test Portfolio ${UUID.randomUUID()}",
                 companyIds = setOf(dummyCompanyId),
                 isMonitored = false,
-                startingMonitoringPeriod = null,
                 monitoredFrameworks = emptySet(),
             )
 
@@ -149,7 +146,6 @@ class UserServiceTest {
         assertEquals(portfolioUpload.portfolioName, portfolio.portfolioName)
         assertEquals(false, portfolio.isMonitored)
         assertEquals(emptySet<String>(), portfolio.monitoredFrameworks)
-        assertEquals(null, portfolio.startingMonitoringPeriod)
 
         val portfolioId = portfolio.portfolioId
 
@@ -160,7 +156,6 @@ class UserServiceTest {
                         portfolioId,
                         PortfolioMonitoringPatch(
                             isMonitored = true,
-                            startingMonitoringPeriod = dummyReportingPeriod,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                         ),
                     )
@@ -168,7 +163,6 @@ class UserServiceTest {
             }
 
         assertTrue(patchedPortfolio.isMonitored)
-        assertEquals(dummyReportingPeriod, patchedPortfolio.startingMonitoringPeriod)
         assertEquals(setOf("sfdr", "eutaxonomy"), patchedPortfolio.monitoredFrameworks)
 
         val requests =
@@ -184,6 +178,5 @@ class UserServiceTest {
 
         assertEquals(3, requests.size)
         assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
-        assertTrue(requests.all { it.reportingPeriod >= dummyReportingPeriod })
     }
 }

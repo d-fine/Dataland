@@ -36,12 +36,6 @@ data class EnrichedPortfolio(
     )
     val isMonitored: Boolean?,
     @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
-        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE,
-    )
-    val startingMonitoringPeriod: String?,
-    @field:JsonProperty(required = false)
     @field:ArraySchema(
         arraySchema =
             Schema(

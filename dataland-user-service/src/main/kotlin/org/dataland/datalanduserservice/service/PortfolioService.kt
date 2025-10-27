@@ -21,8 +21,8 @@ import java.util.UUID
 class PortfolioService
     @Autowired
     constructor(
-        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
         private val portfolioRepository: PortfolioRepository,
+        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
 
@@ -143,10 +143,9 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
-
-            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(portfolio)
-
-            return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
+            val newPortfolio = portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
+            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(newPortfolio)
+            return newPortfolio
         }
 
         /**
@@ -173,13 +172,12 @@ class PortfolioService
                     originalPortfolio.creationTimestamp,
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
-                    portfolio.startingMonitoringPeriod,
                     portfolio.monitoredFrameworks,
                 )
+            val updatedPortfolio = portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
+            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(updatedPortfolio)
 
-            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(updatedPortfolioEntity.toBasePortfolio())
-
-            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
+            return updatedPortfolio
         }
 
         /**
