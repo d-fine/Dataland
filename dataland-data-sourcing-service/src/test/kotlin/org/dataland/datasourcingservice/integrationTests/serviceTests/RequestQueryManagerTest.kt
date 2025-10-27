@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
@@ -192,6 +191,7 @@ class RequestQueryManagerTest
         fun `test sorting of requests works as expected`() {
             val timestamp = 1760428203000
             dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 companyId = UUID.fromString(COMPANY_ID_2),
                 dataType = DATA_TYPE_2,
                 reportingPeriod = REPORTING_PERIOD_2,
@@ -201,6 +201,7 @@ class RequestQueryManagerTest
                 creationTimestamp = timestamp,
             )
             dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000002"),
                 companyId = UUID.fromString(COMPANY_ID_1),
                 dataType = DATA_TYPE_1,
                 reportingPeriod = REPORTING_PERIOD_1,
@@ -210,6 +211,7 @@ class RequestQueryManagerTest
                 creationTimestamp = timestamp,
             )
             dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000003"),
                 companyId = UUID.fromString(COMPANY_ID_1),
                 dataType = DATA_TYPE_2,
                 reportingPeriod = REPORTING_PERIOD_2,
@@ -219,6 +221,7 @@ class RequestQueryManagerTest
                 creationTimestamp = timestamp + 600000,
             )
             dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000004"),
                 companyId = UUID.fromString(COMPANY_ID_2),
                 dataType = DATA_TYPE_1,
                 reportingPeriod = REPORTING_PERIOD_1,
@@ -230,13 +233,14 @@ class RequestQueryManagerTest
 
             val filter = RequestSearchFilter<UUID>()
             val results = requestQueryManager.searchRequests(filter)
-            val sorted =
-                results.sortedWith(
-                    compareByDescending<ExtendedStoredRequest> { it.creationTimeStamp }
-                        .thenBy { it.companyId }
-                        .thenByDescending { it.reportingPeriod }
-                        .thenBy { it.state },
+            val expectedOrder =
+                listOf(
+                    "00000000-0000-0000-0000-000000000003",
+                    "00000000-0000-0000-0000-000000000004",
+                    "00000000-0000-0000-0000-000000000002",
+                    "00000000-0000-0000-0000-000000000001",
                 )
-            Assertions.assertEquals(sorted, results, "Results are not sorted as expected")
+            val actualOrder = results.map { it.id }
+            Assertions.assertEquals(expectedOrder, actualOrder, "Results are not in the expected order")
         }
     }
