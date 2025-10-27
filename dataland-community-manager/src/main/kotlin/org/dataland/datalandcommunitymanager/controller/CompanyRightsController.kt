@@ -40,4 +40,13 @@ class CompanyRightsController(
             companyId = ValidationUtils.convertToUUID(companyRightAssignmentWithString.companyId),
             companyRight = companyRightAssignmentWithString.companyRight,
         )
+
+    override fun deleteCompanyRight(companyRightAssignment: CompanyRightAssignment<String>) =
+        ResponseEntity.ok(
+            companyRightsService.removeCompanyRight(
+                convertToCompanyRightAssignmentWithUUID(
+                    companyRightAssignment,
+                ),
+            ),
+        )
 }

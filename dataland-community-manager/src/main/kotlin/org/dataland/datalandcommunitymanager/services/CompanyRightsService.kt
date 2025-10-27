@@ -54,4 +54,21 @@ class CompanyRightsService(
             companyRight = companyRightAssignment.companyRight,
         )
     }
+
+    /**
+     * Delete the specified company right assignment.
+     * @param companyRightAssignment The company right assignment to delete.
+     * @throws ResourceNotFoundApiException if the specified company right assignment does not exist.
+     */
+    @Transactional
+    fun removeCompanyRight(companyRightAssignment: CompanyRightAssignment<UUID>) {
+        val companyRightEntity =
+            companyRightsRepository.findByIdOrNull(
+                companyRightAssignment.toCompanyRightId(),
+            ) ?: throw ResourceNotFoundApiException(
+                summary = "Company right assignment not found.",
+                message = "The specified company right assignment does not exist.",
+            )
+        companyRightsRepository.delete(companyRightEntity)
+    }
 }
