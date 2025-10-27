@@ -36,6 +36,11 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     override fun findAll(pageable: Pageable): Page<PortfolioEntity>
 
     /**
+     * Return all portfolios that are monitored on Dataland.
+     */
+    fun findAllByIsMonitoredTrue(): List<PortfolioEntity>
+
+    /**
      * Delete specific portfolio by portfolioId for userId
      */
     fun deleteByUserIdAndPortfolioId(

@@ -31,24 +31,8 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
-  it('shows validation errors when both inputs are missing', function () {
+  it('shows validation errors when framework is missing', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-
-    cy.get('[data-test="saveChangesButton"]').click();
-
-    cy.get('[data-test="reportingPeriodsError"]')
-      .should('contain', 'Please select Starting Period.')
-      .should('be.visible');
-
-    cy.get('[data-test="frameworkError"]')
-      .should('contain', 'Please select at least one Framework.')
-      .should('be.visible');
-  });
-
-  it('shows only framework error if reporting year is selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
 
     cy.get('[data-test="saveChangesButton"]').click();
 
@@ -57,27 +41,10 @@ describe('Portfolio Monitoring Modal', function () {
       .should('be.visible');
   });
 
-  it('shows only reporting year error if framework selected', function () {
+  it('submits successfully if framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group')
-      .first()
-      .within(() => {
-        cy.get('input[type="checkbox"]').check().should('be.checked');
-      });
 
-    cy.get('[data-test="saveChangesButton"]').click();
-
-    cy.get('[data-test="reportingPeriodsError"]')
-      .should('contain', 'Please select Starting Period.')
-      .should('be.visible');
-  });
-
-  it('submits successfully when both year and framework are selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
-
-    cy.get('.framework-switch-group')
+    cy.get('[data-test="frameworkSelection"]')
       .first()
       .within(() => {
         cy.get('input[type="checkbox"]').check();
@@ -98,26 +65,11 @@ describe('Portfolio Monitoring Modal', function () {
 
   it('toggle all frameworks on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group').each(($row) => {
+    cy.get('[data-test="frameworkSelection"]').each(($row) => {
       cy.wrap($row).within(() => {
         cy.get('input[type="checkbox"]').check().should('be.checked');
         cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
       });
     });
-  });
-
-  it('dropdown lists all years in order', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').find('.p-select-dropdown').click();
-    for (const year of ['2024', '2023', '2022', '2021', '2020', '2019']) {
-      cy.contains(year).should('exist');
-    }
-  });
-
-  it('updates selectedStartingYear when dropdown changes', () => {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2022').click();
-    cy.get('[data-test="listOfReportingPeriods"]').should('contain.text', '2022');
   });
 });

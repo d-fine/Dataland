@@ -29,7 +29,6 @@ object TestUtils {
             userId = "user1",
             entries = listOf(entryFinancials, entryNonFinancials, entryUndefined),
             isMonitored = null,
-            startingMonitoringPeriod = null,
             monitoredFrameworks = null,
         )
     }
