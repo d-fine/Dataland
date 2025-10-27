@@ -15,16 +15,14 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import javax.sql.DataSource
 
 private class TestContainerInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
-    companion object {
-        val postgres: PostgreSQLContainer<*> =
-            PostgreSQLContainer("postgres:15").apply {
-                withDatabaseName("dataland_test")
-                withUsername("test")
-                withPassword("test")
-                withReuse(true)
-                start()
-            }
-    }
+    val postgres: PostgreSQLContainer<*> =
+        PostgreSQLContainer("postgres:15").apply {
+            withDatabaseName("dataland_test")
+            withUsername("test")
+            withPassword("test")
+            withReuse(true)
+            start()
+        }
 
     override fun initialize(applicationContext: ConfigurableApplicationContext) {
         TestPropertyValues

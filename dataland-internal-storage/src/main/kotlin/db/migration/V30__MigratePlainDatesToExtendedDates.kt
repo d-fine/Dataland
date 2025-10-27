@@ -1,6 +1,6 @@
 package db.migration
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
@@ -9,8 +9,6 @@ import org.flywaydb.core.api.migration.Context
  */
 @Suppress("ClassName")
 class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
-    private val objectMapper = ObjectMapper()
-
     private val plainToExtendedMappings =
         mapOf(
             "plainDateFiscalYearEnd" to "extendedDateFiscalYearEnd",
@@ -73,7 +71,7 @@ class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
             val extendedId = resultSet.getString("extended_id")
             val extendedData = resultSet.getString("extended_data")
 
-            val newData = if (extendedId != null) extendedData else convertToExtendedFormat(plainData)
+            val newData = if (extendedId != null) extendedData else DataPointUtils.convertToExtendedFormat(plainData)
 
             updateStatement.setString(1, newData)
             updateStatement.setString(2, extendedType)
@@ -84,15 +82,5 @@ class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
         resultSet.close()
         selectStatement.close()
         updateStatement.close()
-    }
-
-    internal fun convertToExtendedFormat(plainData: String): String {
-        val onceSerialized = objectMapper.readValue(plainData, String::class.java)
-        val plainValue = objectMapper.readValue(onceSerialized, String::class.java)
-        val extendedObject =
-            objectMapper.createObjectNode().apply {
-                put("value", plainValue)
-            }
-        return objectMapper.writeValueAsString(objectMapper.writeValueAsString(extendedObject))
     }
 }

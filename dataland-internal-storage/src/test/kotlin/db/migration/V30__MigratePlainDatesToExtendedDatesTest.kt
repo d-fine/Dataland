@@ -1,40 +1,82 @@
 package db.migration
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import com.fasterxml.jackson.module.kotlin.readValue
+import db.migration.utils.JsonUtils
+import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.datalandinternalstorage.entities.DataPointItem
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
+import org.junit.jupiter.api.TestInstance
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
+import java.util.UUID
 
+@SpringBootTest(classes = [org.dataland.datalandinternalstorage.DatalandInternalStorage::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
-class V30__MigratePlainDatesToExtendedDatesTest {
-    private val objectMapper = ObjectMapper()
+@Transactional
+class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
+    companion object {
+        const val TRANSFORMED_JSON_FOLDER = "V30"
 
-    @Test
-    fun `check that plain date is converted to extended format with correct field order`() {
-        val migration = V30__MigratePlainDatesToExtendedDates()
-        val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("2024-03-22"))
-
-        val result = migration.convertToExtendedFormat(plainData)
-
-        val deserializedData = objectMapper.readValue(result, String::class.java)
-        val jsonNode = objectMapper.readTree(deserializedData)
-
-        val fieldNames = jsonNode.fieldNames().asSequence().toList()
-        assertEquals(listOf("value"), fieldNames)
-        assertEquals("2024-03-22", jsonNode.get("value").asText())
+        private val expectedRenamingReversed =
+            mapOf(
+                "extendedDateFiscalYearEnd" to "plainDateFiscalYearEnd",
+                "extendedEnumFiscalYearDeviation" to "plainEnumFiscalYearDeviation",
+            )
     }
 
-    @Test
-    fun `check that plain enum is converted to extended format with correct field order`() {
-        val migration = V30__MigratePlainDatesToExtendedDates()
-        val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("NoDeviation"))
+    @Autowired
+    private lateinit var dataPointItemRepository: DataPointItemRepository
 
-        val result = migration.convertToExtendedFormat(plainData)
-
-        val deserializedData = objectMapper.readValue(result, String::class.java)
-        val jsonNode = objectMapper.readTree(deserializedData)
-
-        val fieldNames = jsonNode.fieldNames().asSequence().toList()
-        assertEquals(listOf("value"), fieldNames)
-        assertEquals("NoDeviation", jsonNode.get("value").asText())
+    override fun setupBeforeMigration() {
+        val expectedTransformedDataPoints =
+            expectedRenamingReversed.keys
+                .map {
+                    DataPointItem(
+                        dataPointId = UUID.randomUUID().toString(),
+                        companyId = UUID.randomUUID().toString(),
+                        dataPointType = it,
+                        reportingPeriod = "2023",
+                        dataPoint =
+                            defaultObjectMapper.writeValueAsString(
+                                JsonUtils.readJsonFromResourcesFile("$TRANSFORMED_JSON_FOLDER/$it.json").toString(),
+                            ),
+                    )
+                }
+        expectedTransformedDataPoints.forEach {
+            dataPointItemRepository.save(
+                DataPointItem(
+                    dataPointId = it.dataPointId,
+                    companyId = it.companyId,
+                    dataPointType = expectedRenamingReversed[it.dataPointType]!!,
+                    reportingPeriod = "2023",
+                    dataPoint = defaultObjectMapper.readValue<ExtendedDataPoint>(it.dataPoint).value,
+                ),
+            )
+        }
     }
+
+    override fun getFlywayBaselineVersion(): String = "29"
+
+    override fun getFlywayTargetVersion(): String = "30"
+
+    inner class DataSource(
+        val page: String,
+        val tagName: String?,
+        val fileName: String,
+        val fileReference: String,
+        val publicationDate: LocalDate,
+    )
+
+    inner class ExtendedDataPoint(
+        val value: String,
+        val quality: String,
+        val comment: String,
+        val dataSource: DataSource,
+    )
+
+    //
 }
