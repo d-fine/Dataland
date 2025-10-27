@@ -8,6 +8,20 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.util.UUID
 
+private const val FILTER_WHERE_CLAUSE =
+    "WHERE " +
+        "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
+        "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
+        "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
+        "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
+        "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
+        "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
+        "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
+        "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
+        "(:#{#searchFilter.adminComment} IS NULL " +
+        "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
+        "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})"
+
 /**
  * A JPA Repository for managing RequestEntity instances.
  */
@@ -53,18 +67,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request.id FROM RequestEntity request " +
-            "WHERE " +
-            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
-            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
-            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
-            "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
-            "(:#{#searchFilter.adminComment} IS NULL " +
-            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
-            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
+            FILTER_WHERE_CLAUSE,
     )
     fun searchRequests(
         searchFilter: RequestSearchFilter<UUID>,
@@ -101,18 +104,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT COUNT(request) FROM RequestEntity request " +
-            "WHERE " +
-            "(:#{#searchFilter.companyId} IS NULL OR request.companyId = :#{#searchFilter.companyId}) AND " +
-            "((:#{#searchFilter.dataTypes == null} = TRUE) OR request.dataType IN :#{#searchFilter.dataTypes}) AND " +
-            "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
-            "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
-            "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-            "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
-            "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
-            "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
-            "(:#{#searchFilter.adminComment} IS NULL " +
-            "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%')) ) AND " +
-            "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})",
+            FILTER_WHERE_CLAUSE,
     )
     fun getNumberOfRequests(
         searchFilter: RequestSearchFilter<UUID>,
