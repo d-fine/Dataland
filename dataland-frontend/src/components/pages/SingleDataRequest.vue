@@ -128,7 +128,8 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { ref, computed, inject, onMounted } from 'vue';
 import contentData from '@/assets/content.json';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
@@ -151,225 +152,190 @@ import Divider from 'primevue/divider';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import { defineComponent, inject } from 'vue';
 import PrimeSelect from 'primevue/select';
 import Message from 'primevue/message';
 import { type SingleRequest } from '@clients/datasourcingservice';
 
-export default defineComponent({
-  name: 'SingleDataRequest',
-  components: {
-    Card,
-    Divider,
-    InputText,
-    Message,
-    PrimeSelect,
-    PrimeDialog,
-    ToggleChipFormInputs,
-    CompanyInfoSheet,
-    TheContent,
-    PrimeButton,
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    const content: Content = contentData;
-    const companiesPage = content.pages.find((page) => page.url === '/companies');
-    const singleDatRequestSection = companiesPage
-      ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
-      : undefined;
-    const becomePremiumUserEmailTemplate = singleDatRequestSection
-      ? singleDatRequestSection.cards?.find((card) => card.title === 'Interested in becoming a premium user')
-      : undefined;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-    return {
-      fetchedCompanyInformation: {} as CompanyInformation,
-      frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: router.currentRoute.value.query.preSelectedFramework as SingleDataRequestDataTypeEnum,
-      errorMessage: '',
-      selectedReportingPeriodsError: false,
-      selectedFrameworkError: false,
-      reportingPeriodOptions: FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS.map((period) => {
-        return {
-          name: period,
-          value: false,
-        };
-      }),
-      enteredComment: '',
-      submittingSucceeded: false,
-      submitted: false,
-      maxRequestReachedModalIsVisible: false,
-      becomePremiumUserEmailTemplate,
-      MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
-      hasCompanyAtLeastOneOwner: false,
-    };
-  },
-  computed: {
-    selectedReportingPeriods(): string[] {
-      return this.reportingPeriodOptions
-        .filter((reportingPeriodOption) => reportingPeriodOption.value)
-        .map((reportingPeriodOption) => reportingPeriodOption.name);
-    },
-    companyIdentifier(): string {
-      return router.currentRoute.value.params.companyId as string;
-    },
-    selectedFrameworks(): DataTypeEnum[] {
-      return this.frameworkName ? [this.frameworkName] : [];
-    },
-  },
-  methods: {
-    /**
-     * Opens an Email regarding becoming a premium user
-     */
-    openBecomePremiumUserEmail() {
-      openEmailClient(this.becomePremiumUserEmailTemplate);
-    },
-    /**
-     * Opens the Max Requests Reached Modal
-     */
-    openMaxRequestsReachedModal() {
-      this.maxRequestReachedModalIsVisible = true;
-    },
-    /**
-     * Closes the Max Requests Reached Modal
-     */
-    closeMaxRequestsReachedModal() {
-      this.maxRequestReachedModalIsVisible = false;
-    },
+const content: Content = contentData;
+const companiesPage = content.pages.find((page) => page.url === '/companies');
+const singleDatRequestSection = companiesPage
+  ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
+  : undefined;
+const becomePremiumUserEmailTemplate = singleDatRequestSection
+  ? singleDatRequestSection.cards?.find((card) => card.title === 'Interested in becoming a premium user')
+  : undefined;
 
-    /**
-     * Check whether reporting periods have been selected
-     */
-    checkIfAtLeastOneReportingPeriodSelected(): boolean {
-      if (!this.selectedReportingPeriods.length) {
-        this.selectedReportingPeriodsError = true;
-        return false;
+const fetchedCompanyInformation = ref({} as CompanyInformation);
+const frameworkOptions = ref<{ value: DataTypeEnum; label: string }[]>([]);
+const frameworkName = ref(router.currentRoute.value.query.preSelectedFramework as SingleDataRequestDataTypeEnum);
+const errorMessage = ref('');
+const selectedReportingPeriodsError = ref(false);
+const selectedFrameworkError = ref(false);
+const reportingPeriodOptions = ref(
+  FRONTEND_CREATABLE_REQUESTS_REPORTING_PERIODS.map((period) => ({ name: period, value: false }))
+);
+const enteredComment = ref('');
+const submittingSucceeded = ref(false);
+const submitted = ref(false);
+const maxRequestReachedModalIsVisible = ref(false);
+const hasCompanyAtLeastOneOwner = ref(false);
+
+const selectedReportingPeriods = computed(() =>
+  reportingPeriodOptions.value.filter((option) => option.value).map((option) => option.name)
+);
+const companyIdentifier = computed(() => router.currentRoute.value.params.companyId as string);
+const selectedFrameworks = computed(() => (frameworkName.value ? [frameworkName.value] : []));
+
+/**
+ * Opens an email regarding becoming a premium user.
+ */
+function openBecomePremiumUserEmail(): void {
+  openEmailClient(becomePremiumUserEmailTemplate);
+}
+
+/**
+ * Opens the modal indicating that the maximum number of requests has been reached.
+ */
+function openMaxRequestsReachedModal(): void {
+  maxRequestReachedModalIsVisible.value = true;
+}
+
+/**
+ * Closes the modal indicating that the maximum number of requests has been reached.
+ */
+function closeMaxRequestsReachedModal(): void {
+  maxRequestReachedModalIsVisible.value = false;
+}
+
+/**
+ * Checks if at least one reporting period is selected.
+ * @returns True if at least one reporting period is selected, false otherwise.
+ */
+function checkIfAtLeastOneReportingPeriodSelected(): boolean {
+  if (!selectedReportingPeriods.value.length) {
+    selectedReportingPeriodsError.value = true;
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Checks if at least one framework is selected.
+ * @returns True if at least one framework is selected, false otherwise.
+ */
+function checkIfAtLeastOneFrameworkSelected(): boolean {
+  if (!selectedFrameworks.value.length) {
+    selectedFrameworkError.value = true;
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Handles the submission of the data request form.
+ */
+async function handleSubmission(): Promise<void> {
+  const reportingPeriodIsSelected = checkIfAtLeastOneReportingPeriodSelected();
+  const frameworkIsSelected = checkIfAtLeastOneFrameworkSelected();
+  if (reportingPeriodIsSelected && frameworkIsSelected) {
+    await submitRequest();
+  }
+}
+
+/**
+ * Handles the fetched company information.
+ * @param info The fetched company information.
+ */
+function handleFetchedCompanyInformation(info: CompanyInformation): void {
+  fetchedCompanyInformation.value = info;
+}
+
+/**
+ * Collects the data to be sent in the data request.
+ * @returns An array of SingleRequest objects representing the data to be sent.
+ */
+function collectDataToSend(): SingleRequest[] {
+  return selectedReportingPeriods.value.map((reportingPeriod) => ({
+    companyIdentifier: companyIdentifier.value,
+    dataType: frameworkName.value,
+    reportingPeriod,
+    memberComment: enteredComment.value || undefined,
+  }));
+}
+
+/**
+ * Edits the state variables related to the submission status.
+ * @param msg The error message to be set.
+ * @param isSubmitted Whether the form has been submitted.
+ * @param isSucceeded Whether the submission succeeded.
+ */
+function editStateVariables(msg: string, isSubmitted: boolean, isSucceeded: boolean): void {
+  errorMessage.value = msg;
+  submitted.value = isSubmitted;
+  submittingSucceeded.value = isSucceeded;
+}
+
+/**
+ * Submits the data request.
+ */
+async function submitRequest(): Promise<void> {
+  try {
+    const singleRequests = collectDataToSend();
+    const requestControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+      .requestController;
+    for (const singleRequest of singleRequests) {
+      await requestControllerApi.createRequest(singleRequest);
+    }
+    editStateVariables('', true, true);
+  } catch (error) {
+    console.error(error);
+    if (error instanceof AxiosError) {
+      if (error.response?.status == 403) {
+        openMaxRequestsReachedModal();
+      } else {
+        const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+        editStateVariables(responseMessages?.[0]?.message ?? error.message, true, false);
       }
-      return true;
-    },
-
-    /**
-     * Checks whether at least one framework has been selected
-     */
-    checkIfAtLeastOneFrameworkSelected(): boolean {
-      if (!this.selectedFrameworks.length) {
-        this.selectedFrameworkError = true;
-        return false;
-      }
-      return true;
-    },
-
-    /**
-     * checks if the forms are filled out correctly and updates the displayed warnings accordingly
-     */
-    async handleSubmission(): Promise<void> {
-      const reportingPeriodIsSelected = this.checkIfAtLeastOneReportingPeriodSelected();
-      const frameworkIsSelected = this.checkIfAtLeastOneFrameworkSelected();
-      if (reportingPeriodIsSelected && frameworkIsSelected) {
-        await this.submitRequest();
-      }
-    },
-
-    /**
-     * Saves the company information emitted by the CompanyInformation vue components event.
-     * @param fetchedCompanyInformation the company information for the current company Id
-     */
-    handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
-      this.fetchedCompanyInformation = fetchedCompanyInformation;
-    },
-
-    /**
-     * Builds an array of SingleRequest objects using the currently entered inputs and returns it
-     * @returns the array of SingleRequest objects
-     */
-    collectDataToSend(): SingleRequest[] {
-      return this.selectedReportingPeriods.map((reportingPeriod) => {
-        return {
-          companyIdentifier: this.companyIdentifier,
-          dataType: this.frameworkName,
-          reportingPeriod: reportingPeriod,
-          memberComment: this.enteredComment || undefined,
-        };
-      });
-    },
-    /**
-     * Sets state variables
-     * @param errorMessage sets error message
-     * @param submitted sets submitted state
-     * @param submittingSucceeded sets succeeded submit state
-     */
-    editStateVariables(errorMessage: string, submitted: boolean, submittingSucceeded: boolean): void {
-      this.errorMessage = errorMessage;
-      this.submitted = submitted;
-      this.submittingSucceeded = submittingSucceeded;
-    },
-    /**
-     * Submits the data request to the request service
-     */
-    async submitRequest(): Promise<void> {
-      try {
-        const singleRequests = this.collectDataToSend();
-        const requestControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-          .requestController;
-        for (const singleRequest of singleRequests) {
-          await requestControllerApi.createRequest(singleRequest);
-        }
-        this.editStateVariables('', true, true);
-      } catch (error) {
-        console.error(error);
-        if (error instanceof AxiosError) {
-          if (error.response?.status == 403) {
-            this.openMaxRequestsReachedModal();
-          } else {
-            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.editStateVariables(responseMessages?.[0]?.message ?? error.message, true, false);
-          }
-        } else {
-          this.editStateVariables(
-            'An unexpected error occurred. Please try again or contact the support team if the issue persists.',
-            true,
-            false
-          );
-        }
-      }
-    },
-    /**
-     * Populates the availableFrameworks property in the format expected by the dropdown filter
-     */
-    retrieveFrameworkOptions() {
-      this.frameworkOptions = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        return {
-          value: dataTypeEnum,
-          label: humanizeStringOrNumber(dataTypeEnum),
-        };
-      });
-    },
-    /**
-     * Go to company cockpit page
-     */
-    goToCompanyPage() {
-      const thisCompanyId = this.companyIdentifier;
-      void router.push({
-        path: `/companies/${thisCompanyId}`,
-      });
-    },
-    /**
-     * Updates the hasCompanyAtLeastOneOwner in an async way
-     */
-    async updateHasCompanyAtLeastOneOwner() {
-      this.hasCompanyAtLeastOneOwner = await hasCompanyAtLeastOneCompanyOwner(
-        this.companyIdentifier,
-        this.getKeycloakPromise
+    } else {
+      editStateVariables(
+        'An unexpected error occurred. Please try again or contact the support team if the issue persists.',
+        true,
+        false
       );
-    },
-  },
-  mounted() {
-    this.retrieveFrameworkOptions();
-    this.updateHasCompanyAtLeastOneOwner().catch((error) => console.error(error));
-  },
+    }
+  }
+}
+
+/**
+ * Retrieves the framework options for the select input.
+ */
+function retrieveFrameworkOptions(): void {
+  frameworkOptions.value = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => ({
+    value: dataTypeEnum,
+    label: humanizeStringOrNumber(dataTypeEnum),
+  }));
+}
+
+/**
+ * Navigates to the company page.
+ */
+function goToCompanyPage(): void {
+  const thisCompanyId = companyIdentifier.value;
+  void router.push({ path: `/companies/${thisCompanyId}` });
+}
+
+/**
+ * Updates the hasCompanyAtLeastOneOwner ref.
+ */
+async function updateHasCompanyAtLeastOneOwner(): Promise<void> {
+  hasCompanyAtLeastOneOwner.value = await hasCompanyAtLeastOneCompanyOwner(companyIdentifier.value, getKeycloakPromise);
+}
+
+onMounted(() => {
+  retrieveFrameworkOptions();
+  updateHasCompanyAtLeastOneOwner().catch((error) => console.error(error));
 });
 </script>
 
