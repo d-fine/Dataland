@@ -105,7 +105,7 @@
       <DatalandProgressSpinner />
     </div>
 
-    <div class="text-left p-3">
+    <div style="padding: var(--spacing-md)">
       <div class="card">
         <DataTable
           v-if="currentDataRequests && currentDataRequests.length > 0"

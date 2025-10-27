@@ -39,7 +39,7 @@
         <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
 
-      <div class="p-3">
+      <div style="padding: var(--spacing-md)">
         <DataTable
           :value="displayedData"
           style="cursor: pointer"
@@ -64,7 +64,7 @@
               <div
                 v-if="frameworkHasSubTitle(data.dataType)"
                 data-test="framework-subtitle"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                style="color: gray; font-size: var(--font-size-xs); line-height: 0.5; white-space: nowrap"
               >
                 <br />
                 {{ getFrameworkSubtitle(data.dataType) }}
@@ -93,7 +93,7 @@
             <template #body="{ data }">
               <div v-if="data.state === RequestState.Processed" class="text-primary no-underline">
                 <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
-                <span class="ml-3">&gt;</span>
+                <span style="margin: var(--spacing-md)">&gt;</span>
               </div>
             </template>
           </Column>
