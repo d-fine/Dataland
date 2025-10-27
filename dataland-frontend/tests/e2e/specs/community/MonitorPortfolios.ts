@@ -42,12 +42,7 @@ function testPatchMonitoring(portfolioName: string, permId: string, frameworkVal
     .find('.portfolio-monitoring-content')
     .within(() => {
       cy.get('[data-test="activateMonitoringToggle"]').click();
-      cy.get('[data-test="listOfReportingPeriods"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
     });
-
-  cy.get('.p-select-option').contains('2023').click();
 
   cy.get('.p-dialog')
     .find('.portfolio-monitoring-content')
@@ -67,7 +62,6 @@ function testPatchMonitoring(portfolioName: string, permId: string, frameworkVal
     .its('request.body')
     .should((body) => {
       expect(body.isMonitored).to.be.true;
-      expect(body.startingMonitoringPeriod).to.equal('2023');
       expect(body.monitoredFrameworks).to.include(frameworkValue);
     });
 
