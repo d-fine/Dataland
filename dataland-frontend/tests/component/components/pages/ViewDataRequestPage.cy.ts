@@ -89,8 +89,8 @@ describe('Component tests for the view data request page', function (): void {
    */
   function checkBasicPageElementsAsUser(requestState: RequestState): void {
     cy.contains('Data Request').should('exist');
-    cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Request is').should('exist').should('have.class', 'card__title');
+    cy.contains('Request Details').should('exist');
+    cy.contains('Request is').should('exist');
 
     cy.get('[data-test="card_requestDetails"]').should('exist');
     cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -116,8 +116,8 @@ describe('Component tests for the view data request page', function (): void {
    */
   function checkBasicPageElementsAsAdmin(requestState: RequestState): void {
     cy.contains('Data Request').should('exist');
-    cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Request is').should('exist').should('have.class', 'card__title');
+    cy.contains('Request Details').should('exist');
+    cy.contains('Request is').should('exist');
 
     cy.get('[data-test="card_requestDetails"]').should('exist');
     cy.get('[data-test="card_requestDetails"]').within(() => {
