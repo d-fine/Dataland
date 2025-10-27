@@ -303,6 +303,7 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
+  waitingForData.value = true;
   const selectedFrameworksAsSet = new Set<string>(
     selectedFrameworks.value.map((item) => item.frameworkDataType.toString())
   );
