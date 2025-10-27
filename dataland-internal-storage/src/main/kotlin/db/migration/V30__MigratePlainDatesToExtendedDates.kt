@@ -67,11 +67,6 @@ class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
                 "UPDATE data_point_items SET data = ?, data_point_type = ? WHERE data_point_id = ?",
             )
 
-        val deleteStatement =
-            context.connection.prepareStatement(
-                "DELETE FROM data_point_items WHERE data_point_id = ?",
-            )
-
         while (resultSet.next()) {
             val plainId = resultSet.getString("plain_id")
             val plainData = resultSet.getString("plain_data")
@@ -84,17 +79,11 @@ class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
             updateStatement.setString(2, extendedType)
             updateStatement.setString(3, plainId)
             updateStatement.executeUpdate()
-
-            if (extendedId != null) {
-                deleteStatement.setString(1, extendedId)
-                deleteStatement.executeUpdate()
-            }
         }
 
         resultSet.close()
         selectStatement.close()
         updateStatement.close()
-        deleteStatement.close()
     }
 
     internal fun convertToExtendedFormat(plainData: String): String {

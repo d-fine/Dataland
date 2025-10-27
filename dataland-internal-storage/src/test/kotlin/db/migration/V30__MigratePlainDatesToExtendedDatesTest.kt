@@ -9,7 +9,7 @@ class V30__MigratePlainDatesToExtendedDatesTest {
     private val objectMapper = ObjectMapper()
 
     @Test
-    fun `check that plain data is converted to extended format with correct field order`() {
+    fun `check that plain date is converted to extended format with correct field order`() {
         val migration = V30__MigratePlainDatesToExtendedDates()
         val plainData = objectMapper.writeValueAsString(objectMapper.writeValueAsString("2024-03-22"))
 
