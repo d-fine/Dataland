@@ -30,28 +30,26 @@ import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.USER_EMAIL
 import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.not
-import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @SpringBootTest(
     classes = [DatalandDataSourcingService::class],
     properties = ["spring.profiles.active=containerized-db"],
 )
-@Transactional
 class RequestQueryManagerTest
     @Autowired
     constructor(
@@ -75,8 +73,8 @@ class RequestQueryManagerTest
         private val companyInfo1 = mock<CompanyInformation>()
         private val companyInfo2 = mock<CompanyInformation>()
 
-        private fun setupMocks() {
-            reset(mockKeycloakUserService, mockCompanyDataControllerApi)
+        @BeforeEach
+        fun setupMocks() {
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(firstUser.userId)
             doReturn(secondUser).whenever(mockKeycloakUserService).getUser(not(eq(firstUser.userId)))
             doReturn(null).whenever(secondUser).email
@@ -86,9 +84,6 @@ class RequestQueryManagerTest
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
-            doReturn(listOf(mockBasicCompanyInfo2))
-                .whenever(mockCompanyDataControllerApi)
-                .getCompanies(isNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
             doReturn(COMPANY_ID_1).whenever(storedCompany1).companyId
             doReturn(COMPANY_ID_2).whenever(storedCompany2).companyId
             doReturn(companyInfo1).whenever(storedCompany1).companyInformation
@@ -104,7 +99,6 @@ class RequestQueryManagerTest
          * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
          */
         fun setupParameterizedTest() {
-            setupMocks()
             requestEntities =
                 (0..15).map {
                     dataBaseCreationUtils.storeRequest(
@@ -147,7 +141,8 @@ class RequestQueryManagerTest
                 )
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "{index} => {0}")
+        @DisplayName("Request search filter combinations")
         @MethodSource("requestSearchTestCases")
         fun `ensure that searching for requests works for all filter combinations`(testCase: RequestSearchTestCase) {
             setupParameterizedTest()
@@ -193,7 +188,6 @@ class RequestQueryManagerTest
 
         @Test
         fun `test sorting of requests works as expected`() {
-            setupMocks()
             val timestamp = 1760428203000
             dataBaseCreationUtils.storeRequest(
                 companyId = UUID.fromString(COMPANY_ID_2),
