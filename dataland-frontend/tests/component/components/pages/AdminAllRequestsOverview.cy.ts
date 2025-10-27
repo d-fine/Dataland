@@ -156,11 +156,9 @@ describe('Component test for the admin-requests-overview page', () => {
   });
 
   /**
-   * Mounts the page and asserts that the unfiltered list of all data requests is displayed
-   * @returns mounted component as Chainable
+   * Sets up the interceptions for the unfiltered initial requests and number of requests
    */
-  function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
-    const expectedNumberOfRequests = mockRequests.length;
+  function setUpUnfilteredInterceptions(): void {
     cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
@@ -168,9 +166,17 @@ describe('Component test for the admin-requests-overview page', () => {
     }).as('fetchInitialUnfilteredRequests');
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Object.keys(req.body).length === 0) {
-        req.reply(expectedNumberOfRequests.toString());
+        req.reply(mockRequests.length.toString());
       }
     }).as('fetchInitialUnfilteredNumberOfRequests');
+  }
+
+  /**
+   * Mounts the page and asserts that the unfiltered list of all data requests is displayed
+   * @returns mounted component as Chainable
+   */
+  function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
+    setUpUnfilteredInterceptions();
     const mountedComponent = getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -180,7 +186,7 @@ describe('Component test for the admin-requests-overview page', () => {
       router: router,
     })(AdminAllRequestsOverview);
 
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertNumberOfSearchResults(mockRequests.length);
     for (const extendedStoredDataRequest of mockRequests) {
       if (extendedStoredDataRequest.userEmailAddress) {
         assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
@@ -432,23 +438,13 @@ describe('Component test for the admin-requests-overview page', () => {
    * Removes the combined filter and checks if all requests are shown again
    */
   function validateDeselectingCombinedFilter(): void {
-    const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(mockRequests);
-      }
-    }).as('fetchInitialUnfilteredRequests');
-    cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    }).as('fetchInitialUnfilteredNumberOfRequests');
+    setUpUnfilteredInterceptions();
     const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertNumberOfSearchResults(mockRequests.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
@@ -475,20 +471,10 @@ describe('Component test for the admin-requests-overview page', () => {
    * Removes the combined filter via resetButton and checks if all requests are shown again
    */
   function validateResetButton(): void {
-    const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(mockRequests);
-      }
-    }).as('fetchInitialUnfilteredRequests');
-    cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    }).as('fetchInitialUnfilteredNumberOfRequests');
+    setUpUnfilteredInterceptions();
     cy.get(`[data-test=reset-filter]`).click();
 
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertNumberOfSearchResults(mockRequests.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
