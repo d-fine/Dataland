@@ -105,7 +105,7 @@
       <DatalandProgressSpinner />
     </div>
 
-    <div class="text-left p-3">
+    <div style="padding: var(--spacing-md)">
       <div class="card">
         <DataTable
           v-if="currentDataRequests && currentDataRequests.length > 0"
@@ -303,6 +303,7 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
+  waitingForData.value = true;
   const selectedFrameworksAsSet = new Set<string>(
     selectedFrameworks.value.map((item) => item.frameworkDataType.toString())
   );
