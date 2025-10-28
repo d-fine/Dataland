@@ -3,7 +3,9 @@ package org.dataland.datasourcingservice.integrationTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
+import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.controller.DataSourcingController
 import org.dataland.datasourcingservice.controller.RequestController
@@ -41,7 +43,11 @@ class DataSourcingWorkflowTest
         @MockitoBean
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
+        @MockitoBean
+        private lateinit var mockInheritedRolesControllerApi: InheritedRolesControllerApi
+
         private val mockSecurityContext = mock<SecurityContext>()
+        private val userId = "user-id"
         private lateinit var mockAuthentication: DatalandAuthentication
 
         @Test
@@ -50,7 +56,7 @@ class DataSourcingWorkflowTest
             mockAuthentication =
                 AuthenticationMock.mockJwtAuthentication(
                     "data-admin",
-                    "user-id",
+                    userId,
                     roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER),
                 )
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
@@ -61,6 +67,9 @@ class DataSourcingWorkflowTest
             val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
             whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
                 .thenReturn(listOf(validationResult))
+            doReturn(mapOf(companyId to listOf(InheritedRole.DatalandMember.name)))
+                .whenever(mockInheritedRolesControllerApi)
+                .getInheritedRoles(userId)
 
             val requests = List(3) { SingleRequest(companyId, "sfdr", "2026", null) }
             val requestIds =

@@ -5,7 +5,7 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -21,7 +21,7 @@ import java.util.UUID
 class RequestCreationServiceTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()
-    private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
     private lateinit var requestCreationService: RequestCreationService
 
@@ -42,11 +42,11 @@ class RequestCreationServiceTest {
         reset(
             mockDataSourcingValidator,
             mockRequestRepository,
-            mockKeycloakAdapterRequestProcessingUtils,
+            mockDerivedRightsUtilsComponent,
         )
 
-        doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId.toString())
-        doReturn(false).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(nonPremiumUserId.toString())
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(premiumUserId.toString())
+        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(nonPremiumUserId.toString())
         doReturn(maxNumberOfDailyRequestsForNonPremiumUser)
             .whenever(mockRequestRepository)
             .countByUserIdAndCreationTimestampGreaterThanEqual(any(), any())
@@ -56,7 +56,7 @@ class RequestCreationServiceTest {
             RequestCreationService(
                 dataSourcingValidator = mockDataSourcingValidator,
                 requestRepository = mockRequestRepository,
-                keycloakAdapterRequestProcessingUtils = mockKeycloakAdapterRequestProcessingUtils,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
                 maxRequestsForUser = maxNumberOfDailyRequestsForNonPremiumUser,
             )
     }
