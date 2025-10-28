@@ -47,16 +47,16 @@ class PortfolioMonitoringService
                     originalPortfolio.creationTimestamp,
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
-                    portfolio.startingMonitoringPeriod,
                     portfolio.monitoredFrameworks,
                 )
 
-            val updatedPortfolio = updatedPortfolioEntity.toBasePortfolio()
+            val updatedPortfolio =
+                portfolioRepository
+                    .save(updatedPortfolioEntity)
+                    .toBasePortfolio()
 
-            portfolioBulkDataRequestService.postBulkDataRequestMessageIfMonitored(updatedPortfolio)
+            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(updatedPortfolio)
 
-            return portfolioRepository
-                .save(updatedPortfolioEntity)
-                .toBasePortfolio()
+            return updatedPortfolio
         }
     }

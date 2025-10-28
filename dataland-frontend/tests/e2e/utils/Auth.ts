@@ -51,15 +51,15 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
         new Configuration({ accessToken: token })
       ).getAllPortfolioNamesForCurrentUser();
       doesUserHavePortfolios = allUserPortfolios.data.length > 0;
+      if (doesUserHavePortfolios) {
+        urlToRedirectTo = getBaseUrl() + '/portfolios';
+      }
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
+      cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
+        globalJwt = interception.request.headers['authorization'] as string;
+      });
     });
-    if (doesUserHavePortfolios) {
-      urlToRedirectTo = getBaseUrl() + '/portfolios';
-    }
   }
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
-  cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
-    globalJwt = interception.request.headers['authorization'] as string;
-  });
 }
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
