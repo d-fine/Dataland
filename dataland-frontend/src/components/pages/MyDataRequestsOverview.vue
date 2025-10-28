@@ -13,7 +13,7 @@
           />
         </IconField>
 
-        <FrameworkDataSearchDropdownFilter
+        <DataSearchDropdownFilter
           v-model="selectedFrameworks"
           ref="frameworkFilter"
           :available-items="availableFrameworks"
@@ -25,7 +25,7 @@
           selected-items-label="{0} Frameworks selected"
         />
 
-        <FrameworkDataSearchDropdownFilter
+        <DataSearchDropdownFilter
           v-model="selectedState"
           ref="StateFilter"
           :available-items="availableState"
@@ -122,7 +122,7 @@
 <script setup lang="ts">
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';

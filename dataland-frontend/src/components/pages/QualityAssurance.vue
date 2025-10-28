@@ -31,7 +31,7 @@
           selectionMode="multiple"
         />
 
-        <FrameworkDataSearchDropdownFilter
+        <DataSearchDropdownFilter
           v-model="selectedFrameworks"
           class="search-filter"
           :available-items="availableFrameworks"
@@ -127,7 +127,7 @@
 <script lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -156,7 +156,7 @@ export default defineComponent({
     DatalandProgressSpinner,
     AuthorizationWrapper,
     TheContent,
-    FrameworkDataSearchDropdownFilter,
+    DataSearchDropdownFilter: DataSearchDropdownFilter,
     DataTable,
     Column,
     InputText,

@@ -36,7 +36,7 @@
       </IconField>
     </div>
     <div class="search-container-last-line">
-      <FrameworkDataSearchDropdownFilter
+      <DataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
         ref="frameworkFilter"
@@ -48,7 +48,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} frameworks"
       />
-      <FrameworkDataSearchDropdownFilter
+      <DataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedRequestStates"
         ref="frameworkFilter"
@@ -60,7 +60,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} request states"
       />
-      <FrameworkDataSearchDropdownFilter
+      <DataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedPriorities"
         ref="frameworkFilter"
@@ -72,7 +72,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} request priorities"
       />
-      <FrameworkDataSearchDropdownFilter
+      <DataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedReportingPeriods"
         ref="frameworkFilter"
@@ -206,7 +206,7 @@ import { ref, computed, watch, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';

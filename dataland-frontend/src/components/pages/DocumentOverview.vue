@@ -10,7 +10,7 @@
       data-type="Documents"
       :company-id="companyId"
     />
-    <FrameworkDataSearchDropdownFilter
+    <DataSearchDropdownFilter
       :disabled="waitingForData"
       v-model="selectedDocumentType"
       ref="DocumentTypeFilter"
@@ -128,7 +128,7 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
