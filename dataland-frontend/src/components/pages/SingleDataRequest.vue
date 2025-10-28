@@ -75,7 +75,6 @@
 
       <PrimeDialog
         v-model:visible="maxRequestReachedModalIsVisible"
-        id="successModal"
         :dismissableMask="false"
         :modal="true"
         :closable="false"
@@ -103,6 +102,14 @@
           />
         </div>
       </PrimeDialog>
+      <Message
+        v-if="submitted && errorMessage"
+        severity="error"
+        style="margin-top: var(--spacing-sm); margin-bottom: var(--spacing-sm)"
+        data-test="submissionErrorMessage"
+      >
+        {{ errorMessage }}
+      </Message>
       <PrimeButton type="submit" label="SUBMIT DATA REQUEST" @click="handleSubmission" class="submit-button" />
       <SuccessDialog
         :visible="submittingSucceeded"
@@ -112,9 +119,6 @@
         @close="router.push('/requests')"
         @secondary-action="goToCompanyPage()"
       />
-      <Message v-if="submitted && errorMessage" severity="error">
-        {{ errorMessage }}
-      </Message>
     </div>
   </TheContent>
 </template>
@@ -358,8 +362,7 @@ onMounted(() => {
 
 .submit-button {
   display: block;
-  margin-left: auto;
-  margin-right: 25%;
+  margin: 0 25% var(--spacing-sm) auto;
 }
 
 .header-styling {
