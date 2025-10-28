@@ -201,13 +201,13 @@ describe('Component tests for the data requests search page', function (): void 
         .should('not.be.disabled')
         .clear()
         .type('companyOpen');
-      cy.get('[data-test="requested-Datasets-Resolve"]').should('not.exist');
+      cy.get('[data-test="requested-datasets-resolve"]').should('not.exist');
       cy.get('[data-test="requested-datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
         .clear()
         .type('companyProcessed');
-      cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
+      cy.get('[data-test="requested-datasets-resolve"]').should('exist').should('be.visible').click();
       cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
     });
   });
