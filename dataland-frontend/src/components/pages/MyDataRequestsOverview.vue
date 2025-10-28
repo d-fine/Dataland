@@ -92,7 +92,7 @@
           <Column field="resolve" header="">
             <template #body="{ data }">
               <div v-if="data.state === RequestState.Processed" class="text-primary no-underline">
-                <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve">RESOLVE</span>
+                <span id="resolveButton" style="cursor: pointer" data-test="requested-datasets-resolve">RESOLVE</span>
                 <span style="margin: var(--spacing-md)">&gt;</span>
               </div>
             </template>
