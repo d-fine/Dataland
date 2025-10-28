@@ -101,7 +101,7 @@ class RequestCreationService
             basicDataDimension: BasicDataDimensions,
             memberComment: String? = null,
         ): UUID {
-            val userIsPremiumUser = derivedRightsUtilsComponent.isUserPremiumUser(userId.toString())
+            val userIsPremiumUser = derivedRightsUtilsComponent.isUserDatalandMember(userId.toString())
 
             if (!userIsPremiumUser) performQuotaCheckForNonPremiumUser(userId)
 

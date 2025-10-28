@@ -13,12 +13,12 @@ class DerivedRightsUtilsComponent(
     @Autowired private val inheritedRolesControllerApi: InheritedRolesControllerApi,
 ) {
     /**
-     * Check whether the specified user is a premium user based on their inherited roles.
+     * Check whether the specified user is a Dataland member based on their inherited roles.
      * @param userId the Dataland ID of the user in question
-     * @return true if the user is a premium user, false otherwise
+     * @return true if the user is a Dataland member, false otherwise
      */
-    fun isUserPremiumUser(userId: String): Boolean =
-        DerivedRightsUtils.isUserPremiumUser(
+    fun isUserDatalandMember(userId: String): Boolean =
+        DerivedRightsUtils.isUserDatalandMember(
             inheritedRolesControllerApi.getInheritedRoles(userId),
         )
 }
