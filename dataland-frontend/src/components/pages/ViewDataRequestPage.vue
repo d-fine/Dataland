@@ -396,7 +396,6 @@ function goToNewRequestPage(): void {
 onMounted(() => {
   void initializeComponent();
 });
-
 </script>
 
 <style scoped>

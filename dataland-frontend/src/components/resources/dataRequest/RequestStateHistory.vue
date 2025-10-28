@@ -16,11 +16,7 @@
 
       <Column field="state" header="Request State" style="width: 25%">
         <template #body="{ data }">
-          <DatalandTag
-            :severity="data.state || ''"
-            :value="data.state"
-            class="dataland-inline-tag"
-          />
+          <DatalandTag :severity="data.state || ''" :value="data.state" class="dataland-inline-tag" />
         </template>
       </Column>
 
