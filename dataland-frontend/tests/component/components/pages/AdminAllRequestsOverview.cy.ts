@@ -273,25 +273,25 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   /**
-   * Validates if filtering via data request status dropdown filter works as expected
+   * Validates if filtering via data request state dropdown filter works as expected
    */
-  function validateRequestStatusFilter(): void {
-    const requestStatusToFilterFor = RequestState.Open;
+  function validateRequestStateFilter(): void {
+    const requestStateToFilterFor = RequestState.Open;
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStatusToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchRequestStatusFilteredRequests');
+    }).as('fetchRequestStateFilteredRequests');
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStatusToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchRequestStatusFilteredNumberOfRequests');
+    }).as('fetchRequestStateFilteredNumberOfRequests');
 
-    cy.get(`div[data-test="request-status-picker"]`).click();
-    cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
+    cy.get(`div[data-test="request-state-picker"]`).click();
+    cy.get(`li[aria-label="${requestStateToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -489,9 +489,9 @@ describe('Component test for the admin-requests-overview page', () => {
     validateFrameworkFilter();
   });
 
-  it('Filtering for request status works as expected', () => {
+  it('Filtering for request state works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
-    validateRequestStatusFilter();
+    validateRequestStateFilter();
   });
 
   it('Filtering for request priority works as expected', () => {
