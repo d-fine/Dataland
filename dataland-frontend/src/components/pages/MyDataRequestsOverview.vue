@@ -148,7 +148,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
-const datasetsPerPage = 100;
+const datasetsPerPage = 3;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
@@ -323,7 +323,7 @@ function customCompareForExtendedStoredDataRequests(a: ExtendedStoredRequest, b:
   if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
   if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
 
-  return a.companyName! < b.companyName! ? -1 * sortOrder.value : sortOrder.value;
+  return a.companyName < b.companyName ? -1 * sortOrder.value : sortOrder.value;
 }
 
 /**

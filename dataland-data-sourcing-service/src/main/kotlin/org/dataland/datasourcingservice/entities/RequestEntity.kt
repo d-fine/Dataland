@@ -89,8 +89,8 @@ class RequestEntity(
             requestPriority = requestPriority,
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
-            companyName = null,
-            userEmailAddress = null,
+            companyName = String(),
+            userEmailAddress = String(),
         )
 
     constructor(

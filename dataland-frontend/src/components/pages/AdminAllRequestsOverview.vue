@@ -128,17 +128,9 @@
           :rowHover="true"
           style="cursor: pointer"
         >
-          <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.userEmailAddress }}
-            </template>
-          </Column>
-          <Column header="COMPANY" field="companyName" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.companyName }}
-            </template>
-          </Column>
-          <Column header="FRAMEWORK" :sortable="false" field="dataType">
+          <Column header="REQUESTER" field="userEmailAddress" :sortable="false"/>
+          <Column header="COMPANY" field="companyName" :sortable="false"/>
+          <Column header="FRAMEWORK" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ getFrameworkTitle(slotProps.data.dataType) }}
@@ -153,47 +145,33 @@
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.reportingPeriod }}
-            </template>
-          </Column>
-          <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.id }}
-            </template>
-          </Column>
-          <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false"/>
+          <Column header="REQUEST ID" field="id" :sortable="false"/>
+          <Column header="REQUESTED" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimeStamp) }}
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
+          <Column header="LAST UPDATED" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATE" :sortable="false" field="requestState">
+          <Column header="REQUEST STATE" :sortable="false">
             <template #body="slotProps">
               <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded />
             </template>
           </Column>
-          <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
+          <Column header="REQUEST PRIORITY" :sortable="false">
             <template #body="slotProps">
               <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
             </template>
           </Column>
-          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
-            <template #body="slotProps">
-              <div>
-                {{ slotProps.data.adminComment }}
-              </div>
-            </template>
-          </Column>
+          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment"/>
         </DataTable>
         <div v-if="!waitingForData && currentDataRequests.length == 0">
           <div style="text-align: center">
