@@ -201,7 +201,6 @@ async function initializeComponent(): Promise<void> {
         await getAndStoreCompanyName().catch((error) => console.error(error));
         await getAndStoreRequestHistory().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
-        await getAndStoreUserEmail();
       }
       requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
       await setUserAccessFields();
@@ -398,19 +397,6 @@ onMounted(() => {
   void initializeComponent();
 });
 
-async function getAndStoreUserEmail(): Promise<void> {
-  try {
-    if (storedRequest.userId) {
-      const userInfo = await apiClientProvider.backendClients.userUploadsController.getUserUploadsDataMetaInformation(
-        storedRequest.userId
-      );
-      userEmail.value = userInfo.data;
-    }
-  } catch (error) {
-    console.error(error);
-    userEmail.value = '';
-  }
-}
 </script>
 
 <style scoped>
