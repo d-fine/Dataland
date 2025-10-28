@@ -461,6 +461,130 @@
         ]
       }
     },
+    "/company-rights": {
+      "post": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Post a company right assignment.",
+        "description": "Assign a company right to a Dataland company, specified by its ID.",
+        "operationId": "postCompanyRight",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyRightAssignmentString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully assigned the company right.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyRightAssignmentString"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may assign company rights."
+          },
+          "404": {
+            "description": "Dataland does not know the specified company ID."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Delete a company right assignment.",
+        "description": "Remove a company right from a Dataland company.",
+        "operationId": "deleteCompanyRight",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyRightAssignmentString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the company right assignment.",
+            "content": {}
+          },
+          "403": {
+            "description": "Only Dataland admins may remove company rights."
+          },
+          "404": {
+            "description": "The company right assignment which you want to delete does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/company-ownership/{companyId}": {
       "post": {
         "tags": [
@@ -1343,6 +1467,78 @@
         ]
       }
     },
+    "/inherited-roles/{userId}": {
+      "get": {
+        "tags": [
+          "inherited-roles-controller"
+        ],
+        "summary": "Get inherited roles for a user.",
+        "description": "For the specified user, get a mapping from company IDs to the lists of associated inherited roles.",
+        "operationId": "getInheritedRoles",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved inherited roles for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query inherited roles."
+          },
+          "404": {
+            "description": "Dataland does not know the specified user ID."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/emails/{companyId}/recommended-users": {
       "get": {
         "tags": [
@@ -1475,6 +1671,79 @@
           },
           "404": {
             "description": "The specified company does not exist on Dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/company-rights/{companyId}": {
+      "get": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Get company rights.",
+        "description": "Get a list of all rights assigned to a Dataland company, specified via its ID.",
+        "operationId": "getCompanyRights",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of company rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "Member",
+                      "Provider"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query company rights."
+          },
+          "404": {
+            "description": "Dataland does not know the specified company ID."
           },
           "default": {
             "description": "An error occurred",
@@ -2009,6 +2278,25 @@
             "type": "string",
             "description": "The unique identifier of the user in the company role assignment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        }
+      },
+      "CompanyRightAssignmentString": {
+        "required": [
+          "companyId",
+          "companyRight"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyRight": {
+            "type": "string",
+            "enum": [
+              "Member",
+              "Provider"
+            ]
           }
         }
       },

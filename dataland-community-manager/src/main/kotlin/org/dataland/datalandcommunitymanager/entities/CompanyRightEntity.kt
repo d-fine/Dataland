@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Table
@@ -18,5 +20,6 @@ class CompanyRightEntity(
     @Id
     val companyId: UUID,
     @Id
+    @Enumerated(EnumType.STRING)
     val companyRight: CompanyRight,
 )

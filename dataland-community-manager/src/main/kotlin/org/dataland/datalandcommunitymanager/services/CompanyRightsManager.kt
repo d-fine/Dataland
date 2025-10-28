@@ -16,7 +16,7 @@ import java.util.UUID
  * Service class for handling company rights.
  */
 @Service
-class CompanyRightsService(
+class CompanyRightsManager(
     @Autowired private val companyRightsRepository: CompanyRightsRepository,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {

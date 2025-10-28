@@ -9,9 +9,9 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -30,7 +30,7 @@ class RequestCreationService
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
         private val requestRepository: RequestRepository,
-        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         private val requestLogger = RequestLogger()
@@ -101,7 +101,7 @@ class RequestCreationService
             basicDataDimension: BasicDataDimensions,
             memberComment: String? = null,
         ): UUID {
-            val userIsPremiumUser = keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())
+            val userIsPremiumUser = derivedRightsUtilsComponent.isUserPremiumUser(userId.toString())
 
             if (!userIsPremiumUser) performQuotaCheckForNonPremiumUser(userId)
 
