@@ -5,9 +5,9 @@
     </div>
 
     <SuccessDialog
-        :visible="withdrawSuccessModalIsVisible"
-        message="The request has been successfully withdrawn."
-        @close="
+      :visible="withdrawSuccessModalIsVisible"
+      message="The request has been successfully withdrawn."
+      @close="
         () => {
           withdrawSuccessModalIsVisible = false;
           initializeComponent();
@@ -15,34 +15,34 @@
       "
     />
     <SuccessDialog
-        :visible="resubmitSuccessModalIsVisible"
-        message="Your request has been successfully resubmitted."
-        @close="goToNewRequestPage()"
+      :visible="resubmitSuccessModalIsVisible"
+      message="Your request has been successfully resubmitted."
+      @close="goToNewRequestPage()"
     />
 
     <PrimeDialog
-        :modal="true"
-        v-model:visible="resubmitModalIsVisible"
-        :closable="true"
-        style="text-align: left; height: fit-content; width: 22rem"
-        data-test="resubmit-modal"
-        header="Resubmit Request"
+      :modal="true"
+      v-model:visible="resubmitModalIsVisible"
+      :closable="true"
+      style="text-align: left; height: fit-content; width: 22rem"
+      data-test="resubmit-modal"
+      header="Resubmit Request"
     >
       <div class="message">
         <p class="side-header">Message</p>
         <Textarea
-            v-model="resubmitMessage"
-            style="resize: none"
-            data-test="resubmit-message"
-            rows="5"
-            placeholder="Provide a reason for resubmitting."
+          v-model="resubmitMessage"
+          style="resize: none"
+          data-test="resubmit-message"
+          rows="5"
+          placeholder="Provide a reason for resubmitting."
         />
         <Message
-            v-if="resubmitMessageError && resubmitMessage.length < 10"
-            severity="error"
-            variant="simple"
-            size="small"
-            data-test="noMessageErrorMessage"
+          v-if="resubmitMessageError && resubmitMessage.length < 10"
+          severity="error"
+          variant="simple"
+          size="small"
+          data-test="noMessageErrorMessage"
         >
           You have not provided a sufficient reason yet. Please provide a reason.
         </Message>
@@ -52,17 +52,17 @@
         </p>
       </div>
       <PrimeButton
-          data-test="resubmit-confirmation-button"
-          @click="resubmitRequest()"
-          label="RESUBMIT REQUEST"
-          style="align-self: center"
+        data-test="resubmit-confirmation-button"
+        @click="resubmitRequest()"
+        label="RESUBMIT REQUEST"
+        style="align-self: center"
       />
     </PrimeDialog>
     <div style="display: flex">
       <div style="padding: var(--spacing-md)">
         <div class="card" data-test="card_requestDetails">
           <div class="title">Request Details</div>
-          <Divider/>
+          <Divider />
           <div v-if="isUserKeycloakAdmin" class="side-header">Requester</div>
           <div class="data" v-if="isUserKeycloakAdmin">{{ userEmail }}</div>
           <div class="side-header">Company</div>
@@ -72,70 +72,70 @@
             {{ getFrameworkTitle(storedRequest.dataType) }}
 
             <div
-                v-show="frameworkHasSubTitle(storedRequest.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              v-show="frameworkHasSubTitle(storedRequest.dataType)"
+              style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
             >
-              <br/>
+              <br />
               {{ getFrameworkSubtitle(storedRequest.dataType) }}
             </div>
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data">{{ storedRequest.reportingPeriod }}</div>
           <PrimeButton
-              v-if="answeringDataSetUrl"
-              data-test="view-dataset-button"
-              label="VIEW DATASET"
-              @click="goToAnsweringDataSetPage()"
-              style="width: fit-content"
+            v-if="answeringDataSetUrl"
+            data-test="view-dataset-button"
+            label="VIEW DATASET"
+            @click="goToAnsweringDataSetPage()"
+            style="width: fit-content"
           />
         </div>
       </div>
       <div>
         <div style="padding: var(--spacing-md)">
           <div class="card" data-test="card_requestIs">
-              <span style="display: flex; align-items: center">
-                <span class="title">Request is:</span>
-                <DatalandTag
-                    :severity="storedRequest.state || ''"
-                    :value="storedRequest.state"
-                    class="dataland-inline-tag"
-                />
-                <span class="dataland-info-text normal">
-                  since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
-                </span>
+            <span style="display: flex; align-items: center">
+              <span class="title">Request is:</span>
+              <DatalandTag
+                :severity="storedRequest.state || ''"
+                :value="storedRequest.state"
+                class="dataland-inline-tag"
+              />
+              <span class="dataland-info-text normal">
+                since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
               </span>
-            <Divider/>
+            </span>
+            <Divider />
             <p class="title">Request State History</p>
-            <RequestStateHistory :stateHistory="requestHistory"/>
+            <RequestStateHistory :stateHistory="requestHistory" />
           </div>
           <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
             <div class="title">Resubmit Request</div>
-            <Divider/>
+            <Divider />
             <p class="dataland-info-text normal" style="align-items: baseline">
               Currently, your request has the state {{ storedRequest.state }}. If you believe that your data should be
               available, you can resubmit the request and comment why you believe the data should be available.
             </p>
             <PrimeButton
-                data-test="resubmit-request-button"
-                label="RESUBMIT REQUEST"
-                @click="resubmitModalIsVisible = true"
-                variant="outlined"
-                style="width: fit-content"
+              data-test="resubmit-request-button"
+              label="RESUBMIT REQUEST"
+              @click="resubmitModalIsVisible = true"
+              variant="outlined"
+              style="width: fit-content"
             />
           </div>
           <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
             <div class="title">Withdraw Request</div>
-            <Divider/>
+            <Divider />
             <p class="dataland-info-text normal" style="align-items: baseline">
-              If you want to stop the processing of this request, you can withdraw it. The data provider will no
-              longer process this request.
+              If you want to stop the processing of this request, you can withdraw it. The data provider will no longer
+              process this request.
             </p>
             <PrimeButton
-                data-test="withdraw-request-button"
-                label="WITHDRAW REQUEST"
-                @click="withdrawRequest()"
-                variant="outlined"
-                style="width: fit-content"
+              data-test="withdraw-request-button"
+              label="WITHDRAW REQUEST"
+              @click="withdrawRequest()"
+              variant="outlined"
+              style="width: fit-content"
             />
           </div>
         </div>
@@ -145,21 +145,21 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, inject, onMounted, defineProps} from 'vue';
+import { ref, reactive, inject, onMounted, defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
-import {type NavigationFailure} from 'vue-router';
-import {ApiClientProvider} from '@/services/ApiClients';
-import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
-import {KEYCLOAK_ROLE_ADMIN} from '@/utils/KeycloakRoles';
-import {checkIfUserHasRole, getUserId} from '@/utils/KeycloakUtils';
-import {assertDefined} from '@/utils/TypeScriptUtils.ts';
-import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
-import {RequestState, type SingleRequest, type StoredRequest} from '@clients/datasourcingservice';
-import {type DataMetaInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
+import { type NavigationFailure } from 'vue-router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import { RequestState, type SingleRequest, type StoredRequest } from '@clients/datasourcingservice';
+import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -195,17 +195,17 @@ const userEmail = ref('');
  */
 async function initializeComponent(): Promise<void> {
   await getRequest()
-      .catch((error) => console.error(error))
-      .then(async () => {
-        if (getKeycloakPromise) {
-          await getAndStoreCompanyName().catch((error) => console.error(error));
-          await getAndStoreRequestHistory().catch((error) => console.error(error));
-          await checkForAvailableData().catch((error) => console.error(error));
-        }
-        requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
-        await setUserAccessFields();
-      })
-      .catch((error) => console.error(error));
+    .catch((error) => console.error(error))
+    .then(async () => {
+      if (getKeycloakPromise) {
+        await getAndStoreCompanyName().catch((error) => console.error(error));
+        await getAndStoreRequestHistory().catch((error) => console.error(error));
+        await checkForAvailableData().catch((error) => console.error(error));
+      }
+      requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
+      await setUserAccessFields();
+    })
+    .catch((error) => console.error(error));
   if (getKeycloakPromise) {
     const keycloak = await getKeycloakPromise();
     userEmail.value = keycloak.tokenParsed?.email || '';
@@ -267,10 +267,10 @@ async function getAnsweringDataSetUrl(): Promise<string | undefined> {
  */
 async function getDataMetaInfo(companyId: string): Promise<DataMetaInformation | undefined> {
   const datasets = await metaDataControllerApi.getListOfDataMetaInfo(
-      companyId,
-      storedRequest.dataType as DataTypeEnum,
-      true,
-      storedRequest.reportingPeriod
+    companyId,
+    storedRequest.dataType as DataTypeEnum,
+    true,
+    storedRequest.reportingPeriod
   );
   return datasets.data.length > 0 ? datasets.data[0] : undefined;
 }
@@ -283,7 +283,7 @@ async function getParentCompanyId(): Promise<string | undefined> {
   if (!companyInformation?.parentCompanyLei) return undefined;
 
   return (await companyControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, companyInformation.parentCompanyLei))
-      .data.companyId;
+    .data.companyId;
 }
 
 /**
@@ -370,10 +370,10 @@ async function setUserAccessFields(): Promise<void> {
  */
 function isRequestWithdrawable(): boolean {
   return (
-      (storedRequest.state == RequestState.Open ||
-          storedRequest.state == RequestState.Processing ||
-          storedRequest.state == RequestState.Processed) &&
-      isUserKeycloakAdmin.value
+    (storedRequest.state == RequestState.Open ||
+      storedRequest.state == RequestState.Processing ||
+      storedRequest.state == RequestState.Processed) &&
+    isUserKeycloakAdmin.value
   );
 }
 
@@ -418,7 +418,6 @@ onMounted(() => {
   text-align: left;
   display: flex;
   flex-direction: column;
-
 }
 
 .data {
@@ -431,7 +430,6 @@ onMounted(() => {
   font-weight: var(--font-weight-bold);
   line-height: normal;
 }
-
 
 .dataland-inline-tag {
   margin: 0 var(--spacing-xs);
