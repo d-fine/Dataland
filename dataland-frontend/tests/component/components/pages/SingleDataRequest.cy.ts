@@ -23,7 +23,7 @@ describe('Component tests for the single data request page', function (): void {
       });
 
       cy.get("button[type='submit']").should('exist').click();
-      cy.get("[data-test='requestStatusText']").should('contain.text', 'Submitting your data request was successful.');
+      cy.get("[data-test='success-modal']").should('contain.text', 'Submitting your data request was successful.');
     });
   });
 
@@ -39,10 +39,7 @@ describe('Component tests for the single data request page', function (): void {
       });
 
       cy.get("button[type='submit']").should('exist').click();
-      cy.get("[data-test='requestStatusText']").should(
-        'contain.text',
-        'The submission of your data request was unsuccessful.'
-      );
+      cy.get("[data-test='submissionErrorMessage']").should('contain.text', '404');
     });
   });
 
