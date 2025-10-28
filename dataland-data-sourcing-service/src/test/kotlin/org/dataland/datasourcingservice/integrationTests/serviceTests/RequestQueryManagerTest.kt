@@ -196,8 +196,6 @@ class RequestQueryManagerTest
                 dataType = DATA_TYPE_2,
                 reportingPeriod = REPORTING_PERIOD_2,
                 state = RequestState.valueOf(REQUEST_STATE_2),
-                userId = UUID.randomUUID(),
-                adminComment = null,
                 creationTimestamp = timestamp,
             )
             dataBaseCreationUtils.storeRequest(
@@ -206,8 +204,6 @@ class RequestQueryManagerTest
                 dataType = DATA_TYPE_1,
                 reportingPeriod = REPORTING_PERIOD_1,
                 state = RequestState.valueOf(REQUEST_STATE_1),
-                userId = UUID.randomUUID(),
-                adminComment = null,
                 creationTimestamp = timestamp,
             )
             dataBaseCreationUtils.storeRequest(
@@ -216,8 +212,6 @@ class RequestQueryManagerTest
                 dataType = DATA_TYPE_2,
                 reportingPeriod = REPORTING_PERIOD_2,
                 state = RequestState.valueOf(REQUEST_STATE_2),
-                userId = UUID.randomUUID(),
-                adminComment = null,
                 creationTimestamp = timestamp + 600000,
             )
             dataBaseCreationUtils.storeRequest(
@@ -226,8 +220,6 @@ class RequestQueryManagerTest
                 dataType = DATA_TYPE_1,
                 reportingPeriod = REPORTING_PERIOD_1,
                 state = RequestState.valueOf(REQUEST_STATE_1),
-                userId = UUID.randomUUID(),
-                adminComment = null,
                 creationTimestamp = timestamp + 600000,
             )
 
