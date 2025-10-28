@@ -83,24 +83,27 @@
         :draggable="false"
         data-test="quotaReachedModal"
       >
-        <em class="material-icons info-icon red-text" style="font-size: 3em">error</em>
-        <div class="text-block" style="margin: 15px">
-          Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER }} single data requests per day is
-          exceeded. The quota will reset automatically tomorrow.
+        <div style="text-align: center; padding: 8px 0">
+          <i
+            class="pi pi-exclamation-circle"
+            style="font-size: 2rem; color: var(--p-red-500); margin-top: var(--spacing-sm)"
+          ></i>
+          <div class="text-block" style="margin: var(--spacing-sm)">
+            Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER }} single data requests per day is
+            exceeded. The quota will reset automatically tomorrow.
+          </div>
+          <div class="text-block" style="margin: var(--spacing-sm)">
+            To avoid quotas altogether, consider becoming a premium user.
+            <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on premium
+            membership.
+          </div>
         </div>
-        <div class="text-block" style="margin: 15px">
-          To avoid quotas altogether, consider becoming a premium user.
-          <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on premium
-          membership.
-        </div>
-        <div style="margin: 10px">
-          <PrimeButton
-            label="CLOSE"
-            @click="closeMaxRequestsReachedModal()"
-            class="p-button-outlined"
-            data-test="closeMaxRequestsReachedModalButton"
-          />
-        </div>
+        <PrimeButton
+          label="CLOSE"
+          @click="closeMaxRequestsReachedModal()"
+          class="p-button-outlined"
+          data-test="closeMaxRequestsReachedModalButton"
+        />
       </PrimeDialog>
       <Message
         v-if="submitted && errorMessage"
@@ -363,33 +366,5 @@ onMounted(() => {
 .submit-button {
   display: block;
   margin: 0 25% var(--spacing-sm) auto;
-}
-
-.header-styling {
-  text-align: left;
-}
-
-.label-with-optional {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--spacing-md);
-}
-
-.optional-text {
-  font-style: italic;
-  color: var(--p-primary-color);
-  margin-left: 8px;
-}
-
-.green-text {
-  color: var(--green);
-}
-
-.red-text {
-  color: var(--red);
-}
-
-.uploadFormWrapper {
-  background-color: var(--p-surface-50);
 }
 </style>
