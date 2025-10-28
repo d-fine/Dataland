@@ -169,11 +169,6 @@
           </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment"/>
         </DataTable>
-        <div v-if="!waitingForData && currentDataRequests.length == 0">
-          <div style="text-align: center">
-            <h2>There are no data requests on Dataland matching your filters.</h2>
-          </div>
-        </div>
       </div>
     </div>
   </TheContent>
