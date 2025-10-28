@@ -91,7 +91,6 @@ async function handleCompanyAddition(): Promise<void> {
           // as unknown as Set<string> cast required to ensure proper json is created
           companyIds: updatedCompanyIds as unknown as Set<string>,
           isMonitored: selectedPortfolio.isMonitored,
-          startingMonitoringPeriod: selectedPortfolio.startingMonitoringPeriod,
           monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
         });
       })
