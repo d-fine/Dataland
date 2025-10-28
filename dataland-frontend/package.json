@@ -64,7 +64,7 @@
     "eslint-plugin-jsdoc": "60.8.3",
     "eslint-plugin-vue": "10.5.1",
     "git-commit-id": "2.0.1",
-    "lint-staged": "16.2.5",
+    "lint-staged": "16.2.6",
     "markdown-it": "14.1.0",
     "mocha": "11.7.4",
     "npm-check-updates": "19.0.0",
@@ -74,9 +74,9 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "vite": "7.1.11",
+    "vite": "7.1.12",
     "vite-plugin-istanbul": "7.2.0",
     "vue-markdown-render": "2.3.0",
-    "vue-tsc": "3.1.1"
+    "vue-tsc": "3.1.2"
   }
 }
