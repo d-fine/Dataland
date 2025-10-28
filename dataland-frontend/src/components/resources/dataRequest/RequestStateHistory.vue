@@ -7,27 +7,27 @@
       class="p-datatable-sm"
     >
       <Column field="lastModifiedDate" header="Date" style="width: 30%">
-        <template #body="slotProps">
+        <template #body="{ data }">
           <span data-test="creationTimestampEntry">
-            {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+            {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
           </span>
         </template>
       </Column>
 
       <Column field="state" header="Request State" style="width: 25%">
-        <template #body="slotProps">
+        <template #body="{ data }">
           <DatalandTag
-            :severity="slotProps.data.state || ''"
-            :value="slotProps.data.state"
+            :severity="data.state || ''"
+            :value="data.state"
             class="dataland-inline-tag"
           />
         </template>
       </Column>
 
       <Column field="adminComment" header="Comment" style="width: 45%">
-        <template #body="slotProps">
+        <template #body="{ data }">
           <div style="display: inline-flex" data-test="commentEntry">
-            {{ slotProps.data.adminComment || '—' }}
+            {{ data.adminComment || '—' }}
           </div>
         </template>
       </Column>

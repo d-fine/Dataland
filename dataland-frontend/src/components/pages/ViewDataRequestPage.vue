@@ -155,7 +155,7 @@ import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestState, type SingleRequest, type StoredRequest } from '@clients/datasourcingservice';
@@ -201,14 +201,14 @@ async function initializeComponent(): Promise<void> {
         await getAndStoreCompanyName().catch((error) => console.error(error));
         await getAndStoreRequestHistory().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
+        await getAndStoreUserEmail();
       }
       requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
   if (getKeycloakPromise) {
-    const keycloak = await getKeycloakPromise();
-    userEmail.value = keycloak.tokenParsed?.email || '';
+    userEmail.value = storedRequest.id || '';
   }
 }
 
@@ -354,8 +354,6 @@ async function withdrawRequest(): Promise<void> {
 async function setUserAccessFields(): Promise<void> {
   try {
     if (getKeycloakPromise) {
-      const userId = await getUserId(getKeycloakPromise);
-      isUsersOwnRequest.value = storedRequest.userId == userId;
       isUserKeycloakAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
     }
   } catch (error) {
@@ -399,6 +397,20 @@ function goToNewRequestPage(): void {
 onMounted(() => {
   void initializeComponent();
 });
+
+async function getAndStoreUserEmail(): Promise<void> {
+  try {
+    if (storedRequest.userId) {
+      const userInfo = await apiClientProvider.backendClients.userUploadsController.getUserUploadsDataMetaInformation(
+        storedRequest.userId
+      );
+      userEmail.value = userInfo.data;
+    }
+  } catch (error) {
+    console.error(error);
+    userEmail.value = '';
+  }
+}
 </script>
 
 <style scoped>

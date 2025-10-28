@@ -27,10 +27,10 @@
 
         <FrameworkDataSearchDropdownFilter
           v-model="selectedState"
-          ref="StateFilter"
+          ref="stateFilter"
           :available-items="availableState"
           filter-name="Request State"
-          data-test="requested-datasets-access-status"
+          data-test="requested-datasets-state"
           filter-placeholder="Search State"
           class="search-filter"
           :max-selected-labels="1"
@@ -148,7 +148,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
-const datasetsPerPage = 3;
+const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
@@ -305,25 +305,25 @@ function updateCurrentDisplayedData(): void {
  * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
  * Compares based on the current sort field, request state, last modified date, and company name.
  *
- * @param {ExtendedStoredRequest} a - The first data request object to compare.
- * @param {ExtendedStoredRequest} b - The second data request object to compare.
- * @returns {number} Comparison result: negative if `a` should precede `b`, positive if `b` should precede `a`, or zero if they are equal.
+ * @param {ExtendedStoredRequest} dataRequestObjectA - The first data request object to compare.
+ * @param {ExtendedStoredRequest} dataRequestObjectB - The second data request object to compare.
+ * @returns {number} Comparison result: negative if `dataRequestObjectA` should precede `dataRequestObjectB`, positive if `dataRequestObjectB` should precede `dataRequestObjectA`, or zero if they are equal.
  */
-function customCompareForExtendedStoredDataRequests(a: ExtendedStoredRequest, b: ExtendedStoredRequest): number {
-  const aValue = a[sortField.value] ?? '';
-  const bValue = b[sortField.value] ?? '';
+function customCompareForExtendedStoredDataRequests(dataRequestObjectA: ExtendedStoredRequest, dataRequestObjectB: ExtendedStoredRequest): number {
+  const dataRequestObjectValueA = dataRequestObjectA[sortField.value] ?? '';
+  const dataRequestObjectValueB = dataRequestObjectB[sortField.value] ?? '';
 
   if (sortField.value !== 'state') {
-    if (aValue < bValue) return -1 * sortOrder.value;
-    if (aValue > bValue) return sortOrder.value;
+    if (dataRequestObjectValueA < dataRequestObjectValueB) return -1 * sortOrder.value;
+    if (dataRequestObjectValueA > dataRequestObjectValueB) return sortOrder.value;
   }
 
-  if (a.state !== b.state) return customCompareForRequestState(a.state, b.state, sortOrder.value);
+  if (dataRequestObjectA.state !== dataRequestObjectB.state) return customCompareForRequestState(dataRequestObjectA.state, dataRequestObjectB.state, sortOrder.value);
 
-  if (a.lastModifiedDate < b.lastModifiedDate) return sortOrder.value;
-  if (a.lastModifiedDate > b.lastModifiedDate) return -1 * sortOrder.value;
+  if (dataRequestObjectA.lastModifiedDate < dataRequestObjectB.lastModifiedDate) return sortOrder.value;
+  if (dataRequestObjectA.lastModifiedDate > dataRequestObjectB.lastModifiedDate) return -1 * sortOrder.value;
 
-  return a.companyName < b.companyName ? -1 * sortOrder.value : sortOrder.value;
+  return dataRequestObjectA.companyName < dataRequestObjectB.companyName ? -1 * sortOrder.value : sortOrder.value;
 }
 
 /**
