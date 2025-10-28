@@ -121,9 +121,9 @@ describeIf(
         checkIfRequestBodyIsValid(interception);
       });
       checkCompanyInfoSheet();
-      cy.get('[data-test="submittedDiv"]').should('exist');
-      cy.get('[data-test="requestStatusText"]').should('contain.text', 'Submitting your data request was successful.');
-      cy.get('[data-test="backToCompanyPageButton"]').click();
+      cy.get('[data-test="success-modal"]').should('exist').should('be.visible');
+      cy.get('[data-test="success-modal"]').should('contain.text', 'Submitting your data request was successful.');
+      cy.get('[data-test="secondary-success-modal-button"]').click();
       cy.url().should('contain', '/companies/');
       checkCompanyInfoSheet();
     });
