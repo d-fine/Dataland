@@ -7,9 +7,11 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.controller.DataSourcingController
 import org.dataland.datasourcingservice.controller.RequestController
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -41,6 +43,9 @@ class DataSourcingWorkflowTest
         @MockitoBean
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
+        @MockitoBean
+        private lateinit var mockRequestQueryManager: RequestQueryManager
+
         private val mockSecurityContext = mock<SecurityContext>()
         private lateinit var mockAuthentication: DatalandAuthentication
 
@@ -61,6 +66,9 @@ class DataSourcingWorkflowTest
             val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
             whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
                 .thenReturn(listOf(validationResult))
+            whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
+                (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest()
+            }
 
             val requests = List(3) { SingleRequest(companyId, "sfdr", "2026", null) }
             val requestIds =

@@ -145,7 +145,7 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
     fun getRequest(
         @Valid @PathVariable dataRequestId: String,
-    ): ResponseEntity<StoredRequest>
+    ): ResponseEntity<ExtendedStoredRequest>
 
     /**
      * A method to patch the request state of a data request
