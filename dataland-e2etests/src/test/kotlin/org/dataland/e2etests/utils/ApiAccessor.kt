@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.communitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.EmailAddressControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
@@ -50,6 +51,7 @@ class ApiAccessor {
     val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val companyRightsControllerApi = CompanyRightsControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val emailAddressControllerApi = EmailAddressControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)

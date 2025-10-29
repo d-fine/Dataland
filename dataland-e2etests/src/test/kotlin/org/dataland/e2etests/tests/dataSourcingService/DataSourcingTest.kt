@@ -1,11 +1,14 @@
 package org.dataland.e2etests.tests.dataSourcingService
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.dataSourcingService.openApiClient.model.StoredDataSourcing
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import java.util.UUID
 
 /**
  * Common superclass for DataSourcingControllerTest and DataSourcingServiceListenerTest. Provides functionality used
@@ -23,6 +26,17 @@ open class DataSourcingTest {
     fun initializeDataSourcing() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
+        apiAccessor.companyRightsControllerApi.postCompanyRight(
+            CompanyRightAssignmentString(
+                companyId = companyId,
+                companyRight = CompanyRightAssignmentString.CompanyRight.Member,
+            ),
+        )
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            role = CompanyRole.Member,
+            companyId = UUID.fromString(companyId),
+            userId = UUID.fromString(TechnicalUser.PremiumUser.technicalUserId),
+        )
         apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
         storedDataSourcing =
             apiAccessor.dataSourcingControllerApi
@@ -42,18 +56,17 @@ open class DataSourcingTest {
         }
 
     /**
-     * Creates a new request (in the sense of the data sourcing service) for the given company and returns the
-     * ID of the created request.
+     * Creates a new request (in the sense of the data sourcing service and for technical user PremiumUser) for the given
+     * company and returns the ID of the created request.
      */
     fun createRequest(
         companyId: String,
         dataType: String = testDataType,
         reportingPeriod: String = testReportingPeriod,
         comment: String = "test request",
-        user: TechnicalUser = TechnicalUser.PremiumUser,
     ): String {
         val request = SingleRequest(companyId, dataType, reportingPeriod, comment)
-        return GlobalAuth.withTechnicalUser(user) {
+        return GlobalAuth.withTechnicalUser(TechnicalUser.PremiumUser) {
             apiAccessor.dataSourcingRequestControllerApi.createRequest(request).requestId
         }
     }
