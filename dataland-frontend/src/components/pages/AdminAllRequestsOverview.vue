@@ -165,6 +165,7 @@
             </template>
           </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
+          <template #empty> No requests found.</template>
         </DataTable>
       </div>
     </div>
@@ -172,7 +173,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -229,6 +230,20 @@ function setChunkAndFirstRowIndexToZero(): void {
   firstRowIndex.value = 0;
 }
 
+const filterState = computed(() => ({
+  frameworks: selectedFrameworks.value,
+  requestStates: selectedRequestStates.value,
+  priorities: selectedPriorities.value,
+  reportingPeriods: selectedReportingPeriods.value,
+  email: searchBarInputEmail.value,
+  comment: searchBarInputComment.value,
+  company: searchBarInputCompanySearchString.value,
+}));
+
+watch(filterState, () => {
+  setChunkAndFirstRowIndexToZero();
+});
+
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableRequestStates.value = retrieveAvailableRequestStates();
@@ -241,7 +256,6 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
-  setChunkAndFirstRowIndexToZero();
   const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
     selectedFrameworks.value.length
       ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
