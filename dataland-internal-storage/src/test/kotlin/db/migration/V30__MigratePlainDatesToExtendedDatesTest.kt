@@ -22,10 +22,13 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
     companion object {
         const val TRANSFORMED_JSON_FOLDER = "V30"
 
+        private const val EXTENDED_DATE_TYPE = "extendedDateFiscalYearEnd"
+        private const val EXTENDED_ENUM_TYPE = "extendedEnumFiscalYearDeviation"
+
         private val expectedRenamingReversed =
             mapOf(
-                "extendedDateFiscalYearEnd" to "plainDateFiscalYearEnd",
-                "extendedEnumFiscalYearDeviation" to "plainEnumFiscalYearDeviation",
+                EXTENDED_DATE_TYPE to "plainDateFiscalYearEnd",
+                EXTENDED_ENUM_TYPE to "plainEnumFiscalYearDeviation",
             )
 
         private val dataPointIdMap = expectedRenamingReversed.mapValues { UUID.randomUUID().toString() }
@@ -49,11 +52,16 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         val dataSource: DataSource?,
     )
 
+    private fun exceptionMessage(dataPointType: String) = "The data point type $dataPointType is not a map key."
+
     private fun toPlainDataPoint(extendedDataPoint: DataPointItem): DataPointItem =
         DataPointItem(
             dataPointId = extendedDataPoint.dataPointId,
             companyId = extendedDataPoint.companyId,
-            dataPointType = expectedRenamingReversed.getOrDefault(extendedDataPoint.dataPointType, "dummyDataPointType"),
+            dataPointType =
+                expectedRenamingReversed.getOrElse(extendedDataPoint.dataPointType) {
+                    throw IllegalArgumentException(exceptionMessage(extendedDataPoint.dataPointType))
+                },
             reportingPeriod = extendedDataPoint.reportingPeriod,
             dataPoint =
                 "\"\\\"" +
@@ -63,7 +71,8 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
                                 .readValue<String>(
                                     extendedDataPoint.dataPoint,
                                 ),
-                        ).value + "\\\"\"",
+                        ).value +
+                    "\\\"\"",
         )
 
     private fun extractExtendedDataPointFromJson(
@@ -71,7 +80,10 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         companyId: String = UUID.randomUUID().toString(),
     ): DataPointItem =
         DataPointItem(
-            dataPointId = dataPointIdMap.getOrDefault(extendedDataPointType, UUID.randomUUID().toString()),
+            dataPointId =
+                dataPointIdMap.getOrElse(extendedDataPointType) {
+                    throw IllegalArgumentException(exceptionMessage(extendedDataPointType))
+                },
             companyId = companyId,
             dataPointType = extendedDataPointType,
             reportingPeriod = "2023",
@@ -97,20 +109,26 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
 
     @Test
     fun `check correct migration of plain data points`() {
-        val migratedDateDataPoint = dataPointItemRepository.findById(dataPointIdMap["extendedDateFiscalYearEnd"]!!).get()
+        val migratedDateDataPoint =
+            dataPointItemRepository
+                .findById(
+                    dataPointIdMap.getOrElse(EXTENDED_DATE_TYPE) {
+                        throw IllegalArgumentException(exceptionMessage(EXTENDED_DATE_TYPE))
+                    },
+                ).get()
         assertEquals(
-            extractExtendedDataPointFromJson(
-                "extendedDateFiscalYearEnd",
-                migratedDateDataPoint.companyId,
-            ),
+            extractExtendedDataPointFromJson(EXTENDED_DATE_TYPE, migratedDateDataPoint.companyId),
             migratedDateDataPoint,
         )
-        val migratedEnumDataPoint = dataPointItemRepository.findById(dataPointIdMap["extendedEnumFiscalYearDeviation"]!!).get()
+        val migratedEnumDataPoint =
+            dataPointItemRepository
+                .findById(
+                    dataPointIdMap.getOrElse(EXTENDED_ENUM_TYPE) {
+                        throw IllegalArgumentException(exceptionMessage(EXTENDED_ENUM_TYPE))
+                    },
+                ).get()
         assertEquals(
-            extractExtendedDataPointFromJson(
-                "extendedEnumFiscalYearDeviation",
-                migratedEnumDataPoint.companyId,
-            ),
+            extractExtendedDataPointFromJson(EXTENDED_ENUM_TYPE, migratedEnumDataPoint.companyId),
             migratedEnumDataPoint,
         )
     }
