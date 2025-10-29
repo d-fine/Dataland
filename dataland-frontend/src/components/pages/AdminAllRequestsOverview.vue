@@ -92,10 +92,6 @@
         label="FILTER REQUESTS"
       />
     </div>
-    <div style="display: flex; justify-content: flex-end; padding-right: var(--spacing-xl)">
-      <Message variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
-    </div>
-
     <div v-if="waitingForData">
       <p class="font-medium text-xl">Loading...</p>
       <DatalandProgressSpinner />
@@ -112,6 +108,7 @@
           :paginator="true"
           :lazy="true"
           :total-records="totalRecords"
+          paginator-position="both"
           :rows="rowsPerPage"
           :first="firstRowIndex"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
@@ -175,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -198,7 +195,6 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import Message from 'primevue/message';
 import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
@@ -225,19 +221,6 @@ const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
 const selectedReportingPeriods = ref<SelectableItem[]>([]);
 
-const numberOfRequestsInformation = computed(() => {
-  if (!waitingForData.value) {
-    if (totalRecords.value === 0) {
-      return 'No results for this search.';
-    } else {
-      const startIndex = currentChunkIndex.value * rowsPerPage.value + 1;
-      const endIndex = Math.min(startIndex + rowsPerPage.value - 1, totalRecords.value);
-      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
-    }
-  }
-  return '';
-});
-
 /**
  * Sets the current chunk index and first row index to zero.
  */
@@ -245,20 +228,6 @@ function setChunkAndFirstRowIndexToZero(): void {
   currentChunkIndex.value = 0;
   firstRowIndex.value = 0;
 }
-
-const filterState = computed(() => ({
-  frameworks: selectedFrameworks.value,
-  requestStates: selectedRequestStates.value,
-  priorities: selectedPriorities.value,
-  reportingPeriods: selectedReportingPeriods.value,
-  email: searchBarInputEmail.value,
-  comment: searchBarInputComment.value,
-  company: searchBarInputCompanySearchString.value,
-}));
-
-watch(filterState, () => {
-  setChunkAndFirstRowIndexToZero();
-});
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
@@ -272,6 +241,7 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
+  setChunkAndFirstRowIndexToZero();
   const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
     selectedFrameworks.value.length
       ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
