@@ -64,11 +64,13 @@
           <div class="title">Request Details</div>
           <Divider />
           <div v-if="isUserKeycloakAdmin" class="side-header">Requester</div>
-          <div class="data" v-if="isUserKeycloakAdmin">{{ storedRequest.userEmailAddress }}</div>
+          <div class="data" data-test="request-details-email" v-if="isUserKeycloakAdmin">
+            {{ storedRequest.userEmailAddress }}
+          </div>
           <div class="side-header">Company</div>
-          <div class="data">{{ storedRequest.companyName }}</div>
+          <div class="data" data-test="request-details-company">{{ storedRequest.companyName }}</div>
           <div class="side-header">Framework</div>
-          <div class="data">
+          <div class="data" data-test="request-details-type">
             {{ getFrameworkTitle(storedRequest.dataType) }}
 
             <div
@@ -80,7 +82,7 @@
             </div>
           </div>
           <div class="side-header">Reporting year</div>
-          <div class="data">{{ storedRequest.reportingPeriod }}</div>
+          <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
           <PrimeButton
             v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
