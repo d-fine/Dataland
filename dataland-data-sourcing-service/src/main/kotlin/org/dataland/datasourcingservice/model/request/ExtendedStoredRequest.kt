@@ -19,6 +19,6 @@ data class ExtendedStoredRequest(
     val requestPriority: RequestPriority,
     val state: RequestState,
     val dataSourcingEntityId: String? = null,
-    var companyName: String,
-    var userEmailAddress: String? = null,
+    val companyName: String,
+    val userEmailAddress: String? = null,
 )
