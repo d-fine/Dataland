@@ -88,7 +88,10 @@
       <PrimeButton
         :disabled="waitingForData"
         data-test="trigger-filtering-requests"
-        @click="getAllRequestsForFilters"
+        @click="() => {
+          setChunkAndFirstRowIndexToZero();
+          getAllRequestsForFilters();
+        }"
         label="FILTER REQUESTS"
       />
     </div>
@@ -124,44 +127,44 @@
           <Column header="REQUESTER" field="userEmailAddress" :sortable="false" />
           <Column header="COMPANY" field="companyName" :sortable="false" />
           <Column header="FRAMEWORK" :sortable="false">
-            <template #body="slotProps">
+            <template #body="{ data }">
               <div>
-                {{ getFrameworkTitle(slotProps.data.dataType) }}
+                {{ getFrameworkTitle(data.dataType) }}
               </div>
               <div
                 data-test="framework-subtitle"
-                v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                v-if="frameworkHasSubTitle(data.dataType)"
                 style="color: gray; font-size: smaller; line-height: var(--spacing-xs); white-space: nowrap"
               >
                 <br />
-                {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                {{ getFrameworkSubtitle(data.dataType) }}
               </div>
             </template>
           </Column>
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
           <Column header="REQUEST ID" field="id" :sortable="false" />
           <Column header="REQUESTED" :sortable="false">
-            <template #body="slotProps">
+            <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimeStamp) }}
+                {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
               </div>
             </template>
           </Column>
           <Column header="LAST UPDATED" :sortable="false">
-            <template #body="slotProps">
+            <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
               </div>
             </template>
           </Column>
           <Column header="REQUEST STATE" :sortable="false">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded />
+            <template #body="{ data }">
+              <DatalandTag :severity="data.state" :value="data.state" rounded />
             </template>
           </Column>
           <Column header="REQUEST PRIORITY" :sortable="false">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
+            <template #body="{ data }">
+              <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
             </template>
           </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
@@ -173,7 +176,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -198,7 +201,6 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
-
 const frameworkFilter = ref();
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -230,20 +232,6 @@ function setChunkAndFirstRowIndexToZero(): void {
   firstRowIndex.value = 0;
 }
 
-const filterState = computed(() => ({
-  frameworks: selectedFrameworks.value,
-  requestStates: selectedRequestStates.value,
-  priorities: selectedPriorities.value,
-  reportingPeriods: selectedReportingPeriods.value,
-  email: searchBarInputEmail.value,
-  comment: searchBarInputComment.value,
-  company: searchBarInputCompanySearchString.value,
-}));
-
-watch(filterState, () => {
-  setChunkAndFirstRowIndexToZero();
-});
-
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableRequestStates.value = retrieveAvailableRequestStates();
@@ -256,6 +244,7 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
+  waitingForData.value = true;
   const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
     selectedFrameworks.value.length
       ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
@@ -320,6 +309,7 @@ function resetFilterAndSearchBar(): void {
   searchBarInputEmail.value = '';
   searchBarInputComment.value = '';
   searchBarInputCompanySearchString.value = '';
+  setChunkAndFirstRowIndexToZero();
   void getAllRequestsForFilters();
 }
 

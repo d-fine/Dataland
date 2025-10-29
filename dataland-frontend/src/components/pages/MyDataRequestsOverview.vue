@@ -280,16 +280,16 @@ function resetFilterAndSearchBar(): void {
  * Updates the displayed data and scrolls to the top of the page.
  */
 function updateCurrentDisplayedData(): void {
-  let data = storedDataRequests.value.filter((d) => filterSearchInput(d.companyName));
+  let data = storedDataRequests.value.filter((request) => filterSearchInput(request.companyName));
 
   if (selectedFrameworks.value.length > 0) {
-    data = data.filter((d) => filterFramework(d.dataType));
+    data = data.filter((request) => filterFramework(request.dataType));
   }
   if (selectedState.value.length > 0) {
-    data = data.filter((d) => filterState(d.state));
+    data = data.filter((request) => filterState(request.state));
   }
 
-  data.sort((a, b) => customCompareForExtendedStoredDataRequests(a, b));
+  data.sort((dataRequestObjectA, dataRequestObjectB) => customCompareForExtendedStoredDataRequests(dataRequestObjectA, dataRequestObjectB));
 
   numberOfFilteredRequests.value = data.length;
 
