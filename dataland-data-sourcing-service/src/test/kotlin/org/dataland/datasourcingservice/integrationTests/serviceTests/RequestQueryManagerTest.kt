@@ -152,7 +152,7 @@ class RequestQueryManagerTest
             val expectedResults =
                 indicesOfExpectedResults.map {
                     val entity = requestEntities[it]
-                    entity.toExtendedStoredRequest().copy(
+                    entity.toExtendedStoredRequest(
                         companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME_1 else TEST_COMPANY_NAME_2,
                         userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )

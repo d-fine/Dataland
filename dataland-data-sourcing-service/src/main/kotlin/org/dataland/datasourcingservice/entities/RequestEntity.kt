@@ -75,7 +75,10 @@ class RequestEntity(
     /**
      * Converts this RequestEntity to a ExtendedStoredDataRequest.
      */
-    fun toExtendedStoredRequest(): ExtendedStoredRequest =
+    fun toExtendedStoredRequest(
+        companyName: String,
+        userEmailAddress: String?,
+    ): ExtendedStoredRequest =
         ExtendedStoredRequest(
             id = id.toString(),
             companyId = companyId.toString(),
@@ -89,8 +92,8 @@ class RequestEntity(
             requestPriority = requestPriority,
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
-            companyName = String(),
-            userEmailAddress = null,
+            companyName = companyName,
+            userEmailAddress = userEmailAddress,
         )
 
     constructor(

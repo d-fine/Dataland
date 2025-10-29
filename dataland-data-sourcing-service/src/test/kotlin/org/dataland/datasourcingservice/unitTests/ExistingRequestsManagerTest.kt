@@ -59,7 +59,7 @@ class ExistingRequestsManagerTest {
             )
         reset(mockDataSourcingManager)
         whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
-            (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest()
+            (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("Company Name", null)
         }
     }
 

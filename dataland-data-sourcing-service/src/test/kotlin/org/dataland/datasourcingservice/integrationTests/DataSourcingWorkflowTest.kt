@@ -67,7 +67,7 @@ class DataSourcingWorkflowTest
             whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
                 .thenReturn(listOf(validationResult))
             whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
-                (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest()
+                (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("New Company", null)
             }
 
             val requests = List(3) { SingleRequest(companyId, "sfdr", "2026", null) }
