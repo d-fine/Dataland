@@ -1,8 +1,8 @@
 package org.dataland.e2etests.tests.communityManager
 
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.userService.openApiClient.infrastructure.ClientException
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
