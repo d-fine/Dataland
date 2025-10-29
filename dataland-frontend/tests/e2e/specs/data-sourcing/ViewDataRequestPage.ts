@@ -62,9 +62,8 @@ describe('ViewDataRequestPage', () => {
     });
   });
 
-  it.only('should open and close the resubmit modal', () => {
+  it('should open and close the resubmit modal', () => {
     cy.get('[data-test="card-resubmit"]').should('be.visible');
-      cy.pause();
     cy.get('[data-test="resubmit-request-button"]').click();
     cy.get('[data-test="resubmit-modal"]').should('be.visible');
     cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
@@ -75,18 +74,16 @@ describe('ViewDataRequestPage', () => {
     cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('exist').should('contain.text', 'Open');
   });
 
-  it('should open and close the withdraw modal', () => {
+  it('should check for correct display of request details ' + 'and should open and close the withdraw modal', () => {
+    cy.get('[data-test="request-details-company"]').should('contain.text', alphaCompanyIdAndName.companyName);
+    cy.get('[data-test="request-details-year"]').should('contain.text', testYear);
+    cy.get('[data-test="request-details-type"]').should('contain.text', 'PCAF');
+    cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Processed');
+    cy.get('[data-test="request-details-email"]').should('contain.text', 'data.uploader@example.com');
+
     cy.get('[data-test="card_withdrawn"]').should('be.visible');
     cy.get('[data-test="withdraw-request-button"]').click();
     cy.get('.p-dialog').should('contain.text', 'successfully withdrawn');
     cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Withdrawn');
-  });
-
-  it('should check for correct display of request details', () => {
-    cy.get('[data-test="request-details-company"]').should('contain.text', alphaCompanyIdAndName.companyName);
-    cy.get('[data-test="request-details-year"]').should('contain.text', testYear);
-    cy.get('[data-test="request-details-type"]').should('contain.text', 'pcaf');
-    cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Processed');
-    cy.get('[data-test="request-details-email"]').should('contain.text', uploader_name);
   });
 });
