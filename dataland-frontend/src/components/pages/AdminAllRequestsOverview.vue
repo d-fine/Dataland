@@ -88,10 +88,12 @@
       <PrimeButton
         :disabled="waitingForData"
         data-test="trigger-filtering-requests"
-        @click="() => {
-          setChunkAndFirstRowIndexToZero();
-          getAllRequestsForFilters();
-        }"
+        @click="
+          () => {
+            setChunkAndFirstRowIndexToZero();
+            getAllRequestsForFilters();
+          }
+        "
         label="FILTER REQUESTS"
       />
     </div>
@@ -115,7 +117,7 @@
           :rows="rowsPerPage"
           :first="firstRowIndex"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-          :alwaysShowPaginator="false"
+          :alwaysShowPaginator="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           @row-click="onRowClick($event)"
           @page="onPage($event)"

@@ -64,7 +64,7 @@ describe('ViewDataRequestPage', () => {
 
   it.only('should open and close the resubmit modal', () => {
     cy.get('[data-test="card-resubmit"]').should('be.visible');
-      cy.pause();
+    cy.pause();
     cy.get('[data-test="resubmit-request-button"]').click();
     cy.get('[data-test="resubmit-modal"]').should('be.visible');
     cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');

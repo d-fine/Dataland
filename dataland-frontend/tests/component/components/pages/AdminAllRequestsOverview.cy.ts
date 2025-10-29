@@ -163,12 +163,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
       }
-    }).as('fetchInitialUnfilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests.length.toString());
       }
-    }).as('fetchInitialUnfilteredNumberOfRequests');
+    });
   }
 
   /**
@@ -204,12 +204,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequestsLarge);
       }
-    }).as('fetchInitialUnfilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchInitialUnfilteredNumberOfRequests');
+    });
 
     getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -231,12 +231,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (req.body.emailAddress === mailSearchTerm) {
         req.reply(mockResponse);
       }
-    }).as('fetchEmailFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (req.body.emailAddress === mailSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchFilteredNumberOfRequestsByEmail');
+    });
 
     cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -265,6 +265,7 @@ describe('Component test for the admin-requests-overview page', () => {
     }).as('fetchFrameworkFilteredNumberOfRequests');
 
     cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
@@ -291,6 +292,7 @@ describe('Component test for the admin-requests-overview page', () => {
     }).as('fetchRequestStateFilteredNumberOfRequests');
 
     cy.get(`div[data-test="request-state-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${requestStateToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
@@ -316,6 +318,7 @@ describe('Component test for the admin-requests-overview page', () => {
     }).as('fetchPriorityFilteredNumberOfRequests');
 
     cy.get(`div[data-test="request-priority-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
@@ -428,6 +431,7 @@ describe('Component test for the admin-requests-overview page', () => {
     }).as('fetchCombinedFilteredNumberOfRequests');
 
     cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
@@ -461,7 +465,7 @@ describe('Component test for the admin-requests-overview page', () => {
     );
     cy.intercept(`**/data-sourcing/requests/count`, expectedNumberOfRequests.toString());
 
-    cy.get(`button[aria-label="Page 2"]`).click();
+    cy.get(`button[aria-label="Page 2"]`).first().click();
 
     cy.wait('@fetchRequests');
     assertNumberOfSearchResults(expectedNumberOfRows);
