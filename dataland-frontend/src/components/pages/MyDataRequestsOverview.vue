@@ -7,7 +7,7 @@
           <InputText
             data-test="requested-datasets-searchbar"
             v-model="searchBarInput"
-            placeholder="Search by company name"
+            placeholder="Search by Company Name"
             fluid
             variant="filled"
           />
