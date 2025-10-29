@@ -6,11 +6,13 @@ import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 import java.util.UUID
 
 @SpringBootTest(classes = [org.dataland.datalandinternalstorage.DatalandInternalStorage::class])
@@ -26,57 +28,69 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
                 "extendedDateFiscalYearEnd" to "plainDateFiscalYearEnd",
                 "extendedEnumFiscalYearDeviation" to "plainEnumFiscalYearDeviation",
             )
+
+        private val dataPointIdMap = expectedRenamingReversed.mapValues { UUID.randomUUID().toString() }
+
+        @JvmStatic
+        fun extendedDataPointTypesSource() = expectedRenamingReversed.keys
     }
 
     @Autowired
     private lateinit var dataPointItemRepository: DataPointItemRepository
 
-    override fun setupBeforeMigration() {
-        val expectedTransformedDataPoints =
-            expectedRenamingReversed.keys
-                .map {
-                    DataPointItem(
-                        dataPointId = UUID.randomUUID().toString(),
-                        companyId = UUID.randomUUID().toString(),
-                        dataPointType = it,
-                        reportingPeriod = "2023",
-                        dataPoint =
-                            defaultObjectMapper.writeValueAsString(
-                                JsonUtils.readJsonFromResourcesFile("$TRANSFORMED_JSON_FOLDER/$it.json").toString(),
-                            ),
-                    )
-                }
-        expectedTransformedDataPoints.forEach {
-            dataPointItemRepository.save(
-                DataPointItem(
-                    dataPointId = it.dataPointId,
-                    companyId = it.companyId,
-                    dataPointType = expectedRenamingReversed[it.dataPointType]!!,
-                    reportingPeriod = "2023",
-                    dataPoint = defaultObjectMapper.readValue<ExtendedDataPoint>(it.dataPoint).value,
-                ),
-            )
-        }
-    }
-
-    override fun getFlywayBaselineVersion(): String = "29"
-
-    override fun getFlywayTargetVersion(): String = "30"
-
-    inner class DataSource(
+    data class DataSource(
         val page: String,
         val tagName: String?,
         val fileName: String,
         val fileReference: String,
-        val publicationDate: LocalDate,
+        val publicationDate: String,
     )
 
-    inner class ExtendedDataPoint(
+    data class ExtendedDataPoint(
         val value: String,
         val quality: String,
         val comment: String,
         val dataSource: DataSource,
     )
 
-    //
+    private fun toPlainDataPoint(extendedDataPoint: DataPointItem): DataPointItem =
+        DataPointItem(
+            dataPointId = extendedDataPoint.dataPointId,
+            companyId = extendedDataPoint.companyId,
+            dataPointType = expectedRenamingReversed[extendedDataPoint.dataPointType]!!,
+            reportingPeriod = extendedDataPoint.reportingPeriod,
+            dataPoint = defaultObjectMapper.readValue<ExtendedDataPoint>(extendedDataPoint.dataPoint).value,
+        )
+
+    private fun extractExtendedDataPointFromJson(extendedDataPointType: String): DataPointItem =
+        DataPointItem(
+            dataPointId = dataPointIdMap[extendedDataPointType]!!,
+            companyId = UUID.randomUUID().toString(),
+            dataPointType = extendedDataPointType,
+            reportingPeriod = "2023",
+            dataPoint =
+                defaultObjectMapper.writeValueAsString(
+                    JsonUtils.readJsonFromResourcesFile("$TRANSFORMED_JSON_FOLDER/$extendedDataPointType.json").toString(),
+                ),
+        )
+
+    override fun getFlywayBaselineVersion(): String = "29"
+
+    override fun getFlywayTargetVersion(): String = "30"
+
+    override fun setupBeforeMigration() {
+        val expectedTransformedDataPoints =
+            expectedRenamingReversed.keys.map { extractExtendedDataPointFromJson(it) }
+        expectedTransformedDataPoints.forEach {
+            println("Data point string: ${it.dataPoint}")
+        }
+        expectedTransformedDataPoints.forEach { dataPointItemRepository.save(toPlainDataPoint(it)) }
+    }
+
+    @ParameterizedTest
+    @MethodSource("extendedDataPointTypesSource")
+    fun `check correct migration of plain data points to extended data points`(extendedDataPointType: String) {
+        val migratedDataPoint = dataPointItemRepository.findById(dataPointIdMap[extendedDataPointType]!!).get()
+        assertEquals(extractExtendedDataPointFromJson(extendedDataPointType), migratedDataPoint)
+    }
 }
