@@ -7,8 +7,9 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -52,16 +53,11 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         val dataSource: DataSource?,
     )
 
-    private fun exceptionMessage(dataPointType: String) = "The data point type $dataPointType is not a map key."
-
     private fun toPlainDataPoint(extendedDataPoint: DataPointItem): DataPointItem =
         DataPointItem(
             dataPointId = extendedDataPoint.dataPointId,
             companyId = extendedDataPoint.companyId,
-            dataPointType =
-                expectedRenamingReversed.getOrElse(extendedDataPoint.dataPointType) {
-                    throw IllegalArgumentException(exceptionMessage(extendedDataPoint.dataPointType))
-                },
+            dataPointType = expectedRenamingReversed.getValue(extendedDataPoint.dataPointType),
             reportingPeriod = extendedDataPoint.reportingPeriod,
             dataPoint =
                 "\"\\\"" +
@@ -80,10 +76,7 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         companyId: String = UUID.randomUUID().toString(),
     ): DataPointItem =
         DataPointItem(
-            dataPointId =
-                dataPointIdMap.getOrElse(extendedDataPointType) {
-                    throw IllegalArgumentException(exceptionMessage(extendedDataPointType))
-                },
+            dataPointId = dataPointIdMap.getValue(extendedDataPointType),
             companyId = companyId,
             dataPointType = extendedDataPointType,
             reportingPeriod = "2023",
@@ -107,29 +100,17 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         }
     }
 
-    @Test
-    fun `check correct migration of plain data points`() {
+    @Suppress("UnusedPrivateMember")
+    private fun dataPointTypesProvider() = expectedRenamingReversed.keys
+
+    @ParameterizedTest()
+    @MethodSource("dataPointTypesProvider")
+    fun `check correct migration of plain data points`(dataPoint: String) {
         val migratedDateDataPoint =
-            dataPointItemRepository
-                .findById(
-                    dataPointIdMap.getOrElse(EXTENDED_DATE_TYPE) {
-                        throw IllegalArgumentException(exceptionMessage(EXTENDED_DATE_TYPE))
-                    },
-                ).get()
+            dataPointItemRepository.findById(dataPointIdMap.getValue(dataPoint)).get()
         assertEquals(
-            extractExtendedDataPointFromJson(EXTENDED_DATE_TYPE, migratedDateDataPoint.companyId),
+            extractExtendedDataPointFromJson(dataPoint, migratedDateDataPoint.companyId),
             migratedDateDataPoint,
-        )
-        val migratedEnumDataPoint =
-            dataPointItemRepository
-                .findById(
-                    dataPointIdMap.getOrElse(EXTENDED_ENUM_TYPE) {
-                        throw IllegalArgumentException(exceptionMessage(EXTENDED_ENUM_TYPE))
-                    },
-                ).get()
-        assertEquals(
-            extractExtendedDataPointFromJson(EXTENDED_ENUM_TYPE, migratedEnumDataPoint.companyId),
-            migratedEnumDataPoint,
         )
     }
 }
