@@ -24,7 +24,8 @@ import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_1
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_2
-import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME
+import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME_1
+import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME_2
 import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.USER_EMAIL
 import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
@@ -89,8 +90,8 @@ class RequestQueryManagerTest
             doReturn(COMPANY_ID_2).whenever(storedCompany2).companyId
             doReturn(companyInfo1).whenever(storedCompany1).companyInformation
             doReturn(companyInfo2).whenever(storedCompany2).companyInformation
-            doReturn(TEST_COMPANY_NAME).whenever(companyInfo1).companyName
-            doReturn(null).whenever(companyInfo2).companyName
+            doReturn(TEST_COMPANY_NAME_1).whenever(companyInfo1).companyName
+            doReturn(TEST_COMPANY_NAME_2).whenever(companyInfo2).companyName
             doReturn(storedCompany1).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_1)
             doReturn(storedCompany2).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_2)
         }
@@ -152,7 +153,7 @@ class RequestQueryManagerTest
                 indicesOfExpectedResults.map {
                     val entity = requestEntities[it]
                     entity.toExtendedStoredRequest().copy(
-                        companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME else null,
+                        companyName = if (entity.companyId.toString() == COMPANY_ID_1) TEST_COMPANY_NAME_1 else TEST_COMPANY_NAME_2,
                         userEmailAddress = if (entity.userId.toString() == firstUser.userId) USER_EMAIL else null,
                     )
                 }
