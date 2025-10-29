@@ -64,7 +64,7 @@
           <div class="title">Request Details</div>
           <Divider />
           <div v-if="isUserKeycloakAdmin" class="side-header">Requester</div>
-          <div class="data" v-if="isUserKeycloakAdmin">{{ userEmail }}</div>
+          <div class="data" v-if="isUserKeycloakAdmin">{{ storedRequest.userEmailAddress }}</div>
           <div class="side-header">Company</div>
           <div class="data">{{ companyName }}</div>
           <div class="side-header">Framework</div>
@@ -158,7 +158,12 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { RequestState, type SingleRequest, type StoredRequest } from '@clients/datasourcingservice';
+import {
+  type ExtendedStoredRequest,
+  RequestState,
+  type SingleRequest,
+  type StoredRequest
+} from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -182,12 +187,11 @@ const resubmitMessage = ref('');
 const resubmitSuccessModalIsVisible = ref(false);
 const newRequestId = ref<string>('');
 const isUserKeycloakAdmin = ref(false);
-const storedRequest = reactive({} as StoredRequest);
+const storedRequest = reactive({} as ExtendedStoredRequest);
 const companyName = ref('');
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
-const userEmail = ref('');
 
 /**
  * Perform all steps required to set up the component.
@@ -205,9 +209,6 @@ async function initializeComponent(): Promise<void> {
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
-  if (getKeycloakPromise) {
-    userEmail.value = storedRequest.id || '';
-  }
 }
 
 /**

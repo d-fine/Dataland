@@ -97,7 +97,7 @@ function interceptUserRequests({
   data?: ExtendedStoredRequest[];
   alias?: string;
   matchPattern?: string;
-} = {}) {
+} = {}): void {
   cy.intercept('**/data-sourcing/requests/user', {
     body: data,
     status: 200,
