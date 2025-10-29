@@ -26,7 +26,7 @@ export default defineComponent({
       multiselect: ref(),
     };
   },
-  name: 'DataSearchDropdownFilter',
+  name: 'FrameworkDataSearchDropdownFilter',
   components: { MultiSelect },
   emits: ['update:modelValue'],
   props: {

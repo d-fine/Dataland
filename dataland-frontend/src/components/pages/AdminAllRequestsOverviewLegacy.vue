@@ -39,7 +39,7 @@
     </div>
 
     <div class="search-container-last-line">
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
         ref="frameworkFilter"
@@ -51,7 +51,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} frameworks"
       />
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedRequestStatuses"
         ref="frameworkFilter"
@@ -63,7 +63,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} request status"
       />
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedPriorities"
         ref="frameworkFilter"
@@ -75,7 +75,7 @@
         :max-selected-labels="1"
         selected-items-label="{0} request priorities"
       />
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedReportingPeriods"
         ref="frameworkFilter"
@@ -213,7 +213,7 @@
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTagLegacy.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
@@ -248,7 +248,7 @@ export default defineComponent({
     DatalandProgressSpinner,
     DatalandTag,
     PrimeButton,
-    DataSearchDropdownFilter: DataSearchDropdownFilter,
+    FrameworkDataSearchDropdownFilter,
     TheContent,
     DataTable,
     Column,

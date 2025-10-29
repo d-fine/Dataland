@@ -12,14 +12,14 @@
             fluid
           />
         </IconField>
-        <DataSearchDropdownFilter
+        <FrameworkDataSearchDropdownFilter
           v-model="selectedFrameworks"
           :available-items="availableFrameworks"
           filter-name="Framework"
           data-test="requested-datasets-frameworks"
           filter-placeholder="Search frameworks"
         />
-        <DataSearchDropdownFilter
+        <FrameworkDataSearchDropdownFilter
           v-model="selectedAccessStatus"
           :available-items="availableAccessStatus"
           filter-name="Access Status"
@@ -144,7 +144,7 @@
 
 <script lang="ts">
 import TheContent from '@/components/generics/TheContent.vue';
-import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -178,7 +178,7 @@ export default defineComponent({
   },
   components: {
     PrimeButton,
-    DataSearchDropdownFilter: DataSearchDropdownFilter,
+    FrameworkDataSearchDropdownFilter,
     TheContent,
     DataTable,
     Column,

@@ -2,7 +2,7 @@
   <div class="filter-container">
     <div class="filter">
       <label for="sector-filter" v-if="showHeading">Filter by company</label>
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         v-model="localSelectedSectors"
         ref="sectorFilter"
         :available-items="availableSectors"
@@ -14,7 +14,7 @@
         class="search-filter"
         data-test="frameworkDataSearchDropdownFilterSector"
       />
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         v-model="localSelectedCountries"
         ref="countryFilter"
         :available-items="availableCountries"
@@ -26,7 +26,7 @@
         class="search-filter"
       />
       <Divider layout="vertical" />
-      <DataSearchDropdownFilter
+      <FrameworkDataSearchDropdownFilter
         v-model="localSelectedFrameworks"
         ref="frameworkFilter"
         :available-items="availableFrameworks"
@@ -48,7 +48,7 @@
 import { defineComponent, inject, ref } from 'vue';
 import { type ApiClientProvider } from '@/services/ApiClients';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
-import DataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/DataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
@@ -64,7 +64,7 @@ import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
-  components: { DataSearchDropdownFilter: DataSearchDropdownFilter, PrimeButton, Divider },
+  components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
   emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
