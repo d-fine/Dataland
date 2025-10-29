@@ -78,6 +78,7 @@ class RequestPriorityUpdaterTest {
             lastModifiedDate = 0L,
             requestPriority = priority,
             state = state,
+            companyName = "Dummy Company",
         )
 
     private val storedRequestsMap =
