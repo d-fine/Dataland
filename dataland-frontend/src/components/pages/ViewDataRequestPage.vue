@@ -82,10 +82,10 @@
           <div class="side-header">Reporting year</div>
           <div class="data">{{ storedRequest.reportingPeriod }}</div>
           <PrimeButton
-            v-if="answeringDataSetUrl"
+            v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
             label="VIEW DATASET"
-            @click="goToAnsweringDataSetPage()"
+            @click="goToAnsweringDatasetPage()"
             style="width: fit-content"
           />
         </div>
@@ -155,7 +155,7 @@ import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { RequestState, type SingleRequest, type StoredRequest } from '@clients/datasourcingservice';
@@ -186,7 +186,7 @@ const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
 const companyName = ref('');
 const resubmitMessageError = ref(false);
-const answeringDataSetUrl = ref(undefined as string | undefined);
+const answeringDatasetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
 const userEmail = ref('');
 
@@ -207,8 +207,7 @@ async function initializeComponent(): Promise<void> {
     })
     .catch((error) => console.error(error));
   if (getKeycloakPromise) {
-    const keycloak = await getKeycloakPromise();
-    userEmail.value = keycloak.tokenParsed?.email || '';
+    userEmail.value = storedRequest.id || '';
   }
 }
 
@@ -239,7 +238,7 @@ async function getAndStoreRequestHistory(): Promise<void> {
  */
 async function checkForAvailableData(): Promise<void> {
   try {
-    answeringDataSetUrl.value = await getAnsweringDataSetUrl();
+    answeringDatasetUrl.value = await getAnsweringDatasetUrl();
   } catch (error) {
     console.error(error);
   }
@@ -248,7 +247,7 @@ async function checkForAvailableData(): Promise<void> {
 /**
  * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
  */
-async function getAnsweringDataSetUrl(): Promise<string | undefined> {
+async function getAnsweringDatasetUrl(): Promise<string | undefined> {
   let answeringDataMetaInfo = await getDataMetaInfo(storedRequest.companyId);
   if (!answeringDataMetaInfo) {
     const parentCompanyId = await getParentCompanyId();
@@ -354,8 +353,6 @@ async function withdrawRequest(): Promise<void> {
 async function setUserAccessFields(): Promise<void> {
   try {
     if (getKeycloakPromise) {
-      const userId = await getUserId(getKeycloakPromise);
-      isUsersOwnRequest.value = storedRequest.userId == userId;
       isUserKeycloakAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
     }
   } catch (error) {
@@ -381,8 +378,8 @@ function isRequestWithdrawable(): boolean {
  * Navigates to the company view page
  * @returns the promise of the router push action
  */
-function goToAnsweringDataSetPage(): Promise<void | NavigationFailure | undefined> | void {
-  if (answeringDataSetUrl.value) return router.push(answeringDataSetUrl.value);
+function goToAnsweringDatasetPage(): Promise<void | NavigationFailure | undefined> | void {
+  if (answeringDatasetUrl.value) return router.push(answeringDatasetUrl.value);
 }
 
 /**

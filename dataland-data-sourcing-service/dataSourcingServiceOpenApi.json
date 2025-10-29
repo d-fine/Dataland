@@ -1683,6 +1683,7 @@
       "ExtendedStoredRequest": {
         "required": [
           "companyId",
+          "companyName",
           "creationTimeStamp",
           "dataType",
           "id",

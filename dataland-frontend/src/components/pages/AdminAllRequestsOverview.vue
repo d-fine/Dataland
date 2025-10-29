@@ -54,7 +54,7 @@
         ref="frameworkFilter"
         :available-items="availableRequestStates"
         filter-name="Request State"
-        data-test="request-status-picker"
+        data-test="request-state-picker"
         filter-placeholder="Search by Request State"
         class="search-filter"
         :max-selected-labels="1"
@@ -93,7 +93,7 @@
       />
     </div>
     <div style="display: flex; justify-content: flex-end; padding-right: var(--spacing-xl)">
-      <Message variant="simple" severity="secondary">{{ numberOfRequestsInformation }} </Message>
+      <Message variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
     </div>
 
     <div v-if="waitingForData">
@@ -124,17 +124,9 @@
           :rowHover="true"
           style="cursor: pointer"
         >
-          <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.userEmailAddress }}
-            </template>
-          </Column>
-          <Column header="COMPANY" field="companyName" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.companyName }}
-            </template>
-          </Column>
-          <Column header="FRAMEWORK" :sortable="false" field="dataType">
+          <Column header="REQUESTER" field="userEmailAddress" :sortable="false" />
+          <Column header="COMPANY" field="companyName" :sortable="false" />
+          <Column header="FRAMEWORK" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ getFrameworkTitle(slotProps.data.dataType) }}
@@ -149,53 +141,34 @@
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.reportingPeriod }}
-            </template>
-          </Column>
-          <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.id }}
-            </template>
-          </Column>
-          <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
+          <Column header="REQUEST ID" field="id" :sortable="false" />
+          <Column header="REQUESTED" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimeStamp) }}
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
+          <Column header="LAST UPDATED" :sortable="false">
             <template #body="slotProps">
               <div>
                 {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATE" :sortable="false" field="requestState">
+          <Column header="REQUEST STATE" :sortable="false">
             <template #body="slotProps">
               <DatalandTag :severity="slotProps.data.state" :value="slotProps.data.state" rounded />
             </template>
           </Column>
-          <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
+          <Column header="REQUEST PRIORITY" :sortable="false">
             <template #body="slotProps">
               <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
             </template>
           </Column>
-          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
-            <template #body="slotProps">
-              <div>
-                {{ slotProps.data.adminComment }}
-              </div>
-            </template>
-          </Column>
+          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
         </DataTable>
-        <div v-if="!waitingForData && currentDataRequests.length == 0">
-          <div style="text-align: center">
-            <h2>There are no data requests on Dataland matching your filters.</h2>
-          </div>
-        </div>
       </div>
     </div>
   </TheContent>
@@ -299,38 +272,37 @@ onMounted(() => {
  * Fetches all requests from the backend based on the selected filters and search bar inputs.
  */
 async function getAllRequestsForFilters(): Promise<void> {
-  waitingForData.value = true;
-  const selectedFrameworksAsSet = new Set<string>(
-    selectedFrameworks.value.map((item) => item.frameworkDataType.toString())
+  const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
+    selectedFrameworks.value.length
+      ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
+      : undefined
   );
-  const selectedRequestStatesAsSet = new Set<RequestState>(
-    selectedRequestStates.value.map((item) => item.displayName as RequestState)
+
+  const selectedRequestStatesForApi = computed<RequestState[] | undefined>(() =>
+    selectedRequestStates.value.length
+      ? selectedRequestStates.value.map((i) => i.displayName as RequestState)
+      : undefined
   );
-  const selectedPriorityAsSet = new Set<RequestPriority>(
-    selectedPriorities.value.map((item) => item.displayName as RequestPriority)
+
+  const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
+    selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
   );
-  const selectedReportingPeriodAsSet = new Set<string>(selectedReportingPeriods.value.map((item) => item.displayName));
+
+  const selectedReportingPeriodsForApi = computed<string[] | undefined>(() =>
+    selectedReportingPeriods.value.length ? selectedReportingPeriods.value.map((i) => i.displayName) : undefined
+  );
 
   try {
     if (getKeycloakPromise) {
-      const emailFilter = searchBarInputEmail.value || undefined;
-      const commentFilter = searchBarInputComment.value || undefined;
-      const companySearchStringFilter = searchBarInputCompanySearchString.value || undefined;
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-
-      const frameworksForApi = setToApiArray(selectedFrameworksAsSet);
-      const requestStatesForApi = setToApiArray(selectedRequestStatesAsSet);
-      const prioritiesForApi = setToApiArray(selectedPriorityAsSet);
-      const reportingPeriodsForApi = setToApiArray(selectedReportingPeriodAsSet);
-
       const filters = {
-        dataTypes: frameworksForApi as GetDataRequestsDataTypeEnum[] | undefined,
-        requestStates: requestStatesForApi,
-        requestPriorities: prioritiesForApi,
-        reportingPeriods: reportingPeriodsForApi,
-        emailAddress: emailFilter,
-        adminComment: commentFilter,
-        companySearchString: companySearchStringFilter,
+        dataTypes: selectedFrameworksForApi.value,
+        requestStates: selectedRequestStatesForApi.value,
+        requestPriorities: selectedPrioritiesForApi.value,
+        reportingPeriods: selectedReportingPeriodsForApi.value,
+        emailAddress: searchBarInputEmail.value || undefined,
+        adminComment: searchBarInputComment.value || undefined,
+        companySearchString: searchBarInputCompanySearchString.value || undefined,
       };
 
       const [dataResponse, countResponse] = await Promise.all([
@@ -365,16 +337,6 @@ function resetFilterAndSearchBar(): void {
   searchBarInputComment.value = '';
   searchBarInputCompanySearchString.value = '';
   void getAllRequestsForFilters();
-}
-
-/**
- * Converts a set of strings to a comma-separated string for API usage.
- * Returns undefined if the set is empty.
- * @param set The set of strings to convert.
- * @returns A comma-separated string or undefined.
- */
-function setToApiArray<T>(set: Set<T>): T[] | undefined {
-  return set.size ? Array.from(set) : undefined;
 }
 
 /**

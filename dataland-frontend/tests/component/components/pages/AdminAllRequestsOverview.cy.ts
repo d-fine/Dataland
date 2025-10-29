@@ -43,12 +43,12 @@ describe('Component test for the admin-requests-overview page', () => {
   };
 
   /**
-   * Generates one ExtendedStoredDataRequest type object
+   * Generates one ExtendedStoredRequest type object
    * @param filterParameters contains all parameters that can be set. If companyName and/or reportingPeriod
    * is undefined, a random value will be chosen using faker
-   * @returns the generated ExtendedStoredDataRequest
+   * @returns the generated ExtendedStoredRequest
    */
-  function generateExtendedStoredDataRequest(filterParameters: FilterParameters): ExtendedStoredRequest {
+  function generateExtendedStoredRequest(filterParameters: FilterParameters): ExtendedStoredRequest {
     return {
       id: crypto.randomUUID(),
       userId: crypto.randomUUID(),
@@ -87,7 +87,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
   before(function () {
     mockRequests = [
-      generateExtendedStoredDataRequest({
+      generateExtendedStoredRequest({
         userEmailAddress: mailAlpha,
         framework: DataTypeEnum.Lksg,
         state: RequestState.Open,
@@ -96,7 +96,7 @@ describe('Component test for the admin-requests-overview page', () => {
         companyName: companyNameAlpha,
         reportingPeriod: reportingPeriodAlpha,
       }),
-      generateExtendedStoredDataRequest({
+      generateExtendedStoredRequest({
         userEmailAddress: mailBeta,
         framework: DataTypeEnum.EutaxonomyFinancials,
         state: RequestState.Processing,
@@ -105,7 +105,7 @@ describe('Component test for the admin-requests-overview page', () => {
         companyName: companyNameBeta,
         reportingPeriod: reportingPeriodBeta,
       }),
-      generateExtendedStoredDataRequest({
+      generateExtendedStoredRequest({
         userEmailAddress: mailGamma,
         framework: DataTypeEnum.Vsme,
         state: RequestState.Processed,
@@ -114,7 +114,7 @@ describe('Component test for the admin-requests-overview page', () => {
         companyName: companyNameGamma,
         reportingPeriod: reportingPeriodGamma,
       }),
-      generateExtendedStoredDataRequest({
+      generateExtendedStoredRequest({
         userEmailAddress: mailDelta,
         framework: DataTypeEnum.Sfdr,
         state: RequestState.Withdrawn,
@@ -142,7 +142,7 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Baseline,
       ]);
       mockRequestsLarge.push(
-        generateExtendedStoredDataRequest({
+        generateExtendedStoredRequest({
           userEmailAddress: email,
           framework: dataType,
           state: requestState,
@@ -187,9 +187,9 @@ describe('Component test for the admin-requests-overview page', () => {
     })(AdminAllRequestsOverview);
 
     assertNumberOfSearchResults(mockRequests.length);
-    for (const extendedStoredDataRequest of mockRequests) {
-      if (extendedStoredDataRequest.userEmailAddress) {
-        assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
+    for (const extendedStoredRequest of mockRequests) {
+      if (extendedStoredRequest.userEmailAddress) {
+        assertEmailAddressExistsInSearchResults(extendedStoredRequest.userEmailAddress);
       }
     }
     return mountedComponent;
@@ -273,25 +273,25 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   /**
-   * Validates if filtering via data request status dropdown filter works as expected
+   * Validates if filtering via data request state dropdown filter works as expected
    */
-  function validateRequestStatusFilter(): void {
-    const requestStatusToFilterFor = RequestState.Open;
+  function validateRequestStateFilter(): void {
+    const requestStateToFilterFor = RequestState.Open;
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept('POST', '**/data-sourcing/requests/search**', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStatusToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchRequestStatusFilteredRequests');
+    }).as('fetchRequestStateFilteredRequests');
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStatusToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchRequestStatusFilteredNumberOfRequests');
+    }).as('fetchRequestStateFilteredNumberOfRequests');
 
-    cy.get(`div[data-test="request-status-picker"]`).click();
-    cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
+    cy.get(`div[data-test="request-state-picker"]`).click();
+    cy.get(`li[aria-label="${requestStateToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -489,9 +489,9 @@ describe('Component test for the admin-requests-overview page', () => {
     validateFrameworkFilter();
   });
 
-  it('Filtering for request status works as expected', () => {
+  it('Filtering for request state works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
-    validateRequestStatusFilter();
+    validateRequestStateFilter();
   });
 
   it('Filtering for request priority works as expected', () => {

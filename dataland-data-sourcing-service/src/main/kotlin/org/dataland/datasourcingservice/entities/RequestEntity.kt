@@ -90,7 +90,7 @@ class RequestEntity(
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
             companyName = null,
-            userEmailAddress = null,
+            userEmailAddress = null
         )
 
     constructor(
