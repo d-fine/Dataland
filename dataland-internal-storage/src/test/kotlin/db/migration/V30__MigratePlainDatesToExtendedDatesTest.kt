@@ -7,9 +7,8 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -30,9 +29,6 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
             )
 
         private val dataPointIdMap = expectedRenamingReversed.mapValues { UUID.randomUUID().toString() }
-
-        @JvmStatic
-        fun extendedDataPointTypesSource() = expectedRenamingReversed.keys
     }
 
     @Autowired
@@ -48,29 +44,42 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
 
     data class ExtendedDataPoint(
         val value: String,
-        val quality: String,
-        val comment: String,
-        val dataSource: DataSource,
+        val quality: String?,
+        val comment: String?,
+        val dataSource: DataSource?,
     )
 
     private fun toPlainDataPoint(extendedDataPoint: DataPointItem): DataPointItem =
         DataPointItem(
             dataPointId = extendedDataPoint.dataPointId,
             companyId = extendedDataPoint.companyId,
-            dataPointType = expectedRenamingReversed[extendedDataPoint.dataPointType]!!,
+            dataPointType = expectedRenamingReversed.getOrDefault(extendedDataPoint.dataPointType, "dummyDataPointType"),
             reportingPeriod = extendedDataPoint.reportingPeriod,
-            dataPoint = defaultObjectMapper.readValue<ExtendedDataPoint>(extendedDataPoint.dataPoint).value,
+            dataPoint =
+                "\"\\\"" +
+                    defaultObjectMapper
+                        .readValue<ExtendedDataPoint>(
+                            defaultObjectMapper
+                                .readValue<String>(
+                                    extendedDataPoint.dataPoint,
+                                ),
+                        ).value + "\\\"\"",
         )
 
-    private fun extractExtendedDataPointFromJson(extendedDataPointType: String): DataPointItem =
+    private fun extractExtendedDataPointFromJson(
+        extendedDataPointType: String,
+        companyId: String = UUID.randomUUID().toString(),
+    ): DataPointItem =
         DataPointItem(
-            dataPointId = dataPointIdMap[extendedDataPointType]!!,
-            companyId = UUID.randomUUID().toString(),
+            dataPointId = dataPointIdMap.getOrDefault(extendedDataPointType, UUID.randomUUID().toString()),
+            companyId = companyId,
             dataPointType = extendedDataPointType,
             reportingPeriod = "2023",
             dataPoint =
                 defaultObjectMapper.writeValueAsString(
-                    JsonUtils.readJsonFromResourcesFile("$TRANSFORMED_JSON_FOLDER/$extendedDataPointType.json").toString(),
+                    JsonUtils
+                        .readJsonFromResourcesFile("$TRANSFORMED_JSON_FOLDER/$extendedDataPointType.json")
+                        .toString(),
                 ),
         )
 
@@ -82,15 +91,27 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         val expectedTransformedDataPoints =
             expectedRenamingReversed.keys.map { extractExtendedDataPointFromJson(it) }
         expectedTransformedDataPoints.forEach {
-            println("Data point string: ${it.dataPoint}")
+            dataPointItemRepository.save(toPlainDataPoint(it))
         }
-        expectedTransformedDataPoints.forEach { dataPointItemRepository.save(toPlainDataPoint(it)) }
     }
 
-    @ParameterizedTest
-    @MethodSource("extendedDataPointTypesSource")
-    fun `check correct migration of plain data points to extended data points`(extendedDataPointType: String) {
-        val migratedDataPoint = dataPointItemRepository.findById(dataPointIdMap[extendedDataPointType]!!).get()
-        assertEquals(extractExtendedDataPointFromJson(extendedDataPointType), migratedDataPoint)
+    @Test
+    fun `check correct migration of plain data points`() {
+        val migratedDateDataPoint = dataPointItemRepository.findById(dataPointIdMap["extendedDateFiscalYearEnd"]!!).get()
+        assertEquals(
+            extractExtendedDataPointFromJson(
+                "extendedDateFiscalYearEnd",
+                migratedDateDataPoint.companyId,
+            ),
+            migratedDateDataPoint,
+        )
+        val migratedEnumDataPoint = dataPointItemRepository.findById(dataPointIdMap["extendedEnumFiscalYearDeviation"]!!).get()
+        assertEquals(
+            extractExtendedDataPointFromJson(
+                "extendedEnumFiscalYearDeviation",
+                migratedEnumDataPoint.companyId,
+            ),
+            migratedEnumDataPoint,
+        )
     }
 }

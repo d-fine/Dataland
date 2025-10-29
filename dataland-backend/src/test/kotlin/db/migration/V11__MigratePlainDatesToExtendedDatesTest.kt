@@ -15,6 +15,7 @@ import org.mockito.kotlin.whenever
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import java.util.UUID
 
 @Suppress("ClassName")
 class V11__MigratePlainDatesToExtendedDatesTest {
@@ -23,6 +24,9 @@ class V11__MigratePlainDatesToExtendedDatesTest {
     private val mockConnection = mock<Connection>()
     private val mockResultSet = mock<ResultSet>()
     private val mockPreparedStatement = mock<PreparedStatement>()
+
+    private val companyId1 = UUID.randomUUID().toString()
+    private val companyId2 = UUID.randomUUID().toString()
 
     @BeforeEach
     fun setup() {
@@ -60,7 +64,7 @@ class V11__MigratePlainDatesToExtendedDatesTest {
     fun `check that conflicting tuples are found correctly`() {
         val mockConflictResultSet = mock<ResultSet>()
         whenever(mockConflictResultSet.next()).thenReturn(true, true, false)
-        whenever(mockConflictResultSet.getString("company_id")).thenReturn("company-1", "company-2")
+        whenever(mockConflictResultSet.getString("company_id")).thenReturn(companyId1, companyId2)
         whenever(mockConflictResultSet.getString("reporting_period")).thenReturn("2024", "2023")
 
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
@@ -78,12 +82,12 @@ class V11__MigratePlainDatesToExtendedDatesTest {
         assertEquals(2, conflicts.size)
         assertTrue(
             conflicts.contains(
-                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId1, "2024"),
             ),
         )
         assertTrue(
             conflicts.contains(
-                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId2, "2023"),
             ),
         )
     }
@@ -92,8 +96,8 @@ class V11__MigratePlainDatesToExtendedDatesTest {
     fun `check that conflicting plain data points are deactivated`() {
         val conflicts =
             setOf(
-                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024"),
-                V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2023"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId1, "2024"),
+                V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId2, "2023"),
             )
 
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
@@ -136,9 +140,9 @@ class V11__MigratePlainDatesToExtendedDatesTest {
 
     @Test
     fun `check DataPointTuple equality`() {
-        val tuple1 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
-        val tuple2 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-1", "2024")
-        val tuple3 = V11__MigratePlainDatesToExtendedDates.DataPointTuple("company-2", "2024")
+        val tuple1 = V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId1, "2024")
+        val tuple2 = V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId1, "2024")
+        val tuple3 = V11__MigratePlainDatesToExtendedDates.DataPointTuple(companyId2, "2024")
 
         assertEquals(tuple1, tuple2)
         assertTrue(tuple1 != tuple3)

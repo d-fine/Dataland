@@ -1,12 +1,3 @@
 {
-  "value": "2023-12-31",
-  "quality": "Estimated",
-  "comment": "Test comment",
-  "dataSource": {
-    "page": "14",
-    "tagName": null,
-    "fileName": "LVV_Annual_Report_2024",
-    "fileReference": "378b5971a4583bc5028fc7d67b03d82d07272e5c3db650a5316442d0cdeaf883",
-    "publicationDate": "2025-08-19"
-  }
+  "value": "2023-12-31"
 }
