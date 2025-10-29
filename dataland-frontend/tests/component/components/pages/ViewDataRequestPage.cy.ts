@@ -19,6 +19,11 @@ describe('Component tests for the view data request page', function (): void {
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
 
+  interface MountOptions {
+    keycloak?: ReturnType<typeof minimalKeycloakMock>;
+    router?: typeof router;
+  }
+
   /**
    * Return a stored data request
    * @param requestState the request state
@@ -160,7 +165,7 @@ describe('Component tests for the view data request page', function (): void {
    * @param requestState the request state to check for
    * @param options mounting options (keycloak, router, etc.)
    */
-  function mountAndCheckBasicPageElementsAsUser(requestState: RequestState, options: any): Cypress.Chainable<any> {
+  function mountAndCheckBasicPageElementsAsUser(requestState: RequestState, options: MountOptions): Cypress.Chainable {
     return getMountingFunction(options)(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {

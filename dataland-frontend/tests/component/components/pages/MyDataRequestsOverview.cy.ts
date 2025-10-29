@@ -108,7 +108,7 @@ function interceptUserRequests({
  * Helper to mount MyDataRequestsOverview with plugins.
  * @param options - Additional options for mounting (e.g., router)
  */
-function mountMyDataRequestsOverview(options: any = {}) {
+function mountMyDataRequestsOverview(options: { router?: typeof router } = {}): Cypress.Chainable {
   return cy.mountWithPlugins(MyDataRequestsOverview, {
     keycloak: minimalKeycloakMock({}),
     ...options,
