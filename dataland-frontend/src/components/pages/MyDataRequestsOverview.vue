@@ -55,9 +55,7 @@
           @sort="onSort"
           @row-click="onRowClick"
         >
-          <Column header="COMPANY" field="companyName" :sortable="true">
-            <template #body="{ data }">{{ data.companyName }}</template>
-          </Column>
+          <Column header="COMPANY" field="companyName" :sortable="true"/>
           <Column header="FRAMEWORK" field="dataType" :sortable="true">
             <template #body="{ data }">
               <div>{{ getFrameworkTitle(data.dataType) }}</div>
@@ -71,9 +69,7 @@
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-            <template #body="{ data }">{{ data.reportingPeriod }}</template>
-          </Column>
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true"/>
           <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
             <template #body="{ data }">
               {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
@@ -84,7 +80,7 @@
               {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
             </template>
           </Column>
-          <Column header="REQUEST STATE" field="requestState" :sortable="true">
+          <Column header="REQUEST STATE" field="state" :sortable="true">
             <template #body="{ data }">
               <DatalandTag :severity="data.state" :value="data.state" />
             </template>
