@@ -27,8 +27,8 @@ class RequestCreationServiceTest {
 
     private val maxNumberOfDailyRequestsForNonPremiumUser = 10
 
-    private val premiumUserId = UUID.randomUUID()
-    private val nonPremiumUserId = UUID.randomUUID()
+    private val memberUserId = UUID.randomUUID()
+    private val nonMemberUserId = UUID.randomUUID()
 
     private val dummyBasicDataDimensions =
         BasicDataDimensions(
@@ -45,8 +45,8 @@ class RequestCreationServiceTest {
             mockDerivedRightsUtilsComponent,
         )
 
-        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(premiumUserId.toString())
-        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(nonPremiumUserId.toString())
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(memberUserId.toString())
+        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(nonMemberUserId.toString())
         doReturn(maxNumberOfDailyRequestsForNonPremiumUser)
             .whenever(mockRequestRepository)
             .countByUserIdAndCreationTimestampGreaterThanEqual(any(), any())
@@ -62,20 +62,20 @@ class RequestCreationServiceTest {
     }
 
     @Test
-    fun `check that store request works for a premium user regardless of their daily number of requests`() {
+    fun `check that store request works for a Dataland member regardless of their daily number of requests`() {
         assertDoesNotThrow {
             requestCreationService.storeRequest(
-                userId = premiumUserId,
+                userId = memberUserId,
                 basicDataDimension = dummyBasicDataDimensions,
             )
         }
     }
 
     @Test
-    fun `check that store request throws a QuotaExceededException for a nonpremium user who exceeded their daily quota`() {
+    fun `check that store request throws a QuotaExceededException for a nonmember who exceeded their daily quota`() {
         assertThrows<QuotaExceededException> {
             requestCreationService.storeRequest(
-                userId = nonPremiumUserId,
+                userId = nonMemberUserId,
                 basicDataDimension = dummyBasicDataDimensions,
             )
         }
