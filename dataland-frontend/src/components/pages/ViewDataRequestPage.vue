@@ -181,7 +181,6 @@ const resubmitModalIsVisible = ref(false);
 const resubmitMessage = ref('');
 const resubmitSuccessModalIsVisible = ref(false);
 const newRequestId = ref<string>('');
-const isUsersOwnRequest = ref(false);
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as StoredRequest);
 const companyName = ref('');
@@ -347,8 +346,7 @@ async function withdrawRequest(): Promise<void> {
 }
 
 /**
- * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
- * Both variables are used to show information on page depending on who's visiting
+ * Method to set user access fields
  */
 async function setUserAccessFields(): Promise<void> {
   try {
