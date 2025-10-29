@@ -87,12 +87,9 @@ before(function () {
 /**
  * Helper to intercept user data requests.
  * @param data - The data to return from the intercept (defaults to mockDataRequests)
- * @param alias - The alias to use for the intercept (defaults to 'UserRequests')
- * @param matchPattern - The pattern to match for the intercept
  */
 function interceptUserRequests({
   data = mockDataRequests,
-  alias = 'UserRequests',
 }: {
   data?: ExtendedStoredRequest[];
   alias?: string;
@@ -101,7 +98,7 @@ function interceptUserRequests({
   cy.intercept('**/data-sourcing/requests/user', {
     body: data,
     status: 200,
-  }).as(alias);
+  });
 }
 
 /**

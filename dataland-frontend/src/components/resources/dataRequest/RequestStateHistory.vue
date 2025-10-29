@@ -1,9 +1,9 @@
 <template>
   <div data-test="stateHistoryContainer" style="pointer-events: none">
     <DataTable :value="props.stateHistory" data-test="stateHistoryTable" scrollable class="p-datatable-sm">
-      <Column field="creationTimestampEntry" header="Updated On" style="width: 30%">
+      <Column field="lastModifiedDate" header="Updated On" style="width: 30%">
         <template #body="{ data }">
-          <span data-test="creationTimestampEntry">
+          <span data-test="lastModifiedDate">
             {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
           </span>
         </template>

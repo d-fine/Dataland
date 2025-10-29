@@ -6,7 +6,6 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
@@ -20,12 +19,11 @@ describe('Component tests for the view data request page', function (): void {
   const dummyCreationTime = 1709104495770;
 
   /**
-   * Return a stored data request
+   * Mocks the data-sourcing-manager answer for single data request of the users
    * @param requestState the request state
-   * @returns stored data request
    */
-  function createStoredDataRequest(requestState: RequestState): ExtendedStoredRequest {
-    return {
+  function interceptUserAskForSingleDataRequestsOnMounted(requestState: RequestState): void {
+    const request: ExtendedStoredRequest = {
       id: requestId,
       userId: dummyUserId,
       creationTimeStamp: dummyCreationTime,
@@ -38,14 +36,7 @@ describe('Component tests for the view data request page', function (): void {
       companyName: dummyCompanyName,
       userEmailAddress: dummyEmail,
     };
-  }
-
-  /**
-   * Mocks the data-sourcing-manager answer for single data request of the users
-   * @param request the request to mock
-   */
-  function interceptUserAskForSingleDataRequestsOnMounted(request: ExtendedStoredRequest): void {
-    cy.intercept(`**/data-sourcing/requests/${requestId}`, {
+    cy.intercept(`**/data-sourcing/requests/${request.id}`, {
       body: request,
       status: 200,
     });
@@ -151,7 +142,7 @@ describe('Component tests for the view data request page', function (): void {
    * Sets up all necessary interceptions for a given request state and dataset presence
    */
   function setupRequestInterceptions(requestState: RequestState, hasActiveDataset: boolean): void {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(requestState));
+    interceptUserAskForSingleDataRequestsOnMounted(requestState);
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(hasActiveDataset);
     interceptPatchRequest();
@@ -194,7 +185,7 @@ describe('Component tests for the view data request page', function (): void {
     mountAndCheckBasicPageElementsAsUser(RequestState.Withdrawn, {
       keycloak: minimalKeycloakMock({
         userId: dummyUserId,
-        roles: [KEYCLOAK_ROLE_ADMIN],
+        roles: ['ROLE_ADMIN'],
       }),
     });
     cy.get('[data-test="resubmit-request-button"]').should('be.visible');
@@ -223,7 +214,7 @@ describe('Component tests for the view data request page', function (): void {
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
       cy.get('[data-test="view-dataset-button"]').should('not.exist');
-      interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Withdrawn));
+      interceptUserAskForSingleDataRequestsOnMounted(RequestState.Withdrawn);
       cy.get('[data-test="card_withdrawn"]').within(() => {
         cy.contains(
           'If you want to stop the processing of this request, you can withdraw it. The data provider will no longer process this request.'

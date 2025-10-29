@@ -5,7 +5,6 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Request State History', function (): void {
   const dummyCreationTimestamp = 1714315046000;
-  const dummyLastModifiedDate = 1714325046000;
   const dummyRequest = {
     id: 'dummy-request-id',
     companyId: 'dummy-company-id',
@@ -13,7 +12,7 @@ describe('Component tests for the Request State History', function (): void {
     dataType: 'sfdr',
     userId: 'dummy-user-id',
     creationTimeStamp: dummyCreationTimestamp,
-    lastModifiedDate: dummyLastModifiedDate,
+    lastModifiedDate: dummyCreationTimestamp,
     requestPriority: 'Low',
     state: RequestState.Open,
   } as StoredRequest;
@@ -21,13 +20,13 @@ describe('Component tests for the Request State History', function (): void {
     dummyRequest,
     {
       ...dummyRequest,
-      lastModifiedDate: dummyLastModifiedDate + 600000,
+      lastModifiedDate: dummyCreationTimestamp + 600000,
       state: RequestState.Processing,
       adminComment: 'Processing started',
     },
     {
       ...dummyRequest,
-      lastModifiedDate: dummyLastModifiedDate + 2 * 600000,
+      lastModifiedDate: dummyCreationTimestamp + 2 * 600000,
       state: RequestState.Processed,
     },
   ] as Array<StoredRequest>;
@@ -39,9 +38,9 @@ describe('Component tests for the Request State History', function (): void {
     });
 
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
-    cy.get('[data-test="creationTimestampEntry"]').should('have.length', dummyStateHistory.length);
+    cy.get('[data-test="lastModifiedDate"]').should('have.length', dummyStateHistory.length);
     for (const [idx, entry] of dummyStateHistory.entries()) {
-      cy.get('[data-test="creationTimestampEntry"]')
+      cy.get('[data-test="lastModifiedDate"]')
         .eq(idx)
         .should('contain.text', convertUnixTimeInMsToDateString(entry.lastModifiedDate));
       cy.get('.dataland-inline-tag').eq(idx).should('contain.text', entry.state);
