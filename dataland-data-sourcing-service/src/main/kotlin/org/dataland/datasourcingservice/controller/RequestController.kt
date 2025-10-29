@@ -55,7 +55,7 @@ class RequestController
                 ),
             )
 
-        override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
+        override fun getRequest(dataRequestId: String): ResponseEntity<ExtendedStoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.getRequest(
                     ValidationUtils.convertToUUID(

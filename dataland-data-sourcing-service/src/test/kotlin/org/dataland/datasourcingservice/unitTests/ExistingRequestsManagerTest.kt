@@ -11,6 +11,7 @@ import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -29,9 +30,10 @@ class ExistingRequestsManagerTest {
     private val mockDataSourcingManager = Mockito.mock<DataSourcingManager>()
     private val mockDataRevisionRepository = Mockito.mock<DataRevisionRepository>()
     private val mockDataSourcingRepository = Mockito.mock<DataSourcingRepository>()
+    private val mockRequestQueryManager = Mockito.mock<RequestQueryManager>()
 
     private val testExistingRequestsManager =
-        ExistingRequestsManager(mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository)
+        ExistingRequestsManager(mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository, mockRequestQueryManager)
 
     private val testDataSourcingManager =
         DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator)
@@ -56,6 +58,9 @@ class ExistingRequestsManagerTest {
                 dataSourcingEntity = null,
             )
         reset(mockDataSourcingManager)
+        whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
+            (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest()
+        }
     }
 
     @ParameterizedTest

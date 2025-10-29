@@ -944,7 +944,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredRequest"
+                  "$ref": "#/components/schemas/ExtendedStoredRequest"
                 }
               }
             }
@@ -1683,6 +1683,7 @@
       "ExtendedStoredRequest": {
         "required": [
           "companyId",
+          "companyName",
           "creationTimeStamp",
           "dataType",
           "id",
