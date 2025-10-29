@@ -18,6 +18,7 @@ describe('Component tests for the view data request page', function (): void {
   const dummyReportingYear = 'dummyReportingYear';
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
+
   /**
    * Return a stored data request
    * @param requestState the request state
@@ -36,6 +37,7 @@ describe('Component tests for the view data request page', function (): void {
       requestPriority: RequestPriority.Low,
     };
   }
+
   /**
    * Mocks the data-sourcing-manager answer for single data request of the users
    * @param request the request to mock
@@ -46,6 +48,7 @@ describe('Component tests for the view data request page', function (): void {
       status: 200,
     });
   }
+
   /**
    * Mocks the api-manager answer for basic company information
    */
@@ -59,6 +62,7 @@ describe('Component tests for the view data request page', function (): void {
       status: 200,
     });
   }
+
   /**
    * Mocks the api-manager answer for basic company information
    */
@@ -74,6 +78,7 @@ describe('Component tests for the view data request page', function (): void {
       status: 200,
     });
   }
+
   /**
    * Mocks the data-sourcing-manager answer for patching a data request
    */
@@ -140,21 +145,36 @@ describe('Component tests for the view data request page', function (): void {
     }
   }
 
-  it('Check view data request page for Processed request with data renders as expected', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Processed));
+  /**
+   * Sets up all necessary interceptions for a given request state and dataset presence
+   */
+  function setupRequestInterceptions(requestState: RequestState, hasActiveDataset: boolean): void {
+    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(requestState));
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(true);
+    interceptUserActiveDatasetOnMounted(hasActiveDataset);
     interceptPatchRequest();
+  }
+
+  /**
+   * Mounts the ViewDataRequestPage and checks basic page elements as user
+   * @param requestState the request state to check for
+   * @param options mounting options (keycloak, router, etc.)
+   */
+  function mountAndCheckBasicPageElementsAsUser(requestState: RequestState, options: any): Cypress.Chainable<any> {
+    return getMountingFunction(options)(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      checkBasicPageElementsAsUser(requestState);
+    });
+  }
+
+  it('Check view data request page for Processed request with data renders as expected', function () {
+    setupRequestInterceptions(RequestState.Processed, true);
     cy.spy(router, 'push').as('routerPush');
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
-      ViewDataRequestPage,
-      {
-        props: {
-          requestId: requestId,
-        },
-      }
-    ).then(() => {
-      checkBasicPageElementsAsUser(RequestState.Processed);
+    mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
+      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
+      router: router,
+    }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('be.visible');
       cy.get('[data-test="view-dataset-button"]').should('exist').click();
       cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
@@ -162,79 +182,57 @@ describe('Component tests for the view data request page', function (): void {
   });
 
   it('Check view data request page for Withdrawn request without data renders as expected', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Withdrawn));
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(false);
-    interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId, roles: ['ROLE_ADMIN'] }) })(
-      ViewDataRequestPage,
-      {
-        props: {
-          requestId: requestId,
-        },
-      }
-    );
-    checkBasicPageElementsAsUser(RequestState.Withdrawn);
+    setupRequestInterceptions(RequestState.Withdrawn, false);
+    mountAndCheckBasicPageElementsAsUser(RequestState.Withdrawn, {
+      keycloak: minimalKeycloakMock({
+        userId: dummyUserId,
+        roles: [KEYCLOAK_ROLE_ADMIN],
+      }),
+    });
     cy.get('[data-test="resubmit-request-button"]').should('be.visible');
     cy.get('[data-test="view-dataset-button"]').should('not.exist');
   });
 
   it('Check view data request page as non-admin for Open request without data and verify withdraw button is absent', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Open));
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(false);
-    interceptPatchRequest();
-    getMountingFunction({
-      keycloak: minimalKeycloakMock({ userId: dummyUserId, roles: ['ROLE_USER'] }),
-    })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+    setupRequestInterceptions(RequestState.Open, false);
+    mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
+      keycloak: minimalKeycloakMock({
+        userId: dummyUserId,
+        roles: ['ROLE_USER'],
+      }),
     });
-    checkBasicPageElementsAsUser(RequestState.Open);
     cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
     cy.get('[data-test="view-dataset-button"]').should('not.exist');
   });
 
   it('Check view data request page as admin for Open request without data and withdraw the data request', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Open));
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(false);
-    interceptPatchRequest();
+    setupRequestInterceptions(RequestState.Open, false);
     const keyCloakMock = minimalKeycloakMock({ userId: dummyUserId, roles: [KEYCLOAK_ROLE_ADMIN] });
     keyCloakMock.tokenParsed = keyCloakMock.tokenParsed || {};
     keyCloakMock.tokenParsed.email = dummyEmail;
-    getMountingFunction({
-      keycloak: keyCloakMock,
-    })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+    mountAndCheckBasicPageElementsAsUser(RequestState.Open, { keycloak: keyCloakMock }).then(() => {
+      cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
+      cy.get('[data-test="view-dataset-button"]').should('not.exist');
+      interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Withdrawn));
+      cy.get('[data-test="card_withdrawn"]').within(() => {
+        cy.contains(
+          'If you want to stop the processing of this request, you can withdraw it. The data provider will no longer process this request.'
+        ).should('be.visible');
+        cy.get('[data-test="withdraw-request-button"]').should('exist').click();
+      });
+      cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
+      cy.get('[data-test="success-modal"]').should('not.exist');
+      checkBasicPageElementsAsAdmin(RequestState.Withdrawn);
     });
-    checkBasicPageElementsAsAdmin(RequestState.Open);
-    cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
-    cy.get('[data-test="view-dataset-button"]').should('not.exist');
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Withdrawn));
-    cy.get('[data-test="card_withdrawn"]').within(() => {
-      cy.contains(
-        'If you want to stop the processing of this request, you can withdraw it. The data provider will no longer process this request.'
-      ).should('be.visible');
-      cy.get('[data-test="withdraw-request-button"]').should('exist').click();
-    });
-    cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
-    cy.get('[data-test="success-modal"]').should('not.exist');
-    checkBasicPageElementsAsAdmin(RequestState.Withdrawn);
   });
 
   it('Check view data request page for Open request with data and check the routing to data view page', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestState.Open));
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(true);
-    interceptPatchRequest();
+    setupRequestInterceptions(RequestState.Open, true);
     cy.spy(router, 'push').as('routerPush');
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
-      ViewDataRequestPage,
-      {
-        props: { requestId: requestId },
-      }
-    ).then(() => {
-      checkBasicPageElementsAsUser(RequestState.Open);
+    mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
+      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
+      router: router,
+    }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
       cy.get('[data-test="view-dataset-button"]').should('exist').click();
       cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
@@ -242,14 +240,11 @@ describe('Component tests for the view data request page', function (): void {
   });
 
   it('Check view data request page for Processed request and check resubmitting the request works as expected', function () {
-    const dummyRequest = createStoredDataRequest(RequestState.Processed);
-    interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(true);
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
-      props: { requestId: requestId },
+    setupRequestInterceptions(RequestState.Processed, true);
+    mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
+      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
+      router,
     }).then(() => {
-      checkBasicPageElementsAsUser(RequestState.Processed);
       cy.contains('Currently, your request has the state Processed.').should('be.visible');
       cy.get('[data-test="view-dataset-button"]').should('exist');
       cy.get('[data-test="resubmit-request-button"]').should('be.visible').click();
@@ -259,7 +254,9 @@ describe('Component tests for the view data request page', function (): void {
       cy.get('[data-test="noMessageErrorMessage"]').should('be.visible');
       cy.get('[data-test="resubmit-message"]').should('exist').type(' updated data.');
       cy.get('[data-test="noMessageErrorMessage"]').should('not.exist');
-      cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible');
+      cy.intercept('POST', '**/data-sourcing/requests**', { body: { requestId: 'newId' } }).as('createRequest');
+      cy.get('[data-test="resubmit-confirmation-button"]').click();
+      cy.wait('@createRequest');
     });
   });
 });

@@ -346,7 +346,8 @@ async function withdrawRequest(): Promise<void> {
 }
 
 /**
- * Method to set user access fields
+ * This function sets the components field 'isUserKeycloakAdmin'.
+ * Both variables are used to show information on page depending on who's visiting
  */
 async function setUserAccessFields(): Promise<void> {
   try {

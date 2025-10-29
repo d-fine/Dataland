@@ -5,7 +5,7 @@ import { RequestState, type ExtendedStoredRequest, RequestPriority } from '@clie
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 const mockDataRequests: ExtendedStoredRequest[] = [];
-const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'REQUEST STATE'];
+const expectedHeaders = ['COMPANY', 'FRAMEWORK', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATE', 'LAST UPDATED'];
 const dummyRequestId = 'dummyRequestId';
 
 before(function () {
@@ -59,7 +59,7 @@ before(function () {
       RequestPriority.Low
     ),
     buildExtendedStoredRequest(
-      DataTypeEnum.EutaxonomyFinancials,
+      DataTypeEnum.Sfdr,
       '9999',
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
@@ -75,7 +75,7 @@ before(function () {
       RequestPriority.Low
     ),
     buildExtendedStoredRequest(
-      DataTypeEnum.Lksg,
+      DataTypeEnum.EutaxonomyFinancials,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
@@ -84,17 +84,50 @@ before(function () {
     )
   );
 });
+/**
+ * Helper to intercept user data requests.
+ * @param data - The data to return from the intercept (defaults to mockDataRequests)
+ * @param alias - The alias to use for the intercept (defaults to 'UserRequests')
+ * @param matchPattern - The pattern to match for the intercept
+ */
+function interceptUserRequests({
+  data = mockDataRequests,
+  alias = 'UserRequests',
+}: {
+  data?: ExtendedStoredRequest[];
+  alias?: string;
+  matchPattern?: string;
+} = {}) {
+  cy.intercept('**/data-sourcing/requests/user', {
+    body: data,
+    status: 200,
+  }).as(alias);
+}
+
+/**
+ * Helper to mount MyDataRequestsOverview with plugins.
+ * @param options - Additional options for mounting (e.g., router)
+ */
+function mountMyDataRequestsOverview(options: any = {}) {
+  return cy.mountWithPlugins(MyDataRequestsOverview, {
+    keycloak: minimalKeycloakMock({}),
+    ...options,
+  });
+}
+
 describe('Component tests for the data requests search page', function (): void {
   it('Check sorting', function (): void {
-    cy.intercept('**data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-    });
-    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATE'];
-    for (const value of sortingColumHeader) {
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
+    const sortingColumnHeader = [
+      'COMPANY',
+      'REPORTING PERIOD',
+      'REQUESTED',
+      'REQUEST STATE',
+      'LAST UPDATED',
+      'FRAMEWORK',
+    ];
+    for (const value of sortingColumnHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-datasets-table"]')
         .find('tr')
@@ -115,33 +148,19 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check page when there are no requested datasets', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
-      body: [],
-      status: 200,
-    }).as('UserRequests');
+    interceptUserRequests({ data: [] });
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-      router: router,
-    }).then(() => {
-      cy.get('[data-test="requested-datasets-table"]').should('not.exist');
-      cy.get('[data-test="myPortfoliosButton"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', '/portfolios');
-    });
+    mountMyDataRequestsOverview({ router });
+    cy.get('[data-test="requested-datasets-table"]').should('not.exist');
+    cy.get('[data-test="myPortfoliosButton"]').should('exist').should('be.visible').click();
+    cy.get('@routerPush').should('have.been.calledWith', '/portfolios');
   });
 
   it('Check static layout of the search page', function () {
     const placeholder = 'Search by company name';
     const inputValue = 'A company name';
-
-    cy.intercept('data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-    });
-
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
     cy.get('[data-test="requested-datasets-table"]').should('exist');
     for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
@@ -165,16 +184,8 @@ describe('Component tests for the data requests search page', function (): void 
       'a-company-that-will-always-be-sorted-to-top',
     ];
     const expectedReportingPeriods = ['2020', '2021', '2022'];
-
-    cy.intercept('data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
-
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-    });
-
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
     for (const value of expectedCompanys) {
       cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
     }
@@ -186,30 +197,22 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check existence and functionality of searchbar and resolve button', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
+    interceptUserRequests();
     cy.spy(router, 'push').as('routerPush');
-
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-      router: router,
-    }).then(() => {
-      cy.get('[data-test="requested-datasets-searchbar"]')
-        .should('exist')
-        .should('not.be.disabled')
-        .clear()
-        .type('companyOpen');
-      cy.get('[data-test="requested-datasets-resolve"]').should('not.exist');
-      cy.get('[data-test="requested-datasets-searchbar"]')
-        .should('exist')
-        .should('not.be.disabled')
-        .clear()
-        .type('companyProcessed');
-      cy.get('[data-test="requested-datasets-resolve"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
-    });
+    mountMyDataRequestsOverview({ router });
+    cy.get('[data-test="requested-datasets-searchbar"]')
+      .should('exist')
+      .should('not.be.disabled')
+      .clear()
+      .type('companyOpen');
+    cy.get('[data-test="requested-datasets-resolve"]').should('not.exist');
+    cy.get('[data-test="requested-datasets-searchbar"]')
+      .should('exist')
+      .should('not.be.disabled')
+      .clear()
+      .type('companyProcessed');
+    cy.get('[data-test="requested-datasets-resolve"]').should('exist').should('be.visible').click();
+    cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
   });
 
   it('Check filter functionality and reset button', function (): void {
@@ -219,46 +222,27 @@ describe('Component tests for the data requests search page', function (): void 
       'for financial companies',
       'for non-financial companies',
     ];
-
-    cy.intercept('data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
-
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-    }).then(() => {
-      cy.get('[data-test="requested-datasets-frameworks"]')
-        .click()
-        .get('.p-multiselect-option')
-        .contains('LkSG')
-        .click();
-      cy.get('[data-test="requested-datasets-frameworks"]').click();
-      for (const value of expectedFrameworkNameSubstrings) {
-        cy.get(`table tbody:contains(${value})`).should('not.exist');
-      }
-      cy.get('[data-test="reset-filter"]').should('exist').click();
-      for (const value of expectedFrameworkNameSubstrings) {
-        cy.get(`table tbody:contains(${value})`).should('exist');
-      }
-      cy.get(`table tbody:contains("SME")`).should('not.exist');
-    });
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
+    cy.get('[data-test="requested-datasets-frameworks"]').click().get('.p-multiselect-option').contains('LkSG').click();
+    cy.get('[data-test="requested-datasets-frameworks"]').click();
+    for (const value of expectedFrameworkNameSubstrings) {
+      cy.get(`table tbody:contains(${value})`).should('not.exist');
+    }
+    cy.get('[data-test="reset-filter"]').should('exist').click();
+    for (const value of expectedFrameworkNameSubstrings) {
+      cy.get(`table tbody:contains(${value})`).should('exist');
+    }
+    cy.get(`table tbody:contains("SME")`).should('not.exist');
   });
 
   it('Check the functionality of rowClick event', function (): void {
-    cy.intercept('data-sourcing/requests/user', {
-      body: mockDataRequests,
-      status: 200,
-    }).as('UserRequests');
+    interceptUserRequests();
     cy.spy(router, 'push').as('routerPush');
-    cy.mountWithPlugins(MyDataRequestsOverview, {
-      keycloak: minimalKeycloakMock({}),
-      router: router,
-    }).then(() => {
-      cy.get('[data-test="requested-datasets-table"]').within(() => {
-        cy.get('tr:last').click();
-      });
-      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
+    mountMyDataRequestsOverview({ router });
+    cy.get('[data-test="requested-datasets-table"]').within(() => {
+      cy.get('tr:last').click();
     });
+    cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
   });
 });

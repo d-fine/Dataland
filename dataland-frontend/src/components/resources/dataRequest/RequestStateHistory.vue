@@ -1,12 +1,7 @@
 <template>
-  <div data-test="stateHistoryContainer" style="pointer-events: none; z-index: 0">
-    <DataTable
-      :value="props.stateHistory"
-      data-test="stateHistoryTable"
-      responsiveLayout="scroll"
-      class="p-datatable-sm"
-    >
-      <Column field="lastModifiedDate" header="Date" style="width: 30%">
+  <div data-test="stateHistoryContainer" style="pointer-events: none">
+    <DataTable :value="props.stateHistory" data-test="stateHistoryTable" scrollable class="p-datatable-sm">
+      <Column field="creationTimestampEntry" header="Updated On" style="width: 30%">
         <template #body="{ data }">
           <span data-test="creationTimestampEntry">
             {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
@@ -22,7 +17,7 @@
 
       <Column field="adminComment" header="Comment" style="width: 45%">
         <template #body="{ data }">
-          <div style="display: inline-flex" data-test="commentEntry">
+          <div style="display: inline-flex" data-test="adminComment">
             {{ data.adminComment || '—' }}
           </div>
         </template>
