@@ -66,7 +66,7 @@
           <div v-if="isUserKeycloakAdmin" class="side-header">Requester</div>
           <div class="data" v-if="isUserKeycloakAdmin">{{ storedRequest.userEmailAddress }}</div>
           <div class="side-header">Company</div>
-          <div class="data">{{ companyName }}</div>
+          <div class="data">{{ storedRequest.companyName }}</div>
           <div class="side-header">Framework</div>
           <div class="data">
             {{ getFrameworkTitle(storedRequest.dataType) }}
@@ -162,7 +162,7 @@ import {
   type ExtendedStoredRequest,
   RequestState,
   type SingleRequest,
-  type StoredRequest
+  type StoredRequest,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -188,7 +188,6 @@ const resubmitSuccessModalIsVisible = ref(false);
 const newRequestId = ref<string>('');
 const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as ExtendedStoredRequest);
-const companyName = ref('');
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
@@ -201,7 +200,6 @@ async function initializeComponent(): Promise<void> {
     .catch((error) => console.error(error))
     .then(async () => {
       if (getKeycloakPromise) {
-        await getAndStoreCompanyName().catch((error) => console.error(error));
         await getAndStoreRequestHistory().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
       }
@@ -209,17 +207,6 @@ async function initializeComponent(): Promise<void> {
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));
-}
-
-/**
- * Retrieve the company name and store it if a value was found.
- */
-async function getAndStoreCompanyName(): Promise<void> {
-  try {
-    companyName.value = (await companyControllerApi.getCompanyInfo(storedRequest.companyId)).data.companyName;
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 /**
