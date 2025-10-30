@@ -257,12 +257,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchFrameworkFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchFrameworkFilteredNumberOfRequests');
+    });
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
@@ -284,12 +284,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchRequestStateFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchRequestStateFilteredNumberOfRequests');
+    });
 
     cy.get(`div[data-test="request-state-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
@@ -310,12 +310,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchPriorityFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchPriorityFilteredNumberOfRequests');
+    });
 
     cy.get(`div[data-test="request-priority-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
@@ -338,12 +338,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
         req.reply(mockResponse);
       }
-    }).as('fetchReportingPeriodFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchReportingPeriodFilteredNumberOfRequests');
+    });
 
     cy.get(`div[data-test="reporting-period-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
@@ -364,12 +364,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (req.body.adminComment === commentSearchTerm) {
         req.reply(mockResponse);
       }
-    }).as('fetchCommentFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (req.body.adminComment === commentSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchCommentFilteredNumberOfRequests');
+    });
 
     cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -388,12 +388,12 @@ describe('Component test for the admin-requests-overview page', () => {
       if (req.body.companySearchString === companyNameSearchTerm) {
         req.reply(mockResponse);
       }
-    }).as('fetchCompanySearchStringFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (req.body.companySearchString === companyNameSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchCompanySearchStringFilteredNumberOfRequests');
+    });
 
     cy.get(`input[data-test="company-search-string-searchbar"]`).type(companyNameSearchTerm);
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -419,7 +419,7 @@ describe('Component test for the admin-requests-overview page', () => {
       ) {
         req.reply(mockResponse);
       }
-    }).as('fetchCombinedFilteredRequests');
+    });
     cy.intercept('POST', '**/data-sourcing/requests/count', (req) => {
       if (
         Array.isArray(req.body.dataTypes) &&
@@ -428,7 +428,7 @@ describe('Component test for the admin-requests-overview page', () => {
       ) {
         req.reply(expectedNumberOfRequests.toString());
       }
-    }).as('fetchCombinedFilteredNumberOfRequests');
+    });
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
