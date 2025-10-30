@@ -111,6 +111,7 @@
           data-test="requests-datatable"
           :value="currentDataRequests"
           :paginator="true"
+          :lazy="true"
           :total-records="totalRecords"
           paginator-position="both"
           :rows="rowsPerPage"
