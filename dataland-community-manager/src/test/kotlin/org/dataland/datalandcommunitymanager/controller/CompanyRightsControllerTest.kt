@@ -159,16 +159,17 @@ class CompanyRightsControllerTest
 
         @Test
         @WithMockUser(username = "data_admin", roles = ["ADMIN"])
-        fun `verify that non-existent rights cannot be deleted`() =
+        fun `verify that nonexistent rights cannot be deleted`() {
             deleteCompanyRightAssignment(
                 UUID.randomUUID().toString(),
                 CompanyRight.Provider,
                 MockMvcResultMatchers.status().isNotFound,
             )
+        }
 
         @Test
         @WithMockUser(username = "data_uploader", roles = ["UPLOADER"])
-        fun `verify that non-admin users cannot manage company rights`() {
+        fun `verify that nonadmin users cannot manage company rights`() {
             val companyId = UUID.randomUUID().toString()
             postCompanyRightAssignment(companyId, CompanyRight.Provider, MockMvcResultMatchers.status().isForbidden)
             deleteCompanyRightAssignment(companyId, CompanyRight.Provider, MockMvcResultMatchers.status().isForbidden)
@@ -185,7 +186,7 @@ class CompanyRightsControllerTest
 
         @Test
         @WithMockUser(username = "data_admin", roles = ["ADMIN"])
-        fun `verify that posting right assignments for non-existing companies fails`() {
+        fun `verify that posting right assignments for nonexisting companies fails`() {
             val companyId = UUID.randomUUID().toString()
             doThrow(ClientException()).whenever(companyDataControllerClient).isCompanyIdValid(companyId)
             postCompanyRightAssignment(companyId, CompanyRight.Provider, MockMvcResultMatchers.status().isNotFound)
