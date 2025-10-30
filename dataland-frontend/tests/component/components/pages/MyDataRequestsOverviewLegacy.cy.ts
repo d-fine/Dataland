@@ -221,7 +221,7 @@ describe('Component tests for the data requests search page', function (): void 
         .clear()
         .type('companyAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests-legacy/${dummyRequestId}`);
     });
   });
 
@@ -271,7 +271,7 @@ describe('Component tests for the data requests search page', function (): void 
       cy.get('[data-test="requested-datasets-table"]').within(() => {
         cy.get('tr:last').click();
       });
-      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests-legacy/${dummyRequestId}`);
     });
   });
 });
