@@ -154,7 +154,7 @@ describe('Component tests for the data requests search page', function (): void 
   });
 
   it('Check static layout of the search page', function () {
-    const placeholder = 'Search by company name';
+    const placeholder = 'Search by Company Name';
     const inputValue = 'A company name';
     interceptUserRequests();
     mountMyDataRequestsOverview();
