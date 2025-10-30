@@ -236,7 +236,7 @@ async function getStoredRequestDataList(): Promise<void> {
  */
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = (event.data as ExtendedStoredDataRequest).dataRequestId;
-  vueRouter.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
+  vueRouter.push(`/requests-legacy/${requestIdOfClickedRow}`).catch(console.error);
 }
 
 /**
