@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.integrationTests.serviceTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
@@ -69,9 +68,6 @@ class RequestQueryManagerTest
         private val firstUser = KeycloakUserInfo(USER_EMAIL, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
         private val secondUser = mock<KeycloakUserInfo>()
         private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
-        private val mockBasicCompanyInfo2 = mock<BasicCompanyInformation>()
-        private val storedCompany1 = mock<StoredCompany>()
-        private val storedCompany2 = mock<StoredCompany>()
         private val companyInfo1 = mock<CompanyInformation>()
         private val companyInfo2 = mock<CompanyInformation>()
 
@@ -82,18 +78,13 @@ class RequestQueryManagerTest
             doReturn(null).whenever(secondUser).email
             doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(USER_EMAIL_SEARCH_STRING)
             doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo1).companyId
-            doReturn(COMPANY_ID_2).whenever(mockBasicCompanyInfo2).companyId
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
-            doReturn(COMPANY_ID_1).whenever(storedCompany1).companyId
-            doReturn(COMPANY_ID_2).whenever(storedCompany2).companyId
-            doReturn(companyInfo1).whenever(storedCompany1).companyInformation
-            doReturn(companyInfo2).whenever(storedCompany2).companyInformation
             doReturn(TEST_COMPANY_NAME_1).whenever(companyInfo1).companyName
             doReturn(TEST_COMPANY_NAME_2).whenever(companyInfo2).companyName
-            doReturn(storedCompany1).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_1)
-            doReturn(storedCompany2).whenever(mockCompanyDataControllerApi).getCompanyById(COMPANY_ID_2)
+            doReturn(companyInfo1).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_1)
+            doReturn(companyInfo2).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_2)
         }
 
         /**

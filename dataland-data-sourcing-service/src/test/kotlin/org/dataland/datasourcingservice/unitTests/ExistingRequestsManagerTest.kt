@@ -18,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.Mockito
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -58,7 +59,12 @@ class ExistingRequestsManagerTest {
                 dataSourcingEntity = null,
             )
         reset(mockDataSourcingManager)
-        whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
+        whenever(
+            mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(
+                any<RequestEntity>(),
+                anyOrNull(),
+            ),
+        ).thenAnswer { invocation ->
             (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("Company Name", null)
         }
     }

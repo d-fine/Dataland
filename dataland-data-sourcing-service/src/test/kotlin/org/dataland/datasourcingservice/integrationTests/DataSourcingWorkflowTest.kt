@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -66,7 +67,12 @@ class DataSourcingWorkflowTest
             val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
             whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
                 .thenReturn(listOf(validationResult))
-            whenever(mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())).thenAnswer { invocation ->
+            whenever(
+                mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(
+                    any<RequestEntity>(),
+                    anyOrNull(),
+                ),
+            ).thenAnswer { invocation ->
                 (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("New Company", null)
             }
 
