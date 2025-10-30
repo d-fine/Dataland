@@ -47,8 +47,11 @@
           :loading="waitingForData"
           data-test="requested-datasets-table"
           paginator
-          paginator-position="bottom"
+          paginator-position="both"
           :rows="datasetsPerPage"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+          :alwaysShowPaginator="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           lazy
           :total-records="numberOfFilteredRequests"
           @page="onPage"
@@ -93,7 +96,9 @@
               </div>
             </template>
           </Column>
-          <template #empty> No requests found.</template>
+          <template #empty>
+            <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
+          </template>
         </DataTable>
       </div>
     </div>

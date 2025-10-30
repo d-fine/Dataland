@@ -105,13 +105,12 @@
     <div style="padding: var(--spacing-md)">
       <div class="card">
         <DataTable
-          v-if="currentDataRequests && currentDataRequests.length > 0"
+          v-if="currentDataRequests"
           v-show="!waitingForData"
           ref="dataTable"
           data-test="requests-datatable"
           :value="currentDataRequests"
           :paginator="true"
-          :lazy="true"
           :total-records="totalRecords"
           paginator-position="both"
           :rows="rowsPerPage"
@@ -170,7 +169,9 @@
             </template>
           </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
-          <template #empty> No requests found.</template>
+          <template #empty>
+            <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
+          </template>
         </DataTable>
       </div>
     </div>
@@ -203,6 +204,7 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
+
 const frameworkFilter = ref();
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
