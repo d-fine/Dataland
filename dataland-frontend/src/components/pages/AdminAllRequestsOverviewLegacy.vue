@@ -441,7 +441,7 @@ export default defineComponent({
      */
     onRowClick(event: DataTableRowClickEvent) {
       const requestIdOfClickedRow = event.data.dataRequestId;
-      return router.push(`/requests/${requestIdOfClickedRow}`);
+      return router.push(`/requests-legacy/${requestIdOfClickedRow}`);
     },
 
     /**
