@@ -147,7 +147,7 @@
           <Column header="REQUESTED" :sortable="false">
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
+                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
               </div>
             </template>
           </Column>

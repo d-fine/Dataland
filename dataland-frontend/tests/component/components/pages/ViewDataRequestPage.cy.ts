@@ -26,7 +26,7 @@ describe('Component tests for the view data request page', function (): void {
     const request: ExtendedStoredRequest = {
       id: requestId,
       userId: dummyUserId,
-      creationTimeStamp: dummyCreationTime,
+      creationTimestamp: dummyCreationTime,
       dataType: dummyFramework,
       reportingPeriod: dummyReportingYear,
       companyId: dummyCompanyId,

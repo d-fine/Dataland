@@ -12,7 +12,7 @@ data class ExtendedStoredRequest(
     val reportingPeriod: String,
     val dataType: String,
     val userId: String,
-    val creationTimeStamp: Long,
+    val creationTimestamp: Long,
     val memberComment: String? = null,
     val adminComment: String? = null,
     val lastModifiedDate: Long,

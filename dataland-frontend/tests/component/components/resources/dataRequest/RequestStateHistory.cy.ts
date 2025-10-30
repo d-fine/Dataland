@@ -11,7 +11,7 @@ describe('Component tests for the Request State History', function (): void {
     reportingPeriod: '2024',
     dataType: 'sfdr',
     userId: 'dummy-user-id',
-    creationTimeStamp: dummyCreationTimestamp,
+    creationTimestamp: dummyCreationTimestamp,
     lastModifiedDate: dummyCreationTimestamp,
     requestPriority: 'Low',
     state: RequestState.Open,

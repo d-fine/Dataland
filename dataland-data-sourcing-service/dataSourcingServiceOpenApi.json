@@ -1684,7 +1684,7 @@
         "required": [
           "companyId",
           "companyName",
-          "creationTimeStamp",
+          "creationTimestamp",
           "dataType",
           "id",
           "lastModifiedDate",
@@ -1710,7 +1710,7 @@
           "userId": {
             "type": "string"
           },
-          "creationTimeStamp": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           },
@@ -1859,7 +1859,7 @@
       "StoredRequest": {
         "required": [
           "companyId",
-          "creationTimeStamp",
+          "creationTimestamp",
           "dataType",
           "id",
           "lastModifiedDate",
@@ -1885,7 +1885,7 @@
           "userId": {
             "type": "string"
           },
-          "creationTimeStamp": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           },
