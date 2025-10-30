@@ -1,0 +1,8 @@
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
+
+WORKDIR /app
+COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
+COPY ./.git/ ./.git
+RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
+     ./gradlew dataland-accounting-service:bootJar --no-daemon --stacktrace
