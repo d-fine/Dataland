@@ -10,6 +10,7 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
       <IconField class="search-bar">
@@ -21,6 +22,7 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
       <IconField class="search-bar">
@@ -32,6 +34,7 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
     </div>
@@ -88,12 +91,7 @@
       <PrimeButton
         :disabled="waitingForData"
         data-test="trigger-filtering-requests"
-        @click="
-          () => {
-            setChunkAndFirstRowIndexToZero();
-            getAllRequestsForFilters();
-          }
-        "
+        @click="resetChunkAndFirstRowIndexAndGetAllRequests"
         label="FILTER REQUESTS"
       />
     </div>
@@ -207,13 +205,13 @@ import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clie
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const frameworkFilter = ref();
-const datasetsPerPage = 100;
+const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
-const rowsPerPage = ref(100);
+const rowsPerPage = ref(10);
 const firstRowIndex = ref(0);
 const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
 const searchBarInputEmail = ref('');
@@ -329,6 +327,14 @@ function onPage(event: DataTablePageEvent): void {
     firstRowIndex.value = currentChunkIndex.value * rowsPerPage.value;
     void getAllRequestsForFilters();
   }
+}
+
+/**
+ * Resets the chunk index and first row index to zero and fetches all requests again.
+ */
+function resetChunkAndFirstRowIndexAndGetAllRequests(): void {
+  setChunkAndFirstRowIndexToZero();
+  void getAllRequestsForFilters();
 }
 
 /**
