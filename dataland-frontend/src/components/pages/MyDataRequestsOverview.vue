@@ -151,7 +151,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
-const datasetsPerPage = 10;
+const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
