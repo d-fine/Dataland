@@ -19,6 +19,18 @@ describe('Component tests for the view data request page', function (): void {
   const dummyCreationTime = 1709104495770;
 
   /**
+   * Utility function to create a minimal Keycloak mock
+   * @param userId the user ID to mock
+   * @param roles optional array of roles (e.g. ['ROLE_ADMIN'])
+   */
+  function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): ReturnType<typeof minimalKeycloakMock> {
+    return minimalKeycloakMock({
+      userId,
+      roles,
+    });
+  }
+
+  /**
    * Mocks the data-sourcing-manager answer for single data request of the users
    * @param requestState the request state
    */
@@ -171,8 +183,8 @@ describe('Component tests for the view data request page', function (): void {
     setupRequestInterceptions(RequestState.Processed, true);
     cy.spy(router, 'push').as('routerPush');
     mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
-      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
-      router: router,
+      keycloak: getKeycloakMock(dummyUserId),
+      router,
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('be.visible');
       cy.get('[data-test="view-dataset-button"]').should('exist').click();
@@ -183,10 +195,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page for Withdrawn request without data renders as expected', function () {
     setupRequestInterceptions(RequestState.Withdrawn, false);
     mountAndCheckBasicPageElementsAsUser(RequestState.Withdrawn, {
-      keycloak: minimalKeycloakMock({
-        userId: dummyUserId,
-        roles: ['ROLE_ADMIN'],
-      }),
+      keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
     });
     cy.get('[data-test="resubmit-request-button"]').should('be.visible');
     cy.get('[data-test="view-dataset-button"]').should('not.exist');
@@ -195,10 +204,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page as non-admin for Open request without data and verify withdraw button is absent', function () {
     setupRequestInterceptions(RequestState.Open, false);
     mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
-      keycloak: minimalKeycloakMock({
-        userId: dummyUserId,
-        roles: ['ROLE_USER'],
-      }),
+      keycloak: getKeycloakMock(dummyUserId, ['ROLE_USER']),
     });
     cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
     cy.get('[data-test="view-dataset-button"]').should('not.exist');
@@ -207,10 +213,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page as admin for Open request without data and withdraw the data request', function () {
     setupRequestInterceptions(RequestState.Open, false);
     mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
-      keycloak: minimalKeycloakMock({
-        userId: dummyUserId,
-        roles: ['ROLE_ADMIN'],
-      }),
+      keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
       cy.get('[data-test="view-dataset-button"]').should('not.exist');
@@ -231,8 +234,8 @@ describe('Component tests for the view data request page', function (): void {
     setupRequestInterceptions(RequestState.Open, true);
     cy.spy(router, 'push').as('routerPush');
     mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
-      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
-      router: router,
+      keycloak: getKeycloakMock(dummyUserId),
+      router,
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
       cy.get('[data-test="view-dataset-button"]').should('exist').click();
@@ -243,7 +246,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page for Processed request and check resubmitting the request works as expected', function () {
     setupRequestInterceptions(RequestState.Processed, true);
     mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
-      keycloak: minimalKeycloakMock({ userId: dummyUserId }),
+      keycloak: getKeycloakMock(dummyUserId),
       router,
     }).then(() => {
       cy.contains('Currently, your request has the state Processed.').should('be.visible');
