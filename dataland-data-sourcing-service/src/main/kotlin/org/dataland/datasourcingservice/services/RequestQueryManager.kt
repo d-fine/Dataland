@@ -112,7 +112,7 @@ class RequestQueryManager
             requestRepository
                 .findByUserId(userId)
                 .map { entity ->
-                    transformRequestEntityToExtendedStoredRequest(entity)
+                    transformRequestEntityToExtendedStoredRequest(entity, keycloakUserService.getUser(userId.toString()).email)
                 }
 
         /**
@@ -145,9 +145,12 @@ class RequestQueryManager
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
-        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
+        fun transformRequestEntityToExtendedStoredRequest(
+            entity: RequestEntity,
+            userEmailAddress: String? = null,
+        ): ExtendedStoredRequest =
             entity.toExtendedStoredRequest(
-                companyDataController.getCompanyById(entity.companyId.toString()).companyInformation.companyName,
-                keycloakUserService.getUser(entity.userId.toString()).email,
+                companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
+                userEmailAddress ?: keycloakUserService.getUser(entity.userId.toString()).email,
             )
     }

@@ -7,6 +7,18 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
 
+/**
+ * Utility function to create a minimal Keycloak mock
+ * @param userId the user ID to mock
+ * @param roles optional array of roles (e.g. ['ROLE_ADMIN'])
+ */
+function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): ReturnType<typeof minimalKeycloakMock> {
+  return minimalKeycloakMock({
+    userId,
+    roles,
+  });
+}
+
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
   const dummyUserId = 'dummyUserId';
@@ -17,18 +29,6 @@ describe('Component tests for the view data request page', function (): void {
   const dummyReportingYear = 'dummyReportingYear';
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
-
-  /**
-   * Utility function to create a minimal Keycloak mock
-   * @param userId the user ID to mock
-   * @param roles optional array of roles (e.g. ['ROLE_ADMIN'])
-   */
-  function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): ReturnType<typeof minimalKeycloakMock> {
-    return minimalKeycloakMock({
-      userId,
-      roles,
-    });
-  }
 
   /**
    * Mocks the data-sourcing-manager answer for single data request of the users
