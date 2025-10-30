@@ -2,6 +2,7 @@ import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import type { CompanyIdAndName } from '@clients/backend';
 import { fetchTestCompanies } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
+import { describeIf } from '@e2e/support/TestUtility.ts';
 
 const testYear = '2023';
 const testMessage = 'Frontend test message';
@@ -46,44 +47,51 @@ function patchRequestToProcessed(requestId: string): Cypress.Chainable {
   });
 }
 
-describe('ViewDataRequestPage', () => {
-  before(() => {
-    fetchTestCompanies().then(([alpha]) => {
-      alphaCompanyIdAndName = alpha;
-    });
-  });
-  beforeEach(() => {
-    cy.ensureLoggedIn(admin_name, admin_pw);
-    createRequest().then((id) => {
-      requestId = id;
-      patchRequestToProcessed(requestId).then(() => {
-        cy.visit(getBaseUrl() + `/requests/${requestId}`);
+describeIf(
+  'As an admin, I want to be able to view a data sourcing request and ' +
+    'resubmit or withdraw it from the request details page',
+  {
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
+  },
+  () => {
+    before(() => {
+      fetchTestCompanies().then(([alpha]) => {
+        alphaCompanyIdAndName = alpha;
       });
     });
-  });
+    beforeEach(() => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      createRequest().then((id) => {
+        requestId = id;
+        patchRequestToProcessed(requestId).then(() => {
+          cy.visit(getBaseUrl() + `/requests/${requestId}`);
+        });
+      });
+    });
 
-  it('should open and close the resubmit modal', () => {
-    cy.get('[data-test="card-resubmit"]').should('be.visible');
-    cy.get('[data-test="resubmit-request-button"]').click();
-    cy.get('[data-test="resubmit-modal"]').should('be.visible');
-    cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
-    cy.get('[data-test="resubmit-confirmation-button"]').click();
-    cy.get('.p-dialog').should('contain.text', 'successfully resubmitted');
-    cy.get('[data-test="close-success-modal-button"]').should('be.visible').click();
-    cy.url().should('not.include', requestId);
-    cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('exist').should('contain.text', 'Open');
-  });
+    it('should open and close the resubmit modal', () => {
+      cy.get('[data-test="card-resubmit"]').should('be.visible');
+      cy.get('[data-test="resubmit-request-button"]').click();
+      cy.get('[data-test="resubmit-modal"]').should('be.visible');
+      cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
+      cy.get('[data-test="resubmit-confirmation-button"]').click();
+      cy.get('.p-dialog').should('contain.text', 'successfully resubmitted');
+      cy.get('[data-test="close-success-modal-button"]').should('be.visible').click();
+      cy.url().should('not.include', requestId);
+      cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('exist').should('contain.text', 'Open');
+    });
 
-  it('should check for correct display of request details ' + 'and should open and close the withdraw modal', () => {
-    cy.get('[data-test="request-details-company"]').should('contain.text', alphaCompanyIdAndName.companyName);
-    cy.get('[data-test="request-details-year"]').should('contain.text', testYear);
-    cy.get('[data-test="request-details-type"]').should('contain.text', 'PCAF');
-    cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Processed');
-    cy.get('[data-test="request-details-email"]').should('contain.text', 'data.uploader@example.com');
+    it('should check for correct display of request details ' + 'and should open and close the withdraw modal', () => {
+      cy.get('[data-test="request-details-company"]').should('contain.text', alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="request-details-year"]').should('contain.text', testYear);
+      cy.get('[data-test="request-details-type"]').should('contain.text', 'PCAF');
+      cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Processed');
+      cy.get('[data-test="request-details-email"]').should('contain.text', 'data.uploader@example.com');
 
-    cy.get('[data-test="card_withdrawn"]').should('be.visible');
-    cy.get('[data-test="withdraw-request-button"]').click();
-    cy.get('.p-dialog').should('contain.text', 'successfully withdrawn');
-    cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Withdrawn');
-  });
-});
+      cy.get('[data-test="card_withdrawn"]').should('be.visible');
+      cy.get('[data-test="withdraw-request-button"]').click();
+      cy.get('.p-dialog').should('contain.text', 'successfully withdrawn');
+      cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Withdrawn');
+    });
+  }
+);
