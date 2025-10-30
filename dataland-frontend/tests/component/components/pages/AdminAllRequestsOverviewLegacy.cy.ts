@@ -520,7 +520,7 @@ describe('Component test for the admin-requests-overview page', () => {
         cy.get('tr:last').click();
       });
 
-      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dataRequestIdOfLastElement}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests-legacy/${dataRequestIdOfLastElement}`);
     });
   });
 });
