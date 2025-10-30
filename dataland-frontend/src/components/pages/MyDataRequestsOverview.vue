@@ -182,7 +182,13 @@ onMounted(async () => {
   await getStoredRequestDataList();
 });
 
-watch([selectedFrameworks, selectedState, waitingForData], () =>  { updateCurrentDisplayedData(); resetToFirstPage(); { true } });
+watch([selectedFrameworks, selectedState, waitingForData], () => {
+  updateCurrentDisplayedData();
+  resetToFirstPage();
+  {
+    true;
+  }
+});
 
 watch(searchBarInput, (newSearch) => {
   searchBarInputFilter.value = newSearch;
@@ -282,7 +288,7 @@ function resetFilterAndSearchBar(): void {
 }
 
 /**
- * Reset current page
+ * Resets current page when filters are reset or changed.
  */
 function resetToFirstPage(): void {
   currentPage.value = 0;
