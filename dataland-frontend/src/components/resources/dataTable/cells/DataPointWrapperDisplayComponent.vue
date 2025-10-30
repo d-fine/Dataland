@@ -1,111 +1,102 @@
 <template>
   <div class="flex">
-    <a
-      v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
-      @click="$dialog.open(DataPointDataTable, modalOptions)"
-      class="link"
+    <PrimeButton
+        variant="text"
+        v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
+        @click="$dialog.open(DataPointDataTable, modalOptions)"
     >
       <slot></slot>
-      <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
-    </a>
+      <em v-if="!editModeIsOn" class="pi pi-eye" style="padding-left: var(--spacing-md)"> </em>
+    </PrimeButton>
     <div v-else-if="dataPointProperties.value">
       <slot>{{ dataPointProperties.value }}</slot>
     </div>
-    <div v-else><slot></slot></div>
+    <div v-else>
+      <slot></slot>
+    </div>
+    <PrimeButton
+        v-if="editModeIsOn"
+        icon="pi pi-pencil"
+        variant="text"
+        @click="showEditModal=true"
+    />
+    <Dialog
+        v-model:visible="showEditModal"
+        header="Edit Data Point"
+        :modal="true"
+    ><h4>Value</h4>
+      <InputNumber :placeholder="dataPointProperties.value ?? 'Insert value'" fluid/>
+      <h4>Quality</h4>
+      <Select :placeholder="dataPointProperties.quality ?? 'Select Quality'" fluid/>
+      <h4>Data Source</h4>
+      <Select :placeholder="dataPointProperties.dataSource?.fileName ?? 'Select Datasource'" fluid/>
+
+    </Dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+
+<script setup lang="ts">
+import {computed, inject, ref} from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
-import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
-import { isDatapointCommentConsideredMissing } from '@/components/resources/dataTable/conversion/DataPoints';
+import {type DataMetaInformation, type ExtendedDocumentReference} from '@clients/backend';
+import {isDatapointCommentConsideredMissing} from '@/components/resources/dataTable/conversion/DataPoints';
+import PrimeButton from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import InputNumber from 'primevue/inputnumber'
+import Select from 'primevue/select'
 
-export default defineComponent({
-  name: 'DataPointWrapperDisplayComponent',
-  props: {
-    content: {
-      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
-      required: true,
-    },
-    metaInfo: {
-      type: Object as () => DataMetaInformation,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      DataPointDataTable,
-    };
-  },
+const editModeIsOn = inject('editModeIsOn')
+const showEditModal = ref(false)
+const props = defineProps<{
+  content: MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>;
+  metaInfo: DataMetaInformation;
+}>();
 
-  computed: {
-    modalOptions() {
-      return {
-        props: {
-          header: this.content.displayValue.fieldLabel,
-          modal: true,
-          dismissableMask: true,
-          style: {
-            maxWidth: '80vw',
-          },
-        },
-        data: {
-          dataPointDisplay: this.dataPointProperties,
-          dataId: this.metaInfo.dataId,
-          dataType: this.metaInfo.dataType,
-        },
-      };
+const modalOptions = computed(() => {
+  return {
+    props: {
+      header: props.content.displayValue.fieldLabel,
+      modal: true,
+      dismissableMask: true,
+      style: {
+        maxWidth: '80vw',
+      },
     },
-    dataPointProperties() {
-      const content = this.content.displayValue;
-      let valueOption = undefined;
-      if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
-        valueOption = content.innerContents.displayValue;
-      }
-      return {
-        value: valueOption,
-        quality: content.quality,
-        dataSource: content.dataSource,
-        comment: content.comment,
-      };
+    data: {
+      dataPointDisplay: dataPointProperties.value,
+      dataId: props.metaInfo.dataId,
+      dataType: props.metaInfo.dataType,
     },
-    isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
-      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
-      const quality = this.dataPointProperties.quality;
+  };
+});
 
-      return (
-        !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
-        quality != undefined ||
-        dataSource != undefined
-      );
-    },
-  },
+const dataPointProperties = computed(() => {
+  const content = props.content.displayValue;
+  let valueOption = undefined;
+  if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+    valueOption = content.innerContents.displayValue;
+  }
+  return {
+    value: valueOption,
+    quality: content.quality,
+    dataSource: content.dataSource,
+    comment: content.comment,
+  };
+});
+
+const isAnyDataPointPropertyAvailableThatIsWorthShowingInModal = computed(() => {
+  const dataSource = dataPointProperties.value.dataSource as ExtendedDocumentReference | undefined | null;
+  const quality = dataPointProperties.value.quality;
+
+  return (
+      !isDatapointCommentConsideredMissing(dataPointProperties.value) ||
+      quality != undefined ||
+      dataSource != undefined
+  );
 });
 </script>
-<style scoped>
-.link {
-  color: var(--main-color);
-  background: transparent;
-  border: transparent;
-  cursor: pointer;
-  display: flex;
-
-  &:hover {
-    color: hsl(from var(--main-color) h s calc(l - 20));
-    text-decoration: underline;
-  }
-
-  &:active {
-    color: hsl(from var(--main-color) h s calc(l + 10));
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-}
-</style>

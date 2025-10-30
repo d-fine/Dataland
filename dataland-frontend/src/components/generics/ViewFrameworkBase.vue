@@ -63,9 +63,9 @@
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
-              @click="editDataset"
+              @click="editModeIsOn = !editModeIsOn"
               data-test="editDatasetButton"
-              label="EDIT DATA"
+              :label="editModeIsOn ? 'EDIT MODE' : 'EDIT DATA'"
               :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
@@ -78,7 +78,6 @@
               icon="pi pi-plus"
               label="NEW DATASET"
               data-test="goToNewDatasetButton"
-              @click="linkToNewDataset"
             />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
@@ -175,6 +174,9 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
 
 provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
+
+const editModeIsOn = ref(false)
+provide('editModeIsOn',editModeIsOn)
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
