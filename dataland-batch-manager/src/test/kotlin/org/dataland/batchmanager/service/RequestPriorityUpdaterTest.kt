@@ -74,7 +74,7 @@ class RequestPriorityUpdaterTest {
             userId = userId,
             reportingPeriod = "2025",
             dataType = "sfdr",
-            creationTimeStamp = 0L,
+            creationTimestamp = 0L,
             lastModifiedDate = 0L,
             requestPriority = priority,
             state = state,

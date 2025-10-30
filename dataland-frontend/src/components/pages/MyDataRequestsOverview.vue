@@ -73,9 +73,9 @@
             </template>
           </Column>
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
-          <Column header="REQUESTED" field="creationTimeStamp" :sortable="true">
+          <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
             <template #body="{ data }">
-              {{ convertUnixTimeInMsToDateString(data.creationTimeStamp) }}
+              {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
             </template>
           </Column>
           <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">

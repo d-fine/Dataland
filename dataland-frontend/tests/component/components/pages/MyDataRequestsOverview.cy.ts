@@ -30,7 +30,7 @@ before(function () {
     return {
       id: dummyRequestId,
       userId: 'some-user-id',
-      creationTimeStamp: 1709204495770,
+      creationTimestamp: 1709204495770,
       dataType: dataType,
       reportingPeriod: reportingPeriod,
       companyId: companyId,

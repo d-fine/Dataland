@@ -205,7 +205,7 @@ async function initializeComponent(): Promise<void> {
         await getAndStoreRequestHistory().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
       }
-      requestHistory.value.sort((a, b) => b.creationTimeStamp - a.creationTimeStamp);
+      requestHistory.value.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
       await setUserAccessFields();
     })
     .catch((error) => console.error(error));

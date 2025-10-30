@@ -53,7 +53,7 @@ describe('Component test for the admin-requests-overview page', () => {
       id: crypto.randomUUID(),
       userId: crypto.randomUUID(),
       userEmailAddress: filterParameters.userEmailAddress,
-      creationTimeStamp: Date.now(),
+      creationTimestamp: Date.now(),
       dataType: filterParameters.framework,
       reportingPeriod: filterParameters.reportingPeriod ?? faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
       companyId: crypto.randomUUID(),
