@@ -29,15 +29,38 @@
       <h4>Quality</h4>
       <Select :placeholder="dataPointProperties.quality ?? 'Select Quality'" fluid/>
       <h4>Data Source</h4>
-      <Select :placeholder="dataPointProperties.dataSource?.fileName ?? 'Select Datasource'" fluid/>
-
+      <Select
+          v-model="selectedDocument"
+          :options="availableDocuments"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select Data Source"
+          fluid
+      />
+      <div
+          v-if="selectedDocumentMeta"
+          class="dataland-info-text small"
+          style="background-color: var(--p-blue-50); margin: var(--spacing-xs);"
+      >
+        <div><strong>Name:</strong> {{ selectedDocumentMeta.documentName }}</div>
+        <div><strong>Category:</strong> {{ selectedDocumentMeta.documentCategory ?? '–' }}</div>
+        <div><strong>Publication Date:</strong> {{ selectedDocumentMeta.publicationDate ?? '–' }}</div>
+        <div><strong>Reporting Period:</strong> {{ selectedDocumentMeta.reportingPeriod ?? '–' }}</div>
+       </div>
+      <h4>Comment</h4>
+      <InputText :placeholder="dataPointProperties.comment ?? 'Insert comment'" fluid/>
+      <PrimeButton
+          label="SAVE CHANGES"
+          icon="pi pi-save"
+          style="margin-top: var(--spacing-md)"
+      />
     </Dialog>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import {computed, inject, ref} from 'vue';
+import {computed, inject, ref, watch} from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
@@ -49,13 +72,37 @@ import PrimeButton from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import InputNumber from 'primevue/inputnumber'
 import Select from 'primevue/select'
+import InputText from 'primevue/inputtext'
+import {ApiClientProvider} from "@/services/ApiClients.ts";
+import {assertDefined} from "@/utils/TypeScriptUtils.ts";
+import type Keycloak from "keycloak-js";
+import {DocumentMetaInfoResponse} from "@clients/documentmanager";
+
+const availableDocuments = ref<{ label: string; value: string }[]>([]);
+const selectedDocument = ref<string | null>(null);
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 
 const editModeIsOn = inject('editModeIsOn')
+const companyId = inject<string>('companyID')
 const showEditModal = ref(false)
 const props = defineProps<{
   content: MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>;
   metaInfo: DataMetaInformation;
 }>();
+
+const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
+const selectedDocumentMeta = computed(() =>
+    allDocuments.value.find((doc) => doc.documentId === selectedDocument.value)
+);
+
+watch(showEditModal, async (isVisible) => {
+  if (isVisible) {
+    await updateDocumentsList();
+  }
+});
 
 const modalOptions = computed(() => {
   return {
@@ -99,4 +146,25 @@ const isAnyDataPointPropertyAvailableThatIsWorthShowingInModal = computed(() => 
       dataSource != undefined
   );
 });
+
+async function updateDocumentsList(): Promise<void> {
+  try {
+    const documentControllerApi = apiClientProvider.apiClients.documentController;
+    const response = await documentControllerApi.searchForDocumentMetaInformation(companyId);
+    allDocuments.value = response.data;
+
+    availableDocuments.value = allDocuments.value
+        .filter((doc) => doc.documentName && doc.documentId)
+        .map((doc) => ({
+          label: doc.documentName!,
+          value: doc.documentId,
+        }));
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    allDocuments.value = [];
+    availableDocuments.value = [];
+  }
+}
+
+
 </script>
