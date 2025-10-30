@@ -185,9 +185,6 @@ onMounted(async () => {
 watch([selectedFrameworks, selectedState, waitingForData], () => {
   updateCurrentDisplayedData();
   resetToFirstPage();
-  {
-    true;
-  }
 });
 
 watch(searchBarInput, (newSearch) => {
