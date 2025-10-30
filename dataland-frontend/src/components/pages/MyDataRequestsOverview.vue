@@ -46,6 +46,7 @@
           :row-hover="true"
           :loading="waitingForData"
           data-test="requested-datasets-table"
+          :first="firstRowIndex"
           paginator
           paginator-position="both"
           :rows="datasetsPerPage"
@@ -150,7 +151,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 
-const datasetsPerPage = 100;
+const datasetsPerPage = 10;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
@@ -170,6 +171,7 @@ const sortField = ref<keyof ExtendedStoredRequest>('state');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
+const firstRowIndex = ref(0);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -186,6 +188,7 @@ watch([selectedFrameworks, selectedState, waitingForData], () => updateCurrentDi
 watch(searchBarInput, (newSearch) => {
   searchBarInputFilter.value = newSearch;
   updateCurrentDisplayedData();
+  setFirstRowIndexToZero();
 });
 
 /**
@@ -276,6 +279,9 @@ function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
   selectedState.value = [];
   searchBarInput.value = '';
+  currentPage.value=0;
+  updateCurrentDisplayedData();
+  setFirstRowIndexToZero();
 }
 
 /**
@@ -285,6 +291,7 @@ function resetFilterAndSearchBar(): void {
  * Updates the displayed data and scrolls to the top of the page.
  */
 function updateCurrentDisplayedData(): void {
+
   let data = storedDataRequests.value.filter((request) => filterSearchInput(request.companyName));
 
   if (selectedFrameworks.value.length > 0) {
@@ -344,6 +351,14 @@ function onPage(event: DataTablePageEvent): void {
   currentPage.value = event.page;
   updateCurrentDisplayedData();
 }
+
+/**
+ * Sets the current chunk index and first row index to zero.
+ */
+function setFirstRowIndexToZero(): void {
+  firstRowIndex.value = currentPage.value * datasetsPerPage;
+}
+
 </script>
 
 <style scoped>
