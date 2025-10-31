@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
@@ -127,8 +129,11 @@ class TransformationUtilsTest {
                         SfdrGeneral(
                             SfdrGeneralGeneral(
                                 dataDate = LocalDate.parse("2022-01-01"),
-                                fiscalYearEnd = LocalDate.parse("2022-01-01"),
-                                fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                                fiscalYearEnd = ExtendedDataPointLocalDate(LocalDate.parse("2022-01-01")),
+                                fiscalYearDeviation =
+                                    ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions(
+                                        SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                                    ),
                             ),
                         ),
                     ),

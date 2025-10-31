@@ -2,280 +2,301 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-PCAF-Framework-Company",
-			"headquarters": "Fort Aliaton",
-			"headquartersPostalCode": "11445",
-			"sector": "synergies",
+			"headquarters": "Alfonsoborough",
+			"headquartersPostalCode": null,
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"ReIROoD1izt0"
+					"bTqlHVmfCO1K"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"gkxQiktsnEJ0Owh"
+				]
 			},
-			"countryCode": "ZA",
+			"countryCode": "LY",
 			"companyContactDetails": [
-				"Josue.Batz@example.com",
-				"Mariana.Lynch24@example.com",
-				"Berniece.Bins83@example.com",
-				"Gene66@example.com",
-				"Jerel_Windler@example.com"
+				"Sean77@example.com",
+				"Name3@example.com",
+				"Prince27@example.com",
+				"Matt48@example.com"
 			],
 			"companyAlternativeNames": [
-				"Fadel, Bogisich and Lindgren",
-				"Jakubowski - Ullrich",
-				"McKenzie - Wunsch",
-				"Wintheiser LLC"
+				"Daniel, Farrell and Rau",
+				"Feil, Ward and Rolfson"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyLegalForm": "Sole Trader",
+			"website": "https://swift-godfather.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
-					"fiscalYearDeviation": "NoDeviation",
-					"fiscalYearEnd": "2024-03-09"
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "443-1269",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "synthesize mobile bandwidth",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-09-17",
+						"dataSource": {
+							"page": "600-1134",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "hack solid state program",
+						"quality": "Estimated"
+					}
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Industrials",
+						"value": "RealEstate",
 						"dataSource": {
-							"page": "1134-1185",
+							"page": "1033",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "infrastructures",
+							"tagName": "networks",
 							"publicationDate": null
 						},
-						"comment": "hack virtual system",
+						"comment": "transmit back-end bus",
 						"quality": "Incomplete"
 					},
 					"companyExchangeStatus": {
 						"value": "Listed",
 						"dataSource": {
-							"page": "440-730",
-							"fileName": "IntegratedReport",
+							"page": "915",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
+							"tagName": "partnerships",
 							"publicationDate": null
 						},
-						"comment": "index bluetooth driver",
-						"quality": "Reported"
+						"comment": "back up primary sensor",
+						"quality": "NoDataFound"
 					}
 				}
 			},
 			"companyValue": {
 				"listedCompany": {
 					"marketCapitalizationInEUR": {
-						"value": 38556.14,
+						"value": 35099.94,
 						"dataSource": {
-							"page": "570-967",
-							"fileName": "ESEFReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "paradigms",
+							"page": "337",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
 							"publicationDate": null
 						},
-						"comment": "reboot wireless capacitor",
-						"quality": "NoDataFound"
+						"comment": "navigate haptic circuit",
+						"quality": "Audited"
 					},
 					"bookValueOfDebtInEUR": {
-						"value": 3835.05,
+						"value": 71659.96,
 						"dataSource": {
-							"page": "1124",
+							"page": "219-1299",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "infrastructures",
+							"tagName": "metrics",
 							"publicationDate": null
 						},
-						"comment": "parse mobile monitor",
-						"quality": "Reported"
+						"comment": "back up mobile bus",
+						"quality": "NoDataFound"
 					},
 					"minoritiesInterestInEUR": {
-						"value": 38202.65,
+						"value": 10721.44,
 						"dataSource": {
-							"page": "69-944",
-							"fileName": "IntegratedReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
+							"page": "778",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "experiences",
 							"publicationDate": null
 						},
-						"comment": "bypass 1080p microchip",
-						"quality": "Estimated"
+						"comment": "hack auxiliary sensor",
+						"quality": "Reported"
 					}
 				},
 				"unlistedCompany": {
 					"totalEquityAndDebtInEUR": {
-						"value": 54223.98,
+						"value": 13730.86,
 						"dataSource": {
-							"page": "799",
-							"fileName": "IntegratedReport",
+							"page": "754-1042",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
+							"tagName": "content",
 							"publicationDate": null
 						},
-						"comment": "copy multi-byte hard drive",
-						"quality": "Estimated"
+						"comment": "back up bluetooth capacitor",
+						"quality": "NoDataFound"
 					}
 				}
 			},
 			"environmental": {
 				"greenhouseGasEmissions": {
 					"scope1GhgEmissionsInTonnes": {
-						"value": 58255.98,
+						"value": 82460.32,
 						"dataSource": {
-							"page": "481",
+							"page": "225",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "partnerships",
+							"tagName": "solutions",
 							"publicationDate": null
 						},
-						"comment": "copy neural application",
-						"quality": "Reported"
+						"comment": "copy bluetooth port",
+						"quality": "Audited"
 					},
 					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 96610.25,
+						"value": 58421.35,
 						"dataSource": {
-							"page": "525",
+							"page": "112-1099",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "blockchains",
+							"tagName": "relationships",
 							"publicationDate": null
 						},
-						"comment": "index primary pixel",
-						"quality": "Incomplete"
+						"comment": "hack 1080p system",
+						"quality": "Estimated"
 					},
 					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 9775.36,
+						"value": 41689.83,
 						"dataSource": {
-							"page": "829-1134",
-							"fileName": "ESEFReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "paradigms",
+							"page": "470-1186",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "override haptic bandwidth",
-						"quality": "NoDataFound"
+						"comment": "calculate multi-byte transmitter",
+						"quality": "Estimated"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 8343.48,
+						"value": 56598.29,
 						"dataSource": {
-							"page": "374-491",
-							"fileName": "IntegratedReport",
+							"page": "1084",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
 							"publicationDate": null
 						},
-						"comment": "parse open-source sensor",
-						"quality": "Estimated"
+						"comment": "quantify back-end port",
+						"quality": "NoDataFound"
 					}
 				}
 			},
 			"companyValueEstimation": {
 				"listedCompany": {
 					"marketCapitalizationInEUR": {
-						"value": 7334.39,
+						"value": 82978.48,
 						"dataSource": {
-							"page": "530-854",
-							"fileName": "IntegratedReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "infrastructures",
+							"page": "66",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "lifetime value",
 							"publicationDate": null
 						},
-						"comment": "navigate wireless hard drive",
+						"comment": "bypass back-end protocol",
 						"quality": "Incomplete"
 					},
 					"bookValueOfDebtInEUR": {
-						"value": 50635.9,
+						"value": 79908.36,
 						"dataSource": {
-							"page": "224-1217",
-							"fileName": "IntegratedReport",
+							"page": "843",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
+							"tagName": "content",
 							"publicationDate": null
 						},
-						"comment": "parse back-end matrix",
-						"quality": "Incomplete"
+						"comment": "input solid state system",
+						"quality": "Estimated"
 					},
 					"minoritiesInterestInEUR": {
-						"value": 75651.09,
+						"value": 87200.96,
 						"dataSource": {
-							"page": "1011-1186",
-							"fileName": "IntegratedReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
+							"page": "330-831",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "lifetime value",
 							"publicationDate": null
 						},
-						"comment": "compress haptic system",
-						"quality": "Estimated"
+						"comment": "back up redundant driver",
+						"quality": "Incomplete"
 					}
 				},
 				"unlistedCompany": {
 					"totalEquityAndDebtInEUR": {
-						"value": 44545.32,
+						"value": 4253.1,
 						"dataSource": {
-							"page": "798",
-							"fileName": "IntegratedReport",
+							"page": "330",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "reboot digital alarm",
-						"quality": "NoDataFound"
+						"comment": "override online microchip",
+						"quality": "Audited"
 					}
 				}
 			},
 			"environmentalEstimation": {
 				"greenhouseGasEmissions": {
 					"scope1GhgEmissionsInTonnes": {
-						"value": 26006.99,
+						"value": 35087.71,
 						"dataSource": {
-							"page": "1004",
+							"page": "395-489",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "solutions",
+							"tagName": "supply-chains",
 							"publicationDate": null
 						},
-						"comment": "calculate mobile sensor",
-						"quality": "Audited"
+						"comment": "back up mobile bandwidth",
+						"quality": "Incomplete"
 					},
 					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 28572.8,
+						"value": 12149.26,
 						"dataSource": {
-							"page": "872-1186",
-							"fileName": "IntegratedReport",
+							"page": "132-1131",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
+							"tagName": "models",
 							"publicationDate": null
 						},
-						"comment": "generate redundant sensor",
-						"quality": "Audited"
+						"comment": "connect virtual microchip",
+						"quality": "NoDataFound"
 					},
 					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 62237.09,
+						"value": 76177.04,
 						"dataSource": {
-							"page": "1191",
+							"page": "884-1036",
 							"fileName": "ESEFReport",
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "lifetime value",
+							"tagName": "networks",
 							"publicationDate": null
 						},
-						"comment": "bypass 1080p hard drive",
-						"quality": "Audited"
+						"comment": "compress mobile array",
+						"quality": "Reported"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 72884.06,
+						"value": 5366.02,
 						"dataSource": {
-							"page": "1139-1160",
-							"fileName": "ESEFReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "channels",
+							"page": "376-540",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
 							"publicationDate": null
 						},
-						"comment": "navigate back-end microchip",
-						"quality": "Audited"
+						"comment": "back up wireless system",
+						"quality": "Reported"
 					}
 				}
 			}

@@ -38,10 +38,10 @@ export function generatePcafData(nullProbability = DEFAULT_PROBABILITY): PcafDat
   return {
     general: {
       general: {
-        fiscalYearDeviation: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(PcafGeneralGeneralFiscalYearDeviationOptions))
+        fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.valueOrNull(pickOneElement(Object.values(PcafGeneralGeneralFiscalYearDeviationOptions)))
         ),
-        fiscalYearEnd: dataGenerator.randomFutureDate(),
+        fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
       },
       company: {
         mainPcafSector: dataGenerator.randomExtendedDataPoint(

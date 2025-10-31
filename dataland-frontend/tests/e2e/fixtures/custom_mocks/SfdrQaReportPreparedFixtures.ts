@@ -70,8 +70,8 @@ export function generateSfdrLinkedQaReports(): {
     general: {
       general: {
         dataDate: dataGenerator.guaranteedFutureDate(),
-        fiscalYearDeviation: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)),
-        fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
+        fiscalYearDeviation: { value: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)) },
+        fiscalYearEnd: { value: dataGenerator.guaranteedFutureDate() },
         referencedReports: dataGenerator.reports,
       },
     },

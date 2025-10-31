@@ -2915,6 +2915,85 @@
           }
         }
       },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
       "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -3040,6 +3119,46 @@
           }
         }
       },
+      "QaReportDataPointExtendedDataPointLocalDate": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
       "QaReportDataPointExtendedDataPointYesNo": {
         "required": [
           "comment",
@@ -3073,6 +3192,9 @@
       "SfdrData": {
         "type": "object",
         "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
+          },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
@@ -3323,6 +3445,25 @@
           },
           "highWaterStressAreaExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "SfdrGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
           }
         }
       },
@@ -3647,6 +3788,47 @@
           }
         }
       },
+      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
       "PcafCompanyValue": {
         "type": "object",
         "properties": {
@@ -3786,6 +3968,9 @@
       "PcafGeneral": {
         "type": "object",
         "properties": {
+          "general": {
+            "$ref": "#/components/schemas/PcafGeneralGeneral"
+          },
           "company": {
             "$ref": "#/components/schemas/PcafGeneralCompany"
           }
@@ -3799,6 +3984,17 @@
           },
           "companyExchangeStatus": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+          }
+        }
+      },
+      "PcafGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
           }
         }
       },
@@ -3839,6 +4035,26 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
           }
         }
       },
@@ -5372,44 +5588,6 @@
           }
         }
       },
-      "ExtendedDataPointLocalDate": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "date"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        },
-        "description": "Contains suggested data corrections for the rejected data point.",
-        "example": {
-          "value": "No",
-          "quality": "Incomplete",
-          "comment": "program neural circuit",
-          "dataSource": {
-            "page": "1026",
-            "tagName": "web services",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "publicationDate": "2024-01-07"
-          }
-        }
-      },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -5509,26 +5687,6 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
-          }
-        }
-      },
-      "QaReportDataPointExtendedDataPointLocalDate": {
-        "required": [
-          "comment",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
           }
         }
       },

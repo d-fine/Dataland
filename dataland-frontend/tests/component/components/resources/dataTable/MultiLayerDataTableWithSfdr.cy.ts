@@ -31,7 +31,7 @@ describe('Component tests for SfdrPanel', () => {
     const sfdrData = preparedFixture.t;
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    getCellValueContainer('Fiscal Year End').should('contain.text', sfdrData.general.general.fiscalYearEnd);
+    getCellValueContainer('Fiscal Year End').should('contain.text', sfdrData.general.general.fiscalYearEnd.value);
   });
 
   /**
@@ -47,7 +47,7 @@ describe('Component tests for SfdrPanel', () => {
       const reportingYear = 2023 + i;
       const fiscalYearEnd = `${reportingYear}-01-01`;
       const sfdrData = structuredClone(baseDataset);
-      sfdrData.general.general.fiscalYearEnd = fiscalYearEnd;
+      sfdrData.general.general.fiscalYearEnd = { value: fiscalYearEnd };
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),

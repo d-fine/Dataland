@@ -1,7 +1,8 @@
 package org.dataland.datalandbackendutils.services.utils
 
-import jakarta.annotation.PostConstruct
 import org.flywaydb.core.Flyway
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.util.TestPropertyValues
@@ -15,16 +16,14 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import javax.sql.DataSource
 
 private class TestContainerInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
-    companion object {
-        val postgres: PostgreSQLContainer<*> =
-            PostgreSQLContainer("postgres:15").apply {
-                withDatabaseName("dataland_test")
-                withUsername("test")
-                withPassword("test")
-                withReuse(true)
-                start()
-            }
-    }
+    val postgres: PostgreSQLContainer<*> =
+        PostgreSQLContainer("postgres:15").apply {
+            withDatabaseName("dataland_test")
+            withUsername("test")
+            withPassword("test")
+            withReuse(true)
+            start()
+        }
 
     override fun initialize(applicationContext: ConfigurableApplicationContext) {
         TestPropertyValues
@@ -55,13 +54,14 @@ private class TestContainerInitializer : ApplicationContextInitializer<Configura
 @SpringBootTest
 @ContextConfiguration(initializers = [TestContainerInitializer::class])
 @Testcontainers
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 abstract class BaseFlywayMigrationTest {
     @Autowired
     lateinit var applicationContext: ApplicationContext
 
-    @PostConstruct
-    private fun migrate() {
+    @BeforeAll
+    fun migrate() {
         setupBeforeMigration()
         val flyway =
             Flyway
@@ -71,8 +71,7 @@ abstract class BaseFlywayMigrationTest {
                 .target(getFlywayTargetVersion())
                 .dataSource(applicationContext.getBean(DataSource::class.java))
                 .load()
-        val migrationResult = flyway.migrate()
-        println(migrationResult)
+        flyway.migrate()
     }
 
     /**

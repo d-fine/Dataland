@@ -27,7 +27,7 @@ export const pcafDataModel = [
               },
             ],
 
-            component: 'RadioButtonsFormField',
+            component: 'RadioButtonsExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -36,7 +36,7 @@ export const pcafDataModel = [
             label: 'Fiscal Year End',
             description: 'The date the fiscal year ends.',
 
-            component: 'DateFormField',
+            component: 'DateExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },

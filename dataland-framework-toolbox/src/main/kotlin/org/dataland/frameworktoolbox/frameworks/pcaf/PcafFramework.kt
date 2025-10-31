@@ -39,7 +39,7 @@ class PcafFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "plainEnumFiscalYearDeviation",
+                            "extendedEnumFiscalYearDeviation",
                         )
                     }
                 }

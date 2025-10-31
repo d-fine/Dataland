@@ -2,8 +2,28 @@
   "general": {
     "general": {
       "dataDate": "2024-12-14",
-      "fiscalYearDeviation": "Deviation",
-      "fiscalYearEnd": "2024-05-31",
+      "fiscalYearDeviation": {
+        "value": "Deviation",
+        "dataSource": {
+          "page": "1",
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "infrastructures"
+        },
+        "comment": "connect multi-byte pixel",
+        "quality": "Reported"
+      },
+      "fiscalYearEnd": {
+        "value": "2024-05-31",
+        "dataSource": {
+          "page": "1",
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "infrastructures"
+        },
+        "comment": "transmit auxiliary alarm",
+        "quality": "Reported"
+      },
       "referencedReports": {
         "SustainabilityReport": {
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",

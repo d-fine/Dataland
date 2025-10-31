@@ -7,8 +7,8 @@
     "general" : {
       "general" : {
         "dataDate" : "plainDateSfdrDataDate",
-        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
-        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+        "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "extendedDateFiscalYearEnd"
       }
     },
     "environmental" : {

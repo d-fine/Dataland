@@ -19,7 +19,7 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfFiscalYearEnd" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -147,6 +147,8 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -192,6 +194,8 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    DateExtendedDataPointFormField,
+    RadioButtonsExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -221,15 +225,14 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfDataDate: {
+    yearOfFiscalYearEnd: {
       get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
-        if (currentDate === undefined) {
+        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd?.value;
+        if (typeof currentDate !== 'string') {
           return '';
-        } else {
-          const currentDateSegments = currentDate?.split('-');
-          return currentDateSegments[0] ?? new Date().getFullYear();
         }
+        const currentDateSegments = currentDate.split('-');
+        return currentDateSegments[0] ?? new Date().getFullYear().toString();
       },
       set() {
         // IGNORED

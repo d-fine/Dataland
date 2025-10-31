@@ -58,7 +58,7 @@ class SfdrFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "plainEnumFiscalYearDeviation",
+                            "extendedEnumFiscalYearDeviation",
                         )
                     }
                 }

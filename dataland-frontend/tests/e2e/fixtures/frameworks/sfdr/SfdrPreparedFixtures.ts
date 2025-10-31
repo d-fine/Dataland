@@ -132,7 +132,7 @@ function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): Fixture
  */
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'companyWithOneFilledSfdrSubcategory';
-  input.t.general!.general!.fiscalYearEnd = '2020-01-03';
+  input.t.general!.general!.fiscalYearEnd!.value = '2020-01-03';
   input.t.environmental!.energyPerformance = null;
   input.t.environmental!.waste = null;
   input.t.environmental!.water = null;
@@ -163,8 +163,8 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
     general: {
       general: {
         dataDate: '2022-08-27',
-        fiscalYearDeviation: 'Deviation',
-        fiscalYearEnd: '2023-01-01',
+        fiscalYearDeviation: { value: 'Deviation' },
+        fiscalYearEnd: { value: '2023-01-01' },
         referencedReports: null!,
       },
     },

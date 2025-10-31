@@ -35,10 +35,10 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
     general: {
       general: {
         dataDate: dataGenerator.randomFutureDate(),
-        fiscalYearDeviation: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions))
+        fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.valueOrNull(pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)))
         ),
-        fiscalYearEnd: dataGenerator.randomFutureDate(),
+        fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
         referencedReports: dataGenerator.reports,
       },
     },
