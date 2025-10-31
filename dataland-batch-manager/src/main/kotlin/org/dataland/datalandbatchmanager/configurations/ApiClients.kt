@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -17,6 +18,7 @@ import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActu
 @Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url") private val communityManagerBaseUrl: String,
     @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
@@ -34,7 +36,15 @@ class ApiClients(
     fun getBackendActuatorApi(): BackendActuatorApi = BackendActuatorApi(backendBaseUrl)
 
     /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the community manager
+     * Creates an auto-authenticated version of the CompanyRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getCompanyRolesControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the CompanyDataControllerApi of the data sourcing sevice
      */
     @Bean
     fun getRequestControllerApi(
