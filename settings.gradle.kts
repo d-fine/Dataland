@@ -4,6 +4,7 @@ import de.fayard.refreshVersions.core.StabilityLevel
 rootProject.name = "Dataland"
 
 include(
+    "dataland-accounting-service",
     "dataland-backend-utils",
     "dataland-backend",
     "dataland-api-key-manager",
