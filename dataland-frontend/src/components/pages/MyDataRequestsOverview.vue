@@ -38,13 +38,15 @@
         />
         <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
-
+      <div v-if="waitingForData">
+        <p class="font-medium text-xl">Loading...</p>
+        <DatalandProgressSpinner />
+      </div>
       <div style="padding: var(--spacing-md)">
         <DataTable
           :value="displayedData"
           style="cursor: pointer"
           :row-hover="true"
-          :loading="waitingForData"
           data-test="requested-datasets-table"
           :first="currentPage * datasetsPerPage"
           paginator
@@ -126,7 +128,6 @@
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -150,6 +151,7 @@ import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const datasetsPerPage = 100;
 
