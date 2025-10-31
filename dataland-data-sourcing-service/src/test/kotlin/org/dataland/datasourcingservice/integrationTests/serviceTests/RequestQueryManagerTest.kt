@@ -227,4 +227,64 @@ class RequestQueryManagerTest
             val actualOrder = results.map { it.id }
             Assertions.assertEquals(expectedOrder, actualOrder, "Results are not in the expected order")
         }
+
+        @Test
+        fun `getRequestsByUser returns correct company names and user emails`() {
+            val userId = UUID.fromString(firstUser.userId)
+            val companyId1 = UUID.fromString(COMPANY_ID_1)
+            val companyId2 = UUID.fromString(COMPANY_ID_2)
+            val requestEntity1 =
+                dataBaseCreationUtils.storeRequest(
+                    companyId = companyId1,
+                    userId = userId,
+                    dataType = DATA_TYPE_1,
+                    reportingPeriod = REPORTING_PERIOD_1,
+                    state = RequestState.valueOf(REQUEST_STATE_1),
+                )
+            val requestEntity2 =
+                dataBaseCreationUtils.storeRequest(
+                    companyId = companyId2,
+                    userId = userId,
+                    dataType = DATA_TYPE_2,
+                    reportingPeriod = REPORTING_PERIOD_2,
+                    state = RequestState.valueOf(REQUEST_STATE_2),
+                )
+
+            val validationResult1 =
+                org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult(
+                    identifier = COMPANY_ID_1,
+                    companyInformation =
+                        BasicCompanyInformation(
+                            companyId = COMPANY_ID_1,
+                            companyName = TEST_COMPANY_NAME_1,
+                            headquarters = "HQ1",
+                            countryCode = "DE",
+                        ),
+                )
+            val validationResult2 =
+                org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult(
+                    identifier = COMPANY_ID_2,
+                    companyInformation =
+                        BasicCompanyInformation(
+                            companyId = COMPANY_ID_2,
+                            companyName = TEST_COMPANY_NAME_2,
+                            headquarters = "HQ2",
+                            countryCode = "FR",
+                        ),
+                )
+            doReturn(listOf(validationResult1, validationResult2))
+                .whenever(mockCompanyDataControllerApi)
+                .postCompanyValidation(listOf(COMPANY_ID_1, COMPANY_ID_2))
+            doReturn(firstUser).whenever(mockKeycloakUserService).getUser(userId.toString())
+
+            val results = requestQueryManager.getRequestsByUser(userId)
+
+            Assertions.assertEquals(2, results.size)
+            val result1 = results.find { it.id == requestEntity1.id.toString() }
+            val result2 = results.find { it.id == requestEntity2.id.toString() }
+            Assertions.assertEquals(TEST_COMPANY_NAME_1, result1?.companyName)
+            Assertions.assertEquals(TEST_COMPANY_NAME_2, result2?.companyName)
+            Assertions.assertEquals(USER_EMAIL, result1?.userEmailAddress)
+            Assertions.assertEquals(USER_EMAIL, result2?.userEmailAddress)
+        }
     }

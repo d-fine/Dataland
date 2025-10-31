@@ -211,7 +211,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
-const rowsPerPage = ref(100);
+const rowsPerPage = ref(datasetsPerPage);
 const firstRowIndex = ref(0);
 const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
 const searchBarInputEmail = ref('');

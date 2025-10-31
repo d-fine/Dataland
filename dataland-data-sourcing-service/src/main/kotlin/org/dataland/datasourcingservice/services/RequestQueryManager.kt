@@ -108,12 +108,25 @@ class RequestQueryManager
          * @return list of matching ExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> =
-            requestRepository
-                .findByUserId(userId)
-                .map { entity ->
-                    transformRequestEntityToExtendedStoredRequest(entity, keycloakUserService.getUser(userId.toString()).email)
-                }
+        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> {
+            val userEmailAddress = keycloakUserService.getUser(userId.toString()).email
+            val requestEntities = requestRepository.findByUserId(userId)
+            val validationResults =
+                companyDataController.postCompanyValidation(
+                    requestEntities.map { it.companyId.toString() },
+                )
+            return requestEntities.map { entity ->
+                val companyName =
+                    validationResults
+                        .find { it.identifier == entity.companyId.toString() }
+                        ?.companyInformation
+                        ?.companyName ?: ""
+                entity.toExtendedStoredRequest(
+                    companyName,
+                    userEmailAddress,
+                )
+            }
+        }
 
         /**
          * Get requests for requesting user
@@ -145,12 +158,9 @@ class RequestQueryManager
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
-        fun transformRequestEntityToExtendedStoredRequest(
-            entity: RequestEntity,
-            userEmailAddress: String? = null,
-        ): ExtendedStoredRequest =
+        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
             entity.toExtendedStoredRequest(
                 companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
-                userEmailAddress ?: keycloakUserService.getUser(entity.userId.toString()).email,
+                keycloakUserService.getUser(entity.userId.toString()).email,
             )
     }
