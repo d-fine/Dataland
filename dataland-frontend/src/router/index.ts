@@ -161,7 +161,7 @@ const routes = [
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
     meta: {
-      initialTabIndex: 6,
+      initialTabIndex: 7,
       requiresAuthentication: true,
     },
   },
@@ -170,7 +170,7 @@ const routes = [
     name: 'Admin overview for all requests (Legacy)',
     component: AdminRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 6,
+      initialTabIndex: 8,
       requiresAuthentication: true,
     },
   },
@@ -206,7 +206,7 @@ const routes = [
     name: 'MyDataRequestsOverview (Legacy)',
     component: MyDataRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 4,
+      initialTabIndex: 5,
       requiresAuthentication: true,
     },
   },
@@ -233,7 +233,7 @@ const routes = [
     name: 'CompanyDataRequestsOverview',
     component: CompanyDataRequestsOverview,
     meta: {
-      initialTabIndex: 5,
+      initialTabIndex: 6,
       requiresAuthentication: true,
     },
   },
