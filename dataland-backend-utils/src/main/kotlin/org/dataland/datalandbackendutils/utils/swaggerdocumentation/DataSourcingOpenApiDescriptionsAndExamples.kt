@@ -10,6 +10,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val DOCUMENT_IDS_PATCH_DESCRIPTION = "The IDs of documents to append to or overwrite the existing document IDs."
     const val DOCUMENT_IDS_EXAMPLE = "[\"91a6f38ece1ae347d1b0dc9f6b6a0ef7593ed051595e3f138e922cb1df39c86c\"]"
 
+    const val DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
+    const val USER_EMAIL_ADDRESS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE
+
     const val EXPECTED_PUBLICATION_DATES_DESCRIPTION =
         "The expected publication dates of future documents relevant for this data sourcing object."
 

@@ -6,6 +6,7 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
@@ -17,7 +18,6 @@ import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the requests endpoint
@@ -55,7 +55,7 @@ class RequestController
                 ),
             )
 
-        override fun getRequest(dataRequestId: String): ResponseEntity<StoredRequest> =
+        override fun getRequest(dataRequestId: String): ResponseEntity<ExtendedStoredRequest> =
             ResponseEntity.ok(
                 existingRequestsManager.getRequest(
                     ValidationUtils.convertToUUID(
@@ -101,37 +101,24 @@ class RequestController
                     ),
                 )
 
-        private fun convertToSearchFilterWithUUIDs(requestSearchFilterWithStrings: RequestSearchFilter<String>): RequestSearchFilter<UUID> =
-            RequestSearchFilter<UUID>(
-                companyId =
-                    requestSearchFilterWithStrings.companyId?.let {
-                        ValidationUtils.convertToUUID(it)
-                    },
-                dataTypes = requestSearchFilterWithStrings.dataTypes,
-                reportingPeriods = requestSearchFilterWithStrings.reportingPeriods,
-                userId =
-                    requestSearchFilterWithStrings.userId?.let {
-                        ValidationUtils.convertToUUID(
-                            it,
-                        )
-                    },
-                requestStates = requestSearchFilterWithStrings.requestStates,
-                requestPriorities = requestSearchFilterWithStrings.requestPriorities,
-            )
-
         override fun postRequestSearch(
             requestSearchFilter: RequestSearchFilter<String>,
             chunkSize: Int,
             chunkIndex: Int,
-        ): ResponseEntity<List<StoredRequest>> =
+        ): ResponseEntity<List<ExtendedStoredRequest>> =
             ResponseEntity.ok(
                 requestQueryManager.searchRequests(
-                    convertToSearchFilterWithUUIDs(requestSearchFilter), chunkSize, chunkIndex,
+                    requestSearchFilter.convertToSearchFilterWithUUIDs(), chunkSize, chunkIndex,
                 ),
+            )
+
+        override fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>> =
+            ResponseEntity.ok(
+                requestQueryManager.getRequestsForRequestingUser(),
             )
 
         override fun postRequestCountQuery(requestSearchFilter: RequestSearchFilter<String>): ResponseEntity<Int> =
             ResponseEntity.ok(
-                requestQueryManager.getNumberOfRequests(convertToSearchFilterWithUUIDs(requestSearchFilter)),
+                requestQueryManager.getNumberOfRequests(requestSearchFilter.convertToSearchFilterWithUUIDs()),
             )
     }
