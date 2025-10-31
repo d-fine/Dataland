@@ -108,12 +108,14 @@ class RequestQueryManager
          * @return list of matching ExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> =
-            requestRepository
+        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> {
+            val userEmailAddress = keycloakUserService.getUser(userId.toString()).email
+            return requestRepository
                 .findByUserId(userId)
                 .map { entity ->
-                    transformRequestEntityToExtendedStoredRequest(entity, keycloakUserService.getUser(userId.toString()).email)
+                    transformRequestEntityToExtendedStoredRequest(entity, userEmailAddress)
                 }
+        }
 
         /**
          * Get requests for requesting user
