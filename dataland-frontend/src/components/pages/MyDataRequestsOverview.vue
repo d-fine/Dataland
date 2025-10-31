@@ -46,6 +46,7 @@
       <div style="padding: var(--spacing-md)">
         <DataTable
           v-if="displayedData"
+          v-show="!waitingForData"
           :value="displayedData"
           style="cursor: pointer"
           :row-hover="true"
