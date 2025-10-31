@@ -205,13 +205,13 @@ import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clie
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const frameworkFilter = ref();
-const datasetsPerPage = 10;
+const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
-const rowsPerPage = ref(10);
+const rowsPerPage = ref(100);
 const firstRowIndex = ref(0);
 const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
 const searchBarInputEmail = ref('');
