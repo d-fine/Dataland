@@ -42,8 +42,8 @@ class DataRequestResponseEmailSenderTest {
         val dummyDatalandCompanyId = "dataland-company-id"
         val sampleReportingPeriod = "2023"
         val sampleDataTypeLabel = "EU Taxonomy for financial companies"
-        val sampleTimeStamp = 1708533324967
-        val sampleDate = "21 Feb 2024, 17:35" // corresponds to sampleTimeStamp
+        val sampleTimestamp = 1708533324967
+        val sampleDate = "21 Feb 2024, 17:35" // corresponds to sampleTimestamp
         val dummyDataRequestId = "data-request-id"
         val dummyUserId = "user-id"
         val dummyCompanyName = "company-name"
@@ -52,7 +52,7 @@ class DataRequestResponseEmailSenderTest {
         doReturn(dummyDatalandCompanyId).whenever(mockDataRequestEntity).datalandCompanyId
         doReturn(sampleReportingPeriod).whenever(mockDataRequestEntity).reportingPeriod
         doReturn(sampleDataTypeLabel).whenever(mockDataRequestEntity).getDataTypeDescription()
-        doReturn(sampleTimeStamp).whenever(mockDataRequestEntity).creationTimestamp
+        doReturn(sampleTimestamp).whenever(mockDataRequestEntity).creationTimestamp
         doReturn(dummyDataRequestId).whenever(mockDataRequestEntity).dataRequestId
         doReturn(dummyUserId).whenever(mockDataRequestEntity).userId
 

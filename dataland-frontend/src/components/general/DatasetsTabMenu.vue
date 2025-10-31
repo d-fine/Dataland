@@ -64,8 +64,10 @@ const tabs = ref<Array<TabInfo>>([
   { label: 'MY DATASETS', route: '/datasets', isVisible: true },
   { label: 'QA', route: '/qualityassurance', isVisible: false },
   { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
+  { label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
   { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
   { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
+  { label: 'ALL DATA REQUESTS LEGACY', route: '/requestoverview-legacy', isVisible: false },
 ]);
 
 const currentTabIndex = computed(() => {
@@ -115,7 +117,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
-    tabs.value[5]!.isVisible = companyOwnershipAssignments.length > 0;
+    tabs.value[6]!.isVisible = companyOwnershipAssignments.length > 0;
   }
 }
 
@@ -126,7 +128,8 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
 function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
-      tabs.value[6]!.isVisible = hasUserAdminRights;
+      tabs.value[7]!.isVisible = hasUserAdminRights;
+      tabs.value[8]!.isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }

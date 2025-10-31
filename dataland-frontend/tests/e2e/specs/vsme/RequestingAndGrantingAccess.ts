@@ -123,6 +123,8 @@ describeIf(
      * One for reportingPeriodToBeGranted and one for reportingPeriodToBeDeclined.
      */
     function validateThatAccessRequestsAreDisplayedInTable(): void {
+      cy.contains('tbody.p-datatable-tbody tr', reportingPeriodToBeGranted).should('exist');
+      cy.contains('tbody.p-datatable-tbody tr', reportingPeriodToBeDeclined).should('exist');
       cy.get('tbody.p-datatable-tbody').within(() => {
         cy.get('tr')
           .eq(0)
