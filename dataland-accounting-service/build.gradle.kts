@@ -26,6 +26,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
