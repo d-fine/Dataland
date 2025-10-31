@@ -42,8 +42,10 @@
         <p class="font-medium text-xl">Loading...</p>
         <DatalandProgressSpinner />
       </div>
+
       <div style="padding: var(--spacing-md)">
         <DataTable
+          v-if="displayedData"
           :value="displayedData"
           style="cursor: pointer"
           :row-hover="true"
