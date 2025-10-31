@@ -29,6 +29,7 @@ mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
 docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
 docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API_KEY_MANAGER_DB_PASSWORD} pg_dump --username api_key_manager api_key_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/api-key-manager-db.sql || true
 docker exec -i dala-e2e-test-data-sourcing-service-db-1 /bin/bash -c "PGPASSWORD=${DATA_SOURCING_SERVICE_DB_PASSWORD} pg_dump --username data_sourcing_service data_sourcing_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/data-sourcing-service-db.sql || true
+docker exec -i dala-e2e-test-accounting-service-db-1 /bin/bash -c "PGPASSWORD=${ACCOUNTING_SERVICE_DB_PASSWORD} pg_dump --username accounting_service accounting_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/accounting-service-db.sql || true
 docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/internal-storage-db.sql || true
 docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
 docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
@@ -60,6 +61,7 @@ pg_isready -d community_manager -h "localhost" -p 5439
 pg_isready -d email_service -h "localhost" -p 5440
 pg_isready -d user_service -h "localhost" -p 5441
 pg_isready -d data_sourcing_service -h "localhost" -p 5442
+pg_isready -d accounting_service -h "localhost" -p 5443
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

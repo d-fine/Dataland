@@ -132,7 +132,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
+      DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   accounting-service-db:
@@ -145,7 +145,7 @@ services:
       - accounting_service_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: accounting_service
-      POSTGRES_USER: sourcing_service
+      POSTGRES_USER: accounting_service
       POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       PGUSER: accounting_service
     logging:
