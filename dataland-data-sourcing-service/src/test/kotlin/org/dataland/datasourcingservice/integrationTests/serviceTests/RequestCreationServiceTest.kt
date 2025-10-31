@@ -7,10 +7,10 @@ import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -39,7 +39,7 @@ class RequestCreationServiceTest
         private val mockSecurityContext = mock<SecurityContext>()
         private val premiumUserId = UUID.randomUUID().toString()
         private val mockDataSourcingValidator = mock<DataSourcingValidator>()
-        private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
+        private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
         private lateinit var requestCreationService: RequestCreationService
         private val testComment = "Test comment"
 
@@ -49,12 +49,12 @@ class RequestCreationServiceTest
                 premiumUserId,
                 setOf(DatalandRealmRole.ROLE_USER),
             )
-            doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId)
+            doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(premiumUserId)
             requestCreationService =
                 RequestCreationService(
                     dataSourcingValidator = mockDataSourcingValidator,
                     requestRepository = requestRepository,
-                    keycloakAdapterRequestProcessingUtils = mockKeycloakAdapterRequestProcessingUtils,
+                    derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
                     maxRequestsForUser = 3,
                 )
         }
