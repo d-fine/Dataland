@@ -61,7 +61,7 @@
     "dompurify": "3.3.0",
     "eslint": "9.38.0",
     "eslint-plugin-cypress": "5.2.0",
-    "eslint-plugin-jsdoc": "60.8.3",
+    "eslint-plugin-jsdoc": "61.1.9",
     "eslint-plugin-vue": "10.5.1",
     "git-commit-id": "2.0.1",
     "lint-staged": "16.2.6",
