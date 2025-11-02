@@ -9,6 +9,8 @@ COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-man
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
+COPY ./dataland-internal-storage/internalStorageOpenApi.json ./dataland-internal-storage/internalStorageOpenApi.json
+COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json
 COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-document-manager:bootJar --no-daemon --stacktrace
