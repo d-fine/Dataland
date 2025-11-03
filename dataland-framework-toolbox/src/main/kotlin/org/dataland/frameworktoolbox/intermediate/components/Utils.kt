@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -22,6 +23,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
+        editComponent = component.getTypescriptFieldAccessor(true),
     )
 }
 
@@ -52,7 +54,7 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
 }
 
 /**
- * Asserts that a component-bases document-support is in the set of  pre-defined values.
+ * Asserts that a component-bases document-support is in the set of pre-defined values.
  * Used to ensure a unified error-message across components
  */
 fun ComponentBase.requireDocumentSupportIn(allowedValues: Set<DocumentSupport>) {

@@ -47,6 +47,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Fiscal Year Deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
+            editComponent: 'dataset.general?.general?.fiscalYearDeviation?.value',
           },
           {
             type: 'cell',
@@ -59,6 +60,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Fiscal Year End',
                 dataset.general?.general?.fiscalYearEnd
               ),
+            editComponent: 'dataset.general?.general?.fiscalYearEnd?.value',
           },
           {
             type: 'cell',
@@ -71,6 +73,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Are all Group Entities covered?',
                 dataset.general?.general?.areAllGroupEntitiesCovered
               ),
+            editComponent: 'dataset.general?.general?.areAllGroupEntitiesCovered?.value',
           },
           {
             type: 'cell',
@@ -84,6 +87,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Number of Employees',
                 dataset.general?.general?.numberOfEmployees
               ),
+            editComponent: 'dataset.general?.general?.numberOfEmployees?.value',
           },
           {
             type: 'cell',
@@ -96,6 +100,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Is NFRD mandatory?',
                 dataset.general?.general?.isNfrdMandatory
               ),
+            editComponent: 'dataset.general?.general?.isNfrdMandatory?.value',
           },
           {
             type: 'cell',
@@ -105,6 +110,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
+            editComponent: 'dataset.general?.general?.assurance',
           },
           {
             type: 'cell',
@@ -113,6 +119,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
+            editComponent: 'dataset.general?.general?.assurance',
           },
         ],
       },
@@ -141,6 +148,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount,
                 'Total (gross) Carrying Amount'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.value',
           },
           {
             type: 'cell',
@@ -154,6 +163,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible,
                 'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible?.value',
           },
           {
             type: 'cell',
@@ -167,6 +178,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned,
                 'Total Amount of Assets which are Environmentally Sustainable (Taxonomy-aligned)'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned?.value',
           },
           {
             type: 'cell',
@@ -180,6 +193,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds,
                 'Total Amount of Environmentally Sustainable Assets which are Use of Proceeds'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -193,6 +208,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional,
                 'Total Amount of Environmentally Sustainable Assets which are Transitional'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional?.value',
           },
           {
             type: 'cell',
@@ -206,6 +223,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling,
                 'Total Amount of Environmentally Sustainable Assets which are Enabling'
               ),
+            editComponent:
+              'dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling?.value',
           },
         ],
       },
@@ -231,6 +250,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -248,6 +269,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -265,6 +288,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -282,6 +307,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -299,6 +326,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -316,6 +345,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -333,6 +364,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -350,6 +383,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -367,6 +402,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -384,6 +421,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting?.value',
           },
           {
             type: 'cell',
@@ -403,6 +442,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -422,6 +463,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -441,6 +484,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -460,6 +505,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -477,6 +524,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -494,6 +543,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -510,6 +561,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -527,6 +580,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -544,6 +599,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -561,6 +618,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -578,6 +637,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -595,6 +656,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -614,6 +677,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -633,6 +698,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -652,6 +719,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -671,6 +740,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -688,6 +759,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -705,6 +778,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -723,6 +798,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -740,6 +817,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -758,6 +837,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional?.value',
           },
         ],
       },
@@ -783,6 +864,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -800,6 +883,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -817,6 +902,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -834,6 +921,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -851,6 +940,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -868,6 +959,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -885,6 +978,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -902,6 +997,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -919,6 +1016,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -936,6 +1035,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting?.value',
           },
           {
             type: 'cell',
@@ -955,6 +1056,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -974,6 +1077,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -993,6 +1098,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -1012,6 +1119,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1029,6 +1138,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -1046,6 +1157,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1062,6 +1175,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -1079,6 +1194,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1096,6 +1213,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -1113,6 +1232,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1130,6 +1251,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -1147,6 +1270,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1166,6 +1291,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -1185,6 +1312,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1204,6 +1333,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -1223,6 +1354,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1240,6 +1373,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value',
           },
           {
             type: 'cell',
@@ -1257,6 +1392,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1275,6 +1412,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds?.value',
           },
           {
             type: 'cell',
@@ -1292,6 +1431,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1310,6 +1451,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional?.value',
           },
         ],
       },
@@ -1343,6 +1486,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
+            editComponent:
+              'dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent?.value',
           },
           {
             type: 'cell',
@@ -1360,6 +1505,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
+            editComponent:
+              'dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent?.value',
           },
           {
             type: 'cell',
@@ -1373,6 +1520,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
+            editComponent:
+              'dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount?.value',
           },
           {
             type: 'cell',
@@ -1386,6 +1535,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
+            editComponent:
+              'dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount?.value',
           },
         ],
       },
@@ -1412,6 +1563,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1431,6 +1584,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1450,6 +1605,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -1468,6 +1625,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1487,6 +1646,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1506,6 +1667,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1525,6 +1688,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1544,6 +1709,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1563,6 +1730,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1582,6 +1751,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1601,6 +1772,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1620,6 +1793,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1639,6 +1814,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
         ],
       },
@@ -1665,6 +1842,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1684,6 +1863,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1703,6 +1884,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -1721,6 +1904,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1740,6 +1925,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1759,6 +1946,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1778,6 +1967,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1796,6 +1987,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1815,6 +2008,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1834,6 +2029,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1853,6 +2050,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -1872,6 +2071,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -1891,6 +2092,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
         ],
       },
@@ -1919,6 +2122,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyAlignedActivities,
                 'Total of Absolute Premiums of Taxonomy-aligned Activities'
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyAlignedActivities?.value',
           },
           {
             type: 'cell',
@@ -1932,6 +2137,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities,
                 'Total of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities'
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities?.value',
           },
           {
             type: 'cell',
@@ -1944,6 +2151,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities,
                 'Total of Absolute Premiums of Taxonomy-non-eligible Activities'
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities?.value',
           },
           {
             type: 'cell',
@@ -1960,6 +2169,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Proportion of Absolute Premiums of Taxonomy-aligned Activities',
                 dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities?.value',
           },
           {
             type: 'cell',
@@ -1977,6 +2188,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi
                   ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities?.value',
           },
           {
             type: 'cell',
@@ -1994,6 +2207,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi
                   ?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities?.value',
           },
         ],
       },
@@ -2019,6 +2234,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent?.value',
           },
           {
             type: 'cell',
@@ -2036,6 +2253,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent?.value',
           },
           {
             type: 'cell',
@@ -2049,6 +2268,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount?.value',
           },
           {
             type: 'cell',
@@ -2062,6 +2283,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount?.value',
           },
         ],
       },
@@ -2088,6 +2311,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2107,6 +2332,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2126,6 +2353,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -2144,6 +2373,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2163,6 +2394,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2182,6 +2415,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2201,6 +2436,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2220,6 +2457,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2239,6 +2478,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2258,6 +2499,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2277,6 +2520,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2296,6 +2541,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2315,6 +2562,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
         ],
       },
@@ -2341,6 +2590,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2360,6 +2611,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2379,6 +2632,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -2397,6 +2652,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2416,6 +2673,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2435,6 +2694,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2454,6 +2715,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2472,6 +2735,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2491,6 +2756,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2510,6 +2777,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2529,6 +2798,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2548,6 +2819,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
           },
           {
             type: 'cell',
@@ -2567,6 +2840,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            editComponent:
+              'dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling?.value',
           },
         ],
       },
@@ -2596,6 +2871,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
                 "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount?.value',
           },
           {
             type: 'cell',
@@ -2614,6 +2891,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible?.value',
           },
           {
             type: 'cell',
@@ -2632,6 +2911,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned?.value',
           },
           {
             type: 'cell',
@@ -2651,6 +2932,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -2670,6 +2953,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2688,6 +2973,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible?.value',
           },
           {
             type: 'cell',
@@ -2706,6 +2993,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned?.value',
           },
           {
             type: 'cell',
@@ -2725,6 +3014,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2744,6 +3035,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible?.value',
           },
           {
             type: 'cell',
@@ -2763,6 +3056,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned?.value',
           },
           {
             type: 'cell',
@@ -2782,6 +3077,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2799,6 +3096,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible?.value',
           },
           {
             type: 'cell',
@@ -2816,6 +3115,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned?.value',
           },
           {
             type: 'cell',
@@ -2834,6 +3135,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2853,6 +3156,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible?.value',
           },
           {
             type: 'cell',
@@ -2872,6 +3177,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned?.value',
           },
           {
             type: 'cell',
@@ -2891,6 +3198,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2910,6 +3219,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible?.value',
           },
           {
             type: 'cell',
@@ -2929,6 +3240,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned?.value',
           },
           {
             type: 'cell',
@@ -2948,6 +3261,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -2967,6 +3282,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible?.value',
           },
           {
             type: 'cell',
@@ -2986,6 +3303,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned?.value',
           },
           {
             type: 'cell',
@@ -3005,6 +3324,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -3024,6 +3345,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling?.value',
           },
         ],
       },
@@ -3045,6 +3368,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
                 "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount?.value',
           },
           {
             type: 'cell',
@@ -3063,6 +3388,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible?.value',
           },
           {
             type: 'cell',
@@ -3080,6 +3407,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned?.value',
           },
           {
             type: 'cell',
@@ -3099,6 +3428,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -3118,6 +3449,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3136,6 +3469,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible?.value',
           },
           {
             type: 'cell',
@@ -3153,6 +3488,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned?.value',
           },
           {
             type: 'cell',
@@ -3172,6 +3509,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3191,6 +3530,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible?.value',
           },
           {
             type: 'cell',
@@ -3210,6 +3551,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned?.value',
           },
           {
             type: 'cell',
@@ -3229,6 +3572,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3246,6 +3591,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible?.value',
           },
           {
             type: 'cell',
@@ -3263,6 +3610,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned?.value',
           },
           {
             type: 'cell',
@@ -3281,6 +3630,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3300,6 +3651,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible?.value',
           },
           {
             type: 'cell',
@@ -3318,6 +3671,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned?.value',
           },
           {
             type: 'cell',
@@ -3337,6 +3692,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3356,6 +3713,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible?.value',
           },
           {
             type: 'cell',
@@ -3375,6 +3734,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned?.value',
           },
           {
             type: 'cell',
@@ -3394,6 +3755,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3413,6 +3776,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible?.value',
           },
           {
             type: 'cell',
@@ -3432,6 +3797,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned?.value',
           },
           {
             type: 'cell',
@@ -3451,6 +3818,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -3470,6 +3839,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling?.value',
           },
         ],
       },
@@ -3492,6 +3863,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
                 'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount?.value',
           },
           {
             type: 'cell',
@@ -3510,6 +3883,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible?.value',
           },
           {
             type: 'cell',
@@ -3528,6 +3903,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned?.value',
           },
           {
             type: 'cell',
@@ -3547,6 +3924,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -3566,6 +3945,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3584,6 +3965,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible?.value',
           },
           {
             type: 'cell',
@@ -3602,6 +3985,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned?.value',
           },
           {
             type: 'cell',
@@ -3621,6 +4006,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3640,6 +4027,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible?.value',
           },
           {
             type: 'cell',
@@ -3659,6 +4048,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned?.value',
           },
           {
             type: 'cell',
@@ -3678,6 +4069,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3695,6 +4088,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible?.value',
           },
           {
             type: 'cell',
@@ -3712,6 +4107,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned?.value',
           },
           {
             type: 'cell',
@@ -3730,6 +4127,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3749,6 +4148,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible?.value',
           },
           {
             type: 'cell',
@@ -3768,6 +4169,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned?.value',
           },
           {
             type: 'cell',
@@ -3787,6 +4190,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3806,6 +4211,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible?.value',
           },
           {
             type: 'cell',
@@ -3825,6 +4232,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned?.value',
           },
           {
             type: 'cell',
@@ -3844,6 +4253,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -3863,6 +4274,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible?.value',
           },
           {
             type: 'cell',
@@ -3882,6 +4295,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned?.value',
           },
           {
             type: 'cell',
@@ -3901,6 +4316,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -3920,6 +4337,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling?.value',
           },
         ],
       },
@@ -3942,6 +4361,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
                 'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount?.value',
           },
           {
             type: 'cell',
@@ -3960,6 +4381,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible?.value',
           },
           {
             type: 'cell',
@@ -3978,6 +4401,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned?.value',
           },
           {
             type: 'cell',
@@ -3997,6 +4422,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -4016,6 +4443,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4034,6 +4463,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible?.value',
           },
           {
             type: 'cell',
@@ -4052,6 +4483,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned?.value',
           },
           {
             type: 'cell',
@@ -4071,6 +4504,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4090,6 +4525,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible?.value',
           },
           {
             type: 'cell',
@@ -4109,6 +4546,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned?.value',
           },
           {
             type: 'cell',
@@ -4128,6 +4567,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4145,6 +4586,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible?.value',
           },
           {
             type: 'cell',
@@ -4162,6 +4605,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned?.value',
           },
           {
             type: 'cell',
@@ -4180,6 +4625,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4199,6 +4646,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible?.value',
           },
           {
             type: 'cell',
@@ -4218,6 +4667,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned?.value',
           },
           {
             type: 'cell',
@@ -4237,6 +4688,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4256,6 +4709,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible?.value',
           },
           {
             type: 'cell',
@@ -4275,6 +4730,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned?.value',
           },
           {
             type: 'cell',
@@ -4294,6 +4751,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling?.value',
           },
           {
             type: 'cell',
@@ -4313,6 +4772,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible?.value',
           },
           {
             type: 'cell',
@@ -4332,6 +4793,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned?.value',
           },
           {
             type: 'cell',
@@ -4351,6 +4814,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional?.value',
           },
           {
             type: 'cell',
@@ -4370,6 +4835,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
+            editComponent:
+              'dataset.investmentFirms?.otherServicesCapexBased?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling?.value',
           },
         ],
       },

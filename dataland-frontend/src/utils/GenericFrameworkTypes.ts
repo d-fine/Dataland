@@ -28,6 +28,7 @@ export interface Field {
   description: string;
   unit?: string;
   component: string;
+  editComponent?: string;
   dependency?: string;
   showIf: (dataModel?: FrameworkData) => boolean;
   validation?: string;

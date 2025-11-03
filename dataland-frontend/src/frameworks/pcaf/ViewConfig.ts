@@ -36,6 +36,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                     : ''
                 );
               })(),
+            editComponent: 'dataset.general?.general?.fiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -44,6 +45,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
+            editComponent: 'dataset.general?.general?.fiscalYearEnd',
           },
         ],
       },
@@ -86,6 +88,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Main PCAF sector',
                 dataset.general?.company?.mainPcafSector
               ),
+            editComponent: 'dataset.general?.company?.mainPcafSector?.value',
           },
           {
             type: 'cell',
@@ -111,6 +114,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Company exchange status',
                 dataset.general?.company?.companyExchangeStatus
               ),
+            editComponent: 'dataset.general?.company?.companyExchangeStatus?.value',
           },
         ],
       },
@@ -139,6 +143,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Market capitalization',
                 dataset.companyValue?.listedCompany?.marketCapitalizationInEUR
               ),
+            editComponent: 'dataset.companyValue?.listedCompany?.marketCapitalizationInEUR?.value',
           },
           {
             type: 'cell',
@@ -152,6 +157,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Book value of debt',
                 dataset.companyValue?.listedCompany?.bookValueOfDebtInEUR
               ),
+            editComponent: 'dataset.companyValue?.listedCompany?.bookValueOfDebtInEUR?.value',
           },
           {
             type: 'cell',
@@ -165,6 +171,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Minorities interest',
                 dataset.companyValue?.listedCompany?.minoritiesInterestInEUR
               ),
+            editComponent: 'dataset.companyValue?.listedCompany?.minoritiesInterestInEUR?.value',
           },
         ],
       },
@@ -185,6 +192,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Total equity and debt',
                 dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
+            editComponent: 'dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR?.value',
           },
         ],
       },
@@ -217,6 +225,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value',
           },
           {
             type: 'cell',
@@ -233,6 +242,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
+            editComponent:
+              'dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.value',
           },
           {
             type: 'cell',
@@ -249,6 +260,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
+            editComponent:
+              'dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value',
           },
           {
             type: 'cell',
@@ -265,6 +278,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
+            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value',
           },
         ],
       },
@@ -296,6 +310,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Market capitalization',
                 dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR
               ),
+            editComponent: 'dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR?.value',
           },
           {
             type: 'cell',
@@ -312,6 +327,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Book value of debt',
                 dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR
               ),
+            editComponent: 'dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR?.value',
           },
           {
             type: 'cell',
@@ -328,6 +344,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Minorities interest',
                 dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR
               ),
+            editComponent: 'dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR?.value',
           },
         ],
       },
@@ -351,6 +368,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Total equity and debt',
                 dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
+            editComponent: 'dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR?.value',
           },
         ],
       },
@@ -383,6 +401,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            editComponent: 'dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value',
           },
           {
             type: 'cell',
@@ -400,6 +419,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
+            editComponent:
+              'dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.value',
           },
           {
             type: 'cell',
@@ -416,6 +437,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
+            editComponent:
+              'dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value',
           },
           {
             type: 'cell',
@@ -432,6 +455,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 3 GHG emissions',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
+            editComponent: 'dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value',
           },
         ],
       },

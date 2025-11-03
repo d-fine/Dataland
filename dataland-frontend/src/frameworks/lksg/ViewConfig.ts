@@ -41,6 +41,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.masterData?.dataDate),
+            editComponent: 'dataset.general?.masterData?.dataDate',
           },
           {
             type: 'cell',
@@ -50,6 +51,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.headOfficeInGermany),
+            editComponent: 'dataset.general?.masterData?.headOfficeInGermany',
           },
           {
             type: 'cell',
@@ -58,6 +60,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.groupOfCompanies),
+            editComponent: 'dataset.general?.masterData?.groupOfCompanies',
           },
           {
             type: 'cell',
@@ -66,6 +69,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.masterData?.groupOfCompaniesName),
+            editComponent: 'dataset.general?.masterData?.groupOfCompaniesName',
           },
           {
             type: 'cell',
@@ -74,6 +78,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNaceCodesForDatatable(dataset.general?.masterData?.industry, 'Industry'),
+            editComponent: 'dataset.general?.masterData?.industry',
           },
           {
             type: 'cell',
@@ -82,6 +87,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ''),
+            editComponent: 'dataset.general?.masterData?.numberOfEmployees',
           },
           {
             type: 'cell',
@@ -90,6 +96,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.seasonalOrMigrantWorkers),
+            editComponent: 'dataset.general?.masterData?.seasonalOrMigrantWorkers',
           },
           {
             type: 'cell',
@@ -111,6 +118,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                     : ''
                 );
               })(),
+            editComponent: 'dataset.general?.masterData?.shareOfTemporaryWorkers',
           },
           {
             type: 'cell',
@@ -119,6 +127,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
+            editComponent: 'dataset.general?.masterData?.annualTotalRevenue',
           },
           {
             type: 'cell',
@@ -128,6 +137,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
+            editComponent: 'dataset.general?.masterData?.fixedAndWorkingCapital',
           },
         ],
       },
@@ -144,6 +154,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.manufacturingCompany),
+            editComponent: 'dataset.general?.productionSpecific?.manufacturingCompany',
           },
           {
             type: 'cell',
@@ -153,6 +164,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.productionSpecific?.capacity),
+            editComponent: 'dataset.general?.productionSpecific?.capacity',
           },
           {
             type: 'cell',
@@ -162,6 +174,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionViaSubcontracting),
+            editComponent: 'dataset.general?.productionSpecific?.productionViaSubcontracting',
           },
           {
             type: 'cell',
@@ -174,6 +187,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
                 'Subcontracting Companies Countries'
               ),
+            editComponent: 'dataset.general?.productionSpecific?.subcontractingCompaniesCountries',
           },
           {
             type: 'cell',
@@ -183,6 +197,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionSites),
+            editComponent: 'dataset.general?.productionSpecific?.productionSites',
           },
           {
             type: 'cell',
@@ -192,6 +207,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.productionSites == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, ''),
+            editComponent: 'dataset.general?.productionSpecific?.numberOfProductionSites',
           },
           {
             type: 'cell',
@@ -204,6 +220,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecific?.listOfProductionSites,
                 'List Of Production Sites'
               ),
+            editComponent: 'dataset.general?.productionSpecific?.listOfProductionSites',
           },
           {
             type: 'cell',
@@ -224,6 +241,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                     : ''
                 );
               })(),
+            editComponent: 'dataset.general?.productionSpecific?.market',
           },
           {
             type: 'cell',
@@ -246,6 +264,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Specific Procurement'
               );
             },
+            editComponent: 'dataset.general?.productionSpecific?.specificProcurement',
           },
         ],
       },
@@ -267,6 +286,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecificOwnOperations?.mostImportantProducts,
                 'Most Important Products'
               ),
+            editComponent: 'dataset.general?.productionSpecificOwnOperations?.mostImportantProducts',
           },
           {
             type: 'cell',
@@ -279,6 +299,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecificOwnOperations?.procurementCategories,
                 'Procurement Categories'
               ),
+            editComponent: 'dataset.general?.productionSpecificOwnOperations?.procurementCategories',
           },
         ],
       },
@@ -310,6 +331,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Risk Management System',
                 dataset.governance?.riskManagementOwnOperations?.riskManagementSystem
               ),
+            editComponent: 'dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value',
           },
           {
             type: 'cell',
@@ -319,6 +341,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear),
+            editComponent: 'dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear',
           },
           {
             type: 'cell',
@@ -328,6 +351,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.risksIdentified),
+            editComponent: 'dataset.governance?.riskManagementOwnOperations?.risksIdentified',
           },
           {
             type: 'cell',
@@ -340,6 +364,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.riskManagementOwnOperations?.identifiedRisks,
                 'Identified Risks'
               ),
+            editComponent: 'dataset.governance?.riskManagementOwnOperations?.identifiedRisks',
           },
           {
             type: 'cell',
@@ -352,6 +377,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.riskManagementOwnOperations?.regulatedRiskManagementResponsibility
               ),
+            editComponent: 'dataset.governance?.riskManagementOwnOperations?.regulatedRiskManagementResponsibility',
           },
         ],
       },
@@ -375,6 +401,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Grievance Handling Mechanism',
                 dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value',
           },
           {
             type: 'cell',
@@ -387,6 +414,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingReportingAccessible
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingReportingAccessible',
           },
           {
             type: 'cell',
@@ -399,6 +427,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingInformation
               ),
+            editComponent:
+              'dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingInformation',
           },
           {
             type: 'cell',
@@ -411,6 +441,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingSupport
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingSupport',
           },
           {
             type: 'cell',
@@ -423,6 +454,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.accessToExpertiseForGrievanceHandling
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.accessToExpertiseForGrievanceHandling',
           },
           {
             type: 'cell',
@@ -432,6 +464,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints',
           },
           {
             type: 'cell',
@@ -441,6 +474,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ''),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber',
           },
           {
             type: 'cell',
@@ -453,6 +487,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
                 'Complaints Risk Position'
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition',
           },
           {
             type: 'cell',
@@ -465,6 +500,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.publicAccessToGrievanceHandling
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.publicAccessToGrievanceHandling',
           },
           {
             type: 'cell',
@@ -476,6 +512,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.whistleblowerProtection
               ),
+            editComponent: 'dataset.governance?.grievanceMechanismOwnOperations?.whistleblowerProtection',
           },
           {
             type: 'cell',
@@ -487,6 +524,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.dueDiligenceProcessForGrievanceHandling
               ),
+            editComponent:
+              'dataset.governance?.grievanceMechanismOwnOperations?.dueDiligenceProcessForGrievanceHandling',
           },
         ],
       },
@@ -510,6 +549,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Code of Conduct',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value',
           },
           {
             type: 'cell',
@@ -522,6 +562,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConductTraining
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConductTraining',
           },
           {
             type: 'cell',
@@ -537,6 +578,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Supplier Code of Conduct',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct?.value',
           },
           {
             type: 'cell',
@@ -552,6 +595,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Policy Statement',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value',
           },
           {
             type: 'cell',
@@ -564,6 +608,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.humanRightsStrategy
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.humanRightsStrategy',
           },
           {
             type: 'cell',
@@ -579,6 +624,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Environmental Impact Policy',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy?.value',
           },
           {
             type: 'cell',
@@ -594,6 +641,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Fair Working Conditions Policy',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy?.value',
           },
           {
             type: 'cell',
@@ -605,6 +654,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForFairWorkingConditions
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForFairWorkingConditions',
           },
           {
             type: 'cell',
@@ -616,6 +667,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForTheEnvironment
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForTheEnvironment',
           },
           {
             type: 'cell',
@@ -627,6 +680,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForOccupationalSafety
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForOccupationalSafety',
           },
           {
             type: 'cell',
@@ -642,6 +697,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Amfori BSCI',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.amforiBsci
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.amforiBsci?.value',
           },
           {
             type: 'cell',
@@ -657,6 +713,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Better Work Program',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.betterWorkProgram
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.betterWorkProgram?.value',
           },
           {
             type: 'cell',
@@ -671,6 +728,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Eco-Management and Audit Scheme (EMAS)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.ecoManagementAndAuditSchemeEmas
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.ecoManagementAndAuditSchemeEmas?.value',
           },
           {
             type: 'cell',
@@ -688,6 +747,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.certificationsPoliciesAndResponsibilities
                   ?.flaFairLaborCodeAndComplianceBenchmarksForAgriculture
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.flaFairLaborCodeAndComplianceBenchmarksForAgriculture?.value',
           },
           {
             type: 'cell',
@@ -705,6 +766,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.certificationsPoliciesAndResponsibilities
                   ?.flaFairLaborCodeAndComplianceBenchmarksForManufacturing
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.flaFairLaborCodeAndComplianceBenchmarksForManufacturing?.value',
           },
           {
             type: 'cell',
@@ -720,6 +783,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Fairtrade Trader Standard',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.fairtradeTraderStandard
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.fairtradeTraderStandard?.value',
           },
           {
             type: 'cell',
@@ -735,6 +800,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Global Organic Textile Standard (GOTS)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.globalOrganicTextileStandardGots
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.globalOrganicTextileStandardGots?.value',
           },
           {
             type: 'cell',
@@ -750,6 +817,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'GOTS - Organic in Conversion',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion?.value',
           },
           {
             type: 'cell',
@@ -764,6 +833,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'IATF 16949',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iatf16949
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iatf16949?.value',
           },
           {
             type: 'cell',
@@ -779,6 +849,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 10007',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso10007
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso10007?.value',
           },
           {
             type: 'cell',
@@ -793,6 +864,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 14001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso14001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso14001?.value',
           },
           {
             type: 'cell',
@@ -808,6 +880,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 20400',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso20400
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso20400?.value',
           },
           {
             type: 'cell',
@@ -823,6 +896,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 26000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso26000
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso26000?.value',
           },
           {
             type: 'cell',
@@ -837,6 +911,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 31000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso31000
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso31000?.value',
           },
           {
             type: 'cell',
@@ -851,6 +926,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37001?.value',
           },
           {
             type: 'cell',
@@ -865,6 +941,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37002',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37002
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37002?.value',
           },
           {
             type: 'cell',
@@ -879,6 +956,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37301',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37301
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37301?.value',
           },
           {
             type: 'cell',
@@ -894,6 +972,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 44001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso44001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso44001?.value',
           },
           {
             type: 'cell',
@@ -908,6 +987,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 45001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso45001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso45001?.value',
           },
           {
             type: 'cell',
@@ -922,6 +1002,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 50001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso50001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso50001?.value',
           },
           {
             type: 'cell',
@@ -936,6 +1017,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 9001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso9001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.iso9001?.value',
           },
           {
             type: 'cell',
@@ -950,6 +1032,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC 27001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001?.value',
           },
           {
             type: 'cell',
@@ -965,6 +1048,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC TS 33061',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061?.value',
           },
           {
             type: 'cell',
@@ -979,6 +1063,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC\/IEEE 15288',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288?.value',
           },
           {
             type: 'cell',
@@ -994,6 +1079,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Naturland Standards',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.naturlandStandards
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.naturlandStandards?.value',
           },
           {
             type: 'cell',
@@ -1009,6 +1095,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Responsible Business Alliance',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibleBusinessAlliance
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibleBusinessAlliance?.value',
           },
           {
             type: 'cell',
@@ -1023,6 +1111,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'SA8000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.sa8000
               ),
+            editComponent: 'dataset.governance?.certificationsPoliciesAndResponsibilities?.sa8000?.value',
           },
           {
             type: 'cell',
@@ -1039,6 +1128,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Sedex Members Ethical Trade Audit (SMETA)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.sedexMembersEthicalTradeAuditSmeta
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.sedexMembersEthicalTradeAuditSmeta?.value',
           },
           {
             type: 'cell',
@@ -1055,6 +1146,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Textile Exchange Global Recycled Standard',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.textileExchangeGlobalRecycledStandard
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.textileExchangeGlobalRecycledStandard?.value',
           },
           {
             type: 'cell',
@@ -1070,6 +1163,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ZNU-Standard Nachhaltiger Wirtschaften',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.znuStandardNachhaltigerWirtschaften
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.znuStandardNachhaltigerWirtschaften?.value',
           },
           {
             type: 'cell',
@@ -1085,6 +1180,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Additional Certifications',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications
               ),
+            editComponent:
+              'dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications?.value',
           },
         ],
       },
@@ -1102,6 +1199,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.legalProceedings),
+            editComponent: 'dataset.governance?.generalViolations?.legalProceedings',
           },
           {
             type: 'cell',
@@ -1111,6 +1209,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations),
+            editComponent: 'dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations',
           },
           {
             type: 'cell',
@@ -1123,6 +1222,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition,
                 'Human Rights or Environmental Violations Definition'
               ),
+            editComponent: 'dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition',
           },
           {
             type: 'cell',
@@ -1131,6 +1231,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesRawMaterials),
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountriesRawMaterials',
           },
           {
             type: 'cell',
@@ -1147,6 +1248,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries Raw Materials Location'
               );
             },
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation',
           },
           {
             type: 'cell',
@@ -1156,6 +1258,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesActivity),
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountriesActivity',
           },
           {
             type: 'cell',
@@ -1172,6 +1275,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries'
               );
             },
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountries',
           },
           {
             type: 'cell',
@@ -1181,6 +1285,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesProcurement),
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountriesProcurement',
           },
           {
             type: 'cell',
@@ -1197,6 +1302,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries Procurement Name'
               );
             },
+            editComponent: 'dataset.governance?.generalViolations?.highRiskCountriesProcurementName',
           },
         ],
       },
@@ -1222,6 +1328,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18),
+            editComponent: 'dataset.social?.childLabor?.employeeSUnder18',
           },
           {
             type: 'cell',
@@ -1231,6 +1338,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder15),
+            editComponent: 'dataset.social?.childLabor?.employeeSUnder15',
           },
           {
             type: 'cell',
@@ -1240,6 +1348,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18InApprenticeship),
+            editComponent: 'dataset.social?.childLabor?.employeeSUnder18InApprenticeship',
           },
           {
             type: 'cell',
@@ -1249,6 +1358,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
+            editComponent: 'dataset.social?.childLabor?.worstFormsOfChildLaborProhibition',
           },
           {
             type: 'cell',
@@ -1258,6 +1368,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == 'No',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
+            editComponent: 'dataset.social?.childLabor?.worstFormsOfChildLaborForms',
           },
           {
             type: 'cell',
@@ -1269,6 +1380,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge
               ),
+            editComponent: 'dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge',
           },
           {
             type: 'cell',
@@ -1280,6 +1392,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionEmploymentContracts
               ),
+            editComponent: 'dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionEmploymentContracts',
           },
           {
             type: 'cell',
@@ -1292,6 +1405,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionJobDescription
               ),
+            editComponent: 'dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionJobDescription',
           },
           {
             type: 'cell',
@@ -1303,6 +1417,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionIdentityDocuments
               ),
+            editComponent: 'dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionIdentityDocuments',
           },
           {
             type: 'cell',
@@ -1319,6 +1434,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Employment Under Local Minimum Age Prevention - Training',
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining
               ),
+            editComponent: 'dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining?.value',
           },
           {
             type: 'cell',
@@ -1330,6 +1446,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge
               ),
+            editComponent:
+              'dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge',
           },
           {
             type: 'cell',
@@ -1344,6 +1462,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Child Labor Prevention Policy',
                 dataset.social?.childLabor?.childLaborPreventionPolicy
               ),
+            editComponent: 'dataset.social?.childLabor?.childLaborPreventionPolicy?.value',
           },
           {
             type: 'cell',
@@ -1358,6 +1477,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Additional Child Labor Other Measures',
                 dataset.social?.childLabor?.additionalChildLaborOtherMeasures
               ),
+            editComponent: 'dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -1368,6 +1488,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasuresDescription),
+            editComponent: 'dataset.social?.childLabor?.additionalChildLaborOtherMeasuresDescription',
           },
         ],
       },
@@ -1385,6 +1506,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices',
           },
           {
             type: 'cell',
@@ -1394,6 +1516,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPracticesSpecification),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPracticesSpecification',
           },
           {
             type: 'cell',
@@ -1402,6 +1525,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures',
           },
           {
             type: 'cell',
@@ -1414,6 +1538,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionEmploymentContracts
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionEmploymentContracts',
           },
           {
             type: 'cell',
@@ -1425,6 +1550,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionIdentityDocuments
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionIdentityDocuments',
           },
           {
             type: 'cell',
@@ -1437,6 +1563,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionFreeMovement
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionFreeMovement',
           },
           {
             type: 'cell',
@@ -1448,6 +1575,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets
               ),
+            editComponent:
+              'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets',
           },
           {
             type: 'cell',
@@ -1464,6 +1593,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor and Slavery Prevention - Training',
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining?.value',
           },
           {
             type: 'cell',
@@ -1478,6 +1608,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor Prevention Policy',
                 dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy?.value',
           },
           {
             type: 'cell',
@@ -1493,6 +1624,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor and Slavery Prevention Other Measures',
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures
               ),
+            editComponent: 'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -1504,6 +1636,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatFreeTextForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -1520,6 +1654,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageWithholding),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.adequateWageWithholding',
           },
           {
             type: 'cell',
@@ -1528,6 +1663,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWagesMeasures),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.adequateWagesMeasures',
           },
           {
             type: 'cell',
@@ -1543,6 +1679,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Documented Working Hours and Wages',
                 dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages
               ),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages?.value',
           },
           {
             type: 'cell',
@@ -1557,6 +1694,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Adequate Living Wage',
                 dataset.social?.withholdingAdequateWages?.adequateLivingWage
               ),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.adequateLivingWage?.value',
           },
           {
             type: 'cell',
@@ -1567,6 +1705,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.regularWagesProcessFlow),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.regularWagesProcessFlow',
           },
           {
             type: 'cell',
@@ -1576,6 +1715,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedHourlyWages),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.fixedHourlyWages',
           },
           {
             type: 'cell',
@@ -1585,6 +1725,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedPieceworkWages),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.fixedPieceworkWages',
           },
           {
             type: 'cell',
@@ -1600,6 +1741,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Adequate Wage Other Measures',
                 dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures
               ),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -1609,6 +1751,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasuresDescription),
+            editComponent: 'dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasuresDescription',
           },
         ],
       },
@@ -1625,6 +1768,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.lowSkillWork),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.lowSkillWork',
           },
           {
             type: 'cell',
@@ -1633,6 +1777,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.hazardousMachines),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.hazardousMachines',
           },
           {
             type: 'cell',
@@ -1641,6 +1786,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures',
           },
           {
             type: 'cell',
@@ -1655,6 +1801,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'OSH Policy',
                 dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy?.value',
           },
           {
             type: 'cell',
@@ -1668,6 +1815,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'OSH Training',
                 dataset.social?.disregardForOccupationalHealthSafety?.oshTraining
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.oshTraining?.value',
           },
           {
             type: 'cell',
@@ -1683,6 +1831,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Health and Safety Policy',
                 dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy?.value',
           },
           {
             type: 'cell',
@@ -1699,6 +1848,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Other OSH Measures',
                 dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures?.value',
           },
           {
             type: 'cell',
@@ -1711,6 +1861,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasuresDescription
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasuresDescription',
           },
           {
             type: 'cell',
@@ -1722,6 +1873,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForOccupationalHealthSafety?.under10WorkplaceAccidents
               ),
+            editComponent: 'dataset.social?.disregardForOccupationalHealthSafety?.under10WorkplaceAccidents',
           },
         ],
       },
@@ -1738,6 +1890,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation',
           },
           {
             type: 'cell',
@@ -1747,6 +1900,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.social?.disregardForFreedomOfAssociation?.employeeRepresentation),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.employeeRepresentation',
           },
           {
             type: 'cell',
@@ -1757,6 +1911,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention',
           },
           {
             type: 'cell',
@@ -1769,6 +1924,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.discriminationForTradeUnionMembers
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.discriminationForTradeUnionMembers',
           },
           {
             type: 'cell',
@@ -1781,6 +1937,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfOperationForTradeUnion
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.freedomOfOperationForTradeUnion',
           },
           {
             type: 'cell',
@@ -1797,6 +1954,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Freedom of Association Training',
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining?.value',
           },
           {
             type: 'cell',
@@ -1811,6 +1969,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Works Council',
                 dataset.social?.disregardForFreedomOfAssociation?.worksCouncil
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.worksCouncil?.value',
           },
           {
             type: 'cell',
@@ -1826,6 +1985,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Freedom of Association Other Measures',
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures
               ),
+            editComponent: 'dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -1838,6 +1998,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasuresDescription',
           },
         ],
       },
@@ -1855,6 +2017,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment',
           },
           {
             type: 'cell',
@@ -1865,6 +2028,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures
               ),
+            editComponent:
+              'dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures',
           },
           {
             type: 'cell',
@@ -1875,6 +2040,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole',
           },
           {
             type: 'cell',
@@ -1885,6 +2051,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments',
           },
           {
             type: 'cell',
@@ -1901,6 +2068,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Unequal Treatment Prevention Training',
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining
               ),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining?.value',
           },
           {
             type: 'cell',
@@ -1910,6 +2078,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer',
           },
           {
             type: 'cell',
@@ -1925,6 +2094,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Equal Employment Policy',
                 dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy
               ),
+            editComponent: 'dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy?.value',
           },
           {
             type: 'cell',
@@ -1940,6 +2110,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Unequal Treatment Prevention Other Measures',
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures
               ),
+            editComponent:
+              'dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -1952,6 +2124,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -1970,6 +2144,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange',
           },
           {
             type: 'cell',
@@ -1983,6 +2159,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilDegradation
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilDegradation',
           },
           {
             type: 'cell',
@@ -1996,6 +2174,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilErosion
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilErosion',
           },
           {
             type: 'cell',
@@ -2009,6 +2189,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilBorneDiseases
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilBorneDiseases',
           },
           {
             type: 'cell',
@@ -2022,6 +2204,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilContamination
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilContamination',
           },
           {
             type: 'cell',
@@ -2034,6 +2218,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSalinization
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSalinization',
           },
           {
             type: 'cell',
@@ -2051,6 +2237,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Soil Protection Policy',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilProtectionPolicy
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilProtectionPolicy?.value',
           },
           {
             type: 'cell',
@@ -2069,6 +2257,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Soil Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks?.value',
           },
           {
             type: 'cell',
@@ -2080,6 +2270,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.harmfulWaterPollution
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution',
           },
           {
             type: 'cell',
@@ -2093,6 +2285,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.fertilizersOrPollutants
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.fertilizersOrPollutants',
           },
           {
             type: 'cell',
@@ -2105,6 +2299,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.wasteWaterFiltration
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.wasteWaterFiltration',
           },
           {
             type: 'cell',
@@ -2123,6 +2319,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterProtectionPolicy
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterProtectionPolicy?.value',
           },
           {
             type: 'cell',
@@ -2141,6 +2339,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Water Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks?.value',
           },
           {
             type: 'cell',
@@ -2151,6 +2351,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution',
           },
           {
             type: 'cell',
@@ -2163,6 +2365,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airFiltration
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airFiltration',
           },
           {
             type: 'cell',
@@ -2182,6 +2386,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.airQualityProtectionPolicy
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualityProtectionPolicy?.value',
           },
           {
             type: 'cell',
@@ -2200,6 +2406,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Air Quality Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualitySpotChecks
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualitySpotChecks?.value',
           },
           {
             type: 'cell',
@@ -2210,6 +2418,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission',
           },
           {
             type: 'cell',
@@ -2223,6 +2433,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.reductionOfNoiseEmissions
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.reductionOfNoiseEmissions',
           },
           {
             type: 'cell',
@@ -2240,6 +2452,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Noise Reduction Policy',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseReductionPolicy
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseReductionPolicy?.value',
           },
           {
             type: 'cell',
@@ -2259,6 +2473,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.noiseEmissionsSpotChecks
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseEmissionsSpotChecks?.value',
           },
           {
             type: 'cell',
@@ -2270,6 +2486,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.excessiveWaterConsumption
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption',
           },
           {
             type: 'cell',
@@ -2282,6 +2500,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures',
           },
           {
             type: 'cell',
@@ -2295,6 +2515,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterSavingMeasuresName
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasuresName',
           },
           {
             type: 'cell',
@@ -2314,6 +2536,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterUseReductionPolicy
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterUseReductionPolicy?.value',
           },
           {
             type: 'cell',
@@ -2333,6 +2557,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterConsumptionSpotChecks
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterConsumptionSpotChecks?.value',
           },
           {
             type: 'cell',
@@ -2346,6 +2572,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSources
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSources',
           },
           {
             type: 'cell',
@@ -2363,6 +2591,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.contaminationPreventionMeasures
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasures?.value',
           },
           {
             type: 'cell',
@@ -2377,6 +2607,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.contaminationPreventionMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasuresDescription',
           },
         ],
       },
@@ -2396,6 +2628,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand',
           },
           {
             type: 'cell',
@@ -2407,6 +2641,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandRisk
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandRisk',
           },
           {
             type: 'cell',
@@ -2418,6 +2654,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures',
           },
           {
             type: 'cell',
@@ -2435,6 +2673,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Model Contracts for Land Purchase or Leasing',
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing?.value',
           },
           {
             type: 'cell',
@@ -2447,6 +2687,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.involvementOfLocalsInDecisionMaking
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.involvementOfLocalsInDecisionMaking',
           },
           {
             type: 'cell',
@@ -2463,6 +2705,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Governance of Tenure Policy',
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy?.value',
           },
           {
             type: 'cell',
@@ -2482,6 +2726,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasures
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -2496,6 +2742,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription',
           },
         ],
       },
@@ -2515,6 +2763,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForces
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForces',
           },
           {
             type: 'cell',
@@ -2529,6 +2779,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights',
           },
           {
             type: 'cell',
@@ -2546,6 +2798,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Instruction of Security Forces',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.instructionOfSecurityForces
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.instructionOfSecurityForces?.value',
           },
           {
             type: 'cell',
@@ -2563,6 +2817,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Human Rights Training',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining?.value',
           },
           {
             type: 'cell',
@@ -2576,6 +2832,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.stateSecurityForces
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.stateSecurityForces',
           },
           {
             type: 'cell',
@@ -2594,6 +2852,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Private Security Forces',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces?.value',
           },
           {
             type: 'cell',
@@ -2613,6 +2873,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesMeasures
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasures?.value',
           },
           {
             type: 'cell',
@@ -2627,6 +2889,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesMeasuresDescription
               ),
+            editComponent:
+              'dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasuresDescription',
           },
         ],
       },
@@ -2654,6 +2918,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling',
           },
           {
             type: 'cell',
@@ -2667,6 +2933,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling',
           },
           {
             type: 'cell',
@@ -2681,6 +2949,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAddedProductsHandlingRiskOfExposure
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandlingRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2695,6 +2965,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAddedProductsHandlingRiskOfDisposal
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandlingRiskOfDisposal',
           },
           {
             type: 'cell',
@@ -2708,6 +2980,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryCompoundsProductionAndUse
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryCompoundsProductionAndUse',
           },
           {
             type: 'cell',
@@ -2722,6 +2996,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2735,6 +3011,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionMeasures
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionMeasures',
           },
           {
             type: 'cell',
@@ -2753,6 +3031,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Mercury and Mercury Waste Handling Policy',
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy?.value',
           },
           {
             type: 'cell',
@@ -2771,6 +3051,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionOtherMeasures
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -2785,6 +3067,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -2805,6 +3089,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUse
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse',
           },
           {
             type: 'cell',
@@ -2818,6 +3104,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsed
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsed',
           },
           {
             type: 'cell',
@@ -2832,6 +3120,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskOfExposure
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUseRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2846,6 +3136,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskOfDisposal
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUseRiskOfDisposal',
           },
           {
             type: 'cell',
@@ -2859,6 +3151,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionMeasures
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionMeasures',
           },
           {
             type: 'cell',
@@ -2878,6 +3172,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePolicy
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePolicy?.value',
           },
           {
             type: 'cell',
@@ -2896,6 +3192,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionOtherMeasures
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -2910,6 +3208,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -2930,6 +3230,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements',
           },
           {
             type: 'cell',
@@ -2944,6 +3246,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseRiskForImportingState',
           },
           {
             type: 'cell',
@@ -2957,6 +3261,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein',
           },
           {
             type: 'cell',
@@ -2971,6 +3277,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein',
           },
           {
             type: 'cell',
@@ -2984,6 +3292,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionMeasures
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransportPreventionMeasures',
           },
           {
             type: 'cell',
@@ -3000,6 +3310,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Waste Policy',
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy
               ),
+            editComponent: 'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy?.value',
           },
           {
             type: 'cell',
@@ -3018,6 +3329,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasures
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransportPreventionOtherMeasures?.value',
           },
           {
             type: 'cell',
@@ -3032,6 +3345,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasuresDescription
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransportPreventionOtherMeasuresDescription',
           },
           {
             type: 'cell',
@@ -3043,6 +3358,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal
               ),
+            editComponent: 'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal',
           },
           {
             type: 'cell',
@@ -3055,6 +3371,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalRiskOfImport
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalRiskOfImport',
           },
           {
             type: 'cell',
@@ -3068,6 +3386,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImport
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport',
           },
           {
             type: 'cell',
@@ -3082,6 +3402,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImportDescription
               ),
+            editComponent:
+              'dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImportDescription',
           },
         ],
       },
@@ -3111,6 +3433,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Attachment',
                 dataset.attachment?.attachment?.attachment
               ),
+            editComponent: 'dataset.attachment?.attachment?.attachment?.value',
           },
         ],
       },

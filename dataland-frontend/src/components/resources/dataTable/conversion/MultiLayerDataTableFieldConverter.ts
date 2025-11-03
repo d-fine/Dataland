@@ -65,6 +65,7 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
       explanation: field.description,
       shouldDisplay: (dataset: FrameworkData) => field.showIf(dataset),
       valueGetter: valueGetter,
+      editComponent: field.editComponent,
     };
   } else if (field.component == 'UploadReports') {
     return undefined;

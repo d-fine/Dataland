@@ -52,6 +52,7 @@ data class SectionConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
+        editComponent: String?,
     ): CellConfigBuilder {
         val newCell =
             CellConfigBuilder(
@@ -60,6 +61,7 @@ data class SectionConfigBuilder(
                 explanation = explanation,
                 shouldDisplay = shouldDisplay,
                 valueGetter = valueGetter,
+                editComponent = editComponent,
             )
         children.add(newCell)
         return newCell

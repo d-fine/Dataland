@@ -113,6 +113,7 @@ class EuTaxonomyAssuranceComponent(
                         ),
                     ),
                 ),
+            editComponent = getTypescriptFieldAccessor(true),
         )
     }
 
