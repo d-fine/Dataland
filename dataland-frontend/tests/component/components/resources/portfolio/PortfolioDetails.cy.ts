@@ -4,28 +4,41 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 
 const userId = '9bba9b59-c1ab-48f2-be92-196c5ea83d5f';
-const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
-const datalandMemberInheritedRoleMap = {
-  [companyId]: ['DatalandMember'],
-};
+
+interface ConfigurationParameters {
+  inheritedRoleMap: { [p: string]: string[] };
+  keycloakRoles: string[];
+  portfolioResponse: EnrichedPortfolio;
+}
+
+let nonMemberConfigurationParameters: ConfigurationParameters;
+let memberConfigurationParametersWithoutMonitoring: ConfigurationParameters;
+let memberConfigurationParametersWithMonitoring: ConfigurationParameters;
+let adminConfigurationParametersWithoutMonitoring: ConfigurationParameters;
+let adminConfigurationParametersWithMonitoring: ConfigurationParameters;
+let largePortfolioConfigurationParameters: ConfigurationParameters;
 
 describe('Check the portfolio details view', function (): void {
-  let portfolioFixture: EnrichedPortfolio;
+  let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
+  let portfolioFixtureWithMonitoring: EnrichedPortfolio;
   let largePortfolioFixture: EnrichedPortfolio;
 
   /**
    * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
    * and waits for the portfolio download to complete.
-   * @param inheritedRoleMap to return for the inherited roles API call
-   * @param portfolioResponse to return for the portfolio download API call
+   * @param configurationParameters parameters for configuring the test scenario
    * @returns A Cypress.Chainable that resolves when the portfolio download is complete
    */
   function interceptApiCallsAndMountAndWaitForDownload(
-    inheritedRoleMap: { [p: string]: string[] },
-    portfolioResponse: EnrichedPortfolio = portfolioFixture
+    configurationParameters: ConfigurationParameters
   ): Cypress.Chainable {
-    cy.intercept(`**/inherited-roles/${userId}`, inheritedRoleMap).as('inheritedRolesRetrieved');
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioResponse).as('downloadComplete');
+    cy.intercept(`**/inherited-roles/${userId}`, configurationParameters.inheritedRoleMap).as(
+      'inheritedRolesRetrieved'
+    );
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', configurationParameters.portfolioResponse).as(
+      'downloadComplete'
+    );
+
     return (
       cy
         // @ts-ignore
@@ -33,23 +46,70 @@ describe('Check the portfolio details view', function (): void {
           keycloak: minimalKeycloakMock({
             userId: userId,
           }),
-          props: { portfolioId: portfolioResponse.portfolioId },
+          props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
         })
         .then(() => cy.wait('@downloadComplete'))
     );
   }
 
   before(function () {
-    cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
-      portfolioFixture = jsonContent as EnrichedPortfolio;
-    });
-    cy.fixture('largeEnrichedPortfolio.json').then(function (jsonContent) {
-      largePortfolioFixture = jsonContent as EnrichedPortfolio;
-    });
+    cy.fixture('enrichedPortfolio.json')
+      .then(function (jsonContent) {
+        portfolioFixtureWithoutMonitoring = jsonContent as EnrichedPortfolio;
+      })
+      .then(() => {
+        const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
+        const datalandMemberInheritedRoleMap = {
+          [companyId]: ['DatalandMember'],
+        };
+
+        nonMemberConfigurationParameters = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+        memberConfigurationParametersWithoutMonitoring = {
+          inheritedRoleMap: datalandMemberInheritedRoleMap,
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+        portfolioFixtureWithMonitoring = {
+          ...portfolioFixtureWithoutMonitoring,
+          isMonitored: true,
+          monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
+        } as EnrichedPortfolio;
+        memberConfigurationParametersWithMonitoring = {
+          inheritedRoleMap: datalandMemberInheritedRoleMap,
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithMonitoring,
+        };
+        adminConfigurationParametersWithoutMonitoring = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_ADMIN'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+
+        adminConfigurationParametersWithMonitoring = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_ADMIN'],
+          portfolioResponse: portfolioFixtureWithMonitoring,
+        };
+      });
+    cy.fixture('largeEnrichedPortfolio.json')
+      .then(function (jsonContent) {
+        largePortfolioFixture = jsonContent as EnrichedPortfolio;
+      })
+      .then(() => {
+        largePortfolioConfigurationParameters = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: largePortfolioFixture,
+        };
+      });
   });
 
   it('Check different frameworks', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       const expectedFirstRow = [
         'Company Name',
         'Country',
@@ -102,7 +162,7 @@ describe('Check the portfolio details view', function (): void {
   });
 
   it('Check sorting', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
       checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
       checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
@@ -111,7 +171,7 @@ describe('Check the portfolio details view', function (): void {
   });
 
   it('Check filter', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       checkFilter('first-child', 'companyNameFilter', 'b', 2);
       checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
       checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
@@ -123,38 +183,40 @@ describe('Check the portfolio details view', function (): void {
   });
 
   it('Check Monitoring Button for non Dataland member', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
     });
   });
 
-  it('Check Monitoring Button and Not Monitored Tag for Dataland member', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload(datalandMemberInheritedRoleMap).then(() => {
+  it('Check Monitoring Button and Not Monitored Tag for Dataland member or Admin', function (): void {
+    const testCallback = (): void => {
       cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
       cy.get('[data-test="is-monitored-tag"]')
         .should('be.visible')
         .and('contain.text', 'Portfolio not actively monitored');
-    });
+    };
+
+    interceptApiCallsAndMountAndWaitForDownload(memberConfigurationParametersWithoutMonitoring).then(testCallback);
+    interceptApiCallsAndMountAndWaitForDownload(adminConfigurationParametersWithoutMonitoring).then(testCallback);
   });
 
-  it('Check Monitored Tag for Dataland member', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload(datalandMemberInheritedRoleMap, {
-      ...portfolioFixture,
-      isMonitored: true,
-      monitoredFrameworks: new Set('sfdr'),
-    }).then(() => {
+  it('Check Monitored Tag for Dataland member or admin', function (): void {
+    const testCallback = (): void => {
       cy.get('[data-test="is-monitored-tag"]').should('be.visible').and('contain.text', 'Portfolio actively monitored');
-    });
+    };
+
+    interceptApiCallsAndMountAndWaitForDownload(memberConfigurationParametersWithMonitoring).then(testCallback);
+    interceptApiCallsAndMountAndWaitForDownload(adminConfigurationParametersWithMonitoring).then(testCallback);
   });
 
   it('Check pagination for small portfolios', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       cy.get('.p-datatable-paginator-bottom').should('not.exist');
     });
   });
 
   it('Check pagination for large portfolios', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload({}, largePortfolioFixture).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(largePortfolioConfigurationParameters).then(() => {
       cy.get('.p-datatable-paginator-bottom').should('be.visible');
       cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
       cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();

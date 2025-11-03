@@ -2,6 +2,8 @@ package org.dataland.datasourcingservice.utils
 
 import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -17,8 +19,9 @@ class DerivedRightsUtilsComponent(
      * @param userId the Dataland ID of the user in question
      * @return true if the user is a Dataland member, false otherwise
      */
-    fun isUserDatalandMember(userId: String): Boolean =
+    fun isUserDatalandMemberOrAdmin(userId: String): Boolean =
         DerivedRightsUtils.isUserDatalandMember(
             inheritedRolesControllerApi.getInheritedRoles(userId),
-        )
+        ) ||
+            DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 }

@@ -49,7 +49,7 @@ class RequestCreationServiceTest
                 premiumUserId,
                 setOf(DatalandRealmRole.ROLE_USER),
             )
-            doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(premiumUserId)
+            doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(premiumUserId)
             requestCreationService =
                 RequestCreationService(
                     dataSourcingValidator = mockDataSourcingValidator,

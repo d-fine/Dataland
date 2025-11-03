@@ -45,8 +45,8 @@ class RequestCreationServiceTest {
             mockDerivedRightsUtilsComponent,
         )
 
-        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(memberUserId.toString())
-        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(nonMemberUserId.toString())
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(memberUserId.toString())
+        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(nonMemberUserId.toString())
         doReturn(maxNumberOfDailyRequestsForNonPremiumUser)
             .whenever(mockRequestRepository)
             .countByUserIdAndCreationTimestampGreaterThanEqual(any(), any())

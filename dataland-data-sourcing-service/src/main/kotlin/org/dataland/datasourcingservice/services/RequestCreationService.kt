@@ -101,9 +101,9 @@ class RequestCreationService
             basicDataDimension: BasicDataDimensions,
             memberComment: String? = null,
         ): UUID {
-            val userIsPremiumUser = derivedRightsUtilsComponent.isUserDatalandMember(userId.toString())
+            val userIsMemberOrAdmin = derivedRightsUtilsComponent.isUserDatalandMemberOrAdmin(userId.toString())
 
-            if (!userIsPremiumUser) performQuotaCheckForNonPremiumUser(userId)
+            if (!userIsMemberOrAdmin) performQuotaCheckForNonMember(userId)
 
             val dataRequestEntity =
                 RequestEntity(
@@ -113,7 +113,7 @@ class RequestCreationService
                     reportingPeriod = basicDataDimension.reportingPeriod,
                     memberComment = memberComment,
                     creationTimestamp = Instant.now().toEpochMilli(),
-                    requestPriority = if (userIsPremiumUser) RequestPriority.High else RequestPriority.Low,
+                    requestPriority = if (userIsMemberOrAdmin) RequestPriority.High else RequestPriority.Low,
                 )
 
             return requestRepository
@@ -123,7 +123,7 @@ class RequestCreationService
                 }.id
         }
 
-        private fun performQuotaCheckForNonPremiumUser(userId: UUID) {
+        private fun performQuotaCheckForNonMember(userId: UUID) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 requestRepository.countByUserIdAndCreationTimestampGreaterThanEqual(
                     userId, getEpochTimeStartOfDay(),
