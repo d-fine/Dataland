@@ -47,7 +47,7 @@ class DataSourcingWorkflowTest
 
         @MockitoBean
         private lateinit var mockInheritedRolesControllerApi: InheritedRolesControllerApi
-      
+
         @MockitoBean
         private lateinit var mockRequestQueryManager: RequestQueryManager
 
