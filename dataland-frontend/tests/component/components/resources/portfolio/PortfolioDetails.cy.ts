@@ -22,39 +22,37 @@ let adminConfigurationParametersWithoutMonitoring: ConfigurationParameters;
 let adminConfigurationParametersWithMonitoring: ConfigurationParameters;
 let largePortfolioConfigurationParameters: ConfigurationParameters;
 
+/**
+ * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
+ * and waits for the portfolio download to complete.
+ * @param configurationParameters parameters for configuring the test scenario
+ * @returns A Cypress.Chainable that resolves when the portfolio download is complete
+ */
+function interceptApiCallsAndMountAndWaitForDownload(
+  configurationParameters: ConfigurationParameters
+): Cypress.Chainable {
+  cy.intercept(`**/inherited-roles/${userId}`, configurationParameters.inheritedRoleMap).as('inheritedRolesRetrieved');
+  cy.intercept('**/users/portfolios/*/enriched-portfolio', configurationParameters.portfolioResponse).as(
+    'downloadComplete'
+  );
+
+  return (
+    cy
+      // @ts-ignore
+      .mountWithPlugins(PortfolioDetails, {
+        keycloak: minimalKeycloakMock({
+          userId: userId,
+        }),
+        props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
+      })
+      .then(() => cy.wait('@downloadComplete'))
+  );
+}
+
 describe('Check the portfolio details view', function (): void {
   let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
   let portfolioFixtureWithMonitoring: EnrichedPortfolio;
   let largePortfolioFixture: EnrichedPortfolio;
-
-  /**
-   * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
-   * and waits for the portfolio download to complete.
-   * @param configurationParameters parameters for configuring the test scenario
-   * @returns A Cypress.Chainable that resolves when the portfolio download is complete
-   */
-  function interceptApiCallsAndMountAndWaitForDownload(
-    configurationParameters: ConfigurationParameters
-  ): Cypress.Chainable {
-    cy.intercept(`**/inherited-roles/${userId}`, configurationParameters.inheritedRoleMap).as(
-      'inheritedRolesRetrieved'
-    );
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', configurationParameters.portfolioResponse).as(
-      'downloadComplete'
-    );
-
-    return (
-      cy
-        // @ts-ignore
-        .mountWithPlugins(PortfolioDetails, {
-          keycloak: minimalKeycloakMock({
-            userId: userId,
-          }),
-          props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
-        })
-        .then(() => cy.wait('@downloadComplete'))
-    );
-  }
 
   before(function () {
     cy.fixture('enrichedPortfolio.json')
