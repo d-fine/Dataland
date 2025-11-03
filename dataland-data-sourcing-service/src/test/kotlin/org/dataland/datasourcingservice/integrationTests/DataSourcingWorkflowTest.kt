@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.integrationTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
-import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datasourcingservice.DatalandDataSourcingService
@@ -72,7 +71,7 @@ class DataSourcingWorkflowTest
             val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
             whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
                 .thenReturn(listOf(validationResult))
-            doReturn(mapOf(companyId to listOf(InheritedRole.DatalandMember.name)))
+            doReturn(emptyMap<String, List<String>>())
                 .whenever(mockInheritedRolesControllerApi)
                 .getInheritedRoles(userId)
             whenever(
