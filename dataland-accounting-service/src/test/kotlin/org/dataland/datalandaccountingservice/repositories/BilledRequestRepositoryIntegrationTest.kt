@@ -4,7 +4,8 @@ import org.dataland.datalandaccountingservice.DatalandAccountingService
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
@@ -19,31 +20,25 @@ class BilledRequestRepositoryIntegrationTest
     constructor(
         private val billedRequestRepository: BilledRequestRepository,
     ) : BaseIntegrationTest() {
-        @Test
-        fun `getTotalCreditDebtFromBilledRequests returns correct sum for single member`() {
-            val billedCompanyId = UUID.randomUUID()
-            val requestedCompanyId = UUID.randomUUID()
-            val dataSourcingId = UUID.randomUUID()
-            val billedRequest =
-                BilledRequestEntity(
-                    billedCompanyId = billedCompanyId,
-                    dataSourcingId = dataSourcingId,
-                    requestedCompanyId = requestedCompanyId,
-                    requestedReportingPeriod = "2024",
-                    requestedFramework = "sfdr",
-                )
-            billedRequestRepository.save(billedRequest)
-
-            val result = billedRequestRepository.getTotalCreditDebtFromBilledRequests(billedCompanyId)
-            assertEquals(BigDecimal("1.0"), result)
-        }
-
-        @Test
-        fun `getTotalCreditDebtFromBilledRequests returns correct sum for three members`() {
+        @ParameterizedTest
+        @CsvSource(
+            "1,1.0",
+            "2,0.5",
+            "3,0.4",
+            "4,0.3",
+            "5,0.2",
+            "9,0.2",
+            "10,0.1",
+            "12,0.1",
+        )
+        fun `getTotalCreditDebtFromBilledRequests returns correct sum for group sizes`(
+            groupSize: Int,
+            expectedDebt: BigDecimal,
+        ) {
             val requestedCompanyId = UUID.randomUUID()
             val dataSourcingId = UUID.randomUUID()
             var billedCompanyId = UUID.randomUUID()
-            repeat(3) { _ ->
+            repeat(groupSize) {
                 billedCompanyId = UUID.randomUUID()
                 billedRequestRepository.save(
                     BilledRequestEntity(
@@ -55,8 +50,7 @@ class BilledRequestRepositoryIntegrationTest
                     ),
                 )
             }
-
             val result = billedRequestRepository.getTotalCreditDebtFromBilledRequests(billedCompanyId)
-            assertEquals(BigDecimal("0.4"), result)
+            assertEquals(expectedDebt, result)
         }
     }
