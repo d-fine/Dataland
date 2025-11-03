@@ -108,6 +108,8 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn')
 const dialog = useDialog()
+const companyID = inject('companyID')
+console.log('companyID in MultiLayerDataTableBody:', companyID)
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -179,12 +181,12 @@ function openEditDataModal(): void {
         },
       },
     },
+    data: {
+      companyID: companyID
+    },
   });
 }
 
-function updateDataPoint(): void {
-  
-}
 </script>
 
 <style scoped>

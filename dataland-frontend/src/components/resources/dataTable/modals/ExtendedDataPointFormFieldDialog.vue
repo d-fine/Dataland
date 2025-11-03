@@ -47,7 +47,6 @@ import PrimeButton from 'primevue/button'
 import type Keycloak from "keycloak-js";
 import {ApiClientProvider} from "@/services/ApiClients.ts";
 import {assertDefined} from "@/utils/TypeScriptUtils.ts";
-import {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
 const availableDocuments = ref<{ label: string; value: string }[]>([]);
@@ -65,20 +64,11 @@ const props = defineProps({
   },
 });
 
-const dialogRef = inject<DynamicDialogInstance>('dialogRef');
-const companyID = ref<string | null>(null);
+const companyID = inject<string>('companyID');
 
 onMounted(() => {
   updateDocumentsList();
-  if (dialogRef?.data?.companyID) {
-    companyID.value = dialogRef.data.companyID;
-    console.log("Company ID loaded in modal:", companyID.value);
-  } else {
-    console.warn("No companyID found in dialogRef.data");
-  }
 });
-
-console.log("companyID in ExtendedDataPointFormFieldDialog via dialogRef:", companyID.value);
 
 /**
  * Fetches the list of documents from the API and updates the availableDocuments and allDocuments refs.
@@ -86,7 +76,7 @@ console.log("companyID in ExtendedDataPointFormFieldDialog via dialogRef:", comp
 async function updateDocumentsList(): Promise<void> {
   try {
     const documentControllerApi = apiClientProvider.apiClients.documentController;
-    const response = await documentControllerApi.searchForDocumentMetaInformation(companyID.value!);
+    const response = await documentControllerApi.searchForDocumentMetaInformation(props.companyID);
     allDocuments.value = response.data;
 
     availableDocuments.value = allDocuments.value
