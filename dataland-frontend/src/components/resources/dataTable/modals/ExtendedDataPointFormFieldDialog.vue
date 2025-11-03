@@ -76,7 +76,7 @@ onMounted(() => {
 async function updateDocumentsList(): Promise<void> {
   try {
     const documentControllerApi = apiClientProvider.apiClients.documentController;
-    const response = await documentControllerApi.searchForDocumentMetaInformation(props.companyID);
+    const response = await documentControllerApi.searchForDocumentMetaInformation(companyID);
     allDocuments.value = response.data;
 
     availableDocuments.value = allDocuments.value
