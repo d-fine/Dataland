@@ -1505,11 +1505,10 @@
               "schema": {
                 "type": "array",
                 "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
-                "example": {
-                  "Lei": [
-                    "5493001KJX4BT0IHAG73"
-                  ]
-                },
+                "example": [
+                  "5493001KJX4BT0IHAG73",
+                  "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+                ],
                 "items": {
                   "type": "string"
                 }

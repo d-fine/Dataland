@@ -1,234 +1,144 @@
 <template>
-  <TheContent class="min-h-screen flex sheet">
-    <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
+  <TheContent>
+    <div class="headline" style="margin: var(--spacing-xs) 0 0 var(--spacing-md)">
       <h1 class="text-left">Data Request</h1>
     </div>
 
     <SuccessDialog
-      :visible="successModalIsVisible"
-      message="You have successfully withdrawn your request."
-      @close="successModalIsVisible = false"
+      :visible="withdrawSuccessModalIsVisible"
+      message="The request has been successfully withdrawn."
+      @close="
+        () => {
+          withdrawSuccessModalIsVisible = false;
+          initializeComponent();
+        }
+      "
     />
-    <PrimeDialog
-      :dismissableMask="true"
-      :modal="true"
-      v-if="showNewMessageDialog"
-      v-model:visible="showNewMessageDialog"
-      :closable="true"
-      style="text-align: center"
-      :show-header="true"
-    >
-      <template #header>
-        <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
-      </template>
-      <EmailDetails
-        :is-optional="false"
-        :show-errors="toggleEmailDetailsError"
-        @has-new-input="updateEmailFields"
-        data-test="newMessageModal"
-      />
-      <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
-        <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
-      </PrimeButton>
-    </PrimeDialog>
+    <SuccessDialog
+      :visible="resubmitSuccessModalIsVisible"
+      message="Your request has been successfully resubmitted."
+      @close="goToNewRequestPage()"
+    />
 
     <PrimeDialog
-      id="reopenModal"
-      :dismissableMask="true"
       :modal="true"
-      v-model:visible="reopenModalIsVisible"
+      v-model:visible="resubmitModalIsVisible"
       :closable="true"
-      style="text-align: left; height: fit-content; width: 21vw"
-      data-test="reopenModal"
-      class="modal pl-2"
+      style="text-align: left; height: fit-content; width: 22rem"
+      data-test="resubmit-modal"
+      header="Resubmit Request"
     >
-      <template #header>
-        <span style="font-weight: bold; margin-right: auto">REOPEN REQUEST</span>
-      </template>
-
-      <FormKit type="form" :actions="false" class="formkit-wrapper">
-        <label for="Message">
-          <b style="margin-bottom: 8px">Message</b>
-        </label>
-        <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
-        <p
-          v-show="reopenMessageError && reopenMessage.length < 10"
-          class="text-danger"
+      <div class="message">
+        <p class="side-header">Message</p>
+        <Textarea
+          v-model="resubmitMessage"
+          style="resize: none"
+          data-test="resubmit-message"
+          rows="5"
+          placeholder="Provide a reason for resubmitting."
+        />
+        <Message
+          v-if="resubmitMessageError && resubmitMessage.length < 10"
+          severity="error"
+          variant="simple"
+          size="small"
           data-test="noMessageErrorMessage"
         >
           You have not provided a sufficient reason yet. Please provide a reason.
+        </Message>
+        <p class="dataland-info-text small" style="text-align: left">
+          Please enter the reason why you want to resubmit your request. Your message will be forwarded to the data
+          provider.
         </p>
-        <p class="gray-text font-italic" style="text-align: left">
-          Please enter the reason why you think that the dataset should be available. Your message will be forwarded to
-          the data provider.
-        </p>
-      </FormKit>
-      <PrimeButton data-test="reopenRequestButton" @click="reopenRequest()" label="REOPEN REQUEST" />
-    </PrimeDialog>
-
-    <PrimeDialog
-      id="reopenedModal"
-      :dismissableMask="true"
-      :modal="true"
-      v-model:visible="reopenedModalIsVisible"
-      :closable="false"
-      style="border-radius: 0.75rem; text-align: center"
-      :show-header="false"
-      data-test="reopenedModal"
-    >
-      <div class="text-center" style="display: flex; flex-direction: column">
-        <div style="margin: 10px">
-          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-        </div>
-        <div style="margin: 10px">
-          <h2 class="m-0" data-test="successText">Reopened</h2>
-        </div>
       </div>
-      <div class="text-block" style="margin: 15px; white-space: pre">
-        You have successfully reopened your data request.
-      </div>
-      <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" variant="outlined" />
+      <PrimeButton
+        data-test="resubmit-confirmation-button"
+        @click="resubmitRequest()"
+        label="RESUBMIT REQUEST"
+        style="align-self: center"
+      />
     </PrimeDialog>
-
-    <div class="py-4">
-      <div class="grid col-9 justify-content-around">
-        <div class="col-4">
-          <div class="card" data-test="card_requestDetails">
-            <div class="card__title">Request Details</div>
-            <div class="card__separator" />
-            <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
-            <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
-            <div class="card__subtitle">Company</div>
-            <div class="card__data">{{ companyName }}</div>
-            <div class="card__subtitle">Framework</div>
-            <div class="card__data">
-              {{ getFrameworkTitle(storedDataRequest.dataType) }}
-
-              <div
-                v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-              >
-                <br />
-                {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
-              </div>
-            </div>
-            <div class="card__subtitle">Reporting year</div>
-            <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+    <div style="display: flex">
+      <div style="padding: var(--spacing-md)">
+        <div class="card" data-test="card_requestDetails">
+          <div class="title">Request Details</div>
+          <Divider />
+          <div v-if="isUserKeycloakAdmin" class="side-header">Requester</div>
+          <div class="data" data-test="request-details-email" v-if="isUserKeycloakAdmin">
+            {{ storedRequest.userEmailAddress }}
           </div>
-          <div
-            v-show="answeringDatasetUrl"
-            class="link claim-panel-text"
-            style="font-weight: bold"
-            data-test="viewDataset"
+          <div class="side-header">Company</div>
+          <div class="data" data-test="request-details-company">{{ storedRequest.companyName }}</div>
+          <div class="side-header">Framework</div>
+          <div class="data" data-test="request-details-type">
+            {{ getFrameworkTitle(storedRequest.dataType) }}
+
+            <div
+              v-show="frameworkHasSubTitle(storedRequest.dataType)"
+              style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+            >
+              <br />
+              {{ getFrameworkSubtitle(storedRequest.dataType) }}
+            </div>
+          </div>
+          <div class="side-header">Reporting year</div>
+          <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
+          <PrimeButton
+            v-if="answeringDatasetUrl"
+            data-test="view-dataset-button"
+            label="VIEW DATASET"
             @click="goToAnsweringDatasetPage()"
-          >
-            VIEW DATASET
-          </div>
+            style="width: fit-content"
+          />
         </div>
-        <div class="grid col-8 flex-direction-column">
-          <div class="col-12">
-            <div class="card" data-test="card_requestIs">
-              <span style="display: flex; align-items: center">
-                <span class="card__title">Request is:</span>
-                <DatalandTag
-                  :severity="storedDataRequest.requestStatus || ''"
-                  :value="storedDataRequest.requestStatus"
-                  class="dataland-inline-tag"
-                />
-                <span class="card__title">and Access is:</span>
-                <DatalandTag
-                  :severity="storedDataRequest.accessStatus || ''"
-                  :value="storedDataRequest.accessStatus"
-                  class="dataland-inline-tag"
-                />
-                <span class="card__subtitle">
-                  since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
-                </span>
-                <span style="margin-left: auto">
-                  <ReviewRequestButtons
-                    v-if="isUsersOwnRequest && isRequestStatusAnswered()"
-                    @request-reopened-or-resolved="initializeComponent()"
-                    :data-request-id="storedDataRequest.dataRequestId"
-                  />
-                </span>
-              </span>
-              <div class="card__separator" />
-              <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
-            </div>
-            <div class="card" data-test="notifyMeImmediately" v-if="isUsersOwnRequest">
-              <span class="card__title" style="margin-right: auto">Notify Me Immediately</span>
-              <div class="card__separator" />
-              Receive emails directly or via summary
-              <ToggleSwitch
-                style="margin: 1rem 0"
-                data-test="notifyMeImmediatelyInput"
-                inputId="notifyMeImmediatelyInput"
-                v-model="storedDataRequest.notifyMeImmediately"
-                @update:modelValue="changeReceiveEmails()"
+      </div>
+      <div>
+        <div style="padding: var(--spacing-md)">
+          <div class="card" data-test="card_requestIs">
+            <span style="display: flex; align-items: center">
+              <span class="title">Request is:</span>
+              <DatalandTag
+                :severity="storedRequest.state || ''"
+                :value="storedRequest.state"
+                class="dataland-inline-tag"
               />
-              <label for="notifyMeImmediatelyInput">
-                <strong v-if="storedDataRequest.notifyMeImmediately">immediate update</strong>
-                <span v-else>weekly summary</span>
-              </label>
-            </div>
-            <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
-              <span style="display: flex; align-items: center">
-                <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
-                <span
-                  v-show="isNewMessageAllowed()"
-                  style="cursor: pointer; display: flex; align-items: center"
-                  @click="openMessageDialog()"
-                  data-test="newMessage"
-                >
-                  <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
-                  <span style="font-weight: bold">NEW MESSAGE</span>
-                </span>
+              <span class="dataland-info-text normal">
+                since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
               </span>
-              <div class="card__separator" />
-              <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
-                <div style="color: black; font-weight: bold; font-size: small">
-                  {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
-                </div>
-                <div class="message">
-                  <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
-                  <div class="card__separator" />
-                  <div style="color: gray">
-                    {{ message.message }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card" v-show="isRequestReopenable(storedDataRequest.requestStatus)" data-test="card_reopen">
-              <div class="card__title">Reopen Request</div>
-              <div class="card__separator" />
-              <div>
-                Currently, your request has the status non-sourceable. If you believe that your data should be
-                available, you can reopen the request and comment why you believe the data should be available.<br />
-                <br />
-                <a
-                  class="link"
-                  style="display: inline-flex; font-weight: bold; color: var(--p-primary-color)"
-                  @click="openModalReopenRequest()"
-                >
-                  Reopen request</a
-                >
-              </div>
-            </div>
-            <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
-              <div class="card__title">Withdraw Request</div>
-              <div class="card__separator" />
-              <div>
-                Once a data request is withdrawn, it will be removed from your data request list. The company owner will
-                not be notified anymore. <br />
-                <br />
-                <PrimeButton
-                  data-test="withdrawRequestButton"
-                  label="WITHDRAW REQUEST"
-                  @click="withdrawRequest()"
-                  variant="link"
-                />
-              </div>
-            </div>
+            </span>
+            <Divider />
+            <p class="title">Request State History</p>
+            <RequestStateHistory :stateHistory="requestHistory" />
+          </div>
+          <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
+            <div class="title">Resubmit Request</div>
+            <Divider />
+            <p class="dataland-info-text normal" style="align-items: baseline">
+              Currently, your request has the state {{ storedRequest.state }}. If you believe that your data should be
+              available, you can resubmit the request and comment why you believe the data should be available.
+            </p>
+            <PrimeButton
+              data-test="resubmit-request-button"
+              label="RESUBMIT REQUEST"
+              @click="resubmitModalIsVisible = true"
+              variant="outlined"
+              style="width: fit-content"
+            />
+          </div>
+          <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
+            <div class="title">Withdraw Request</div>
+            <Divider />
+            <p class="dataland-info-text normal" style="align-items: baseline">
+              If you want to stop the processing of this request, you can withdraw it. The data provider will no longer
+              process this request.
+            </p>
+            <PrimeButton
+              data-test="withdraw-request-button"
+              label="WITHDRAW REQUEST"
+              @click="withdrawRequest()"
+              variant="outlined"
+              style="width: fit-content"
+            />
           </div>
         </div>
       </div>
@@ -236,435 +146,278 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, reactive, inject, onMounted, defineProps } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
+import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { getAnsweringDatasetUrl } from '@/utils/AnsweringDataset.ts';
-import { getCompanyName } from '@/utils/CompanyInformation.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import { patchDataRequest } from '@/utils/RequestUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import {
+  type ExtendedStoredRequest,
+  RequestState,
+  type SingleRequest,
+  type StoredRequest,
+} from '@clients/datasourcingservice';
+import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import ToggleSwitch from 'primevue/toggleswitch';
-import { defineComponent, inject } from 'vue';
-import SuccessDialog from '@/components/general/SuccessDialog.vue';
+import Textarea from 'primevue/textarea';
+import Divider from 'primevue/divider';
+import Message from 'primevue/message';
 
-export default defineComponent({
-  name: 'ViewDataRequest',
-  components: {
-    SuccessDialog,
-    DatalandTag,
-    ReviewRequestButtons,
-    TheContent,
-    EmailDetails,
-    PrimeDialog,
-    PrimeButton,
-    ToggleSwitch,
-    StatusHistory,
-  },
-  props: {
-    requestId: {
-      type: String,
-      required: true,
-    },
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    return {
-      toggleEmailDetailsError: false,
-      successModalIsVisible: false,
-      reopenModalIsVisible: false,
-      reopenMessage: '',
-      reopenedModalIsVisible: false,
-      isUsersOwnRequest: false,
-      isUserKeycloakAdmin: false,
-      storedDataRequest: {} as StoredDataRequest,
-      companyName: '',
-      showNewMessageDialog: false,
-      emailContacts: undefined as string[] | undefined,
-      emailMessage: undefined as string | undefined,
-      hasValidEmailForm: false,
-      reopenMessageError: false,
-      answeringDatasetUrl: undefined as string | undefined,
-    };
-  },
-  mounted() {
-    this.initializeComponent();
-  },
-  methods: {
-    convertUnixTimeInMsToDateString,
-    getFrameworkSubtitle,
-    frameworkHasSubTitle,
-    getFrameworkTitle,
-    /**
-     * Perform all steps required to set up the component.
-     */
-    initializeComponent() {
-      this.getRequest()
-        .catch((error) => console.error(error))
-        .then(() => {
-          if (this.getKeycloakPromise) {
-            const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-            this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
-              console.error(error)
-            );
-            this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) =>
-              console.error(error)
-            );
-          }
-          this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-          void this.setUserAccessFields();
-        })
-        .catch((error) => console.error(error));
-    },
-    /**
-     * Method to update the email fields
-     * @param hasValidForm boolean indicating if the input is correct
-     * @param contacts email addresses
-     * @param message the content
-     */
-    updateEmailFields(hasValidForm: boolean, contacts: string[], message: string) {
-      this.hasValidEmailForm = hasValidForm;
-      this.emailContacts = contacts;
-      this.emailMessage = message;
-    },
-    /**
-     * Retrieve the company name and store it if a value was found.
-     */
-    async getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider) {
-      try {
-        this.companyName = await getCompanyName(companyId, apiClientProvider);
-      } catch (error) {
-        console.error(error);
+const props = defineProps<{ requestId: string }>();
+const requestId = ref<string>(props.requestId);
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const requestControllerApi = apiClientProvider.apiClients.requestController;
+const companyControllerApi = apiClientProvider.backendClients.companyDataController;
+const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
+
+const withdrawSuccessModalIsVisible = ref(false);
+const resubmitModalIsVisible = ref(false);
+const resubmitMessage = ref('');
+const resubmitSuccessModalIsVisible = ref(false);
+const newRequestId = ref<string>('');
+const isUserKeycloakAdmin = ref(false);
+const storedRequest = reactive({} as ExtendedStoredRequest);
+const resubmitMessageError = ref(false);
+const answeringDatasetUrl = ref(undefined as string | undefined);
+const requestHistory = ref<StoredRequest[]>([]);
+
+/**
+ * Perform all steps required to set up the component.
+ */
+async function initializeComponent(): Promise<void> {
+  await getRequest()
+    .catch((error) => console.error(error))
+    .then(async () => {
+      if (getKeycloakPromise) {
+        await getAndStoreRequestHistory().catch((error) => console.error(error));
+        await checkForAvailableData().catch((error) => console.error(error));
       }
-    },
-    /**
-     * Method to check if there exist an approved dataset for a dataRequest
-     * @param storedDataRequest dataRequest
-     * @param apiClientProvider the ApiClientProvider to use for the connection
-     */
-    async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
-      try {
-        this.answeringDatasetUrl = await getAnsweringDatasetUrl(storedDataRequest, apiClientProvider);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Method to get the request from the api
-     */
-    async getRequest() {
-      try {
-        if (this.getKeycloakPromise) {
-          this.storedDataRequest = (
-            await new ApiClientProvider(
-              this.getKeycloakPromise()
-            ).apiClients.communityManagerRequestController.getDataRequestById(this.requestId)
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Method to check if a request can be reopened (only for nonSourceable requests)
-     * @param requestStatus request status of the dataland request
-     * @returns true if request status is non sourceable otherwise false
-     */
-    isRequestReopenable(requestStatus: RequestStatus) {
-      return requestStatus == RequestStatus.NonSourceable;
-    },
-    /**
-     * Opens a pop-up window to get the users message why the nonSourceable request should be reopened
-     */
-    openModalReopenRequest() {
-      this.reopenModalIsVisible = true;
-    },
-    /**
-     * Method to change if the user wants to receive emails on updates
-     */
-    async changeReceiveEmails() {
-      try {
-        await patchDataRequest(
-          this.requestId,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          this.storedDataRequest.notifyMeImmediately,
-          undefined,
-          this.getKeycloakPromise
-        );
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    },
-    /**
-     * Method to reopen the non sourceable data request
-     */
-    async reopenRequest() {
-      if (this.reopenMessage.length > 10) {
-        try {
-          await patchDataRequest(
-            this.storedDataRequest.dataRequestId,
-            RequestStatus.Open as RequestStatus,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            this.reopenMessage,
-            this.getKeycloakPromise
-          );
-          this.reopenModalIsVisible = false;
-          this.reopenedModalIsVisible = true;
-          this.storedDataRequest.requestStatus = RequestStatus.Open;
-          this.reopenMessage = '';
-        } catch (error) {
-          console.log(error);
-        }
-        return;
-      }
-      this.reopenMessageError = true;
-    },
-    /**
-     * Method to withdraw the request when clicking on the button
-     */
-    async withdrawRequest() {
-      try {
-        await patchDataRequest(
-          this.requestId,
-          RequestStatus.Withdrawn as RequestStatus,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          this.getKeycloakPromise
-        );
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-      this.successModalIsVisible = true;
-      this.storedDataRequest.requestStatus = RequestStatus.Withdrawn;
-    },
-    /**
-     * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
-     * Both variables are used to show information on page depending on who's visiting
-     */
-    async setUserAccessFields() {
-      try {
-        if (this.getKeycloakPromise) {
-          const userId = await getUserId(this.getKeycloakPromise);
-          this.isUsersOwnRequest = this.storedDataRequest.userId == userId;
-          this.isUserKeycloakAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise);
-        }
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    },
-    /**
-     * Method to update the request message when clicking on the button
-     */
-    addMessage() {
-      if (this.hasValidEmailForm) {
-        patchDataRequest(
-          this.requestId,
-          undefined,
-          undefined,
-          // as unknown as Set<string> cast required to ensure proper json is created
-          this.emailContacts as unknown as Set<string>,
-          this.emailMessage,
-          undefined,
-          undefined,
-          this.getKeycloakPromise
-        )
-          .then(() => {
-            this.getRequest().catch((error) => console.error(error));
-            this.showNewMessageDialog = false;
-          })
-          .catch((error) => console.error(error));
-      } else {
-        this.toggleEmailDetailsError = !this.toggleEmailDetailsError;
-      }
-    },
-    /**
-     * Method to check if request is withdrawAble
-     * @returns boolean is withdrawAble
-     */
-    isRequestWithdrawable() {
-      return (
-        this.storedDataRequest.requestStatus == RequestStatus.Open ||
-        this.storedDataRequest.requestStatus == RequestStatus.Answered ||
-        this.storedDataRequest.requestStatus == RequestStatus.NonSourceable
-      );
-    },
-    /**
-     * Navigates to the company view page
-     * @returns the promise of the router push action
-     */
-    goToAnsweringDatasetPage() {
-      if (this.answeringDatasetUrl) return router.push(this.answeringDatasetUrl);
-    },
-    /**
-     * Method to check if request status is answered
-     * @returns boolean if request status is answered
-     */
-    isRequestStatusAnswered() {
-      return this.storedDataRequest.requestStatus == RequestStatus.Answered;
-    },
-    /**
-     * Method to transform set of string to one string representing the set elements seperated by ','
-     * @param contacts set of strings
-     * @returns string representing the elements of the set
-     */
-    formatContactsToString(contacts: Set<string>) {
-      const contactsList = Array.from(contacts);
-      return contactsList.join(', ');
-    },
-    /**
-     * Shows or hides the Modal depending on the current state
-     */
-    openMessageDialog() {
-      this.showNewMessageDialog = true;
-    },
-    /**
-     * Method to check if request status is open
-     * @returns boolean if request status is open
-     */
-    isNewMessageAllowed() {
-      return this.storedDataRequest.requestStatus == RequestStatus.Open;
-    },
-  },
+      requestHistory.value.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+      await setUserAccessFields();
+    })
+    .catch((error) => console.error(error));
+}
+
+/**
+ * Retrieve the request history and store it if a value was found.
+ */
+async function getAndStoreRequestHistory(): Promise<void> {
+  try {
+    requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Method to check if there exist an approved dataset for a dataRequest
+ */
+async function checkForAvailableData(): Promise<void> {
+  try {
+    answeringDatasetUrl.value = await getAnsweringDatasetUrl();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
+ */
+async function getAnsweringDatasetUrl(): Promise<string | undefined> {
+  let answeringDataMetaInfo = await getDataMetaInfo(storedRequest.companyId);
+  if (!answeringDataMetaInfo) {
+    const parentCompanyId = await getParentCompanyId();
+    if (!parentCompanyId) return;
+    answeringDataMetaInfo = await getDataMetaInfo(parentCompanyId);
+  }
+  if (answeringDataMetaInfo)
+    return `/companies/${answeringDataMetaInfo.companyId}/frameworks/${answeringDataMetaInfo.dataType}`;
+}
+
+/**
+ * Retrieve the metadata object of the active data set identified by the given parameters.
+ *
+ * This function may throw an exception.
+ * @return the metadata object if found, else "undefined"
+ */
+async function getDataMetaInfo(companyId: string): Promise<DataMetaInformation | undefined> {
+  const datasets = await metaDataControllerApi.getListOfDataMetaInfo(
+    companyId,
+    storedRequest.dataType as DataTypeEnum,
+    true,
+    storedRequest.reportingPeriod
+  );
+  return datasets.data.length > 0 ? datasets.data[0] : undefined;
+}
+
+/**
+ * Get the id of the parent company. This function may throw an exception.
+ */
+async function getParentCompanyId(): Promise<string | undefined> {
+  const companyInformation = (await companyControllerApi.getCompanyInfo(storedRequest.companyId)).data;
+  if (!companyInformation?.parentCompanyLei) return undefined;
+
+  return (await companyControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, companyInformation.parentCompanyLei))
+    .data.companyId;
+}
+
+/**
+ * Method to get the request from the api
+ */
+async function getRequest(): Promise<void> {
+  try {
+    if (getKeycloakPromise) {
+      const result = await requestControllerApi.getRequest(requestId.value);
+      Object.assign(storedRequest, result.data);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Method to check if a request can be resubmitted
+ * @returns true if request can be resubmitted otherwise false
+ */
+function isRequestResubmittable(): boolean {
+  return storedRequest.state == RequestState.Processed || storedRequest.state == RequestState.Withdrawn;
+}
+
+/**
+ * Method to resubmit the data request
+ */
+async function resubmitRequest(): Promise<void> {
+  if (resubmitMessage.value.length > 10) {
+    try {
+      const request: SingleRequest = {
+        companyIdentifier: storedRequest.companyId,
+        dataType: storedRequest.dataType,
+        reportingPeriod: storedRequest.reportingPeriod,
+        memberComment: resubmitMessage.value,
+      };
+      const response = await requestControllerApi.createRequest(request, storedRequest.userId);
+      newRequestId.value = response.data.requestId;
+      resubmitModalIsVisible.value = false;
+      resubmitSuccessModalIsVisible.value = true;
+      resubmitMessage.value = '';
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+  resubmitMessageError.value = true;
+}
+
+/**
+ * Method to withdraw the request when clicking on the button
+ */
+async function withdrawRequest(): Promise<void> {
+  try {
+    await requestControllerApi.patchRequestState(requestId.value, RequestState.Withdrawn);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  withdrawSuccessModalIsVisible.value = true;
+  storedRequest.state = RequestState.Withdrawn;
+}
+
+/**
+ * This function sets the components field 'isUserKeycloakAdmin'.
+ * Both variables are used to show information on page depending on who's visiting
+ */
+async function setUserAccessFields(): Promise<void> {
+  try {
+    if (getKeycloakPromise) {
+      isUserKeycloakAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+    }
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+}
+
+/**
+ * Method to check if request is withdrawAble
+ * @returns boolean is withdrawAble
+ */
+function isRequestWithdrawable(): boolean {
+  return (
+    (storedRequest.state == RequestState.Open ||
+      storedRequest.state == RequestState.Processing ||
+      storedRequest.state == RequestState.Processed) &&
+    isUserKeycloakAdmin.value
+  );
+}
+
+/**
+ * Navigates to the company view page
+ * @returns the promise of the router push action
+ */
+function goToAnsweringDatasetPage(): Promise<void | NavigationFailure | undefined> | void {
+  if (answeringDatasetUrl.value) return router.push(answeringDatasetUrl.value);
+}
+
+/**
+ * Navigates to the new request page after resubmission
+ */
+function goToNewRequestPage(): void {
+  resubmitSuccessModalIsVisible.value = false;
+  router.push(`/requests/${newRequestId.value}`).catch(console.error);
+  requestId.value = newRequestId.value;
+  newRequestId.value = '';
+  void initializeComponent();
+}
+
+onMounted(() => {
+  void initializeComponent();
 });
 </script>
-<style lang="scss" scoped>
+
+<style scoped>
+.side-header {
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--spacing-md);
+}
+
 .message {
   width: 100%;
-  border: #e0dfde solid 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
   padding: var(--spacing-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
 }
 
-:deep(*) {
-  .card {
-    width: 100%;
-    background-color: var(--surface-card);
-    padding: var(--spacing-lg);
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+.data {
+  color: gray;
+  margin-bottom: var(--spacing-xl);
+}
 
-    &__subtitle {
-      font-size: medium;
-      line-height: normal;
-      color: gray;
-    }
-
-    &__data {
-      font-size: medium;
-      font-weight: bold;
-      line-height: normal;
-      margin-top: 0.25rem;
-      margin-bottom: 2rem;
-    }
-
-    &__title {
-      font-size: large;
-      font-weight: bold;
-      line-height: normal;
-    }
-
-    &__separator {
-      width: 100%;
-      border-bottom: #e0dfde solid 1px;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: normal;
 }
 
 .dataland-inline-tag {
   margin: 0 var(--spacing-xs);
-}
-
-.info-icon {
-  cursor: help;
-}
-
-.two-columns {
-  columns: 2;
-  -webkit-columns: 2;
-  -moz-columns: 2;
-  list-style-type: none;
-}
-
-.flex-direction-column {
-  flex-direction: column;
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.text-danger {
-  color: var(--fk-color-error);
-  font-size: var(--font-size-xs);
-}
-
-.gray-text {
-  color: var(--gray);
-}
-
-.green-text {
-  color: var(--green);
-}
-
-.link {
-  color: var(--main-color);
-  background: transparent;
-  border: transparent;
-  cursor: pointer;
-  display: flex;
-
-  &:hover {
-    color: hsl(from var(--main-color) h s calc(l - 20));
-    text-decoration: underline;
-  }
-
-  &:active {
-    color: hsl(from var(--main-color) h s calc(l + 10));
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
-
-  &.--underlined {
-    text-decoration: underline;
-  }
 }
 </style>

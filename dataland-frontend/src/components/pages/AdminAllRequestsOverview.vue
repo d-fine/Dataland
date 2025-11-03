@@ -1,5 +1,5 @@
 <template>
-  <TheContent class="min-h-screen relative">
+  <TheContent>
     <div class="search-container-first-line">
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
@@ -10,9 +10,9 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
-
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
         <InputText
@@ -22,9 +22,9 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
-
       <IconField class="search-bar">
         <InputIcon class="pi pi-search" />
         <InputText
@@ -34,10 +34,10 @@
           fluid
           variant="filled"
           :disabled="waitingForData"
+          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
     </div>
-
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -46,7 +46,6 @@
         :available-items="availableFrameworks"
         filter-name="Framework"
         data-test="framework-picker"
-        id="framework-filter"
         filter-placeholder="Search by Frameworks"
         class="search-filter"
         :max-selected-labels="1"
@@ -54,16 +53,15 @@
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
-        v-model="selectedRequestStatuses"
+        v-model="selectedRequestStates"
         ref="frameworkFilter"
-        :available-items="availableRequestStatuses"
-        filter-name="Request Status"
-        data-test="request-status-picker"
-        id="framework-filter"
-        filter-placeholder="Search by Request Status"
+        :available-items="availableRequestStates"
+        filter-name="Request State"
+        data-test="request-state-picker"
+        filter-placeholder="Search by Request State"
         class="search-filter"
         :max-selected-labels="1"
-        selected-items-label="{0} request status"
+        selected-items-label="{0} request states"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -72,7 +70,6 @@
         :available-items="availablePriorities"
         filter-name="Priority"
         data-test="request-priority-picker"
-        id="framework-filter"
         filter-placeholder="Search by Priority"
         class="search-filter"
         :max-selected-labels="1"
@@ -85,33 +82,28 @@
         :available-items="availableReportingPeriods"
         filter-name="Reporting Period"
         data-test="reporting-period-picker"
-        id="framework-filter"
         filter-placeholder="Search by Reporting Period"
         class="search-filter"
         :max-selected-labels="1"
         selected-items-label="{0} reporting periods"
       />
-      <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
+      <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       <PrimeButton
         :disabled="waitingForData"
         data-test="trigger-filtering-requests"
-        @click="getAllRequestsForFilters"
-        label="FILTER REQUESTS "
+        @click="resetChunkAndFirstRowIndexAndGetAllRequests"
+        label="FILTER REQUESTS"
       />
     </div>
-    <div class="message-container">
-      <Message class="info-message" variant="simple" severity="secondary">{{ numberOfRequestsInformation }}</Message>
-    </div>
-
-    <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+    <div v-if="waitingForData">
       <p class="font-medium text-xl">Loading...</p>
       <DatalandProgressSpinner />
     </div>
 
-    <div class="col-12 text-left p-3">
+    <div style="padding: var(--spacing-md)">
       <div class="card">
         <DataTable
-          v-if="currentDataRequests && currentDataRequests.length > 0"
+          v-if="currentDataRequests"
           v-show="!waitingForData"
           ref="dataTable"
           data-test="requests-datatable"
@@ -119,10 +111,11 @@
           :paginator="true"
           :lazy="true"
           :total-records="totalRecords"
+          paginator-position="both"
           :rows="rowsPerPage"
           :first="firstRowIndex"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-          :alwaysShowPaginator="false"
+          :alwaysShowPaginator="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           @row-click="onRowClick($event)"
           @page="onPage($event)"
@@ -131,89 +124,61 @@
           :rowHover="true"
           style="cursor: pointer"
         >
-          <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.userEmailAddress }}
-            </template>
-          </Column>
-          <Column header="COMPANY" field="companyName" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.companyName }}
-            </template>
-          </Column>
-          <Column header="FRAMEWORK" :sortable="false" field="dataType">
-            <template #body="slotProps">
+          <Column header="REQUESTER" field="userEmailAddress" :sortable="false" />
+          <Column header="COMPANY" field="companyName" :sortable="false" />
+          <Column header="FRAMEWORK" :sortable="false">
+            <template #body="{ data }">
               <div>
-                {{ getFrameworkTitle(slotProps.data.dataType) }}
+                {{ getFrameworkTitle(data.dataType) }}
               </div>
               <div
                 data-test="framework-subtitle"
-                v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                v-if="frameworkHasSubTitle(data.dataType)"
+                style="color: gray; font-size: smaller; line-height: var(--spacing-xs); white-space: nowrap"
               >
                 <br />
-                {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                {{ getFrameworkSubtitle(data.dataType) }}
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.reportingPeriod }}
-            </template>
-          </Column>
-          <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
-            <template #body="slotProps">
-              {{ slotProps.data.dataRequestId }}
-            </template>
-          </Column>
-          <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
-            <template #body="slotProps">
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
+          <Column header="REQUEST ID" field="id" :sortable="false" />
+          <Column header="REQUESTED" :sortable="false">
+            <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
-            <template #body="slotProps">
+          <Column header="LAST UPDATED" :sortable="false">
+            <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
+          <Column header="REQUEST STATE" :sortable="false">
+            <template #body="{ data }">
+              <DatalandTag :severity="data.state" :value="data.state" rounded />
             </template>
           </Column>
-          <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
+          <Column header="REQUEST PRIORITY" :sortable="false">
+            <template #body="{ data }">
+              <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
             </template>
           </Column>
-          <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
-            </template>
-          </Column>
-          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
-            <template #body="slotProps">
-              <div>
-                {{ slotProps.data.adminComment }}
-              </div>
-            </template>
-          </Column>
+          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
+          <template #empty>
+            <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
+          </template>
         </DataTable>
-        <div v-if="!waitingForData && currentDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
-          </div>
-        </div>
       </div>
     </div>
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, computed, onMounted, inject } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -225,17 +190,10 @@ import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkD
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStatuses,
+  retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import type { DataTypeEnum } from '@clients/backend';
-import {
-  type ExtendedStoredDataRequest,
-  type GetDataRequestsDataTypeEnum,
-  type RequestPriority,
-  type RequestStatus,
-} from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -243,226 +201,156 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import Message from 'primevue/message';
-import { defineComponent, inject, ref } from 'vue';
+import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
+import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
-export default defineComponent({
-  name: 'AdminDataRequestsOverview',
-  components: {
-    DatalandProgressSpinner,
-    DatalandTag,
-    PrimeButton,
-    FrameworkDataSearchDropdownFilter,
-    TheContent,
-    DataTable,
-    Column,
-    IconField,
-    InputText,
-    InputIcon,
-    Message,
-  },
+const frameworkFilter = ref();
+const datasetsPerPage = 100;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-  setup() {
-    return {
-      frameworkFilter: ref(),
-      datasetsPerPage: 100,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
+const waitingForData = ref(true);
+const currentChunkIndex = ref(0);
+const totalRecords = ref(0);
+const rowsPerPage = ref(datasetsPerPage);
+const firstRowIndex = ref(0);
+const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
+const searchBarInputEmail = ref('');
+const searchBarInputComment = ref('');
+const searchBarInputCompanySearchString = ref('');
 
-  data() {
-    return {
-      waitingForData: true,
-      currentChunkIndex: 0,
-      totalRecords: 0,
-      rowsPerPage: 100,
-      firstRowIndex: 0,
-      currentDataRequests: [] as ExtendedStoredDataRequest[],
-      searchBarInputEmail: '',
-      searchBarInputComment: '',
-      searchBarInputCompanySearchString: '',
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableRequestStatuses: [] as Array<SelectableItem>,
-      selectedRequestStatuses: [] as Array<SelectableItem>,
-      availablePriorities: [] as Array<SelectableItem>,
-      selectedPriorities: [] as Array<SelectableItem>,
-      availableReportingPeriods: [] as Array<SelectableItem>,
-      selectedReportingPeriods: [] as Array<SelectableItem>,
-    };
-  },
-  mounted() {
-    this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableRequestStatuses = retrieveAvailableRequestStatuses();
-    this.availablePriorities = retrieveAvailablePriorities();
-    this.availableReportingPeriods = retrieveAvailableReportingPeriods();
-    this.getAllRequestsForFilters().catch((error) => console.error(error));
-  },
-  computed: {
-    numberOfRequestsInformation(): string {
-      if (!this.waitingForData) {
-        if (this.totalRecords === 0) {
-          return 'No results for this search.';
-        } else {
-          const startIndex = this.currentChunkIndex * this.rowsPerPage + 1;
-          const endIndex = Math.min(startIndex + this.rowsPerPage - 1, this.totalRecords);
-          return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
-        }
-      }
-      return '';
-    },
-  },
+const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
+const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
+const availableRequestStates = ref<SelectableItem[]>([]);
+const selectedRequestStates = ref<SelectableItem[]>([]);
+const availablePriorities = ref<SelectableItem[]>([]);
+const selectedPriorities = ref<SelectableItem[]>([]);
+const availableReportingPeriods = ref<SelectableItem[]>([]);
+const selectedReportingPeriods = ref<SelectableItem[]>([]);
 
-  watch: {
-    selectedFrameworks(newSelected) {
-      this.selectedFrameworks = newSelected;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    selectedRequestStatuses(newSelected) {
-      this.selectedRequestStatuses = newSelected;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    selectedPriorities(newSelected) {
-      this.selectedPriorities = newSelected;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    selectedReportingPeriods(newSelected) {
-      this.selectedReportingPeriods = newSelected;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    searchBarInputEmail(newSearch: string) {
-      this.searchBarInputEmail = newSearch;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    searchBarInputComment(newSearch: string) {
-      this.searchBarInputComment = newSearch;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-    searchBarInputCompanySearchString(newSearch: string) {
-      this.searchBarInputCompanySearchString = newSearch;
-      this.setChunkAndFirstRowIndexToZero();
-    },
-  },
-  methods: {
-    frameworkHasSubTitle,
-    getFrameworkTitle,
-    getFrameworkSubtitle,
-    convertUnixTimeInMsToDateString,
+/**
+ * Sets the current chunk index and first row index to zero.
+ */
+function setChunkAndFirstRowIndexToZero(): void {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+}
 
-    /**
-     * Gets list of storedDataRequests
-     */
-    async getAllRequestsForFilters() {
-      this.waitingForData = true;
-      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
-        this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
-      );
-      const selectedRequestStatusesAsSet = new Set<RequestStatus>(
-        this.selectedRequestStatuses.map((selectableItem) => selectableItem.displayName as RequestStatus)
-      );
-      const selectedPriorityAsSet = new Set<RequestPriority>(
-        this.selectedPriorities.map((selectableItem) => selectableItem.displayName as RequestPriority)
-      );
-      const selectedReportingPeriodAsSet = new Set<string>(
-        this.selectedReportingPeriods.map((selectableItem) => selectableItem.displayName)
-      );
-      try {
-        if (this.getKeycloakPromise) {
-          const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
-          const commentFilter = this.searchBarInputComment === '' ? undefined : this.searchBarInputComment;
-          const companySearchStringFilter =
-            this.searchBarInputCompanySearchString === '' ? undefined : this.searchBarInputCompanySearchString;
-          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-          this.currentDataRequests = (
-            await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-              undefined,
-              emailFilter,
-              commentFilter,
-              selectedRequestStatusesAsSet,
-              undefined,
-              selectedPriorityAsSet,
-              selectedReportingPeriodAsSet,
-              undefined,
-              companySearchStringFilter,
-              this.datasetsPerPage,
-              this.currentChunkIndex
-            )
-          ).data;
-          this.totalRecords = (
-            await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
-              undefined,
-              emailFilter,
-              commentFilter,
-              selectedRequestStatusesAsSet,
-              undefined,
-              selectedPriorityAsSet,
-              selectedReportingPeriodAsSet,
-              undefined,
-              companySearchStringFilter
-            )
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      this.waitingForData = false;
-    },
-
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.currentChunkIndex = 0;
-      this.selectedFrameworks = [];
-      this.selectedRequestStatuses = [];
-      this.selectedPriorities = [];
-      this.selectedReportingPeriods = [];
-      this.searchBarInputEmail = '';
-      this.searchBarInputComment = '';
-      this.searchBarInputCompanySearchString = '';
-      void this.getAllRequestsForFilters();
-    },
-
-    /**
-     * Updates the current Page
-     * @param event DataTablePageEvent
-     */
-    onPage(event: DataTablePageEvent) {
-      globalThis.scrollTo(0, 0);
-      if (event.page != this.currentChunkIndex) {
-        this.currentChunkIndex = event.page;
-        this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
-        void this.getAllRequestsForFilters();
-      }
-    },
-
-    /**
-     * Navigates to the view dataRequest page
-     * @param event contains column that was clicked
-     * @returns the promise of the router push action
-     */
-    onRowClick(event: DataTableRowClickEvent) {
-      const requestIdOfClickedRow = event.data.dataRequestId;
-      return router.push(`/requests/${requestIdOfClickedRow}`);
-    },
-
-    /**
-     * Sets the currentChunkIndex and firstRowIndex to Zero
-     */
-    setChunkAndFirstRowIndexToZero() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-    },
-  },
+onMounted(() => {
+  availableFrameworks.value = retrieveAvailableFrameworks();
+  availableRequestStates.value = retrieveAvailableRequestStates();
+  availablePriorities.value = retrieveAvailablePriorities();
+  availableReportingPeriods.value = retrieveAvailableReportingPeriods();
+  void getAllRequestsForFilters();
 });
+
+/**
+ * Fetches all requests from the backend based on the selected filters and search bar inputs.
+ */
+async function getAllRequestsForFilters(): Promise<void> {
+  waitingForData.value = true;
+  const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
+    selectedFrameworks.value.length
+      ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
+      : undefined
+  );
+
+  const selectedRequestStatesForApi = computed<RequestState[] | undefined>(() =>
+    selectedRequestStates.value.length
+      ? selectedRequestStates.value.map((i) => i.displayName as RequestState)
+      : undefined
+  );
+
+  const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
+    selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
+  );
+
+  const selectedReportingPeriodsForApi = computed<string[] | undefined>(() =>
+    selectedReportingPeriods.value.length ? selectedReportingPeriods.value.map((i) => i.displayName) : undefined
+  );
+
+  try {
+    if (getKeycloakPromise) {
+      const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
+      const filters = {
+        dataTypes: selectedFrameworksForApi.value,
+        requestStates: selectedRequestStatesForApi.value,
+        requestPriorities: selectedPrioritiesForApi.value,
+        reportingPeriods: selectedReportingPeriodsForApi.value,
+        emailAddress: searchBarInputEmail.value || undefined,
+        adminComment: searchBarInputComment.value || undefined,
+        companySearchString: searchBarInputCompanySearchString.value || undefined,
+      };
+
+      const [dataResponse, countResponse] = await Promise.all([
+        apiClientProvider.apiClients.requestController.postRequestSearch(
+          filters,
+          datasetsPerPage,
+          currentChunkIndex.value
+        ),
+        apiClientProvider.apiClients.requestController.postRequestCountQuery(filters),
+      ]);
+
+      currentDataRequests.value = dataResponse.data;
+      totalRecords.value = countResponse.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  waitingForData.value = false;
+}
+
+/**
+ * Resets all filters and search bars to their initial state and fetches all requests again.
+ */
+function resetFilterAndSearchBar(): void {
+  currentChunkIndex.value = 0;
+  selectedFrameworks.value = [];
+  selectedRequestStates.value = [];
+  selectedPriorities.value = [];
+  selectedReportingPeriods.value = [];
+  searchBarInputEmail.value = '';
+  searchBarInputComment.value = '';
+  searchBarInputCompanySearchString.value = '';
+  setChunkAndFirstRowIndexToZero();
+  void getAllRequestsForFilters();
+}
+
+/**
+ * Handles the pagination event of the data table.
+ * @param event
+ */
+function onPage(event: DataTablePageEvent): void {
+  globalThis.scrollTo(0, 0);
+  if (event.page != currentChunkIndex.value) {
+    currentChunkIndex.value = event.page;
+    firstRowIndex.value = currentChunkIndex.value * rowsPerPage.value;
+    void getAllRequestsForFilters();
+  }
+}
+
+/**
+ * Resets the chunk index and first row index to zero and fetches all requests again.
+ */
+function resetChunkAndFirstRowIndexAndGetAllRequests(): void {
+  setChunkAndFirstRowIndexToZero();
+  void getAllRequestsForFilters();
+}
+
+/**
+ * Handles the row click event of the data table.
+ * Navigates to the request detail page of the clicked request.
+ * @param event
+ */
+function onRowClick(event: DataTableRowClickEvent): void {
+  const requestIdOfClickedRow = event.data.id;
+  router.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
+}
 </script>
 
 <style scoped lang="scss">
 %search-container-base {
   margin: 0;
-  width: 100%;
   display: flex;
   gap: var(--spacing-lg);
   align-items: start;
@@ -485,28 +373,5 @@ export default defineComponent({
     width: 20%;
     text-align: left;
   }
-
-  > :last-child {
-    margin-left: auto;
-  }
-}
-
-.message-container {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  margin-bottom: var(--spacing-lg);
-
-  .info-message {
-    margin: 0 var(--spacing-lg);
-  }
-}
-
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
 }
 </style>
