@@ -75,14 +75,14 @@ const getInTouchSection = computed(() => {
 
   &__image {
     grid-column: 5 / 8;
+    max-width: 240px;
+    aspect-ratio: 2000 / 2795;
     border-radius: 16px;
     overflow: hidden;
 
     img {
       width: 100%;
-      max-height: 320px;
-      border-radius: 16px;
-      height: auto;
+      height: 100%;
       object-fit: contain;
       display: block;
     }
