@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.hibernate.envers.Audited
 import java.util.UUID
@@ -62,13 +63,37 @@ class RequestEntity(
             reportingPeriod = reportingPeriod,
             dataType = dataType,
             userId = userId.toString(),
-            creationTimeStamp = creationTimestamp,
+            creationTimestamp = creationTimestamp,
             memberComment = memberComment,
             adminComment = adminComment,
             lastModifiedDate = lastModifiedDate,
             requestPriority = requestPriority,
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+        )
+
+    /**
+     * Converts this RequestEntity to a ExtendedStoredDataRequest.
+     */
+    fun toExtendedStoredRequest(
+        companyName: String,
+        userEmailAddress: String?,
+    ): ExtendedStoredRequest =
+        ExtendedStoredRequest(
+            id = id.toString(),
+            companyId = companyId.toString(),
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            userId = userId.toString(),
+            creationTimestamp = creationTimestamp,
+            memberComment = memberComment,
+            adminComment = adminComment,
+            lastModifiedDate = lastModifiedDate,
+            requestPriority = requestPriority,
+            state = state,
+            dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+            companyName = companyName,
+            userEmailAddress = userEmailAddress,
         )
 
     constructor(
