@@ -93,6 +93,6 @@ class TransactionRepositoryIntegrationTest
             )
 
             val result = transactionRepository.getTotalBalanceFromTransactions(targetCompany)
-            assertEquals(BigDecimal("5.0"), result)
+            assertEquals(BigDecimal("5.00"), result)
         }
     }
