@@ -82,4 +82,11 @@ class BilledRequestRepositoryIntegrationTest
             val result = billedRequestRepository.getTotalCreditDebtFromBilledRequests(billedCompanyId)
             assertEquals(2.0, result.toDouble())
         }
+
+        @Test
+        fun `getTotalCreditDebtFromBilledRequests returns 0 for no billed requests`() {
+            val companyId = UUID.randomUUID()
+            val result = billedRequestRepository.getTotalCreditDebtFromBilledRequests(companyId)
+            assertEquals(0.0, result.toDouble())
+        }
     }

@@ -18,7 +18,7 @@ interface BilledRequestRepository : JpaRepository<BilledRequestEntity, BilledReq
      * based on billed requests in which they are involved.
      */
     @Query(
-        "SELECT SUM(credit_debts) FROM (${TemporaryTables.CREDIT_DEBTS_FROM_BILLED_REQUESTS_FOR_MEMBER_TO_BILL})",
+        "SELECT COALESCE(SUM(credit_debts), 0) FROM (${TemporaryTables.CREDIT_DEBTS_FROM_BILLED_REQUESTS_FOR_MEMBER_TO_BILL})",
     )
     fun getTotalCreditDebtFromBilledRequests(
         @Param("billedCompanyId") billedCompanyId: UUID,

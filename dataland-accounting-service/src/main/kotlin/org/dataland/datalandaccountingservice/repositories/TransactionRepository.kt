@@ -16,7 +16,7 @@ interface TransactionRepository : JpaRepository<TransactionEntity, UUID> {
      * from all associated transactions.
      */
     @Query(
-        "SELECT SUM(e.valueOfChange) FROM TransactionEntity e WHERE e.companyId = :billedCompanyId",
+        "SELECT  COALESCE(SUM(e.valueOfChange), 0)  FROM TransactionEntity e WHERE e.companyId = :billedCompanyId",
     )
     fun getTotalBalanceFromTransactions(
         @Param("billedCompanyId") billedCompanyId: UUID,
