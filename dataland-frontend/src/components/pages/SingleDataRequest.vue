@@ -90,8 +90,8 @@
           exceeded. The quota will reset automatically tomorrow.
         </div>
         <div class="text-block" style="margin: 15px">
-          To avoid quotas altogether, consider becoming a premium user.
-          <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on premium
+          To avoid quotas altogether, consider becoming a Dataland member.
+          <a href="#" @click="openBecomeDatalandMemberEmail">Contact Erik Breen</a> for more information on Dataland
           membership.
         </div>
         <div style="margin: 10px">
@@ -181,8 +181,8 @@ export default defineComponent({
     const singleDatRequestSection = companiesPage
       ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
       : undefined;
-    const becomePremiumUserEmailTemplate = singleDatRequestSection
-      ? singleDatRequestSection.cards?.find((card) => card.title === 'Interested in becoming a premium user')
+    const becomeDatalandMemberEmailTemplate = singleDatRequestSection
+      ? singleDatRequestSection.cards?.find((card) => card.title === 'Interested in becoming a Dataland member')
       : undefined;
 
     return {
@@ -202,7 +202,7 @@ export default defineComponent({
       submittingSucceeded: false,
       submitted: false,
       maxRequestReachedModalIsVisible: false,
-      becomePremiumUserEmailTemplate,
+      becomeDatalandMemberEmailTemplate: becomeDatalandMemberEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
       hasCompanyAtLeastOneOwner: false,
     };
@@ -222,10 +222,10 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens an Email regarding becoming a premium user
+     * Opens an Email regarding becoming a Dataland member
      */
-    openBecomePremiumUserEmail() {
-      openEmailClient(this.becomePremiumUserEmailTemplate);
+    openBecomeDatalandMemberEmail() {
+      openEmailClient(this.becomeDatalandMemberEmailTemplate);
     },
     /**
      * Opens the Max Requests Reached Modal

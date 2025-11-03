@@ -1,12 +1,41 @@
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
-import { KEYCLOAK_ROLE_PREMIUM_USER } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 
+const userId = '9bba9b59-c1ab-48f2-be92-196c5ea83d5f';
+const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
+const datalandMemberInheritedRoleMap = {
+  [companyId]: ['DatalandMember'],
+};
+
 describe('Check the portfolio details view', function (): void {
   let portfolioFixture: EnrichedPortfolio;
   let largePortfolioFixture: EnrichedPortfolio;
+
+  /**
+   * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
+   * and waits for the portfolio download to complete.
+   * @param inheritedRoleMap to return for the inherited roles API call
+   * @param portfolioResponse to return for the portfolio download API call
+   * @returns A Cypress.Chainable that resolves when the portfolio download is complete
+   */
+  function interceptApiCallsAndMountAndWaitForDownload(
+    inheritedRoleMap: { [p: string]: string[] },
+    portfolioResponse: EnrichedPortfolio = portfolioFixture
+  ): Cypress.Chainable {
+    cy.intercept(`**/inherited-roles/${userId}`, inheritedRoleMap).as('inheritedRolesRetrieved');
+    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioResponse).as('downloadComplete');
+    // @ts-ignore
+    return cy
+      .mountWithPlugins(PortfolioDetails, {
+        keycloak: minimalKeycloakMock({
+          userId: userId,
+        }),
+        props: { portfolioId: portfolioResponse.portfolioId },
+      })
+      .then(() => cy.wait('@downloadComplete'));
+  }
 
   before(function () {
     cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
@@ -18,12 +47,7 @@ describe('Check the portfolio details view', function (): void {
   });
 
   it('Check different frameworks', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
       const expectedFirstRow = [
         'Company Name',
         'Country',
@@ -70,129 +94,75 @@ describe('Check the portfolio details view', function (): void {
         checkHeader,
       ];
       const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
-      cy.wait('@downloadComplete').then(() => {
-        assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
-        assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
-      });
+      assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
+      assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
     });
   });
 
   it('Check sorting', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
-        checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
-        checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
-        checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
-      });
+    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+      checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
+      checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
+      checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
+      checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
     });
   });
 
   it('Check filter', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        checkFilter('first-child', 'companyNameFilter', 'b', 2);
-        checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
-        checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
-        checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
-        checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
-        checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
-        checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
-      });
+    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+      checkFilter('first-child', 'companyNameFilter', 'b', 2);
+      checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
+      checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
+      checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
+      checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
+      checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
+      checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
     });
   });
 
-  it('Check Monitoring Button for non premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
-      });
+  it('Check Monitoring Button for non Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+      cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
     });
   });
-  it('Check Monitoring Button and Not Monitored Tag for premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({
-        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
-      }),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
-        cy.get('[data-test="is-monitored-tag"]')
-          .should('be.visible')
-          .and('contain.text', 'Portfolio not actively monitored');
-      });
+
+  it('Check Monitoring Button and Not Monitored Tag for Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(datalandMemberInheritedRoleMap).then(() => {
+      cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
+      cy.get('[data-test="is-monitored-tag"]')
+        .should('be.visible')
+        .and('contain.text', 'Portfolio not actively monitored');
     });
   });
-  it('Check Monitored Tag for premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', {
+
+  it('Check Monitored Tag for Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(datalandMemberInheritedRoleMap, {
       ...portfolioFixture,
       isMonitored: true,
-      startingMonitoringPeiod: '2024',
       monitoredFrameworks: new Set('sfdr'),
-    }).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({
-        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
-      }),
-      props: { portfolioId: portfolioFixture.portfolioId },
     }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="is-monitored-tag"]')
-          .should('be.visible')
-          .and('contain.text', 'Portfolio actively monitored');
-      });
+      cy.get('[data-test="is-monitored-tag"]').should('be.visible').and('contain.text', 'Portfolio actively monitored');
     });
   });
+
   it('Check pagination for small portfolios', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('.p-datatable-paginator-bottom').should('not.exist');
-      });
+    interceptApiCallsAndMountAndWaitForDownload({}).then(() => {
+      cy.get('.p-datatable-paginator-bottom').should('not.exist');
     });
   });
+
   it('Check pagination for large portfolios', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', largePortfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: largePortfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('.p-datatable-paginator-bottom').should('be.visible');
-        cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
-        cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();
-        cy.get('table tr:first-child td:first-child').should(
-          'contain.text',
-          `Company ${MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1}`
-        );
-        cy.get('table tr:first-child th:first-child [data-pc-section="sort"]').click();
-        cy.get('table tr:first-child td:first-child').should('contain.text', `Company 110`);
-        cy.get('[data-pc-section="page"][aria-label="Page 1"]').should('have.attr', 'data-p-active', 'true');
-      });
+    interceptApiCallsAndMountAndWaitForDownload({}, largePortfolioFixture).then(() => {
+      cy.get('.p-datatable-paginator-bottom').should('be.visible');
+      cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
+      cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();
+      cy.get('table tr:first-child td:first-child').should(
+        'contain.text',
+        `Company ${MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1}`
+      );
+      cy.get('table tr:first-child th:first-child [data-pc-section="sort"]').click();
+      cy.get('table tr:first-child td:first-child').should('contain.text', `Company 110`);
+      cy.get('[data-pc-section="page"][aria-label="Page 1"]').should('have.attr', 'data-p-active', 'true');
     });
   });
 });

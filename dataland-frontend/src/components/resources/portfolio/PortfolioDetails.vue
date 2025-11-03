@@ -17,11 +17,11 @@
         label="DOWNLOAD PORTFOLIO"
         icon="pi pi-download"
       />
-      <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
+      <div :title="!isDatalandMember ? 'Only Dataland members can activate monitoring' : ''">
         <Button
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
-          :disabled="!isPremiumUser"
+          :disabled="!isDatalandMember"
           icon="pi pi-bell"
           label="ACTIVE MONITORING"
         />
@@ -282,7 +282,7 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
-const isPremiumUser = ref(false);
+const isDatalandMember = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
@@ -291,7 +291,7 @@ const monitoredTagAttributes = computed(() => ({
 }));
 
 onMounted(() => {
-  void checkPremiumRole();
+  void checkDatalandMembership();
   loadPortfolio();
 });
 
@@ -321,12 +321,21 @@ watch([enrichedPortfolio], () => {
 });
 
 /**
- * Checks whether the logged in User is premium user
+ * Checks whether the logged-in User is Dataland member
  */
-async function checkPremiumRole(): Promise<void> {
+async function checkDatalandMembership(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
 
-  isPremiumUser.value = keycloak.realmAccess?.roles.includes('ROLE_PREMIUM_USER') || false;
+  if (keycloakUserId === undefined) {
+    isDatalandMember.value = false;
+    return;
+  }
+
+  const response = await apiClientProvider.apiClients.inheritedRolesController.getInheritedRoles(keycloakUserId);
+  const inheritedRolesMap = response.data;
+
+  isDatalandMember.value = Object.values(inheritedRolesMap).flat().includes('DatalandMember');
 }
 
 /**
