@@ -80,6 +80,9 @@ const getInTouchSection = computed(() => {
       width: 100%;
       max-height: 320px;
       border-radius: 16px;
+      height: auto;
+      object-fit: contain;
+      display: block;
     }
   }
 
