@@ -75,6 +75,8 @@ const getInTouchSection = computed(() => {
 
   &__image {
     grid-column: 5 / 8;
+    border-radius: 16px;
+    overflow: hidden;
 
     img {
       width: 100%;
