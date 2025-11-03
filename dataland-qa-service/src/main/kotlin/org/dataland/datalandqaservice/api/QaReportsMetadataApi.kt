@@ -54,7 +54,7 @@ interface QaReportsMetadataApi {
         @RequestParam
         @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+            example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_LIST_EXAMPLE,
             required = false,
         )
         uploaderUserIds: Set<UUID>? = null,

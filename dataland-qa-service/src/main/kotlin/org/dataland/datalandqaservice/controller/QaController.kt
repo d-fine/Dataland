@@ -118,7 +118,7 @@ class QaController(
     }
 
     override fun getDataPointQaReviewInformationByDataId(dataPointId: String): ResponseEntity<List<DataPointQaReviewInformation>> {
-        logger.info("Received request to retrieve the review information of the dataset with identifier $dataPointId")
+        logger.info("Received request to retrieve the review information of the datapoint with identifier $dataPointId")
         return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewInformationByDataId(dataPointId))
     }
 

@@ -86,6 +86,7 @@ interface MetaDataApi {
         @RequestParam
         @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.ALL_UPLOADER_USER_IDS_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.ALL_UPLOADER_USER_IDS_EXAMPLE,
             required = false,
         )
         uploaderUserIds: Set<UUID>? = null,

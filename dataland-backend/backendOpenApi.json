@@ -1346,7 +1346,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -1360,7 +1362,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           },
           {
             "name": "chunkSize",
@@ -2260,7 +2264,10 @@
                 "type": "string",
                 "format": "uuid"
               }
-            }
+            },
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ]
           },
           {
             "name": "qaStatus",
@@ -5301,7 +5308,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -5315,7 +5324,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           }
         ],
         "responses": {
@@ -16925,15 +16936,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
