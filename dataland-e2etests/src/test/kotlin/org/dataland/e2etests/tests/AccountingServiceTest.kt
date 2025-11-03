@@ -12,6 +12,7 @@ import org.dataland.e2etests.utils.CompanyRolesTestUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.lang.Thread.sleep
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -82,7 +83,7 @@ class AccountingServiceTest {
                 requestState = RequestState.Processing,
             )
         }
-
+        sleep(2000)
         val balance =
             apiAccessor.accountingServiceCreditsControllerApi.getBalance(billableCompanyId)
         assertEquals(initialCredit - BigDecimal(1.0), balance)
