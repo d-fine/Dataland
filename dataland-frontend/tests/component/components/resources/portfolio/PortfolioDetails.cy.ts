@@ -26,15 +26,17 @@ describe('Check the portfolio details view', function (): void {
   ): Cypress.Chainable {
     cy.intercept(`**/inherited-roles/${userId}`, inheritedRoleMap).as('inheritedRolesRetrieved');
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioResponse).as('downloadComplete');
-    // @ts-ignore
-    return cy
-      .mountWithPlugins(PortfolioDetails, {
-        keycloak: minimalKeycloakMock({
-          userId: userId,
-        }),
-        props: { portfolioId: portfolioResponse.portfolioId },
-      })
-      .then(() => cy.wait('@downloadComplete'));
+    return (
+      // @ts-ignore
+      cy
+        .mountWithPlugins(PortfolioDetails, {
+          keycloak: minimalKeycloakMock({
+            userId: userId,
+          }),
+          props: { portfolioId: portfolioResponse.portfolioId },
+        })
+        .then(() => cy.wait('@downloadComplete'))
+    );
   }
 
   before(function () {
