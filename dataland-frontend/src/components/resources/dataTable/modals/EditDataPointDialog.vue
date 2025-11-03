@@ -10,11 +10,10 @@
   >
    {{errorMessage}}
   </Message>
-
 </template>
 
 <script setup lang="ts">
-import {inject, onMounted, type Ref, ref, provide} from 'vue';
+import {inject, type Ref, ref, provide } from 'vue';
 import PrimeButton from 'primevue/button';
 import BigDecimalExtendedDataPointFormFieldDialog
   from "@/components/resources/dataTable/modals/BigDecimalExtendedDataPointFormFieldDialog.vue";
@@ -29,13 +28,9 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const errorMessage = ref('')
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
-let companyID = ref<string | undefined>(undefined);
+const companyID = dialogRef?.value?.data?.companyID;
+provide('companyID', companyID as string);
 
-
-onMounted(() => {
-  companyID.value = dialogRef?.value.data.companyID;
-  provide('companyID', companyID.value);
-});
 
 async function updateDataPoint() {
   const dataPointPayload = JSON.stringify({ value: value.value });
@@ -43,7 +38,7 @@ async function updateDataPoint() {
       {
         dataPoint: dataPointPayload,
         dataPointType: "extendedDecimalEstimatedMarketCapitalizationInEUR",
-        companyId: companyID.value,
+        companyId: companyID,
         reportingPeriod: "2024"
       },
       true
@@ -51,6 +46,5 @@ async function updateDataPoint() {
     console.error(error);
     errorMessage.value = error.message
   })
-
 }
 </script>

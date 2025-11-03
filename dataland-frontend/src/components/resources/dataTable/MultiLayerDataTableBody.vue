@@ -102,14 +102,13 @@ import Tooltip from 'primevue/tooltip';
 import {computed, inject, onMounted, ref} from 'vue';
 import PrimeButton from "primevue/button";
 import {useDialog} from "primevue/usedialog";
-import EditDataDialog from "@/components/resources/dataTable/modals/EditDataDialog.vue";
+import EditDataPointDialog from "@/components/resources/dataTable/modals/EditDataPointDialog.vue";
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn')
 const dialog = useDialog()
-const companyID = inject('companyID')
-console.log('companyID in MultiLayerDataTableBody:', companyID)
+const companyID = inject<string>('companyID');
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -166,7 +165,7 @@ onMounted(() => {
 });
 
 function openEditDataModal(): void {
-  dialog.open(EditDataDialog, {
+  dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
       header: 'Edit Data Point',

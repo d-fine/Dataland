@@ -8,7 +8,6 @@
       :modelValue="insertedQuality"
       fluid
   />
-
   <h4>Data Source</h4>
   <Select
       :modelValue="selectedDocument"
@@ -18,7 +17,6 @@
       :placeholder="dataPointProperties?.dataSource?.fileName"
       fluid
   />
-
   <div
       v-if="selectedDocumentMetaInformation"
       class="dataland-info-text small"
@@ -34,7 +32,6 @@
   <Textarea :placeholder="props.dataPointProperties?.comment ?? 'Insert comment'"
              :modelValue="insertedComment"
              fluid />
-
 </template>
 
 <script setup lang="ts">
@@ -47,6 +44,7 @@ import PrimeButton from 'primevue/button'
 import type Keycloak from "keycloak-js";
 import {ApiClientProvider} from "@/services/ApiClients.ts";
 import {assertDefined} from "@/utils/TypeScriptUtils.ts";
+import Textarea from "primevue/textarea";
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
 const availableDocuments = ref<{ label: string; value: string }[]>([]);
@@ -63,7 +61,6 @@ const props = defineProps({
     required: false
   },
 });
-
 const companyID = inject<string>('companyID');
 
 onMounted(() => {
