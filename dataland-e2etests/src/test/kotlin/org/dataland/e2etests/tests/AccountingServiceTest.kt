@@ -19,73 +19,104 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingServiceTest {
     private val apiAccessor = ApiAccessor()
-
     private val companyRolesTestUtils = CompanyRolesTestUtils()
-    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val initialCredit = BigDecimal(10.0)
 
-    private fun createDummyRequest(companyId: String): String {
-        val singleRequest = SingleRequest(companyId, "sfdr", "2023", "dummy request")
-        return apiAccessor.dataSourcingRequestControllerApi
-            .createRequest(
-                singleRequest,
-            ).requestId
-    }
+    private fun createDummyRequestForCompany(
+        companyId: String,
+        comment: String = "dummy request",
+    ): String =
+        apiAccessor.dataSourcingRequestControllerApi
+            .createRequest(SingleRequest(companyId, "sfdr", "2023", comment))
+            .requestId
 
     private fun uploadCompanyAsUploader(): String =
         GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         }
 
+    private fun assignCompanyOwnerRole(
+        companyId: String,
+        userId: UUID,
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
+    }
+
+    private fun postTransaction(
+        companyId: String,
+        value: BigDecimal = initialCredit,
+        reason: String = "Initial credit top-up",
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        apiAccessor.accountingServiceCreditsControllerApi.postTransaction(
+            companyId = companyId,
+            transactionPost = TransactionPost(valueOfChange = value, reasonForChange = reason),
+        )
+    }
+
+    private fun patchRequestStateToProcessing(
+        requestId: String,
+        state: RequestState = RequestState.Processing,
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        apiAccessor.dataSourcingRequestControllerApi.patchRequestState(
+            dataRequestId = requestId,
+            requestState = state,
+        )
+    }
+
+    private fun getBalance(companyId: String): BigDecimal = apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
+
     @Test
     fun `post a transaction, then check the balance`() {
-        val companyId =
-            uploadCompanyAsUploader()
-        val initialCredit = BigDecimal(10.0)
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.accountingServiceCreditsControllerApi.postTransaction(
-                companyId = companyId,
-                transactionPost =
-                    TransactionPost(
-                        valueOfChange = initialCredit,
-                        reasonForChange = "Initial credit top-up",
-                    ),
-            )
-            val balance =
-                apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
-            assertEquals(initialCredit, balance)
-        }
+        val companyId = uploadCompanyAsUploader()
+        postTransaction(companyId)
+        val balance = getBalance(companyId)
+        assertEquals(initialCredit, balance)
     }
 
     @Test
     fun `post a transaction, then add a request, set it to processing and check the balance`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val billableCompanyId =
-            uploadCompanyAsUploader()
-        val initialCredit = BigDecimal(10.0)
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(billableCompanyId), dataReaderUserId)
-            apiAccessor.accountingServiceCreditsControllerApi.postTransaction(
-                companyId = billableCompanyId,
-                transactionPost =
-                    TransactionPost(
-                        valueOfChange = initialCredit,
-                        reasonForChange = "Initial credit top-up",
-                    ),
-            )
-        }
 
-        val requestedCompanyId =
-            uploadCompanyAsUploader()
-        val requestId = createDummyRequest(requestedCompanyId)
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(
-                dataRequestId = requestId,
-                requestState = RequestState.Processing,
-            )
-        }
+        val billableCompanyId = uploadCompanyAsUploader()
+        val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+        assignCompanyOwnerRole(billableCompanyId, dataReaderUserId)
+        postTransaction(billableCompanyId)
+
+        val requestedCompanyId = uploadCompanyAsUploader()
+        val requestId = createDummyRequestForCompany(requestedCompanyId)
+        patchRequestStateToProcessing(requestId)
+
         sleep(2000)
-        val balance =
-            apiAccessor.accountingServiceCreditsControllerApi.getBalance(billableCompanyId)
+        val balance = getBalance(billableCompanyId)
         assertEquals(initialCredit - BigDecimal(1.0), balance)
+    }
+
+    @Test
+    fun `post a transaction, then add two requests from different users for the same requestedCompanyId and check the balance`() {
+        // First user and request
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val billableCompanyIdA = uploadCompanyAsUploader()
+        val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+        assignCompanyOwnerRole(billableCompanyIdA, dataReaderUserId)
+        postTransaction(billableCompanyIdA)
+
+        // The requested company (same for both requests)
+        val requestedCompanyId = uploadCompanyAsUploader()
+
+        // Request from Reader
+        val requestIdA = createDummyRequestForCompany(requestedCompanyId)
+        patchRequestStateToProcessing(requestIdA)
+
+        // Second user and request
+        val dataUploaderUserId = UUID.fromString(TechnicalUser.Uploader.technicalUserId)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val billableCompanyIdB = uploadCompanyAsUploader()
+        assignCompanyOwnerRole(billableCompanyIdB, dataUploaderUserId)
+        val requestIdB = createDummyRequestForCompany(requestedCompanyId)
+        patchRequestStateToProcessing(requestIdB)
+
+        sleep(2000)
+        val balance = getBalance(billableCompanyIdA)
+        assertEquals(initialCredit - BigDecimal(0.5), balance) // Modify deduction logic as per business calculation
     }
 }
