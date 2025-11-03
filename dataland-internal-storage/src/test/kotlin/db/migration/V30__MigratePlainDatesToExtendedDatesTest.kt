@@ -53,22 +53,24 @@ class V30__MigratePlainDatesToExtendedDatesTest : BaseFlywayMigrationTest() {
         val dataSource: DataSource?,
     )
 
+    private fun extractPlainDataPointStringAsStoredInDatabase(extendedDataPoint: DataPointItem): String =
+        "\"\\\"" +
+            defaultObjectMapper
+                .readValue<ExtendedDataPoint>(
+                    defaultObjectMapper
+                        .readValue<String>(
+                            extendedDataPoint.dataPoint,
+                        ),
+                ).value +
+            "\\\"\""
+
     private fun toPlainDataPoint(extendedDataPoint: DataPointItem): DataPointItem =
         DataPointItem(
             dataPointId = extendedDataPoint.dataPointId,
             companyId = extendedDataPoint.companyId,
             dataPointType = expectedRenamingReversed.getValue(extendedDataPoint.dataPointType),
             reportingPeriod = extendedDataPoint.reportingPeriod,
-            dataPoint =
-                "\"\\\"" +
-                    defaultObjectMapper
-                        .readValue<ExtendedDataPoint>(
-                            defaultObjectMapper
-                                .readValue<String>(
-                                    extendedDataPoint.dataPoint,
-                                ),
-                        ).value +
-                    "\\\"\"",
+            dataPoint = extractPlainDataPointStringAsStoredInDatabase(extendedDataPoint),
         )
 
     private fun extractExtendedDataPointFromJson(

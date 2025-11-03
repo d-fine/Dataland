@@ -29,7 +29,7 @@ class V30__MigratePlainDatesToExtendedDates : BaseJavaMigration() {
     /**
      * Migrates plain data points to extended format.
      * If an extended version exists for the same company_id + reporting_period,
-     * we copy its data to the plain row and delete the extended row.
+     * we copy its data to the plain row.
      * Otherwise, we convert the plain value to extended format with just the value field.
      */
     @Suppress("MagicNumber")
