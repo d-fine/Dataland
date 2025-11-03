@@ -27,8 +27,8 @@ describe('Check the portfolio details view', function (): void {
     cy.intercept(`**/inherited-roles/${userId}`, inheritedRoleMap).as('inheritedRolesRetrieved');
     cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioResponse).as('downloadComplete');
     return (
-      // @ts-ignore
       cy
+        // @ts-ignore
         .mountWithPlugins(PortfolioDetails, {
           keycloak: minimalKeycloakMock({
             userId: userId,
