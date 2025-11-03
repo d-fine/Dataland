@@ -4,6 +4,10 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 
 const userId = '9bba9b59-c1ab-48f2-be92-196c5ea83d5f';
+const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
+const datalandMemberInheritedRoleMap = {
+  [companyId]: ['DatalandMember'],
+};
 
 interface ConfigurationParameters {
   inheritedRoleMap: { [p: string]: string[] };
@@ -58,11 +62,6 @@ describe('Check the portfolio details view', function (): void {
         portfolioFixtureWithoutMonitoring = jsonContent as EnrichedPortfolio;
       })
       .then(() => {
-        const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
-        const datalandMemberInheritedRoleMap = {
-          [companyId]: ['DatalandMember'],
-        };
-
         nonMemberConfigurationParameters = {
           inheritedRoleMap: {},
           keycloakRoles: ['ROLE_USER'],
@@ -188,26 +187,48 @@ describe('Check the portfolio details view', function (): void {
     });
   });
 
-  it('Check Monitoring Button and Not Monitored Tag for Dataland member or Admin', function (): void {
-    const testCallback = (): void => {
-      cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
-      cy.get('[data-test="is-monitored-tag"]')
-        .should('be.visible')
-        .and('contain.text', 'Portfolio not actively monitored');
-    };
+  const testModes = ['member', 'admin'];
 
-    interceptApiCallsAndMountAndWaitForDownload(memberConfigurationParametersWithoutMonitoring).then(testCallback);
-    interceptApiCallsAndMountAndWaitForDownload(adminConfigurationParametersWithoutMonitoring).then(testCallback);
-  });
+  /**
+   * Gets the configuration parameters based on the test mode and monitoring status
+   * @param testMode whether the test is for Dataland members or admins
+   * @param monitoringIsOn whether the test portfolio shall have monitoring activated
+   * @returns The appropriate configuration parameters for the test scenario
+   */
+  function getTestModeConfigurationParameters(testMode: string, monitoringIsOn: boolean): ConfigurationParameters {
+    if (testMode === 'member') {
+      return monitoringIsOn
+        ? memberConfigurationParametersWithMonitoring
+        : memberConfigurationParametersWithoutMonitoring;
+    } else {
+      return monitoringIsOn
+        ? adminConfigurationParametersWithMonitoring
+        : adminConfigurationParametersWithoutMonitoring;
+    }
+  }
 
-  it('Check Monitored Tag for Dataland member or admin', function (): void {
-    const testCallback = (): void => {
-      cy.get('[data-test="is-monitored-tag"]').should('be.visible').and('contain.text', 'Portfolio actively monitored');
-    };
+  for (const testMode of testModes) {
+    it('Check Monitoring Button and Not Monitored Tag for Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, false);
 
-    interceptApiCallsAndMountAndWaitForDownload(memberConfigurationParametersWithMonitoring).then(testCallback);
-    interceptApiCallsAndMountAndWaitForDownload(adminConfigurationParametersWithMonitoring).then(testCallback);
-  });
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
+        cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio not actively monitored');
+      });
+    });
+
+    it('Check Monitored Tag for Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, true);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
+        cy.get('[data-test="is-monitored-tag"]')
+          .should('be.visible')
+          .and('contain.text', 'Portfolio actively monitored');
+      });
+    });
+  }
 
   it('Check pagination for small portfolios', function (): void {
     interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
