@@ -49,6 +49,22 @@ function interceptApiCallsAndMountAndWaitForDownload(
   );
 }
 
+/**
+ * Gets the configuration parameters based on the test mode and monitoring status
+ * @param testMode whether the test is for Dataland members or admins
+ * @param monitoringIsOn whether the test portfolio shall have monitoring activated
+ * @returns The appropriate configuration parameters for the test scenario
+ */
+function getTestModeConfigurationParameters(testMode: string, monitoringIsOn: boolean): ConfigurationParameters {
+  if (testMode === 'member') {
+    return monitoringIsOn
+      ? memberConfigurationParametersWithMonitoring
+      : memberConfigurationParametersWithoutMonitoring;
+  } else {
+    return monitoringIsOn ? adminConfigurationParametersWithMonitoring : adminConfigurationParametersWithoutMonitoring;
+  }
+}
+
 describe('Check the portfolio details view', function (): void {
   let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
   let portfolioFixtureWithMonitoring: EnrichedPortfolio;
@@ -186,24 +202,6 @@ describe('Check the portfolio details view', function (): void {
   });
 
   const testModes = ['member', 'admin'];
-
-  /**
-   * Gets the configuration parameters based on the test mode and monitoring status
-   * @param testMode whether the test is for Dataland members or admins
-   * @param monitoringIsOn whether the test portfolio shall have monitoring activated
-   * @returns The appropriate configuration parameters for the test scenario
-   */
-  function getTestModeConfigurationParameters(testMode: string, monitoringIsOn: boolean): ConfigurationParameters {
-    if (testMode === 'member') {
-      return monitoringIsOn
-        ? memberConfigurationParametersWithMonitoring
-        : memberConfigurationParametersWithoutMonitoring;
-    } else {
-      return monitoringIsOn
-        ? adminConfigurationParametersWithMonitoring
-        : adminConfigurationParametersWithoutMonitoring;
-    }
-  }
 
   for (const testMode of testModes) {
     it('Check Monitoring Button and Not Monitored Tag for Dataland ' + testMode, function (): void {
