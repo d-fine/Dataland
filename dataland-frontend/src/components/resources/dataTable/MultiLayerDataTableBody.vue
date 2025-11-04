@@ -103,7 +103,6 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn');
 const dialog = useDialog();
-const companyID = inject<string>('companyID');
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -162,8 +161,11 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(idx?: number): void {
-  const reportingPeriod = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.reportingPeriod;
+function openEditDataModal(idx: number): void {
+  const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
+  const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
+  const dataId = props.dataAndMetaInfo[idx]?.metaInfo.dataId;
+  console.log('DATA ID IS:', dataId);
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -171,7 +173,7 @@ function openEditDataModal(idx?: number): void {
       pt: {
         title: {
           style: {
-            maxWidth: '15em',
+            maxWidth: '20em',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -180,8 +182,9 @@ function openEditDataModal(idx?: number): void {
       },
     },
     data: {
-      companyID: companyID,
+      companyId: companyId,
       reportingPeriod: reportingPeriod,
+      dataId: dataId,
     },
   });
 }

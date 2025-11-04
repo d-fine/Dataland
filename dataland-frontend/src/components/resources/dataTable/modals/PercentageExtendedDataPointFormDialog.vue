@@ -1,6 +1,6 @@
 <template>
   <h4>Value</h4>
-  <InputNumber placeholder="Insert Value" fluid v-model="value" />
+  <InputNumber id="percentage" mode="decimal" suffix="%" :min="0" :max="100" fluid v-model="value" />
   <ExtendedDataPointFormFieldDialog
     v-model:chosenQuality="chosenQuality"
     v-model:selectedDocument="selectedDocument"

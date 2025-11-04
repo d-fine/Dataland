@@ -1,72 +1,62 @@
 <template>
   <h4>Value</h4>
-  <div v-for="(labelText, value) in options" :key="value" class="yes-no-option">
-    <Checkbox
-      class="yes-no-checkboxes"
-      v-model="checkboxValue"
-      :inputId="`yes-no-${value}`"
-      :value="value"
-      @change="updateYesNoValue()"
-      :binary="true"
-    />
-    <label :for="`yes-no-${value}`">{{ labelText }}</label>
+  <div style="gap: 0.5rem; display: flex">
+    <RadioButton v-model="value" :inputId="'yes-no-yes'" :value="'Yes'" />
+    <label for="yes-no-yes">Yes</label>
+    <RadioButton v-model="value" :inputId="'yes-no-no'" :value="'No'" />
+    <label for="yes-no-no">No</label>
   </div>
   <ExtendedDataPointFormFieldDialog
-    :companyID="props.companyID"
-    :dataPointProperties="dataPointProperties || undefined"
-    :allDocuments="allDocuments.length ? allDocuments : undefined"
-    :availableDocuments="availableDocuments.length ? availableDocuments : undefined"
+    v-model:chosenQuality="chosenQuality"
     v-model:selectedDocument="selectedDocument"
-    v-model:insertedQuality="insertedQuality"
     v-model:insertedComment="insertedComment"
+    v-model:selectedDocumentMeta="selectedDocumentMeta"
+    v-model:insertedPage="insertedPage"
   />
-  <PrimeButton label="SAVE CHANGES" icon="pi pi-save" style="margin-top: var(--spacing-md)" />
 </template>
 
 <script setup lang="ts">
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
-import { ref } from 'vue';
+import { inject, ref, watchEffect } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import PrimeButton from 'primevue/button';
-import Checkbox from 'primevue/checkbox';
+import RadioButton from 'primevue/radiobutton';
+import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
 
-const dataPointProperties = ref<{
-  //TODO: Remove eslint-disable-next-line
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any;
-  quality: string | undefined;
-  //TODO: Remove eslint-disable-next-line
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dataSource: any;
-  comment: string | undefined;
-} | null>(null);
+const props = defineProps({
+  value: Number,
+  chosenQuality: String,
+  selectedDocument: String,
+  insertedComment: String,
+  insertedPage: String,
+});
 
-const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
-const availableDocuments = ref<{ label: string; value: string }[]>([]);
+const value = ref<number | null>(props.value ?? null);
+const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
+const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
+const insertedComment = ref<string | null>(props.insertedComment ?? null);
+const insertedPage = ref<string | null>(props.insertedPage ?? null);
+const apiBody = ref({});
+const companyId = inject<string>('companyId');
+const reportingPeriod = inject<string>('reportingPeriod');
+const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
+const dataId = inject<string>('dataId');
 
-const insertedQuality = ref<string | undefined>(undefined);
-const insertedComment = ref<string | undefined>(undefined);
-const selectedDocument = ref<string | undefined>(undefined);
-const checkboxValue = [] as Array<string>;
+const emit = defineEmits(['update:apiBody']);
 
-const props = defineProps<{ companyID: string }>();
-
-const options = {
-  yes: 'Yes',
-  no: 'No',
-};
-
-/**
- * Updates a value to represent a "Yes" or "No" state.
- */
-function updateYesNoValue(): void {
-  // TODO: Implement logic for updating yes/no value
-}
+watchEffect(() => {
+  apiBody.value = buildApiBody(
+    value.value,
+    chosenQuality.value,
+    selectedDocument.value,
+    insertedComment.value,
+    insertedPage.value,
+    selectedDocumentMeta.value,
+    companyId!,
+    reportingPeriod!,
+  );
+  emit('update:apiBody', apiBody.value);
+});
 </script>
 
 <style scoped>
-.yes-no-checkboxes {
-  gap: 7rem;
-  align-items: center;
-}
 </style>
