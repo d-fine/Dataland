@@ -32,7 +32,7 @@ const companyId = dialogRef?.value?.data?.companyId;
 const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const dataId = dialogRef?.value?.data?.dataId as string;
 const emit = defineEmits<{
-  dataUpdated: ['dataUpdated'];
+  dataUpdated: [];
 }>();
 provide('companyId', companyId as string);
 provide('reportingPeriod', reportingPeriod as string);
@@ -47,7 +47,6 @@ async function updateDataPoint(): Promise<void> {
     errorMessage.value = error.message;
   });
   dialogRef?.value?.close({ dataUpdated: true });
-  console.log('EditDataPointDialog: emitting dataUpdated');
   emit('dataUpdated')
 }
 </script>

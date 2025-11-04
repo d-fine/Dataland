@@ -37,7 +37,7 @@
               :meta-info="sinlgeDataAndMetaInfo.metaInfo"
               :inReviewMode="inReviewMode"
           />
-          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal(idx)"/>
+          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal(idx, cellOrSectionConfig)"/>
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -90,7 +90,7 @@ import {type DataAndMetaInformation} from '@/api-models/DataAndMetaInformation';
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import {
-  isCellOrSectionVisible,
+  isCellOrSectionVisible, MLDTCellConfig,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
@@ -165,10 +165,12 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(idx: number): void {
+function openEditDataModal(idx: number, cellOrSectionConfig: MLDTCellConfig<T>): void {
   const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
-  const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;
+  const data = props.dataAndMetaInfo[idx]?.data;
+  const dataPoint = data !== undefined ? cellOrSectionConfig.valueGetter(data) : undefined;
+  console.log('MultiLayerDataTableBody: openEditDataModal called for data point', dataPoint);
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -187,12 +189,10 @@ function openEditDataModal(idx: number): void {
     data: {
       companyId: companyId,
       reportingPeriod: reportingPeriod,
-      dataId: dataType,
+      dataPoint: dataPoint,
     },
     onClose: (options) => {
-      console.log('MultiLayerDataTableBody: onClose called', options);
       if (options?.data?.dataUpdated) {
-        console.log('MultiLayerDataTableBody: emitting dataUpdated');
         emit('dataUpdated');
       }
     },
