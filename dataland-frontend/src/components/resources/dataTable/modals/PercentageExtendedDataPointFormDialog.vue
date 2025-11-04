@@ -1,11 +1,6 @@
 <template>
   <h4>Value</h4>
-  <div style="gap: 0.5rem; display: flex">
-    <RadioButton v-model="value" :inputId="'yes-no-yes'" :value="'Yes'" />
-    <label for="yes-no-yes">Yes</label>
-    <RadioButton v-model="value" :inputId="'yes-no-no'" :value="'No'" />
-    <label for="yes-no-no">No</label>
-  </div>
+  <InputNumber id="percentage" mode="decimal" suffix="%" :min="0" :max="100" fluid v-model="value" />
   <ExtendedDataPointFormFieldDialog
     v-model:chosenQuality="chosenQuality"
     v-model:selectedDocument="selectedDocument"
@@ -16,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, inject, watchEffect } from 'vue';
+import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
-import { inject, ref, watchEffect } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import RadioButton from 'primevue/radiobutton';
 import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps({
@@ -30,6 +25,8 @@ const props = defineProps({
   insertedPage: String,
 });
 
+const emit = defineEmits(['update:apiBody']);
+
 const value = ref<number | null>(props.value ?? null);
 const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
 const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
@@ -39,8 +36,6 @@ const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-
-const emit = defineEmits(['update:apiBody']);
 
 watchEffect(() => {
   apiBody.value = buildApiBody(

@@ -24,8 +24,8 @@
       v-if="metaInfoOfAvailableButInaccessibleDataset.length > 0"
       @click="openModalToDisplayInaccessibleDatasets"
       class="mb-4"
-      >REQUEST ACCESS TO MORE DATASETS</PrimeButton
-    >
+      >REQUEST ACCESS TO MORE DATASETS
+    </PrimeButton>
     <MultiLayerDataTable
       :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
@@ -38,6 +38,8 @@
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
       :hideEmptyFields="hideEmptyFields ?? false"
+      :key="updateKey"
+      @dataUpdated="handleDataUpdated"
     />
   </div>
   <div v-if="status == 'InsufficientRights'">
@@ -152,6 +154,7 @@ const updateCounter = ref(0);
 const status = ref<ViewPanelStates>('LoadingDatasets');
 const metaInfoOfAvailableButInaccessibleDataset = ref<DataMetaInformation[]>([]);
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
+const updateKey = ref(Math.random());
 
 watch(
   [
@@ -163,6 +166,15 @@ watch(
   async () => reloadDisplayData(++updateCounter.value),
   { immediate: true }
 );
+
+/**
+ * Handles the dataUpdated event from child components and triggers a reload.
+ */
+function handleDataUpdated(): void {
+  updateKey.value = Math.random();
+  console.log('Data updated event received. Reloading display data.', updateKey.value);
+  void reloadDisplayData(++updateCounter.value);
+}
 
 /**
  * Triggers a reload of the information to be displayed with concurrency conflict handling.

@@ -172,8 +172,6 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
 provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 provide('editModeIsOn', editModeIsOn);
-provide('companyID', props.companyID);
-console.log('Providing companyID:', props.companyID);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();

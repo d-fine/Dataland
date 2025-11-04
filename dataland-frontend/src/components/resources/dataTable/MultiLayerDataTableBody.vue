@@ -37,14 +37,7 @@
             :meta-info="sinlgeDataAndMetaInfo.metaInfo"
             :inReviewMode="inReviewMode"
           />
-          <PrimeButton
-            v-if="editModeIsOn"
-            icon="pi pi-pencil"
-            variant="text"
-            @click.stop="
-              openEditDataModal(idx, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
-            "
-          />
+          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal(idx)" />
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -85,6 +78,7 @@
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
           :inReviewMode="inReviewMode"
+          @dataUpdated="$emit('dataUpdated')"
         />
       </template>
     </template>
@@ -110,7 +104,9 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn');
 const dialog = useDialog();
-const companyID = inject<string>('companyID');
+const emit = defineEmits<{
+  dataUpdated: [];
+}>();
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -170,7 +166,9 @@ onMounted(() => {
  * Opens a modal dialog for editing a data point.
  */
 function openEditDataModal(idx?: number, uploadComponentName?: string, dataPointTypeId?: string): void {
-  const reportingPeriod = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.reportingPeriod;
+  const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
+  const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
+  const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -178,7 +176,7 @@ function openEditDataModal(idx?: number, uploadComponentName?: string, dataPoint
       pt: {
         title: {
           style: {
-            maxWidth: '15em',
+            maxWidth: '20em',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -187,10 +185,18 @@ function openEditDataModal(idx?: number, uploadComponentName?: string, dataPoint
       },
     },
     data: {
-      companyID: companyID,
+      companyId: companyId,
       reportingPeriod: reportingPeriod,
+      dataId: dataType,
       uploadComponentName: uploadComponentName,
       dataPointTypeId: dataPointTypeId,
+    },
+    onClose: (options) => {
+      console.log('MultiLayerDataTableBody: onClose called', options);
+      if (options?.data?.dataUpdated) {
+        console.log('MultiLayerDataTableBody: emitting dataUpdated');
+        emit('dataUpdated');
+      }
     },
   });
 }
@@ -204,6 +210,7 @@ function openEditDataModal(idx?: number, uploadComponentName?: string, dataPoint
 .vertical-align-top {
   vertical-align: top;
 }
+
 .header-column-width {
   width: 30%;
 }
