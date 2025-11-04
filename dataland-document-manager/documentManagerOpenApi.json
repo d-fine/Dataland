@@ -812,6 +812,62 @@
           }
         }
       }
+    },
+    "/{documentId}/deletion-request": {
+      "delete": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Delete a document and its metadata.",
+        "description": "Deletes a document and its metadata.",
+        "operationId": "deleteDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted document.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
     }
   },
   "components": {

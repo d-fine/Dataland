@@ -1,7 +1,11 @@
 package org.dataland.datalandinternalstorage.services
 
-import jakarta.persistence.EntityManager
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,8 +16,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class DocumentStorageService(
-    @Autowired private val entityManager: EntityManager,
     @Autowired private val blobItemRepository: BlobItemRepository,
+    @Autowired private val dataItemRepository: DataItemRepository,
+    @Autowired private val dataPointItemRepository: DataPointItemRepository,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -31,21 +37,24 @@ class DocumentStorageService(
         correlationId: String,
     ): Map<String, List<String>> {
         logger.info("Searching for document references. DocumentId: $documentId. Correlation ID: $correlationId")
-        val dataPointQuery =
-            entityManager.createQuery(
-                "SELECT d.dataPointId FROM DataPointItem d WHERE d.dataPoint LIKE :documentId",
-                String::class.java,
-            )
-        dataPointQuery.setParameter("documentId", "%$documentId%")
-        val dataPointIds = dataPointQuery.resultList
 
-        val datasetQuery =
-            entityManager.createQuery(
-                "SELECT d.id FROM DataItem d WHERE d.data LIKE :documentId",
-                String::class.java,
-            )
-        datasetQuery.setParameter("documentId", "%$documentId%")
-        val datasetIds = datasetQuery.resultList
+        val allDataPoints = dataPointItemRepository.findAll()
+        val dataPointIds: List<String> =
+            allDataPoints
+                .filter { containsDocumentReference(it.dataPoint, documentId) }
+                .map { it.dataPointId }
+
+        val allDatasets = dataItemRepository.findAll()
+        val datasetIds: List<String> =
+            allDatasets
+                .filter { containsDocumentReference(it.data, documentId) }
+                .map { it.id }
+
+        logger.info(
+            "Found document references. DocumentId: $documentId. " +
+                "DataPoints: ${dataPointIds.size}, Datasets: ${datasetIds.size}. " +
+                "Correlation ID: $correlationId",
+        )
 
         return mapOf(
             "dataPointIds" to dataPointIds,
@@ -54,7 +63,34 @@ class DocumentStorageService(
     }
 
     /**
+     * Checks if the given JSON data contains a reference to the specified document ID
+     * Handles datasets (wrapped with "data" field) and data points (direct content)
+     *
+     * @param jsonData the JSON data string from the database
+     * @param documentId the document ID to search for
+     * @return true if the data contains a reference to the document, false otherwise
+     */
+    private fun containsDocumentReference(
+        jsonData: String,
+        documentId: String,
+    ): Boolean =
+        try {
+            val parsedJson = objectMapper.readTree(jsonData)
+
+            if (parsedJson.has("data") && parsedJson.get("data").isTextual) {
+                val innerDataString = parsedJson.get("data").asText()
+                innerDataString.contains(documentId)
+            } else {
+                jsonData.contains(documentId)
+            }
+        } catch (e: com.fasterxml.jackson.core.JsonProcessingException) {
+            logger.warn("Failed to parse JSON data while searching for document $documentId", e)
+            false
+        }
+
+    /**
      * Deletes a document from blob storage
+     * Before deletion, nullifies all file references to this document in datasets and datapoints
      *
      * @param documentId the ID of the document to delete
      * @param correlationId the correlation ID of the current user process
@@ -64,6 +100,218 @@ class DocumentStorageService(
         correlationId: String,
     ) {
         logger.info("Deleting document from blob storage. DocumentId: $documentId. Correlation ID: $correlationId")
+
+        val references = getDocumentReferences(documentId, correlationId)
+
+        val datasetsUpdated =
+            references["datasetIds"]?.count { datasetId ->
+                nullifyFileReferencesInDataset(datasetId, documentId)
+            } ?: 0
+
+        val dataPointsUpdated =
+            references["dataPointIds"]?.count { dataPointId ->
+                nullifyFileReferencesInDataPoint(dataPointId, documentId)
+            } ?: 0
+
+        logger.info(
+            "Nullified file references for document $documentId. " +
+                "Datasets updated: $datasetsUpdated, Data points updated: $dataPointsUpdated. " +
+                "Correlation ID: $correlationId",
+        )
+
         blobItemRepository.deleteById(documentId)
+
+        logger.info("Successfully deleted document. DocumentId: $documentId. Correlation ID: $correlationId")
+    }
+
+    /**
+     * Nullifies file references to the specified document in a dataset
+     * Handles double-encoded JSON by parsing and re-serializing at both levels
+     *
+     * @param datasetId the ID of the dataset to update
+     * @param documentId the ID of the document whose references should be nullified
+     * @return true if the dataset was updated, false otherwise
+     */
+    @Suppress("ReturnCount")
+    private fun nullifyFileReferencesInDataset(
+        datasetId: String,
+        documentId: String,
+    ): Boolean {
+        val dataItem =
+            dataItemRepository.findById(datasetId).orElse(null) ?: run {
+                logger.warn("Dataset $datasetId not found")
+                return false
+            }
+
+        val root = objectMapper.readTree(dataItem.data)
+        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
+        val innerDataString =
+            outerJson.get("data")?.asText() ?: run {
+                logger.warn("Dataset $datasetId has no 'data' field")
+                return false
+            }
+
+        val innerJsonNode = objectMapper.readTree(innerDataString)
+        val modified = nullifyMatchingReferences(innerJsonNode, documentId)
+
+        if (modified) {
+            forceNullHasAttachment(innerJsonNode)
+
+            val updatedInnerData = objectMapper.writeValueAsString(innerJsonNode)
+            (outerJson as ObjectNode).put("data", updatedInnerData)
+            val updatedOuterJson = objectMapper.writeValueAsString(outerJson)
+            val finalData = if (root.isTextual) objectMapper.writeValueAsString(updatedOuterJson) else updatedOuterJson
+            val updatedDataItem = dataItem.copy(data = finalData)
+            dataItemRepository.save(updatedDataItem)
+            logger.info("Nullified references and attachments in dataset $datasetId")
+            return true
+        }
+
+        return false
+    }
+
+    /**
+     * Nullifies file references to the specified document in a data point
+     * Handles both single-encoded and double-encoded JSON formats
+     *
+     * @param dataPointId the ID of the data point to update
+     * @param documentId the ID of the document whose references should be nullified
+     * @return true if the datapoint was updated, false otherwise
+     */
+    @Suppress("ReturnCount")
+    private fun nullifyFileReferencesInDataPoint(
+        dataPointId: String,
+        documentId: String,
+    ): Boolean {
+        val dataPointItem =
+            dataPointItemRepository.findById(dataPointId).orElse(null) ?: run {
+                logger.warn("Datapoint $dataPointId not found")
+                return false
+            }
+
+        val root = objectMapper.readTree(dataPointItem.dataPoint)
+        val targetNode = if (root.isTextual) objectMapper.readTree(root.asText()) else root
+        val modified = nullifyMatchingReferences(targetNode, documentId)
+
+        if (modified) {
+            val updatedJson = objectMapper.writeValueAsString(targetNode)
+            val finalDataPoint = if (root.isTextual) objectMapper.writeValueAsString(updatedJson) else updatedJson
+            val updatedDataPointItem = dataPointItem.copy(dataPoint = finalDataPoint)
+            dataPointItemRepository.save(updatedDataPointItem)
+            logger.info("Nullified references in datapoint $dataPointId")
+            return true
+        }
+
+        return false
+    }
+
+    /**
+     * Recursively searches for and nullifies document reference objects matching the specified document ID
+     * Sets the entire dataSource object to null
+     *
+     * @param node the JSON node to search
+     * @param documentId the document ID to match and nullify
+     * @return true if any modifications were made, false otherwise
+     */
+    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
+    private fun nullifyMatchingReferences(
+        node: JsonNode,
+        documentId: String,
+    ): Boolean {
+        var modified = false
+
+        when {
+            node.isObject -> {
+                val objectNode = node as ObjectNode
+
+                objectNode.properties().forEach { (fieldName, value) ->
+                    when {
+                        value.isObject -> {
+                            if (value.has("fileReference")) {
+                                val fileRefNode = value.get("fileReference")
+                                if (fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId) {
+                                    objectNode.putNull(fieldName)
+                                    modified = true
+                                } else if (nullifyMatchingReferences(value, documentId)) {
+                                    modified = true
+                                }
+                            } else if (nullifyMatchingReferences(value, documentId)) {
+                                modified = true
+                            }
+                        }
+                        value.isArray -> {
+                            if (nullifyMatchingReferences(value, documentId)) {
+                                modified = true
+                            }
+                        }
+                    }
+                }
+            }
+            node.isArray -> {
+                val arrayNode = node as com.fasterxml.jackson.databind.node.ArrayNode
+                for (i in 0 until arrayNode.size()) {
+                    val element = arrayNode.get(i)
+                    if (element.isObject && element.has("fileReference")) {
+                        val fileRefNode = element.get("fileReference")
+                        if (fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId) {
+                            arrayNode.set(
+                                i,
+                                com.fasterxml.jackson.databind.node.NullNode
+                                    .getInstance(),
+                            )
+                            modified = true
+                            continue
+                        }
+                    }
+                    if (nullifyMatchingReferences(element, documentId)) {
+                        modified = true
+                    }
+                }
+            }
+        }
+
+        return modified
+    }
+
+    /**
+     * Sets the attachment field to null in LkSG datasets
+     * Navigates through the nested structure: attachment -> attachment -> attachment (leaf)
+     * This changes "Has Attachment" from "Yes" to null when documents are deleted
+     *
+     * @param dataNode the JSON node to update (typically the inner dataset data)
+     * @return true if the attachment field was found and nullified, false otherwise
+     */
+    private fun forceNullHasAttachment(dataNode: JsonNode): Boolean {
+        val att0 = dataNode.get("attachment")
+        if (att0 != null && att0.isObject) {
+            val att1 = att0.get("attachment")
+            if (att1 != null && att1.isObject) {
+                val att1Obj = att1 as ObjectNode
+                if (att1Obj.has("attachment")) {
+                    att1Obj.putNull("attachment")
+                    return true
+                }
+            }
+        }
+
+        var changed = false
+        when {
+            dataNode.isObject -> {
+                val obj = dataNode as ObjectNode
+                obj.properties().forEach { (_, v) ->
+                    if (forceNullHasAttachment(v)) {
+                        changed = true
+                    }
+                }
+            }
+            dataNode.isArray -> {
+                dataNode.forEach {
+                    if (forceNullHasAttachment(it)) {
+                        changed = true
+                    }
+                }
+            }
+        }
+        return changed
     }
 }
