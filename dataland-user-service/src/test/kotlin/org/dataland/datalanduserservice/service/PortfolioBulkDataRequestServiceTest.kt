@@ -120,6 +120,7 @@ class PortfolioBulkDataRequestServiceTest {
         portfolioName = portfolioName,
         creationTimestamp = TIMESTAMP,
         lastUpdateTimestamp = TIMESTAMP,
+        notificationFrequency = null,
     )
 
     @Test

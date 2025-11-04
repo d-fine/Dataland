@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.time.Instant
 import java.util.UUID
@@ -69,6 +70,12 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
+    )
+    override val notificationFrequency: NotificationFrequency?,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
@@ -80,6 +87,7 @@ data class BasePortfolio(
         companyIds = portfolioUpload.companyIds,
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+        notificationFrequency = portfolioUpload.notificationFrequency,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -91,6 +99,7 @@ data class BasePortfolio(
         companyIds = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+        notificationFrequency = portfolioMonitoringPatch.notificationFrequency,
     )
 
     /**
@@ -102,6 +111,7 @@ data class BasePortfolio(
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
+        notificationFrequency: NotificationFrequency? = this.notificationFrequency,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -112,5 +122,6 @@ data class BasePortfolio(
             companyIds = this.companyIds.toMutableSet(),
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
+            notificationFrequency = notificationFrequency,
         )
 }

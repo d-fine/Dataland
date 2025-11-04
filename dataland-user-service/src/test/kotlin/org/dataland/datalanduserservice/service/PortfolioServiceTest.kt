@@ -274,5 +274,6 @@ class PortfolioServiceTest {
         companyIds = setOf(dummyCompanyId),
         isMonitored = false,
         monitoredFrameworks = emptySet(),
+        notificationFrequency = null,
     )
 }

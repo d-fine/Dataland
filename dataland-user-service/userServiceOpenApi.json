@@ -956,6 +956,17 @@
   },
   "components": {
     "schemas": {
+      "NotificationFrequency": {
+        "type": "string",
+        "description": "Possible frequencies in which notifications can be received.",
+        "example": "Weekly",
+        "enum": [
+          "NoNotification",
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ]
+      },
       "PortfolioUpload": {
         "required": [
           "companyIds",
@@ -996,6 +1007,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
@@ -1064,6 +1078,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
@@ -1107,6 +1124,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },

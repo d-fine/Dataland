@@ -41,6 +41,7 @@ class PortfolioMonitoringServiceTest {
             companyIds = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            notificationFrequency = null,
         )
 
     @BeforeEach
