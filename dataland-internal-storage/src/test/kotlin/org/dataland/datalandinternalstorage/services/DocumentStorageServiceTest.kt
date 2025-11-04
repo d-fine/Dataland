@@ -162,29 +162,6 @@ class DocumentStorageServiceTest {
     }
 
     @Test
-    fun `check that attachment field is nullified when document is deleted from LkSG dataset`() {
-        val lksgDatasetId = UUID.randomUUID().toString()
-        val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, attachmentDoc = documentId)
-
-        whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithAttachment))
-        whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithAttachment))
-
-        documentStorageService.deleteDocument(documentId, correlationId)
-
-        val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
-        verify(mockDataItemRepository).save(savedDataset.capture())
-
-        val savedData = savedDataset.firstValue.data
-        val root = objectMapper.readTree(savedData)
-        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
-        val innerData = objectMapper.readTree(outerJson.get("data").asText())
-
-        val attachmentField = innerData.at("/attachment/attachment/attachment")
-        assert(attachmentField.isNull) { "attachment.attachment.attachment should be null after document deletion" }
-    }
-
-    @Test
     fun `check that deleting one document preserves other document references in same dataset`() {
         val lksgDatasetId = UUID.randomUUID().toString()
         val document1Id = UUID.randomUUID().toString()

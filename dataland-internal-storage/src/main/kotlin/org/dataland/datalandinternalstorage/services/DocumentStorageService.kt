@@ -155,15 +155,13 @@ class DocumentStorageService(
         val modified = nullifyMatchingReferences(innerJsonNode, documentId)
 
         if (modified) {
-            forceNullHasAttachment(innerJsonNode)
-
             val updatedInnerData = objectMapper.writeValueAsString(innerJsonNode)
             (outerJson as ObjectNode).put("data", updatedInnerData)
             val updatedOuterJson = objectMapper.writeValueAsString(outerJson)
             val finalData = if (root.isTextual) objectMapper.writeValueAsString(updatedOuterJson) else updatedOuterJson
             val updatedDataItem = dataItem.copy(data = finalData)
             dataItemRepository.save(updatedDataItem)
-            logger.info("Nullified references and attachments in dataset $datasetId")
+            logger.info("Nullified references in dataset $datasetId")
             return true
         }
 
@@ -305,47 +303,5 @@ class DocumentStorageService(
         }
 
         return modified
-    }
-
-    /**
-     * Sets the attachment field to null in LkSG datasets
-     * Navigates through the nested structure: attachment -> attachment -> attachment (leaf)
-     * This changes "Has Attachment" from "Yes" to null when documents are deleted
-     *
-     * @param dataNode the JSON node to update (typically the inner dataset data)
-     * @return true if the attachment field was found and nullified, false otherwise
-     */
-    private fun forceNullHasAttachment(dataNode: JsonNode): Boolean {
-        val att0 = dataNode.get("attachment")
-        if (att0 != null && att0.isObject) {
-            val att1 = att0.get("attachment")
-            if (att1 != null && att1.isObject) {
-                val att1Obj = att1 as ObjectNode
-                if (att1Obj.has("attachment")) {
-                    att1Obj.putNull("attachment")
-                    return true
-                }
-            }
-        }
-
-        var changed = false
-        when {
-            dataNode.isObject -> {
-                val obj = dataNode as ObjectNode
-                obj.properties().forEach { (_, v) ->
-                    if (forceNullHasAttachment(v)) {
-                        changed = true
-                    }
-                }
-            }
-            dataNode.isArray -> {
-                dataNode.forEach {
-                    if (forceNullHasAttachment(it)) {
-                        changed = true
-                    }
-                }
-            }
-        }
-        return changed
     }
 }

@@ -269,7 +269,7 @@ endobj"""
     }
 
     @Test
-    fun `test that document deletion nullifies file references and attachment in rejected LkSG datasets`() {
+    fun `test that document deletion nullifies file references in rejected LkSG datasets`() {
         val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
