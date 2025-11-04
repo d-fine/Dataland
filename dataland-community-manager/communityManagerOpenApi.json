@@ -1503,7 +1503,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins may query inherited roles."
+            "description": "Only Dataland admins may query the inherited roles of other users."
           },
           "404": {
             "description": "Dataland does not know the specified user ID."
