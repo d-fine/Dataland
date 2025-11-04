@@ -4,7 +4,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -23,7 +22,8 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
-        editComponent = component.getTypescriptFieldAccessor(true),
+        uploadComponentName = component.getUploadComponentName(),
+        dataPointTypeId = component.identifier,
     )
 }
 
@@ -32,7 +32,6 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  */
 fun UploadCategoryBuilder.addStandardUploadConfigCell(
     component: ComponentBase,
-    uploadComponentName: String,
     frameworkUploadOptions: FrameworkUploadOptions? = null,
     unit: String? = null,
     validation: String? = null,
@@ -47,7 +46,7 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         unit = unit,
         required = component.isRequired,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
-        uploadComponentName = uploadComponentName,
+        uploadComponentName = component.getUploadComponentName(),
         frameworkUploadOptions = frameworkUploadOptions,
         validation = validation,
     )

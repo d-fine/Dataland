@@ -246,6 +246,15 @@ open class ComponentBase(
         )
 
     /**
+     * Returns the name of the upload component.
+     */
+    open fun getUploadComponentName(): String =
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement view config conversion.",
+        )
+
+    /**
      * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */

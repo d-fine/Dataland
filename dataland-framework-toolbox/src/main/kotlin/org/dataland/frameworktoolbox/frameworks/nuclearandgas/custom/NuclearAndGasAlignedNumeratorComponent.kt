@@ -50,11 +50,12 @@ class NuclearAndGasAlignedNumeratorComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "NuclearAndGasFormElement"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "NuclearAndGasFormElement",
         )
     }
 

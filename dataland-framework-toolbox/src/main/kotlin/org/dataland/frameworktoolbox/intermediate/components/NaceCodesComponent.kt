@@ -57,11 +57,12 @@ class NaceCodesComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "NaceCodeFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "NaceCodeFormField",
         )
     }
 

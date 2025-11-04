@@ -29,7 +29,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.dataDate),
-            editComponent: 'dataset.general?.general?.dataDate',
+            uploadComponentName: 'DateFormField',
+            dataPointTypeId: 'dataDate',
           },
           {
             type: 'cell',
@@ -52,7 +53,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fiscal Year Deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
-            editComponent: 'dataset.general?.general?.fiscalYearDeviation?.value',
+            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
+            dataPointTypeId: 'fiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -65,7 +67,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fiscal Year End',
                 dataset.general?.general?.fiscalYearEnd
               ),
-            editComponent: 'dataset.general?.general?.fiscalYearEnd?.value',
+            uploadComponentName: 'DateExtendedDataPointFormField',
+            dataPointTypeId: 'fiscalYearEnd',
           },
         ],
       },
@@ -99,7 +102,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -116,7 +120,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 2 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope2GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -133,8 +138,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope2GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -151,8 +156,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope2GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -169,7 +174,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -186,8 +192,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -204,8 +210,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -222,7 +228,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope3GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -239,7 +246,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 3 upstream GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3UpstreamGhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope3UpstreamGhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope3UpstreamGhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -256,7 +264,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 3 downstream GHG emissions ',
                 dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope3DownstreamGhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -273,7 +282,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 and 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2And3GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -290,8 +300,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 and 3 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2And3GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -308,8 +318,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 and 3 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1And2And3GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -326,7 +336,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 4 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope4GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -343,7 +354,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Enterprise Value',
                 dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'enterpriseValueInEUR',
           },
           {
             type: 'cell',
@@ -360,7 +372,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Total Revenue',
                 dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'totalRevenueInEUR',
           },
           {
             type: 'cell',
@@ -377,8 +390,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Carbon footprint',
                 dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEUREnterpriseValue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEUREnterpriseValue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'carbonFootprintInTonnesPerMillionEUREnterpriseValue',
           },
           {
             type: 'cell',
@@ -395,8 +408,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'ghgIntensityInTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -413,8 +426,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 1',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'ghgIntensityScope1InTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -431,8 +444,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 2',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'ghgIntensityScope2InTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -449,8 +462,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 3',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'ghgIntensityScope3InTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -467,8 +480,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 4',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
               ),
-            editComponent:
-              'dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -484,7 +497,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fossil Fuel Sector Exposure',
                 dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'fossilFuelSectorExposure',
           },
           {
             type: 'cell',
@@ -500,7 +514,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Financed scope 1 and scope 2 emissions',
                 dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'financedScope1AndScope2Emissions',
           },
           {
             type: 'cell',
@@ -516,7 +531,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Financed scope 3 emissions',
                 dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions
               ),
-            editComponent: 'dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'financedScope3Emissions',
           },
         ],
       },
@@ -541,7 +557,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'renewableEnergyProductionInGWh',
           },
           {
             type: 'cell',
@@ -558,7 +575,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'renewableEnergyConsumptionInGWh',
           },
           {
             type: 'cell',
@@ -575,7 +593,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyProductionInGWh',
           },
           {
             type: 'cell',
@@ -592,8 +611,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Relative Non-Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'relativeNonRenewableEnergyProductionInPercent',
           },
           {
             type: 'cell',
@@ -610,7 +629,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionInGWh',
           },
           {
             type: 'cell',
@@ -627,8 +647,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Relative Non-Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'relativeNonRenewableEnergyConsumptionInPercent',
           },
           {
             type: 'cell',
@@ -639,7 +659,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               formatHighImpactClimateSectorForDisplay(
                 dataset.environmental?.energyPerformance?.applicableHighImpactClimateSectors
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.applicableHighImpactClimateSectors',
+            uploadComponentName: 'HighImpactClimateSectorsFormField',
+            dataPointTypeId: 'applicableHighImpactClimateSectors',
           },
           {
             type: 'cell',
@@ -656,8 +677,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Total High Impact Climate Sector Energy Consumption',
                 dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'totalHighImpactClimateSectorEnergyConsumptionInGWh',
           },
           {
             type: 'cell',
@@ -674,8 +695,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Fossil Fuels',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionFossilFuelsInGWh',
           },
           {
             type: 'cell',
@@ -692,8 +713,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Crude Oil',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionCrudeOilInGWh',
           },
           {
             type: 'cell',
@@ -710,8 +731,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Natural Gas',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionNaturalGasInGWh',
           },
           {
             type: 'cell',
@@ -728,7 +749,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Lignite',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionLigniteInGWh',
           },
           {
             type: 'cell',
@@ -745,7 +767,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Coal',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionCoalInGWh',
           },
           {
             type: 'cell',
@@ -762,8 +785,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Nuclear Energy',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh
               ),
-            editComponent:
-              'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionNuclearEnergyInGWh',
           },
           {
             type: 'cell',
@@ -780,7 +803,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Other',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh
               ),
-            editComponent: 'dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRenewableEnergyConsumptionOtherInGWh',
           },
         ],
       },
@@ -804,8 +828,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Primary Forest And Wooded Land Of Native Species Exposure',
                 dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure
               ),
-            editComponent:
-              'dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'primaryForestAndWoodedLandOfNativeSpeciesExposure',
           },
           {
             type: 'cell',
@@ -819,7 +843,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Protected Areas Exposure',
                 dataset.environmental?.biodiversity?.protectedAreasExposure
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.protectedAreasExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'protectedAreasExposure',
           },
           {
             type: 'cell',
@@ -835,7 +860,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Rare Or Endangered Ecosystems Exposure',
                 dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'rareOrEndangeredEcosystemsExposure',
           },
           {
             type: 'cell',
@@ -851,7 +877,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Highly Biodiverse Grassland Exposure',
                 dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'highlyBiodiverseGrasslandExposure',
           },
           {
             type: 'cell',
@@ -867,7 +894,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Manufacture Of Agrochemical Pesticides Products',
                 dataset.environmental?.biodiversity?.manufactureOfAgrochemicalPesticidesProducts
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.manufactureOfAgrochemicalPesticidesProducts?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'manufactureOfAgrochemicalPesticidesProducts',
           },
           {
             type: 'cell',
@@ -883,8 +911,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Land Degradation Desertification Soil Sealing Exposure',
                 dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure
               ),
-            editComponent:
-              'dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'landDegradationDesertificationSoilSealingExposure',
           },
           {
             type: 'cell',
@@ -898,7 +926,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Sustainable Agriculture Policy',
                 dataset.environmental?.biodiversity?.sustainableAgriculturePolicy
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.sustainableAgriculturePolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'sustainableAgriculturePolicy',
           },
           {
             type: 'cell',
@@ -914,7 +943,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Sustainable Oceans And Seas Policy',
                 dataset.environmental?.biodiversity?.sustainableOceansAndSeasPolicy
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.sustainableOceansAndSeasPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'sustainableOceansAndSeasPolicy',
           },
           {
             type: 'cell',
@@ -928,7 +958,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Threatened Species Exposure',
                 dataset.environmental?.biodiversity?.threatenedSpeciesExposure
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.threatenedSpeciesExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'threatenedSpeciesExposure',
           },
           {
             type: 'cell',
@@ -942,7 +973,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Biodiversity Protection Policy',
                 dataset.environmental?.biodiversity?.biodiversityProtectionPolicy
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.biodiversityProtectionPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'biodiversityProtectionPolicy',
           },
           {
             type: 'cell',
@@ -956,7 +988,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Deforestation Policy',
                 dataset.environmental?.biodiversity?.deforestationPolicy
               ),
-            editComponent: 'dataset.environmental?.biodiversity?.deforestationPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'deforestationPolicy',
           },
         ],
       },
@@ -978,7 +1011,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions To Water',
                 dataset.environmental?.water?.emissionsToWaterInTonnes
               ),
-            editComponent: 'dataset.environmental?.water?.emissionsToWaterInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'emissionsToWaterInTonnes',
           },
           {
             type: 'cell',
@@ -995,7 +1029,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Consumption',
                 dataset.environmental?.water?.waterConsumptionInCubicMeters
               ),
-            editComponent: 'dataset.environmental?.water?.waterConsumptionInCubicMeters?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'waterConsumptionInCubicMeters',
           },
           {
             type: 'cell',
@@ -1009,7 +1044,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Reused',
                 dataset.environmental?.water?.waterReusedInCubicMeters
               ),
-            editComponent: 'dataset.environmental?.water?.waterReusedInCubicMeters?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'waterReusedInCubicMeters',
           },
           {
             type: 'cell',
@@ -1026,7 +1062,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Relative Water Usage',
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
               ),
-            editComponent: 'dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'relativeWaterUsageInCubicMetersPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -1040,7 +1077,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Management Policy',
                 dataset.environmental?.water?.waterManagementPolicy
               ),
-            editComponent: 'dataset.environmental?.water?.waterManagementPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'waterManagementPolicy',
           },
           {
             type: 'cell',
@@ -1054,7 +1092,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'High Water Stress Area Exposure',
                 dataset.environmental?.water?.highWaterStressAreaExposure
               ),
-            editComponent: 'dataset.environmental?.water?.highWaterStressAreaExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'highWaterStressAreaExposure',
           },
         ],
       },
@@ -1079,7 +1118,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Hazardous and Radioactive Waste',
                 dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes
               ),
-            editComponent: 'dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'hazardousAndRadioactiveWasteInTonnes',
           },
           {
             type: 'cell',
@@ -1093,7 +1133,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Recycled Waste',
                 dataset.environmental?.waste?.nonRecycledWasteInTonnes
               ),
-            editComponent: 'dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'nonRecycledWasteInTonnes',
           },
         ],
       },
@@ -1118,7 +1159,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions of Inorganic Pollutants',
                 dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes
               ),
-            editComponent: 'dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'emissionsOfInorganicPollutantsInTonnes',
           },
           {
             type: 'cell',
@@ -1135,7 +1177,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions of Air Pollutants',
                 dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes
               ),
-            editComponent: 'dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'emissionsOfAirPollutantsInTonnes',
           },
           {
             type: 'cell',
@@ -1152,7 +1195,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions of Ozone Depletion Substances',
                 dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes
               ),
-            editComponent: 'dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'emissionsOfOzoneDepletionSubstancesInTonnes',
           },
           {
             type: 'cell',
@@ -1166,7 +1210,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Carbon Reduction Initiatives',
                 dataset.environmental?.emissions?.carbonReductionInitiatives
               ),
-            editComponent: 'dataset.environmental?.emissions?.carbonReductionInitiatives?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'carbonReductionInitiatives',
           },
         ],
       },
@@ -1198,7 +1243,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Legal Proceedings',
                 dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'humanRightsLegalProceedings',
           },
           {
             type: 'cell',
@@ -1211,7 +1257,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'ILO Core Labour Standards',
                 dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'iloCoreLabourStandards',
           },
           {
             type: 'cell',
@@ -1224,7 +1271,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Environmental Policy',
                 dataset.social?.socialAndEmployeeMatters?.environmentalPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'environmentalPolicy',
           },
           {
             type: 'cell',
@@ -1239,7 +1287,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Corruption Legal Proceedings',
                 dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'corruptionLegalProceedings',
           },
           {
             type: 'cell',
@@ -1255,7 +1304,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Transparency Disclosure Policy',
                 dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'transparencyDisclosurePolicy',
           },
           {
             type: 'cell',
@@ -1271,7 +1321,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Due Diligence Policy',
                 dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'humanRightsDueDiligencePolicy',
           },
           {
             type: 'cell',
@@ -1284,7 +1335,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Child Labour',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'policyAgainstChildLabour',
           },
           {
             type: 'cell',
@@ -1299,7 +1351,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Forced Labour',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'policyAgainstForcedLabour',
           },
           {
             type: 'cell',
@@ -1314,7 +1367,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Discrimination in the Workplace',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'policyAgainstDiscriminationInTheWorkplace',
           },
           {
             type: 'cell',
@@ -1327,7 +1381,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'ISO 14001 Certificate',
                 dataset.social?.socialAndEmployeeMatters?.iso14001Certificate
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'iso14001Certificate',
           },
           {
             type: 'cell',
@@ -1343,7 +1398,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Bribery and Corruption',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'policyAgainstBriberyAndCorruption',
           },
           {
             type: 'cell',
@@ -1359,7 +1415,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fair Business Marketing Advertising Policy',
                 dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'fairBusinessMarketingAdvertisingPolicy',
           },
           {
             type: 'cell',
@@ -1375,7 +1432,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Technologies Expertise Transfer Policy',
                 dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'technologiesExpertiseTransferPolicy',
           },
           {
             type: 'cell',
@@ -1389,7 +1447,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fair Competition Policy',
                 dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'fairCompetitionPolicy',
           },
           {
             type: 'cell',
@@ -1405,7 +1464,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Violation Of Tax Rules And Regulation',
                 dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'violationOfTaxRulesAndRegulation',
           },
           {
             type: 'cell',
@@ -1421,7 +1481,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'UN Global Compact Principles Compliance Policy',
                 dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'unGlobalCompactPrinciplesCompliancePolicy',
           },
           {
             type: 'cell',
@@ -1438,8 +1499,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'OECD Guidelines For Multinational Enterprises Grievance Handling',
                 dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling
               ),
-            editComponent:
-              'dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'oecdGuidelinesForMultinationalEnterprisesGrievanceHandling',
           },
           {
             type: 'cell',
@@ -1451,7 +1512,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees,
                 'Average Gross Hourly Earnings Male Employees'
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees?.value',
+            uploadComponentName: 'CurrencyDataPointFormField',
+            dataPointTypeId: 'averageGrossHourlyEarningsMaleEmployees',
           },
           {
             type: 'cell',
@@ -1463,7 +1525,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees,
                 'Average Gross Hourly Earnings Female Employees'
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees?.value',
+            uploadComponentName: 'CurrencyDataPointFormField',
+            dataPointTypeId: 'averageGrossHourlyEarningsFemaleEmployees',
           },
           {
             type: 'cell',
@@ -1480,7 +1543,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Unadjusted gender pay gap',
                 dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'unadjustedGenderPayGapInPercent',
           },
           {
             type: 'cell',
@@ -1497,7 +1561,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Female Board Members - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersSupervisoryBoard
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersSupervisoryBoard?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'femaleBoardMembersSupervisoryBoard',
           },
           {
             type: 'cell',
@@ -1513,7 +1578,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Female Board Members - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersBoardOfDirectors
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersBoardOfDirectors?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'femaleBoardMembersBoardOfDirectors',
           },
           {
             type: 'cell',
@@ -1530,7 +1596,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Male Board Members - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.maleBoardMembersSupervisoryBoard
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.maleBoardMembersSupervisoryBoard?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'maleBoardMembersSupervisoryBoard',
           },
           {
             type: 'cell',
@@ -1546,7 +1613,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Male Board Members - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.maleBoardMembersBoardOfDirectors
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.maleBoardMembersBoardOfDirectors?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'maleBoardMembersBoardOfDirectors',
           },
           {
             type: 'cell',
@@ -1563,8 +1631,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Board gender diversity - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.boardGenderDiversitySupervisoryBoardInPercent
               ),
-            editComponent:
-              'dataset.social?.socialAndEmployeeMatters?.boardGenderDiversitySupervisoryBoardInPercent?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'boardGenderDiversitySupervisoryBoardInPercent',
           },
           {
             type: 'cell',
@@ -1581,8 +1649,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Board gender diversity - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent
               ),
-            editComponent:
-              'dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'boardGenderDiversityBoardOfDirectorsInPercent',
           },
           {
             type: 'cell',
@@ -1598,7 +1666,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Controversial Weapons Exposure',
                 dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'controversialWeaponsExposure',
           },
           {
             type: 'cell',
@@ -1614,7 +1683,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Workplace Accident Prevention Policy',
                 dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'workplaceAccidentPreventionPolicy',
           },
           {
             type: 'cell',
@@ -1628,7 +1698,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Rate Of Accidents',
                 dataset.social?.socialAndEmployeeMatters?.rateOfAccidents
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'rateOfAccidents',
           },
           {
             type: 'cell',
@@ -1641,7 +1712,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Workdays Lost',
                 dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'workdaysLostInDays',
           },
           {
             type: 'cell',
@@ -1655,7 +1727,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Supplier Code Of Conduct',
                 dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'supplierCodeOfConduct',
           },
           {
             type: 'cell',
@@ -1671,7 +1744,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Grievance Handling Mechanism',
                 dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'grievanceHandlingMechanism',
           },
           {
             type: 'cell',
@@ -1687,7 +1761,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Whistleblower Protection Policy',
                 dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'whistleblowerProtectionPolicy',
           },
           {
             type: 'cell',
@@ -1704,7 +1779,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Reported Incidents Of Discrimination',
                 dataset.social?.socialAndEmployeeMatters?.reportedIncidentsOfDiscrimination
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.reportedIncidentsOfDiscrimination?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'reportedIncidentsOfDiscrimination',
           },
           {
             type: 'cell',
@@ -1721,7 +1797,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Sanctioned Incidents Of Discrimination',
                 dataset.social?.socialAndEmployeeMatters?.sanctionedIncidentsOfDiscrimination
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.sanctionedIncidentsOfDiscrimination?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'sanctionedIncidentsOfDiscrimination',
           },
           {
             type: 'cell',
@@ -1735,7 +1812,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Excessive CEO pay ratio',
                 dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio
               ),
-            editComponent: 'dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'excessiveCeoPayRatio',
           },
         ],
       },
@@ -1757,7 +1835,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Securities Not Certified As Green',
                 dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen
               ),
-            editComponent: 'dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'securitiesNotCertifiedAsGreen',
           },
         ],
       },
@@ -1779,7 +1858,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Policy',
                 dataset.social?.humanRights?.humanRightsPolicy
               ),
-            editComponent: 'dataset.social?.humanRights?.humanRightsPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'humanRightsPolicy',
           },
           {
             type: 'cell',
@@ -1793,7 +1873,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Due Diligence',
                 dataset.social?.humanRights?.humanRightsDueDiligence
               ),
-            editComponent: 'dataset.social?.humanRights?.humanRightsDueDiligence?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'humanRightsDueDiligence',
           },
           {
             type: 'cell',
@@ -1807,7 +1888,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Trafficking In Human Beings Policy',
                 dataset.social?.humanRights?.traffickingInHumanBeingsPolicy
               ),
-            editComponent: 'dataset.social?.humanRights?.traffickingInHumanBeingsPolicy?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'traffickingInHumanBeingsPolicy',
           },
           {
             type: 'cell',
@@ -1821,7 +1903,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Reported Child Labour Incidents',
                 dataset.social?.humanRights?.reportedChildLabourIncidents
               ),
-            editComponent: 'dataset.social?.humanRights?.reportedChildLabourIncidents?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'reportedChildLabourIncidents',
           },
           {
             type: 'cell',
@@ -1837,7 +1920,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Reported Forced Or Compulsory Labour Incidents',
                 dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents
               ),
-            editComponent: 'dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'reportedForcedOrCompulsoryLabourIncidents',
           },
           {
             type: 'cell',
@@ -1854,7 +1938,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Number Of Reported Incidents Of Human Rights Violations',
                 dataset.social?.humanRights?.numberOfReportedIncidentsOfHumanRightsViolations
               ),
-            editComponent: 'dataset.social?.humanRights?.numberOfReportedIncidentsOfHumanRightsViolations?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'numberOfReportedIncidentsOfHumanRightsViolations',
           },
         ],
       },
@@ -1880,8 +1965,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Cases of Insufficient Action against Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.casesOfInsufficientActionAgainstBriberyAndCorruption
               ),
-            editComponent:
-              'dataset.social?.antiCorruptionAndAntiBribery?.casesOfInsufficientActionAgainstBriberyAndCorruption?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'casesOfInsufficientActionAgainstBriberyAndCorruption',
           },
           {
             type: 'cell',
@@ -1898,8 +1983,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Reported Convictions Of Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption
               ),
-            editComponent:
-              'dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'reportedConvictionsOfBriberyAndCorruption',
           },
           {
             type: 'cell',
@@ -1912,8 +1997,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.antiCorruptionAndAntiBribery?.totalAmountOfReportedFinesOfBriberyAndCorruption,
                 'Total Amount Of Reported Fines Of Bribery and Corruption'
               ),
-            editComponent:
-              'dataset.social?.antiCorruptionAndAntiBribery?.totalAmountOfReportedFinesOfBriberyAndCorruption?.value',
+            uploadComponentName: 'CurrencyDataPointFormField',
+            dataPointTypeId: 'totalAmountOfReportedFinesOfBriberyAndCorruption',
           },
         ],
       },

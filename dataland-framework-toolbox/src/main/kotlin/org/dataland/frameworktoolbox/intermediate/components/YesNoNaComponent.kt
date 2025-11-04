@@ -46,20 +46,23 @@ class YesNoNaComponent(
         )
     }
 
+    /**
+     * Returns the name of the upload component based on the document support type.
+     */
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "YesNoNaFormField"
+            is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
+            is ExtendedDocumentSupport -> "YesNoNaExtendedDataPointFormField"
+            else -> throw IllegalArgumentException(
+                "YesNoNaComponent does not support document support " +
+                    "'$documentSupport",
+            )
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponentNameToUse =
-            when (documentSupport) {
-                is NoDocumentSupport -> "YesNoNaFormField"
-                is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
-                is ExtendedDocumentSupport -> "YesNoNaExtendedDataPointFormField"
-                else -> throw IllegalArgumentException(
-                    "YesNoNaComponent does not support document support " +
-                        "'$documentSupport",
-                )
-            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = uploadComponentNameToUse,
         )
     }
 

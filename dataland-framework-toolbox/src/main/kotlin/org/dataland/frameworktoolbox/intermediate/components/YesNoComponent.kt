@@ -43,17 +43,17 @@ class YesNoComponent(
         )
     }
 
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "YesNoFormField"
+            is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
+            is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
+            else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponentNameToUse =
-            when (documentSupport) {
-                is NoDocumentSupport -> "YesNoFormField"
-                is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
-                is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
-                else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
-            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = uploadComponentNameToUse,
         )
     }
 

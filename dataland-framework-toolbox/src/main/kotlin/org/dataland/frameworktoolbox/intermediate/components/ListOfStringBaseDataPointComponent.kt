@@ -67,10 +67,11 @@ class ListOfStringBaseDataPointComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "ListOfBaseDataPointsFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "ListOfBaseDataPointsFormField",
         )
     }
 

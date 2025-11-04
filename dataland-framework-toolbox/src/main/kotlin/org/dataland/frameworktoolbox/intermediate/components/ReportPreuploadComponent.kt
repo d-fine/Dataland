@@ -72,11 +72,12 @@ class ReportPreuploadComponent(
         // Component not displayed on view page
     }
 
+    override fun getUploadComponentName(): String = "UploadReports"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "UploadReports",
         )
     }
 

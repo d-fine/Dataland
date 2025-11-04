@@ -43,7 +43,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Fiscal Year Deviation',
             dataset.general?.fiscalYearDeviation
           ),
-        editComponent: 'dataset.general?.fiscalYearDeviation?.value',
       },
       {
         type: 'cell',
@@ -56,7 +55,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Fiscal Year End',
             dataset.general?.fiscalYearEnd
           ),
-        editComponent: 'dataset.general?.fiscalYearEnd?.value',
       },
       {
         type: 'cell',
@@ -69,7 +67,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Scope Of Entities',
             dataset.general?.scopeOfEntities
           ),
-        editComponent: 'dataset.general?.scopeOfEntities?.value',
       },
       {
         type: 'cell',
@@ -82,7 +79,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'NFRD Mandatory',
             dataset.general?.nfrdMandatory
           ),
-        editComponent: 'dataset.general?.nfrdMandatory?.value',
       },
       {
         type: 'cell',
@@ -95,7 +91,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'EU Taxonomy Activity Level Reporting',
             dataset.general?.euTaxonomyActivityLevelReporting
           ),
-        editComponent: 'dataset.general?.euTaxonomyActivityLevelReporting?.value',
       },
       {
         type: 'cell',
@@ -104,7 +99,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
-        editComponent: 'dataset.general?.assurance',
       },
       {
         type: 'cell',
@@ -113,7 +107,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceProviderForDataTable(dataset.general?.assurance),
-        editComponent: 'dataset.general?.assurance',
       },
       {
         type: 'cell',
@@ -127,7 +120,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Number of Employees',
             dataset.general?.numberOfEmployees
           ),
-        editComponent: 'dataset.general?.numberOfEmployees?.value',
       },
       {
         type: 'cell',
@@ -141,7 +133,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'UN Global Compact Principles Compliance Policy',
             dataset.general?.unGlobalCompactPrinciplesCompliancePolicy
           ),
-        editComponent: 'dataset.general?.unGlobalCompactPrinciplesCompliancePolicy?.value',
       },
       {
         type: 'cell',
@@ -157,7 +148,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'OECD Guidelines for Multinational Enterprises Compliance Policy',
             dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy
           ),
-        editComponent: 'dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy?.value',
       },
       {
         type: 'cell',
@@ -170,7 +160,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'ILO Core Labour Standards',
             dataset.general?.iloCoreLabourStandards
           ),
-        editComponent: 'dataset.general?.iloCoreLabourStandards?.value',
       },
       {
         type: 'cell',
@@ -184,7 +173,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Human Rights Due Diligence',
             dataset.general?.humanRightsDueDiligence
           ),
-        editComponent: 'dataset.general?.humanRightsDueDiligence?.value',
       },
     ],
     labelBadgeColor: 'orange',
@@ -202,7 +190,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.revenue?.totalAmount, 'Total Amount'),
-        editComponent: 'dataset.revenue?.totalAmount?.value',
       },
       {
         type: 'section',
@@ -222,7 +209,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.revenue?.nonEligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.revenue?.nonEligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -232,7 +218,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.revenue?.nonEligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -254,7 +239,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.revenue?.eligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.revenue?.eligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -264,7 +248,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.eligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.revenue?.eligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -286,7 +269,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.revenue?.nonAlignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.revenue?.nonAlignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -296,7 +278,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.revenue?.nonAlignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -311,7 +292,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'revenue'
           ),
-        editComponent: 'dataset.revenue?.nonAlignedActivities?.value',
       },
       {
         type: 'section',
@@ -331,7 +311,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.revenue?.alignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.revenue?.alignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -341,7 +320,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.alignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.revenue?.alignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -358,7 +336,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -373,7 +350,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -388,8 +364,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -405,7 +379,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -421,8 +394,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value',
       },
       {
         type: 'cell',
@@ -437,7 +408,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
             dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -452,7 +422,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -467,8 +436,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
             dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -484,7 +451,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
             dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -503,8 +469,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -523,8 +487,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -544,8 +506,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -565,8 +525,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -581,7 +539,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -596,7 +553,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -611,8 +567,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
             dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -628,8 +582,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
             dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -645,8 +597,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
             dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -662,7 +612,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned
           ),
-        editComponent: 'dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -679,8 +628,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
             dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -696,8 +643,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
             dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -716,8 +661,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -736,8 +679,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -757,8 +698,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -778,8 +717,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.revenue
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -793,7 +730,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'revenue'
           ),
-        editComponent: 'dataset.revenue?.alignedActivities?.value',
       },
       {
         type: 'cell',
@@ -807,7 +743,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Enabling Share In Percent',
             dataset.revenue?.enablingShareInPercent
           ),
-        editComponent: 'dataset.revenue?.enablingShareInPercent?.value',
       },
       {
         type: 'cell',
@@ -821,7 +756,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Transitional Share In Percent',
             dataset.revenue?.transitionalShareInPercent
           ),
-        editComponent: 'dataset.revenue?.transitionalShareInPercent?.value',
       },
     ],
     labelBadgeColor: 'green',
@@ -840,7 +774,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.capex?.totalAmount, 'Total Amount'),
-        editComponent: 'dataset.capex?.totalAmount?.value',
       },
       {
         type: 'section',
@@ -860,7 +793,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.capex?.nonEligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.capex?.nonEligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -870,7 +802,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.capex?.nonEligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -892,7 +823,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.capex?.eligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.capex?.eligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -902,7 +832,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.eligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.capex?.eligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -924,7 +853,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.capex?.nonAlignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.capex?.nonAlignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -934,7 +862,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.capex?.nonAlignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -949,7 +876,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'capex'
           ),
-        editComponent: 'dataset.capex?.nonAlignedActivities?.value',
       },
       {
         type: 'section',
@@ -969,7 +895,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.capex?.alignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.capex?.alignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -979,7 +904,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.alignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.capex?.alignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -996,7 +920,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1011,7 +934,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1026,8 +948,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1043,7 +963,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1059,8 +978,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value',
       },
       {
         type: 'cell',
@@ -1075,7 +992,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
             dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1090,7 +1006,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1105,8 +1020,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
             dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1122,7 +1035,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
             dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
           ),
-        editComponent: 'dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1141,8 +1053,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.capex
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1160,8 +1070,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1181,8 +1089,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.capex
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1202,8 +1108,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.capex
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1218,7 +1122,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible
           ),
-        editComponent: 'dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1233,7 +1136,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
-        editComponent: 'dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1248,8 +1150,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
             dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1264,8 +1164,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
             dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1281,7 +1179,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
             dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible
           ),
-        editComponent: 'dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1297,7 +1194,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
           ),
-        editComponent: 'dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1313,8 +1209,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
             dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1330,8 +1224,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
             dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1349,8 +1241,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
             dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value',
       },
       {
         type: 'cell',
@@ -1368,8 +1258,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1389,8 +1277,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.capex
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds?.value',
       },
       {
         type: 'cell',
@@ -1410,8 +1296,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             dataset.capex
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
           ),
-        editComponent:
-          'dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare?.value',
       },
       {
         type: 'cell',
@@ -1425,7 +1309,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'capex'
           ),
-        editComponent: 'dataset.capex?.alignedActivities?.value',
       },
       {
         type: 'cell',
@@ -1439,7 +1322,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Enabling Share In Percent',
             dataset.capex?.enablingShareInPercent
           ),
-        editComponent: 'dataset.capex?.enablingShareInPercent?.value',
       },
       {
         type: 'cell',
@@ -1453,7 +1335,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Transitional Share In Percent',
             dataset.capex?.transitionalShareInPercent
           ),
-        editComponent: 'dataset.capex?.transitionalShareInPercent?.value',
       },
     ],
     labelBadgeColor: 'yellow',
@@ -1472,7 +1353,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.opex?.totalAmount, 'Total Amount'),
-        editComponent: 'dataset.opex?.totalAmount?.value',
       },
       {
         type: 'section',
@@ -1492,7 +1372,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.opex?.nonEligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.opex?.nonEligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -1502,7 +1381,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.opex?.nonEligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -1524,7 +1402,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.opex?.eligibleShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.opex?.eligibleShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -1534,7 +1411,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.eligibleShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.opex?.eligibleShare?.absoluteShare?.value',
           },
         ],
       },
@@ -1556,7 +1432,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.opex?.nonAlignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.opex?.nonAlignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -1566,7 +1441,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.opex?.nonAlignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -1577,7 +1451,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, 'Non-Aligned Activities', 'opex'),
-        editComponent: 'dataset.opex?.nonAlignedActivities?.value',
       },
       {
         type: 'section',
@@ -1597,7 +1470,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                 'Relative Share in Percent',
                 dataset.opex?.alignedShare?.relativeShareInPercent
               ),
-            editComponent: 'dataset.opex?.alignedShare?.relativeShareInPercent?.value',
           },
           {
             type: 'cell',
@@ -1607,7 +1479,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.alignedShare?.absoluteShare, 'Absolute Share'),
-            editComponent: 'dataset.opex?.alignedShare?.absoluteShare?.value',
           },
         ],
       },
@@ -1624,7 +1495,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
-        editComponent: 'dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1639,7 +1509,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned
           ),
-        editComponent: 'dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1657,8 +1526,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
-        editComponent:
-          'dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1673,7 +1540,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
-        editComponent: 'dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1689,7 +1555,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
           ),
-        editComponent: 'dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1707,8 +1572,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
-        editComponent:
-          'dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value',
       },
       {
         type: 'cell',
@@ -1721,7 +1584,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'opex'
           ),
-        editComponent: 'dataset.opex?.alignedActivities?.value',
       },
       {
         type: 'cell',
@@ -1735,7 +1597,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Enabling Share In Percent',
             dataset.opex?.enablingShareInPercent
           ),
-        editComponent: 'dataset.opex?.enablingShareInPercent?.value',
       },
       {
         type: 'cell',
@@ -1749,7 +1610,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Transitional Share In Percent',
             dataset.opex?.transitionalShareInPercent
           ),
-        editComponent: 'dataset.opex?.transitionalShareInPercent?.value',
       },
     ],
     labelBadgeColor: 'blue',
