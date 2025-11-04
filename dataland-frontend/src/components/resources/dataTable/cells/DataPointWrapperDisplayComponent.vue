@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <PrimeButton
-      variant="text"
+      variant="link"
       v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
       @click="$dialog.open(DataPointDataTable, modalOptions)"
     >
@@ -13,12 +13,11 @@
     <div v-else>
       <slot></slot>
     </div>
-    <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click="openEditDataModal()" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
+import { computed } from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
@@ -27,15 +26,6 @@ import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
 import { isDatapointCommentConsideredMissing } from '@/components/resources/dataTable/conversion/DataPoints';
 import PrimeButton from 'primevue/button';
-import EditDataDialog from '@/components/resources/dataTable/modals/EditDataDialog.vue';
-import { useDialog } from 'primevue/usedialog';
-import { DocumentMetaInfoResponse } from '@clients/documentmanager';
-const selectedDocument = ref<string | null>(null);
-
-const dialog = useDialog();
-const editModeIsOn = inject('editModeIsOn');
-const availableDocuments = inject('availableDocuments') as { label: string; value: string }[];
-const allDocuments = inject('allDocuments') as DocumentMetaInfoResponse[];
 
 const props = defineProps<{
   content: MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>;
@@ -82,32 +72,4 @@ const isAnyDataPointPropertyAvailableThatIsWorthShowingInModal = computed(() => 
     !isDatapointCommentConsideredMissing(dataPointProperties.value) || quality != undefined || dataSource != undefined
   );
 });
-
-/**
- * Opens the edit data modal.
- */
-function openEditDataModal(): void {
-  dialog.open(EditDataDialog, {
-    props: {
-      modal: true,
-      header: 'Edit Data Point',
-      pt: {
-        title: {
-          style: {
-            maxWidth: '15em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          },
-        },
-      },
-    },
-    data: {
-      dataPointProperties: dataPointProperties.value,
-      availableDocuments: availableDocuments,
-      allDocuments: allDocuments,
-      selectedDocument: selectedDocument.value,
-    },
-  });
-}
 </script>

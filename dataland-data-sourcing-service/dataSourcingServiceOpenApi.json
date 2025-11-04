@@ -147,7 +147,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
+                    "$ref": "#/components/schemas/ExtendedStoredRequest"
                   }
                 }
               }
@@ -944,7 +944,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredRequest"
+                  "$ref": "#/components/schemas/ExtendedStoredRequest"
                 }
               }
             }
@@ -1025,6 +1025,59 @@
           },
           "404": {
             "description": "The specified request ID does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/user": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get all stored data requests of the user making the request.",
+        "description": "Gets all the stored data request created by the user who is making the request.",
+        "operationId": "getRequestsForRequestingUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data requests for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedStoredRequest"
+                  }
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -1600,6 +1653,21 @@
             "items": {
               "$ref": "#/components/schemas/RequestPriority"
             }
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "companySearchString": {
+            "type": "string",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers.",
+            "example": "Inc."
           }
         }
       },
@@ -1612,10 +1680,11 @@
           "Processed"
         ]
       },
-      "StoredRequest": {
+      "ExtendedStoredRequest": {
         "required": [
           "companyId",
-          "creationTimeStamp",
+          "companyName",
+          "creationTimestamp",
           "dataType",
           "id",
           "lastModifiedDate",
@@ -1641,7 +1710,7 @@
           "userId": {
             "type": "string"
           },
-          "creationTimeStamp": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           },
@@ -1662,6 +1731,12 @@
             "$ref": "#/components/schemas/RequestState"
           },
           "dataSourcingEntityId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "userEmailAddress": {
             "type": "string"
           }
         }
@@ -1778,6 +1853,60 @@
             "items": {
               "$ref": "#/components/schemas/BasicDataDimensions"
             }
+          }
+        }
+      },
+      "StoredRequest": {
+        "required": [
+          "companyId",
+          "creationTimestamp",
+          "dataType",
+          "id",
+          "lastModifiedDate",
+          "reportingPeriod",
+          "requestPriority",
+          "state",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "memberComment": {
+            "type": "string"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "dataSourcingEntityId": {
+            "type": "string"
           }
         }
       },

@@ -90,8 +90,8 @@ data class CompanyInformationPatch(
     )
     val sectorCodeWz: String? = null,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_MAP_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_MAP_EXAMPLE,
     )
     val identifiers: Map<IdentifierType, List<String>>? = null,
     @field:Schema(

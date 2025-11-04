@@ -45,9 +45,9 @@ class RequestControllerTest {
         assertEquals(request.reportingPeriod, storedRequest.reportingPeriod)
         assertEquals(request.memberComment, storedRequest.memberComment)
 
-        assertTrue(timeBeforeUpload < storedRequest.creationTimeStamp)
-        assertTrue(storedRequest.creationTimeStamp < Instant.now().toEpochMilli())
-        assertEquals(storedRequest.creationTimeStamp, storedRequest.lastModifiedDate)
+        assertTrue(timeBeforeUpload < storedRequest.creationTimestamp)
+        assertTrue(storedRequest.creationTimestamp < Instant.now().toEpochMilli())
+        assertEquals(storedRequest.creationTimestamp, storedRequest.lastModifiedDate)
         assertEquals(RequestState.Open, storedRequest.state)
     }
 

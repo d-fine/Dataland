@@ -37,6 +37,7 @@
             :meta-info="sinlgeDataAndMetaInfo.metaInfo"
             :inReviewMode="inReviewMode"
           />
+          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal()" />
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -93,10 +94,16 @@ import {
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import Tooltip from 'primevue/tooltip';
-import { computed, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
+import PrimeButton from 'primevue/button';
+import { useDialog } from 'primevue/usedialog';
+import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
+const editModeIsOn = inject('editModeIsOn');
+const dialog = useDialog();
+const companyID = inject<string>('companyID');
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -151,6 +158,31 @@ const props = defineProps<{
 onMounted(() => {
   expandSectionsOnPageLoad();
 });
+
+/**
+ * Opens a modal dialog for editing a data point.
+ */
+function openEditDataModal(): void {
+  dialog.open(EditDataPointDialog, {
+    props: {
+      modal: true,
+      header: 'Edit Data Point',
+      pt: {
+        title: {
+          style: {
+            maxWidth: '15em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
+      },
+    },
+    data: {
+      companyID: companyID,
+    },
+  });
+}
 </script>
 
 <style scoped>

@@ -65,12 +65,8 @@
               v-if="isEditableByCurrentUser"
               @click="editModeIsOn = !editModeIsOn"
               data-test="editDatasetButton"
-              :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'EXIT EDIT MODE'"
-              :icon="
-                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
-                  ? 'pi pi-chevron-down'
-                  : 'pi pi-pencil'
-              "
+              :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
+              :icon="'pi pi-pencil'"
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
             <PrimeButton
@@ -138,7 +134,6 @@ import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '
 import { useDialog } from 'primevue/usedialog';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
-import { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 const props = defineProps<{
   companyID: string;
@@ -164,9 +159,6 @@ const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
-const availableDocuments = ref<{ label: string; value: string }[]>([]);
 const editModeIsOn = ref(false);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
@@ -180,8 +172,8 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
 provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 provide('editModeIsOn', editModeIsOn);
-provide('availableDocuments', availableDocuments);
-provide('allDocuments', allDocuments);
+provide('companyID', props.companyID);
+console.log('Providing companyID:', props.companyID);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -259,37 +251,7 @@ onMounted(async () => {
     await getAllActiveDataForCurrentCompanyAndFramework();
   }
   await setViewPageAttributesForUser();
-  await updateDocumentsList();
 });
-
-/**
- * Fetches the list of documents from the API and updates the availableDocuments and allDocuments refs.
- */
-async function updateDocumentsList(): Promise<void> {
-  try {
-    const documentControllerApi = apiClientProvider.apiClients.documentController;
-    const response = await documentControllerApi.searchForDocumentMetaInformation(props.companyID);
-    allDocuments.value = response.data;
-
-    availableDocuments.value = allDocuments.value
-      .filter((doc) => doc.documentName && doc.documentId)
-      .map((doc) => ({
-        label: doc.documentName!,
-        value: doc.documentId,
-      }));
-  } catch (error) {
-    console.error('Error fetching documents:', error);
-    allDocuments.value = [];
-    availableDocuments.value = [];
-  }
-}
-
-/**
- * Navigates to the new dataset creation page
- */
-function linkToNewDataset(): void {
-  void router.push(`/companies/${props.companyID}/frameworks/upload`);
-}
 
 /**
  * Sets dataset quality status to the given status
@@ -389,30 +351,6 @@ async function setViewPageAttributesForUser(): Promise<void> {
   }
 
   hideEmptyFields.value = !hasUserReviewerRights.value;
-}
-
-/**
- * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
- * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
- * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
- * @param event event
- */
-async function editDataset(event: Event): Promise<void> {
-  if (props.singleDataMetaInfoToDisplay) {
-    await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
-  } else if (availableReportingPeriods.value.length > 1) {
-    reportingPeriodsOverlayPanel.value?.toggle(event);
-  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
-    await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
-  }
-}
-
-/**
- * Navigates to the data update form by using templateDataId
- * @param dataId dataId
- */
-async function goToUpdateFormByDataId(dataId: string): Promise<void> {
-  await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
 }
 
 /**

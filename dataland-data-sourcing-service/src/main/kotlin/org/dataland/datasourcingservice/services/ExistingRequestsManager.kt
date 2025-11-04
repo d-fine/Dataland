@@ -4,6 +4,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
@@ -25,6 +26,7 @@ class ExistingRequestsManager
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
+        private val requestQueryManager: RequestQueryManager, // Inject RequestQueryManager
     ) {
         private val requestLogger = RequestLogger()
 
@@ -35,8 +37,10 @@ class ExistingRequestsManager
          * @throws RequestNotFoundApiException If no data request with the given ID exists.
          */
         @Transactional(readOnly = true)
-        fun getRequest(dataRequestId: UUID): StoredRequest =
-            requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)?.toStoredDataRequest()
+        fun getRequest(dataRequestId: UUID): ExtendedStoredRequest =
+            requestRepository
+                .findByIdAndFetchDataSourcingEntity(dataRequestId)
+                ?.let { requestQueryManager.transformRequestEntityToExtendedStoredRequest(it) }
                 ?: throw RequestNotFoundApiException(
                     dataRequestId,
                 ).also { requestLogger.logMessageForGettingDataRequest(dataRequestId, UUID.randomUUID()) }
