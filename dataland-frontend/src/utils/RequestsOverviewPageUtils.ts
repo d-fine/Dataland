@@ -18,7 +18,7 @@ export function customCompareForRequestState(a: RequestState, b: RequestState, s
   sortOrderRequestState[RequestState.Processing] = 2;
   sortOrderRequestState[RequestState.Open] = 3;
   sortOrderRequestState[RequestState.Withdrawn] = 4;
-  if (sortOrderRequestState[a] <= sortOrderRequestState[b]) return -1 * sortOrder;
+  if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
 }
 

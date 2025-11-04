@@ -93,7 +93,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeGranted,
-              vsmeFixtures[0].t,
+              vsmeFixtures[0]!.t,
               []
             );
           })
@@ -102,7 +102,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeDeclined,
-              vsmeFixtures[1].t,
+              vsmeFixtures[1]!.t,
               []
             )
           )
@@ -111,7 +111,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodWithoutRequest,
-              vsmeFixtures[1].t,
+              vsmeFixtures[1]!.t,
               []
             )
           );

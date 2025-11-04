@@ -102,7 +102,7 @@ function onTabChange(newIndex: number | string): void {
 function setVisibilityForTabWithQualityAssurance(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise)
     .then((hasUserReviewerRights) => {
-      tabs.value[3].isVisible = hasUserReviewerRights;
+      tabs.value[3]!.isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
 }
@@ -117,7 +117,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
-    tabs.value[6].isVisible = companyOwnershipAssignments.length > 0;
+    tabs.value[6]!.isVisible = companyOwnershipAssignments.length > 0;
   }
 }
 
@@ -128,8 +128,8 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
 function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
-      tabs.value[7].isVisible = hasUserAdminRights;
-      tabs.value[8].isVisible = hasUserAdminRights;
+      tabs.value[7]!.isVisible = hasUserAdminRights;
+      tabs.value[8]!.isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }

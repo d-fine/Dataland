@@ -21,7 +21,7 @@ export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQa
 
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithOneCorrection(
-      generateFixtureDataset<SfdrQaReport>(generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand, 1)[0]
+      generateFixtureDataset<SfdrQaReport>(generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand, 1)[0]!
     )
   );
   return preparedFixtures;
