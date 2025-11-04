@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class NotificationFrequency {
-    NoNotification,
+    NoNotifications,
     Daily,
     Weekly,
     Monthly,
