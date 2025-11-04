@@ -6,7 +6,7 @@
       data-test="activateMonitoringToggle"
       @update:modelValue="onMonitoringToggled"
     />
-
+    <p class="header-styling">Notification Frequency</p>
     <p class="header-styling">Frameworks</p>
     <div>
       <div
