@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,7 +30,21 @@ interface InheritedRolesApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved inherited roles for the user."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved inherited roles for the user.",
+                content = [
+                    Content(
+                        schema =
+                            Schema(
+                                type = "object",
+                                additionalPropertiesSchema = Array<String>::class,
+                                description = CommunityManagerOpenApiDescriptionsAndExamples.INHERITED_ROLES_MAP_DESCRIPTION,
+                                example = CommunityManagerOpenApiDescriptionsAndExamples.INHERITED_ROLES_MAP_EXAMPLE,
+                            ),
+                    ),
+                ],
+            ),
             ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland admins may query the inherited roles of other users.",

@@ -12,7 +12,7 @@ import org.mockito.kotlin.reset
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InheritedRolesControllerTest {
+class InheritedRolesControllerUnitTest {
     private val mockInheritedRolesManager = mock<InheritedRolesManager>()
     private lateinit var inheritedRolesController: InheritedRolesController
 

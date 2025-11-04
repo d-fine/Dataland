@@ -1497,6 +1497,12 @@
                     "items": {
                       "type": "string"
                     }
+                  },
+                  "description": "A map from Dataland company IDs to the list of inherited roles in those companies for the specified user.",
+                  "example": {
+                    "c9710c7b-9cd6-446b-85b0-3773d2aceb48": [
+                      "DatalandMember"
+                    ]
                   }
                 }
               }
@@ -2289,10 +2295,13 @@
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyRight": {
             "type": "string",
+            "description": "One of the Dataland-specific rights which can be assigned to a company on Dataland.",
             "enum": [
               "Member",
               "Provider"

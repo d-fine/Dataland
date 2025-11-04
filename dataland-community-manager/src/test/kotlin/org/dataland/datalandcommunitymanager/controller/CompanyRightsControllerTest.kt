@@ -32,7 +32,7 @@ import java.util.UUID
 class CompanyRightsControllerTest
     @Autowired
     constructor(
-        val mockMvc: MockMvc,
+        private val mockMvc: MockMvc,
     ) {
         @MockitoBean
         private lateinit var companyDataControllerClient: CompanyDataControllerApi

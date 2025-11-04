@@ -37,7 +37,7 @@ class RequestCreationServiceTest
     ) : BaseIntegrationTest() {
         private lateinit var mockAuthentication: DatalandAuthentication
         private val mockSecurityContext = mock<SecurityContext>()
-        private val premiumUserId = UUID.randomUUID().toString()
+        private val memberUserId = UUID.randomUUID().toString()
         private val mockDataSourcingValidator = mock<DataSourcingValidator>()
         private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
         private lateinit var requestCreationService: RequestCreationService
@@ -46,10 +46,10 @@ class RequestCreationServiceTest
         @BeforeEach
         fun setup() {
             resetSecurityContext(
-                premiumUserId,
+                memberUserId,
                 setOf(DatalandRealmRole.ROLE_USER),
             )
-            doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(premiumUserId)
+            doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(memberUserId)
             requestCreationService =
                 RequestCreationService(
                     dataSourcingValidator = mockDataSourcingValidator,
@@ -130,7 +130,7 @@ class RequestCreationServiceTest
 
         @Test
         fun `storeRequest does not throw QuotaExceededException for premium user over quota`() {
-            val userId = UUID.fromString(premiumUserId)
+            val userId = UUID.fromString(memberUserId)
             val companyId = UUID.randomUUID()
             val memberComment = testComment
             for (i in 1..requestCreationService.maxRequestsForUser) {

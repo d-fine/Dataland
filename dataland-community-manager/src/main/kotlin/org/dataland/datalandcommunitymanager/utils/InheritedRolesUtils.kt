@@ -10,10 +10,13 @@ object InheritedRolesUtils {
     /**
      * Get the (company-specific) inherited roles of the user based on the rights of the company.
      */
-    fun getInheritedRoles(companyRights: List<CompanyRight>): List<InheritedRole> =
+    fun getInheritedRoles(companyRights: List<CompanyRight>): List<InheritedRole> {
+        val inheritedRoles = mutableListOf<InheritedRole>()
+
         if (companyRights.contains(CompanyRight.Member)) {
-            listOf(InheritedRole.DatalandMember)
-        } else {
-            emptyList()
+            inheritedRoles.add(InheritedRole.DatalandMember)
         }
+
+        return inheritedRoles
+    }
 }
