@@ -7,6 +7,15 @@
       @update:modelValue="onMonitoringToggled"
     />
     <p class="header-styling">Notification Frequency</p>
+    <Select
+      v-model="selectedNotificationOption"
+      :options="notificationOptions"
+      :disabled="!isMonitoringActive"
+      optionLabel="label"
+      optionValue="value"
+      data-test="notification-options"
+      style="min-width: 14rem"
+    />
     <p class="header-styling">Frameworks</p>
     <div>
       <div
@@ -55,6 +64,7 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
+import Select from 'primevue/select';
 
 type MonitoringOption = {
   value: string;
@@ -68,6 +78,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
   .portfolioController;
 
+const notificationOptions = ref([
+  { label: 'No Notifications', value: 'noNotifications' },
+  { label: 'Daily Notifications', value: 'daily' },
+  { label: 'Weekly Notifications', value: 'weekly' },
+  { label: 'Monthly Notifications', value: 'monthly' },
+]);
+const selectedNotificationOption = ref('weekly');
 const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'sfdr', label: 'SFDR', isActive: false },
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
