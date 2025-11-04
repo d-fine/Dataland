@@ -152,9 +152,10 @@ class DocumentStorageService(
             }
 
         val innerJsonNode = objectMapper.readTree(innerDataString)
-        val modified = nullifyMatchingReferences(innerJsonNode, documentId)
+        val referencesModified = nullifyMatchingReferences(innerJsonNode, documentId)
+        val attachmentCleaned = cleanupAttachmentStructure(innerJsonNode)
 
-        if (modified) {
+        if (referencesModified || attachmentCleaned) {
             val updatedInnerData = objectMapper.writeValueAsString(innerJsonNode)
             (outerJson as ObjectNode).put("data", updatedInnerData)
             val updatedOuterJson = objectMapper.writeValueAsString(outerJson)
@@ -303,5 +304,29 @@ class DocumentStorageService(
         }
 
         return modified
+    }
+
+    /**
+     * Cleans up attachment structure after dataSource nullification
+     * If attachment.attachment.attachment has a null dataSource, nullifies the entire attachment object
+     * This ensures consistency with the schema for datasets without attachments
+     *
+     * @param dataNode the JSON node to clean up (typically the inner dataset data)
+     * @return true if the attachment structure was cleaned up, false otherwise
+     */
+    private fun cleanupAttachmentStructure(dataNode: JsonNode): Boolean {
+        val attachment0 = dataNode.get("attachment")?.takeIf { it.isObject }
+        val attachment1 = attachment0?.get("attachment")?.takeIf { it.isObject }
+        val attachment2 = attachment1?.get("attachment")?.takeIf { it.isObject }
+
+        return when {
+            attachment1 == null -> false
+            attachment2 == null -> false
+            attachment2.get("dataSource")?.isNull != true -> false
+            else -> {
+                (attachment1 as ObjectNode).putNull("attachment")
+                true
+            }
+        }
     }
 }

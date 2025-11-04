@@ -197,6 +197,29 @@ class DocumentStorageServiceTest {
         verify(mockBlobItemRepository).deleteById(document1Id)
     }
 
+    @Test
+    fun `check that attachment structure is cleaned up when dataSource is nullified`() {
+        val lksgDatasetId = UUID.randomUUID().toString()
+        val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, attachmentDoc = documentId)
+
+        whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithAttachment))
+        whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithAttachment))
+
+        documentStorageService.deleteDocument(documentId, correlationId)
+
+        val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
+        verify(mockDataItemRepository).save(savedDataset.capture())
+
+        val savedData = savedDataset.firstValue.data
+        val root = objectMapper.readTree(savedData)
+        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
+        val innerData = objectMapper.readTree(outerJson.get("data").asText())
+
+        val attachmentField = innerData.at("/attachment/attachment/attachment")
+        assert(attachmentField.isNull) { "attachment.attachment.attachment should be null after document deletion" }
+    }
+
     private fun createLksgDataset(
         datasetId: String,
         governanceDoc1: String? = null,
