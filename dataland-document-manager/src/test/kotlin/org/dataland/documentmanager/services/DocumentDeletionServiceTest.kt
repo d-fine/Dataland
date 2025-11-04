@@ -20,6 +20,11 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DocumentDeletionServiceTest {
+    companion object {
+        private const val TEST_COMPANY_ID = "44444444-4444-4444-4444-444444444444"
+        private const val TEST_COMPANY_NAME = "Great Company Inc."
+    }
+
     private lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     private lateinit var mockStorageControllerApi: StorageControllerApi
     private lateinit var mockQaControllerApi: QaControllerApi
@@ -71,8 +76,8 @@ class DocumentDeletionServiceTest {
         val rejectedDatasetQaReview =
             QaReviewResponse(
                 dataId = testDatasetId1,
-                companyId = "44444444-4444-4444-4444-444444444444",
-                companyName = "Great Company Inc.",
+                companyId = TEST_COMPANY_ID,
+                companyName = TEST_COMPANY_NAME,
                 framework = "sfdr",
                 reportingPeriod = "2023",
                 timestamp = System.currentTimeMillis(),
@@ -84,8 +89,8 @@ class DocumentDeletionServiceTest {
         val rejectedDataPointQaReview =
             DataPointQaReviewInformation(
                 dataPointId = testDataPointId1,
-                companyId = "44444444-4444-4444-4444-444444444444",
-                companyName = "Great Company Inc.",
+                companyId = TEST_COMPANY_ID,
+                companyName = TEST_COMPANY_NAME,
                 dataPointType = "emissions",
                 reportingPeriod = "2023",
                 timestamp = System.currentTimeMillis(),
@@ -103,7 +108,7 @@ class DocumentDeletionServiceTest {
     }
 
     @Test
-    fun `check that document with non-rejected dataset reference throws ConflictApiException`() {
+    fun `check that document with non rejected dataset reference throws ConflictApiException`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             mapOf(
@@ -115,8 +120,8 @@ class DocumentDeletionServiceTest {
         val pendingDatasetQaReview =
             QaReviewResponse(
                 dataId = testDatasetId1,
-                companyId = "44444444-4444-4444-4444-444444444444",
-                companyName = "Great Company Inc.",
+                companyId = TEST_COMPANY_ID,
+                companyName = TEST_COMPANY_NAME,
                 framework = "sfdr",
                 reportingPeriod = "2023",
                 timestamp = System.currentTimeMillis(),
@@ -155,7 +160,7 @@ class DocumentDeletionServiceTest {
     }
 
     @Test
-    fun `check that non-existent document throws DocumentNotFoundException`() {
+    fun `check that non existent document throws DocumentNotFoundException`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(false)
 
         assertThrows<DocumentNotFoundException> {

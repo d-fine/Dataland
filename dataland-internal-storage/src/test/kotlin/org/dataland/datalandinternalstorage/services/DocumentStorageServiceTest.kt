@@ -7,7 +7,6 @@ import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -126,8 +125,8 @@ class DocumentStorageServiceTest {
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertTrue(result["dataPointIds"]!!.isEmpty())
-        assertTrue(result["datasetIds"]!!.isEmpty())
+        assertEquals(emptyList<String>(), result["dataPointIds"])
+        assertEquals(emptyList<String>(), result["datasetIds"])
     }
 
     @Test

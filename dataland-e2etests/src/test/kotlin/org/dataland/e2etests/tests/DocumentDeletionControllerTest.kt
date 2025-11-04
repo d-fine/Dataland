@@ -78,7 +78,7 @@ endobj"""
     }
 
     @Test
-    fun `test that deleting a non-existent document returns 404`() {
+    fun `test that deleting a non existent document returns 404`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistentDocumentId = "nonExistentDocumentId"
 
