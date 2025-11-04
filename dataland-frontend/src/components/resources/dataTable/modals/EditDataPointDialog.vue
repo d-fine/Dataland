@@ -31,7 +31,9 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const errorMessage = ref('')
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyID = dialogRef?.value?.data?.companyID;
+const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 provide('companyID', companyID as string);
+provide('reportingPeriod', reportingPeriod as string);
 
 /**
  * Updates the data point with the current API body.

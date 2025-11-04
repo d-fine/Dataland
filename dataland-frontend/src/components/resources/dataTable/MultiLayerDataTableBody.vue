@@ -37,7 +37,7 @@
             :meta-info="sinlgeDataAndMetaInfo.metaInfo"
             :inReviewMode="inReviewMode"
           />
-          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal()" />
+          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal(idx)" />
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -162,7 +162,8 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(): void {
+function openEditDataModal(idx?: number): void {
+  const reportingPeriod = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.reportingPeriod;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -180,6 +181,7 @@ function openEditDataModal(): void {
     },
     data: {
       companyID: companyID,
+      reportingPeriod: reportingPeriod,
     },
   });
 }

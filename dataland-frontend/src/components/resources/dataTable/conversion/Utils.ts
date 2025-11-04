@@ -80,7 +80,8 @@ export function buildApiBody(
     insertedComment: string | null,
     insertedPage: string | null,
     selectedDocumentMeta: DocumentMetaInfoResponse | null,
-    companyID: string
+    companyID: string,
+    reportingPeriod: string
 ): {
     dataPoint: string,
     dataPointType: string,
@@ -103,6 +104,6 @@ export function buildApiBody(
         dataPoint: JSON.stringify(dataPointObj),
         dataPointType: "extendedDecimalEstimatedMarketCapitalizationInEUR",
         companyId: companyID,
-        reportingPeriod: "2024"
+        reportingPeriod: reportingPeriod
     };
 }
