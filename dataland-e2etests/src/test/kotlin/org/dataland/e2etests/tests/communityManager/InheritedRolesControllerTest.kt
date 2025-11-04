@@ -17,7 +17,7 @@ class InheritedRolesControllerTest {
 
     @ParameterizedTest
     @EnumSource(TechnicalUser::class)
-    fun `verify that only Dataland admins can retrieve inherited roles`(user: TechnicalUser) {
+    fun `verify that only Dataland admins can retrieve inherited roles of other users`(user: TechnicalUser) {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
 
         if (user == TechnicalUser.Admin) {
@@ -27,5 +27,13 @@ class InheritedRolesControllerTest {
                 inheritedRolesControllerApi.getInheritedRoles(UUID.randomUUID().toString())
             }
         }
+    }
+
+    @ParameterizedTest
+    @EnumSource(TechnicalUser::class)
+    fun `verify that every user can retrieve his or her own inherited roles`(user: TechnicalUser) {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        assertDoesNotThrow { inheritedRolesControllerApi.getInheritedRoles(user.technicalUserId) }
     }
 }

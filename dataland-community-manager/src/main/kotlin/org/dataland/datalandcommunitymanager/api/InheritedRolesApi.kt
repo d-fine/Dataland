@@ -32,7 +32,7 @@ interface InheritedRolesApi {
             ApiResponse(responseCode = "200", description = "Successfully retrieved inherited roles for the user."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland admins may query inherited roles.",
+                description = "Only Dataland admins may query the inherited roles of other users.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -46,7 +46,7 @@ interface InheritedRolesApi {
         value = ["/{userId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@InheritedRolesManager.requesterMayQueryInheritedRoles(#userId)")
     fun getInheritedRoles(
         @PathVariable("userId") userId: String,
     ): ResponseEntity<Map<String, List<String>>>

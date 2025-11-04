@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.utils.InheritedRolesUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -44,5 +46,16 @@ class InheritedRolesManager
             }
 
             return inheritedRolesMap
+        }
+
+        /**
+         * Check whether the authenticated user may query inherited roles for the specified user ID.
+         */
+        fun requesterMayQueryInheritedRoles(userId: String): Boolean {
+            val authentication = DatalandAuthentication.fromContext()
+
+            if (!authentication.isAuthenticated) return false
+
+            return authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN) || authentication.userId == userId
         }
     }

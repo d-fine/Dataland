@@ -4,6 +4,8 @@ import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -12,6 +14,8 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,7 +24,24 @@ class InheritedRolesManagerTest {
     private val mockCompanyRightsManager = mock<CompanyRightsManager>()
     private lateinit var inheritedRolesManager: InheritedRolesManager
 
-    private val userId = UUID.randomUUID()
+    private val adminId = UUID.randomUUID()
+    private val nonAdminId = UUID.randomUUID()
+
+    private val dummyAdminAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            username = "DATA_ADMIN",
+            userId = adminId.toString(),
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN),
+        )
+
+    private val dummyNonAdminAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            username = "DATA_READER",
+            userId = nonAdminId.toString(),
+            roles = setOf(DatalandRealmRole.ROLE_USER),
+        )
+
+    private val mockSecurityContext = mock<SecurityContext>()
 
     private val companyIdWithoutRights = UUID.randomUUID()
     private val companyIdWithMemberOnlyRights = UUID.randomUUID()
@@ -47,7 +68,7 @@ class InheritedRolesManagerTest {
         CompanyRoleAssignmentEntity(
             companyRole = CompanyRole.entries.random(),
             companyId = companyId.toString(),
-            userId = userId.toString(),
+            userId = nonAdminId.toString(),
         )
 
     @BeforeEach
@@ -55,6 +76,7 @@ class InheritedRolesManagerTest {
         reset(
             mockCompanyRolesManager,
             mockCompanyRightsManager,
+            mockSecurityContext,
         )
 
         doReturn(
@@ -62,7 +84,7 @@ class InheritedRolesManagerTest {
         ).whenever(mockCompanyRolesManager).getCompanyRoleAssignmentsByParameters(
             companyRole = null,
             companyId = null,
-            userId = userId.toString(),
+            userId = nonAdminId.toString(),
         )
         doReturn(emptyList<CompanyRight>()).whenever(mockCompanyRightsManager).getCompanyRights(companyIdWithoutRights)
         doReturn(listOf(CompanyRight.Member)).whenever(mockCompanyRightsManager).getCompanyRights(companyIdWithMemberOnlyRights)
@@ -80,7 +102,25 @@ class InheritedRolesManagerTest {
 
     @Test
     fun `check that getInheritedRoles behaves as expected`() {
-        val actualInheritedRolesMap = inheritedRolesManager.getInheritedRoles(userId)
+        val actualInheritedRolesMap = inheritedRolesManager.getInheritedRoles(nonAdminId)
         assertEquals(expectedInheritedRolesMap, actualInheritedRolesMap)
+    }
+
+    @Test
+    fun `check that requesterMayQueryInheritedRoles behaves as expected for admins`() {
+        doReturn(dummyAdminAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+
+        assert(inheritedRolesManager.requesterMayQueryInheritedRoles(adminId.toString()))
+        assert(inheritedRolesManager.requesterMayQueryInheritedRoles(nonAdminId.toString()))
+    }
+
+    @Test
+    fun `check that requesterMayQueryInheritedRoles behaves as expected for nonadmins`() {
+        doReturn(dummyNonAdminAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+
+        assert(!inheritedRolesManager.requesterMayQueryInheritedRoles(adminId.toString()))
+        assert(inheritedRolesManager.requesterMayQueryInheritedRoles(nonAdminId.toString()))
     }
 }
