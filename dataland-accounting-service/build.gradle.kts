@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
+    implementation(Spring.boot.amqp)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
     implementation(Spring.boot.security)

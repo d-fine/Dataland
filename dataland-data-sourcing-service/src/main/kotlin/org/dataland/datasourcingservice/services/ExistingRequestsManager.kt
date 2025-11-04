@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -26,7 +27,9 @@ class ExistingRequestsManager
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val requestQueryManager: RequestQueryManager, // Inject RequestQueryManager
+        private val dataSourcingServiceMessageSender: DataSourcingServiceMessageSender,
+        private val companyRolesControllerApi: CompanyRolesControllerApi,
+        private val requestQueryManager: RequestQueryManager,
     ) {
         private val requestLogger = RequestLogger()
 
@@ -75,7 +78,23 @@ class ExistingRequestsManager
             }
 
             if (newRequestState == RequestState.Processing) {
-                dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
+                val billedCompanyId =
+                    companyRolesControllerApi
+                        .getExtendedCompanyRoleAssignments(userId = requestEntity.userId)
+                        .firstOrNull()
+                        ?.companyId
+                if (billedCompanyId == null) {
+                    throw InvalidInputApiException(
+                        summary = "No company to bill found.",
+                        message = "The user for whom the request is to be set to Processing does not have a role in any company.",
+                    )
+                }
+                val dataSourcingEntity = dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
+                dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
+                    billedCompanyId = billedCompanyId,
+                    dataSourcingEntity = dataSourcingEntity,
+                    requestEntity = requestEntity,
+                )
             } else {
                 requestRepository.save(requestEntity)
             }
