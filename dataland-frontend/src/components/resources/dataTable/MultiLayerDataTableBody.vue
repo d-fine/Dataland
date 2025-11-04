@@ -37,7 +37,14 @@
             :meta-info="sinlgeDataAndMetaInfo.metaInfo"
             :inReviewMode="inReviewMode"
           />
-          <PrimeButton v-if="editModeIsOn" icon="pi pi-pencil" variant="text" @click.stop="openEditDataModal(idx, cellOrSectionConfig)" />
+          <PrimeButton
+            v-if="editModeIsOn"
+            icon="pi pi-pencil"
+            variant="text"
+            @click.stop="
+              openEditDataModal(idx, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
+            "
+          />
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -90,7 +97,7 @@ import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import {
-  isCellOrSectionVisible, MLDTCellConfig,
+  isCellOrSectionVisible,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
@@ -166,8 +173,8 @@ onMounted(() => {
  * Opens a modal dialog for editing a data point.
  */
 function openEditDataModal(idx?: number, uploadComponentName?: string, dataPointTypeId?: string): void {
-  const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
-  const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
+  const reportingPeriod = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.reportingPeriod;
+  const companyId = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.companyId;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -186,7 +193,6 @@ function openEditDataModal(idx?: number, uploadComponentName?: string, dataPoint
     data: {
       companyId: companyId,
       reportingPeriod: reportingPeriod,
-      dataPoint: dataPoint,
       uploadComponentName: uploadComponentName,
       dataPointTypeId: dataPointTypeId,
     },
