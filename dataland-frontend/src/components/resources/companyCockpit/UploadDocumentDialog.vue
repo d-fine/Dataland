@@ -149,6 +149,7 @@ import type Keycloak from 'keycloak-js';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { AxiosError, isAxiosError } from 'axios';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
+import dayjs from 'dayjs';
 
 const props = defineProps<{ visible: boolean; companyId: string }>();
 const emit = defineEmits(['close', 'document-uploaded', 'conflict']);
@@ -192,7 +193,7 @@ async function handleDocumentUpload(): Promise<void> {
     documentName: documentName.value,
     documentCategory: documentCategory.value!,
     companyIds: [props.companyId] as unknown as Set<string>,
-    publicationDate: publicationDate.value ? publicationDate.value.toISOString().split('T')[0] : undefined,
+    publicationDate: publicationDate.value ? dayjs(publicationDate.value).format('YYYY-MM-DD') : undefined,
     reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
   };
   await documentControllerApi.postDocument(fileToUpload, documentMetaInfo);
