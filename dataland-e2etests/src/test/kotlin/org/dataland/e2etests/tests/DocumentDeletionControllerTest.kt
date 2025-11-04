@@ -67,14 +67,12 @@ endobj"""
 
     @Test
     fun `test that a document with no references can be deleted successfully`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
     }
 
     @Test
@@ -88,40 +86,35 @@ endobj"""
 
     @Test
     fun `test that users without proper authorization cannot delete documents`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader)
-        val documentId = uploadResponse.documentId
+        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
 
         for (role in arrayOf(TechnicalUser.Reader, TechnicalUser.Reviewer)) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(role)
             val exception = assertThrows<ClientException> { documentControllerClient.deleteDocument(documentId) }
             assertEquals(403, exception.statusCode)
 
-            documentControllerClient.checkDocument(documentId)
+            assertDocumentExists(documentId)
         }
     }
 
     @Test
     fun `test that admin can delete any document`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader)
-        val documentId = uploadResponse.documentId
+        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
     }
 
     @Test
     fun `test that uploader can delete their own document`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader)
-        val documentId = uploadResponse.documentId
+        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
     }
 
     @Test
@@ -202,8 +195,7 @@ endobj"""
 
     @Test
     fun `test that document with LkSG dataset reference in Rejected status can be deleted`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
         val testCompanyInformation =
@@ -235,8 +227,7 @@ endobj"""
 
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
     }
 
     @Test
@@ -260,8 +251,7 @@ endobj"""
 
     @Test
     fun `test that document with data point reference in Rejected status can be deleted`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
 
         val companyId = createCompany()
 
@@ -275,14 +265,12 @@ endobj"""
 
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
     }
 
     @Test
     fun `test that document deletion nullifies file references and attachment in rejected LkSG datasets`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
         val testCompanyInformation =
@@ -314,8 +302,7 @@ endobj"""
 
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
 
         val retrievedDataset = Backend.lksgDataControllerApi.getCompanyAssociatedLksgData(dataId).data
         val riskManagementSystem = retrievedDataset.governance?.riskManagementOwnOperations?.riskManagementSystem
@@ -327,8 +314,7 @@ endobj"""
 
     @Test
     fun `test that document deletion nullifies file references in rejected datapoints`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
 
         val companyId = createCompany()
 
@@ -342,13 +328,23 @@ endobj"""
 
         documentControllerClient.deleteDocument(documentId)
 
-        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
-        assertEquals(404, exception.statusCode)
+        assertDocumentDeleted(documentId)
 
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
         val innerData = unwrapPossiblyEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
         val dataSourceNode = innerData.get("dataSource")
         assertTrue(dataSourceNode == null || dataSourceNode.isNull, "Entire dataSource object should be null after document deletion")
+    }
+
+    private fun uploadDocumentAndGetId(): String = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf()).documentId
+
+    private fun assertDocumentDeleted(documentId: String) {
+        val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
+        assertEquals(404, exception.statusCode)
+    }
+
+    private fun assertDocumentExists(documentId: String) {
+        documentControllerClient.checkDocument(documentId)
     }
 
     private fun addDocumentReferenceToLksgDataset(
@@ -361,13 +357,11 @@ endobj"""
                 fileName = "TestDoc.pdf",
                 publicationDate = LocalDate.now(),
             )
-
         val riskManagementSystemWithDoc =
             BaseDataPointYesNo(
                 value = YesNo.Yes,
                 dataSource = documentReference,
             )
-
         val updatedGovernance =
             dataset.governance?.copy(
                 riskManagementOwnOperations =
@@ -375,7 +369,6 @@ endobj"""
                         riskManagementSystem = riskManagementSystemWithDoc,
                     ),
             )
-
         return dataset.copy(governance = updatedGovernance)
     }
 

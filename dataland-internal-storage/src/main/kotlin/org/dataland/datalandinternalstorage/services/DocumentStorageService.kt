@@ -206,6 +206,76 @@ class DocumentStorageService(
     }
 
     /**
+     * Checks if a JSON node contains a fileReference field matching the specified document ID
+     *
+     * @param node the JSON node to check
+     * @param documentId the document ID to match
+     * @return true if the node has a matching fileReference, false otherwise
+     */
+    private fun hasMatchingFileReference(
+        node: JsonNode,
+        documentId: String,
+    ): Boolean {
+        if (!node.isObject || !node.has("fileReference")) return false
+        val fileRefNode = node.get("fileReference")
+        return fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId
+    }
+
+    /**
+     * Processes a single field in an object node, checking and nullifying matching file references
+     *
+     * @param objectNode the parent object node
+     * @param fieldName the name of the field being processed
+     * @param value the value of the field
+     * @param documentId the document ID to match
+     * @return true if any modifications were made, false otherwise
+     */
+    private fun processObjectField(
+        objectNode: ObjectNode,
+        fieldName: String,
+        value: JsonNode,
+        documentId: String,
+    ): Boolean =
+        when {
+            value.isObject -> {
+                if (hasMatchingFileReference(value, documentId)) {
+                    objectNode.putNull(fieldName)
+                    true
+                } else {
+                    nullifyMatchingReferences(value, documentId)
+                }
+            }
+            value.isArray -> nullifyMatchingReferences(value, documentId)
+            else -> false
+        }
+
+    /**
+     * Processes a single element in an array, checking and nullifying matching file references
+     *
+     * @param arrayNode the parent array node
+     * @param index the index of the element being processed
+     * @param element the element to process
+     * @param documentId the document ID to match
+     * @return true if any modifications were made, false otherwise
+     */
+    private fun processArrayElement(
+        arrayNode: com.fasterxml.jackson.databind.node.ArrayNode,
+        index: Int,
+        element: JsonNode,
+        documentId: String,
+    ): Boolean {
+        if (hasMatchingFileReference(element, documentId)) {
+            arrayNode.set(
+                index,
+                com.fasterxml.jackson.databind.node.NullNode
+                    .getInstance(),
+            )
+            return true
+        }
+        return nullifyMatchingReferences(element, documentId)
+    }
+
+    /**
      * Recursively searches for and nullifies document reference objects matching the specified document ID
      * Sets the entire dataSource object to null
      *
@@ -213,7 +283,6 @@ class DocumentStorageService(
      * @param documentId the document ID to match and nullify
      * @return true if any modifications were made, false otherwise
      */
-    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
     private fun nullifyMatchingReferences(
         node: JsonNode,
         documentId: String,
@@ -223,49 +292,14 @@ class DocumentStorageService(
         when {
             node.isObject -> {
                 val objectNode = node as ObjectNode
-
                 objectNode.properties().forEach { (fieldName, value) ->
-                    when {
-                        value.isObject -> {
-                            if (value.has("fileReference")) {
-                                val fileRefNode = value.get("fileReference")
-                                if (fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId) {
-                                    objectNode.putNull(fieldName)
-                                    modified = true
-                                } else if (nullifyMatchingReferences(value, documentId)) {
-                                    modified = true
-                                }
-                            } else if (nullifyMatchingReferences(value, documentId)) {
-                                modified = true
-                            }
-                        }
-                        value.isArray -> {
-                            if (nullifyMatchingReferences(value, documentId)) {
-                                modified = true
-                            }
-                        }
-                    }
+                    modified = processObjectField(objectNode, fieldName, value, documentId) || modified
                 }
             }
             node.isArray -> {
                 val arrayNode = node as com.fasterxml.jackson.databind.node.ArrayNode
                 for (i in 0 until arrayNode.size()) {
-                    val element = arrayNode.get(i)
-                    if (element.isObject && element.has("fileReference")) {
-                        val fileRefNode = element.get("fileReference")
-                        if (fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId) {
-                            arrayNode.set(
-                                i,
-                                com.fasterxml.jackson.databind.node.NullNode
-                                    .getInstance(),
-                            )
-                            modified = true
-                            continue
-                        }
-                    }
-                    if (nullifyMatchingReferences(element, documentId)) {
-                        modified = true
-                    }
+                    modified = processArrayElement(arrayNode, i, arrayNode.get(i), documentId) || modified
                 }
             }
         }
