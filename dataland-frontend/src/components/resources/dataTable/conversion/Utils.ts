@@ -100,7 +100,7 @@ export function buildApiBody(
 
   return {
     dataPoint: JSON.stringify(dataPointObj),
-    dataPointType: 'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentAligned',
+    dataPointType: 'extendedDecimalEstimatedMarketCapitalizationInEUR',
     companyId: companyID,
     reportingPeriod: reportingPeriod,
   };

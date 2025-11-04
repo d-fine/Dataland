@@ -31,9 +31,12 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyId = dialogRef?.value?.data?.companyId;
 const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const dataId = dialogRef?.value?.data?.dataId as string;
+const emit = defineEmits<{
+  dataUpdated: [];
+}>();
 provide('companyId', companyId as string);
 provide('reportingPeriod', reportingPeriod as string);
-provide('dataId', dataId as string);
+provide('dataId', dataId);
 
 /**
  * Updates the data point with the current API body.
@@ -43,5 +46,8 @@ async function updateDataPoint(): Promise<void> {
     console.error(error);
     errorMessage.value = error.message;
   });
+  dialogRef?.value?.close({ dataUpdated: true });
+  console.log('EditDataPointDialog: emitting dataUpdated');
+  emit('dataUpdated')
 }
 </script>

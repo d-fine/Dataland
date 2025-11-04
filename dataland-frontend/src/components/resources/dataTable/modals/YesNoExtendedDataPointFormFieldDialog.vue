@@ -39,7 +39,6 @@ const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-const dataId = inject<string>('dataId');
 
 const emit = defineEmits(['update:apiBody']);
 

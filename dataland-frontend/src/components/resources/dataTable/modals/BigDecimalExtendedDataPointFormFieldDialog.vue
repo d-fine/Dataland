@@ -36,7 +36,6 @@ const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-const dataId = inject<string>('dataId');
 
 watchEffect(() => {
   apiBody.value = buildApiBody(
@@ -48,7 +47,6 @@ watchEffect(() => {
     selectedDocumentMeta.value,
     companyId!,
     reportingPeriod!,
-    dataId!
   );
   emit('update:apiBody', apiBody.value);
 });
