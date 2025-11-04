@@ -76,10 +76,10 @@ describe('Portfolio Monitoring Modal', function () {
   it('renders notification frequency Select and updates value on change', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.get('[data-test="notification-options"]').should('exist');
-    cy.get('[data-test="notification-options"]').should('contain', 'Weekly Notifications');
+    cy.get('[data-test="notification-options"]').should('contain', 'Weekly');
 
     cy.get('[data-test="notification-options"]').click();
-    cy.get('.p-select-option-selected').should('contain', 'Weekly Notifications');
+    cy.get('.p-select-option-selected').should('contain', 'Weekly');
     cy.get('.p-select-option').contains('No Notifications').click();
 
     cy.get('[data-test="notification-options"]').should('contain', 'No Notifications');

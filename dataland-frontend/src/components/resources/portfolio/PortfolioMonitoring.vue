@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import { type EnrichedPortfolio, NotificationFrequency, type PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -65,6 +65,7 @@ import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 import Select from 'primevue/select';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 type MonitoringOption = {
   value: string;
@@ -78,13 +79,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
   .portfolioController;
 
-const notificationOptions = ref([
-  { label: 'No Notifications', value: 'noNotifications' },
-  { label: 'Daily Notifications', value: 'daily' },
-  { label: 'Weekly Notifications', value: 'weekly' },
-  { label: 'Monthly Notifications', value: 'monthly' },
-]);
-const selectedNotificationOption = ref('weekly');
+const notificationOptions = ref(
+  Object.values(NotificationFrequency).map((category) => ({
+    label: humanizeStringOrNumber(category),
+    value: category,
+  }))
+);
+const selectedNotificationOption = ref('Weekly');
 const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'sfdr', label: 'SFDR', isActive: false },
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
@@ -146,6 +147,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
+    notificationFrequency: selectedNotificationOption.value as NotificationFrequency,
   };
 
   if (isMonitoringActive.value) {
