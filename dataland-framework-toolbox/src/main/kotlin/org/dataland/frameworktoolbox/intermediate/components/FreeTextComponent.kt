@@ -44,11 +44,12 @@ class FreeTextComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "FreeTextFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "FreeTextFormField",
         )
     }
 

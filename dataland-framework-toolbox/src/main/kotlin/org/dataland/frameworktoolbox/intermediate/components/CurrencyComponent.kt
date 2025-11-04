@@ -75,11 +75,12 @@ class CurrencyComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "CurrencyDataPointFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "CurrencyDataPointFormField",
             validation = getMinMaxValidationRule(minimumValue, maximumValue),
         )
     }

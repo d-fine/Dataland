@@ -1,55 +1,54 @@
 <template>
   <div v-if="status == 'LoadingDatasets'" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Loading {{ frameworkDisplayName }} Data...</p>
-    <DatalandProgressSpinner/>
+    <DatalandProgressSpinner />
   </div>
   <div v-show="status == 'DisplayingDatasets'">
     <p v-if="inReviewMode">
       You are viewing this page in review mode. Therefore, <b>all</b> possible fields are displayed even if they are not
       going to be visible in the final view page. Normally hidden fields are highlighted (start with a
-      <i class="pi pi-eye-slash pl-1 text-red-500" aria-hidden="true"/>) and should be empty.
+      <i class="pi pi-eye-slash pl-1 text-red-500" aria-hidden="true" />) and should be empty.
     </p>
     <ShowMultipleReportsBanner
-        data-test="multipleReportsBanner"
-        v-if="
+      data-test="multipleReportsBanner"
+      v-if="
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
         frameworkIdentifier == DataTypeEnum.Sfdr ||
         frameworkIdentifier == DataTypeEnum.NuclearAndGas
       "
-        :reporting-periods="sortedReportingPeriods"
-        :reports="sortedReports"
+      :reporting-periods="sortedReportingPeriods"
+      :reports="sortedReports"
     />
     <PrimeButton
-        v-if="metaInfoOfAvailableButInaccessibleDataset.length > 0"
-        @click="openModalToDisplayInaccessibleDatasets"
-        class="mb-4"
-    >REQUEST ACCESS TO MORE DATASETS
-    </PrimeButton
-    >
+      v-if="metaInfoOfAvailableButInaccessibleDataset.length > 0"
+      @click="openModalToDisplayInaccessibleDatasets"
+      class="mb-4"
+      >REQUEST ACCESS TO MORE DATASETS
+    </PrimeButton>
     <MultiLayerDataTable
-        :dataAndMetaInfo="sortedDataAndMetaInfo"
-        :inReviewMode="inReviewMode"
-        :config="
-    editMultiLayerDataTableConfigForHighlightingHiddenFields(
-      displayConfiguration,
-      inReviewMode,
-      hideEmptyFields ?? false
-    )
-  "
-        :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
-        :hideEmptyFields="hideEmptyFields ?? false"
-        :key="updateKey"
-        @dataUpdated="handleDataUpdated"
+      :dataAndMetaInfo="sortedDataAndMetaInfo"
+      :inReviewMode="inReviewMode"
+      :config="
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(
+          displayConfiguration,
+          inReviewMode,
+          hideEmptyFields ?? false
+        )
+      "
+      :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
+      :hideEmptyFields="hideEmptyFields ?? false"
+      :key="updateKey"
+      @dataUpdated="handleDataUpdated"
     />
   </div>
   <div v-if="status == 'InsufficientRights'">
     <h1>Sorry! You have insufficient rights to view the available datasets.</h1>
     <h3>You can request access from the company owner:</h3>
     <RequestableDatasetsTable
-        :metaInfoOfAvailableDatasets="metaInfoOfAvailableButInaccessibleDataset"
-        :dataType="props.frameworkIdentifier"
-        :companyId="props.companyId"
+      :metaInfoOfAvailableDatasets="metaInfoOfAvailableButInaccessibleDataset"
+      :dataType="props.frameworkIdentifier"
+      :companyId="props.companyId"
     />
   </div>
   <div v-if="status == 'Error'">
@@ -62,11 +61,11 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import PrimeButton from 'primevue/button';
 import MultiLayerDataTable from '@/components/resources/dataTable/MultiLayerDataTable.vue';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
-import {humanizeStringOrNumber} from '@/utils/StringFormatter';
-import {computed, inject, ref, shallowRef, watch} from 'vue';
-import {type MLDTConfig} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import {type DataAndMetaInformation} from '@/api-models/DataAndMetaInformation';
-import {sortDatasetsByReportingPeriod} from '@/utils/DataTableDisplay';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { computed, inject, ref, shallowRef, watch } from 'vue';
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import { sortDatasetsByReportingPeriod } from '@/utils/DataTableDisplay';
 import {
   type CompanyReport,
   type DataMetaInformation,
@@ -77,20 +76,16 @@ import {
   type SfdrData,
 } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
-import {ApiClientProvider} from '@/services/ApiClients';
-import {assertDefined} from '@/utils/TypeScriptUtils';
-import {
-  editMultiLayerDataTableConfigForHighlightingHiddenFields
-} from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
-import {getFrameworkDataApiForIdentifier} from '@/frameworks/FrameworkApiUtils';
-import {type PublicFrameworkDataApi} from '@/utils/api/UnifiedFrameworkDataApi';
-import {AxiosError} from 'axios';
-import RequestableDatasetsTable
-  from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
-import {useDialog} from 'primevue/usedialog';
-import RequestableDatasetsTableModalWrapper
-  from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
-import {isFrameworkPrivate} from '@/utils/Frameworks';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { AxiosError } from 'axios';
+import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
+import { useDialog } from 'primevue/usedialog';
+import RequestableDatasetsTableModalWrapper from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
+import { isFrameworkPrivate } from '@/utils/Frameworks';
 
 const dialog = useDialog();
 
@@ -121,32 +116,32 @@ const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
       return sortedDataAndMetaInfo.value
-          .map(
-              (singleDataAndMetaInfo) =>
-                  (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports
-          )
-          .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.EutaxonomyFinancials: {
       return sortedDataAndMetaInfo.value
-          .map(
-              (singleDataAndMetaInfo) =>
-                  (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports
-          )
-          .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value
-          .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports)
-          .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.NuclearAndGas: {
       return sortedDataAndMetaInfo.value
-          .map(
-              (singleDataAndMetaInfo) =>
-                  (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports
-          )
-          .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     default: {
       return []; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
@@ -162,14 +157,14 @@ const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<Framework
 const updateKey = ref(Math.random());
 
 watch(
-    [
-      (): string => props.companyId,
-      (): string => props.frameworkIdentifier,
-      (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
-    ],
+  [
+    (): string => props.companyId,
+    (): string => props.frameworkIdentifier,
+    (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
+  ],
 
-    async () => reloadDisplayData(++updateCounter.value),
-    {immediate: true}
+  async () => reloadDisplayData(++updateCounter.value),
+  { immediate: true }
 );
 
 /**
@@ -178,7 +173,7 @@ watch(
 function handleDataUpdated(): void {
   updateKey.value = Math.random();
   console.log('Data updated event received. Reloading display data.', updateKey.value);
-  reloadDisplayData(++updateCounter.value);
+  void reloadDisplayData(++updateCounter.value);
 }
 
 /**
@@ -216,12 +211,12 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
  * @returns the datasets that should be displayed
  */
 async function loadDataForDisplay(
-    companyId: string,
-    singleDataMetaInfoToDisplay?: DataMetaInformation
+  companyId: string,
+  singleDataMetaInfoToDisplay?: DataMetaInformation
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
-      | PublicFrameworkDataApi<FrameworkDataType>
-      | undefined;
+    | PublicFrameworkDataApi<FrameworkDataType>
+    | undefined;
   if (!dataControllerApi) throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
   if (!singleDataMetaInfoToDisplay) return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
   let singleDataset;
@@ -231,13 +226,13 @@ async function loadDataForDisplay(
     console.error(error);
     console.log(`Unable to fetch data via ID. Falling back to reporting Period.`);
     singleDataset = (
-        await dataControllerApi.getCompanyAssociatedDataByDimensions(
-            singleDataMetaInfoToDisplay.reportingPeriod,
-            singleDataMetaInfoToDisplay.companyId
-        )
+      await dataControllerApi.getCompanyAssociatedDataByDimensions(
+        singleDataMetaInfoToDisplay.reportingPeriod,
+        singleDataMetaInfoToDisplay.companyId
+      )
     ).data.data;
   }
-  return [{metaInfo: singleDataMetaInfoToDisplay, data: singleDataset}];
+  return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
 }
 
 /**
@@ -248,17 +243,17 @@ async function loadDataForDisplay(
 async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
   if (isFrameworkPrivate(props.frameworkIdentifier as DataTypeEnum)) {
     const allMetaInfoOfAvailableDatasets = (
-        await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
-            props.companyId,
-            props.frameworkIdentifier as DataTypeEnum,
-            true
-        )
+      await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
+        props.companyId,
+        props.frameworkIdentifier as DataTypeEnum,
+        true
+      )
     ).data;
 
     const alreadyFetchedDataIds = new Set(rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId));
 
     metaInfoOfAvailableButInaccessibleDataset.value = allMetaInfoOfAvailableDatasets.filter(
-        (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.has(metaInfoOfAvailableDataset.dataId)
+      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.has(metaInfoOfAvailableDataset.dataId)
     );
   }
 }

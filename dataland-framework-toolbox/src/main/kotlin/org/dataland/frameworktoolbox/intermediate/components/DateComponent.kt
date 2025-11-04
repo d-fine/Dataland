@@ -45,16 +45,16 @@ class DateComponent(
         )
     }
 
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "DateFormField"
+            is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
+            else -> throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName =
-            when (documentSupport) {
-                is NoDocumentSupport -> "DateFormField"
-                is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
-                else -> throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
-            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = componentName,
         )
     }
 

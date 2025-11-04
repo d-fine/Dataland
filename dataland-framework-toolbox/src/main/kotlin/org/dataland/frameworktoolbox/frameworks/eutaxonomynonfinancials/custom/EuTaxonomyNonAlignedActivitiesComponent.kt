@@ -68,7 +68,6 @@ class EuTaxonomyNonAlignedActivitiesComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "NonAlignedActivitiesFormField",
         )
     }
 

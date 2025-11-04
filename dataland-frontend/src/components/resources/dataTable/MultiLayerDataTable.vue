@@ -3,82 +3,82 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table class="p-datatable-table" :aria-label="ariaLabel">
         <thead class="p-datatable-thead">
-        <tr class="border-bottom-table">
-          <th class="horizontal-headers-size">
-            <div class="p-column-header-content">
-              <span class="p-column-title">KPIs</span>
-            </div>
-          </th>
-          <th
+          <tr class="border-bottom-table">
+            <th class="horizontal-headers-size">
+              <div class="p-column-header-content">
+                <span class="p-column-title">KPIs</span>
+              </div>
+            </th>
+            <th
               v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo"
               :key="idx"
               class="horizontal-headers-size"
               :data-dataset-index="idx"
-          >
-            <div class="p-column-header-content">
+            >
+              <div class="p-column-header-content">
                 <span class="p-column-title" style="display: flex; align-items: center">
                   {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
                 </span>
-            </div>
-          </th>
-        </tr>
+              </div>
+            </th>
+          </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-        <tr
+          <tr
             v-show="
               !hideEmptyFields ||
               dataAndMetaInfo.some((singleDataAndMetaInfo) => singleDataAndMetaInfo.metaInfo.uploadTime != null)
             "
-        >
-          <td class="headers-bg pl-4 vertical-align-top header-column-width">
-            <span class="table-left-label">Publication date of the dataset on Dataland</span>
-            <em
+          >
+            <td class="headers-bg pl-4 vertical-align-top header-column-width">
+              <span class="table-left-label">Publication date of the dataset on Dataland</span>
+              <em
                 class="material-icons info-icon"
                 aria-hidden="true"
                 v-tooltip.top="{
                   value: 'Timestamp of data upload',
                 }"
-            >info</em
-            >
-          </td>
-          <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
+                >info</em
+              >
+            </td>
+            <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
               <span class="table-left-label" style="display: flex; align-items: center">
                 {{ convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime) }}
               </span>
-          </td>
-        </tr>
-        <tr v-show="!hideEmptyFields || hasPublicationDate()">
-          <td class="headers-bg pl-4 vertical-align-top header-column-width" data-row-header="true">
-            <span class="table-left-label">Publication date of most recent report</span>
-            <em
+            </td>
+          </tr>
+          <tr v-show="!hideEmptyFields || hasPublicationDate()">
+            <td class="headers-bg pl-4 vertical-align-top header-column-width" data-row-header="true">
+              <span class="table-left-label">Publication date of most recent report</span>
+              <em
                 class="material-icons info-icon"
                 aria-hidden="true"
                 v-tooltip.top="{
                   value: 'Date when the latest version of the report was published',
                 }"
-            >info</em
-            >
-          </td>
-          <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
-            <i
+                >info</em
+              >
+            </td>
+            <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
+              <i
                 v-if="!hasPublicationDate() && inReviewMode"
                 class="pi pi-eye-slash pr-1 text-red-500"
                 aria-hidden="true"
                 data-test="hidden-icon"
-            />
-            <span class="table-left-label" style="display: flex; align-items: center">
+              />
+              <span class="table-left-label" style="display: flex; align-items: center">
                 {{ latestDate(singleDataAndMetaInfo) }}
               </span>
-          </td>
-        </tr>
-        <MultiLayerDataTableBody
+            </td>
+          </tr>
+          <MultiLayerDataTableBody
             :dataAndMetaInfo="dataAndMetaInfo"
             :inReviewMode="inReviewMode"
             :config="config"
             :isTopLevel="true"
             :isVisible="true"
             @dataUpdated="onDataUpdated"
-        />
+          />
         </tbody>
       </table>
     </div>
@@ -93,11 +93,11 @@
 </style>
 
 <script setup lang="ts" generic="T">
-import {type MLDTConfig} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
-import {type DataAndMetaInformation} from '@/api-models/DataAndMetaInformation';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import Tooltip from 'primevue/tooltip';
-import {convertUnixTimeInMsToDateString, dateStringFormatter} from '@/utils/DataFormatUtils';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,
   DataTypeEnum,
@@ -135,7 +135,7 @@ function hasPublicationDate(): boolean {
         break;
       case DataTypeEnum.EutaxonomyFinancials:
         referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general
-            ?.referencedReports;
+          ?.referencedReports;
         break;
       case DataTypeEnum.EutaxonomyNonFinancials:
         referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
@@ -149,9 +149,9 @@ function hasPublicationDate(): boolean {
     }
     // Check if there is at least one valid publicationDate
     return (
-        referencedReports &&
-        Object.keys(referencedReports).length > 0 &&
-        Object.values(referencedReports).some((companyReport) => companyReport?.publicationDate != null)
+      referencedReports &&
+      Object.keys(referencedReports).length > 0 &&
+      Object.values(referencedReports).some((companyReport) => companyReport?.publicationDate != null)
     );
   });
 }

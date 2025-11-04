@@ -41,7 +41,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Reporting Basis',
                 dataset.basic?.basisForPreparation?.reportingBasis
               ),
-            editComponent: 'dataset.basic?.basisForPreparation?.reportingBasis?.value',
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'reportingBasis',
           },
           {
             type: 'cell',
@@ -50,7 +51,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatVsmeSubsidiaryForDisplay(dataset.basic?.basisForPreparation?.subsidiary, 'Subsidiary'),
-            editComponent: 'dataset.basic?.basisForPreparation?.subsidiary',
+            uploadComponentName: 'SubsidiaryFormField',
+            dataPointTypeId: 'subsidiary',
           },
         ],
       },
@@ -74,7 +76,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Document'
               );
             },
-            editComponent: 'dataset.basic?.practicesForTransitioningTowardsAMoreSustainableEconomy?.undertakenMeasures',
+            uploadComponentName: 'ListOfBaseDataPointsFormField',
+            dataPointTypeId: 'undertakenMeasures',
           },
         ],
       },
@@ -92,7 +95,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuelsInMWh, 'MWh'),
-            editComponent: 'dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuelsInMWh',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'energyFossilFuelsInMWh',
           },
           {
             type: 'cell',
@@ -109,7 +113,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Electricity Total',
                 dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh
               ),
-            editComponent: 'dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'electricityTotalInMWh',
           },
           {
             type: 'cell',
@@ -121,7 +126,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.energyAndGreenhousGasEmissions?.electricityNonRenewableInMWh,
                 'MWh'
               ),
-            editComponent: 'dataset.basic?.energyAndGreenhousGasEmissions?.electricityNonRenewableInMWh',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'electricityNonRenewableInMWh',
           },
           {
             type: 'cell',
@@ -130,7 +136,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityRenewableInMWh, 'MWh'),
-            editComponent: 'dataset.basic?.energyAndGreenhousGasEmissions?.electricityRenewableInMWh',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'electricityRenewableInMWh',
           },
           {
             type: 'cell',
@@ -147,8 +154,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Total Emissions',
                 dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissionsInTonnesOfCO2Equivalents
               ),
-            editComponent:
-              'dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissionsInTonnesOfCO2Equivalents?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'totalEmissionsInTonnesOfCO2Equivalents',
           },
           {
             type: 'cell',
@@ -164,8 +171,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Scope 1 Emissions',
                 dataset.basic?.energyAndGreenhousGasEmissions?.scope1EmissionsInTonnesOfCO2Equivalents
               ),
-            editComponent:
-              'dataset.basic?.energyAndGreenhousGasEmissions?.scope1EmissionsInTonnesOfCO2Equivalents?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope1EmissionsInTonnesOfCO2Equivalents',
           },
           {
             type: 'cell',
@@ -182,8 +189,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Scope 2 Emissions',
                 dataset.basic?.energyAndGreenhousGasEmissions?.scope2EmissionsInTonnesOfCO2Equivalents
               ),
-            editComponent:
-              'dataset.basic?.energyAndGreenhousGasEmissions?.scope2EmissionsInTonnesOfCO2Equivalents?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope2EmissionsInTonnesOfCO2Equivalents',
           },
           {
             type: 'cell',
@@ -199,8 +206,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Scope 3 Emissions',
                 dataset.basic?.energyAndGreenhousGasEmissions?.scope3EmissionsInTonnesOfCO2Equivalents
               ),
-            editComponent:
-              'dataset.basic?.energyAndGreenhousGasEmissions?.scope3EmissionsInTonnesOfCO2Equivalents?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'scope3EmissionsInTonnesOfCO2Equivalents',
           },
         ],
       },
@@ -221,7 +228,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.pollutionOfAirWaterSoil?.pollutionEmission,
                 'Pollution Emission'
               ),
-            editComponent: 'dataset.basic?.pollutionOfAirWaterSoil?.pollutionEmission',
+            uploadComponentName: 'PollutionEmissionFormField',
+            dataPointTypeId: 'pollutionEmission',
           },
         ],
       },
@@ -239,7 +247,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatVsmeSiteAndAreaForDisplay(dataset.basic?.biodiversity?.sitesAndAreas, 'Sites and Areas'),
-            editComponent: 'dataset.basic?.biodiversity?.sitesAndAreas',
+            uploadComponentName: 'SiteAndAreaFormField',
+            dataPointTypeId: 'sitesAndAreas',
           },
           {
             type: 'cell',
@@ -249,7 +258,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaPreviousYearInHectare, 'Hectare'),
-            editComponent: 'dataset.basic?.biodiversity?.totalSealedAreaPreviousYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalSealedAreaPreviousYearInHectare',
           },
           {
             type: 'cell',
@@ -259,7 +269,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaReportingYearInHectare, 'Hectare'),
-            editComponent: 'dataset.basic?.biodiversity?.totalSealedAreaReportingYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalSealedAreaReportingYearInHectare',
           },
           {
             type: 'cell',
@@ -269,7 +280,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeSealedArea),
-            editComponent: 'dataset.basic?.biodiversity?.relativeChangeSealedArea',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'relativeChangeSealedArea',
           },
           {
             type: 'cell',
@@ -282,7 +294,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSitePreviousYearInHectare,
                 'Hectare'
               ),
-            editComponent: 'dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSitePreviousYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalNatureOrientedAreaOnSitePreviousYearInHectare',
           },
           {
             type: 'cell',
@@ -295,7 +308,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSiteReportingYearInHectare,
                 'Hectare'
               ),
-            editComponent: 'dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSiteReportingYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalNatureOrientedAreaOnSiteReportingYearInHectare',
           },
           {
             type: 'cell',
@@ -305,7 +319,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeNatureOrientedOnSite),
-            editComponent: 'dataset.basic?.biodiversity?.relativeChangeNatureOrientedOnSite',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'relativeChangeNatureOrientedOnSite',
           },
           {
             type: 'cell',
@@ -318,7 +333,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePreviousYearInHectare,
                 'Hectare'
               ),
-            editComponent: 'dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePreviousYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalNatureOrientedAreaOffSitePreviousYearInHectare',
           },
           {
             type: 'cell',
@@ -331,7 +347,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSiteReportingYearInHectare,
                 'Hectare'
               ),
-            editComponent: 'dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSiteReportingYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalNatureOrientedAreaOffSiteReportingYearInHectare',
           },
           {
             type: 'cell',
@@ -341,7 +358,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeNatureOrientedOffSite),
-            editComponent: 'dataset.basic?.biodiversity?.relativeChangeNatureOrientedOffSite',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'relativeChangeNatureOrientedOffSite',
           },
           {
             type: 'cell',
@@ -351,7 +369,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandPreviousYearInHectare, 'Hectare'),
-            editComponent: 'dataset.basic?.biodiversity?.totalUseOfLandPreviousYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalUseOfLandPreviousYearInHectare',
           },
           {
             type: 'cell',
@@ -361,7 +380,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandReportingYearInHectare, 'Hectare'),
-            editComponent: 'dataset.basic?.biodiversity?.totalUseOfLandReportingYearInHectare',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalUseOfLandReportingYearInHectare',
           },
           {
             type: 'cell',
@@ -371,7 +391,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeLandUse),
-            editComponent: 'dataset.basic?.biodiversity?.relativeChangeLandUse',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'relativeChangeLandUse',
           },
         ],
       },
@@ -396,7 +417,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Water Withdrawal All Sites',
                 dataset.basic?.water?.waterWithdrawalAllSitesInCubicMeters
               ),
-            editComponent: 'dataset.basic?.water?.waterWithdrawalAllSitesInCubicMeters?.value',
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'waterWithdrawalAllSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -405,7 +427,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalStressSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.waterWithdrawalStressSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'waterWithdrawalStressSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -415,7 +438,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.waterDischargeAllSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.waterDischargeAllSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'waterDischargeAllSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -424,7 +448,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.waterDischargeStressSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.waterDischargeStressSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'waterDischargeStressSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -433,7 +458,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.rainwaterAllSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.rainwaterAllSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'rainwaterAllSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -442,7 +468,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.rainwaterStressSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.rainwaterStressSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'rainwaterStressSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -451,7 +478,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.waterConsumptionAllSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.waterConsumptionAllSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'waterConsumptionAllSitesInCubicMeters',
           },
           {
             type: 'cell',
@@ -461,7 +489,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.water?.waterConsumptionStressSitesInCubicMeters, 'Cubic Meters'),
-            editComponent: 'dataset.basic?.water?.waterConsumptionStressSitesInCubicMeters',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'waterConsumptionStressSitesInCubicMeters',
           },
         ],
       },
@@ -482,7 +511,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.totalWeightMaterialsInTonnes,
                 'Tonnes'
               ),
-            editComponent: 'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.totalWeightMaterialsInTonnes',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalWeightMaterialsInTonnes',
           },
           {
             type: 'cell',
@@ -494,8 +524,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycledMaterialsInTonnes,
                 'Tonnes'
               ),
-            editComponent:
-              'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycledMaterialsInTonnes',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'weightRecycledMaterialsInTonnes',
           },
           {
             type: 'cell',
@@ -507,7 +537,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatPercentageForDatatable(
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecycledMaterials
               ),
-            editComponent: 'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecycledMaterials',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'percentageRecycledMaterials',
           },
           {
             type: 'cell',
@@ -519,8 +550,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecyclableMaterialsInTonnes,
                 'Tonnes'
               ),
-            editComponent:
-              'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecyclableMaterialsInTonnes',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'weightRecyclableMaterialsInTonnes',
           },
           {
             type: 'cell',
@@ -532,7 +563,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatPercentageForDatatable(
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecyclableMaterials
               ),
-            editComponent: 'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecyclableMaterials',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'percentageRecyclableMaterials',
           },
           {
             type: 'cell',
@@ -555,7 +587,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                     : ''
                 );
               })(),
-            editComponent: 'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste',
+            uploadComponentName: 'RadioButtonsFormField',
+            dataPointTypeId: 'measureWaste',
           },
           {
             type: 'cell',
@@ -567,7 +600,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.wasteClassification,
                 'Waste Classification'
               ),
-            editComponent: 'dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.wasteClassification',
+            uploadComponentName: 'WasteClassificationFormField',
+            dataPointTypeId: 'wasteClassification',
           },
         ],
       },
@@ -598,7 +632,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                     : ''
                 );
               })(),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.measureEmployees',
+            uploadComponentName: 'RadioButtonsFormField',
+            dataPointTypeId: 'measureEmployees',
           },
           {
             type: 'cell',
@@ -612,7 +647,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfEmployeesInFte',
           },
           {
             type: 'cell',
@@ -626,7 +662,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -640,7 +677,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfTemporaryContractEmployeesInFte',
           },
           {
             type: 'cell',
@@ -654,8 +692,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent:
-              'dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfTemporaryContractEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -669,7 +707,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfPermanentContractEmployeesInFte',
           },
           {
             type: 'cell',
@@ -683,8 +722,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent:
-              'dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfPermanentContractEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -698,7 +737,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfMaleEmployeesInFte',
           },
           {
             type: 'cell',
@@ -712,7 +752,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfMaleEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -726,7 +767,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberFemaleEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberFemaleEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberFemaleEmployeesInFte',
           },
           {
             type: 'cell',
@@ -740,7 +782,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfFemaleEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfFemaleEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfFemaleEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -754,7 +797,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfOtherEmployeesInFte',
           },
           {
             type: 'cell',
@@ -768,7 +812,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfOtherEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -782,7 +827,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfNotReportedEmployeesInFte',
           },
           {
             type: 'cell',
@@ -796,7 +842,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfNotReportedEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -809,7 +856,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceGeneralCharacteristics?.employeesPerCountry,
                 'Employees Per Country'
               ),
-            editComponent: 'dataset.basic?.workforceGeneralCharacteristics?.employeesPerCountry',
+            uploadComponentName: 'EmployeesPerCountryFormField',
+            dataPointTypeId: 'employeesPerCountry',
           },
         ],
       },
@@ -826,7 +874,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.totalHours, 'h'),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.totalHours',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalHours',
           },
           {
             type: 'cell',
@@ -835,7 +884,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberOfAccidents, ''),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfAccidents',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfAccidents',
           },
           {
             type: 'cell',
@@ -845,7 +895,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.accidentLevel, ''),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.accidentLevel',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'accidentLevel',
           },
           {
             type: 'cell',
@@ -859,7 +910,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfTotalFatalitiesInFte',
           },
           {
             type: 'cell',
@@ -873,7 +925,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfTotalFatalitiesInHeadcount',
           },
           {
             type: 'cell',
@@ -887,7 +940,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfFatalitiesOfAccidentsInFte',
           },
           {
             type: 'cell',
@@ -901,7 +955,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfFatalitiesOfAccidentsInHeadcount',
           },
           {
             type: 'cell',
@@ -915,7 +970,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfHealthFatalitiesInFte',
           },
           {
             type: 'cell',
@@ -928,7 +984,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInHeadcount,
                 'Head Count'
               ),
-            editComponent: 'dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfHealthFatalitiesInHeadcount',
           },
         ],
       },
@@ -950,8 +1007,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberOfMinimumWageEmployeesInFte,
                 'Full Time Equivalents'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberOfMinimumWageEmployeesInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfMinimumWageEmployeesInFte',
           },
           {
             type: 'cell',
@@ -966,8 +1023,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                   ?.numberOfMinimumWageEmployeesInHeadcount,
                 'Head Count'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberOfMinimumWageEmployeesInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfMinimumWageEmployeesInHeadcount',
           },
           {
             type: 'cell',
@@ -979,8 +1036,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatPercentageForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.percentageOfMinimumWageEmployees
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.percentageOfMinimumWageEmployees',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'percentageOfMinimumWageEmployees',
           },
           {
             type: 'cell',
@@ -992,8 +1049,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatYesNoValueForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.majorityOfMinimumWageEmployees
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.majorityOfMinimumWageEmployees',
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'majorityOfMinimumWageEmployees',
           },
           {
             type: 'cell',
@@ -1005,7 +1062,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.entryLevelWageInEuro,
                 'Euro'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.entryLevelWageInEuro',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'entryLevelWageInEuro',
           },
           {
             type: 'cell',
@@ -1017,7 +1075,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.minimumWageInEuro,
                 'Euro'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.minimumWageInEuro',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'minimumWageInEuro',
           },
           {
             type: 'cell',
@@ -1029,7 +1088,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.wageRatio,
                 ''
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.wageRatio',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'wageRatio',
           },
           {
             type: 'cell',
@@ -1056,7 +1116,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                     : ''
                 );
               })(),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis',
+            uploadComponentName: 'RadioButtonsFormField',
+            dataPointTypeId: 'payGapBasis',
           },
           {
             type: 'cell',
@@ -1073,7 +1134,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMaleInEuro,
                 'Euro'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMaleInEuro',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'grossPayMaleInEuro',
           },
           {
             type: 'cell',
@@ -1090,7 +1152,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemaleInEuro,
                 'Euro'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemaleInEuro',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'grossPayFemaleInEuro',
           },
           {
             type: 'cell',
@@ -1107,7 +1170,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursMale,
                 'h'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursMale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalWorkHoursMale',
           },
           {
             type: 'cell',
@@ -1124,7 +1188,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursFemale,
                 'h'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursFemale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalWorkHoursFemale',
           },
           {
             type: 'cell',
@@ -1141,7 +1206,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursMale,
                 'h'
               ),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursMale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageWorkHoursMale',
           },
           {
             type: 'cell',
@@ -1158,8 +1224,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursFemale,
                 'h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursFemale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageWorkHoursFemale',
           },
           {
             type: 'cell',
@@ -1175,8 +1241,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMaleInEuroPerHour,
                 'Euro\/h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMaleInEuroPerHour',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageHourlyPayMaleInEuroPerHour',
           },
           {
             type: 'cell',
@@ -1193,8 +1259,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                   ?.averageHourlyPayFemaleInEuroPerHour,
                 'Euro\/h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayFemaleInEuroPerHour',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageHourlyPayFemaleInEuroPerHour',
           },
           {
             type: 'cell',
@@ -1207,7 +1273,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGap, ''),
-            editComponent: 'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGap',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'payGap',
           },
           {
             type: 'cell',
@@ -1220,8 +1287,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsInFte,
                 'Full Time Equivalents'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsInFte',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberBargainingAgreementsInFte',
           },
           {
             type: 'cell',
@@ -1235,8 +1302,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                   ?.numberBargainingAgreementsInHeadcount,
                 'Head Count'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsInHeadcount',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberBargainingAgreementsInHeadcount',
           },
           {
             type: 'cell',
@@ -1248,8 +1315,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatPercentageForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.ratioBargainingAgreement
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.ratioBargainingAgreement',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'ratioBargainingAgreement',
           },
           {
             type: 'cell',
@@ -1262,8 +1329,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursMale,
                 'h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursMale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalTrainingHoursMale',
           },
           {
             type: 'cell',
@@ -1276,8 +1343,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursFemale,
                 'h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursFemale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'totalTrainingHoursFemale',
           },
           {
             type: 'cell',
@@ -1290,8 +1357,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursMale,
                 'h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursMale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageTrainingHoursMale',
           },
           {
             type: 'cell',
@@ -1304,8 +1371,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursFemale,
                 'h'
               ),
-            editComponent:
-              'dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursFemale',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'averageTrainingHoursFemale',
           },
         ],
       },
@@ -1329,8 +1396,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 'Document'
               );
             },
-            editComponent:
-              'dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.negativeEffects',
+            uploadComponentName: 'ListOfBaseDataPointsFormField',
+            dataPointTypeId: 'negativeEffects',
           },
           {
             type: 'cell',
@@ -1343,8 +1410,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.numberOfConvictions,
                 ''
               ),
-            editComponent:
-              'dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.numberOfConvictions',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfConvictions',
           },
           {
             type: 'cell',
@@ -1356,8 +1423,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
                 dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.sumOfFinesInEuro,
                 'Euro'
               ),
-            editComponent:
-              'dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.sumOfFinesInEuro',
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'sumOfFinesInEuro',
           },
         ],
       },

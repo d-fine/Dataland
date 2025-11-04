@@ -46,7 +46,7 @@ watchEffect(() => {
     insertedPage.value,
     selectedDocumentMeta.value,
     companyId!,
-    reportingPeriod!,
+    reportingPeriod!
   );
   emit('update:apiBody', apiBody.value);
 });

@@ -4,7 +4,8 @@
   <#if cellConfig.explanation??>explanation: "${cellConfig.explanation?js_string}",</#if>
   shouldDisplay: <@frameworklambda cellConfig.shouldDisplay/>,
   valueGetter: <@frameworklambda cellConfig.valueGetter/>,
-  editComponent: "${cellConfig.editComponent?js_string}",
+  uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
+  dataPointTypeId: "${cellConfig.dataPointTypeId?js_string}",
 }</#macro>
 <#macro mldtsection sectionConfig>{
   type: "section",

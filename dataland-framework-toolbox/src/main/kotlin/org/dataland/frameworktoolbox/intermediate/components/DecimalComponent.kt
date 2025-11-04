@@ -49,17 +49,16 @@ open class DecimalComponent(
         )
     }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponent =
-            when (documentSupport) {
-                is NoDocumentSupport -> "NumberFormField"
-                is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
-                is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-            }
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "NumberFormField"
+            is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
+            is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
+        }
 
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = uploadComponent,
             unit = constantUnitSuffix,
             validation = getMinMaxValidationRule(minimumValue, maximumValue),
         )

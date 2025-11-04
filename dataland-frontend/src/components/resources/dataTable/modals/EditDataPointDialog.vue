@@ -1,4 +1,8 @@
 <template>
+  <span> {{ uploadComponentName }} - Edit Data Point </span>
+  <span>
+    {{ dataPointTypeId }}
+  </span>
   <BigDecimalExtendedDataPointFormFieldDialog v-model:apiBody="apiBody" />
   <div style="display: flex; justify-content: flex-end">
     <PrimeButton
@@ -31,6 +35,8 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyId = dialogRef?.value?.data?.companyId;
 const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const dataId = dialogRef?.value?.data?.dataId as string;
+const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
+const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
 const emit = defineEmits<{
   dataUpdated: [];
 }>();
@@ -47,6 +53,6 @@ async function updateDataPoint(): Promise<void> {
     errorMessage.value = error.message;
   });
   dialogRef?.value?.close({ dataUpdated: true });
-  emit('dataUpdated')
+  emit('dataUpdated');
 }
 </script>
