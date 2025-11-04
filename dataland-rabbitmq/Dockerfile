@@ -1,4 +1,4 @@
-FROM rabbitmq:4.1.3-management@sha256:93ade3d3fcd3290243fcad5ee45bd07b77c13844c2137f08608410f08f3575d6
+FROM rabbitmq:4.1.4-management@sha256:294b01e1796a8acede4619f32a1c394fae1f8021e57986ea01aad38dc2a4f502
 COPY ./dataland-rabbitmq/custom_entrypoint.sh ./custom_entrypoint.sh
 COPY ./dataland-rabbitmq/definitions.json /etc/rabbitmq/definitions.json
 COPY ./dataland-rabbitmq/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf

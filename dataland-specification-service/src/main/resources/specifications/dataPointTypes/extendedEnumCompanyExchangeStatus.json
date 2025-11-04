@@ -1,8 +1,8 @@
 {
-  "id" : "customEnumCompanyExchangeStatus",
+  "id" : "extendedEnumCompanyExchangeStatus",
   "name" : "Company exchange status",
   "businessDefinition" : "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
-  "dataPointBaseTypeId" : "customEnumCompanyExchangeStatus",
+  "dataPointBaseTypeId" : "extendedEnumCompanyExchangeStatus",
   "frameworkOwnership" : [ "pcaf" ],
   "constraints" : null
 }

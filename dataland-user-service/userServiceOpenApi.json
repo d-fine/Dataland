@@ -472,6 +472,62 @@
         ]
       }
     },
+    "/subscribed-companies/incomplete-fye-information": {
+      "get": {
+        "tags": [
+          "subscribed-companies-controller"
+        ],
+        "summary": "Get companyIDs with incomplete FYE information",
+        "description": "Returns the temporary list of companyIDs with incomplete FYE information. The return value is determined by a nightly batch job and is constant throughout the day.",
+        "operationId": "getCompaniesWithIncompleteFyeInformation",
+        "responses": {
+          "200": {
+            "description": "List of companyIDs with incomplete FYE information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied. Only reviewers can access this endpoint."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/{portfolioId}/enriched-portfolio": {
       "get": {
         "tags": [
@@ -930,11 +986,6 @@
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
-          },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
@@ -1003,11 +1054,6 @@
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
-          },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
@@ -1050,11 +1096,6 @@
           "isMonitored": {
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
-          },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
@@ -1102,11 +1143,6 @@
           "isMonitored": {
             "type": "boolean",
             "description": "Boolean flag that indicates whether the portfolio is monitored."
-          },
-          "startingMonitoringPeriod": {
-            "type": "string",
-            "description": "The reporting period from which the companies in the portfolio are actively monitored for data updates.",
-            "example": "2023"
           },
           "monitoredFrameworks": {
             "uniqueItems": true,

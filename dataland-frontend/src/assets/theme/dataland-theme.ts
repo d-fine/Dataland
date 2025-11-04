@@ -208,6 +208,12 @@ export const DatalandPreset = definePreset(Aura, {
         selectedColor: '{primary.color}',
       },
     },
+    dialog: {
+      css: () => `
+        .p-dialog-header {
+        padding-bottom: 0;
+      `,
+    },
     menu: {
       root: {
         background: '{highlight.background}',

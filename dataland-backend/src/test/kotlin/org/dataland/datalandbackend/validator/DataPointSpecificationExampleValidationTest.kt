@@ -3,27 +3,85 @@ package org.dataland.datalandbackend.validator
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.controller.CompanyDataController
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.services.CompanyAlterationManager
+import org.dataland.datalandbackend.services.CompanyBaseManager
+import org.dataland.datalandbackend.services.CompanyIdentifierManager
+import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.datapoints.DataPointManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
+import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.io.File
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Suppress("LongParameterList")
 @DefaultMocks
 class DataPointSpecificationExampleValidationTest
     @Autowired
     constructor(
         private val dataPointValidator: DataPointValidator,
+        private val objectMapper: ObjectMapper,
+        private val dataPointManager: DataPointManager,
+        private val companyAlterationManager: CompanyAlterationManager,
+        private val companyQueryManager: CompanyQueryManager,
+        private val companyIdentifierManager: CompanyIdentifierManager,
+        private val companyBaseManager: CompanyBaseManager,
+        private val dataPointUtils: DataPointUtils,
     ) {
+        lateinit var companyController: CompanyDataController
+        private lateinit var companyIdOfPostedCompany: String
+        private var dummyUuid = "00000000-0000-0000-0000-000000000000"
+
+        @BeforeAll
+        fun seedCompanyOnce() {
+            companyController =
+                CompanyDataController(
+                    companyAlterationManager,
+                    companyQueryManager,
+                    companyIdentifierManager,
+                    companyBaseManager,
+                    dataPointUtils,
+                )
+
+            companyIdOfPostedCompany = postCompany(companyWithTestLei)
+        }
+
         companion object {
             private const val DATA_POINT_BASE_TYPE_DIRECTORY =
                 "../dataland-specification-service/src/main/resources/specifications/dataPointBaseTypes"
@@ -38,6 +96,27 @@ class DataPointSpecificationExampleValidationTest
                         val dataPointBaseTypeId = it.nameWithoutExtension
                         Arguments.of(dataPointBaseTypeId, it)
                     }
+
+            private const val TEST_LEI = "testLei"
+
+            val companyWithTestLei =
+                CompanyInformation(
+                    companyName = "Test Company",
+                    companyAlternativeNames = null,
+                    companyContactDetails = null,
+                    companyLegalForm = null,
+                    countryCode = "DE",
+                    headquarters = "Berlin",
+                    headquartersPostalCode = "8",
+                    fiscalYearEnd = null,
+                    reportingPeriodShift = null,
+                    sector = null,
+                    sectorCodeWz = null,
+                    website = null,
+                    isTeaserCompany = null,
+                    identifiers = mapOf(IdentifierType.Lei to listOf(TEST_LEI)),
+                    parentCompanyLei = null,
+                )
         }
 
         @ParameterizedTest(name = "Ensure the datapoint example {0} matches the specification")
@@ -77,6 +156,115 @@ class DataPointSpecificationExampleValidationTest
                     "correlationId",
                 )
             }
+
+            val jsonDifferences =
+                compareJson(
+                    schema,
+                    example,
+                    JsonComparator.JsonComparisonOptions(ignoreValues = true, fullyNullObjectsAreEqualToNull = false),
+                )
+            Assertions.assertEquals(
+                emptyList<JsonComparator.JsonDiff>(),
+                filterExpectedListDifferences(jsonDifferences),
+            )
+        }
+
+        private fun isDifferenceCausedByArraySpecification(diff: JsonComparator.JsonDiff) =
+            diff.actual?.let { actual ->
+                diff.expected.toString().matches(Regex("\"List<[^>]+>\"")) &&
+                    actual.isArray &&
+                    actual.size() > 0 &&
+                    actual.values().asSequence().all { it.isValueNode }
+            } ?: false
+
+        private fun isDifferenceCausedByDifferingArrayLengths(diff: JsonComparator.JsonDiff) =
+            diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
+
+        /**
+         * Filters out expected differences related to lists and nulls in arrays.
+         *
+         * This functions removes differences if one of the following conditions is met:
+         *  a) The expected value indicates a list type (e.g., "List<SomeType>") and the actual value is a non-empty array of value nodes.
+         *  b) The expected value is a null JSON node (not Kotlin null) and the path indicates an array index > 0. This happens, when the
+         *     schema defines an array and the example provides more than one element (i.e. multiple aligned activities).
+         *
+         * @param differences The list of JSON differences to filter.
+         */
+        private fun filterExpectedListDifferences(differences: List<JsonComparator.JsonDiff>): List<JsonComparator.JsonDiff> =
+            differences.filterNot { diff ->
+                isDifferenceCausedByArraySpecification(diff) || isDifferenceCausedByDifferingArrayLengths(diff)
+            }
+
+        @MockitoBean
+        private lateinit var companyRoleChecker: CompanyRoleChecker
+
+        @MockitoBean
+        private lateinit var specificationClient: SpecificationControllerApi
+
+        @Suppress("unused")
+        @MockitoBean
+        private lateinit var messageQueuePublications: org.dataland.datalandbackend.services.MessageQueuePublications
+
+        @ParameterizedTest(name = "Ensure datapoints are retrieved as they are uploaded")
+        @MethodSource("dataPointBaseTypeTestProvider")
+        fun `ensure datapoints are retrieved as they are uploaded`(
+            dataPointBaseTypeId: String,
+            file: File,
+        ) {
+            val fileContents = objectMapper.readTree(file)
+            val validatedByRef = fileContents["validatedBy"].asText()
+
+            doReturn(true).whenever(companyRoleChecker).canUserBypassQa(any())
+            mockSecurityContext()
+
+            val uploadedDataPoint =
+                UploadedDataPoint(
+                    dataPoint = objectMapper.writeValueAsString(fileContents["example"]),
+                    dataPointType = dataPointBaseTypeId,
+                    companyId = companyIdOfPostedCompany,
+                    reportingPeriod = "2025",
+                )
+
+            val dataPointTypeMock = mock<IdWithRef> { on { id } doReturn "dummy" }
+            val dataPointTypeSpecificationMock =
+                mock<DataPointTypeSpecification> {
+                    on { dataPointBaseType } doReturn dataPointTypeMock
+                    on { constraints } doReturn null
+                }
+            doReturn(dataPointTypeSpecificationMock).whenever(specificationClient).getDataPointTypeSpecification(any())
+
+            val dataPointBaseTypeSpecificationMock =
+                mock<DataPointBaseTypeSpecification> {
+                    on { validatedBy } doReturn validatedByRef
+                }
+            doReturn(dataPointBaseTypeSpecificationMock).whenever(specificationClient).getDataPointBaseType(any())
+
+            val response = dataPointManager.processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
+            val downloadedDataPoint = dataPointManager.retrieveDataPoint(response.dataPointId, "correlationId")
+
+            Assertions.assertEquals(
+                emptyList<JsonComparator.JsonDiff>(),
+                compareJsonStrings(uploadedDataPoint.dataPoint, downloadedDataPoint.dataPoint),
+            )
+        }
+
+        fun postCompany(company: CompanyInformation = companyWithTestLei): String =
+            companyController
+                .postCompany(
+                    company,
+                ).body!!
+                .companyId
+
+        private fun mockSecurityContext() {
+            val mockAuthentication =
+                AuthenticationMock.mockJwtAuthentication(
+                    "mocked_uploader",
+                    "dummy-id",
+                    setOf(DatalandRealmRole.ROLE_ADMIN),
+                )
+            val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+            `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+            SecurityContextHolder.setContext(mockSecurityContext)
         }
 
         fun buildJsonFromSchemaWithExample(

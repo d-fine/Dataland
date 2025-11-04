@@ -2,6 +2,7 @@ package org.dataland.e2etests.utils.testDataProviders
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import java.time.LocalDate
 
 class GeneralTestDataProvider {
     private fun getRandomAlphaNumericString(): String {
@@ -25,6 +26,24 @@ class GeneralTestDataProvider {
             ),
             "DE",
             sector = sector,
+        )
+
+    fun generateCompanyInformationWithFYEAndReportingShift(
+        fiscalYearEnd: LocalDate,
+        reportingPeriodShift: Int,
+    ): CompanyInformation =
+        CompanyInformation(
+            "DummyName",
+            "DummyCity",
+            (
+                mapOf(
+                    IdentifierType.PermId.value to listOf(getRandomAlphaNumericString()),
+                )
+            ),
+            "DE",
+            sector = "DummySector",
+            fiscalYearEnd = fiscalYearEnd,
+            reportingPeriodShift = reportingPeriodShift,
         )
 
     fun generateCompanyInformationWithNameAndIdentifiers(

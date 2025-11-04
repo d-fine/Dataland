@@ -133,7 +133,6 @@ class PortfolioEnrichmentService
                         majorFrameworks,
                     ),
                 isMonitored = portfolio.isMonitored,
-                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
                 monitoredFrameworks = portfolio.monitoredFrameworks,
             )
     }

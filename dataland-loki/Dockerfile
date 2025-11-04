@@ -1,5 +1,5 @@
 # basis image from grafana loki
-FROM grafana/loki:3.5.5@sha256:31628519045e7f28692a7ae73b4a3fd293dccb425585ed5d16ceea3b5c9592e6
+FROM grafana/loki:3.5.6@sha256:2b10e3c0ba66ee115c018736b351c435006c809d32ea2c14be62be88d80f8372
 
 COPY ./dataland-loki/config /etc/loki
 

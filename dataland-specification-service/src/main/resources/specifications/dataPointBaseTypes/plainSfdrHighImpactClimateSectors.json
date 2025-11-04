@@ -10,7 +10,7 @@
         "quality" : "QualityOptions",
         "comment" : "String",
         "dataSource" : {
-          "page" : "Integer",
+          "page" : "String",
           "tagName" : "String",
           "fileName" : "String",
           "fileReference" : "String",
@@ -22,7 +22,7 @@
         "quality" : "QualityOptions",
         "comment" : "String",
         "dataSource" : {
-          "page" : "Integer",
+          "page" : "String",
           "tagName" : "String",
           "fileName" : "String",
           "fileReference" : "String",
@@ -36,7 +36,7 @@
         "quality" : "QualityOptions",
         "comment" : "String",
         "dataSource" : {
-          "page" : "Integer",
+          "page" : "String",
           "tagName" : "String",
           "fileName" : "String",
           "fileReference" : "String",
@@ -48,7 +48,189 @@
         "quality" : "QualityOptions",
         "comment" : "String",
         "dataSource" : {
-          "page" : "Integer",
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeC" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeD" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeE" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeF" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeG" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeH" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      }
+    },
+    "NaceCodeL" : {
+      "highImpactClimateSectorEnergyConsumptionInGWh" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
+          "tagName" : "String",
+          "fileName" : "String",
+          "fileReference" : "String",
+          "publicationDate" : "LocalDate"
+        }
+      },
+      "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
+        "value" : "BigDecimal",
+        "quality" : "QualityOptions",
+        "comment" : "String",
+        "dataSource" : {
+          "page" : "String",
           "tagName" : "String",
           "fileName" : "String",
           "fileReference" : "String",
@@ -62,7 +244,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -74,7 +256,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -88,7 +270,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -100,7 +282,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -114,7 +296,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -126,7 +308,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -140,7 +322,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -152,7 +334,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -166,7 +348,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -178,7 +360,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -192,7 +374,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -204,7 +386,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -218,7 +400,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -230,7 +412,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -244,7 +426,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -256,7 +438,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -270,7 +452,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWh" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
@@ -282,7 +464,7 @@
       "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue" : {
         "quality" : "Audited",
         "dataSource" : {
-          "page" : 0,
+          "page" : "0",
           "tagName" : "date",
           "fileName" : "AnnualReport2020.pdf",
           "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",

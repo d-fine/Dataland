@@ -30,7 +30,14 @@ object BackendOpenApiDescriptionsAndExamples {
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
 
     const val IDENTIFIERS_DESCRIPTION = "Unique identifiers associated with the company, such as LEI, PermId, ..."
-    const val IDENTIFIERS_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
+    const val IDENTIFIERS_EXAMPLE =
+        "[\"" +
+            "${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
+            "\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
+            "\"]"
+
+    const val IDENTIFIER_MAP_DESCRIPTION = IDENTIFIERS_DESCRIPTION
+    const val IDENTIFIER_MAP_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
 
     const val COUNTRY_CODE_DESCRIPTION = "The ISO 3166-1 alpha-2 code representing the country of origin."
     const val COUNTRY_CODE_EXAMPLE = "DE"

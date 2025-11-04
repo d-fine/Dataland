@@ -36,9 +36,9 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
-    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
+    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private lateinit var portfolioService: PortfolioService
     private lateinit var mockAuthentication: DatalandAuthentication
 
@@ -62,7 +62,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioRepository, mockPortfolioBulkDataRequestService)
     }
 
     /**
@@ -273,7 +273,6 @@ class PortfolioServiceTest {
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = setOf(dummyCompanyId),
         isMonitored = false,
-        startingMonitoringPeriod = null,
         monitoredFrameworks = emptySet(),
     )
 }

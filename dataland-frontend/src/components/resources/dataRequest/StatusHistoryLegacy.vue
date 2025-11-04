@@ -18,7 +18,7 @@
   <div v-show="isStatusHistoryVisible">
     <div>
       <DataTable :value="statusHistory" data-test="statusHistoryTable">
-        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 28%"
+        <Column field="creationTimestamp" header="Creation Timestamp" style="width: 28%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
               {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';

@@ -36,8 +36,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")
     val companyIds: MutableSet<String>,
-    val isMonitored: Boolean? = false,
-    val startingMonitoringPeriod: String?,
+    val isMonitored: Boolean = false,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
@@ -54,8 +53,7 @@ data class PortfolioEntity(
             creationTimestamp,
             lastUpdateTimestamp,
             companyIds,
-            isMonitored ?: false,
-            startingMonitoringPeriod,
+            isMonitored,
             monitoredFrameworks ?: emptySet(),
         )
 }

@@ -17,7 +17,6 @@ export function createPortfolio(): void {
       portfolioName: 'Dummy Portfolio ' + Date.now(),
       companyIds: [companyId] as unknown as Set<string>,
       isMonitored: false,
-      startingMonitoringPeriod: '',
       monitoredFrameworks: [] as unknown as Set<string>,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);

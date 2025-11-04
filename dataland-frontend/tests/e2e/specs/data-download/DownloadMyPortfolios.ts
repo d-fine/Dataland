@@ -17,11 +17,10 @@ let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
 let portfolioName: string;
 
-const reportingYearsToSelect = ['2025', '2024', '2023', '2022', '2021', '2020'];
-const unavailableYears = ['2021', '2020'];
-
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 
+const reportingYearsToSelect = ['2025', '2024', '2023', '2022', '2021', '2020'];
+const unavailableYears = ['2021', '2020'];
 /**
  * Uploads data for a given company for specified years using a generic framework.
  *

@@ -1,62 +1,33 @@
 <template>
-  <div class="portfolio-monitoring-content d-flex flex-column align-items-left">
+  <div class="portfolio-monitoring-content">
+    <p class="header-styling">Activate Monitoring</p>
+    <ToggleSwitch
+      v-model="isMonitoringActive"
+      data-test="activateMonitoringToggle"
+      @update:modelValue="onMonitoringToggled"
+    />
+
+    <p class="header-styling">Frameworks</p>
     <div>
-      <p class="header-styling">Activate Monitoring</p>
-      <ToggleSwitch
-        class="form-field vertical-middle"
-        v-model="isMonitoringActive"
-        data-test="activateMonitoringToggle"
-        @update:modelValue="onMonitoringToggled"
-      />
-    </div>
-    <div>
-      <p class="header-styling">Starting Period</p>
-      <Select
-        v-model="selectedStartingYear"
-        :options="reportingPeriodsOptions"
-        option-label="label"
-        option-value="value"
-        data-test="listOfReportingPeriods"
-        placeholder="Select Starting Period"
-        :disabled="!isMonitoringActive"
-        @change="resetErrors"
-        :highlightOnSelect="false"
-        fluid
-      />
-      <Message
-        v-if="showReportingPeriodsError"
-        severity="error"
-        variant="simple"
-        size="small"
-        data-test="reportingPeriodsError"
+      <div
+        v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
+        :key="frameworkMonitoringOption.value"
+        data-test="frameworkSelection"
       >
-        Please select Starting Period.
-      </Message>
-    </div>
-    <div>
-      <p class="header-styling">Frameworks</p>
-      <div class="framework-switch-group">
-        <div
-          v-for="frameworkMonitoringOption in availableFrameworkMonitoringOptions"
-          :key="frameworkMonitoringOption.value"
-          data-test="frameworkSelection"
-        >
-          <div class="framework-toggle-label">
-            <ToggleSwitch
-              v-model="frameworkMonitoringOption.isActive"
-              class="form-field vertical-middle"
-              data-test="valuesOnlySwitch"
-              @change="resetErrors"
-              :disabled="!isMonitoringActive"
-            />
-            <p :for="frameworkMonitoringOption.value" class="">
-              {{ frameworkMonitoringOption.label }}
-            </p>
-          </div>
+        <div class="framework-toggle-label">
+          <ToggleSwitch
+            v-model="frameworkMonitoringOption.isActive"
+            data-test="valuesOnlySwitch"
+            @change="resetErrors"
+            :disabled="!isMonitoringActive"
+          />
+          <span>
+            {{ frameworkMonitoringOption.label }}
+          </span>
         </div>
-        <div class="dataland-info-text small">
-          EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
-        </div>
+      </div>
+      <div class="dataland-info-text small">
+        EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
@@ -80,23 +51,16 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Select from 'primevue/select';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
-import { PORTFOLIO_MONITORING_REPORTING_PERIODS } from '@/utils/Constants.ts';
 
 type MonitoringOption = {
   value: string;
   label: string;
   isActive: boolean;
 };
-
-const reportingPeriodsOptions = PORTFOLIO_MONITORING_REPORTING_PERIODS.map((yearString) => ({
-  label: yearString,
-  value: +yearString,
-}));
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -108,12 +72,9 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'sfdr', label: 'SFDR', isActive: false },
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
 ]);
-const selectedStartingYear = ref<number | undefined>(undefined);
 const showFrameworksError = ref(false);
-const showReportingPeriodsError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
-const previousStartingYear = ref<number | undefined>(undefined);
 const previousFrameworks = ref<Set<string>>(new Set());
 
 const selectedFrameworkOptions = computed(() => {
@@ -138,18 +99,14 @@ onMounted(() => {
  */
 function onMonitoringToggled(newValue: boolean): void {
   if (newValue) {
-    selectedStartingYear.value = previousStartingYear.value;
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
       isActive: previousFrameworks.value.has(option.value),
     }));
   } else {
-    previousStartingYear.value = selectedStartingYear.value;
     previousFrameworks.value = new Set(
       availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
     );
-
-    selectedStartingYear.value = undefined;
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
       isActive: false,
@@ -162,7 +119,6 @@ function onMonitoringToggled(newValue: boolean): void {
  * Reset errors when either framework, reporting period or file type changes
  */
 function resetErrors(): void {
-  showReportingPeriodsError.value = false;
   showFrameworksError.value = false;
 }
 
@@ -172,15 +128,13 @@ function resetErrors(): void {
 async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
-    startingMonitoringPeriod: selectedStartingYear.value?.toString() ?? '',
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
   };
 
   if (isMonitoringActive.value) {
-    showReportingPeriodsError.value = !selectedStartingYear.value;
     showFrameworksError.value = selectedFrameworkOptions.value.length === 0;
 
-    if (showReportingPeriodsError.value || showFrameworksError.value) {
+    if (showFrameworksError.value) {
       return;
     }
   } else {
@@ -204,16 +158,11 @@ function prefillModal(): void {
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
 
   if (!isMonitoringActive.value) {
-    selectedStartingYear.value = undefined;
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
       isActive: false,
     }));
     return;
-  }
-
-  if (portfolio.value.startingMonitoringPeriod) {
-    selectedStartingYear.value = Number(portfolio.value.startingMonitoringPeriod);
   }
 
   const monitoredFrameworksRaw = portfolio.value.monitoredFrameworks as string[] | undefined;
@@ -232,33 +181,20 @@ function prefillModal(): void {
 }
 
 .button-wrapper {
-  width: 100%;
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
 }
 
 .portfolio-monitoring-content {
   width: 20rem;
-  height: 100%;
-  border-radius: var(--spacing-xxs);
-  background-color: white;
   padding: var(--spacing-xs) var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.framework-switch-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .framework-toggle-label {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  padding-bottom: var(--spacing-md);
 }
 </style>

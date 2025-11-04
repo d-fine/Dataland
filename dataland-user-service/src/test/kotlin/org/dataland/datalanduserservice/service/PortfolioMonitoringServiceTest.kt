@@ -40,7 +40,6 @@ class PortfolioMonitoringServiceTest {
             lastUpdateTimestamp = Instant.now().toEpochMilli(),
             companyIds = setOf("companyId"),
             isMonitored = false,
-            startingMonitoringPeriod = "2023",
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
 
@@ -68,7 +67,6 @@ class PortfolioMonitoringServiceTest {
         val portfolioMonitoringPatch =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                startingMonitoringPeriod = "2022",
                 monitoredFrameworks = setOf("sfdr"),
             )
 
@@ -92,7 +90,6 @@ class PortfolioMonitoringServiceTest {
         val portfolioMonitoringPatch =
             PortfolioMonitoringPatch(
                 isMonitored = true,
-                startingMonitoringPeriod = "2021",
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
             )
 
@@ -111,7 +108,6 @@ class PortfolioMonitoringServiceTest {
         assertEquals(originalPortfolio.userId, updatedPortfolio.userId)
         assertEquals(originalPortfolio.companyIds, updatedPortfolio.companyIds)
         assertEquals(portfolioMonitoringPatch.isMonitored, updatedPortfolio.isMonitored)
-        assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, updatedPortfolio.startingMonitoringPeriod)
         assertEquals(portfolioMonitoringPatch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
     }
 }

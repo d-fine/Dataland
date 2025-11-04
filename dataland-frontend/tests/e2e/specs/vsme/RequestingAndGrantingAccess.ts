@@ -93,7 +93,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeGranted,
-              vsmeFixtures[0]!.t,
+              vsmeFixtures[0].t,
               []
             );
           })
@@ -102,7 +102,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeDeclined,
-              vsmeFixtures[1]!.t,
+              vsmeFixtures[1].t,
               []
             )
           )
@@ -111,7 +111,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodWithoutRequest,
-              vsmeFixtures[1]!.t,
+              vsmeFixtures[1].t,
               []
             )
           );
@@ -123,6 +123,8 @@ describeIf(
      * One for reportingPeriodToBeGranted and one for reportingPeriodToBeDeclined.
      */
     function validateThatAccessRequestsAreDisplayedInTable(): void {
+      cy.contains('tbody.p-datatable-tbody tr', reportingPeriodToBeGranted).should('exist');
+      cy.contains('tbody.p-datatable-tbody tr', reportingPeriodToBeDeclined).should('exist');
       cy.get('tbody.p-datatable-tbody').within(() => {
         cy.get('tr')
           .eq(0)
