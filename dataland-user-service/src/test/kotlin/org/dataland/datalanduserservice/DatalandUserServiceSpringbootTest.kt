@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -78,6 +79,7 @@ class DatalandUserServiceSpringbootTest
                 companyIds = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
             )
 
         private val dummyPortfolioUpload2 =
@@ -86,6 +88,7 @@ class DatalandUserServiceSpringbootTest
                 companyIds = setOf(validCompanyId1),
                 isMonitored,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
             )
 
         @BeforeEach
@@ -156,6 +159,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
                     )
                 val patchedPortfolio =
                     assertDoesNotThrow {
@@ -182,6 +186,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
                     )
 
                 assertDoesNotThrow {
@@ -236,6 +241,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
                     )
 
                 assertThrows<AuthorizationDeniedException> {

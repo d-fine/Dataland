@@ -26,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.util.Optional
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -52,9 +53,10 @@ class MessageQueueListenerTest(
         val messageWithEmptyDocumentID =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    dataId = "",
+                    dataId = UUID.randomUUID().toString(),
                     updatedQaStatus = QaStatus.Accepted,
-                    currentlyActiveDataId = "",
+                    currentlyActiveDataId = UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString(), "sfdr", "2025", false,
                 ),
             )
         val thrown =
@@ -73,6 +75,7 @@ class MessageQueueListenerTest(
                     dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = null,
+                    UUID.randomUUID().toString(), "sfdr", "2025", false,
                 ),
             )
 

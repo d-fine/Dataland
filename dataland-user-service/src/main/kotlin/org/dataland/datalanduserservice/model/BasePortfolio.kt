@@ -70,12 +70,12 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
-    @field:JsonProperty(required = false)
+    @field:JsonProperty(required = true)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
     )
-    override val notificationFrequency: NotificationFrequency?,
+    override val notificationFrequency: NotificationFrequency,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
@@ -111,7 +111,7 @@ data class BasePortfolio(
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
-        notificationFrequency: NotificationFrequency? = this.notificationFrequency,
+        notificationFrequency: NotificationFrequency = this.notificationFrequency,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),

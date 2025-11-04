@@ -42,7 +42,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
-    val notificationFrequency: NotificationFrequency? = null,
+    val notificationFrequency: NotificationFrequency = NotificationFrequency.NoNotifications,
 ) {
     /**
      * create PortfolioResponse from entity

@@ -237,15 +237,18 @@ class QaReviewManager(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
     ) {
+        val pastActiveDataId =
+            getDataIdOfCurrentlyActiveDataset(
+                qaReviewEntity.companyId,
+                qaReviewEntity.framework,
+                qaReviewEntity.reportingPeriod,
+            )
+        val isUpdate = pastActiveDataId != null
         val currentlyActiveDataId =
             if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
                 qaReviewEntity.dataId
             } else {
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
-                )
+                pastActiveDataId
             }
 
         val qaStatusChangeMessage =
@@ -253,6 +256,10 @@ class QaReviewManager(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
+                companyId = qaReviewEntity.companyId,
+                framework = qaReviewEntity.framework,
+                reportingPeriod = qaReviewEntity.reportingPeriod,
+                isUpdate = isUpdate,
             )
 
         logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")

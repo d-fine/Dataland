@@ -28,10 +28,10 @@ data class PortfolioMonitoringPatch(
             ),
     )
     override val monitoredFrameworks: Set<String>,
-    @field:JsonProperty(required = false)
+    @field:JsonProperty(required = true)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
     )
-    override val notificationFrequency: NotificationFrequency? = NotificationFrequency.Weekly,
+    override val notificationFrequency: NotificationFrequency,
 ) : PortfolioMonitoring

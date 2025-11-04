@@ -126,7 +126,8 @@ class QaEventListenerQaService
         }
 
         /**
-         * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
+         * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange.
+         * What is this function used for?
          * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
@@ -170,6 +171,10 @@ class QaEventListenerQaService
                             documentId,
                             QaStatus.Accepted,
                             null,
+                            "",
+                            "",
+                            "",
+                            true,
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(

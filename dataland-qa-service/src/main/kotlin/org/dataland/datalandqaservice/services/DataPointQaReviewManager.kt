@@ -275,6 +275,7 @@ class DataPointQaReviewManager
                                     reviewEntity.reportingPeriod,
                                 ),
                             ],
+                        reviewEntity.companyId, "", reviewEntity.reportingPeriod, true,
                     )
 
                 logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")

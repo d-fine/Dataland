@@ -13,4 +13,8 @@ data class QaStatusChangeMessage(
     val dataId: String,
     val updatedQaStatus: QaStatus,
     val currentlyActiveDataId: String?,
+    val companyId: String,
+    val framework: String,
+    val reportingPeriod: String,
+    val isUpdate: Boolean,
 )

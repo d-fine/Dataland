@@ -35,6 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
+import java.util.UUID
 
 /**
  * A class for testing cases where DataManager should throw an exception.
@@ -229,15 +230,17 @@ class DataManagerExceptionTest
 
         @Test
         fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
-            val changedQaStatusDataId = "453545"
-            val updatedQaStatus = QaStatus.Accepted
-            val currentlyActiveDataId = "1273091"
+            val changedQaStatusDataId = UUID.randomUUID().toString()
             val messageWithChangedQAStatus =
                 objectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         changedQaStatusDataId,
-                        updatedQaStatus,
-                        currentlyActiveDataId,
+                        QaStatus.Accepted,
+                        UUID.randomUUID().toString(),
+                        UUID.randomUUID().toString(),
+                        "sfdr",
+                        "2025",
+                        true,
                     ),
                 )
             val thrown =
@@ -259,9 +262,13 @@ class DataManagerExceptionTest
             val messageWithEmptyDataIDs =
                 objectMapper.writeValueAsString(
                     QaStatusChangeMessage(
-                        dataId = "",
+                        dataId = UUID.randomUUID().toString(),
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = "1273091",
+                        UUID.randomUUID().toString(),
+                        "sfdr",
+                        "2025",
+                        true,
                     ),
                 )
             val thrown =
