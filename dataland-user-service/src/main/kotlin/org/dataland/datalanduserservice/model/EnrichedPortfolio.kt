@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 
 /**
  * --- API model ---
@@ -45,4 +46,6 @@ data class EnrichedPortfolio(
             ),
     )
     val monitoredFrameworks: Set<String>?,
+    @field:JsonProperty(required = true)
+    val notificationFrequency: NotificationFrequency,
 )

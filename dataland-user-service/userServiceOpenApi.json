@@ -1136,6 +1136,7 @@
       "EnrichedPortfolio": {
         "required": [
           "entries",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1177,6 +1178,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },

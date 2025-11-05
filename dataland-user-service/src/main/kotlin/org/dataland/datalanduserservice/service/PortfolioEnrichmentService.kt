@@ -134,5 +134,6 @@ class PortfolioEnrichmentService
                     ),
                 isMonitored = portfolio.isMonitored,
                 monitoredFrameworks = portfolio.monitoredFrameworks,
+                notificationFrequency = portfolio.notificationFrequency,
             )
     }

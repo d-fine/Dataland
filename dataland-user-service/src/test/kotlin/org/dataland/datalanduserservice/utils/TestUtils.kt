@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.utils
 
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
@@ -30,6 +31,7 @@ object TestUtils {
             entries = listOf(entryFinancials, entryNonFinancials, entryUndefined),
             isMonitored = null,
             monitoredFrameworks = null,
+            notificationFrequency = NotificationFrequency.Weekly,
         )
     }
 }
