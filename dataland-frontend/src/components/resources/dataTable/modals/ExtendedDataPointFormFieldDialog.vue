@@ -102,38 +102,22 @@ watch(chosenQuality, (val) => emit('update:chosenQuality', val));
 watch(insertedComment, (val) => emit('update:insertedComment', val));
 watch(insertedPage, (val) => emit('update:insertedPage', val));
 watch(selectedDocument, (val) => {
-  emit('update:selectedDocument', val);
-  const meta = allDocuments.value.find((doc) => doc.documentId === val) ?? null;
-  emit('update:selectedDocumentMeta', meta);
+  setSelectedDocument(val);
 });
 
 onMounted(async () => {
   await updateDocumentsList();
-  let matchedDoc: DocumentMetaInfoResponse | undefined;
+
   if (props.selectedDocument) {
-    matchedDoc = allDocuments.value.find((doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument);
-    if (matchedDoc) {
-      selectedDocument.value = matchedDoc.documentId;
-      emit('update:selectedDocument', selectedDocument.value);
-      emit('update:selectedDocumentMeta', matchedDoc);
-      if (props.insertedPage) {
-        insertedPage.value = props.insertedPage;
-        emit('update:insertedPage', insertedPage.value);
-      }
-    } else {
-      selectedDocument.value = null;
-      emit('update:selectedDocument', null);
-      emit('update:selectedDocumentMeta', null);
-      insertedPage.value = null;
-      emit('update:insertedPage', null);
-    }
+    setSelectedDocument(
+        allDocuments.value.find(
+            (doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument
+        )?.documentId ?? null
+    );
   } else {
-    selectedDocument.value = null;
-    emit('update:selectedDocument', null);
-    emit('update:selectedDocumentMeta', null);
-    insertedPage.value = null;
-    emit('update:insertedPage', null);
+    setSelectedDocument(null);
   }
+
   if (props.chosenQuality) {
     const matchQuality = qualityOptionsList.find((q) => q.value === props.chosenQuality);
     if (matchQuality) {
@@ -185,6 +169,28 @@ async function updateDocumentsList(): Promise<void> {
 async function handleUploadDocumentClick(): Promise<void> {
   await router.push(`/companies/${companyId}/documents`);
   dialogRef?.value?.close();
+}
+
+/**
+ * Sets the selected document based on the provided document ID.
+ * Updates the selectedDocument, selectedDocumentMeta, and insertedPage refs accordingly.
+ *
+ * @param docId - The ID of the document to select, or null to clear the selection.
+ */
+function setSelectedDocument(docId: string | null) {
+  const meta = allDocuments.value.find((doc) => doc.documentId === docId) ?? null;
+
+  if (!meta) {
+    selectedDocument.value = null;
+    insertedPage.value = null;
+    emit('update:selectedDocument', null);
+    emit('update:selectedDocumentMeta', null);
+    emit('update:insertedPage', null);
+  } else {
+    selectedDocument.value = meta.documentId;
+    emit('update:selectedDocument', meta.documentId);
+    emit('update:selectedDocumentMeta', meta);
+  }
 }
 </script>
 
