@@ -126,8 +126,7 @@ class QaEventListenerQaService
         }
 
         /**
-         * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange.
-         * What is this function used for?
+         * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
          * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
@@ -165,6 +164,7 @@ class QaEventListenerQaService
                 logger.info(
                     "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
+                // this function misuses QaStatusChangeMessage originally made for datasets not documents.
                 val messageToSend =
                     objectMapper.writeValueAsString(
                         QaStatusChangeMessage(
