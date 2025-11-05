@@ -51,7 +51,7 @@
                   : 'Edit Data Point'
               "
               @click.stop="
-                openEditDataModal(
+                openEditDataPointModal(
                   idx,
                   cellOrSectionConfig,
                   cellOrSectionConfig.uploadComponentName,
@@ -211,7 +211,7 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(
+function openEditDataPointModal(
   idx: number,
   cellOrSectionConfig: MLDTCellConfig<T>,
   uploadComponentName?: string,

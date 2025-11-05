@@ -43,6 +43,7 @@
   <Textarea
     :placeholder="'Insert comment'"
     :modelValue="insertedComment"
+    data-test="comment-textarea"
     @update:modelValue="(val) => (insertedComment = val)"
     rows="5"
     :draggable="false"
