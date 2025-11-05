@@ -172,7 +172,6 @@ watch(
  */
 function handleDataUpdated(): void {
   updateKey.value = Math.random();
-  console.log('Data updated event received. Reloading display data.', updateKey.value);
   void reloadDisplayData(++updateCounter.value);
 }
 

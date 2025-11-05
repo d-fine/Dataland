@@ -116,7 +116,6 @@ const vTooltip = Tooltip;
  * Emits the dataUpdated event to the parent component.
  */
 function onDataUpdated(): void {
-  console.log('MultiLayerDataTable: emitting dataUpdated');
   emit('dataUpdated');
 }
 
