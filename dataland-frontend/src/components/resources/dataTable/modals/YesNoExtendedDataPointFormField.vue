@@ -1,9 +1,9 @@
 <template>
   <h4>Value</h4>
   <div style="gap: 0.5rem; display: flex">
-    <RadioButton v-model="value" :inputId="'yes-no-yes'" :value="'Yes'" />
+    <RadioButton v-model="value" :inputId="'yes-no-yes'" :value="'Yes'" data-test="yes-input"/>
     <label for="yes-no-yes">Yes</label>
-    <RadioButton v-model="value" :inputId="'yes-no-no'" :value="'No'" />
+    <RadioButton v-model="value" :inputId="'yes-no-no'" :value="'No'" data-test="no-input"/>
     <label for="yes-no-no">No</label>
   </div>
   <ExtendedDataPointFormFieldDialog

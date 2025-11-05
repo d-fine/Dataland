@@ -5,6 +5,7 @@
     :options="qualityOptionsList ?? []"
     optionLabel="label"
     optionValue="value"
+    data-test="quality-select"
     :modelValue="chosenQuality"
     @update:modelValue="(val) => (chosenQuality = val)"
     fluid
@@ -17,6 +18,7 @@
       :options="availableDocuments ?? []"
       optionLabel="label"
       optionValue="value"
+      data-test="document-select"
       @update:modelValue="(val) => (selectedDocument = val)"
       style="width: 17em"
       fluid
@@ -25,6 +27,7 @@
       :modelValue="insertedPage"
       @update:modelValue="(val) => (insertedPage = val ?? null)"
       placeholder="Page Number"
+      data-test="page-number-input"
       style="width: 8em"
     />
     <div
@@ -53,7 +56,7 @@
 <script setup lang="ts">
 import Select from 'primevue/select';
 import { QualityOptions } from '@clients/backend';
-import { computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
+import {computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
@@ -74,6 +77,7 @@ const props = defineProps<{
   selectedDocument?: string | null;
   insertedComment?: string | null;
   insertedPage?: string | null;
+  fileReference?: string | null;
 }>();
 
 const emit = defineEmits([
@@ -118,7 +122,6 @@ async function updateDocumentsList(): Promise<void> {
     const documentControllerApi = apiClientProvider.apiClients.documentController;
     const response = await documentControllerApi.searchForDocumentMetaInformation(companyId);
     allDocuments.value = response.data;
-
     availableDocuments.value = allDocuments.value
       .filter((doc) => doc.documentName && doc.documentId)
       .map((doc) => ({

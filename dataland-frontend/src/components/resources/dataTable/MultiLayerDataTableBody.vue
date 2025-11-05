@@ -50,8 +50,9 @@
                   : 'Edit Data Point'
               "
               @click.stop="
-                openEditDataModal(idx, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
+                openEditDataModal(idx, cellOrSectionConfig, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
               "
+              data-test="edit-data-point-button"
               :pt="{
                 root: {
                   class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
@@ -204,9 +205,11 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(idx: number, uploadComponentName?: string, dataPointTypeId?: string): void {
+function openEditDataModal(idx: number, cellOrSectionConfig, uploadComponentName?: string, dataPointTypeId?: string): void {
   const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
+  const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;
+  const dataPoint = cellOrSectionConfig.valueGetter(props.dataAndMetaInfo[idx]?.data);
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
@@ -227,6 +230,8 @@ function openEditDataModal(idx: number, uploadComponentName?: string, dataPointT
       reportingPeriod: reportingPeriod,
       uploadComponentName: uploadComponentName,
       dataPointTypeId: dataPointTypeId,
+      dataType: dataType,
+      dataPoint: dataPoint,
     },
     onClose: (options) => {
       if (options?.data?.dataUpdated) {
