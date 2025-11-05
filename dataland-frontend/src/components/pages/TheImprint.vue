@@ -12,7 +12,7 @@
     </p>
     <p>Vertretungsberechtige Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
     <p>
-      Telefon: +49 1511 77 22 399
+      Telefon: +49 1622 63 13 04
       <br />
       E-Mail: mortiz.kiese@dataland.com
     </p>
