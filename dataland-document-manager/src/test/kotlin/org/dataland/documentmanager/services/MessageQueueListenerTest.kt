@@ -53,7 +53,7 @@ class MessageQueueListenerTest(
         val messageWithEmptyDocumentID =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    dataId = UUID.randomUUID().toString(),
+                    dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = UUID.randomUUID().toString(),
                     UUID.randomUUID().toString(), "sfdr", "2025", false,
