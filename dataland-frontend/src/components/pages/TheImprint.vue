@@ -10,11 +10,11 @@
       <br />
       60320 Frankfurt am Main
     </p>
-    <p>Vertretungsberechtige Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
+    <p>Vertretungsberechtiger Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
     <p>
       Telefon: +49 1622 63 13 04
       <br />
-      E-Mail: mortiz.kiese@dataland.com
+      E-Mail: moritz.kiese@dataland.com
     </p>
     <p>
       Registergericht: Amtsgericht Frankfurt am Main
