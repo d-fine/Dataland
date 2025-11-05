@@ -74,6 +74,7 @@
               icon="pi pi-plus"
               label="NEW DATASET"
               data-test="goToNewDatasetButton"
+              @click="linkToNewDataset"
             />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
@@ -252,6 +253,13 @@ onMounted(async () => {
 });
 
 /**
+ * Navigates to the new dataset creation page
+ */
+function linkToNewDataset(): void {
+  void router.push(`/companies/${props.companyID}/frameworks/upload`);
+}
+
+/**
  * Sets dataset quality status to the given status
  * @param qaStatus the QA status to be assigned
  */
@@ -349,6 +357,30 @@ async function setViewPageAttributesForUser(): Promise<void> {
   }
 
   hideEmptyFields.value = !hasUserReviewerRights.value;
+}
+
+/**
+ * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
+ * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
+ * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
+ * @param event event
+ */
+async function editDataset(event: Event): Promise<void> {
+  if (props.singleDataMetaInfoToDisplay) {
+    await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
+  } else if (availableReportingPeriods.value.length > 1) {
+    reportingPeriodsOverlayPanel.value?.toggle(event);
+  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
+    await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
+  }
+}
+
+/**
+ * Navigates to the data update form by using templateDataId
+ * @param dataId dataId
+ */
+async function goToUpdateFormByDataId(dataId: string): Promise<void> {
+  await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
 }
 
 /**
