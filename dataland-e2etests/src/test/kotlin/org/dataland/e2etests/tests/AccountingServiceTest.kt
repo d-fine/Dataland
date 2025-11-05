@@ -42,6 +42,13 @@ class AccountingServiceTest {
         companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
     }
 
+    private fun removeCompanyOwnerRole(
+        companyId: String,
+        userId: UUID,
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
+    }
+
     private fun postTransaction(
         companyId: String,
         value: BigDecimal = initialCredit,
@@ -73,6 +80,7 @@ class AccountingServiceTest {
         assignCompanyOwnerRole(companyId, dataReaderUserId)
         postTransaction(companyId)
         val balance = getBalance(companyId)
+        removeCompanyOwnerRole(companyId, dataReaderUserId)
         assertEquals(initialCredit, balance)
     }
 
@@ -91,6 +99,7 @@ class AccountingServiceTest {
 
         sleep(2000)
         val balance = getBalance(billableCompanyId)
+        removeCompanyOwnerRole(billableCompanyId, dataReaderUserId)
         assertEquals(initialCredit - BigDecimal(1.0), balance)
     }
 
@@ -122,6 +131,8 @@ class AccountingServiceTest {
         // Request balance as first user
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val balance = getBalance(billableCompanyIdA)
+        removeCompanyOwnerRole(billableCompanyIdA, dataReaderUserId)
+        removeCompanyOwnerRole(billableCompanyIdB, dataUploaderUserId)
         assertEquals(initialCredit - BigDecimal(0.5), balance)
     }
 }
