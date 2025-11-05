@@ -15,6 +15,8 @@ interface ConfigurationParameters {
   portfolioResponse: EnrichedPortfolio;
 }
 
+type TestMode = 'member' | 'admin';
+
 let nonMemberConfigurationParameters: ConfigurationParameters;
 let memberConfigurationParametersWithoutMonitoring: ConfigurationParameters;
 let memberConfigurationParametersWithMonitoring: ConfigurationParameters;
@@ -55,7 +57,7 @@ function interceptApiCallsAndMountAndWaitForDownload(
  * @param isMonitored whether the test portfolio shall have monitoring activated
  * @returns The appropriate configuration parameters for the test scenario
  */
-function getTestModeConfigurationParameters(testMode: string, isMonitored: boolean): ConfigurationParameters {
+function getTestModeConfigurationParameters(testMode: TestMode, isMonitored: boolean): ConfigurationParameters {
   if (testMode === 'member') {
     return isMonitored ? memberConfigurationParametersWithMonitoring : memberConfigurationParametersWithoutMonitoring;
   } else {
@@ -199,7 +201,7 @@ describe('Check the portfolio details view', function (): void {
     });
   });
 
-  const testModes = ['member', 'admin'];
+  const testModes = ['member' as TestMode, 'admin' as TestMode];
 
   for (const testMode of testModes) {
     it('Check Monitoring Button and Not Monitored Tag for Dataland ' + testMode, function (): void {
