@@ -10,7 +10,7 @@
       <br />
       60320 Frankfurt am Main
     </p>
-    <p>Vertretungsberechtiger Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
+    <p>Vertretungsberechtigter Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
     <p>
       Telefon: +49 1622 63 13 04
       <br />
