@@ -41,7 +41,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.general?.general?.fiscalYearDeviation
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'fiscalYearDeviation',
+            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -55,7 +55,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.general?.general?.fiscalYearEnd
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
-            dataPointTypeId: 'fiscalYearEnd',
+            dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
         ],
       },
@@ -99,7 +99,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.general?.company?.mainPcafSector
               ),
             uploadComponentName: 'ExtendedSingleSelectFormField',
-            dataPointTypeId: 'mainPcafSector',
+            dataPointTypeId: 'extendedEnumPcafMainSector',
           },
           {
             type: 'cell',
@@ -126,7 +126,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.general?.company?.companyExchangeStatus
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'companyExchangeStatus',
+            dataPointTypeId: 'extendedEnumCompanyExchangeStatus',
           },
         ],
       },
@@ -156,7 +156,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValue?.listedCompany?.marketCapitalizationInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'marketCapitalizationInEUR',
+            dataPointTypeId: 'extendedDecimalMarketCapitalizationInEUR',
           },
           {
             type: 'cell',
@@ -171,7 +171,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValue?.listedCompany?.bookValueOfDebtInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'bookValueOfDebtInEUR',
+            dataPointTypeId: 'extendedDecimalBookValueOfDebtInEUR',
           },
           {
             type: 'cell',
@@ -186,7 +186,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValue?.listedCompany?.minoritiesInterestInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'minoritiesInterestInEUR',
+            dataPointTypeId: 'extendedDecimalMinoritiesInterestInEUR',
           },
         ],
       },
@@ -208,7 +208,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'totalEquityAndDebtInEUR',
+            dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
           },
         ],
       },
@@ -242,7 +242,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope1GhgEmissionsInTonnes',
+            dataPointTypeId: 'extendedDecimalScope1GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -260,7 +260,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope2GhgEmissionsLocationBasedInTonnes',
+            dataPointTypeId: 'extendedDecimalScope2GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -278,7 +278,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope2GhgEmissionsMarketBasedInTonnes',
+            dataPointTypeId: 'extendedDecimalScope2GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -296,7 +296,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope3GhgEmissionsInTonnes',
+            dataPointTypeId: 'extendedDecimalScope3GhgEmissionsInTonnes',
           },
         ],
       },
@@ -329,7 +329,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'marketCapitalizationInEUR',
+            dataPointTypeId: 'extendedDecimalEstimatedMarketCapitalizationInEUR',
           },
           {
             type: 'cell',
@@ -347,7 +347,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'bookValueOfDebtInEUR',
+            dataPointTypeId: 'extendedDecimalEstimatedBookValueOfDebtInEUR',
           },
           {
             type: 'cell',
@@ -365,7 +365,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'minoritiesInterestInEUR',
+            dataPointTypeId: 'extendedDecimalEstimatedMinoritiesInterestInEUR',
           },
         ],
       },
@@ -390,7 +390,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'totalEquityAndDebtInEUR',
+            dataPointTypeId: 'extendedDecimalEstimatedTotalEquityAndDebtInEUR',
           },
         ],
       },
@@ -424,7 +424,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope1GhgEmissionsInTonnes',
+            dataPointTypeId: 'extendedDecimalEstimatedScope1GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -443,7 +443,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope2GhgEmissionsLocationBasedInTonnes',
+            dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -461,7 +461,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope2GhgEmissionsMarketBasedInTonnes',
+            dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -479,7 +479,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'scope3GhgEmissionsInTonnes',
+            dataPointTypeId: 'extendedDecimalEstimatedScope3GhgEmissionsInTonnes',
           },
         ],
       },

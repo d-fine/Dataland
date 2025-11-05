@@ -23,7 +23,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
         uploadComponentName = component.getUploadComponentName(),
-        dataPointTypeId = component.identifier,
+        dataPointTypeId = component.dataPointTypeId ?: "Framework specification not compiled by the Framework Toolbox",
     )
 }
 

@@ -48,7 +48,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.general?.general?.fiscalYearDeviation
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'fiscalYearDeviation',
+            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -62,7 +62,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.general?.general?.fiscalYearEnd
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
-            dataPointTypeId: 'fiscalYearEnd',
+            dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
           {
             type: 'cell',
@@ -76,7 +76,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.general?.general?.areAllGroupEntitiesCovered
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'areAllGroupEntitiesCovered',
+            dataPointTypeId: 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports',
           },
           {
             type: 'cell',
@@ -91,7 +91,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.general?.general?.numberOfEmployees
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'numberOfEmployees',
+            dataPointTypeId: 'extendedDecimalNumberOfEmployees',
           },
           {
             type: 'cell',
@@ -105,7 +105,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.general?.general?.isNfrdMandatory
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'isNfrdMandatory',
+            dataPointTypeId: 'extendedEnumYesNoIsNfrdMandatory',
           },
           {
             type: 'cell',
@@ -116,7 +116,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
             uploadComponentName: 'AssuranceFormField',
-            dataPointTypeId: 'assurance',
+            dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
           },
           {
             type: 'cell',
@@ -156,7 +156,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total (gross) Carrying Amount'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalGrossCarryingAmount',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
           },
           {
             type: 'cell',
@@ -171,7 +172,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
           },
           {
             type: 'cell',
@@ -186,7 +188,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total Amount of Assets which are Environmentally Sustainable (Taxonomy-aligned)'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
           },
           {
             type: 'cell',
@@ -201,7 +204,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total Amount of Environmentally Sustainable Assets which are Use of Proceeds'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
           },
           {
             type: 'cell',
@@ -216,7 +220,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total Amount of Environmentally Sustainable Assets which are Transitional'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
           },
           {
             type: 'cell',
@@ -231,7 +236,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total Amount of Environmentally Sustainable Assets which are Enabling'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
           },
         ],
       },
@@ -258,7 +264,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentEligible',
           },
           {
             type: 'cell',
@@ -277,7 +284,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -296,7 +304,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -315,7 +324,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -334,7 +344,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -353,7 +364,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentEligible',
           },
           {
             type: 'cell',
@@ -372,7 +384,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -391,7 +404,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -410,7 +424,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -429,7 +444,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting',
           },
           {
             type: 'cell',
@@ -451,7 +467,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
           },
           {
             type: 'cell',
@@ -473,7 +489,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -495,7 +511,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -517,7 +533,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -536,7 +552,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentEligible',
           },
           {
             type: 'cell',
@@ -555,7 +572,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -573,7 +591,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -592,7 +611,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -611,7 +631,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentEligible',
           },
           {
             type: 'cell',
@@ -630,7 +651,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -649,7 +671,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -668,7 +691,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -690,7 +714,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
           },
           {
             type: 'cell',
@@ -712,7 +736,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -734,7 +758,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -756,7 +780,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -775,7 +799,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
           },
           {
             type: 'cell',
@@ -794,7 +819,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
           },
           {
             type: 'cell',
@@ -814,7 +840,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -833,7 +860,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -853,7 +881,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
           },
         ],
       },
@@ -880,7 +909,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentEligible',
           },
           {
             type: 'cell',
@@ -899,7 +929,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -918,7 +949,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -937,7 +969,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -956,7 +989,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -975,7 +1009,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentEligible',
           },
           {
             type: 'cell',
@@ -994,7 +1029,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1013,7 +1049,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1032,7 +1069,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1051,7 +1089,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting',
           },
           {
             type: 'cell',
@@ -1073,7 +1112,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1095,7 +1134,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1117,7 +1156,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1139,7 +1178,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1158,7 +1197,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentEligible',
           },
           {
             type: 'cell',
@@ -1177,7 +1217,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -1195,7 +1236,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1214,7 +1256,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1233,7 +1276,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentEligible',
           },
           {
             type: 'cell',
@@ -1252,7 +1296,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -1271,7 +1316,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1290,7 +1336,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1312,7 +1359,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
           },
           {
             type: 'cell',
@@ -1334,7 +1381,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -1356,7 +1403,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1378,7 +1425,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1397,7 +1444,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1416,7 +1464,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1436,7 +1485,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -1455,7 +1505,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1475,7 +1526,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
           },
         ],
       },
@@ -1510,7 +1562,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
+            dataPointTypeId: 'extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
           },
           {
             type: 'cell',
@@ -1529,7 +1581,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsCapexBasedInPercent',
+            dataPointTypeId: 'extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedInPercent',
           },
           {
             type: 'cell',
@@ -1544,7 +1596,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
+            dataPointTypeId:
+              'extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
           },
           {
             type: 'cell',
@@ -1559,7 +1612,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
+            dataPointTypeId:
+              'extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
           },
         ],
       },
@@ -1588,7 +1642,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1610,7 +1664,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1632,7 +1686,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -1653,7 +1707,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1675,7 +1729,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1697,7 +1751,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1719,7 +1773,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1741,7 +1795,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -1763,7 +1817,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1785,7 +1839,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -1807,7 +1861,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1829,7 +1883,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -1851,7 +1905,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
         ],
       },
@@ -1879,7 +1933,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1901,7 +1956,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1923,7 +1978,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -1943,7 +1998,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1965,7 +2021,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1987,7 +2043,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2009,7 +2065,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2030,7 +2086,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -2052,7 +2108,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2074,7 +2130,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -2096,7 +2152,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2118,7 +2174,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -2140,7 +2196,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
         ],
       },
@@ -2170,7 +2226,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total of Absolute Premiums of Taxonomy-aligned Activities'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalOfAbsolutePremiumsOfTaxonomyAlignedActivities',
+            dataPointTypeId: 'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyAlignedActivities',
           },
           {
             type: 'cell',
@@ -2185,7 +2241,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
           },
           {
             type: 'cell',
@@ -2199,7 +2256,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Total of Absolute Premiums of Taxonomy-non-eligible Activities'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities',
           },
           {
             type: 'cell',
@@ -2217,7 +2275,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities',
           },
           {
             type: 'cell',
@@ -2236,7 +2295,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
           },
           {
             type: 'cell',
@@ -2255,7 +2315,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities',
           },
         ],
       },
@@ -2282,7 +2343,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
           },
           {
             type: 'cell',
@@ -2301,7 +2363,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsCapexBasedInPercent',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsCapexBasedInPercent',
           },
           {
             type: 'cell',
@@ -2316,7 +2379,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
           },
           {
             type: 'cell',
@@ -2331,7 +2395,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
           },
         ],
       },
@@ -2360,7 +2425,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2382,7 +2447,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2404,7 +2469,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -2425,7 +2490,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2447,7 +2512,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2469,7 +2534,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2491,7 +2556,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2513,7 +2578,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -2535,7 +2600,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2557,7 +2622,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -2579,7 +2644,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2601,7 +2666,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -2623,7 +2688,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
         ],
       },
@@ -2651,7 +2716,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2673,7 +2739,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2695,7 +2761,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -2715,7 +2781,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2737,7 +2804,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2759,7 +2826,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2781,7 +2848,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2802,7 +2869,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -2824,7 +2891,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2846,7 +2913,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -2868,7 +2935,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2890,7 +2957,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -2912,7 +2979,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
           },
         ],
       },
@@ -2943,7 +3010,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -2964,7 +3032,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
           },
           {
             type: 'cell',
@@ -2984,7 +3052,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -3006,7 +3075,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3028,7 +3097,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3049,7 +3118,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
           },
           {
             type: 'cell',
@@ -3069,7 +3138,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -3091,7 +3161,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3113,7 +3183,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
           },
           {
             type: 'cell',
@@ -3135,7 +3205,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -3157,7 +3227,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3176,7 +3246,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
           },
           {
             type: 'cell',
@@ -3195,7 +3266,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -3215,7 +3287,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3237,7 +3310,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
           },
           {
             type: 'cell',
@@ -3259,7 +3332,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -3281,7 +3354,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3303,7 +3376,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
           },
           {
             type: 'cell',
@@ -3325,7 +3398,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -3347,7 +3420,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3369,7 +3442,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -3391,7 +3464,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3413,7 +3486,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3435,7 +3508,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
         ],
       },
@@ -3458,7 +3531,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
-            dataPointTypeId: 'capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -3478,7 +3552,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
           },
           {
             type: 'cell',
@@ -3497,7 +3572,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -3519,7 +3595,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3541,7 +3617,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3561,7 +3637,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
           },
           {
             type: 'cell',
@@ -3580,7 +3657,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -3602,7 +3680,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3624,7 +3702,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
           },
           {
             type: 'cell',
@@ -3646,7 +3724,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -3668,7 +3746,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3687,7 +3765,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
           },
           {
             type: 'cell',
@@ -3706,7 +3785,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -3726,7 +3806,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3748,7 +3829,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
           },
           {
             type: 'cell',
@@ -3769,7 +3850,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -3791,7 +3872,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3813,7 +3894,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
           },
           {
             type: 'cell',
@@ -3835,7 +3916,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -3857,7 +3938,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3879,7 +3960,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -3901,7 +3982,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3923,7 +4004,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3945,7 +4026,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
         ],
       },
@@ -3970,7 +4051,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
+              'extendedCurrencyInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -3991,7 +4072,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
           },
           {
             type: 'cell',
@@ -4012,7 +4093,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -4034,7 +4115,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -4056,7 +4137,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4077,7 +4158,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
           },
           {
             type: 'cell',
@@ -4098,7 +4179,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -4120,7 +4201,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4142,7 +4223,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
           },
           {
             type: 'cell',
@@ -4164,7 +4245,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -4186,7 +4267,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4205,7 +4286,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible',
           },
           {
             type: 'cell',
@@ -4224,7 +4306,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -4245,7 +4328,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4267,7 +4350,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
           },
           {
             type: 'cell',
@@ -4289,7 +4372,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -4311,7 +4394,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4333,7 +4416,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
           },
           {
             type: 'cell',
@@ -4355,7 +4438,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -4377,7 +4460,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4399,7 +4482,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -4421,7 +4504,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -4443,7 +4526,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -4465,7 +4548,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
         ],
       },
@@ -4490,7 +4573,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'CurrencyDataPointFormField',
             dataPointTypeId:
-              'capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
+              'extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -4510,7 +4593,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
           },
           {
             type: 'cell',
@@ -4530,7 +4614,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -4552,7 +4637,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -4574,7 +4659,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4594,7 +4679,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
           },
           {
             type: 'cell',
@@ -4614,7 +4700,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -4636,7 +4723,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4658,7 +4745,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible',
           },
           {
             type: 'cell',
@@ -4680,7 +4767,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -4702,7 +4789,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4721,7 +4808,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible',
           },
           {
             type: 'cell',
@@ -4740,7 +4828,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -4760,7 +4849,8 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4782,7 +4872,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
           },
           {
             type: 'cell',
@@ -4804,7 +4894,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -4826,7 +4916,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4848,7 +4938,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible',
           },
           {
             type: 'cell',
@@ -4870,7 +4960,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -4892,7 +4982,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4914,7 +5004,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -4936,7 +5026,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -4958,7 +5048,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -4980,7 +5070,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
         ],
       },

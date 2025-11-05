@@ -43,6 +43,11 @@ open class ComponentBase(
     var dataPointTypeName: String? = null
 
     /**
+     * Data point type identifier for assembled datasets
+     */
+    var dataPointTypeId: String? = null
+
+    /**
      * Shorter version of a human-readable name describing the component
      */
     var aliasExport: String? = null

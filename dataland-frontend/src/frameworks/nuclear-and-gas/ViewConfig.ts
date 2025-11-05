@@ -31,7 +31,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection426
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'nuclearEnergyRelatedActivitiesSection426',
+            dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection426',
           },
           {
             type: 'cell',
@@ -46,7 +46,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection427
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'nuclearEnergyRelatedActivitiesSection427',
+            dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection427',
           },
           {
             type: 'cell',
@@ -61,7 +61,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection428
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'nuclearEnergyRelatedActivitiesSection428',
+            dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection428',
           },
           {
             type: 'cell',
@@ -76,7 +76,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.fossilGasRelatedActivitiesSection429
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'fossilGasRelatedActivitiesSection429',
+            dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection429',
           },
           {
             type: 'cell',
@@ -91,7 +91,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.fossilGasRelatedActivitiesSection430
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'fossilGasRelatedActivitiesSection430',
+            dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection430',
           },
           {
             type: 'cell',
@@ -106,7 +106,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.general?.fossilGasRelatedActivitiesSection431
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'fossilGasRelatedActivitiesSection431',
+            dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection431',
           },
         ],
       },
@@ -128,7 +128,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-aligned Revenue (denominator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyAlignedRevenueDenominator',
+            dataPointTypeId:
+              'extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedRevenueDenominator',
           },
           {
             type: 'cell',
@@ -142,7 +143,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-aligned CapEx (denominator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyAlignedCapexDenominator',
+            dataPointTypeId:
+              'extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedCapexDenominator',
           },
         ],
       },
@@ -164,7 +166,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-aligned Revenue (numerator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyAlignedRevenueNumerator',
+            dataPointTypeId:
+              'extendedNuclearAndGasAlignedNumeratorComponentNuclearAndGasTaxonomyAlignedRevenueNumerator',
           },
           {
             type: 'cell',
@@ -178,7 +181,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-aligned CapEx (numerator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyAlignedCapexNumerator',
+            dataPointTypeId: 'extendedNuclearAndGasAlignedNumeratorComponentNuclearAndGasTaxonomyAlignedCapexNumerator',
           },
         ],
       },
@@ -200,7 +203,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-eligible but not aligned Revenue'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyEligibleButNotAlignedRevenue',
+            dataPointTypeId:
+              'extendedNuclearAndGasEligibleButNotAlignedComponentNuclearAndGasTaxonomyEligibleButNotAlignedRevenue',
           },
           {
             type: 'cell',
@@ -214,7 +218,8 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-eligible but not aligned CapEx'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyEligibleButNotAlignedCapex',
+            dataPointTypeId:
+              'extendedNuclearAndGasEligibleButNotAlignedComponentNuclearAndGasTaxonomyEligibleButNotAlignedCapex',
           },
         ],
       },
@@ -236,7 +241,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-non-eligible Revenue'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyNonEligibleRevenue',
+            dataPointTypeId: 'extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleRevenue',
           },
           {
             type: 'cell',
@@ -250,7 +255,7 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear and Gas Taxonomy-non-eligible CapEx'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
-            dataPointTypeId: 'nuclearAndGasTaxonomyNonEligibleCapex',
+            dataPointTypeId: 'extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleCapex',
           },
         ],
       },
