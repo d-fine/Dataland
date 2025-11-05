@@ -11,14 +11,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watchEffect } from 'vue';
+import { ref, inject, watchEffect, watch } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { buildApiBody, parseValue } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps({
-  value: Number,
+  value: [String, Number, null],
   chosenQuality: String,
   selectedDocument: String,
   insertedComment: String,
@@ -27,7 +27,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:apiBody']);
 
-const value = ref<number | null>(props.value ?? null);
+const value = ref<number | null>(parseValue(props.value));
 const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
 const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
@@ -37,6 +37,13 @@ const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
+
+watch(
+  () => props.value,
+  (newVal) => {
+    value.value = parseValue(newVal);
+  }
+);
 
 watchEffect(() => {
   apiBody.value = buildApiBody(

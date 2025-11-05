@@ -50,7 +50,12 @@
                   : 'Edit Data Point'
               "
               @click.stop="
-                openEditDataModal(idx, cellOrSectionConfig, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
+                openEditDataModal(
+                  idx,
+                  cellOrSectionConfig,
+                  cellOrSectionConfig.uploadComponentName,
+                  cellOrSectionConfig.dataPointTypeId
+                )
               "
               data-test="edit-data-point-button"
               :pt="{
@@ -120,6 +125,7 @@ import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayer
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import {
   isCellOrSectionVisible,
+  type MLDTCellConfig,
   type MLDTConfig,
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
@@ -205,11 +211,17 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(idx: number, cellOrSectionConfig, uploadComponentName?: string, dataPointTypeId?: string): void {
+function openEditDataModal(
+  idx: number,
+  cellOrSectionConfig: MLDTCellConfig<T>,
+  uploadComponentName?: string,
+  dataPointTypeId?: string
+): void {
   const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
   const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;
-  const dataPoint = cellOrSectionConfig.valueGetter(props.dataAndMetaInfo[idx]?.data);
+  const data = props.dataAndMetaInfo[idx]?.data;
+  const dataPoint = data !== undefined ? cellOrSectionConfig.valueGetter(data) : undefined;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,

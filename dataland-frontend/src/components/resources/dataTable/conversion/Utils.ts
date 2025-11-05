@@ -109,3 +109,17 @@ export function buildApiBody(
     reportingPeriod: reportingPeriod,
   };
 }
+
+/**
+ * Parses the input value to a number or null.
+ * @param val The input value as string, number, null, or undefined.
+ * @returns The parsed number or null if parsing fails.
+ */
+export function parseValue(val: string | number | null | undefined): number | null {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const match = val.replace(/,/g, '').match(/-?\d+(\.\d+)?/);
+    return match ? parseFloat(match[0]) : null;
+  }
+  return null;
+}

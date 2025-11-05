@@ -30,17 +30,14 @@
       data-test="page-number-input"
       style="width: 8em"
     />
-    <div
-      v-if="selectedDocumentMetaInformation"
-      class="dataland-info-text small"
-      style="background-color: var(--p-blue-50); margin: var(--spacing-xs)"
-    >
-      <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
-      <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
-      <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
-      <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
-    </div>
   </div>
+  <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
+    <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
+    <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
+    <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
+    <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
+  </div>
+
   <PrimeButton label="Upload Document" icon="pi pi-upload" variant="link" @click="handleUploadDocumentClick" />
   <h4>Comment</h4>
   <Textarea
@@ -56,7 +53,7 @@
 <script setup lang="ts">
 import Select from 'primevue/select';
 import { QualityOptions } from '@clients/backend';
-import {computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
@@ -77,7 +74,6 @@ const props = defineProps<{
   selectedDocument?: string | null;
   insertedComment?: string | null;
   insertedPage?: string | null;
-  fileReference?: string | null;
 }>();
 
 const emit = defineEmits([
@@ -97,8 +93,7 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 
 const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
 const selectedDocumentMetaInformation = computed(() => {
-  const docs = Array.isArray(allDocuments) ? allDocuments : [];
-  return docs.find((doc) => doc && doc.documentId === selectedDocument.value);
+  return allDocuments.value.find((doc) => doc.documentId === selectedDocument.value) ?? null;
 });
 
 watch(chosenQuality, (val) => emit('update:chosenQuality', val));
@@ -112,6 +107,25 @@ watch(selectedDocument, (val) => {
 
 onMounted(async () => {
   await updateDocumentsList();
+  if (props.selectedDocument) {
+    const match = allDocuments.value.find((doc) => doc.documentName === props.selectedDocument);
+    if (match) {
+      selectedDocument.value = match.documentId;
+      emit('update:selectedDocument', selectedDocument.value);
+      emit('update:selectedDocumentMeta', match);
+    }
+  }
+  if (props.chosenQuality) {
+    const matchQuality = qualityOptionsList.find((q) => q.value === props.chosenQuality);
+    if (matchQuality) {
+      chosenQuality.value = matchQuality.value;
+      emit('update:chosenQuality', chosenQuality.value);
+    }
+  }
+  if (props.insertedPage) {
+    insertedPage.value = props.insertedPage;
+    emit('update:insertedPage', insertedPage.value);
+  }
 });
 
 /**

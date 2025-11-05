@@ -28,16 +28,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watchEffect } from 'vue';
+import { ref, inject, watchEffect, watch } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { buildApiBody, parseValue } from '@/components/resources/dataTable/conversion/Utils.ts';
 import Select from 'primevue/select';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets.ts';
 
 const props = defineProps({
-  value: Number,
+  value: [String, Number, null],
   chosenQuality: String,
   selectedDocument: String,
   insertedComment: String,
@@ -46,7 +46,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:apiBody']);
 
-const value = ref<number | null>(props.value ?? null);
+const value = ref<number | null>(parseValue(props.value));
 const currency = ref<string | null>(null);
 const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
 const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
@@ -59,6 +59,13 @@ const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) =>
   currencyA.label.localeCompare(currencyB.label)
+);
+
+watch(
+  () => props.value,
+  (newVal) => {
+    value.value = parseValue(newVal);
+  }
 );
 
 watchEffect(() => {
