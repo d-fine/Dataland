@@ -74,6 +74,7 @@ class CreditsManagerTest {
         )
 
         doThrow(ClientException::class).whenever(mockCompanyDataControllerApi).isCompanyIdValid(invalidCompanyId.toString())
+        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockTransactionRepository).save(any())
 
         creditsManager =
             CreditsManager(
@@ -92,8 +93,6 @@ class CreditsManagerTest {
 
     @Test
     fun `postTransaction should save transaction and return as DTO String type`() {
-        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockTransactionRepository).save(any())
-
         val result = creditsManager.postTransaction(validTransactionDto)
 
         assertEquals(transactionDtoString, result)
