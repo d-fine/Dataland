@@ -18,6 +18,7 @@
       optionLabel="label"
       optionValue="value"
       @update:modelValue="(val) => (selectedDocument = val)"
+      style="width: 17em"
       fluid
     />
     <InputText

@@ -1,6 +1,12 @@
 <template>
   <h4>Value</h4>
-  <InputNumber placeholder="Insert Value" fluid v-model="value"/>
+  <InputNumber
+      placeholder="Insert Value"
+      fluid
+      v-model="value"
+      :maxFractionDigits="2"
+      locale="en-US"
+  />
   <ExtendedDataPointFormFieldDialog
       v-model:chosenQuality="chosenQuality"
       v-model:selectedDocument="selectedDocument"
@@ -41,15 +47,15 @@ const dataPointTypeId = inject<string>('dataPointTypeId');
 
 watchEffect(() => {
   apiBody.value = buildApiBody(
-    value.value,
-    chosenQuality.value,
-    selectedDocument.value,
-    insertedComment.value,
-    insertedPage.value,
-    selectedDocumentMeta.value,
-    companyId!,
-    reportingPeriod!,
-    dataPointTypeId!
+      value.value,
+      chosenQuality.value,
+      selectedDocument.value,
+      insertedComment.value,
+      insertedPage.value,
+      selectedDocumentMeta.value,
+      companyId!,
+      reportingPeriod!,
+      dataPointTypeId!
   );
   emit('update:apiBody', apiBody.value);
 });

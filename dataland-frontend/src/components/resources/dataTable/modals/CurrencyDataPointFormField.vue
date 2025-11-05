@@ -2,7 +2,7 @@
   <h4>Value</h4>
   <div class="currency-value-fields">
     <div>
-      <InputNumber v-model="value" />
+      <InputNumber v-model="value" placeholder="Insert Value" fluid/>
     </div>
     <div>
       <Select
@@ -13,6 +13,7 @@
         option-value="value"
         class="currency-select"
         data-test="currency"
+        style="width: 10em"
         fluid
       />
     </div>
@@ -56,7 +57,7 @@ const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes);
+const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) => currencyA.label.localeCompare(currencyB.label));
 
 watchEffect(() => {
   apiBody.value = buildApiBody(

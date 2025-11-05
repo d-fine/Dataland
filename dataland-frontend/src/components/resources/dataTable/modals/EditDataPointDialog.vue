@@ -1,6 +1,8 @@
 <template>
-  {{ uploadComponentName }}
   <component :is="resolvedComponent" v-model:apiBody="apiBody" />
+  <Message v-if="errorMessage" severity="error" data-test="reportingYearError" style="margin: var(--spacing-xs)" fluid>
+    {{ errorMessage }}
+  </Message>
   <div style="display: flex; justify-content: flex-end">
     <PrimeButton
       label="SAVE CHANGES"
@@ -9,9 +11,6 @@
       @click="updateDataPoint"
     />
   </div>
-  <Message v-if="errorMessage" severity="error" variant="simple" size="small" data-test="reportingYearError">
-    {{ errorMessage }}
-  </Message>
 </template>
 
 <script setup lang="ts">
