@@ -36,7 +36,7 @@ export const sfdrDataModel = [
               },
             ],
 
-            component: 'RadioButtonsFormField',
+            component: 'RadioButtonsExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -45,7 +45,7 @@ export const sfdrDataModel = [
             label: 'Fiscal Year End',
             description: 'The date the fiscal year ends.',
 
-            component: 'DateFormField',
+            component: 'DateExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
