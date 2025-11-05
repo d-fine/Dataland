@@ -1,23 +1,21 @@
 <template>
   <div class="flex">
-    <PrimeButton
-      variant="link"
-      v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
-      @click="$dialog.open(DataPointDataTable, modalOptions)"
+    <a
+        v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
+        @click="$dialog.open(DataPointDataTable, modalOptions)"
+        class="link"
     >
       <slot></slot>
-    </PrimeButton>
+    </a>
     <div v-else-if="dataPointProperties.value">
       <slot>{{ dataPointProperties.value }}</slot>
     </div>
-    <div v-else>
-      <slot></slot>
-    </div>
+    <div v-else><slot></slot></div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
@@ -25,51 +23,88 @@ import {
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
 import { isDatapointCommentConsideredMissing } from '@/components/resources/dataTable/conversion/DataPoints';
-import PrimeButton from 'primevue/button';
 
-const props = defineProps<{
-  content: MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>;
-  metaInfo: DataMetaInformation;
-}>();
-
-const modalOptions = computed(() => {
-  return {
-    props: {
-      header: props.content.displayValue.fieldLabel,
-      modal: true,
-      dismissableMask: true,
-      style: {
-        maxWidth: '80vw',
-      },
+export default defineComponent({
+  name: 'DataPointWrapperDisplayComponent',
+  props: {
+    content: {
+      type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
+      required: true,
     },
-    data: {
-      dataPointDisplay: dataPointProperties.value,
-      dataId: props.metaInfo.dataId,
-      dataType: props.metaInfo.dataType,
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
+      required: true,
     },
-  };
-});
+  },
+  data() {
+    return {
+      DataPointDataTable,
+    };
+  },
 
-const dataPointProperties = computed(() => {
-  const content = props.content.displayValue;
-  let valueOption = undefined;
-  if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
-    valueOption = content.innerContents.displayValue;
-  }
-  return {
-    value: valueOption,
-    quality: content.quality,
-    dataSource: content.dataSource,
-    comment: content.comment,
-  };
-});
+  computed: {
+    modalOptions() {
+      return {
+        props: {
+          header: this.content.displayValue.fieldLabel,
+          modal: true,
+          dismissableMask: true,
+          style: {
+            maxWidth: '80vw',
+          },
+        },
+        data: {
+          dataPointDisplay: this.dataPointProperties,
+          dataId: this.metaInfo.dataId,
+          dataType: this.metaInfo.dataType,
+        },
+      };
+    },
+    dataPointProperties() {
+      const content = this.content.displayValue;
+      let valueOption = undefined;
+      if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+        valueOption = content.innerContents.displayValue;
+      }
+      return {
+        value: valueOption,
+        quality: content.quality,
+        dataSource: content.dataSource,
+        comment: content.comment,
+      };
+    },
+    isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
+      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
+      const quality = this.dataPointProperties.quality;
 
-const isAnyDataPointPropertyAvailableThatIsWorthShowingInModal = computed(() => {
-  const dataSource = dataPointProperties.value.dataSource as ExtendedDocumentReference | undefined | null;
-  const quality = dataPointProperties.value.quality;
-
-  return (
-    !isDatapointCommentConsideredMissing(dataPointProperties.value) || quality != undefined || dataSource != undefined
-  );
+      return (
+          !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
+          quality != undefined ||
+          dataSource != undefined
+      );
+    },
+  },
 });
 </script>
+<style scoped>
+.link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
+}
+</style>
