@@ -29,6 +29,7 @@
       placeholder="Page Number"
       data-test="page-number-input"
       style="width: 8em"
+      :disabled="!selectedDocument"
     />
   </div>
   <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
@@ -108,13 +109,30 @@ watch(selectedDocument, (val) => {
 
 onMounted(async () => {
   await updateDocumentsList();
+  let matchedDoc: DocumentMetaInfoResponse | undefined;
   if (props.selectedDocument) {
-    const match = allDocuments.value.find((doc) => doc.documentName === props.selectedDocument);
-    if (match) {
-      selectedDocument.value = match.documentId;
+    matchedDoc = allDocuments.value.find((doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument);
+    if (matchedDoc) {
+      selectedDocument.value = matchedDoc.documentId;
       emit('update:selectedDocument', selectedDocument.value);
-      emit('update:selectedDocumentMeta', match);
+      emit('update:selectedDocumentMeta', matchedDoc);
+      if (props.insertedPage) {
+        insertedPage.value = props.insertedPage;
+        emit('update:insertedPage', insertedPage.value);
+      }
+    } else {
+      selectedDocument.value = null;
+      emit('update:selectedDocument', null);
+      emit('update:selectedDocumentMeta', null);
+      insertedPage.value = null;
+      emit('update:insertedPage', null);
     }
+  } else {
+    selectedDocument.value = null;
+    emit('update:selectedDocument', null);
+    emit('update:selectedDocumentMeta', null);
+    insertedPage.value = null;
+    emit('update:insertedPage', null);
   }
   if (props.chosenQuality) {
     const matchQuality = qualityOptionsList.find((q) => q.value === props.chosenQuality);
@@ -123,9 +141,19 @@ onMounted(async () => {
       emit('update:chosenQuality', chosenQuality.value);
     }
   }
-  if (props.insertedPage) {
-    insertedPage.value = props.insertedPage;
-    emit('update:insertedPage', insertedPage.value);
+});
+
+watch(selectedDocument, (val) => {
+  const meta = allDocuments.value.find((doc) => doc.documentId === val);
+  if (!meta) {
+    selectedDocument.value = null;
+    emit('update:selectedDocument', null);
+    emit('update:selectedDocumentMeta', null);
+    insertedPage.value = null;
+    emit('update:insertedPage', null);
+  } else {
+    emit('update:selectedDocument', val);
+    emit('update:selectedDocumentMeta', meta);
   }
 });
 
