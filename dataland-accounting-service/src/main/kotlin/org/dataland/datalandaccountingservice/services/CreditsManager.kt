@@ -3,6 +3,9 @@ package org.dataland.datalandaccountingservice.services
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
 import org.dataland.datalandaccountingservice.repositories.TransactionRepository
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -18,23 +21,39 @@ class CreditsManager
     constructor(
         private val transactionRepository: TransactionRepository,
         private val billedRequestRepository: BilledRequestRepository,
+        private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
+        private fun validateCompanyId(companyId: UUID) {
+            try {
+                companyDataControllerApi.isCompanyIdValid(companyId.toString())
+            } catch (_: ClientException) {
+                throw ResourceNotFoundApiException(
+                    summary = "Company ID not found.",
+                    message = "Dataland does not know the company ID $companyId.",
+                )
+            }
+        }
+
         /**
          * Post a Dataland credits transaction.
          * @param transactionDto contains all relevant information about the transaction
          * @return the saved transaction where all IDs are of type String
          */
-        fun postTransaction(transactionDto: TransactionDto<UUID>): TransactionDto<String> =
-            transactionRepository.save(transactionDto.toTransactionEntity()).toTransactionDtoString()
+        fun postTransaction(transactionDto: TransactionDto<UUID>): TransactionDto<String> {
+            validateCompanyId(transactionDto.companyId)
+            return transactionRepository.save(transactionDto.toTransactionEntity()).toTransactionDtoString()
+        }
 
         /**
          * Calculate the current Dataland credits balance of the specified company.
          * @param companyId the ID of the company whose balance is to be calculated
          * @return the current Dataland credits balance of the specified company
          */
-        fun getBalance(companyId: UUID): BigDecimal =
-            (
+        fun getBalance(companyId: UUID): BigDecimal {
+            validateCompanyId(companyId)
+            return (
                 transactionRepository.getTotalBalanceFromTransactions(companyId) -
                     billedRequestRepository.getTotalCreditDebtFromBilledRequests(companyId)
             ).setScale(1, RoundingMode.HALF_UP)
+        }
     }
