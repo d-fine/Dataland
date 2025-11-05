@@ -1512,7 +1512,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees,
                 'Average Gross Hourly Earnings Male Employees'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyAverageGrossHourlyEarningsMaleEmployees',
           },
           {
@@ -1525,7 +1525,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees,
                 'Average Gross Hourly Earnings Female Employees'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees',
           },
           {
@@ -1997,7 +1997,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.antiCorruptionAndAntiBribery?.totalAmountOfReportedFinesOfBriberyAndCorruption,
                 'Total Amount Of Reported Fines Of Bribery and Corruption'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption',
           },
         ],
