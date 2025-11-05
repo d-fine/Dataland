@@ -1,9 +1,6 @@
 <template>
-  <span> {{ uploadComponentName }} - Edit Data Point </span>
-  <span>
-    {{ dataPointTypeId }}
-  </span>
-  <BigDecimalExtendedDataPointFormFieldDialog v-model:apiBody="apiBody" />
+  {{ uploadComponentName }}
+  <component :is="resolvedComponent" v-model:apiBody="apiBody" />
   <div style="display: flex; justify-content: flex-end">
     <PrimeButton
       label="SAVE CHANGES"
@@ -18,15 +15,17 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref, ref, provide } from 'vue';
+import { inject, type Ref, ref, provide, computed } from 'vue';
+import type { Component } from 'vue';
 import PrimeButton from 'primevue/button';
-import BigDecimalExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/BigDecimalExtendedDataPointFormFieldDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Message from 'primevue/message';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type { UploadedDataPoint } from '@clients/backend';
+import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
+
 const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -43,7 +42,11 @@ const emit = defineEmits<{
 provide('companyId', companyId as string);
 provide('reportingPeriod', reportingPeriod as string);
 provide('dataId', dataId);
+provide('dataPointTypeId', dataPointTypeId);
 
+const resolvedComponent = computed<Component | null>(() => {
+  return componentDictionary[uploadComponentName ?? ''] ?? null;
+});
 /**
  * Updates the data point with the current API body.
  */

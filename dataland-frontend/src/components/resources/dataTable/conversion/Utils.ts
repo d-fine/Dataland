@@ -55,6 +55,7 @@ export function getOriginalNameFromTechnicalName<T extends string>(
 
 type DataPointObject = {
   value?: number;
+  currency?: string;
   quality?: string;
   comment?: string;
   dataSource?: {
@@ -79,7 +80,8 @@ export function buildApiBody(
   insertedPage: string | null,
   selectedDocumentMeta: DocumentMetaInfoResponse | null,
   companyID: string,
-  reportingPeriod: string
+  reportingPeriod: string,
+  currency?: string | null
 ): {
   dataPoint: string;
   dataPointType: string;
@@ -88,6 +90,7 @@ export function buildApiBody(
 } {
   const dataPointObj: DataPointObject = {};
   if (value !== null && value !== undefined) dataPointObj.value = value;
+  if (currency) dataPointObj.currency = currency;
   if (chosenQuality) dataPointObj.quality = chosenQuality;
   if (insertedComment) dataPointObj.comment = insertedComment;
   if (selectedDocument) {
@@ -100,7 +103,7 @@ export function buildApiBody(
 
   return {
     dataPoint: JSON.stringify(dataPointObj),
-    dataPointType: 'extendedDecimalEstimatedMarketCapitalizationInEUR',
+    dataPointType: 'extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue',
     companyId: companyID,
     reportingPeriod: reportingPeriod,
   };

@@ -37,12 +37,7 @@
       <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
     </div>
   </div>
-  <PrimeButton
-    label="Upload Document"
-    icon="pi pi-upload"
-    variant="link"
-    @click="router.push(`/companies/${companyId}/documents`)"
-  />
+  <PrimeButton label="Upload Document" icon="pi pi-upload" variant="link" @click="handleUploadDocumentClick" />
   <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"
@@ -57,7 +52,7 @@
 <script setup lang="ts">
 import Select from 'primevue/select';
 import { QualityOptions } from '@clients/backend';
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
@@ -66,6 +61,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
 import router from '@/router';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
 const availableDocuments = ref<{ label: string; value: string }[]>([]);
@@ -92,6 +88,7 @@ const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
 const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const companyId = inject<string>('companyId');
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 
 const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
 const selectedDocumentMetaInformation = computed(() => {
@@ -132,6 +129,15 @@ async function updateDocumentsList(): Promise<void> {
     allDocuments.value = [];
     availableDocuments.value = [];
   }
+}
+
+/**
+ * Handles the click event for the "Upload Document" button.
+ * Navigates to the document upload page for the current company.
+ */
+async function handleUploadDocumentClick(): Promise<void> {
+  await router.push(`/companies/${companyId}/documents`);
+  dialogRef?.value?.close();
 }
 </script>
 

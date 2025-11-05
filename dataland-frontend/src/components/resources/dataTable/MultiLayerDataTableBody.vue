@@ -32,19 +32,40 @@
           :style="columnWidthStyle"
           class="vertical-align-top"
         >
-          <MultiLayerDataTableCell
-            :content="cellOrSectionConfig.valueGetter(sinlgeDataAndMetaInfo.data)"
-            :meta-info="sinlgeDataAndMetaInfo.metaInfo"
-            :inReviewMode="inReviewMode"
-          />
-          <PrimeButton
-            v-if="editModeIsOn"
-            icon="pi pi-pencil"
-            variant="text"
-            @click.stop="
-              openEditDataModal(idx, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
-            "
-          />
+          <div class="flex items-center gap-2">
+            <MultiLayerDataTableCell
+              :content="cellOrSectionConfig.valueGetter(sinlgeDataAndMetaInfo.data)"
+              :meta-info="sinlgeDataAndMetaInfo.metaInfo"
+              :inReviewMode="inReviewMode"
+            />
+            <PrimeButton
+              class="p-0 h-auto"
+              v-if="editModeIsOn"
+              icon="pi pi-pencil"
+              variant="text"
+              :disabled="!isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)"
+              v-tooltip.top="
+                !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                  ? 'Currently not implemented'
+                  : 'Edit Data Point'
+              "
+              @click.stop="
+                openEditDataModal(idx, cellOrSectionConfig.uploadComponentName, cellOrSectionConfig.dataPointTypeId)
+              "
+              :pt="{
+                root: {
+                  class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                    ? 'text-gray-400 cursor-not-allowed'
+                    : 'text-primary hover:text-primary-600',
+                },
+                icon: {
+                  class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                    ? 'text-gray-400'
+                    : 'text-inherit',
+                },
+              }"
+            />
+          </div>
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -106,6 +127,7 @@ import { computed, inject, onMounted, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
 import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
+import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -157,6 +179,16 @@ function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>):
   } else return false;
 }
 
+/**
+ * Check if an edit component is available for the given uploadComponentName
+ * @param uploadComponentName the name of the component to check
+ * @returns true if the component exists in the dictionary, false otherwise
+ */
+function isEditComponentAvailable(uploadComponentName?: string): boolean {
+  if (!uploadComponentName) return false;
+  return uploadComponentName in componentDictionary;
+}
+
 const props = defineProps<{
   config: MLDTConfig<T>;
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
@@ -172,9 +204,9 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataModal(idx?: number, uploadComponentName?: string, dataPointTypeId?: string): void {
-  const reportingPeriod = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.reportingPeriod;
-  const companyId = props.dataAndMetaInfo[idx ?? 0]?.metaInfo.companyId;
+function openEditDataModal(idx: number, uploadComponentName?: string, dataPointTypeId?: string): void {
+  const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
+  const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,
