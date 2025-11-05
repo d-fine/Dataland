@@ -20,8 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref, ref, provide, computed, unref } from 'vue';
-import type { Component } from 'vue';
+import { inject, type Ref, ref, provide, computed, unref, type Component } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
@@ -71,5 +70,4 @@ const page = unref(data?.displayValue?.dataSource?.page ?? '');
 const quality = unref(data?.displayValue?.quality ?? '');
 const comment = unref(data?.displayValue?.comment ?? '');
 
-console.log('this is the data', data);
 </script>

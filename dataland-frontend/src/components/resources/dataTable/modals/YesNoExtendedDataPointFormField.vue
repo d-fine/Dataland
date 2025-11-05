@@ -65,5 +65,3 @@ watchEffect(() => {
   emit('update:apiBody', apiBody.value);
 });
 </script>
-
-<style scoped></style>
