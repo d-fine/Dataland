@@ -1,6 +1,12 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.DataPointUtils.objectMapper
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
@@ -19,6 +25,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.util.UUID
+import java.util.UUID.randomUUID
 
 /**
  * Service class that manages all operations related to data sourcing entities.
@@ -30,6 +37,7 @@ class DataSourcingManager
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingValidator: DataSourcingValidator,
+        private val cloudEventMessageHandler: CloudEventMessageHandler,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -117,6 +125,23 @@ class DataSourcingManager
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
+            }
+            if (state == DataSourcingState.NonSourceable) {
+                val messageBody =
+                    SourceabilityMessage(
+                        dataSourcingEntityWithFetchedRequests.companyId.toString(),
+                        dataSourcingEntityWithFetchedRequests.dataType,
+                        dataSourcingEntityWithFetchedRequests.reportingPeriod,
+                        true,
+                        "",
+                    )
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    objectMapper.writeValueAsString(messageBody),
+                    MessageType.DATASOURCING_NONSOURCEABLE,
+                    randomUUID().toString(),
+                    ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
+                    RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
+                )
             }
         }
 

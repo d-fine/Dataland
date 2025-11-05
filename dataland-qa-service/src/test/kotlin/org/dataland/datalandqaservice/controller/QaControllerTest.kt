@@ -160,7 +160,7 @@ class QaControllerTest(
                 dataId = dataId,
                 updatedQaStatus = updatedQaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
-                UUID.randomUUID().toString(), "sfdr", "2025", false,
+                companyId, "", reportingPeriod, true,
             ),
         )
 
