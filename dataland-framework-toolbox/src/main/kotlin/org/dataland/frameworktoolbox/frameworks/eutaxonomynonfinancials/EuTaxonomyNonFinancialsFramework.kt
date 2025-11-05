@@ -29,7 +29,7 @@ class EuTaxonomyNonFinancialsFramework :
         order = 3,
         enabledFeatures =
             FrameworkGenerationFeatures
-                .allExcept(FrameworkGenerationFeatures.UploadPage),
+                .allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.ViewPage),
     ) {
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         val tooLargeClasses =

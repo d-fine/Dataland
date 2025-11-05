@@ -39,7 +39,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
-  CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
+  CurrencyExtendedDataPointFormField: currencyDataPointValueGetterFactory,
   SubsidiaryFormField: getModalGetterFactory('listOfSubsidiary', vsmeModalColumnHeaders),
   PollutionEmissionFormField: getModalGetterFactory('pollutionEmission', vsmeModalColumnHeaders),
 };

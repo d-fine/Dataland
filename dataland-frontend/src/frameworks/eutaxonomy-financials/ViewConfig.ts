@@ -155,7 +155,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount,
                 'Total (gross) Carrying Amount'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
           },
@@ -171,7 +171,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible,
                 'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
           },
@@ -187,7 +187,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned,
                 'Total Amount of Assets which are Environmentally Sustainable (Taxonomy-aligned)'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
           },
@@ -203,7 +203,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds,
                 'Total Amount of Environmentally Sustainable Assets which are Use of Proceeds'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
           },
@@ -219,7 +219,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional,
                 'Total Amount of Environmentally Sustainable Assets which are Transitional'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
           },
@@ -235,7 +235,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling,
                 'Total Amount of Environmentally Sustainable Assets which are Enabling'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
           },
@@ -1595,7 +1595,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
           },
@@ -1611,7 +1611,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
           },
@@ -2225,7 +2225,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyAlignedActivities,
                 'Total of Absolute Premiums of Taxonomy-aligned Activities'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyAlignedActivities',
           },
           {
@@ -2240,7 +2240,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities,
                 'Total of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
           },
@@ -2255,7 +2255,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities,
                 'Total of Absolute Premiums of Taxonomy-non-eligible Activities'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities',
           },
@@ -2378,7 +2378,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount',
           },
@@ -2394,7 +2394,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
                 'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount',
           },
@@ -3009,7 +3009,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
                 "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
@@ -3530,7 +3530,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
                 "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
@@ -4049,7 +4049,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
                 'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },
@@ -4571,7 +4571,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                   ?.capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
                 'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
-            uploadComponentName: 'CurrencyDataPointFormField',
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },

@@ -13,7 +13,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { roundNumber } from '@/utils/NumberConversionUtils';
 import { formatAmountWithCurrency } from '@/utils/Formatter';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
-import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-non-financials/ViewConfig';
+import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/custom/EuTaxoNonFinancialsStaticViewConfig.ts';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
   getCellValueContainer,
@@ -169,7 +169,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         },
       },
     })(ShowMultipleReportsBanner).then(() => {
-      cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
+      cy.get(`[data-test="frameworkNewDataTableTitle"]`).contains(
         `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
       );
       cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`);
