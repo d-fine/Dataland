@@ -25,11 +25,16 @@ object ValidationUtils {
      * @return true if the string is a valid UUID, false otherwise
      */
     private fun isUuid(testString: String): Boolean {
-        try {
+        val uuidRegex =
+            Regex(
+                "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\$",
+            )
+        if (!uuidRegex.matches(testString)) return false
+        return try {
             UUID.fromString(testString)
-            return true
-        } catch (_: Exception) {
-            return false
+            true
+        } catch (_: IllegalArgumentException) {
+            false
         }
     }
 
@@ -39,15 +44,15 @@ object ValidationUtils {
      * @return the UUID corresponding to the string
      * @throws ResourceNotFoundApiException if the string is not a valid UUID (so there is no resource with such an ID)
      */
-    fun convertToUUID(testString: String): UUID =
-        try {
-            UUID.fromString(testString)
-        } catch (_: IllegalArgumentException) {
+    fun convertToUUID(testString: String): UUID {
+        if (!isUuid(testString)) {
             throw ResourceNotFoundApiException(
                 summary = "Unknown ID.",
-                message = "The string $testString is not a valid UUID. In particular, the resource requested under it is unknown.",
+                message = "The string '$testString' is not a valid UUID; the requested resource is unknown.",
             )
         }
+        return UUID.fromString(testString)
+    }
 
     /**
      * Checks if a given base dimension contains valid reporting period and company ID
