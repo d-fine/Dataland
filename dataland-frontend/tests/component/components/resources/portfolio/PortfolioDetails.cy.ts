@@ -52,16 +52,14 @@ function interceptApiCallsAndMountAndWaitForDownload(
 /**
  * Gets the configuration parameters based on the test mode and monitoring status
  * @param testMode whether the test is for Dataland members or admins
- * @param monitoringIsOn whether the test portfolio shall have monitoring activated
+ * @param isMonitored whether the test portfolio shall have monitoring activated
  * @returns The appropriate configuration parameters for the test scenario
  */
-function getTestModeConfigurationParameters(testMode: string, monitoringIsOn: boolean): ConfigurationParameters {
+function getTestModeConfigurationParameters(testMode: string, isMonitored: boolean): ConfigurationParameters {
   if (testMode === 'member') {
-    return monitoringIsOn
-      ? memberConfigurationParametersWithMonitoring
-      : memberConfigurationParametersWithoutMonitoring;
+    return isMonitored ? memberConfigurationParametersWithMonitoring : memberConfigurationParametersWithoutMonitoring;
   } else {
-    return monitoringIsOn ? adminConfigurationParametersWithMonitoring : adminConfigurationParametersWithoutMonitoring;
+    return isMonitored ? adminConfigurationParametersWithMonitoring : adminConfigurationParametersWithoutMonitoring;
   }
 }
 

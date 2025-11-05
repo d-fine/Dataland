@@ -1,8 +1,7 @@
-package org.dataland.datalanduserservice.utils
+package org.dataland.datalandbatchmanager.service
 
 import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
-import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -22,15 +21,4 @@ class DerivedRightsUtilsComponent(
         DerivedRightsUtils.isUserDatalandMember(
             inheritedRolesControllerApi.getInheritedRoles(userId),
         )
-
-    /**
-     * Check whether a non-admin user may create the specified portfolio.
-     * @param userId the Dataland ID of the user in question
-     * @param portfolioUpload the portfolio upload in question
-     * @return true if the non-admin user may create the specified portfolio, false otherwise
-     */
-    fun mayNonAdminUserCreatePortfolio(
-        userId: String,
-        portfolioUpload: PortfolioUpload,
-    ): Boolean = !portfolioUpload.isMonitored || isUserDatalandMember(userId)
 }

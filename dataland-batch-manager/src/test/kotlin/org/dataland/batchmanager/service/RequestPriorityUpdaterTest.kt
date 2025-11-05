@@ -5,6 +5,8 @@ import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredReques
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbatchmanager.service.DerivedRightsUtilsComponent
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
@@ -28,6 +30,9 @@ import java.util.UUID
 class RequestPriorityUpdaterTest {
     private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockRequestControllerApi = mock<RequestControllerApi>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
+
     private val resultsPerPage = 100
     private lateinit var requestPriorityUpdater: RequestPriorityUpdater
 
@@ -98,6 +103,8 @@ class RequestPriorityUpdaterTest {
         reset(
             mockCompanyRolesControllerApi,
             mockRequestControllerApi,
+            mockKeycloakUserService,
+            mockDerivedRightsUtilsComponent,
         )
 
         requestPriorities.forEach { priority ->
@@ -125,11 +132,17 @@ class RequestPriorityUpdaterTest {
         }
 
         requestPriorityUpdater =
-            RequestPriorityUpdater(mockCompanyRolesControllerApi, mockRequestControllerApi, resultsPerPage)
+            RequestPriorityUpdater(
+                companyRolesControllerApi = mockCompanyRolesControllerApi,
+                keycloakUserService = mockKeycloakUserService,
+                requestControllerApi = mockRequestControllerApi,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
+                resultsPerPage = resultsPerPage,
+            )
     }
 
     @Test
-    fun `check that the update priority process exits if the list of premium users is empty`() {
+    fun `check that the update priority process exits if there are no admins nor members`() {
         doReturn(emptyList<CompanyRoleAssignmentExtended>())
             .whenever(mockCompanyRolesControllerApi)
             .getExtendedCompanyRoleAssignments(anyOrNull(), anyOrNull(), anyOrNull())
@@ -158,6 +171,8 @@ class RequestPriorityUpdaterTest {
             companyId = null,
             userId = null,
         )
+
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(memberUserId)
 
         requestPriorityUpdater.processRequestPriorityUpdates()
 

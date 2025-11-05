@@ -50,6 +50,8 @@ class InheritedRolesManager
 
         /**
          * Check whether the authenticated user may query inherited roles for the specified user ID.
+         * @userId of the user whose inherited roles are to be queried
+         * @return whether the requester may query inherited roles for the specified user ID
          */
         fun requesterMayQueryInheritedRoles(userId: String): Boolean {
             val authentication = DatalandAuthentication.fromContext()

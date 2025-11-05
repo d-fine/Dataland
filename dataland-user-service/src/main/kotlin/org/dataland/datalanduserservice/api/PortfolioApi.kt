@@ -157,8 +157,7 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "!#portfolioUpload.isMonitored) or " +
-            "@DerivedRightsUtilsComponent.isUserDatalandMember(authentication.userId)",
+            "@DerivedRightsUtilsComponent.mayNonAdminUserCreatePortfolio(authentication.userId, #portfolioUpload))",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,

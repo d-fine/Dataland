@@ -5,6 +5,7 @@ import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -42,6 +43,14 @@ class ApiClients(
     fun getCompanyRolesControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getInheritedRolesControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the data sourcing sevice
