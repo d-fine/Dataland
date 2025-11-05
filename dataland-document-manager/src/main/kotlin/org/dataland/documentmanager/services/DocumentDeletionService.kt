@@ -18,87 +18,82 @@ import java.util.UUID
  * @param qaControllerApi client for QA service operations
  */
 @Service
-class DocumentDeletionService(
-    @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
-    @Autowired private val storageControllerApi: StorageControllerApi,
-    @Autowired private val qaControllerApi: QaControllerApi,
-) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-    /**
-     * Deletes a document after validating that all references are rejected
-     * @param documentId the ID of the document to delete
-     * @throws DocumentNotFoundException if the document does not exist
-     * @throws ConflictApiException if the document has non-rejected references
-     */
-    fun deleteDocument(documentId: String) {
-        val correlationId = UUID.randomUUID().toString()
-        logger.info("Starting document deletion. DocumentId: $documentId. Correlation ID: $correlationId")
-
-        val documentExists = documentMetaInfoRepository.existsById(documentId)
-        if (!documentExists) {
-            throw DocumentNotFoundException(documentId, correlationId)
-        }
-
-        val references = storageControllerApi.getDocumentReferences(documentId, correlationId)
-        val dataPointIds = references["dataPointIds"] ?: emptyList()
-        val datasetIds = references["datasetIds"] ?: emptyList()
-
-        if (dataPointIds.isNotEmpty() || datasetIds.isNotEmpty()) {
-            checkQaStatuses(datasetIds, dataPointIds, documentId, correlationId)
-        }
-
-        try {
-            storageControllerApi.deleteDocument(documentId, correlationId)
-        } catch (e: org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException) {
-            logger.error("Internal Storage deletion failed. DocumentId: $documentId. Correlation ID: $correlationId", e)
-            throw e
-        }
-
-        documentMetaInfoRepository.deleteById(documentId)
-
-        logger.info("Successfully deleted document. DocumentId: $documentId. Correlation ID: $correlationId")
-    }
-
-    @Suppress("ThrowsCount")
-    private fun checkQaStatuses(
-        datasetIds: List<String>,
-        dataPointIds: List<String>,
-        documentId: String,
-        correlationId: String,
+class DocumentDeletionService
+    @Autowired
+    constructor(
+        private val documentMetaInfoRepository: DocumentMetaInfoRepository,
+        private val storageControllerApi: StorageControllerApi,
+        private val qaControllerApi: QaControllerApi,
     ) {
-        val nonRejectedReferences = mutableListOf<String>()
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-        datasetIds.forEach { datasetId ->
+        /**
+         * Deletes a document after validating that all references are rejected
+         * @param documentId the ID of the document to delete
+         * @throws DocumentNotFoundException if the document does not exist
+         * @throws ConflictApiException if the document has active references
+         */
+        fun deleteDocument(documentId: String) {
+            val correlationId = UUID.randomUUID().toString()
+            logger.info("Attempting to delete document. DocumentId: $documentId. Correlation ID: $correlationId")
+
+            if (!documentMetaInfoRepository.existsById(documentId)) {
+                throw DocumentNotFoundException(documentId, correlationId)
+            }
+
+            val references = storageControllerApi.getDocumentReferences(documentId, correlationId)
+
+            if ((references["datasetIds"]?.any { isDatasetActive(it, correlationId) } == true) ||
+                (references["dataPointIds"]?.any { isDataPointActive(it, correlationId) } == true)
+            ) {
+                throw ConflictApiException(
+                    summary = "Document $documentId cannot be deleted.",
+                    message = "Document cannot be deleted because it has active references.",
+                )
+            }
+
+            deleteFromStorage(documentId, correlationId)
+            documentMetaInfoRepository.deleteById(documentId)
+
+            logger.info("Successfully deleted document. DocumentId: $documentId. Correlation ID: $correlationId")
+        }
+
+        private fun deleteFromStorage(
+            documentId: String,
+            correlationId: String,
+        ) {
+            try {
+                storageControllerApi.deleteDocument(documentId, correlationId)
+            } catch (e: org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException) {
+                logger.error("Internal Storage deletion failed. DocumentId: $documentId. Correlation ID: $correlationId", e)
+                throw e
+            }
+        }
+
+        private fun isDatasetActive(
+            datasetId: String,
+            correlationId: String,
+        ): Boolean {
             try {
                 val qaReview = qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(datasetId))
-                if (qaReview.qaStatus != QaStatus.Rejected) {
-                    nonRejectedReferences.add("Dataset $datasetId (status: ${qaReview.qaStatus})")
-                }
+                return qaReview.qaStatus != QaStatus.Rejected
             } catch (e: org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException) {
                 logger.error("Failed to get QA status for dataset $datasetId. Correlation ID: $correlationId", e)
                 throw e
             }
         }
 
-        dataPointIds.forEach { dataPointId ->
+        private fun isDataPointActive(
+            dataPointId: String,
+            correlationId: String,
+        ): Boolean {
             try {
                 val qaReviews = qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
                 val latestReview = qaReviews.firstOrNull()
-                if (latestReview?.qaStatus != QaStatus.Rejected) {
-                    nonRejectedReferences.add("Data point $dataPointId (status: ${latestReview?.qaStatus})")
-                }
+                return latestReview?.qaStatus != QaStatus.Rejected
             } catch (e: org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException) {
                 logger.error("Failed to get QA status for data point $dataPointId. Correlation ID: $correlationId", e)
                 throw e
             }
         }
-
-        if (nonRejectedReferences.isNotEmpty()) {
-            throw ConflictApiException(
-                summary = "Document $documentId cannot be deleted.",
-                message = "Document cannot be deleted because it has active references.",
-            )
-        }
     }
-}

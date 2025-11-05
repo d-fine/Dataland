@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -20,11 +22,6 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DocumentDeletionServiceTest {
-    companion object {
-        private const val TEST_COMPANY_ID = "44444444-4444-4444-4444-444444444444"
-        private const val TEST_COMPANY_NAME = "Great Company Inc."
-    }
-
     private lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     private lateinit var mockStorageControllerApi: StorageControllerApi
     private lateinit var mockQaControllerApi: QaControllerApi
@@ -59,7 +56,7 @@ class DocumentDeletionServiceTest {
 
         documentDeletionService.deleteDocument(testDocumentId)
 
-        verify(mockStorageControllerApi).deleteDocument(any(), any())
+        verify(mockStorageControllerApi).deleteDocument(eq(testDocumentId), any())
         verify(mockDocumentMetaInfoRepository).deleteById(testDocumentId)
     }
 
@@ -74,36 +71,22 @@ class DocumentDeletionServiceTest {
         )
 
         val rejectedDatasetQaReview =
-            QaReviewResponse(
-                dataId = testDatasetId1,
-                companyId = TEST_COMPANY_ID,
-                companyName = TEST_COMPANY_NAME,
-                framework = "sfdr",
-                reportingPeriod = "2023",
-                timestamp = System.currentTimeMillis(),
-                qaStatus = QaStatus.Rejected,
-            )
+            mock<QaReviewResponse> {
+                on { qaStatus } doReturn QaStatus.Rejected
+            }
         whenever(mockQaControllerApi.getQaReviewResponseByDataId(UUID.fromString(testDatasetId1)))
             .thenReturn(rejectedDatasetQaReview)
 
         val rejectedDataPointQaReview =
-            DataPointQaReviewInformation(
-                dataPointId = testDataPointId1,
-                companyId = TEST_COMPANY_ID,
-                companyName = TEST_COMPANY_NAME,
-                dataPointType = "emissions",
-                reportingPeriod = "2023",
-                timestamp = System.currentTimeMillis(),
-                qaStatus = QaStatus.Rejected,
-                comment = null,
-                reviewerId = "55555555-5555-5555-5555-555555555555",
-            )
+            mock<DataPointQaReviewInformation> {
+                on { qaStatus } doReturn QaStatus.Rejected
+            }
         whenever(mockQaControllerApi.getDataPointQaReviewInformationByDataId(testDataPointId1))
             .thenReturn(listOf(rejectedDataPointQaReview))
 
         documentDeletionService.deleteDocument(testDocumentId)
 
-        verify(mockStorageControllerApi).deleteDocument(any(), any())
+        verify(mockStorageControllerApi).deleteDocument(eq(testDocumentId), any())
         verify(mockDocumentMetaInfoRepository).deleteById(testDocumentId)
     }
 
@@ -118,15 +101,9 @@ class DocumentDeletionServiceTest {
         )
 
         val pendingDatasetQaReview =
-            QaReviewResponse(
-                dataId = testDatasetId1,
-                companyId = TEST_COMPANY_ID,
-                companyName = TEST_COMPANY_NAME,
-                framework = "sfdr",
-                reportingPeriod = "2023",
-                timestamp = System.currentTimeMillis(),
-                qaStatus = QaStatus.Pending,
-            )
+            mock<QaReviewResponse> {
+                on { qaStatus } doReturn QaStatus.Pending
+            }
         whenever(mockQaControllerApi.getQaReviewResponseByDataId(UUID.fromString(testDatasetId1)))
             .thenReturn(pendingDatasetQaReview)
 
@@ -173,7 +150,7 @@ class DocumentDeletionServiceTest {
     }
 
     @Test
-    fun `check that Internal Storage deletion failure propagates ClientException and database is not touched`() {
+    fun `check that Internal Storage deletion failure propagates ClientException and meta data is not deleted`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             mapOf(
@@ -181,7 +158,7 @@ class DocumentDeletionServiceTest {
                 "datasetIds" to emptyList(),
             ),
         )
-        whenever(mockStorageControllerApi.deleteDocument(any(), any()))
+        whenever(mockStorageControllerApi.deleteDocument(eq(testDocumentId), any()))
             .thenThrow(ClientException("Internal Storage error"))
 
         assertThrows<ClientException> {

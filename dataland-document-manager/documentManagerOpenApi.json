@@ -838,6 +838,15 @@
             "description": "Successfully deleted document.",
             "content": {}
           },
+          "403": {
+            "description": "You do not have the right to delete this document."
+          },
+          "404": {
+            "description": "Document ID does not match any stored document."
+          },
+          "409": {
+            "description": "Document cannot be deleted because it has active references."
+          },
           "default": {
             "description": "An error occurred",
             "content": {

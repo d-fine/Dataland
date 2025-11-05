@@ -51,11 +51,7 @@ interface DocumentApi {
             "Upload a document and (optionally) its metainformation. When specifying the metainformation, " +
                 "the fields 'publicationDate' and 'reportingPeriod' are optional.",
     )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully uploaded document."),
-        ],
-    )
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "Successfully uploaded document.")])
     @PostMapping(
         value = ["/"],
         produces = ["application/json"],
@@ -88,20 +84,12 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to update the document's metainformation.",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
             ApiResponse(
                 responseCode = "404",
                 description = "Document ID does not match any stored document.",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
         ],
     )
@@ -145,20 +133,12 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to update the companyIds field.",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
             ApiResponse(
                 responseCode = "404",
                 description = "Document ID does not match any stored document.",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
         ],
     )
@@ -223,6 +203,21 @@ interface DocumentApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "Successfully deleted document."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to delete this document.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document ID does not match any stored document.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Document cannot be deleted because it has active references.",
+                content = [Content(schema = Schema())],
+            ),
         ],
     )
     @DeleteMapping(
@@ -306,11 +301,7 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "404",
                 description = "Document meta information could not be retrieved.",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
         ],
     )
@@ -363,11 +354,7 @@ interface DocumentApi {
                 description =
                     "Bad request; make sure that at least one search parameter is non-null and " +
                         "that the chunk index is within bounds (when in doubt, use chunk index 0).",
-                content = [
-                    Content(
-                        schema = Schema(),
-                    ),
-                ],
+                content = [Content(schema = Schema())],
             ),
         ],
     )
