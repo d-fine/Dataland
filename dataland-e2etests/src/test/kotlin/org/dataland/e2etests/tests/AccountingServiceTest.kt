@@ -73,7 +73,7 @@ class AccountingServiceTest {
     private fun getBalance(companyId: String): BigDecimal = apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
 
     @Test
-    fun `post a transaction, then check the balance`() {
+    fun `post a transaction then check the balance`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
         val companyId = uploadCompanyAsUploader()
@@ -85,7 +85,7 @@ class AccountingServiceTest {
     }
 
     @Test
-    fun `post a transaction, then add a request, set it to processing and check the balance`() {
+    fun `post a transaction then add a request and set it to processing and check the balance`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         val billableCompanyId = uploadCompanyAsUploader()
@@ -104,7 +104,7 @@ class AccountingServiceTest {
     }
 
     @Test
-    fun `post a transaction, then add two requests from different users for the same requestedCompanyId and check the balance`() {
+    fun `post a transaction then add two requests from different users for the same requestedCompanyId and check the balance`() {
         // First user and request
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val billableCompanyIdA = uploadCompanyAsUploader()
