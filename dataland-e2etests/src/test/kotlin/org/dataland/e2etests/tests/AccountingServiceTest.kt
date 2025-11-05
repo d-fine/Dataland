@@ -20,7 +20,7 @@ import java.util.UUID
 class AccountingServiceTest {
     private val apiAccessor = ApiAccessor()
     private val companyRolesTestUtils = CompanyRolesTestUtils()
-    private val initialCredit = BigDecimal(10.0)
+    private val initialCredit = BigDecimal("10.0")
 
     private fun createDummyRequestForCompany(
         companyId: String,
@@ -67,7 +67,10 @@ class AccountingServiceTest {
 
     @Test
     fun `post a transaction, then check the balance`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
         val companyId = uploadCompanyAsUploader()
+        assignCompanyOwnerRole(companyId, dataReaderUserId)
         postTransaction(companyId)
         val balance = getBalance(companyId)
         assertEquals(initialCredit, balance)
@@ -116,7 +119,9 @@ class AccountingServiceTest {
         patchRequestStateToProcessing(requestIdB)
 
         sleep(2000)
+        // Request balance as first user
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val balance = getBalance(billableCompanyIdA)
-        assertEquals(initialCredit - BigDecimal(0.5), balance) // Modify deduction logic as per business calculation
+        assertEquals(initialCredit - BigDecimal(0.5), balance)
     }
 }
