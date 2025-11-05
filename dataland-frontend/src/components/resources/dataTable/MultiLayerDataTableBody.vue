@@ -42,6 +42,7 @@
               class="p-0 h-auto"
               v-if="editModeIsOn"
               icon="pi pi-pencil"
+              data-test="edit-data-point-icon"
               variant="text"
               :disabled="!isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)"
               v-tooltip.top="
@@ -57,7 +58,6 @@
                   cellOrSectionConfig.dataPointTypeId
                 )
               "
-              data-test="edit-data-point-button"
               :pt="{
                 root: {
                   class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
