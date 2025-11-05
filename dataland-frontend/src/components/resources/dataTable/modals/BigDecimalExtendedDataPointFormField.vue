@@ -1,21 +1,22 @@
 <template>
   <h4>Value</h4>
-  <InputNumber placeholder="Insert Value" fluid v-model="value" />
+  <InputNumber placeholder="Insert Value" fluid v-model="value"/>
   <ExtendedDataPointFormFieldDialog
-    v-model:chosenQuality="chosenQuality"
-    v-model:selectedDocument="selectedDocument"
-    v-model:insertedComment="insertedComment"
-    v-model:selectedDocumentMeta="selectedDocumentMeta"
-    v-model:insertedPage="insertedPage"
+      v-model:chosenQuality="chosenQuality"
+      v-model:selectedDocument="selectedDocument"
+      v-model:insertedComment="insertedComment"
+      v-model:selectedDocumentMeta="selectedDocumentMeta"
+      v-model:insertedPage="insertedPage"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watchEffect } from 'vue';
+import {ref, inject, watchEffect} from 'vue';
 import InputNumber from 'primevue/inputnumber';
-import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
-import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
+import ExtendedDataPointFormFieldDialog
+  from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
+import type {DocumentMetaInfoResponse} from '@clients/documentmanager';
+import {buildApiBody} from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps({
   value: Number,
@@ -36,6 +37,7 @@ const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
+const dataPointTypeId = inject<string>('dataPointTypeId');
 
 watchEffect(() => {
   apiBody.value = buildApiBody(
@@ -46,7 +48,8 @@ watchEffect(() => {
     insertedPage.value,
     selectedDocumentMeta.value,
     companyId!,
-    reportingPeriod!
+    reportingPeriod!,
+    dataPointTypeId!
   );
   emit('update:apiBody', apiBody.value);
 });

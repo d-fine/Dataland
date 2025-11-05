@@ -81,6 +81,7 @@ export function buildApiBody(
   selectedDocumentMeta: DocumentMetaInfoResponse | null,
   companyID: string,
   reportingPeriod: string,
+  dataPointTypeId: string,
   currency?: string | null
 ): {
   dataPoint: string;
@@ -103,7 +104,7 @@ export function buildApiBody(
 
   return {
     dataPoint: JSON.stringify(dataPointObj),
-    dataPointType: 'extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue',
+    dataPointType: dataPointTypeId,
     companyId: companyID,
     reportingPeriod: reportingPeriod,
   };

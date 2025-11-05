@@ -38,6 +38,7 @@ const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
+const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 
 const emit = defineEmits(['update:apiBody']);
@@ -51,7 +52,8 @@ watchEffect(() => {
     insertedPage.value,
     selectedDocumentMeta.value,
     companyId!,
-    reportingPeriod!
+    reportingPeriod!,
+    dataPointTypeId!
   );
   emit('update:apiBody', apiBody.value);
 });

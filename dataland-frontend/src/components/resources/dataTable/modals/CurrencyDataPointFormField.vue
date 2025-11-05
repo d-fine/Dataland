@@ -54,6 +54,7 @@ const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const apiBody = ref({});
 const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
+const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes);
 
@@ -67,6 +68,7 @@ watchEffect(() => {
     selectedDocumentMeta.value,
     companyId!,
     reportingPeriod!,
+    dataPointTypeId!,
     currency.value
   );
   emit('update:apiBody', apiBody.value);
