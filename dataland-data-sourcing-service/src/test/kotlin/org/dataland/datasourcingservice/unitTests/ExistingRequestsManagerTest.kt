@@ -1,5 +1,9 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -18,9 +22,11 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.Mockito
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
@@ -31,12 +37,13 @@ class ExistingRequestsManagerTest {
     private val mockDataRevisionRepository = Mockito.mock<DataRevisionRepository>()
     private val mockDataSourcingRepository = Mockito.mock<DataSourcingRepository>()
     private val mockRequestQueryManager = Mockito.mock<RequestQueryManager>()
+    private val mockCloudEventMessageHandler = Mockito.mock<CloudEventMessageHandler>()
 
     private val testExistingRequestsManager =
         ExistingRequestsManager(mockRequestRepository, mockDataSourcingManager, mockDataRevisionRepository, mockRequestQueryManager)
 
     private val testDataSourcingManager =
-        DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator)
+        DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator, mockCloudEventMessageHandler)
 
     private lateinit var newRequest: RequestEntity
 
@@ -57,7 +64,7 @@ class ExistingRequestsManagerTest {
                 state = RequestState.Open,
                 dataSourcingEntity = null,
             )
-        reset(mockDataSourcingManager)
+        reset(mockDataSourcingManager, mockCloudEventMessageHandler)
         whenever(
             mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>()),
         ).thenAnswer { invocation ->
@@ -104,7 +111,20 @@ class ExistingRequestsManagerTest {
         }
 
         val reducedDataSourcing = testDataSourcingManager.patchDataSourcingState(newDataSourcingEntity.dataSourcingId, state)
-
+        if (state == DataSourcingState.NonSourceable) {
+            verify(
+                mockCloudEventMessageHandler,
+                times(1),
+            ).buildCEMessageAndSendToQueue(
+                any(),
+                eq(MessageType.DATASOURCING_NONSOURCEABLE),
+                any(),
+                eq(ExchangeName.DATASOURCING_DATA_NONSOURCEABLE),
+                eq(RoutingKeyNames.DATASOURCING_NONSOURCEABLE),
+            )
+        } else {
+            verifyNoInteractions(mockCloudEventMessageHandler)
+        }
         Assertions.assertEquals(state, reducedDataSourcing.state)
         if (state == DataSourcingState.Done || state == DataSourcingState.NonSourceable) {
             Assertions.assertEquals(RequestState.Processed, newRequest.state)
