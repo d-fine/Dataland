@@ -3,8 +3,8 @@ import {admin_name, admin_pw, getBaseUrl} from '@e2e/utils/Cypress.ts';
 import {getKeycloakToken} from '@e2e/utils/Auth.ts';
 import {generateDummyCompanyInformation, uploadCompanyViaApi} from '@e2e/utils/CompanyUpload.ts';
 import {uploadFrameworkDataForPublicToolboxFramework} from '@e2e/utils/FrameworkUpload.ts';
-import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
-import {type FixtureData, getPreparedFixture} from '@sharedUtils/Fixtures';
+import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition.ts';
+import {type FixtureData, getPreparedFixture} from '@sharedUtils/Fixtures.ts';
 import {describeIf} from '@e2e/support/TestUtility.ts';
 
 describeIf(

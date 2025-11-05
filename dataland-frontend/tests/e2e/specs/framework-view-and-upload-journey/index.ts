@@ -5,4 +5,5 @@ describe('Tests for shared header for the page of framework data', () => {
   require('./FrameworkViewPage');
   require('./UploadFrameworkDataJourney');
   require('./RoleChecks');
+  require('./EditDataPointDialog')
 });
