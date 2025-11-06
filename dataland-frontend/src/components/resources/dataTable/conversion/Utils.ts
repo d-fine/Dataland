@@ -1,4 +1,4 @@
-import type {DocumentMetaInfoResponse} from '@clients/documentmanager';
+import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -9,15 +9,15 @@ import type {DocumentMetaInfoResponse} from '@clients/documentmanager';
 // This function is inherently not type-safe, but still required for the data-model conversion.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromFrameworkDataset(identifier: string, frameworkDataset: any): any {
-    const splits = identifier.split('.');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let currentObject: any = frameworkDataset;
-    for (const split of splits) {
-        if (currentObject === undefined || currentObject === null) return currentObject;
+  const splits = identifier.split('.');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let currentObject: any = frameworkDataset;
+  for (const split of splits) {
+    if (currentObject === undefined || currentObject === null) return currentObject;
 
-        currentObject = currentObject[split];
-    }
-    return currentObject;
+    currentObject = currentObject[split];
+  }
+  return currentObject;
 }
 
 /**
@@ -29,15 +29,15 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
 // This function is inherently not type-safe, but still required for the data-model conversion.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromDataModel(identifier: string, dataModel: any): any {
-    const splits = identifier.split('.');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let currentObject: any = dataModel;
-    for (const split of splits) {
-        if (currentObject === undefined || currentObject === null) return currentObject;
+  const splits = identifier.split('.');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let currentObject: any = dataModel;
+  for (const split of splits) {
+    if (currentObject === undefined || currentObject === null) return currentObject;
 
-        currentObject = currentObject[split];
-    }
-    return currentObject;
+    currentObject = currentObject[split];
+  }
+  return currentObject;
 }
 
 /**
@@ -47,24 +47,24 @@ export function getFieldValueFromDataModel(identifier: string, dataModel: any): 
  * @returns original name that matches the technical name
  */
 export function getOriginalNameFromTechnicalName<T extends string>(
-    technicalName: T,
-    mappingObject: { [key in T]: string }
+  technicalName: T,
+  mappingObject: { [key in T]: string }
 ): string {
-    return mappingObject[technicalName];
+  return mappingObject[technicalName];
 }
 
 type DataPointObject = {
-    value?: number | string;
-    currency?: string;
-    quality?: string;
-    comment?: string;
-    dataSource?: {
-        fileName?: string;
-        page?: string;
-        tagName?: string;
-        fileReference?: string;
-        publicationDate?: string;
-    };
+  value?: number | string;
+  currency?: string;
+  quality?: string;
+  comment?: string;
+  dataSource?: {
+    fileName?: string;
+    page?: string;
+    tagName?: string;
+    fileReference?: string;
+    publicationDate?: string;
+  };
 };
 
 /**
@@ -73,41 +73,41 @@ type DataPointObject = {
  * @returns uploadedDataPoint
  */
 export function buildApiBody(
-    value: string | number | null,
-    chosenQuality: string | null,
-    selectedDocument: string | null,
-    insertedComment: string | null,
-    insertedPage: string | null,
-    selectedDocumentMeta: DocumentMetaInfoResponse | null,
-    companyID: string,
-    reportingPeriod: string,
-    dataPointTypeId: string,
-    currency?: string | null
+  value: string | number | null,
+  chosenQuality: string | null,
+  selectedDocument: string | null,
+  insertedComment: string | null,
+  insertedPage: string | null,
+  selectedDocumentMeta: DocumentMetaInfoResponse | null,
+  companyID: string,
+  reportingPeriod: string,
+  dataPointTypeId: string,
+  currency?: string | null
 ): {
-    dataPoint: string;
-    dataPointType: string;
-    companyId: string;
-    reportingPeriod: string;
+  dataPoint: string;
+  dataPointType: string;
+  companyId: string;
+  reportingPeriod: string;
 } {
-    const dataPointObj: DataPointObject = {};
-    if (value !== null && value !== undefined) dataPointObj.value = value;
-    if (currency) dataPointObj.currency = currency;
-    if (chosenQuality) dataPointObj.quality = chosenQuality;
-    if (insertedComment) dataPointObj.comment = insertedComment;
-    if (selectedDocument) {
-        dataPointObj.dataSource = {
-            fileReference: selectedDocument,
-            fileName: selectedDocumentMeta?.documentName,
-            page: insertedPage ?? undefined,
-        };
-    }
-
-    return {
-        dataPoint: JSON.stringify(dataPointObj),
-        dataPointType: dataPointTypeId,
-        companyId: companyID,
-        reportingPeriod: reportingPeriod,
+  const dataPointObj: DataPointObject = {};
+  if (value !== null && value !== undefined) dataPointObj.value = value;
+  if (currency) dataPointObj.currency = currency;
+  if (chosenQuality) dataPointObj.quality = chosenQuality;
+  if (insertedComment) dataPointObj.comment = insertedComment;
+  if (selectedDocument) {
+    dataPointObj.dataSource = {
+      fileReference: selectedDocument,
+      fileName: selectedDocumentMeta?.documentName,
+      page: insertedPage ?? undefined,
     };
+  }
+
+  return {
+    dataPoint: JSON.stringify(dataPointObj),
+    dataPointType: dataPointTypeId,
+    companyId: companyID,
+    reportingPeriod: reportingPeriod,
+  };
 }
 
 /**
@@ -116,11 +116,11 @@ export function buildApiBody(
  * @returns The parsed number or null if parsing fails.
  */
 export function parseValue(val: string | number | null | undefined): number | null {
-    if (typeof val === 'number') return val;
-    if (typeof val === 'string') {
-        const regex = /-?\d+(\.\d+)?/;
-        const match = regex.exec(val.replace(/,/g, ''));
-        return match ? Number.parseFloat(match[0]) : null;
-    }
-    return null;
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const regex = /-?\d+(\.\d+)?/;
+    const match = regex.exec(val.replace(/,/g, ''));
+    return match ? Number.parseFloat(match[0]) : null;
+  }
+  return null;
 }

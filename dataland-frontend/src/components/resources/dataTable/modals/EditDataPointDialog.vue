@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {inject, type Ref, ref, computed, unref, type Component, provide} from 'vue';
+import { inject, type Ref, ref, computed, unref, type Component, provide } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
@@ -65,5 +65,4 @@ const fileName = unref(dataPoint?.displayValue?.dataSource?.fileName ?? '');
 const page = unref(dataPoint?.displayValue?.dataSource?.page ?? '');
 const quality = unref(dataPoint?.displayValue?.quality ?? '');
 const comment = unref(dataPoint?.displayValue?.comment ?? '');
-
 </script>

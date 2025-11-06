@@ -70,16 +70,16 @@
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
             <PrimeButton
-                v-if="isEditableByCurrentUser"
-                @click="editDataset"
-                data-test="editDatasetButton"
-                label="EDIT DATASET"
-                :icon="
+              v-if="isEditableByCurrentUser"
+              @click="editDataset"
+              data-test="editDatasetButton"
+              label="EDIT DATASET"
+              :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
                   : 'pi pi-database'
               "
-                :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
             <PrimeButton
               v-if="hasUserUploaderRights"
@@ -394,8 +394,6 @@ async function editDataset(event: Event): Promise<void> {
 async function goToUpdateFormByDataId(dataId: string): Promise<void> {
   await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
 }
-
-
 
 /**
  * Navigates to the data update form by using reportingPeriod

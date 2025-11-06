@@ -110,9 +110,9 @@ onMounted(async () => {
 
   if (props.selectedDocument) {
     setSelectedDocument(
-        allDocuments.value.find(
-            (doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument
-        )?.documentId ?? null
+      allDocuments.value.find(
+        (doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument
+      )?.documentId ?? null
     );
   } else {
     setSelectedDocument(null);

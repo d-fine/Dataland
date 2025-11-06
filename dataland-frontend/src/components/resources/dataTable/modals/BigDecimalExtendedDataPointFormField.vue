@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {inject, ref, watch, watchEffect} from 'vue';
+import { inject, ref, watch, watchEffect } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -42,8 +42,8 @@ const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
 const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const companyId = inject<string>('companyId');
-const reportingPeriod =  ref<string>(props.reportingPeriod!);
-const dataPointTypeId =  ref<string>(props.dataPointTypeId!);
+const reportingPeriod = ref<string>(props.reportingPeriod!);
+const dataPointTypeId = ref<string>(props.dataPointTypeId!);
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const apiBody = ref({});
 
@@ -64,7 +64,7 @@ watchEffect(() => {
     selectedDocumentMeta.value,
     companyId!,
     reportingPeriod.value,
-    dataPointTypeId.value,
+    dataPointTypeId.value
   );
   emit('update:apiBody', apiBody.value);
 });

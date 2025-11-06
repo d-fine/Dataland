@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, watchEffect, watch, onMounted, inject} from 'vue';
+import { ref, watchEffect, watch, onMounted, inject } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -62,8 +62,8 @@ const insertedComment = ref<string | null>(props.insertedComment ?? null);
 const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const apiBody = ref({});
 const companyId = inject<string>('companyId');
-const reportingPeriod =  ref<string>(props.reportingPeriod!);
-const dataPointTypeId =  ref<string>(props.dataPointTypeId!);
+const reportingPeriod = ref<string>(props.reportingPeriod!);
+const dataPointTypeId = ref<string>(props.dataPointTypeId!);
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) =>
   currencyA.label.localeCompare(currencyB.label)
