@@ -97,6 +97,8 @@ sonar {
                 "dataland-frontend/src/main.ts," +
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
+                // temporary exclusion to merge DALA-6526
+                "dataland-frontend/src/components/pages/SingleDataRequest.vue," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**",
         )
         property(
@@ -143,8 +145,7 @@ sonar {
                 "dataland-frontend/src/utils/RequestsOverviewPageUtilsLegacy.ts," +
                 "dataland-frontend/tests/component/components/pages/MyDataRequestsOverviewLegacy.cy.ts," +
                 "dataland-frontend/tests/component/components/pages/AdminAllRequestsOverviewLegacy.cy.ts," +
-                // temporary exclusion to merge DALA-6526
-                "dataland-frontend/src/components/pages/SingleDataRequest.vue," +
+
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
