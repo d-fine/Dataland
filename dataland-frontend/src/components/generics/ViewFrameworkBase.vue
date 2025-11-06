@@ -64,10 +64,22 @@
             <PrimeButton
               v-if="isEditableByCurrentUser"
               @click="editModeIsOn = !editModeIsOn"
-              data-test="editDatasetButton"
+              data-test="editDataPointsButton"
               :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
               :icon="'pi pi-pencil'"
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+            />
+            <PrimeButton
+                v-if="isEditableByCurrentUser"
+                @click="editDataset"
+                data-test="editDatasetButton"
+                label="EDIT DATASET"
+                :icon="
+                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
+                  ? 'pi pi-chevron-down'
+                  : 'pi pi-pencil'
+              "
+                :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
             <PrimeButton
               v-if="hasUserUploaderRights"
@@ -358,6 +370,32 @@ async function setViewPageAttributesForUser(): Promise<void> {
 
   hideEmptyFields.value = !hasUserReviewerRights.value;
 }
+
+/**
+ * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
+ * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
+ * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
+ * @param event event
+ */
+async function editDataset(event: Event): Promise<void> {
+  if (props.singleDataMetaInfoToDisplay) {
+    await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
+  } else if (availableReportingPeriods.value.length > 1) {
+    reportingPeriodsOverlayPanel.value?.toggle(event);
+  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
+    await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
+  }
+}
+
+/**
+ * Navigates to the data update form by using templateDataId
+ * @param dataId dataId
+ */
+async function goToUpdateFormByDataId(dataId: string): Promise<void> {
+  await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
+}
+
+
 
 /**
  * Navigates to the data update form by using reportingPeriod

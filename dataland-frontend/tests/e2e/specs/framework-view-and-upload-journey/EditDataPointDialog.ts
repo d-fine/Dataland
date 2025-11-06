@@ -49,7 +49,7 @@ describeIf(
 
         it('should open EditDataPointDialog for a BigDecimalExtendedDataPointFormField modal and display its parts', () => {
             cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDatasetButton]').should('exist').click();
+            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
             cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
                 .closest('td')
                 .next('td')
@@ -79,7 +79,7 @@ describeIf(
             const newValue = '1234.56';
 
             cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDatasetButton]').should('exist').click();
+            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
 
             cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
                 .closest('td')
@@ -143,7 +143,7 @@ describeIf(
 
 
             cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDatasetButton]').should('exist').click();
+            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
 
             cy.contains('span.table-left-label', 'Fossil Fuel Sector Exposure')
                 .closest('td')
@@ -173,7 +173,7 @@ describeIf(
                 const newValue = '1234.56';
 
                 cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-                cy.get('button[data-test=editDatasetButton]').should('exist').click();
+                cy.get('button[data-test=editDataPointsButton]').should('exist').click();
 
                 cy.contains('span.table-left-label', 'Average Gross Hourly Earnings Male Employees')
                     .closest('td')
