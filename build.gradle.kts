@@ -97,8 +97,6 @@ sonar {
                 "dataland-frontend/src/main.ts," +
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
-                // temporary exclusion to merge DALA-6526
-                "dataland-frontend/src/components/pages/SingleDataRequest.vue," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**",
         )
         property(
