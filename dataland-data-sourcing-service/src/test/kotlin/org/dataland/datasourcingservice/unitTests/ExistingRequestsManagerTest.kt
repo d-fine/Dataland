@@ -88,7 +88,7 @@ class ExistingRequestsManagerTest {
 
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockRequestRepository).save(any())
 
-        doReturn(dataSourcingEntity).whenever(mockDataSourcingManager).resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
+        doReturn(dataSourcingEntity).whenever(mockDataSourcingManager).useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
     }
 
     @ParameterizedTest
@@ -98,14 +98,14 @@ class ExistingRequestsManagerTest {
     ) {
         existingRequestsManager.patchRequestState(dataRequestId, requestState, null)
         if (requestState == RequestState.Processing) {
-            verify(mockDataSourcingManager, times(1)).resetOrCreateDataSourcingObjectAndAddRequest(any())
+            verify(mockDataSourcingManager, times(1)).useExistingOrCreateDataSourcingAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, times(1))
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntity,
                 )
         } else {
-            verify(mockDataSourcingManager, never()).resetOrCreateDataSourcingObjectAndAddRequest(any())
+            verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, never())
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = anyOrNull(),

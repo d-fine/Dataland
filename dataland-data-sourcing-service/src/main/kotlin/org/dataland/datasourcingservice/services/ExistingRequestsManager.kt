@@ -76,7 +76,7 @@ class ExistingRequestsManager
             }
 
             if (newRequestState == RequestState.Processing) {
-                val dataSourcingEntity = dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
+                val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
                 dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntity,
