@@ -2,7 +2,13 @@
   <h4>Value</h4>
   <div class="currency-value-fields">
     <div>
-      <InputNumber v-model="value" placeholder="Insert Value" data-test="currency-value-input" :maxFractionDigits="2" fluid />
+      <InputNumber
+        v-model="value"
+        placeholder="Insert Value"
+        data-test="currency-value-input"
+        :maxFractionDigits="2"
+        fluid
+      />
     </div>
     <div>
       <Select
@@ -28,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watchEffect, watch } from 'vue';
+import { ref, inject, watchEffect, watch, onMounted } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -60,6 +66,10 @@ const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) =>
   currencyA.label.localeCompare(currencyB.label)
 );
+
+onMounted(() => {
+  currency.value = props.value ? String(props.value).replace(/[^A-Za-z]+/g, '') || null : null;
+});
 
 watch(
   () => props.value,

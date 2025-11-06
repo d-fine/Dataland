@@ -72,7 +72,6 @@
                 },
               }"
             />
-            <PrimeButton @click="scroller(cellOrSectionConfig.dataPointTypeId)" />
           </div>
         </td>
       </tr>
