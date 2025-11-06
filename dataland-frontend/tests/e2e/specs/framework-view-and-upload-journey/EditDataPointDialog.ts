@@ -80,7 +80,7 @@ describeIf(
             });
         });
 
-        it.only('should open EditDataPointDialog, edit all fields and save changes successfully', () => {
+        it('should open EditDataPointDialog, edit all fields and save changes successfully', () => {
             const newValue = '1234.56';
             const newComment = 'Updated via Cypress test';
             const newPage = '42';
