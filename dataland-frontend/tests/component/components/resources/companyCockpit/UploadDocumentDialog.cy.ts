@@ -14,6 +14,20 @@ function uploadFile(fileName: string, fileType: string = 'application/pdf'): voi
   );
 }
 
+/** Helper to check publication date in intercepted request */
+function checkPublicationDate(rawBody: string): void {
+  const jsonMatch = rawBody.match(
+    /Content-Disposition: form-data; name="documentMetaInfo"; filename="blob"[\s\S]*?\r\n\r\n([\s\S]*?)\r\n------/
+  );
+  expect(jsonMatch, 'documentMetaInfo JSON found').to.not.be.null;
+  if (!jsonMatch || !jsonMatch[1]) {
+    throw new Error('documentMetaInfo JSON not found in request body');
+  }
+  const metaInfo = JSON.parse(jsonMatch[1]);
+  const expectedDate = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD format
+  expect(metaInfo.publicationDate).to.eq(expectedDate);
+}
+
 describe('Check the Upload Document modal', function (): void {
   beforeEach(function () {
     // @ts-ignore
@@ -64,7 +78,10 @@ describe('Check the Upload Document modal', function (): void {
     cy.get('[data-test="reporting-period"]').find('.p-datepicker-dropdown').click();
     cy.get('.p-datepicker-year').contains('2024').click();
     cy.get('[data-test="upload-document-button"]').click();
-    cy.wait('@postDocumentData');
+    cy.wait('@postDocumentData').then((interception) => {
+      expect(interception.response?.statusCode).to.eq(200);
+      checkPublicationDate(interception.request.body);
+    });
     cy.get('[data-test="success-modal"]').should('be.visible');
   });
 });
