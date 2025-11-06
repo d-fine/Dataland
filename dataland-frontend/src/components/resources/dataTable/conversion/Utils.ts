@@ -119,7 +119,7 @@ export function parseValue(val: string | number | null | undefined): number | nu
   if (typeof val === 'number') return val;
   if (typeof val === 'string') {
     const regex = /-?\d+(\.\d+)?/;
-    const match = regex.exec(val.replaceAll(/,/g, ''));
+    const match = regex.exec(val.replaceAll(',', ''));
     return match ? Number.parseFloat(match[0]) : null;
   }
   return null;

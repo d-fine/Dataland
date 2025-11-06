@@ -7,6 +7,39 @@ import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefiniti
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 
+const dataType = DataTypeEnum.Sfdr;
+let storedCompany: StoredCompany;
+/**
+ * Navigates to the framework edit mode page for the stored company
+ */
+function navigateToEditMode(): void {
+  cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
+  cy.get('button[data-test=editDataPointsButton]').should('exist').click();
+}
+
+/**
+ * Opens the edit dialog for a specific data field
+ * @param fieldLabel - The label of the field to edit
+ */
+function openEditDialog(fieldLabel: string): void {
+  cy.contains('span.table-left-label', fieldLabel)
+    .closest('td')
+    .next('td')
+    .find('button[data-test="edit-data-point-icon"]')
+    .as('editButton');
+
+  cy.get('@editButton').click();
+}
+
+/**
+ * Saves the current data point and waits for successful response
+ */
+function saveDataPoint(): void {
+  cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+  cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+  cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+}
+
 describeIf(
   'As a user, I want to be able edit data points on dataland',
   {
@@ -14,40 +47,7 @@ describeIf(
   },
   () => {
     const reportingPeriod = '2021';
-    const dataType = DataTypeEnum.Sfdr;
-    let storedCompany: StoredCompany;
     let SfdrFixtureWithNoNullFields: FixtureData<SfdrData>;
-
-    /**
-     * Navigates to the framework edit mode page for the stored company
-     */
-    function navigateToEditMode(): void {
-      cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-      cy.get('button[data-test=editDataPointsButton]').should('exist').click();
-    }
-
-    /**
-     * Opens the edit dialog for a specific data field
-     * @param fieldLabel - The label of the field to edit
-     */
-    function openEditDialog(fieldLabel: string): void {
-      cy.contains('span.table-left-label', fieldLabel)
-        .closest('td')
-        .next('td')
-        .find('button[data-test="edit-data-point-icon"]')
-        .as('editButton');
-
-      cy.get('@editButton').click();
-    }
-
-    /**
-     * Saves the current data point and waits for successful response
-     */
-    function saveDataPoint(): void {
-      cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
-      cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
-      cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
-    }
 
     /**
      * Verifies that a field contains the expected value in the table view
