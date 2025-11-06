@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { ref, inject, watch, watchEffect } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -30,9 +30,6 @@ const props = defineProps({
   selectedDocument: String,
   insertedComment: String,
   insertedPage: String,
-  companyId: String,
-  reportingPeriod: String,
-  dataPointTypeId: String,
 });
 
 const emit = defineEmits(['update:apiBody']);
@@ -42,11 +39,11 @@ const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
 const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
 const insertedPage = ref<string | null>(props.insertedPage ?? null);
-const companyId =  ref<string>(props.companyId!);
-const reportingPeriod =  ref<string>(props.reportingPeriod!);
-const dataPointTypeId =  ref<string>(props.dataPointTypeId!);
-const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const apiBody = ref({});
+const companyId = inject<string>('companyId');
+const reportingPeriod = inject<string>('reportingPeriod');
+const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
+const dataPointTypeId = inject<string>('dataPointTypeId');
 
 watch(
   () => props.value,
@@ -63,9 +60,9 @@ watchEffect(() => {
     insertedComment.value,
     insertedPage.value,
     selectedDocumentMeta.value,
-    companyId.value,
-    reportingPeriod.value,
-    dataPointTypeId.value
+    companyId!,
+    reportingPeriod!,
+    dataPointTypeId!
   );
   emit('update:apiBody', apiBody.value);
 });
