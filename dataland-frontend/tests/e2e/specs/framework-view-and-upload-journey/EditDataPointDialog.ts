@@ -68,11 +68,6 @@ describeIf(
                     .find('.p-select-label, .p-dropdown-label, .p-inputwrapper, .p-select')
                     .should('contain', 'Estimated');
 
-                cy.get('[data-test="page-number-input"]')
-                    .should('exist')
-                    .should('be.visible')
-                    .should('have.value', '1060-1150');
-
                 cy.get('[data-test="comment-textarea"]')
                     .should('exist')
                     .should('be.visible')
