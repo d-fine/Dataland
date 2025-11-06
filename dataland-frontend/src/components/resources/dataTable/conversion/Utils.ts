@@ -118,8 +118,9 @@ export function buildApiBody(
 export function parseValue(val: string | number | null | undefined): number | null {
     if (typeof val === 'number') return val;
     if (typeof val === 'string') {
-        const match = val.replace(/,/g, '').match(/-?\d+(\.\d+)?/);
-        return match ? parseFloat(match[0]) : null;
+        const regex = /-?\d+(\.\d+)?/;
+        const match = regex.exec(val.replace(/,/g, ''));
+        return match ? Number.parseFloat(match[0]) : null;
     }
     return null;
 }

@@ -68,7 +68,7 @@ const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((c
 );
 
 onMounted(() => {
-  currency.value = props.value ? String(props.value).replace(/[^A-Za-z]+/g, '') || null : null;
+  currency.value = props.value ? String(props.value).replaceAll(/[^A-Za-z]+/g, '') || null : null;
 });
 
 watch(

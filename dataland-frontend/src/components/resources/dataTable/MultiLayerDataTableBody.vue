@@ -248,7 +248,7 @@ function openEditDataPointModal(
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
   const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;
   const data = props.dataAndMetaInfo[idx]?.data;
-  const dataPoint = data !== undefined ? cellOrSectionConfig.valueGetter(data) : undefined;
+  const dataPoint = data != null ? cellOrSectionConfig.valueGetter(data) : undefined;
   dialog.open(EditDataPointDialog, {
     props: {
       modal: true,

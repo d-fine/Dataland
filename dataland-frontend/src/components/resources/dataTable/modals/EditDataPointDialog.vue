@@ -40,9 +40,7 @@ const dataId = dialogRef?.value?.data?.dataId as string;
 const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
 const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
 const data = dialogRef?.value?.data?.dataPoint;
-const emit = defineEmits<{
-  (e: 'dataUpdated'): void;
-}>();
+const emit = defineEmits<(e: 'dataUpdated') => void>();
 provide('companyId', companyId as string);
 provide('reportingPeriod', reportingPeriod as string);
 provide('dataId', dataId);

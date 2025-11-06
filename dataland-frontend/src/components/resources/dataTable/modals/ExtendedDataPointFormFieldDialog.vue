@@ -129,7 +129,8 @@ onMounted(async () => {
 
 watch(selectedDocument, (val) => {
   const meta = allDocuments.value.find((doc) => doc.documentId === val);
-  if (!meta) {
+
+  if (meta == null) {
     selectedDocument.value = null;
     emit('update:selectedDocument', null);
     emit('update:selectedDocumentMeta', null);
@@ -177,10 +178,10 @@ async function handleUploadDocumentClick(): Promise<void> {
  *
  * @param docId - The ID of the document to select, or null to clear the selection.
  */
-function setSelectedDocument(docId: string | null) {
+function setSelectedDocument(docId: string | null): void {
   const meta = allDocuments.value.find((doc) => doc.documentId === docId) ?? null;
 
-  if (!meta) {
+  if (meta == null) {
     selectedDocument.value = null;
     insertedPage.value = null;
     emit('update:selectedDocument', null);
