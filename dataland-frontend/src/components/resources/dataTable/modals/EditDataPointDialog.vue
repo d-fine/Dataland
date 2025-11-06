@@ -7,6 +7,8 @@
     :selectedDocument="fileName"
     :insertedPage="page"
     :chosenQuality="quality"
+    :reportingPeriod="reportingPeriod"
+    :dataPointTypeId="dataPointTypeId"
   />
   <div style="display: flex; justify-content: flex-end">
     <PrimeButton
@@ -20,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref, ref, provide, computed, unref, type Component } from 'vue';
+import {inject, type Ref, ref, computed, unref, type Component, provide} from 'vue';
 import PrimeButton from 'primevue/button';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
@@ -36,19 +38,15 @@ const errorMessage = ref('');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyId = dialogRef?.value?.data?.companyId;
 const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
-const dataId = dialogRef?.value?.data?.dataId as string;
 const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
 const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
-const data = dialogRef?.value?.data?.dataPoint;
+const dataPoint = dialogRef?.value?.data?.dataPoint;
 const emit = defineEmits<(e: 'dataUpdated') => void>();
-provide('companyId', companyId as string);
-provide('reportingPeriod', reportingPeriod as string);
-provide('dataId', dataId);
-provide('dataPointTypeId', dataPointTypeId);
-
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
+
+provide('companyId', companyId);
 
 /**
  * Updates the data point with the current API body.
@@ -62,10 +60,10 @@ async function updateDataPoint(): Promise<void> {
   emit('dataUpdated');
 }
 
-const value = unref(data?.displayValue?.innerContents?.displayValue).trim() ?? '';
-const fileName = unref(data?.displayValue?.dataSource?.fileName ?? '');
-const page = unref(data?.displayValue?.dataSource?.page ?? '');
-const quality = unref(data?.displayValue?.quality ?? '');
-const comment = unref(data?.displayValue?.comment ?? '');
+const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
+const fileName = unref(dataPoint?.displayValue?.dataSource?.fileName ?? '');
+const page = unref(dataPoint?.displayValue?.dataSource?.page ?? '');
+const quality = unref(dataPoint?.displayValue?.quality ?? '');
+const comment = unref(dataPoint?.displayValue?.comment ?? '');
 
 </script>
