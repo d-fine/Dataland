@@ -41,6 +41,11 @@ const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
 const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
 const dataPoint = dialogRef?.value?.data?.dataPoint;
+const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
+const fileName = unref(dataPoint?.displayValue?.dataSource?.fileName ?? '');
+const page = unref(dataPoint?.displayValue?.dataSource?.page ?? '');
+const quality = unref(dataPoint?.displayValue?.quality ?? '');
+const comment = unref(dataPoint?.displayValue?.comment ?? '');
 const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
@@ -59,10 +64,4 @@ async function updateDataPoint(): Promise<void> {
   dialogRef?.value?.close({ dataUpdated: true });
   emit('dataUpdated');
 }
-
-const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
-const fileName = unref(dataPoint?.displayValue?.dataSource?.fileName ?? '');
-const page = unref(dataPoint?.displayValue?.dataSource?.page ?? '');
-const quality = unref(dataPoint?.displayValue?.quality ?? '');
-const comment = unref(dataPoint?.displayValue?.comment ?? '');
 </script>
