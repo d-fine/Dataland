@@ -102,8 +102,15 @@ watch(chosenQuality, (val) => emit('update:chosenQuality', val));
 watch(insertedComment, (val) => emit('update:insertedComment', val));
 watch(insertedPage, (val) => emit('update:insertedPage', val));
 watch(selectedDocument, (val) => {
-  setSelectedDocument(val);
+  const meta = allDocuments.value.find((doc) => doc.documentId === val) ?? null;
+  emit('update:selectedDocument', meta?.documentId ?? null);
+  emit('update:selectedDocumentMeta', meta);
+  if (!meta) {
+    insertedPage.value = null;
+    emit('update:insertedPage', null);
+  }
 });
+
 
 onMounted(async () => {
   await updateDocumentsList();
@@ -127,20 +134,7 @@ onMounted(async () => {
   }
 });
 
-watch(selectedDocument, (val) => {
-  const meta = allDocuments.value.find((doc) => doc.documentId === val);
 
-  if (meta == null) {
-    selectedDocument.value = null;
-    emit('update:selectedDocument', null);
-    emit('update:selectedDocumentMeta', null);
-    insertedPage.value = null;
-    emit('update:insertedPage', null);
-  } else {
-    emit('update:selectedDocument', val);
-    emit('update:selectedDocumentMeta', meta);
-  }
-});
 
 /**
  * Fetches the list of documents from the API and updates the availableDocuments and allDocuments refs.
@@ -181,17 +175,12 @@ async function handleUploadDocumentClick(): Promise<void> {
 function setSelectedDocument(docId: string | null): void {
   const meta = allDocuments.value.find((doc) => doc.documentId === docId) ?? null;
 
-  if (meta == null) {
-    selectedDocument.value = null;
-    insertedPage.value = null;
-    emit('update:selectedDocument', null);
-    emit('update:selectedDocumentMeta', null);
-    emit('update:insertedPage', null);
-  } else {
-    selectedDocument.value = meta.documentId;
-    emit('update:selectedDocument', meta.documentId);
-    emit('update:selectedDocumentMeta', meta);
-  }
+  selectedDocument.value = meta?.documentId ?? null;
+  insertedPage.value = meta ? insertedPage.value : null;
+
+  emit('update:selectedDocument', selectedDocument.value);
+  emit('update:selectedDocumentMeta', meta);
+  emit('update:insertedPage', insertedPage.value);
 }
 </script>
 
