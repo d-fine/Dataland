@@ -26,7 +26,7 @@ describeIf(
 
             getKeycloakToken(admin_name, admin_pw).then((token: string) => {
                 const uniqueCompanyMarker = Date.now().toString();
-                const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
+                const testStoredCompanyName = 'Company-Created-For-EditDataPoint-Test-' + uniqueCompanyMarker;
                 return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
                     (newStoredCompany) => {
                         storedCompany = newStoredCompany;
@@ -80,7 +80,7 @@ describeIf(
             });
         });
 
-        it('should open EditDataPointDialog, edit all fields and save changes successfully', () => {
+        it('should open a BigDecimal EditDataPointDialog, edit all fields and save changes successfully', () => {
             const newValue = '1234.56';
             const newComment = 'Updated via Cypress test';
             const newPage = '42';
@@ -133,5 +133,71 @@ describeIf(
                 .should('contain', '1,234.56');
         });
 
-    }
-);
+        it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
+
+
+            cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
+            cy.get('button[data-test=editDatasetButton]').should('exist').click();
+
+            cy.contains('span.table-left-label', 'Fossil Fuel Sector Exposure')
+                .closest('td')
+                .next('td')
+                .find('button[data-test="edit-data-point-icon"]')
+                .click();
+
+            cy.get('div.p-dialog-content').should('be.visible').within(() => {
+                cy.get('[data-test="yes-input"] input')
+                    .should('exist')
+                    .should('have.value', 'Yes');
+
+                cy.get('[data-test="no-input"] input')
+                    .should('exist').click();
+
+                cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+                cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+                cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+            });
+            cy.contains('span.table-left-label', 'Fossil Fuel Sector Exposure')
+                .closest('td')
+                .next('td')
+                .should('contain', 'No');
+        });
+
+        it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
+                const newValue = '1234.56';
+
+                cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
+                cy.get('button[data-test=editDatasetButton]').should('exist').click();
+
+                cy.contains('span.table-left-label', 'Average Gross Hourly Earnings Male Employees')
+                    .closest('td')
+                    .next('td')
+                    .find('button[data-test="edit-data-point-icon"]')
+                    .click();
+
+                cy.get('div.p-dialog-content').should('be.visible').within(() => {
+                    cy.get('[data-test="currency-value-input"] input')
+                        .should('exist')
+                        .should('have.value', '1,838,828,082.29');
+
+
+                    cy.get('[data-test="currency-value-input"] input')
+                        .clear()
+                        .type(newValue)
+                        .blur();
+
+                    cy.get('[data-test="currency"]').should('exist')
+
+                    cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+                    cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+                    cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+                });
+
+                cy.contains('span.table-left-label', 'Average Gross Hourly Earnings Male Employees')
+                    .closest('td')
+                    .next('td')
+                    .should('contain', '1,234.56');
+
+            }
+        );
+    });
