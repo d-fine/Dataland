@@ -262,7 +262,7 @@ class DataManagerExceptionTest
             val messageWithEmptyDataIDs =
                 objectMapper.writeValueAsString(
                     QaStatusChangeMessage(
-                        dataId = UUID.randomUUID().toString(),
+                        dataId = "",
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = "1273091",
                         UUID.randomUUID().toString(),
