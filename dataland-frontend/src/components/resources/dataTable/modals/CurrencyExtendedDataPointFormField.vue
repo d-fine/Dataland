@@ -2,13 +2,14 @@
   <h4>Value</h4>
   <div class="currency-value-fields">
     <div>
-      <InputNumber v-model="value" placeholder="Insert Value" fluid />
+      <InputNumber v-model="value" placeholder="Insert Value" data-test="currency-value-input" fluid />
     </div>
     <div>
       <Select
         v-model="currency"
         placeholder="Currency"
         :options="currencyList"
+        :maxFractionDigits="2"
         option-label="label"
         option-value="value"
         class="currency-select"
