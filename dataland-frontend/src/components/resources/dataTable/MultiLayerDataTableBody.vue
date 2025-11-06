@@ -63,6 +63,7 @@
                   class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
                     ? 'text-gray-400 cursor-not-allowed'
                     : 'text-primary hover:text-primary-600',
+                  'data-dpt-id': cellOrSectionConfig.dataPointTypeId,
                 },
                 icon: {
                   class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
@@ -71,6 +72,7 @@
                 },
               }"
             />
+            <PrimeButton @click="scroller(cellOrSectionConfig.dataPointTypeId)" />
           </div>
         </td>
       </tr>
@@ -130,7 +132,7 @@ import {
   type MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import Tooltip from 'primevue/tooltip';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, nextTick, onMounted, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
 import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
@@ -143,6 +145,32 @@ const dialog = useDialog();
 const emit = defineEmits<{
   dataUpdated: [];
 }>();
+
+/**
+ * Scrolls to a specific target element identified by its unique data attribute if it becomes visible.
+ */
+async function scroller(targetId?: string): Promise<void> {
+  if (!targetId) return;
+  await scrollToWhenVisible(`[data-dpt-id="${targetId}"]`);
+}
+
+/**
+ * Scrolls to the first visible element matching the specified CSS selector within a given timeout.
+ * Continuously checks if the element becomes visible during the timeout period.
+ */
+async function scrollToWhenVisible(selector: string, timeout = 5000): Promise<void> {
+  const start = performance.now();
+
+  while (performance.now() - start < timeout) {
+    await new Promise((r) => setTimeout(r, 100));
+
+    const el = document.querySelector<HTMLElement>(selector);
+    if (el && el.offsetParent !== null) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+  }
+}
 
 /**
  * Toggle the visibility of the section at the given index in the configuration
@@ -246,9 +274,13 @@ function openEditDataPointModal(
       dataPoint: dataPoint,
     },
     onClose: (options) => {
-      if (options?.data?.dataUpdated) {
-        emit('dataUpdated');
-      }
+      void (async (): Promise<void> => {
+        if (options?.data?.dataUpdated) {
+          emit('dataUpdated');
+          await nextTick();
+          await scroller(dataPointTypeId);
+        }
+      })();
     },
   });
 }
