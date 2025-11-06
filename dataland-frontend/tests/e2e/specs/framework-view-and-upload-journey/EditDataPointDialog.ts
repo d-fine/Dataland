@@ -77,9 +77,6 @@ describeIf(
 
         it('should open a BigDecimal EditDataPointDialog, edit all fields and save changes successfully', () => {
             const newValue = '1234.56';
-            const newComment = 'Updated via Cypress test';
-            const newPage = '42';
-            const newQuality = 'Reported';
 
             cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
             cy.get('button[data-test=editDatasetButton]').should('exist').click();
@@ -104,6 +101,11 @@ describeIf(
                 .find('.p-select-label, .p-dropdown-label')
                 .should('contain', 'Estimated');
 
+            cy.get('[data-test="quality-select"]')
+                .should('exist')
+                .should('be.visible').click()
+
+                cy.get('[aria-label="Reported"]').click();
             cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
 
 
@@ -125,7 +127,16 @@ describeIf(
             cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
                 .closest('td')
                 .next('td')
-                .should('contain', '1,234.56');
+                .within(() => {
+                    cy.get('span[meta-info]')
+                        .contains('1,234.56 Tonnes')
+                        .click();
+                });
+
+            cy.contains('span.table-left-label', 'Quality')
+                .closest('th')
+                .next('td')
+                .should('contain', 'Reported');
         });
 
         it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
