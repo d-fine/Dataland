@@ -1,9 +1,5 @@
 package org.dataland.datasourcingservice.unitTests
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestPriority
@@ -15,8 +11,6 @@ import org.dataland.datasourcingservice.services.DataSourcingServiceMessageSende
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
@@ -36,7 +30,6 @@ class ExistingRequestsManagerTest {
     private val mockDataSourcingManager = mock<DataSourcingManager>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockDataSourcingServiceMessageSender = mock<DataSourcingServiceMessageSender>()
-    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockRequestQueryManager = mock<RequestQueryManager>()
 
     private val existingRequestsManager =
@@ -45,7 +38,6 @@ class ExistingRequestsManagerTest {
             mockDataSourcingManager,
             mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
-            mockCompanyRolesControllerApi,
             mockRequestQueryManager,
         )
 
@@ -71,16 +63,6 @@ class ExistingRequestsManagerTest {
             dataSourcingEntity = null,
         )
 
-    private val companyRoleAssignmentExtended =
-        CompanyRoleAssignmentExtended(
-            companyRole = CompanyRole.Member,
-            companyId = UUID.randomUUID().toString(),
-            userId = userId.toString(),
-            email = "test@example.com",
-            firstName = "Jane",
-            lastName = "Doe",
-        )
-
     private val dataSourcingEntity =
         DataSourcingEntity(
             companyId = companyId,
@@ -95,7 +77,6 @@ class ExistingRequestsManagerTest {
             mockDataSourcingManager,
             mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
-            mockCompanyRolesControllerApi,
             mockRequestQueryManager,
         )
 
@@ -112,35 +93,14 @@ class ExistingRequestsManagerTest {
 
     @ParameterizedTest
     @EnumSource(RequestState::class)
-    fun `verify that a request cannot be set to Processing when the requesting user has no company roles but other cases work`(
-        requestState: RequestState,
-    ) {
-        if (requestState == RequestState.Processing) {
-            assertThrows<InvalidInputApiException> {
-                existingRequestsManager.patchRequestState(dataRequestId, requestState, null)
-            }
-        } else {
-            assertDoesNotThrow {
-                existingRequestsManager.patchRequestState(dataRequestId, requestState, null)
-            }
-        }
-    }
-
-    @ParameterizedTest
-    @EnumSource(RequestState::class)
     fun `verify that a request is appended to the its sourcing object and a message is sent only when request set to Processing`(
         requestState: RequestState,
     ) {
-        doReturn(
-            listOf<CompanyRoleAssignmentExtended>(companyRoleAssignmentExtended),
-        ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(userId = userId)
-
         existingRequestsManager.patchRequestState(dataRequestId, requestState, null)
         if (requestState == RequestState.Processing) {
             verify(mockDataSourcingManager, times(1)).resetOrCreateDataSourcingObjectAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, times(1))
                 .sendMessageToAccountingServiceOnRequestProcessing(
-                    billedCompanyId = companyRoleAssignmentExtended.companyId,
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntity,
                 )
@@ -148,7 +108,6 @@ class ExistingRequestsManagerTest {
             verify(mockDataSourcingManager, never()).resetOrCreateDataSourcingObjectAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, never())
                 .sendMessageToAccountingServiceOnRequestProcessing(
-                    billedCompanyId = anyOrNull(),
                     dataSourcingEntity = anyOrNull(),
                     requestEntity = anyOrNull(),
                 )

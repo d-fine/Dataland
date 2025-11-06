@@ -6,6 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Index
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import java.util.UUID
 
@@ -18,6 +19,9 @@ import java.util.UUID
     indexes = [
         Index(name = "idx_billed_requests_billed_company_id", columnList = "billed_company_id"),
         Index(name = "idx_billed_requests_data_sourcing_id", columnList = "data_sourcing_id"),
+    ],
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["billed_company_id", "requested_company_id", "requested_reporting_period", "requested_framework"]),
     ],
 )
 @IdClass(BilledRequestEntityId::class)

@@ -4,6 +4,10 @@ import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
@@ -26,9 +30,11 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingServiceListenerTest {
     private val mockBilledRequestRepository = mock<BilledRequestRepository>()
+    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
 
     private lateinit var accountingServiceListener: AccountingServiceListener
 
+    private val triggeringUserId = UUID.randomUUID().toString()
     private val billedCompanyId = UUID.randomUUID().toString()
     private val dataSourcingId = UUID.randomUUID().toString()
     private val requestedCompanyId = UUID.randomUUID().toString()
@@ -37,7 +43,7 @@ class AccountingServiceListenerTest {
 
     private val requestSetToProcessingMessage =
         RequestSetToProcessingMessage(
-            billedCompanyId = billedCompanyId,
+            triggeringUserId = triggeringUserId,
             dataSourcingId = dataSourcingId,
             requestedCompanyId = requestedCompanyId,
             requestedReportingPeriod = requestedReportingPeriod,
@@ -50,18 +56,36 @@ class AccountingServiceListenerTest {
 
     private val billedRequestEntity =
         BilledRequestEntity(
-            billedCompanyId = UUID.fromString(billedCompanyId),
-            dataSourcingId = UUID.fromString(dataSourcingId),
-            requestedCompanyId = UUID.fromString(requestedCompanyId),
+            billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+            dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
+            requestedCompanyId = ValidationUtils.convertToUUID(requestedCompanyId),
             requestedReportingPeriod = requestedReportingPeriod,
             requestedFramework = requestedFramework,
+        )
+
+    private val companyRoleAssignmentExtended =
+        CompanyRoleAssignmentExtended(
+            companyRole = CompanyRole.Member,
+            companyId = billedCompanyId,
+            userId = triggeringUserId,
+            email = "test@example.com",
+            firstName = "Jane",
+            lastName = "Doe",
         )
 
     @BeforeEach
     fun setup() {
         reset(mockBilledRequestRepository)
 
-        accountingServiceListener = AccountingServiceListener(mockBilledRequestRepository)
+        doReturn(listOf(companyRoleAssignmentExtended))
+            .whenever(mockCompanyRolesControllerApi)
+            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(triggeringUserId))
+
+        accountingServiceListener =
+            AccountingServiceListener(
+                billedRequestRepository = mockBilledRequestRepository,
+                companyRolesControllerApi = mockCompanyRolesControllerApi,
+            )
     }
 
     @Test
@@ -73,6 +97,21 @@ class AccountingServiceListenerTest {
                 correlationId = correlationId,
             )
         }
+    }
+
+    @Test
+    fun `check that no billed request is saved when the triggering user is not a Dataland member`() {
+        doReturn(emptyList<CompanyRoleAssignmentExtended>())
+            .whenever(mockCompanyRolesControllerApi)
+            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(triggeringUserId))
+
+        accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
+            payload = requestProcessingMessagePayload,
+            type = MessageType.REQUEST_SET_TO_PROCESSING,
+            correlationId = correlationId,
+        )
+
+        verify(mockBilledRequestRepository, times(0)).save(any())
     }
 
     @Test

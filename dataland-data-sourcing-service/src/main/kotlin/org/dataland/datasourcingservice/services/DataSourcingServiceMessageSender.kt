@@ -26,13 +26,12 @@ class DataSourcingServiceMessageSender
          * Sends a RabbitMQ message to the accounting service after a request had its state changed to Processing.
          */
         fun sendMessageToAccountingServiceOnRequestProcessing(
-            billedCompanyId: String,
             dataSourcingEntity: DataSourcingEntity,
             requestEntity: RequestEntity,
         ) {
             val requestSetToProcessingMessage =
                 RequestSetToProcessingMessage(
-                    billedCompanyId = billedCompanyId,
+                    triggeringUserId = requestEntity.userId.toString(),
                     dataSourcingId = dataSourcingEntity.dataSourcingId.toString(),
                     requestedCompanyId = requestEntity.companyId.toString(),
                     requestedReportingPeriod = requestEntity.reportingPeriod,
