@@ -10,17 +10,11 @@
     :reportingPeriod="reportingPeriod"
     :dataPointTypeId="dataPointTypeId"
   />
-    <Message v-if="errorMessage" severity="error" :life="3000">
-      {{ errorMessage }}
-    </Message>
+  <Message v-if="errorMessage" severity="error" :life="3000">
+    {{ errorMessage }}
+  </Message>
   <div style="display: flex; justify-content: flex-end; margin-top: var(--spacing-md)">
-    <PrimeButton
-      label="SAVE CHANGES"
-      icon="pi pi-save"
-
-      @click="updateDataPoint"
-      data-test="save-data-point-button"
-    />
+    <PrimeButton label="SAVE CHANGES" icon="pi pi-save" @click="updateDataPoint" data-test="save-data-point-button" />
   </div>
 </template>
 
@@ -33,8 +27,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type { UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
-import Message from "primevue/message";
-import {AxiosError} from "axios";
+import Message from 'primevue/message';
+import { AxiosError } from 'axios';
 
 const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -73,6 +67,5 @@ async function updateDataPoint(): Promise<void> {
       errorMessage.value = 'Failed edit Data Point.';
     }
   }
-
 }
 </script>
