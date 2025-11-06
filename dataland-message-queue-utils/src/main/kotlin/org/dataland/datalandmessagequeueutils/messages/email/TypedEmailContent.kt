@@ -163,6 +163,7 @@ data class DataRequestSummaryEmailContent(
     val newData: List<FrameworkData>,
     val updatedData: List<FrameworkData>,
     val nonSourceableData: List<FrameworkData>,
+    val frequency: String,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Summary for your data requests changes!"

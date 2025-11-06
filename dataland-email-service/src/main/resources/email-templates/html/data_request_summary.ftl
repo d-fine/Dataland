@@ -66,8 +66,8 @@
         </tr>
         <!-- EMAIL TEXT -->
         <tr>
-            <td colspan="3">Weekly Summary 📣
-                <br><br>Data for your request(s) has been updated on Dataland this week,
+            <td colspan="3">${frequency} Summary 📣
+                <br><br>Data for your request(s) has been updated on Dataland,
                 listed in the sections below. Please note that you may have already reviewed these updates.
                 <br><br>Check details for all your requests using the following link:</td>
         </tr>
