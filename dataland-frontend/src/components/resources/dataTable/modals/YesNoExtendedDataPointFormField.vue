@@ -20,7 +20,7 @@ import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/m
 import { inject, ref, watch, watchEffect } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import RadioButton from 'primevue/radiobutton';
-import { buildApiBody, parseValue } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps({
   value: [String, Number, null],
@@ -30,7 +30,6 @@ const props = defineProps({
   insertedPage: String,
 });
 
-const value = ref<number | null>(parseValue(props.value));
 const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
 const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
@@ -40,14 +39,18 @@ const companyId = inject<string>('companyId');
 const reportingPeriod = inject<string>('reportingPeriod');
 const dataPointTypeId = inject<string>('dataPointTypeId');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-
 const emit = defineEmits(['update:apiBody']);
+const value = ref<string | null>(
+    props.value !== null && props.value !== undefined
+        ? String(props.value)
+        : null
+);
 
 watch(
-  () => props.value,
-  (newVal) => {
-    value.value = parseValue(newVal);
-  }
+    () => props.value,
+    (newVal) => {
+      value.value = newVal !== null && newVal !== undefined ? String(newVal) : null;
+    }
 );
 
 watchEffect(() => {
