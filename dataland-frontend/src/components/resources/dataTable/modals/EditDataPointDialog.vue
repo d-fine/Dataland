@@ -10,11 +10,14 @@
     :reportingPeriod="reportingPeriod"
     :dataPointTypeId="dataPointTypeId"
   />
-  <div style="display: flex; justify-content: flex-end">
+    <Message v-if="errorMessage" severity="error" :life="3000">
+      {{ errorMessage }}
+    </Message>
+  <div style="display: flex; justify-content: flex-end; margin-top: var(--spacing-md)">
     <PrimeButton
       label="SAVE CHANGES"
       icon="pi pi-save"
-      style="margin-top: var(--spacing-md)"
+
       @click="updateDataPoint"
       data-test="save-data-point-button"
     />
@@ -30,6 +33,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type { UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
+import Message from "primevue/message";
+import {AxiosError} from "axios";
 
 const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -57,11 +62,17 @@ provide('companyId', companyId);
  * Updates the data point with the current API body.
  */
 async function updateDataPoint(): Promise<void> {
-  await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody.value, true).catch((error) => {
-    console.error(error);
-    errorMessage.value = error.message;
-  });
-  dialogRef?.value?.close({ dataUpdated: true });
-  emit('dataUpdated');
+  try {
+    await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody.value, true);
+    dialogRef?.value?.close({ dataUpdated: true });
+    emit('dataUpdated');
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = 'Failed edit Data Point.';
+    }
+  }
+
 }
 </script>
