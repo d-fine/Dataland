@@ -1,11 +1,12 @@
 <template>
   <div class="flex">
     <a
-        v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
-        @click="$dialog.open(DataPointDataTable, modalOptions)"
-        class="link"
+      v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
+      @click="$dialog.open(DataPointDataTable, modalOptions)"
+      class="link"
     >
       <slot></slot>
+      <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
     <div v-else-if="dataPointProperties.value">
       <slot>{{ dataPointProperties.value }}</slot>
@@ -78,9 +79,9 @@ export default defineComponent({
       const quality = this.dataPointProperties.quality;
 
       return (
-          !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
-          quality != undefined ||
-          dataSource != undefined
+        !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
+        quality != undefined ||
+        dataSource != undefined
       );
     },
   },
