@@ -37,6 +37,42 @@ class AccountingServiceListener
     ) {
         private val logger = LoggerFactory.getLogger(AccountingServiceListener::class.java)
 
+        private fun getBilledCompanyId(triggeringUserId: String): String? =
+            companyRolesControllerApi
+                .getExtendedCompanyRoleAssignments(
+                    userId = ValidationUtils.convertToUUID(triggeringUserId),
+                ).firstOrNull()
+                ?.companyId
+
+        private fun logBilledRequestMessage(
+            requestSetToProcessingMessage: RequestSetToProcessingMessage,
+            correlationId: String,
+        ) = logger.info(
+            "Received a message to create a billed request. Triggering user ID is ${requestSetToProcessingMessage.triggeringUserId} " +
+                "and data sourcing ID is ${requestSetToProcessingMessage.dataSourcingId}. " +
+                "Requested company ID is ${requestSetToProcessingMessage.requestedCompanyId}, " +
+                "reporting period is ${requestSetToProcessingMessage.requestedReportingPeriod}, " +
+                "and requested framework is ${requestSetToProcessingMessage.requestedFramework}. " +
+                "Correlation ID: $correlationId.",
+        )
+
+        private fun logBilledRequestAbortionMessage(
+            triggeringUserId: String,
+            correlationId: String,
+        ) = logger.info(
+            "The user with ID $triggeringUserId is not a Dataland member. " +
+                "Aborting the creation of an associated billed request object. Correlation ID: $correlationId.",
+        )
+
+        private fun logDuplicateBilledRequestMessage(
+            triggeringUserId: String,
+            dataSourcingId: String,
+            correlationId: String,
+        ) = logger.info(
+            "A billed request for user ID $triggeringUserId and data sourcing ID $dataSourcingId already exists. " +
+                "Skipping creation. Correlation ID: $correlationId.",
+        )
+
         /**
          * Creates a billed request when a request is patched to the "Processing" state and the company to bill does not
          * already have a billed request for the given data sourcing ID.
@@ -70,26 +106,11 @@ class AccountingServiceListener
             MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
             val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
 
-            logger.info(
-                "Received a message to create a billed request. Triggering user ID is ${requestSetToProcessingMessage.triggeringUserId} " +
-                    "and data sourcing ID is ${requestSetToProcessingMessage.dataSourcingId}. " +
-                    "Requested company ID is ${requestSetToProcessingMessage.requestedCompanyId}, " +
-                    "reporting period is ${requestSetToProcessingMessage.requestedReportingPeriod}, " +
-                    "and requested framework is ${requestSetToProcessingMessage.requestedFramework}. " +
-                    "Correlation ID: $correlationId.",
-            )
+            logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
 
-            val billedCompanyId =
-                companyRolesControllerApi
-                    .getExtendedCompanyRoleAssignments(
-                        userId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.triggeringUserId),
-                    ).firstOrNull()
-                    ?.companyId
+            val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.requestedCompanyId)
             if (billedCompanyId == null) {
-                logger.info(
-                    "The user with ID ${requestSetToProcessingMessage.triggeringUserId} is not a Dataland member. " +
-                        "Aborting the creation of an associated billed request object. Correlation ID: $correlationId.",
-                )
+                logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
                 return
             }
 
@@ -103,10 +124,10 @@ class AccountingServiceListener
                     )
 
                 if (existingBilledRequest != null) {
-                    logger.info(
-                        "Billed request for billed company ID ${requestSetToProcessingMessage.triggeringUserId} " +
-                            "and data sourcing ID ${requestSetToProcessingMessage.dataSourcingId} already exists. " +
-                            "Skipping creation. Correlation ID: $correlationId.",
+                    logDuplicateBilledRequestMessage(
+                        requestSetToProcessingMessage.triggeringUserId,
+                        requestSetToProcessingMessage.dataSourcingId,
+                        correlationId,
                     )
                     return@rejectMessageOnException
                 }
