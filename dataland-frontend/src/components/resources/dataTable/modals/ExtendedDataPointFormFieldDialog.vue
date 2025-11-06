@@ -111,7 +111,6 @@ watch(selectedDocument, (val) => {
   }
 });
 
-
 onMounted(async () => {
   await updateDocumentsList();
 
@@ -133,8 +132,6 @@ onMounted(async () => {
     }
   }
 });
-
-
 
 /**
  * Fetches the list of documents from the API and updates the availableDocuments and allDocuments refs.

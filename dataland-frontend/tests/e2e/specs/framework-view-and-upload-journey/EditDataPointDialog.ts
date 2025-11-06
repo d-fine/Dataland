@@ -18,6 +18,49 @@ describeIf(
         let storedCompany: StoredCompany;
         let SfdrFixtureWithNoNullFields: FixtureData<SfdrData>;
 
+        /**
+         * Navigates to the framework edit mode page for the stored company
+         */
+        function navigateToEditMode(): void {
+            cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
+            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
+        }
+
+        /**
+         * Opens the edit dialog for a specific data field
+         * @param fieldLabel - The label of the field to edit
+         */
+        function openEditDialog(fieldLabel: string): void {
+            cy.contains('span.table-left-label', fieldLabel)
+                .closest('td')
+                .next('td')
+                .find('button[data-test="edit-data-point-icon"]')
+                .as('editButton');
+
+            cy.get('@editButton').click();
+        }
+
+        /**
+         * Saves the current data point and waits for successful response
+         */
+        function saveDataPoint(): void {
+            cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+            cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+            cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+        }
+
+        /**
+         * Verifies that a field contains the expected value in the table view
+         * @param fieldLabel - The label of the field to verify
+         * @param expectedValue - The expected value to be displayed
+         */
+        function verifyFieldValue(fieldLabel: string, expectedValue: string): void {
+            cy.contains('span.table-left-label', fieldLabel)
+                .closest('td')
+                .next('td')
+                .should('contain', expectedValue);
+        }
+
         before(() => {
             cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then((jsonContent) => {
                 const preparedFixturesSfdr = jsonContent as Array<FixtureData<SfdrData>>;
@@ -48,13 +91,9 @@ describeIf(
         });
 
         it('should open EditDataPointDialog for a BigDecimalExtendedDataPointFormField modal and display its parts', () => {
-            cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
-            cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
-                .closest('td')
-                .next('td')
-                .find('button[data-test="edit-data-point-icon"]')
-                .click();
+            navigateToEditMode();
+            openEditDialog('Scope 1 GHG emissions');
+
             cy.get('div.p-dialog-content').within(() => {
                 cy.get('[data-test="big-decimal-input"]')
                     .should('exist')
@@ -78,21 +117,14 @@ describeIf(
         it('should open a BigDecimal EditDataPointDialog, edit all fields and save changes successfully', () => {
             const newValue = '1234.56';
 
-            cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
-
-            cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
-                .closest('td')
-                .next('td')
-                .find('button[data-test="edit-data-point-icon"]')
-                .click();
+            navigateToEditMode();
+            openEditDialog('Scope 1 GHG emissions');
 
             cy.get('div.p-dialog-content').should('be.visible').within(() => {
                 cy.get('[data-test="big-decimal-input"] input')
                     .should('exist')
                     .should('be.visible')
                     .should('have.value', '17,992.73');
-
             });
 
             cy.get('[data-test="quality-select"]')
@@ -103,34 +135,36 @@ describeIf(
 
             cy.get('[data-test="quality-select"]')
                 .should('exist')
-                .should('be.visible').click()
+                .should('be.visible');
 
-                cy.get('[aria-label="Reported"]').click();
+            cy.get('[data-test="quality-select"]').click();
+            cy.get('[aria-label="Reported"]').click();
             cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
-
-
             cy.get('div.p-dialog-content').within(() => {
-                cy.get('[data-test="big-decimal-input"] input')
-                    .clear()
-                    .type(newValue)
-                    .blur();
-
-
-                cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
-                cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
-
-                cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
-
-                cy.get('div.p-dialog-content').should('not.exist');
+                cy.get('[data-test="big-decimal-input"] input').clear();
             });
 
+            cy.get('div.p-dialog-content').within(() => {
+                cy.get('[data-test="big-decimal-input"] input').type(newValue);
+            });
+
+            cy.get('[data-test="big-decimal-input"] input').blur();
+            saveDataPoint();
+
+            cy.get('div.p-dialog-content').should('not.exist');
             cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
                 .closest('td')
                 .next('td')
                 .within(() => {
                     cy.get('span[meta-info]')
-                        .contains('1,234.56 Tonnes')
-                        .click();
+                        .contains('1,234.56 Tonnes');
+                });
+
+            cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
+                .closest('td')
+                .next('td')
+                .within(() => {
+                    cy.get('span[meta-info]').click();
                 });
 
             cy.contains('span.table-left-label', 'Quality')
@@ -140,16 +174,8 @@ describeIf(
         });
 
         it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
-
-
-            cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-            cy.get('button[data-test=editDataPointsButton]').should('exist').click();
-
-            cy.contains('span.table-left-label', 'Fossil Fuel Sector Exposure')
-                .closest('td')
-                .next('td')
-                .find('button[data-test="edit-data-point-icon"]')
-                .click();
+            navigateToEditMode();
+            openEditDialog('Fossil Fuel Sector Exposure');
 
             cy.get('div.p-dialog-content').should('be.visible').within(() => {
                 cy.get('[data-test="yes-input"] input')
@@ -157,53 +183,37 @@ describeIf(
                     .should('have.value', 'Yes');
 
                 cy.get('[data-test="no-input"] input')
-                    .should('exist').click();
+                    .should('exist');
 
-                cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
-                cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
-                cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+                cy.get('[data-test="no-input"] input').click();
             });
-            cy.contains('span.table-left-label', 'Fossil Fuel Sector Exposure')
-                .closest('td')
-                .next('td')
-                .should('contain', 'No');
+
+            saveDataPoint();
+
+            verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
         });
 
         it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
-                const newValue = '1234.56';
+            const newValue = '1234.56';
 
-                cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
-                cy.get('button[data-test=editDataPointsButton]').should('exist').click();
+            navigateToEditMode();
+            openEditDialog('Average Gross Hourly Earnings Male Employees');
 
-                cy.contains('span.table-left-label', 'Average Gross Hourly Earnings Male Employees')
-                    .closest('td')
-                    .next('td')
-                    .find('button[data-test="edit-data-point-icon"]')
-                    .click();
+            cy.get('div.p-dialog-content').should('be.visible').within(() => {
+                cy.get('[data-test="currency-value-input"] input')
+                    .should('exist')
+                    .should('have.value', '1,838,828,082.29');
 
-                cy.get('div.p-dialog-content').should('be.visible').within(() => {
-                    cy.get('[data-test="currency-value-input"] input')
-                        .should('exist')
-                        .should('have.value', '1,838,828,082.29');
+                cy.get('[data-test="currency"]').should('exist');
+            });
 
+            cy.get('[data-test="currency-value-input"] input').clear();
+            cy.get('[data-test="currency-value-input"] input').type(newValue);
 
-                    cy.get('[data-test="currency-value-input"] input')
-                        .clear()
-                        .type(newValue)
-                        .blur();
+            cy.get('[data-test="currency-value-input"] input').blur();
 
-                    cy.get('[data-test="currency"]').should('exist')
+            saveDataPoint();
 
-                    cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
-                    cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
-                    cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
-                });
-
-                cy.contains('span.table-left-label', 'Average Gross Hourly Earnings Male Employees')
-                    .closest('td')
-                    .next('td')
-                    .should('contain', '1,234.56');
-
-            }
-        );
+            verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
+        });
     });
