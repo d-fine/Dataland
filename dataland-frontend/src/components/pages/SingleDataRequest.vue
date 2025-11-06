@@ -91,7 +91,7 @@
         </div>
         <div class="text-block" style="margin: 15px">
           To avoid quotas altogether, consider becoming a premium user.
-          <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on premium
+          <a href="#" @click="openBecomePremiumUserEmail">Contact Moritz Kiese</a> for more information on premium
           membership.
         </div>
         <div style="margin: 10px">
