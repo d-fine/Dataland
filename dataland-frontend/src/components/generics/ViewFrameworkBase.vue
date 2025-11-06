@@ -77,7 +77,7 @@
                 :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
-                  : 'pi pi-pencil'
+                  : 'pi pi-database'
               "
                 :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
