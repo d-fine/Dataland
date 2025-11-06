@@ -39,7 +39,7 @@
     <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
   </div>
 
-  <PrimeButton label="Upload Document" icon="pi pi-upload" variant="link" @click="handleUploadDocumentClick" />
+  <PrimeButton label="Up- or download Document" icon="pi pi-file" variant="link" @click="handleUploadDocumentClick" />
   <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"
@@ -111,7 +111,7 @@ onMounted(async () => {
   if (props.selectedDocument) {
     setSelectedDocument(
         allDocuments.value.find(
-            (doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument
+            (doc) => doc.documentName === props.selectedDocument
         )?.documentId ?? null
     );
   } else {

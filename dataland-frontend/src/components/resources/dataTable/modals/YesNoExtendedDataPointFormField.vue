@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
-import { inject, ref, watch, watchEffect } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import RadioButton from 'primevue/radiobutton';
 import { buildApiBody } from '@/components/resources/dataTable/conversion/Utils.ts';
@@ -28,6 +28,9 @@ const props = defineProps({
   selectedDocument: String,
   insertedComment: String,
   insertedPage: String,
+  companyId: String,
+  reportingPeriod: String,
+  dataPointTypeId: String,
 });
 
 const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
@@ -35,9 +38,9 @@ const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
 const insertedComment = ref<string | null>(props.insertedComment ?? null);
 const insertedPage = ref<string | null>(props.insertedPage ?? null);
 const apiBody = ref({});
-const companyId = inject<string>('companyId');
-const reportingPeriod = inject<string>('reportingPeriod');
-const dataPointTypeId = inject<string>('dataPointTypeId');
+const companyId =  ref<string>(props.companyId!);
+const reportingPeriod =  ref<string>(props.reportingPeriod!);
+const dataPointTypeId =  ref<string>(props.dataPointTypeId!);
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const emit = defineEmits(['update:apiBody']);
 const value = ref<string | null>(
@@ -55,15 +58,15 @@ watch(
 
 watchEffect(() => {
   apiBody.value = buildApiBody(
-    value.value,
-    chosenQuality.value,
-    selectedDocument.value,
-    insertedComment.value,
-    insertedPage.value,
-    selectedDocumentMeta.value,
-    companyId!,
-    reportingPeriod!,
-    dataPointTypeId!
+      value.value,
+      chosenQuality.value,
+      selectedDocument.value,
+      insertedComment.value,
+      insertedPage.value,
+      selectedDocumentMeta.value,
+      companyId.value,
+      reportingPeriod.value,
+      dataPointTypeId.value
   );
   emit('update:apiBody', apiBody.value);
 });
