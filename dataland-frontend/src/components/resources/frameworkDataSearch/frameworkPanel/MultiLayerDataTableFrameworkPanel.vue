@@ -154,7 +154,7 @@ const updateCounter = ref(0);
 const status = ref<ViewPanelStates>('LoadingDatasets');
 const metaInfoOfAvailableButInaccessibleDataset = ref<DataMetaInformation[]>([]);
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
-const updateKey = ref(Math.random());
+const updateKey = ref(0);
 
 watch(
   [
