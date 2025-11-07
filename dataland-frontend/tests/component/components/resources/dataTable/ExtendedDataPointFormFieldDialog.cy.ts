@@ -61,18 +61,14 @@ describe('As a user I want to have displayed the associated documents for the co
       },
     });
     cy.wait('@fetchDocuments');
-    // Select the first document
     cy.get('[data-test="document-select"] .p-select-label').click();
     cy.get('.p-select-option-label').contains(mockDocuments[0]!.documentName).click();
-    // Check meta info for first document
     cy.get('.dataland-info-text').should('contain', `Name: ${mockDocuments[0]!.documentName}`);
     cy.get('.dataland-info-text').should('contain', `Category: ${mockDocuments[0]!.documentCategory}`);
     cy.get('.dataland-info-text').should('contain', `Publication Date: ${mockDocuments[0]!.publicationDate}`);
     cy.get('.dataland-info-text').should('contain', `Reporting Period: ${mockDocuments[0]!.reportingPeriod}`);
-    // Select the second document
     cy.get('[data-test="document-select"] .p-select-label').click();
     cy.get('.p-select-option-label').contains(mockDocuments[1]!.documentName).click();
-    // Check meta info for second document
     cy.get('.dataland-info-text').should('contain', `Name: ${mockDocuments[1]!.documentName}`);
     cy.get('.dataland-info-text').should('contain', `Category: ${mockDocuments[1]!.documentCategory}`);
     cy.get('.dataland-info-text').should('contain', `Publication Date: ${mockDocuments[1]!.publicationDate}`);
