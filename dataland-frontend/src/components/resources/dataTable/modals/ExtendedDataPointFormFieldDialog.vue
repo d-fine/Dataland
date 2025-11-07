@@ -64,7 +64,7 @@ import router from '@/router';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type {
   ExtendedDataPointType,
-  ExtendedDataPointTypeMetaInfo,
+  ExtendedDataPointMetaInfoType,
 } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
@@ -117,7 +117,7 @@ onMounted(async () => {
  * Gathers the current form data into an object.
  * @returns An object containing the current form data.
  */
-function getFormData(): ExtendedDataPointTypeMetaInfo {
+function getFormData(): ExtendedDataPointMetaInfoType {
   return {
     quality: chosenQuality.value ?? undefined,
     comment: insertedComment.value ?? undefined,

@@ -51,7 +51,7 @@ export function getOriginalNameFromTechnicalName<T extends string>(
   return mappingObject[technicalName];
 }
 
-export type ExtendedDataPointTypeMetaInfo = {
+export type ExtendedDataPointMetaInfoType = {
   quality?: string;
   comment?: string;
   dataSource?: {
@@ -85,7 +85,7 @@ export type ExtendedDataPointType = {
 export function buildApiBody(
   dataPointValue?: number | string | null,
   currency?: string,
-  extendedDataPoint?: ExtendedDataPointTypeMetaInfo
+  extendedDataPoint?: ExtendedDataPointMetaInfoType
 ): string {
   if (dataPointValue === undefined && !currency && !extendedDataPoint) {
     return '';

@@ -21,7 +21,7 @@ import RadioButton from 'primevue/radiobutton';
 import {
   buildApiBody,
   type ExtendedDataPointType,
-  type ExtendedDataPointTypeMetaInfo,
+  type ExtendedDataPointMetaInfoType,
 } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps<{
@@ -34,7 +34,7 @@ const dataPointValue = ref<string | null>(
     : null
 );
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
-const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointTypeMetaInfo }>();
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType }>();
 
 /**
  * Reference to the extended dialog to get form data

@@ -35,7 +35,7 @@ import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import {
   buildApiBody,
   type ExtendedDataPointType,
-  type ExtendedDataPointTypeMetaInfo,
+  type ExtendedDataPointMetaInfoType,
   parseValue,
 } from '@/components/resources/dataTable/conversion/Utils.ts';
 import Select from 'primevue/select';
@@ -50,7 +50,7 @@ const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((c
 );
 const dataPointValue = ref<number | null>(parseValue(props.extendedDataPointObject.value));
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
-const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointTypeMetaInfo }>();
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType }>();
 const currency = ref<string | undefined>(undefined);
 
 onMounted(() => {
