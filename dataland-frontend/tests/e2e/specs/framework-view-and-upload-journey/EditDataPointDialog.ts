@@ -106,7 +106,8 @@ describeIf(
       cy.get('[aria-label="Reported"]').click();
       cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
       cy.get('div.p-dialog-content').within(() => {
-        cy.get('[data-test="big-decimal-input"] input').clear().type(newValue);
+        cy.get('[data-test="big-decimal-input"] input').clear();
+        cy.get('[data-test="big-decimal-input"] input').type(newValue);
       });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
@@ -149,7 +150,7 @@ describeIf(
       verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
     });
 
-    it.only('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
       const newValue = '1234.56';
 
       navigateToEditMode();

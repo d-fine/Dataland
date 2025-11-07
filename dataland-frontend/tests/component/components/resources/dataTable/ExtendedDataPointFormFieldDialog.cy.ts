@@ -38,15 +38,15 @@ describe('As a user I want to have displayed the associated documents for the co
         },
       },
     });
-        cy.wait('@fetchDocuments');
-        cy.get('[data-test="page-number-input"]').should('be.disabled');
-        cy.get('[data-test="document-select"] .p-select-label').click();
-        cy.get('.p-select-option-label').should('contain', 'AnnualReport2022.pdf');
-        cy.get('.p-select-option-label').should('contain', 'SustainabilityReport2023.pdf');
-        cy.get('.p-select-option-label').contains('AnnualReport2022.pdf').click();
-        cy.get('[data-test="page-number-input"]').should('not.be.disabled');
-        cy.get('[data-test="page-number-input"]').type('123-456').should('have.value', '123-456');
-        cy.get('[data-test="document-select"] .p-select-label').click();
+    cy.wait('@fetchDocuments');
+    cy.get('[data-test="page-number-input"]').should('be.disabled');
+    cy.get('[data-test="document-select"] .p-select-label').click();
+    cy.get('.p-select-option-label').should('contain', 'AnnualReport2022.pdf');
+    cy.get('.p-select-option-label').should('contain', 'SustainabilityReport2023.pdf');
+    cy.get('.p-select-option-label').contains('AnnualReport2022.pdf').click();
+    cy.get('[data-test="page-number-input"]').should('not.be.disabled');
+    cy.get('[data-test="page-number-input"]').type('123-456').should('have.value', '123-456');
+    cy.get('[data-test="document-select"] .p-select-label').click();
   });
 
   it('updates meta information when different documents are selected', () => {

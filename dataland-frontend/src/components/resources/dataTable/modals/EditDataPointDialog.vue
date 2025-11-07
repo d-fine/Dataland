@@ -21,7 +21,6 @@ import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
 
-const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const errorMessage = ref('');
