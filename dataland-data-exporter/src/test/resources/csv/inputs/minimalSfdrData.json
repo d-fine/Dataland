@@ -2,8 +2,8 @@
   "general": {
     "general": {
       "dataDate": "2022-01-01",
-      "fiscalYearDeviation": "Deviation",
-      "fiscalYearEnd": "2022-01-01",
+      "fiscalYearDeviation": {"value":"Deviation","quality":null,"comment":null,"dataSource":null},
+      "fiscalYearEnd": {"value":"2022-01-01","quality":null,"comment":null,"dataSource":null},
       "referencedReports": null
     }
   },
