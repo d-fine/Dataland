@@ -23,14 +23,6 @@ class DocumentStorageServiceTest {
     private val documentId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
 
-    private val dataPointIdWithDocumentReference1 = UUID.randomUUID().toString()
-    private val dataPointIdWithDocumentReference2 = UUID.randomUUID().toString()
-    private val dataPointIdWithDocumentReference3 = UUID.randomUUID().toString()
-
-    private val datasetIdWithDocumentReference1 = UUID.randomUUID().toString()
-    private val datasetIdWithDocumentReference2 = UUID.randomUUID().toString()
-    private val datasetIdWithDocumentReference3 = UUID.randomUUID().toString()
-
     @BeforeEach
     fun setup() {
         mockBlobItemRepository = mock<BlobItemRepository>()
@@ -46,76 +38,50 @@ class DocumentStorageServiceTest {
 
     @Test
     fun `check that getDocumentReferences returns data point IDs when document is found in data points`() {
-        val dataPointsWithDocument =
-            listOf(
-                createDataPointItem(dataPointIdWithDocumentReference1, documentId),
-                createDataPointItem(dataPointIdWithDocumentReference2, documentId),
-                createDataPointItem(dataPointIdWithDocumentReference3, documentId),
-            )
+        val dataPointIds = List(3) { UUID.randomUUID().toString() }
+        val dataPointsWithDocument = dataPointIds.map { createDataPointItem(it, documentId) }
 
         setupMockRepositories(dataPointsWithDocument, emptyList())
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(
-            listOf(dataPointIdWithDocumentReference1, dataPointIdWithDocumentReference2, dataPointIdWithDocumentReference3),
-            result.dataPointIds,
-        )
+        assertEquals(dataPointIds, result.dataPointIds)
         assertEquals(emptyList<String>(), result.datasetIds)
     }
 
     @Test
     fun `check that getDocumentReferences returns dataset IDs when document is found in datasets`() {
-        val dataPointsWithoutDocument = emptyList<DataPointItem>()
-        val datasetsWithDocument =
-            listOf(
-                createDataItem(datasetIdWithDocumentReference1, documentId),
-                createDataItem(datasetIdWithDocumentReference2, documentId),
-            )
+        val datasetIds = List(3) { UUID.randomUUID().toString() }
+        val datasetsWithDocument = datasetIds.map { createDataItem(it, documentId) }
 
-        setupMockRepositories(dataPointsWithoutDocument, datasetsWithDocument)
+        setupMockRepositories(emptyList(), datasetsWithDocument)
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(emptyList<String>(), result.dataPointIds)
-        assertEquals(listOf(datasetIdWithDocumentReference1, datasetIdWithDocumentReference2), result.datasetIds)
+        assertEquals(datasetIds, result.datasetIds)
     }
 
     @Test
     fun `check that getDocumentReferences returns both data point and dataset IDs when document is found in both`() {
-        val dataPointsWithDocument =
-            listOf(
-                createDataPointItem(dataPointIdWithDocumentReference1, documentId),
-                createDataPointItem(dataPointIdWithDocumentReference2, documentId),
-            )
-        val datasetsWithDocument =
-            listOf(
-                createDataItem(datasetIdWithDocumentReference1, documentId),
-                createDataItem(datasetIdWithDocumentReference2, documentId),
-                createDataItem(datasetIdWithDocumentReference3, documentId),
-            )
+        val dataPointIds = List(3) { UUID.randomUUID().toString() }
+        val datasetIds = List(3) { UUID.randomUUID().toString() }
+
+        val dataPointsWithDocument = dataPointIds.map { createDataPointItem(it, documentId) }
+        val datasetsWithDocument = datasetIds.map { createDataItem(it, documentId) }
 
         setupMockRepositories(dataPointsWithDocument, datasetsWithDocument)
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(listOf(dataPointIdWithDocumentReference1, dataPointIdWithDocumentReference2), result.dataPointIds)
-        assertEquals(
-            listOf(datasetIdWithDocumentReference1, datasetIdWithDocumentReference2, datasetIdWithDocumentReference3),
-            result.datasetIds,
-        )
+        assertEquals(dataPointIds, result.dataPointIds)
+        assertEquals(datasetIds, result.datasetIds)
     }
 
     @Test
     fun `check that getDocumentReferences returns empty lists when document is not found anywhere`() {
-        val dataPointsWithoutDocument =
-            listOf(
-                createDataPointItem(dataPointIdWithDocumentReference1, "otherDocumentId"),
-            )
-        val datasetsWithoutDocument =
-            listOf(
-                createDataItem(datasetIdWithDocumentReference1, "anotherDocumentId"),
-            )
+        val dataPointsWithoutDocument = listOf(createDataPointItem(UUID.randomUUID().toString(), "otherDocumentId"))
+        val datasetsWithoutDocument = listOf(createDataItem(UUID.randomUUID().toString(), "anotherDocumentId"))
 
         setupMockRepositories(dataPointsWithoutDocument, datasetsWithoutDocument)
 
@@ -137,7 +103,7 @@ class DocumentStorageServiceTest {
     @Test
     fun `check that nullification handles LkSG dataset correctly`() {
         val lksgDatasetId = UUID.randomUUID().toString()
-        val lksgDataset = createLksgDataset(lksgDatasetId, governanceDoc1 = documentId)
+        val lksgDataset = createLksgDataset(lksgDatasetId, riskManagementSystemDocumentReference1 = documentId)
 
         whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
         whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDataset))
@@ -160,16 +126,20 @@ class DocumentStorageServiceTest {
     @Test
     fun `check that deleting one document preserves other document references in same dataset`() {
         val lksgDatasetId = UUID.randomUUID().toString()
-        val document1Id = UUID.randomUUID().toString()
-        val document2Id = UUID.randomUUID().toString()
+        val documentIdToBeDeleted = UUID.randomUUID().toString()
+        val documentIdToBeKept = UUID.randomUUID().toString()
 
-        val lksgDatasetWithTwoDocuments = createLksgDataset(lksgDatasetId, governanceDoc1 = document1Id, governanceDoc2 = document2Id)
+        val lksgDatasetWithTwoDocuments =
+            createLksgDataset(
+                lksgDatasetId, riskManagementSystemDocumentReference1 = documentIdToBeDeleted,
+                riskManagementSystemDocumentReference2 = documentIdToBeKept,
+            )
 
         whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
         whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithTwoDocuments))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithTwoDocuments))
 
-        documentStorageService.deleteDocument(document1Id, correlationId)
+        documentStorageService.deleteDocument(documentIdToBeDeleted, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -179,24 +149,25 @@ class DocumentStorageServiceTest {
         val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
         val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
-        val dataSource1 = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
-        assert(dataSource1.isNull) { "First document reference should be null after deletion" }
+        val removedDataSource = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
+        assert(removedDataSource.isNull) { "First document reference should be null after deletion" }
 
-        val dataSource2 = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementProcess/dataSource")
-        assert(!dataSource2.isNull && dataSource2.has("fileReference")) { "Second document reference should still exist" }
+        val preservedDataSource = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementProcess/dataSource")
+        assert(!preservedDataSource.isNull) { "Preserved document reference should not be null" }
+        assert(preservedDataSource.has("fileReference")) { "Preserved document reference should have fileReference field" }
         assertEquals(
-            document2Id,
-            dataSource2.get("fileReference").asText(),
+            documentIdToBeKept,
+            preservedDataSource.get("fileReference").asText(),
             "Second document fileReference should be preserved",
         )
 
-        verify(mockBlobItemRepository).deleteById(document1Id)
+        verify(mockBlobItemRepository).deleteById(documentIdToBeDeleted)
     }
 
     @Test
     fun `check that attachment structure is cleaned up when dataSource is nullified`() {
         val lksgDatasetId = UUID.randomUUID().toString()
-        val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, attachmentDoc = documentId)
+        val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, lksgAttachmentDoc = documentId)
 
         whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
         whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithAttachment))
@@ -218,50 +189,50 @@ class DocumentStorageServiceTest {
 
     private fun createLksgDataset(
         datasetId: String,
-        governanceDoc1: String? = null,
-        governanceDoc2: String? = null,
-        attachmentDoc: String? = null,
+        riskManagementSystemDocumentReference1: String? = null,
+        riskManagementSystemDocumentReference2: String? = null,
+        lksgAttachmentDoc: String? = null,
     ): DataItem {
-        val doc1Json =
-            if (governanceDoc1 != null) {
-                """{"fileName":"TestDoc1","fileReference":"$governanceDoc1","publicationDate":null}"""
+        val riskManagementSystemDataSource1 =
+            if (riskManagementSystemDocumentReference1 != null) {
+                """{"fileName":"TestDoc1","fileReference":"$riskManagementSystemDocumentReference1","publicationDate":null}"""
             } else {
                 "null"
             }
 
-        val doc2Json =
-            if (governanceDoc2 != null) {
-                """{"fileName":"TestDoc2","fileReference":"$governanceDoc2","publicationDate":null}"""
+        val riskManagementSystemDataSource2 =
+            if (riskManagementSystemDocumentReference2 != null) {
+                """{"fileName":"TestDoc2","fileReference":"$riskManagementSystemDocumentReference2","publicationDate":null}"""
             } else {
                 "null"
             }
 
-        val attachmentJson =
-            if (attachmentDoc != null) {
-                """{"value":"Yes","dataSource":{"fileName":"AttachmentDoc","fileReference":"$attachmentDoc"}}"""
+        val lksgAttachmentDataSource =
+            if (lksgAttachmentDoc != null) {
+                """{"value":"Yes","dataSource":{"fileName":"AttachmentDoc","fileReference":"$lksgAttachmentDoc"}}"""
             } else {
                 "null"
             }
 
-        val actualData =
+        val lksgData =
             """
-            {"governance":{"riskManagementOwnOperations":{"riskManagementSystem":{"value":"Yes","dataSource":$doc1Json},
-            "riskManagementProcess":{"value":"Yes","dataSource":$doc2Json}}},
-            "attachment":{"attachment":{"attachment":$attachmentJson}}}
+            {"governance":{"riskManagementOwnOperations":{"riskManagementSystem":{"value":"Yes","dataSource":$riskManagementSystemDataSource1},
+            "riskManagementProcess":{"value":"Yes","dataSource":$riskManagementSystemDataSource2}}},
+            "attachment":{"attachment":{"attachment":$lksgAttachmentDataSource}}}
             """.trimIndent().replace("\n", "")
 
-        val datasetJson =
+        val lksgDataEntry =
             defaultObjectMapper.writeValueAsString(
                 mapOf(
                     "companyId" to UUID.randomUUID().toString(),
                     "dataType" to "lksg",
                     "reportingPeriod" to "2025",
-                    "data" to actualData,
+                    "data" to lksgData,
                 ),
             )
         return DataItem(
             id = datasetId,
-            data = datasetJson,
+            data = lksgDataEntry,
         )
     }
 

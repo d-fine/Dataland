@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.services
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
@@ -34,7 +35,7 @@ class DocumentStorageService
         fun getDocumentReferences(
             documentId: String,
             correlationId: String,
-        ): org.dataland.datalandinternalstorage.model.DocumentReferencesResponse {
+        ): DocumentReferencesResponse {
             logger.info("Searching for document references. DocumentId: $documentId. Correlation ID: $correlationId")
 
             val allDataPoints = dataPointItemRepository.findAll()
@@ -55,7 +56,7 @@ class DocumentStorageService
                     "Correlation ID: $correlationId",
             )
 
-            return org.dataland.datalandinternalstorage.model.DocumentReferencesResponse(
+            return DocumentReferencesResponse(
                 datasetIds = datasetIds,
                 dataPointIds = dataPointIds,
             )
@@ -310,11 +311,14 @@ class DocumentStorageService
             val attachment1 = attachment0?.get("attachment")?.takeIf { it.isObject }
             val attachment2 = attachment1?.get("attachment")?.takeIf { it.isObject }
 
+            logger.info("Attachment structure: $attachment2")
+
             return when {
                 attachment1 == null -> false
                 attachment2 == null -> false
                 attachment2.get("dataSource")?.isNull == true -> {
                     (attachment1 as ObjectNode).putNull("attachment")
+                    logger.info("Attachment cleaned up")
                     true
                 }
                 else -> false

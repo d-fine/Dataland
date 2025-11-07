@@ -1,6 +1,7 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
+import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.services.DatabaseBlobDataStore
 import org.dataland.datalandinternalstorage.services.DatabaseStringDataStore
@@ -61,7 +62,7 @@ class StorageController(
     override fun getDocumentReferences(
         documentId: String,
         correlationId: String,
-    ): ResponseEntity<org.dataland.datalandinternalstorage.model.DocumentReferencesResponse> {
+    ): ResponseEntity<DocumentReferencesResponse> {
         logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
         return ResponseEntity.ok(documentStorageService.getDocumentReferences(documentId, correlationId))
     }
