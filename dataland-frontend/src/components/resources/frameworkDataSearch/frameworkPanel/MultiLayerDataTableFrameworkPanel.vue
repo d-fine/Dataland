@@ -171,7 +171,7 @@ watch(
  * Handles the dataUpdated event from child components and triggers a reload.
  */
 function handleDataUpdated(): void {
-  updateKey.value = Math.random();
+  updateKey.value++;
   void reloadDisplayData(++updateCounter.value);
 }
 
