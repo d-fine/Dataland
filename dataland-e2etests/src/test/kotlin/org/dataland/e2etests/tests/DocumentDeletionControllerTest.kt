@@ -356,7 +356,7 @@ endobj"""
         dataPointId: String,
         expectedStatus: QaStatus,
     ) {
-        Awaitility.await().atMost(3000, TimeUnit.MILLISECONDS).pollInterval(200, TimeUnit.MILLISECONDS).untilAsserted {
+        Awaitility.await().atMost(3000, TimeUnit.MILLISECONDS).pollInterval(200, TimeUnit.MILLISECONDS).ignoreExceptions().untilAsserted {
             val qaReviews = apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
             val latestReview = qaReviews.firstOrNull()
             assertEquals(expectedStatus, latestReview?.qaStatus)
