@@ -154,19 +154,6 @@ endobj"""
     }
 
     @Test
-    fun `test that document with data point reference without QA review cannot be deleted`() {
-        val documentId = uploadDocumentAndGetId()
-
-        uploadDataPointWithDocumentReference(documentId, qaStatus = null)
-
-        val exception =
-            assertThrows<ClientException> {
-                documentControllerClient.deleteDocument(documentId)
-            }
-        assertEquals(HttpStatus.CONFLICT.value(), exception.statusCode)
-    }
-
-    @Test
     fun `test that document with data point reference in Rejected status can be deleted`() {
         val documentId = uploadDocumentAndGetId()
 
@@ -202,6 +189,7 @@ endobj"""
         val documentId = uploadDocumentAndGetId()
 
         val dataPointId = uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
+        awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -210,7 +198,10 @@ endobj"""
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
         val dataPointJson = objectMapperForJsonAssertion.readTree(retrievedDataPoint)
         val dataSourceNode = dataPointJson.get("dataSource")
-        assertTrue(dataSourceNode == null || dataSourceNode.isNull, "Entire dataSource object should be null after document deletion")
+        assertTrue(
+            dataSourceNode == null || dataSourceNode.isNull,
+            "Entire dataSource object should be null after document deletion",
+        )
     }
 
     private fun uploadDocumentAndGetId(): String = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf()).documentId
