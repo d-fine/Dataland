@@ -19,16 +19,10 @@ function navigateToEditMode(): void {
 
 /**
  * Opens the edit dialog for a specific data field
- * @param fieldLabel - The label of the field to edit
+ * @param dataPointType - The type of data point to edit
  */
-function openEditDialog(fieldLabel: string): void {
-  cy.contains('span.table-left-label', fieldLabel)
-    .closest('td')
-    .next('td')
-    .find('button[data-test="edit-data-point-icon"]')
-    .as('editButton');
-
-  cy.get('@editButton').click();
+function openEditDialog(dataPointType: string): void {
+  cy.get(`[data-test="edit-data-point-icon-${dataPointType}"]`).click();
 }
 
 /**
@@ -91,7 +85,7 @@ describeIf(
       const newValue = '1234.56';
 
       navigateToEditMode();
-      openEditDialog('Scope 1 GHG emissions');
+      openEditDialog('extendedDecimalScope1GhgEmissionsInTonnes');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
@@ -138,7 +132,7 @@ describeIf(
 
     it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
       navigateToEditMode();
-      openEditDialog('Fossil Fuel Sector Exposure');
+      openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
@@ -155,11 +149,11 @@ describeIf(
       verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
     });
 
-    it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it.only('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
       const newValue = '1234.56';
 
       navigateToEditMode();
-      openEditDialog('Average Gross Hourly Earnings Male Employees');
+      openEditDialog('extendedCurrencyAverageGrossHourlyEarningsMaleEmployees');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
@@ -174,8 +168,11 @@ describeIf(
 
       cy.get('[data-test="currency-value-input"] input').blur();
 
-      saveDataPoint();
+      cy.get('[data-test="currency"]').click();
+      cy.get('[aria-label="East Caribbean Dollar (XCD)"]').click();
 
+
+      saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
     });
   }
