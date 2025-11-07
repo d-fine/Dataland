@@ -2,7 +2,6 @@
   <component
     ref="componentRef"
     :is="resolvedComponent"
-    v-model:apiBody="apiBody"
     :extendedDataPointObject="extendedDataPointObject"
   />
   <Message v-if="errorMessage" severity="error" :life="3000">
@@ -52,8 +51,6 @@ const extendedDataPointObject: ExtendedDataPointType = {
     page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
   },
 };
-
-console.log('DATAPOINT FROM EDIT MODAL', extendedDataPointObject);
 
 provide('companyId', companyId);
 

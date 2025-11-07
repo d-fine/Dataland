@@ -1,7 +1,6 @@
 <template>
   <h4>Value</h4>
   <div class="currency-value-fields">
-    <div>
       <InputNumber
         v-model="dataPointValue"
         placeholder="Insert Value"
@@ -9,8 +8,6 @@
         :maxFractionDigits="2"
         fluid
       />
-    </div>
-    <div>
       <Select
         v-model="currency"
         placeholder="Currency"
@@ -22,7 +19,6 @@
         style="width: 10em"
         fluid
       />
-    </div>
   </div>
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"

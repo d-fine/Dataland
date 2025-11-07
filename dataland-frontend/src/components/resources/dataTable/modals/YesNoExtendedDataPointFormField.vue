@@ -1,6 +1,6 @@
 <template>
   <h4>Value</h4>
-  <div style="gap: 0.5rem; display: flex">
+  <div style="gap: var(--spacing-xs); display: flex">
     <RadioButton v-model="dataPointValue" :inputId="'yes-no-yes'" :value="'Yes'" data-test="yes-input" />
     <label for="yes-no-yes">Yes</label>
     <RadioButton v-model="dataPointValue" :inputId="'yes-no-no'" :value="'No'" data-test="no-input" />

@@ -7,7 +7,6 @@
     optionValue="value"
     data-test="quality-select"
     :modelValue="chosenQuality"
-    @update:modelValue="(val) => (chosenQuality = val)"
     fluid
   />
   <h4>Data Source</h4>
@@ -19,7 +18,6 @@
       optionLabel="label"
       optionValue="value"
       data-test="document-select"
-      @update:modelValue="(val) => (selectedDocument = val)"
       style="width: 17em"
       fluid
     />
@@ -45,7 +43,6 @@
     :placeholder="'Insert comment'"
     :modelValue="insertedComment"
     data-test="comment-textarea"
-    @update:modelValue="(val) => (insertedComment = val)"
     rows="5"
     :draggable="false"
     fluid
