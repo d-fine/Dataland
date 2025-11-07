@@ -2,11 +2,7 @@
   <component
     :is="resolvedComponent"
     v-model:apiBody="apiBody"
-    :value="value"
-    :insertedComment="comment"
-    :selectedDocument="fileName"
-    :insertedPage="page"
-    :chosenQuality="quality"
+    :extendedDataPointObject="extendedDataPointObject"
     :reportingPeriod="reportingPeriod"
     :dataPointTypeId="dataPointTypeId"
   />
@@ -29,6 +25,7 @@ import type { UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
+import {DataPointObject} from "@/components/resources/dataTable/conversion/Utils.ts";
 
 const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -40,15 +37,21 @@ const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
 const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
 const dataPoint = dialogRef?.value?.data?.dataPoint;
-const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
-const fileName = unref(dataPoint?.displayValue?.dataSource?.fileName ?? '');
-const page = unref(dataPoint?.displayValue?.dataSource?.page ?? '');
-const quality = unref(dataPoint?.displayValue?.quality ?? '');
-const comment = unref(dataPoint?.displayValue?.comment ?? '');
 const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
+const extendedDataPointObject: DataPointObject = {
+  value: unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '',
+  quality: unref(dataPoint?.displayValue?.quality ?? ''),
+  comment: unref(dataPoint?.displayValue?.comment ?? ''),
+  dataSource: {
+    fileName: unref(dataPoint?.displayValue?.dataSource?.fileName ?? ''),
+    page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
+  },
+};
+
+console.log("DATAPOINT FROM EDIT MODAL", extendedDataPointObject);
 
 provide('companyId', companyId);
 

@@ -65,6 +65,7 @@ import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
 import router from '@/router';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import {DataPointObject} from "@/components/resources/dataTable/conversion/Utils.ts";
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
 const availableDocuments = ref<{ label: string; value: string }[]>([]);
@@ -72,10 +73,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const props = defineProps<{
-  chosenQuality?: string | null;
-  selectedDocument?: string | null;
-  insertedComment?: string | null;
-  insertedPage?: string | null;
+  extendedDataPointObject?: DataPointObject;
 }>();
 
 const emit = defineEmits([
@@ -86,10 +84,11 @@ const emit = defineEmits([
   'update:insertedPage',
 ]);
 
-const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
-const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
-const insertedComment = ref<string | null>(props.insertedComment ?? null);
-const insertedPage = ref<string | null>(props.insertedPage ?? null);
+const chosenQuality = ref<string | null>(props.extendedDataPointObject?.quality ?? null);
+const selectedDocument = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileReference ?? null);
+const fileName = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileName ?? null);
+const insertedComment = ref<string | null>(props.extendedDataPointObject?.comment ?? null);
+const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
 const companyId = inject<string>('companyId');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 
@@ -114,18 +113,18 @@ watch(selectedDocument, (val) => {
 onMounted(async () => {
   await updateDocumentsList();
 
-  if (props.selectedDocument) {
+  if (fileName) {
     setSelectedDocument(
       allDocuments.value.find(
-        (doc) => doc.documentName === props.selectedDocument || doc.documentId === props.selectedDocument
+        (doc) => doc.documentName === fileName.value
       )?.documentId ?? null
     );
   } else {
     setSelectedDocument(null);
   }
 
-  if (props.chosenQuality) {
-    const matchQuality = qualityOptionsList.find((q) => q.value === props.chosenQuality);
+  if (chosenQuality) {
+    const matchQuality = qualityOptionsList.find((q) => q.value === chosenQuality.value);
     if (matchQuality) {
       chosenQuality.value = matchQuality.value;
       emit('update:chosenQuality', chosenQuality.value);
