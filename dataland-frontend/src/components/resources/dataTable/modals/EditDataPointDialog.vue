@@ -56,6 +56,7 @@ provide('companyId', companyId);
  * Updates the data point with the current API body.
  */
 async function updateDataPoint(): Promise<void> {
+  errorMessage.value = '';
   try {
     await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody.value, true);
     dialogRef?.value?.close({ dataUpdated: true });
@@ -64,7 +65,7 @@ async function updateDataPoint(): Promise<void> {
     if (error instanceof AxiosError) {
       errorMessage.value = error.message;
     } else {
-      errorMessage.value = 'Failed edit Data Point.';
+      errorMessage.value = 'Failed to edit Data Point.';
     }
   }
 }
