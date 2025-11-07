@@ -1,0 +1,63 @@
+package org.dataland.datalandcommunitymanager.services
+
+import org.dataland.datalandcommunitymanager.utils.InheritedRolesUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.util.UUID
+
+/**
+ * Service class for handling inherited roles.
+ */
+@Service("InheritedRolesManager")
+class InheritedRolesManager
+    @Autowired
+    constructor(
+        private val companyRolesManager: CompanyRolesManager,
+        private val companyRightsManager: CompanyRightsManager,
+    ) {
+        /**
+         * For the specified user, get a map from the Dataland IDs of companies in which this user has at least one
+         * CompanyRole to the corresponding (company-specific) lists of inherited roles of the user.
+         * @param userId the Dataland ID of the user in question
+         * @return a map from company IDs to the lists of associated inherited roles
+         */
+        fun getInheritedRoles(userId: UUID): Map<String, List<String>> {
+            val inheritedRolesMap = mutableMapOf<String, List<String>>()
+
+            val associatedCompanyIdsOfUser =
+                companyRolesManager
+                    .getCompanyRoleAssignmentsByParameters(
+                        companyRole = null,
+                        companyId = null,
+                        userId = userId.toString(),
+                    ).map { it.companyId }
+                    .toSet()
+
+            associatedCompanyIdsOfUser.forEach { associatedCompanyId ->
+                val associatedCompanyRights = companyRightsManager.getCompanyRights(UUID.fromString(associatedCompanyId))
+
+                inheritedRolesMap[associatedCompanyId] =
+                    InheritedRolesUtils
+                        .getInheritedRoles(
+                            associatedCompanyRights,
+                        ).map { it.name }
+            }
+
+            return inheritedRolesMap
+        }
+
+        /**
+         * Check whether the authenticated user may query inherited roles for the specified user ID.
+         * @userId of the user whose inherited roles are to be queried
+         * @return whether the requester may query inherited roles for the specified user ID
+         */
+        fun requesterMayQueryInheritedRoles(userId: String): Boolean {
+            val authentication = DatalandAuthentication.fromContext()
+
+            if (!authentication.isAuthenticated) return false
+
+            return authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN) || authentication.userId == userId
+        }
+    }
