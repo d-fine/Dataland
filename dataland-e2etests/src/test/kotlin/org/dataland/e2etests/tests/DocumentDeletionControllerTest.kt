@@ -197,7 +197,7 @@ endobj"""
         assertDocumentDeleted(documentId)
 
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-        val dataPointJson = objectMapperForJsonAssertion.readTree(retrievedDataPoint)
+        val dataPointJson = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
         val dataSourceNode = dataPointJson.get("dataSource")
         assertTrue(
             dataSourceNode == null || dataSourceNode.isNull,
@@ -314,6 +314,16 @@ endobj"""
         }
 
         return dataPointId
+    }
+
+    private fun unwrapEncodedJson(
+        json: String,
+        mapper: ObjectMapper,
+    ): com.fasterxml.jackson.databind.JsonNode {
+        var node = mapper.readTree(json)
+        if (node.isTextual) node = mapper.readTree(node.asText())
+        val dataField = node.get("data")
+        return if (dataField != null && dataField.isTextual) mapper.readTree(dataField.asText()) else node
     }
 
     private fun awaitDocumentAvailable(documentId: String) {
