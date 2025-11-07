@@ -73,12 +73,13 @@ export type DataPointObject = {
  * @returns uploadedDataPoint
  */
 export function buildApiBody(
-  extendedDataPoint: DataPointObject,
-  selectedDocumentMeta: DocumentMetaInfoResponse | undefined,
-  companyID: string,
-  reportingPeriod: string,
-  dataPointTypeId: string,
-  currency?: string | undefined,
+    value: string | number | undefined,
+    extendedDataPoint: DataPointObject,
+    selectedDocumentMeta: DocumentMetaInfoResponse | undefined,
+    companyID: string,
+    reportingPeriod: string,
+    dataPointTypeId: string,
+    currency?: string | undefined,
 ): {
   dataPoint: string;
   dataPointType: string;
@@ -87,7 +88,7 @@ export function buildApiBody(
 } {
 
   const dataPointObj: DataPointObject = {};
-  if (extendedDataPoint.value !== null && extendedDataPoint.value !== undefined) dataPointObj.value = parseValue(extendedDataPoint.value);
+  if (value) dataPointObj.value = parseValue(value);
   if (currency) dataPointObj.currency = currency;
   if (extendedDataPoint.quality) dataPointObj.quality = extendedDataPoint.quality;
   if (extendedDataPoint.comment) dataPointObj.comment = extendedDataPoint.comment;

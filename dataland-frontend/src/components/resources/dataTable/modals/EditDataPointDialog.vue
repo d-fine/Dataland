@@ -5,6 +5,7 @@
     :extendedDataPointObject="extendedDataPointObject"
     :reportingPeriod="reportingPeriod"
     :dataPointTypeId="dataPointTypeId"
+    :value="value"
   />
   <Message v-if="errorMessage" severity="error" :life="3000">
     {{ errorMessage }}
@@ -41,8 +42,10 @@ const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
+
+const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
+
 const extendedDataPointObject: DataPointObject = {
-  value: unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '',
   quality: unref(dataPoint?.displayValue?.quality ?? ''),
   comment: unref(dataPoint?.displayValue?.comment ?? ''),
   dataSource: {

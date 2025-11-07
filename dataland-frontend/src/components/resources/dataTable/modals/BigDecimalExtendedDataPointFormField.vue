@@ -22,6 +22,7 @@ import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import {buildApiBody, parseValue, type DataPointObject } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const props = defineProps<{
+  value: number | null;
   extendedDataPointObject: DataPointObject;
   reportingPeriod: string;
   dataPointTypeId: string;
@@ -29,7 +30,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:apiBody']);
 
-const dataPointValue = ref<number | null>(parseValue(props.extendedDataPointObject.value));
+const dataPointValue = ref<number>(parseValue(props.value));
 const companyId = inject<string>('companyId');
 const reportingPeriod = ref<string>(props.reportingPeriod!);
 const dataPointTypeId = ref<string>(props.dataPointTypeId!);
@@ -45,6 +46,7 @@ watch(
 
 watchEffect(() => {
   apiBody.value = buildApiBody(
+    dataPointValue,
     props.extendedDataPointObject,
     selectedDocumentMeta.value,
     companyId!,
