@@ -16,11 +16,11 @@ function uploadFile(fileName: string, fileType: string = 'application/pdf'): voi
 
 /** Helper to check publication date in intercepted request */
 function checkPublicationDate(rawBody: string): void {
-  const jsonMatch = rawBody.match(
-    /Content-Disposition: form-data; name="documentMetaInfo"; filename="blob"[\s\S]*?\r\n\r\n([\s\S]*?)\r\n------/
-  );
-  expect(jsonMatch, 'documentMetaInfo JSON found').to.not.be.null;
-  if (!jsonMatch || !jsonMatch[1]) {
+  const regex =
+    /Content-Disposition: form-data; name="documentMetaInfo"; filename="blob"[\s\S]*?\r\n\r\n([\s\S]*?)\r\n------/;
+  const jsonMatch = regex.exec(rawBody);
+  expect(jsonMatch?.[1], 'documentMetaInfo JSON found').to.not.be.undefined;
+  if (!jsonMatch?.[1]) {
     throw new Error('documentMetaInfo JSON not found in request body');
   }
   const metaInfo = JSON.parse(jsonMatch[1]);
