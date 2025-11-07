@@ -345,7 +345,11 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAvailableDataDimensions(
         @RequestParam
-        @CompanyIdParameterNonRequired
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_IDS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_IDS_EXAMPLE,
+            required = false,
+        )
         companyIds: List<String>? = null,
         @RequestParam
         @Parameter(
@@ -355,7 +359,11 @@ interface MetaDataApi {
         )
         frameworksOrDataPointTypes: List<String>? = null,
         @RequestParam
-        @ReportingPeriodParameterNonRequired
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
+            required = false,
+        )
         reportingPeriods: List<String>? = null,
     ): ResponseEntity<List<BasicDataDimensions>>
 

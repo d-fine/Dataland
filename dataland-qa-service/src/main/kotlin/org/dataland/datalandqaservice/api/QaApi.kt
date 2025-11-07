@@ -328,15 +328,15 @@ interface QaApi {
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
-     * Changes the QA review status of a datapoint
-     * @param dataPointId the ID of the datapoint of which to change the QA review status
-     * @param qaStatus the QA review status to be assigned to a datapoint
+     * Changes the QA review status of a data point
+     * @param dataPointId the ID of the data point of which to change the QA review status
+     * @param qaStatus the QA review status to be assigned to a data point
      * @param comment (optional) comment to explain the QA review status change
      */
     @Operation(
-        summary = "Assign a QA review status to a datapoint.",
+        summary = "Assign a QA review status to a data point.",
         description =
-            "Assign a QA review status to a datapoint.",
+            "Assign a QA review status to a data point.",
     )
     @ApiResponses(
         value = [
