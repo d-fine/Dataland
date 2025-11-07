@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
+import org.dataland.datalandinternalstorage.openApiClient.model.DocumentReferencesResponse
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
@@ -48,9 +49,9 @@ class DocumentDeletionServiceTest {
     fun `check that document with no references is deleted successfully`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
-            mapOf(
-                "dataPointIds" to emptyList(),
-                "datasetIds" to emptyList(),
+            DocumentReferencesResponse(
+                datasetIds = listOf(),
+                dataPointIds = listOf(),
             ),
         )
 
@@ -64,9 +65,9 @@ class DocumentDeletionServiceTest {
     fun `check that document with all references rejected is deleted successfully`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
-            mapOf(
-                "dataPointIds" to listOf(testDataPointId1),
-                "datasetIds" to listOf(testDatasetId1),
+            DocumentReferencesResponse(
+                datasetIds = listOf(testDatasetId1),
+                dataPointIds = listOf(testDataPointId1),
             ),
         )
 
@@ -94,9 +95,9 @@ class DocumentDeletionServiceTest {
     fun `check that document with non rejected dataset reference throws ConflictApiException`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
-            mapOf(
-                "dataPointIds" to emptyList(),
-                "datasetIds" to listOf(testDatasetId1),
+            DocumentReferencesResponse(
+                datasetIds = listOf(testDatasetId1),
+                dataPointIds = listOf(),
             ),
         )
 
@@ -119,9 +120,9 @@ class DocumentDeletionServiceTest {
     fun `check that document with data point without QA review throws ConflictApiException`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
-            mapOf(
-                "dataPointIds" to listOf(testDataPointId1),
-                "datasetIds" to emptyList(),
+            DocumentReferencesResponse(
+                datasetIds = listOf(),
+                dataPointIds = listOf(testDataPointId1),
             ),
         )
 
@@ -153,9 +154,9 @@ class DocumentDeletionServiceTest {
     fun `check that Internal Storage deletion failure propagates ClientException and meta data is not deleted`() {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
-            mapOf(
-                "dataPointIds" to emptyList(),
-                "datasetIds" to emptyList(),
+            DocumentReferencesResponse(
+                datasetIds = listOf(),
+                dataPointIds = listOf(),
             ),
         )
         whenever(mockStorageControllerApi.deleteDocument(eq(testDocumentId), any()))
