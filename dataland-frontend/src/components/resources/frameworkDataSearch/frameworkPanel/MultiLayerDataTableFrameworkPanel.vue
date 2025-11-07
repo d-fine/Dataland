@@ -154,7 +154,7 @@ const updateCounter = ref(0);
 const status = ref<ViewPanelStates>('LoadingDatasets');
 const metaInfoOfAvailableButInaccessibleDataset = ref<DataMetaInformation[]>([]);
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
-const updateKey = ref(Math.random());
+const updateKey = ref(0);
 
 watch(
   [
@@ -171,7 +171,7 @@ watch(
  * Handles the dataUpdated event from child components and triggers a reload.
  */
 function handleDataUpdated(): void {
-  updateKey.value = Math.random();
+  updateKey.value = updateKey.value++;
   void reloadDisplayData(++updateCounter.value);
 }
 

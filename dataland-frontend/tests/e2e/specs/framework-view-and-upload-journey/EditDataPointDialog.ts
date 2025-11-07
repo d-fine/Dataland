@@ -40,6 +40,15 @@ function saveDataPoint(): void {
   cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
 }
 
+/**
+ * Verifies that a field contains the expected value in the table view
+ * @param fieldLabel - The label of the field to verify
+ * @param expectedValue - The expected value to be displayed
+ */
+function verifyFieldValue(fieldLabel: string, expectedValue: string): void {
+  cy.contains('span.table-left-label', fieldLabel).closest('td').next('td').should('contain', expectedValue);
+}
+
 describeIf(
   'As a user, I want to be able edit data points on dataland',
   {
@@ -48,15 +57,6 @@ describeIf(
   () => {
     const reportingPeriod = '2021';
     let SfdrFixtureWithNoNullFields: FixtureData<SfdrData>;
-
-    /**
-     * Verifies that a field contains the expected value in the table view
-     * @param fieldLabel - The label of the field to verify
-     * @param expectedValue - The expected value to be displayed
-     */
-    function verifyFieldValue(fieldLabel: string, expectedValue: string): void {
-      cy.contains('span.table-left-label', fieldLabel).closest('td').next('td').should('contain', expectedValue);
-    }
 
     before(() => {
       cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then((jsonContent) => {
