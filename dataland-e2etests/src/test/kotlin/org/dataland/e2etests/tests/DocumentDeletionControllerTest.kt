@@ -187,6 +187,7 @@ endobj"""
     @Test
     fun `test that document deletion nullifies file references in rejected datapoints`() {
         val documentId = uploadDocumentAndGetId()
+        awaitDocumentAvailable(documentId)
 
         val dataPointId = uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
         awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
