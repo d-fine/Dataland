@@ -67,7 +67,6 @@
               data-test="editDataPointsButton"
               :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
               :icon="'pi pi-pencil'"
-              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
             />
             <PrimeButton
               v-if="isEditableByCurrentUser"

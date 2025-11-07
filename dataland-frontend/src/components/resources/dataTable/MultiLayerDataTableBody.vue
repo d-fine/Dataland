@@ -46,29 +46,27 @@
               variant="text"
               :disabled="!isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)"
               v-tooltip.top="
-                !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
-                  ? 'Currently not implemented'
-                  : 'Edit Data Point'
+                isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                  ? 'Edit Data Point'
+                  : 'Currently not implemented'
               "
               @click.stop="
                 openEditDataPointModal(
                   idx,
-                  cellOrSectionConfig,
-                  cellOrSectionConfig.uploadComponentName,
-                  cellOrSectionConfig.dataPointTypeId
+                  cellOrSectionConfig
                 )
               "
               :pt="{
                 root: {
-                  class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-primary hover:text-primary-600',
+                  class: isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                    ? 'text-primary hover:text-primary-600'
+                    : 'text-gray-400 cursor-not-allowed',
                   'data-dpt-id': cellOrSectionConfig.dataPointTypeId,
                 },
                 icon: {
-                  class: !isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
-                    ? 'text-gray-400'
-                    : 'text-inherit',
+                  class: isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
+                    ? 'text-inherit'
+                    : 'text-gray-400',
                 },
               }"
             />
@@ -241,8 +239,6 @@ onMounted(() => {
 function openEditDataPointModal(
   idx: number,
   cellOrSectionConfig: MLDTCellConfig<T>,
-  uploadComponentName?: string,
-  dataPointTypeId?: string
 ): void {
   const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
@@ -267,8 +263,8 @@ function openEditDataPointModal(
     data: {
       companyId: companyId,
       reportingPeriod: reportingPeriod,
-      uploadComponentName: uploadComponentName,
-      dataPointTypeId: dataPointTypeId,
+      uploadComponentName: cellOrSectionConfig.uploadComponentName,
+      dataPointTypeId: cellOrSectionConfig.dataPointTypeId,
       dataType: dataType,
       dataPoint: dataPoint,
     },
@@ -277,7 +273,7 @@ function openEditDataPointModal(
         if (options?.data?.dataUpdated) {
           emit('dataUpdated');
           await nextTick();
-          await scroller(dataPointTypeId);
+          await scroller(cellOrSectionConfig.dataPointTypeId);
         }
       })();
     },
