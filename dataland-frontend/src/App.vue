@@ -1,8 +1,8 @@
 <template>
   <DynamicDialog />
   <component
-    v-if="route.meta.requiresAuthentication !== undefined"
-    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+      v-if="route.meta.requiresAuthentication !== undefined"
+      :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
     <LandingPageHeader v-if="useLandingPageHeader" />
     <TheHeader v-else />
@@ -14,7 +14,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
-import Keycloak from 'keycloak-js';
+import type Keycloak from 'keycloak-js';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
   SessionDialogMode,
@@ -22,7 +22,6 @@ import {
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from '@/utils/SessionTimeoutUtils';
 import SessionDialog from '@/components/general/SessionDialog.vue';
-import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
@@ -34,11 +33,13 @@ import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { useDialog } from 'primevue/usedialog';
+// eslint-disable-next-line no-restricted-imports
+import { minimalKeycloakMock } from '../tests/component/testUtils/Keycloak';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
-  windowWidth.value = globalThis.innerWidth;
+  windowWidth.value = window.innerWidth;
 };
 export default defineComponent({
   name: 'app',
@@ -81,8 +82,8 @@ export default defineComponent({
         }
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
-          this.resolvedKeycloakPromise,
-          openSessionWarningModalBound
+            this.resolvedKeycloakPromise,
+            openSessionWarningModalBound
         );
       }
     },
@@ -103,7 +104,7 @@ export default defineComponent({
       apiClientProvider: computed(() => {
         return this.apiClientProvider;
       }),
-      useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
+      useMobileView: computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
     };
   },
 
@@ -112,10 +113,10 @@ export default defineComponent({
   },
 
   mounted() {
-    globalThis.addEventListener('resize', storeWindowWidth);
+    window.addEventListener('resize', storeWindowWidth);
   },
   unmounted() {
-    globalThis.removeEventListener('resize', storeWindowWidth);
+    window.removeEventListener('resize', storeWindowWidth);
   },
 
   methods: {
@@ -128,8 +129,8 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
         this.apiClientProvider = apiClientProvider;
         this.keycloakPromise
-          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
-          .catch((e) => console.log(e));
+            .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
+            .catch((e) => console.log(e));
       }
     },
     /**
@@ -137,24 +138,29 @@ export default defineComponent({
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {
-      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      //const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      const keycloak = minimalKeycloakMock({
+        userId: 'dummyUser',
+        roles: ['ROLE_USER', 'ROLE_REVIEWER', 'ROLE_UPLOADER', 'ROLE_ADMIN'],
+        authenticated: true,
+      });
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
-        .init({
-          onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
-          pkceMethod: 'S256',
-        })
-        .then((authenticated) => {
-          this.keycloakAuthenticated = authenticated;
-        })
-        .catch((error) => {
-          console.log('Error in init Keycloak ', error);
-          this.keycloakAuthenticated = false;
-        })
-        .then((): Keycloak => {
-          return keycloak;
-        });
+          .init({
+            onLoad: 'check-sso',
+            silentCheckSsoRedirectUri: window.location.origin + '/static/silent-check-sso.html',
+            pkceMethod: 'S256',
+          })
+          .then((authenticated) => {
+            this.keycloakAuthenticated = authenticated;
+          })
+          .catch((error) => {
+            console.log('Error in init Keycloak ', error);
+            this.keycloakAuthenticated = false;
+          })
+          .then((): Keycloak => {
+            return keycloak;
+          });
     },
 
     /**
@@ -177,8 +183,8 @@ export default defineComponent({
      */
     async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
-        resolvedKeycloakPromise,
-        apiClientProvider
+          resolvedKeycloakPromise,
+          apiClientProvider
       );
     },
 
@@ -212,3 +218,4 @@ export default defineComponent({
   },
 });
 </script>
+

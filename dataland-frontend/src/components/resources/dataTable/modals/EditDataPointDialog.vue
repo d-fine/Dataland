@@ -62,7 +62,6 @@ async function updateDataPoint(): Promise<void> {
       companyId: companyId,
       reportingPeriod: reportingPeriod,
     };
-
     await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody, true);
     dialogRef?.value?.close({ dataUpdated: true });
     emit('dataUpdated');

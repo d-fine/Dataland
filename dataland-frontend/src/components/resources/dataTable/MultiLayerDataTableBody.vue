@@ -18,6 +18,7 @@
             class="material-icons info-icon"
             aria-hidden="true"
             :title="cellOrSectionConfig.label"
+            :data-test="'edit-data-point-' + cellOrSectionConfig.dataPointTypeId"
             v-tooltip.top="{
               value: cellOrSectionConfig.explanation,
             }"
@@ -42,7 +43,7 @@
               class="p-0 h-auto"
               v-if="editModeIsOn"
               icon="pi pi-pencil"
-              data-test="edit-data-point-icon"
+              :data-test="'edit-data-point-icon-' + cellOrSectionConfig.dataPointTypeId"
               variant="text"
               :disabled="!isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)"
               v-tooltip.top="

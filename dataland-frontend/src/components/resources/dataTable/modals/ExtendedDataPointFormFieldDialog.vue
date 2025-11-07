@@ -6,6 +6,7 @@
     optionLabel="label"
     optionValue="value"
     data-test="quality-select"
+    @update:modelValue="(val) => (chosenQuality = val)"
     :modelValue="chosenQuality"
     fluid
   />
@@ -15,6 +16,7 @@
       :placeholder="'Select Document'"
       :modelValue="selectedDocument"
       :options="availableDocuments ?? []"
+      @update:modelValue="(val) => (selectedDocument = val)"
       optionLabel="label"
       optionValue="value"
       data-test="document-select"
@@ -42,6 +44,7 @@
   <Textarea
     :placeholder="'Insert comment'"
     :modelValue="insertedComment"
+    @update:modelValue="(val) => (insertedComment = val)"
     data-test="comment-textarea"
     rows="5"
     :draggable="false"
