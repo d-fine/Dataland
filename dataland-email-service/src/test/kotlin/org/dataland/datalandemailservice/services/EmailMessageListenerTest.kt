@@ -179,12 +179,11 @@ class EmailMessageListenerTest {
         val sentEmail = emailCaptor.firstValue
 
         assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, allowedBcc)
-        assert(
-            keywords.all { keyword ->
-                sentEmail.content.htmlContent.contains(keyword) &&
-                    sentEmail.content.textContent.contains(keyword)
-            },
-        )
+        keywords.forEach { keyword ->
+            assert(
+                sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
+            ) { "Neither htmlContent nor textContent contains '$keyword'" }
+        }
     }
 
     @Test
