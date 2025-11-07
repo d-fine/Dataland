@@ -132,7 +132,6 @@ class DocumentStorageService
          * @param documentId the ID of the document whose references should be nullified
          * @return true if the dataset was updated, false otherwise
          */
-        @Suppress("ReturnCount")
         private fun nullifyFileReferencesInDataset(
             datasetId: String,
             documentId: String,
@@ -155,14 +154,14 @@ class DocumentStorageService
                 val updatedSerializedData = defaultObjectMapper.writeValueAsString(datasetData)
                 (datasetWrapper as ObjectNode).put("data", updatedSerializedData)
                 val updatedWrapper = defaultObjectMapper.writeValueAsString(datasetWrapper)
-                val finalData = if (storedData.isTextual) defaultObjectMapper.writeValueAsString(updatedWrapper) else updatedWrapper
+                val finalData =
+                    if (storedData.isTextual) defaultObjectMapper.writeValueAsString(updatedWrapper) else updatedWrapper
                 val updatedDataItem = dataItem.copy(data = finalData)
                 dataItemRepository.save(updatedDataItem)
                 logger.info("Nullified references in dataset $datasetId")
-                return true
             }
 
-            return false
+            return referencesModified || attachmentCleaned
         }
 
         /**
@@ -173,7 +172,6 @@ class DocumentStorageService
          * @param documentId the ID of the document whose references should be nullified
          * @return true if the datapoint was updated, false otherwise
          */
-        @Suppress("ReturnCount")
         private fun nullifyFileReferencesInDataPoint(
             dataPointId: String,
             documentId: String,
@@ -181,12 +179,14 @@ class DocumentStorageService
             val dataPointItem = dataPointItemRepository.findById(dataPointId).get()
 
             val storedDataPoint = defaultObjectMapper.readTree(dataPointItem.dataPoint)
-            val dataPointData = if (storedDataPoint.isTextual) defaultObjectMapper.readTree(storedDataPoint.asText()) else storedDataPoint
+            val dataPointData =
+                if (storedDataPoint.isTextual) defaultObjectMapper.readTree(storedDataPoint.asText()) else storedDataPoint
             val modified = nullifyMatchingReferences(dataPointData, documentId)
 
             if (modified) {
                 val updatedJson = defaultObjectMapper.writeValueAsString(dataPointData)
-                val finalDataPoint = if (storedDataPoint.isTextual) defaultObjectMapper.writeValueAsString(updatedJson) else updatedJson
+                val finalDataPoint =
+                    if (storedDataPoint.isTextual) defaultObjectMapper.writeValueAsString(updatedJson) else updatedJson
                 val updatedDataPointItem = dataPointItem.copy(dataPoint = finalDataPoint)
                 dataPointItemRepository.save(updatedDataPointItem)
                 logger.info("Nullified references in datapoint $dataPointId")
@@ -194,76 +194,6 @@ class DocumentStorageService
             }
 
             return false
-        }
-
-        /**
-         * Checks if a JSON node contains a fileReference field matching the specified document ID
-         *
-         * @param node the JSON node to check
-         * @param documentId the document ID to match
-         * @return true if the node has a matching fileReference, false otherwise
-         */
-        private fun hasMatchingFileReference(
-            node: JsonNode,
-            documentId: String,
-        ): Boolean {
-            if (!node.isObject || !node.has("fileReference")) return false
-            val fileRefNode = node.get("fileReference")
-            return fileRefNode != null && fileRefNode.isTextual && fileRefNode.asText() == documentId
-        }
-
-        /**
-         * Processes a single field in an object node, checking and nullifying matching file references
-         *
-         * @param objectNode the parent object node
-         * @param fieldName the name of the field being processed
-         * @param value the value of the field
-         * @param documentId the document ID to match
-         * @return true if any modifications were made, false otherwise
-         */
-        private fun processObjectField(
-            objectNode: ObjectNode,
-            fieldName: String,
-            value: JsonNode,
-            documentId: String,
-        ): Boolean =
-            when {
-                value.isObject -> {
-                    if (hasMatchingFileReference(value, documentId)) {
-                        objectNode.putNull(fieldName)
-                        true
-                    } else {
-                        nullifyMatchingReferences(value, documentId)
-                    }
-                }
-                value.isArray -> nullifyMatchingReferences(value, documentId)
-                else -> false
-            }
-
-        /**
-         * Processes a single element in an array, checking and nullifying matching file references
-         *
-         * @param arrayNode the parent array node
-         * @param index the index of the element being processed
-         * @param element the element to process
-         * @param documentId the document ID to match
-         * @return true if any modifications were made, false otherwise
-         */
-        private fun processArrayElement(
-            arrayNode: com.fasterxml.jackson.databind.node.ArrayNode,
-            index: Int,
-            element: JsonNode,
-            documentId: String,
-        ): Boolean {
-            if (hasMatchingFileReference(element, documentId)) {
-                arrayNode.set(
-                    index,
-                    com.fasterxml.jackson.databind.node.NullNode
-                        .getInstance(),
-                )
-                return true
-            }
-            return nullifyMatchingReferences(element, documentId)
         }
 
         /**
@@ -277,26 +207,12 @@ class DocumentStorageService
         private fun nullifyMatchingReferences(
             node: JsonNode,
             documentId: String,
-        ): Boolean {
-            var modified = false
-
-            when {
-                node.isObject -> {
-                    val objectNode = node as ObjectNode
-                    objectNode.properties().forEach { (fieldName, value) ->
-                        modified = processObjectField(objectNode, fieldName, value, documentId) || modified
-                    }
-                }
-                node.isArray -> {
-                    val arrayNode = node as com.fasterxml.jackson.databind.node.ArrayNode
-                    for (i in 0 until arrayNode.size()) {
-                        modified = processArrayElement(arrayNode, i, arrayNode.get(i), documentId) || modified
-                    }
-                }
-            }
-
-            return modified
-        }
+        ): Boolean =
+            node
+                .findParents("dataSource")
+                .filter { it.get("dataSource")?.get("fileReference")?.asText() == documentId }
+                .map { (it as ObjectNode).putNull("dataSource") }
+                .isNotEmpty()
 
         /**
          * Cleans up attachment structure after dataSource nullification
@@ -307,21 +223,12 @@ class DocumentStorageService
          * @return true if the attachment structure was cleaned up, false otherwise
          */
         private fun cleanupAttachmentStructure(dataNode: JsonNode): Boolean {
-            val attachment0 = dataNode.get("attachment")?.takeIf { it.isObject }
-            val attachment1 = attachment0?.get("attachment")?.takeIf { it.isObject }
-            val attachment2 = attachment1?.get("attachment")?.takeIf { it.isObject }
-
-            logger.info("Attachment structure: $attachment2")
-
-            return when {
-                attachment1 == null -> false
-                attachment2 == null -> false
-                attachment2.get("dataSource")?.isNull == true -> {
-                    (attachment1 as ObjectNode).putNull("attachment")
-                    logger.info("Attachment cleaned up")
-                    true
-                }
-                else -> false
+            val attachmentLevel2 = dataNode.get("attachment")?.get("attachment")
+            if (attachmentLevel2?.get("attachment")?.get("dataSource")?.isNull == true) {
+                (attachmentLevel2 as ObjectNode).putNull("attachment")
+                logger.info("Attachment cleaned")
+                return true
             }
+            return false
         }
     }
