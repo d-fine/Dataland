@@ -17,11 +17,11 @@
         label="DOWNLOAD PORTFOLIO"
         icon="pi pi-download"
       />
-      <div :title="!isPremiumUser ? 'Only premium users can activate monitoring' : ''">
+      <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can activate monitoring' : ''">
         <Button
           @click="openMonitoringModal()"
           data-test="monitor-portfolio"
-          :disabled="!isPremiumUser"
+          :disabled="!isUserDatalandMemberOrAdmin"
           icon="pi pi-bell"
           label="ACTIVE MONITORING"
         />
@@ -204,6 +204,8 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -282,7 +284,7 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
-const isPremiumUser = ref(false);
+const isUserDatalandMemberOrAdmin = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
@@ -291,7 +293,7 @@ const monitoredTagAttributes = computed(() => ({
 }));
 
 onMounted(() => {
-  void checkPremiumRole();
+  void checkDatalandMembershipOrAdminRights();
   loadPortfolio();
 });
 
@@ -321,12 +323,23 @@ watch([enrichedPortfolio], () => {
 });
 
 /**
- * Checks whether the logged in User is premium user
+ * Checks whether the logged-in User is Dataland member or Admin
  */
-async function checkPremiumRole(): Promise<void> {
+async function checkDatalandMembershipOrAdminRights(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
 
-  isPremiumUser.value = keycloak.realmAccess?.roles.includes('ROLE_PREMIUM_USER') || false;
+  if (keycloakUserId === undefined) {
+    isUserDatalandMemberOrAdmin.value = false;
+    return;
+  }
+
+  const response = await apiClientProvider.apiClients.inheritedRolesController.getInheritedRoles(keycloakUserId);
+  const inheritedRolesMap = response.data;
+
+  isUserDatalandMemberOrAdmin.value =
+    Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
+    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
 }
 
 /**

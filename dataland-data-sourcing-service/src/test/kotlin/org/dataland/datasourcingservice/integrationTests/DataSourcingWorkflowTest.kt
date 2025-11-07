@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidat
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.controller.DataSourcingController
 import org.dataland.datasourcingservice.controller.RequestController
@@ -109,6 +110,39 @@ class DataSourcingWorkflowTest
                         lastName = lastName,
                     ),
                 ).whenever(mockKeycloakUserService).getUser(it.toString())
+        private lateinit var mockInheritedRolesControllerApi: InheritedRolesControllerApi
+
+        @MockitoBean
+        private lateinit var mockRequestQueryManager: RequestQueryManager
+
+        private val mockSecurityContext = mock<SecurityContext>()
+        private val userId = "user-id"
+        private lateinit var mockAuthentication: DatalandAuthentication
+
+        @Test
+        fun `put three requests to processing then close data sourcing object`() {
+            reset(mockKeycloakUserService)
+            mockAuthentication =
+                AuthenticationMock.mockJwtAuthentication(
+                    "data-admin",
+                    userId,
+                    roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER),
+                )
+            doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
+            SecurityContextHolder.setContext(mockSecurityContext)
+
+            val companyId = UUID.randomUUID().toString()
+            val companyInfo = BasicCompanyInformation(companyId, "New Company", "Location", "DE")
+            val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
+            whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
+                .thenReturn(listOf(validationResult))
+            doReturn(emptyMap<String, List<String>>())
+                .whenever(mockInheritedRolesControllerApi)
+                .getInheritedRoles(userId)
+            whenever(
+                mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>()),
+            ).thenAnswer { invocation ->
+                (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("New Company", null)
             }
 
             doReturn(companyInfo).whenever(companyDataControllerApi).getCompanyInfo(companyId)

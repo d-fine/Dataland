@@ -1,5 +1,7 @@
 package org.dataland.e2etests.tests.dataSourcingService
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.time.Instant
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RequestControllerTest {
@@ -27,6 +30,19 @@ class RequestControllerTest {
             GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
                 apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
             }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRightsControllerApi.postCompanyRight(
+                CompanyRightAssignmentString(
+                    companyId = companyId,
+                    companyRight = CompanyRightAssignmentString.CompanyRight.Member,
+                ),
+            )
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(
+                role = CompanyRole.Member,
+                companyId = UUID.fromString(companyId),
+                userId = UUID.fromString(TechnicalUser.PremiumUser.technicalUserId),
+            )
+        }
         dummyRequest = SingleRequest(companyId, "sfdr", "2023", "dummy request")
     }
 

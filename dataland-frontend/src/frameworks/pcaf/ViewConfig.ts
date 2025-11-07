@@ -25,17 +25,21 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Deviation: 'Deviation',
-                  NoDeviation: 'No Deviation',
-                };
-                return formatStringForDatatable(
-                  dataset.general?.general?.fiscalYearDeviation
-                    ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings)
-                    : ''
-                );
-              })(),
+              wrapDisplayValueWithDatapointInformation(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    dataset.general?.general?.fiscalYearDeviation?.value
+                      ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation?.value, mappings)
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataset.general?.general?.fiscalYearDeviation
+              ),
           },
           {
             type: 'cell',
@@ -43,7 +47,11 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
+                'Fiscal Year End',
+                dataset.general?.general?.fiscalYearEnd
+              ),
           },
         ],
       },

@@ -3,11 +3,14 @@ package org.dataland.datalandqaservice.frameworks.pcaf.model.general
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.pcaf.model.general.company.PcafGeneralCompany
+import org.dataland.datalandqaservice.frameworks.pcaf.model.general.general.PcafGeneralGeneral
 
 /**
  * The QA-model for the General section
  */
 data class PcafGeneral(
+    @field:Valid()
+    val general: PcafGeneralGeneral? = null,
     @field:Valid()
     val company: PcafGeneralCompany? = null,
 )
