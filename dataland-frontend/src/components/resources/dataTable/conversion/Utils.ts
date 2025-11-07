@@ -1,5 +1,3 @@
-import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-
 /**
  * Retrieves a deeply nested value from an object by an identifier.
  * @param identifier the path to the value to retrieve (dot-seperated)
@@ -53,7 +51,19 @@ export function getOriginalNameFromTechnicalName<T extends string>(
   return mappingObject[technicalName];
 }
 
-export type DataPointObject = {
+export type ExtendedDataPointTypeMetaInfo = {
+  quality?: string;
+  comment?: string;
+  dataSource?: {
+    fileName?: string;
+    page?: string;
+    tagName?: string;
+    fileReference?: string;
+    publicationDate?: string;
+  };
+};
+
+export type ExtendedDataPointType = {
   value?: number | string | null;
   currency?: string;
   quality?: string;
@@ -73,40 +83,28 @@ export type DataPointObject = {
  * @returns uploadedDataPoint
  */
 export function buildApiBody(
-    value: string | number | undefined,
-    extendedDataPoint: DataPointObject,
-    selectedDocumentMeta: DocumentMetaInfoResponse | undefined,
-    companyID: string,
-    reportingPeriod: string,
-    dataPointTypeId: string,
-    currency?: string | undefined,
-): {
-  dataPoint: string;
-  dataPointType: string;
-  companyId: string;
-  reportingPeriod: string;
-} {
-
-  const dataPointObj: DataPointObject = {};
-  if (value) dataPointObj.value = parseValue(value);
+  dataPointValue?: number | string | null,
+  currency?: string,
+  extendedDataPoint?: ExtendedDataPointTypeMetaInfo
+): string {
+  if (dataPointValue === undefined && !currency && !extendedDataPoint) {
+    return '';
+  }
+  const dataPointObj: ExtendedDataPointType = {};
+  if (dataPointValue) dataPointObj.value = dataPointValue;
   if (currency) dataPointObj.currency = currency;
-  if (extendedDataPoint.quality) dataPointObj.quality = extendedDataPoint.quality;
-  if (extendedDataPoint.comment) dataPointObj.comment = extendedDataPoint.comment;
-  if (extendedDataPoint.dataSource?.fileReference) {
+  if (extendedDataPoint?.quality) dataPointObj.quality = extendedDataPoint.quality;
+  if (extendedDataPoint?.comment) dataPointObj.comment = extendedDataPoint.comment;
+  if (extendedDataPoint?.dataSource?.fileReference) {
     dataPointObj.dataSource = {
       fileReference: extendedDataPoint.dataSource?.fileReference,
-      fileName: selectedDocumentMeta?.documentName,
+      fileName: extendedDataPoint.dataSource.fileName,
       page: extendedDataPoint.dataSource?.page ?? undefined,
-      publicationDate: selectedDocumentMeta?.publicationDate,
+      publicationDate: extendedDataPoint.dataSource.publicationDate,
     };
   }
 
-  return {
-    dataPoint: JSON.stringify(dataPointObj),
-    dataPointType: dataPointTypeId,
-    companyId: companyID,
-    reportingPeriod: reportingPeriod,
-  };
+  return JSON.stringify(dataPointObj);
 }
 
 /**

@@ -1,11 +1,9 @@
 <template>
   <component
+    ref="componentRef"
     :is="resolvedComponent"
     v-model:apiBody="apiBody"
     :extendedDataPointObject="extendedDataPointObject"
-    :reportingPeriod="reportingPeriod"
-    :dataPointTypeId="dataPointTypeId"
-    :value="value"
   />
   <Message v-if="errorMessage" severity="error" :life="3000">
     {{ errorMessage }}
@@ -26,7 +24,7 @@ import type { UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
-import {DataPointObject} from "@/components/resources/dataTable/conversion/Utils.ts";
+import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const apiBody = ref<UploadedDataPoint>({} as UploadedDataPoint);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -43,9 +41,10 @@ const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
 
-const value = unref(dataPoint?.displayValue?.innerContents?.displayValue).trim() ?? '';
+const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
 
-const extendedDataPointObject: DataPointObject = {
+const extendedDataPointObject: ExtendedDataPointType = {
+  value: unref(dataPoint?.displayValue?.innerContents?.displayValue).trim(),
   quality: unref(dataPoint?.displayValue?.quality ?? ''),
   comment: unref(dataPoint?.displayValue?.comment ?? ''),
   dataSource: {
@@ -54,7 +53,7 @@ const extendedDataPointObject: DataPointObject = {
   },
 };
 
-console.log("DATAPOINT FROM EDIT MODAL", extendedDataPointObject);
+console.log('DATAPOINT FROM EDIT MODAL', extendedDataPointObject);
 
 provide('companyId', companyId);
 
@@ -64,7 +63,14 @@ provide('companyId', companyId);
 async function updateDataPoint(): Promise<void> {
   errorMessage.value = '';
   try {
-    await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody.value, true);
+    const apiBody: UploadedDataPoint = {
+      dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
+      dataPointType: dataPointTypeId,
+      companyId: companyId,
+      reportingPeriod: reportingPeriod,
+    };
+
+    await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody, true);
     dialogRef?.value?.close({ dataUpdated: true });
     emit('dataUpdated');
   } catch (error) {

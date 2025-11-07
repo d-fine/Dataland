@@ -65,7 +65,10 @@ import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
 import router from '@/router';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import {DataPointObject} from "@/components/resources/dataTable/conversion/Utils.ts";
+import type {
+  ExtendedDataPointType,
+  ExtendedDataPointTypeMetaInfo,
+} from '@/components/resources/dataTable/conversion/Utils.ts';
 
 const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
 const availableDocuments = ref<{ label: string; value: string }[]>([]);
@@ -73,21 +76,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const props = defineProps<{
-  extendedDataPointObject?: DataPointObject;
+  extendedDataPointObject?: ExtendedDataPointType;
 }>();
 
-const emit = defineEmits([
-  'update:chosenQuality',
-  'update:selectedDocument',
-  'update:insertedComment',
-  'update:selectedDocumentMeta',
-  'update:insertedPage',
-]);
-
-const chosenQuality = ref<string | null>(props.extendedDataPointObject?.quality ?? null);
+const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);
 const selectedDocument = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileReference ?? null);
 const fileName = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileName ?? null);
-const insertedComment = ref<string | null>(props.extendedDataPointObject?.comment ?? null);
+const insertedComment = ref<string | undefined>(props.extendedDataPointObject?.comment ?? undefined);
 const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
 const companyId = inject<string>('companyId');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
@@ -97,39 +92,49 @@ const selectedDocumentMetaInformation = computed(() => {
   return allDocuments.value.find((doc) => doc.documentId === selectedDocument.value) ?? null;
 });
 
-watch(chosenQuality, (val) => emit('update:chosenQuality', val));
-watch(insertedComment, (val) => emit('update:insertedComment', val));
-watch(insertedPage, (val) => emit('update:insertedPage', val));
 watch(selectedDocument, (val) => {
   const meta = allDocuments.value.find((doc) => doc.documentId === val) ?? null;
-  emit('update:selectedDocument', meta?.documentId ?? null);
-  emit('update:selectedDocumentMeta', meta);
   if (!meta) {
     insertedPage.value = null;
-    emit('update:insertedPage', null);
   }
 });
 
 onMounted(async () => {
   await updateDocumentsList();
 
-  if (fileName) {
-    setSelectedDocument(
-      allDocuments.value.find(
-        (doc) => doc.documentName === fileName.value
-      )?.documentId ?? null
-    );
+  if (fileName.value) {
+    setSelectedDocument(allDocuments.value.find((doc) => doc.documentName === fileName.value)?.documentId ?? null);
   } else {
     setSelectedDocument(null);
   }
 
-  if (chosenQuality) {
+  if (chosenQuality.value) {
     const matchQuality = qualityOptionsList.find((q) => q.value === chosenQuality.value);
     if (matchQuality) {
       chosenQuality.value = matchQuality.value;
-      emit('update:chosenQuality', chosenQuality.value);
     }
   }
+});
+
+/**
+ * Gathers the current form data into an object.
+ * @returns An object containing the current form data.
+ */
+function getFormData(): ExtendedDataPointTypeMetaInfo {
+  return {
+    quality: chosenQuality.value ?? undefined,
+    comment: insertedComment.value ?? undefined,
+    dataSource: {
+      fileName: selectedDocumentMetaInformation.value?.documentName ?? undefined,
+      page: insertedPage.value ?? undefined,
+      fileReference: selectedDocument.value ?? undefined,
+      publicationDate: selectedDocumentMetaInformation.value?.publicationDate ?? undefined,
+    },
+  };
+}
+
+defineExpose({
+  getFormData,
 });
 
 /**
@@ -173,10 +178,6 @@ function setSelectedDocument(docId: string | null): void {
 
   selectedDocument.value = meta?.documentId ?? null;
   insertedPage.value = meta ? insertedPage.value : null;
-
-  emit('update:selectedDocument', selectedDocument.value);
-  emit('update:selectedDocumentMeta', meta);
-  emit('update:insertedPage', insertedPage.value);
 }
 </script>
 

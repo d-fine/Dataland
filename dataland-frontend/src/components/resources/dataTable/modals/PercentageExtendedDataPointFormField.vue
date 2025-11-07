@@ -1,64 +1,37 @@
 <template>
   <h4>Value</h4>
-  <InputNumber id="percentage" mode="decimal" suffix="%" :min="0" :max="100" fluid v-model="value" />
+  <InputNumber id="percentage" mode="decimal" suffix="%" :min="0" :max="100" fluid v-model="dataPointValue" />
   <ExtendedDataPointFormFieldDialog
-    v-model:chosenQuality="chosenQuality"
-    v-model:selectedDocument="selectedDocument"
-    v-model:insertedComment="insertedComment"
+    ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
-    v-model:insertedPage="insertedPage"
+    :extendedDataPointObject="props.extendedDataPointObject"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, watch, inject } from 'vue';
+import { ref } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { buildApiBody, parseValue } from '@/components/resources/dataTable/conversion/Utils.ts';
+import {
+  buildApiBody,
+  parseValue,
+  type ExtendedDataPointType,
+  type ExtendedDataPointTypeMetaInfo,
+} from '@/components/resources/dataTable/conversion/Utils.ts';
 
-const props = defineProps({
-  value: [String, Number, null],
-  chosenQuality: String,
-  selectedDocument: String,
-  insertedComment: String,
-  insertedPage: String,
-  reportingPeriod: String,
-  dataPointTypeId: String,
-});
+const props = defineProps<{
+  extendedDataPointObject: ExtendedDataPointType;
+}>();
+const dataPointValue = ref<number | null>(parseValue(props.extendedDataPointObject.value));
+const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointTypeMetaInfo }>();
 
-const emit = defineEmits(['update:apiBody']);
-
-const value = ref<number | null>(parseValue(props.value));
-const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
-const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
-const insertedComment = ref<string | null>(props.insertedComment ?? null);
-const insertedPage = ref<string | null>(props.insertedPage ?? null);
-const apiBody = ref({});
-const companyId = inject<string>('companyId');
-const reportingPeriod = ref<string>(props.reportingPeriod!);
-const dataPointTypeId = ref<string>(props.dataPointTypeId!);
-const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
-
-watch(
-  () => props.value,
-  (newVal) => {
-    value.value = parseValue(newVal);
-  }
-);
-
-watchEffect(() => {
-  apiBody.value = buildApiBody({
-    value: value.value,
-    chosenQuality: chosenQuality.value,
-    selectedDocument: selectedDocument.value,
-    insertedComment: insertedComment.value,
-    insertedPage: insertedPage.value,
-    selectedDocumentMeta: selectedDocumentMeta.value,
-    companyID: companyId!,
-    reportingPeriod: reportingPeriod.value,
-    dataPointTypeId: dataPointTypeId.value,
-  });
-  emit('update:apiBody', apiBody.value);
-});
+/**
+ * Reference to the extended dialog to get form data
+ */
+function buildApiBodyWithExtendedInfo(): string {
+  return buildApiBody(dataPointValue.value, undefined, extendedDialogRef.value?.getFormData());
+}
+defineExpose({ buildApiBodyWithExtendedInfo });
 </script>

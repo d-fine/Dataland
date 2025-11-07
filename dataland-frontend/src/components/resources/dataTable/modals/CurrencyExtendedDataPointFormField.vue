@@ -3,7 +3,7 @@
   <div class="currency-value-fields">
     <div>
       <InputNumber
-        v-model="value"
+        v-model="dataPointValue"
         placeholder="Insert Value"
         data-test="currency-value-input"
         :maxFractionDigits="2"
@@ -25,76 +25,52 @@
     </div>
   </div>
   <ExtendedDataPointFormFieldDialog
-    v-model:chosenQuality="chosenQuality"
-    v-model:selectedDocument="selectedDocument"
-    v-model:insertedComment="insertedComment"
+    ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
-    v-model:insertedPage="insertedPage"
+    :extendedDataPointObject="props.extendedDataPointObject"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, watch, onMounted, inject } from 'vue';
+import { ref, onMounted } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { buildApiBody, parseValue } from '@/components/resources/dataTable/conversion/Utils.ts';
+import {
+  buildApiBody,
+  type ExtendedDataPointType,
+  type ExtendedDataPointTypeMetaInfo,
+  parseValue,
+} from '@/components/resources/dataTable/conversion/Utils.ts';
 import Select from 'primevue/select';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets.ts';
 
-const props = defineProps({
-  value: [String, Number, null],
-  chosenQuality: String,
-  selectedDocument: String,
-  insertedComment: String,
-  insertedPage: String,
-  reportingPeriod: String,
-  dataPointTypeId: String,
-});
+const props = defineProps<{
+  extendedDataPointObject: ExtendedDataPointType;
+}>();
 
-const emit = defineEmits(['update:apiBody']);
-
-const value = ref<number | null>(parseValue(props.value));
-const currency = ref<string | null>(null);
-const chosenQuality = ref<string | null>(props.chosenQuality ?? null);
-const selectedDocument = ref<string | null>(props.selectedDocument ?? null);
-const insertedComment = ref<string | null>(props.insertedComment ?? null);
-const insertedPage = ref<string | null>(props.insertedPage ?? null);
-const apiBody = ref({});
-const companyId = inject<string>('companyId');
-const reportingPeriod = ref<string>(props.reportingPeriod!);
-const dataPointTypeId = ref<string>(props.dataPointTypeId!);
-const selectedDocumentMeta = ref<DocumentMetaInfoResponse | null>(null);
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) =>
   currencyA.label.localeCompare(currencyB.label)
 );
+const dataPointValue = ref<number | null>(parseValue(props.extendedDataPointObject.value));
+const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointTypeMetaInfo }>();
+const currency = ref<string | undefined>(undefined);
 
 onMounted(() => {
-  currency.value = props.value ? String(props.value).replaceAll(/[^A-Za-z]+/g, '') || null : null;
+  currency.value = props.extendedDataPointObject.value
+    ? String(props.extendedDataPointObject.value).replaceAll(/[^A-Za-z]+/g, '') || undefined
+    : undefined;
 });
 
-watch(
-  () => props.value,
-  (newVal) => {
-    value.value = parseValue(newVal);
-  }
-);
+/**
+ * Reference to the extended dialog to get form data
+ */
+function buildApiBodyWithExtendedInfo(): string {
+  return buildApiBody(dataPointValue.value, currency.value, extendedDialogRef.value?.getFormData());
+}
 
-watchEffect(() => {
-  apiBody.value = buildApiBody({
-    value: value.value,
-    chosenQuality: chosenQuality.value,
-    selectedDocument: selectedDocument.value,
-    insertedComment: insertedComment.value,
-    insertedPage: insertedPage.value,
-    selectedDocumentMeta: selectedDocumentMeta.value,
-    companyID: companyId!,
-    reportingPeriod: reportingPeriod.value,
-    dataPointTypeId: dataPointTypeId.value,
-    currency: currency.value,
-  });
-  emit('update:apiBody', apiBody.value);
-});
+defineExpose({ buildApiBodyWithExtendedInfo });
 </script>
 
 <style scoped>
