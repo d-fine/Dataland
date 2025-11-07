@@ -6,9 +6,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidat
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.controller.DataSourcingController
 import org.dataland.datasourcingservice.controller.RequestController
@@ -46,9 +43,6 @@ class DataSourcingWorkflowTest
 
         @MockitoBean
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-
-        @MockitoBean
-        private lateinit var mockCompanyRolesControllerApi: CompanyRolesControllerApi
 
         @MockitoBean
         private lateinit var companyDataControllerApi: CompanyDataControllerApi
@@ -99,7 +93,6 @@ class DataSourcingWorkflowTest
             reset(
                 mockKeycloakUserService,
                 mockCompanyDataControllerApi,
-                mockCompanyRolesControllerApi,
                 mockCompanyDataControllerApi,
                 mockDataSourcingServiceMessageSender,
             )
@@ -108,19 +101,6 @@ class DataSourcingWorkflowTest
             SecurityContextHolder.setContext(mockSecurityContext)
 
             userIds.forEach {
-                doReturn(
-                    listOf(
-                        CompanyRoleAssignmentExtended(
-                            companyRole = CompanyRole.Member,
-                            companyId = UUID.randomUUID().toString(),
-                            userId = it.toString(),
-                            email = generateEmail(it),
-                            firstName = firstName,
-                            lastName = lastName,
-                        ),
-                    ),
-                ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(userId = it)
-
                 doReturn(
                     KeycloakUserInfo(
                         userId = it.toString(),
