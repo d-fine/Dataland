@@ -49,7 +49,7 @@ class RequestPriorityUpdater
 
             logger.info("Found ${userIdsOfAdminsAndMembers.size} users who are Dataland admins or members.")
 
-            logger.info("Upgrading request priorities from Low to High for Dataland admins and  members.")
+            logger.info("Upgrading request priorities from Low to High for Dataland admins and members.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
