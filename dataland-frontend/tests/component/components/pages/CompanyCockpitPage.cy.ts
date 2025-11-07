@@ -40,11 +40,10 @@ function validateClaimOwnershipPanel(isThisExpected: boolean): void {
 }
 
 /**
- * Validates the existence or non-existence of the single data request button
- * @param isButtonExpected self explanatory
+ * Validates the existence of the single data request button
  */
-function validateSingleDataRequestButton(isButtonExpected: boolean): void {
-  cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? 'exist' : 'not.exist');
+function validateSingleDataRequestButton(): void {
+  cy.get('[data-test="singleDataRequestButton"]').should('exist');
 }
 
 describe('Component test for the company cockpit', () => {
@@ -217,13 +216,13 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(false, false, []);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateSingleDataRequestButton();
   });
 
   it('Check for all expected elements for a logged-in reader-user for a company with company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
-    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
@@ -234,7 +233,7 @@ describe('Component test for the company cockpit', () => {
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected);
-    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
+    validateSingleDataRequestButton();
   });
 
   it('Check for all expected elements for a logged-in uploader-user and for a company without company owner', () => {
@@ -251,13 +250,13 @@ describe('Component test for the company cockpit', () => {
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+    validateSingleDataRequestButton();
   });
   it('Check for all expected elements for a logged-in uploader-user with company ownership for a company with company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
-    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
@@ -268,18 +267,17 @@ describe('Component test for the company cockpit', () => {
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, false, true);
-    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
+    validateSingleDataRequestButton();
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
-    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], []);
-    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
+    validateSingleDataRequestButton();
   });
 
   for (const keycloakRole of KEYCLOAK_ROLES) {

@@ -126,4 +126,11 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val RESOURCE_URL_DESCRIPTION = "A URL pointing to the resource identified by resourceId."
     const val RESOURCE_URL_EXAMPLE = "https://dataland.com/requests/$RESOURCE_ID_EXAMPLE"
+
+    const val COMPANY_RIGHT_DESCRIPTION = "One of the Dataland-specific rights which can be assigned to a company on Dataland."
+
+    const val INHERITED_ROLES_MAP_DESCRIPTION =
+        "A map from Dataland company IDs to the list of inherited roles in those companies for the specified user."
+    const val INHERITED_ROLES_MAP_EXAMPLE =
+        "{\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}\":[\"DatalandMember\"]}"
 }

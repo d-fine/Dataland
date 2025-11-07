@@ -5,7 +5,7 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.RequestCreationService
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -21,14 +21,14 @@ import java.util.UUID
 class RequestCreationServiceTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockRequestRepository = mock<RequestRepository>()
-    private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
     private lateinit var requestCreationService: RequestCreationService
 
     private val maxNumberOfDailyRequestsForNonPremiumUser = 10
 
-    private val premiumUserId = UUID.randomUUID()
-    private val nonPremiumUserId = UUID.randomUUID()
+    private val memberUserId = UUID.randomUUID()
+    private val nonMemberUserId = UUID.randomUUID()
 
     private val dummyBasicDataDimensions =
         BasicDataDimensions(
@@ -42,11 +42,11 @@ class RequestCreationServiceTest {
         reset(
             mockDataSourcingValidator,
             mockRequestRepository,
-            mockKeycloakAdapterRequestProcessingUtils,
+            mockDerivedRightsUtilsComponent,
         )
 
-        doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId.toString())
-        doReturn(false).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(nonPremiumUserId.toString())
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(memberUserId.toString())
+        doReturn(false).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMemberOrAdmin(nonMemberUserId.toString())
         doReturn(maxNumberOfDailyRequestsForNonPremiumUser)
             .whenever(mockRequestRepository)
             .countByUserIdAndCreationTimestampGreaterThanEqual(any(), any())
@@ -56,26 +56,26 @@ class RequestCreationServiceTest {
             RequestCreationService(
                 dataSourcingValidator = mockDataSourcingValidator,
                 requestRepository = mockRequestRepository,
-                keycloakAdapterRequestProcessingUtils = mockKeycloakAdapterRequestProcessingUtils,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
                 maxRequestsForUser = maxNumberOfDailyRequestsForNonPremiumUser,
             )
     }
 
     @Test
-    fun `check that store request works for a premium user regardless of their daily number of requests`() {
+    fun `check that store request works for a Dataland member regardless of their daily number of requests`() {
         assertDoesNotThrow {
             requestCreationService.storeRequest(
-                userId = premiumUserId,
+                userId = memberUserId,
                 basicDataDimension = dummyBasicDataDimensions,
             )
         }
     }
 
     @Test
-    fun `check that store request throws a QuotaExceededException for a nonpremium user who exceeded their daily quota`() {
+    fun `check that store request throws a QuotaExceededException for a nonmember who exceeded their daily quota`() {
         assertThrows<QuotaExceededException> {
             requestCreationService.storeRequest(
-                userId = nonPremiumUserId,
+                userId = nonMemberUserId,
                 basicDataDimension = dummyBasicDataDimensions,
             )
         }
