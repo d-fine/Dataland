@@ -95,6 +95,7 @@
             v-model="publicationDate"
             :updateModelType="'date'"
             showIcon
+            dateFormat="D, M dd, yy"
             placeholder="Select publication date"
             data-test="publication-date"
           />
