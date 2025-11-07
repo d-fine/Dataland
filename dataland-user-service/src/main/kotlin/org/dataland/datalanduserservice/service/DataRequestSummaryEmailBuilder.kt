@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.UUID
-import kotlin.text.ifEmpty
 
 /**
  * A service used to build scheduled data request summary emails, containing all data requests updates for one user
