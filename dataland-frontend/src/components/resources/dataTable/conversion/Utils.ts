@@ -54,17 +54,17 @@ export function getOriginalNameFromTechnicalName<T extends string>(
 }
 
 type DataPointObject = {
-  value?: number | string;
-  currency?: string;
-  quality?: string;
-  comment?: string;
-  dataSource?: {
-    fileName?: string;
-    page?: string;
-    tagName?: string;
-    fileReference?: string;
-    publicationDate?: string;
-  };
+    value?: number | string;
+    currency?: string;
+    quality?: string;
+    comment?: string;
+    dataSource?: {
+        fileName?: string;
+        page?: string;
+        tagName?: string;
+        fileReference?: string;
+        publicationDate?: string;
+    };
 };
 
 /**
@@ -72,42 +72,46 @@ type DataPointObject = {
  * Only includes fields that are filled.
  * @returns uploadedDataPoint
  */
-export function buildApiBody(
-  value: string | number | null,
-  chosenQuality: string | null,
-  selectedDocument: string | null,
-  insertedComment: string | null,
-  insertedPage: string | null,
-  selectedDocumentMeta: DocumentMetaInfoResponse | null,
-  companyID: string,
-  reportingPeriod: string,
-  dataPointTypeId: string,
-  currency?: string | null
-): {
-  dataPoint: string;
-  dataPointType: string;
-  companyId: string;
-  reportingPeriod: string;
+export function buildApiBody(options: {
+    value: string | number | null;
+    chosenQuality: string | null;
+    selectedDocument: string | null;
+    insertedComment: string | null;
+    insertedPage: string | null;
+    selectedDocumentMeta: DocumentMetaInfoResponse | null;
+    companyID: string;
+    reportingPeriod: string;
+    dataPointTypeId: string;
+    currency?: string | null;
+}): {
+    dataPoint: string;
+    dataPointType: string;
+    companyId: string;
+    reportingPeriod: string;
 } {
-  const dataPointObj: DataPointObject = {};
-  if (value !== null && value !== undefined) dataPointObj.value = value;
-  if (currency) dataPointObj.currency = currency;
-  if (chosenQuality) dataPointObj.quality = chosenQuality;
-  if (insertedComment) dataPointObj.comment = insertedComment;
-  if (selectedDocument) {
-    dataPointObj.dataSource = {
-      fileReference: selectedDocument,
-      fileName: selectedDocumentMeta?.documentName,
-      page: insertedPage ?? undefined,
-    };
-  }
+    const { value, chosenQuality, selectedDocument, insertedComment, insertedPage,
+        selectedDocumentMeta, companyID, reportingPeriod, dataPointTypeId, currency } = options;
 
-  return {
-    dataPoint: JSON.stringify(dataPointObj),
-    dataPointType: dataPointTypeId,
-    companyId: companyID,
-    reportingPeriod: reportingPeriod,
-  };
+    const dataPointObj: DataPointObject = {};
+    if (value !== null && value !== undefined) dataPointObj.value = value;
+    if (currency) dataPointObj.currency = currency;
+    if (chosenQuality) dataPointObj.quality = chosenQuality;
+    if (insertedComment) dataPointObj.comment = insertedComment;
+    if (selectedDocument) {
+        dataPointObj.dataSource = {
+            fileReference: selectedDocument,
+            fileName: selectedDocumentMeta?.documentName,
+            page: insertedPage ?? undefined,
+            publicationDate: selectedDocumentMeta?.publicationDate
+        };
+    }
+
+    return {
+        dataPoint: JSON.stringify(dataPointObj),
+        dataPointType: dataPointTypeId,
+        companyId: companyID,
+        reportingPeriod: reportingPeriod,
+    };
 }
 
 /**

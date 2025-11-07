@@ -55,17 +55,17 @@ watch(
 );
 
 watchEffect(() => {
-  apiBody.value = buildApiBody(
-    value.value,
-    chosenQuality.value,
-    selectedDocument.value,
-    insertedComment.value,
-    insertedPage.value,
-    selectedDocumentMeta.value,
-    companyId!,
-    reportingPeriod.value,
-    dataPointTypeId.value
-  );
+  apiBody.value = buildApiBody({
+    value: value.value,
+    chosenQuality: chosenQuality.value,
+    selectedDocument: selectedDocument.value,
+    insertedComment: insertedComment.value,
+    insertedPage: insertedPage.value,
+    selectedDocumentMeta: selectedDocumentMeta.value,
+    companyID: companyId!,
+    reportingPeriod: reportingPeriod.value,
+    dataPointTypeId: dataPointTypeId.value,
+  });
   emit('update:apiBody', apiBody.value);
 });
 </script>
