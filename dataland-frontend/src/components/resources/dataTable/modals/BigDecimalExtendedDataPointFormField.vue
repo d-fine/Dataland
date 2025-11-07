@@ -39,7 +39,7 @@ const apiBody = ref({});
 watch(
   () => dataPointValue.value,
   (newVal) => {
-    props.extendedDataPointObject.value?.value = parseValue(newVal);
+    dataPointValue.value = parseValue(newVal);
   }
 );
 
