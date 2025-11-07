@@ -241,7 +241,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
 
     @Test
     fun `verify that a nonexisting document ID can not be added to a data sourcing object`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val nonExistingDocumentId = "nonExistingDocumentId"
         val exception =
             assertThrows<ClientException> {
@@ -257,7 +257,7 @@ class DataSourcingControllerTest : DataSourcingTest() {
     @Test
     fun `verify that documents of an existing data sourcing object can be patched`() {
         val testDocumentIds = documentControllerApiAccessor.uploadAllTestDocumentsAndAssurePersistence()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         verifyDataSourcingDocuments(storedDataSourcing.dataSourcingId, emptySet())
         apiAccessor.dataSourcingControllerApi.patchDataSourcingDocuments(

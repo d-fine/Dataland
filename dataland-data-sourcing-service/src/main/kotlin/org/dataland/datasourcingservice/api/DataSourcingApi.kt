@@ -255,7 +255,10 @@ interface DataSourcingApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "(hasRole('ROLE_USER') and @AuthorizationUtils.doesUserBelongToDocumentCollector(authentication.userId, #dataSourcingId))",
+    )
     fun patchDataSourcingDocuments(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
