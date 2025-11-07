@@ -72,23 +72,36 @@ type DataPointObject = {
  * Only includes fields that are filled.
  * @returns uploadedDataPoint
  */
-export function buildApiBody(
-  value: string | number | null,
-  chosenQuality: string | null,
-  selectedDocument: string | null,
-  insertedComment: string | null,
-  insertedPage: string | null,
-  selectedDocumentMeta: DocumentMetaInfoResponse | null,
-  companyID: string,
-  reportingPeriod: string,
-  dataPointTypeId: string,
-  currency?: string | null
-): {
+export function buildApiBody(options: {
+  value: string | number | null;
+  chosenQuality: string | null;
+  selectedDocument: string | null;
+  insertedComment: string | null;
+  insertedPage: string | null;
+  selectedDocumentMeta: DocumentMetaInfoResponse | null;
+  companyID: string;
+  reportingPeriod: string;
+  dataPointTypeId: string;
+  currency?: string | null;
+}): {
   dataPoint: string;
   dataPointType: string;
   companyId: string;
   reportingPeriod: string;
 } {
+  const {
+    value,
+    chosenQuality,
+    selectedDocument,
+    insertedComment,
+    insertedPage,
+    selectedDocumentMeta,
+    companyID,
+    reportingPeriod,
+    dataPointTypeId,
+    currency,
+  } = options;
+
   const dataPointObj: DataPointObject = {};
   if (value !== null && value !== undefined) dataPointObj.value = value;
   if (currency) dataPointObj.currency = currency;
@@ -99,6 +112,7 @@ export function buildApiBody(
       fileReference: selectedDocument,
       fileName: selectedDocumentMeta?.documentName,
       page: insertedPage ?? undefined,
+      publicationDate: selectedDocumentMeta?.publicationDate,
     };
   }
 
