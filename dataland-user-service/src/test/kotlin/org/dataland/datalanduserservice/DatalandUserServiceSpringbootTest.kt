@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
@@ -54,7 +54,7 @@ class DatalandUserServiceSpringbootTest
         private val portfolioApi: PortfolioApi,
     ) {
         @MockitoBean
-        private val mockKeycloakUserService = mock<KeycloakUserService>()
+        private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
         @MockitoBean
         private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
@@ -93,7 +93,7 @@ class DatalandUserServiceSpringbootTest
 
         @BeforeEach
         fun setup() {
-            reset(mockCompanyDataController, mockSecurityContext, mockKeycloakUserService)
+            reset(mockCompanyDataController, mockSecurityContext, mockInheritedRolesControllerApi)
             this.resetSecurityContext()
 
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
@@ -150,7 +150,7 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that patching monitoring of a portfolio updates monitoring fields correctly`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
+                resetSecurityContext(DatalandRealmRole.ROLE_ADMIN)
 
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
@@ -178,7 +178,7 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that patching monitoring triggers community manager bulk data request`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
+                resetSecurityContext(DatalandRealmRole.ROLE_ADMIN)
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
 
@@ -233,6 +233,8 @@ class DatalandUserServiceSpringbootTest
             @Test
             fun `test that patching portfolio with unauthorized user throws ClientException`() {
                 resetSecurityContext(DatalandRealmRole.ROLE_USER)
+
+                doReturn(emptyMap<String, List<String>>()).whenever(mockInheritedRolesControllerApi).getInheritedRoles(userId)
 
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!

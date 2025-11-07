@@ -119,7 +119,7 @@
         <p class="font-medium text-xl">You have not requested data yet.</p>
         <p class="font-medium text-xl">Individual data requests can be made for each company from its cockpit page.</p>
         <p class="font-medium text-xl">
-          Alternatively, become a premium user and create a portfolio for automatic request creation.
+          Alternatively, become a Dataland member and create a portfolio for automatic request creation.
         </p>
         <PrimeButton
           label="MANAGE YOUR PORTFOLIOS"
