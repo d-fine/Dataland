@@ -171,7 +171,6 @@ describeIf(
       cy.get('[data-test="currency"]').click();
       cy.get('[aria-label="East Caribbean Dollar (XCD)"]').click();
 
-
       saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
     });

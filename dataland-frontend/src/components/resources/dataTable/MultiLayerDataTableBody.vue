@@ -18,7 +18,7 @@
             class="material-icons info-icon"
             aria-hidden="true"
             :title="cellOrSectionConfig.label"
-            :data-test="'edit-data-point-' + cellOrSectionConfig.dataPointTypeId"
+            :data-test="'data-point-' + cellOrSectionConfig.dataPointTypeId"
             v-tooltip.top="{
               value: cellOrSectionConfig.explanation,
             }"
