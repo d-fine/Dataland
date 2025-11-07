@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.utils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -40,14 +41,14 @@ class AuthorizationUtils
          * @param dataSourcingId of the data sourcing in question
          * @return true if the user belongs to the document collector company, false otherwise
          */
-        fun doesUserBelongToDocumentCollector(
-            userId: String,
-            dataSourcingId: String,
-        ): Boolean {
-            val dataSourcing =
-                dataSourcingRepository.findByIdOrNull(ValidationUtils.convertToUUID(dataSourcingId))
-                    ?: return false
-            val documentCollectorId = dataSourcing.documentCollector.toString()
-            return doesUserBelongToCompany(userId, documentCollectorId)
+        fun doesUserBelongToDocumentCollector(dataSourcingId: String): Boolean {
+            val dataSourcing = dataSourcingRepository.findByIdOrNull(ValidationUtils.convertToUUID(dataSourcingId))
+
+            val userId = DatalandAuthentication.fromContextOrNull()?.userId
+            val documentCollectorId = dataSourcing?.documentCollector
+
+            if (userId == null || documentCollectorId == null) return false
+
+            return doesUserBelongToCompany(userId, documentCollectorId.toString())
         }
     }

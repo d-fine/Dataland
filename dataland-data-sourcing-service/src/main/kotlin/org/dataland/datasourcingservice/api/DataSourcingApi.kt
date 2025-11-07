@@ -256,8 +256,7 @@ interface DataSourcingApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_USER') and @AuthorizationUtils.doesUserBelongToDocumentCollector(authentication.userId, #dataSourcingId))",
+        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToDocumentCollector(#dataSourcingId)",
     )
     fun patchDataSourcingDocuments(
         @Parameter(

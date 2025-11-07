@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.integrationTests
+package org.dataland.datasourcingservice.serviceTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
