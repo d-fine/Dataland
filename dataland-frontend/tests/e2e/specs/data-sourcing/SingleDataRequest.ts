@@ -1,4 +1,4 @@
-import { admin_name, admin_pw, premium_user_name, premium_user_pw } from '@e2e/utils/Cypress.ts';
+import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress.ts';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 import { type SingleRequest } from '@clients/datasourcingservice';
@@ -12,6 +12,8 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition.ts';
+import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
+import { assignCompanyRight } from '@e2e/utils/CompanyRightsUtils.ts';
 
 /**
  * Checks if all expected human-readable labels are visible in the dropdown options
@@ -41,17 +43,30 @@ function checkValidation(): void {
 }
 
 describeIf(
-  'As a premium user, I want to be able to navigate to the single data request page and submit a request',
+  'As a Dataland member, I want to be able to navigate to the single data request page and submit a request',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
-    const uniqueCompanyMarker = Date.now().toString();
-    const testCompanyName = 'Company-for-single-data-request' + uniqueCompanyMarker;
+    const companyMarker = Date.now().toString();
+    const testCompanyName = 'Company-for-single-data-request' + companyMarker;
+    const memberCompanyName = 'Member-company-for-single-data-request' + companyMarker;
     let testStoredCompany: StoredCompany;
+    let memberStoredCompany: StoredCompany;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     const testMessage = 'Frontend test message';
     const testYear = '2023';
+
+    /**
+     * Uploads a company without data
+     */
+    function uploadCompanyWithoutData(): void {
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
+          memberStoredCompany = storedCompany;
+        });
+      });
+    }
 
     /**
      * Uploads a company with lksg data
@@ -83,14 +98,35 @@ describeIf(
       });
     }
 
+    /**
+     * Gives the memberStoredCompany Member rights.
+     */
+    function makeCompanyMember(): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return assignCompanyRight(token, 'Member', memberStoredCompany.companyId);
+      });
+    }
+
+    /**
+     * Makes the Data Reader a Member of the memberStoredCompany.
+     */
+    function makeReaderMemberOfCompany(): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return assignCompanyRole(token, 'Member', memberStoredCompany.companyId, reader_userId);
+      });
+    }
+
     before(() => {
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        uploadCompanyWithoutData();
+        makeCompanyMember();
+        makeReaderMemberOfCompany();
         uploadCompanyWithData('2020');
       });
     });
     beforeEach(() => {
-      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
+      cy.ensureLoggedIn(reader_name, reader_pw);
     });
 
     it('Navigate to the single request page via the company cockpit', () => {
