@@ -1,6 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
@@ -18,7 +18,6 @@ class DocumentStorageServiceTest {
     private lateinit var mockBlobItemRepository: BlobItemRepository
     private lateinit var mockDataItemRepository: DataItemRepository
     private lateinit var mockDataPointItemRepository: DataPointItemRepository
-    private lateinit var objectMapper: ObjectMapper
     private lateinit var documentStorageService: DocumentStorageService
 
     private val documentId = UUID.randomUUID().toString()
@@ -37,13 +36,11 @@ class DocumentStorageServiceTest {
         mockBlobItemRepository = mock<BlobItemRepository>()
         mockDataItemRepository = mock<DataItemRepository>()
         mockDataPointItemRepository = mock<DataPointItemRepository>()
-        objectMapper = ObjectMapper()
         documentStorageService =
             DocumentStorageService(
                 mockBlobItemRepository,
                 mockDataItemRepository,
                 mockDataPointItemRepository,
-                objectMapper,
             )
     }
 
@@ -55,17 +52,16 @@ class DocumentStorageServiceTest {
                 createDataPointItem(dataPointIdWithDocumentReference2, documentId),
                 createDataPointItem(dataPointIdWithDocumentReference3, documentId),
             )
-        val datasetsWithoutDocument = emptyList<DataItem>()
 
-        setupMockRepositories(dataPointsWithDocument, datasetsWithoutDocument)
+        setupMockRepositories(dataPointsWithDocument, emptyList())
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(
             listOf(dataPointIdWithDocumentReference1, dataPointIdWithDocumentReference2, dataPointIdWithDocumentReference3),
-            result["dataPointIds"],
+            result.dataPointIds,
         )
-        assertEquals(emptyList<String>(), result["datasetIds"])
+        assertEquals(emptyList<String>(), result.datasetIds)
     }
 
     @Test
@@ -81,8 +77,8 @@ class DocumentStorageServiceTest {
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(emptyList<String>(), result["dataPointIds"])
-        assertEquals(listOf(datasetIdWithDocumentReference1, datasetIdWithDocumentReference2), result["datasetIds"])
+        assertEquals(emptyList<String>(), result.dataPointIds)
+        assertEquals(listOf(datasetIdWithDocumentReference1, datasetIdWithDocumentReference2), result.datasetIds)
     }
 
     @Test
@@ -103,10 +99,10 @@ class DocumentStorageServiceTest {
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(listOf(dataPointIdWithDocumentReference1, dataPointIdWithDocumentReference2), result["dataPointIds"])
+        assertEquals(listOf(dataPointIdWithDocumentReference1, dataPointIdWithDocumentReference2), result.dataPointIds)
         assertEquals(
             listOf(datasetIdWithDocumentReference1, datasetIdWithDocumentReference2, datasetIdWithDocumentReference3),
-            result["datasetIds"],
+            result.datasetIds,
         )
     }
 
@@ -125,8 +121,8 @@ class DocumentStorageServiceTest {
 
         val result = documentStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(emptyList<String>(), result["dataPointIds"])
-        assertEquals(emptyList<String>(), result["datasetIds"])
+        assertEquals(emptyList<String>(), result.dataPointIds)
+        assertEquals(emptyList<String>(), result.datasetIds)
     }
 
     @Test
@@ -153,11 +149,11 @@ class DocumentStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val root = objectMapper.readTree(savedData)
-        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
-        val innerData = objectMapper.readTree(outerJson.get("data").asText())
+        val storedDataItem = defaultObjectMapper.readTree(savedData)
+        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
-        val dataSource = innerData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
+        val dataSource = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
         assert(dataSource.isNull) { "dataSource should be null after nullification" }
     }
 
@@ -179,14 +175,14 @@ class DocumentStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val root = objectMapper.readTree(savedData)
-        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
-        val innerData = objectMapper.readTree(outerJson.get("data").asText())
+        val storedDataItem = defaultObjectMapper.readTree(savedData)
+        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
-        val dataSource1 = innerData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
+        val dataSource1 = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
         assert(dataSource1.isNull) { "First document reference should be null after deletion" }
 
-        val dataSource2 = innerData.at("/governance/riskManagementOwnOperations/riskManagementProcess/dataSource")
+        val dataSource2 = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementProcess/dataSource")
         assert(!dataSource2.isNull && dataSource2.has("fileReference")) { "Second document reference should still exist" }
         assertEquals(
             document2Id,
@@ -212,11 +208,11 @@ class DocumentStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val root = objectMapper.readTree(savedData)
-        val outerJson = if (root.isTextual) objectMapper.readTree(root.asText()) else root
-        val innerData = objectMapper.readTree(outerJson.get("data").asText())
+        val storedDataItem = defaultObjectMapper.readTree(savedData)
+        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
-        val attachmentField = innerData.at("/attachment/attachment/attachment")
+        val attachmentField = serializedDatasetData.at("/attachment/attachment/attachment")
         assert(attachmentField.isNull) { "attachment.attachment.attachment should be null after document deletion" }
     }
 
@@ -255,7 +251,7 @@ class DocumentStorageServiceTest {
             """.trimIndent().replace("\n", "")
 
         val datasetJson =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 mapOf(
                     "companyId" to UUID.randomUUID().toString(),
                     "dataType" to "lksg",
@@ -283,7 +279,7 @@ class DocumentStorageServiceTest {
     ): DataPointItem {
         val innerData = """{"dataSource":{"fileReference":"$documentId"}}"""
         val outerData =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 mapOf(
                     "companyId" to UUID.randomUUID().toString(),
                     "dataPointType" to "testType",
@@ -306,7 +302,7 @@ class DocumentStorageServiceTest {
     ): DataItem {
         val innerData = """{"general":{"referencedReports":{"report1":{"fileReference":"$documentId"}}}}"""
         val outerData =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 mapOf(
                     "companyId" to UUID.randomUUID().toString(),
                     "dataType" to "eutaxonomy-non-financials",

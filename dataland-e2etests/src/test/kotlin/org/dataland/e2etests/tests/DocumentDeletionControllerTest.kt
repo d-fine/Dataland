@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackend.openApiClient.model.YesNo
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -17,6 +18,7 @@ import org.dataland.e2etests.utils.api.Backend
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
@@ -30,6 +32,11 @@ class DocumentDeletionControllerTest {
     private val documentControllerApiAccessor = DocumentControllerApiAccessor()
     private val documentControllerClient = documentControllerApiAccessor.documentControllerApi
     private val objectMapperForJsonAssertion = ObjectMapper()
+
+    @BeforeEach
+    fun setupAuth() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    }
 
     companion object {
         private const val PDF_HEADER = """%PDF-1.4
@@ -66,18 +73,7 @@ endobj"""
     }
 
     @Test
-    fun `test that a document with no references can be deleted successfully`() {
-        val documentId = uploadDocumentAndGetId()
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        documentControllerClient.deleteDocument(documentId)
-
-        assertDocumentDeleted(documentId)
-    }
-
-    @Test
     fun `test that deleting a non existent document returns 404`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistentDocumentId = "nonExistentDocumentId"
 
         val exception = assertThrows<ClientException> { documentControllerClient.deleteDocument(nonExistentDocumentId) }
@@ -86,7 +82,7 @@ endobj"""
 
     @Test
     fun `test that users without proper authorization cannot delete documents`() {
-        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
+        val documentId = uploadDocumentAndGetId()
 
         for (role in arrayOf(TechnicalUser.Reader, TechnicalUser.Reviewer)) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(role)
@@ -99,9 +95,8 @@ endobj"""
 
     @Test
     fun `test that admin can delete any document`() {
-        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
+        val documentId = uploadDocumentAndGetId()
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         documentControllerClient.deleteDocument(documentId)
 
         assertDocumentDeleted(documentId)
@@ -109,43 +104,22 @@ endobj"""
 
     @Test
     fun `test that uploader can delete their own document`() {
-        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf(), TechnicalUser.Uploader).documentId
+        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            val documentId = uploadDocumentAndGetId()
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        documentControllerClient.deleteDocument(documentId)
+            documentControllerClient.deleteDocument(documentId)
 
-        assertDocumentDeleted(documentId)
+            assertDocumentDeleted(documentId)
+        }
     }
 
     @Test
     fun `test that document with LkSG dataset reference in Pending status cannot be deleted`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
-        val testCompanyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getCompanyInformationWithoutIdentifiers(1)
-                .first()
+        uploadLksgDatasetWithDocumentReference(documentId, qaStatus = null)
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
-        val testData =
-            apiAccessor.testDataProviderForLksgData
-                .getTData(1)
-                .first()
-        val modifiedData = addDocumentReferenceToLksgDataset(testData, documentId)
-
-        apiAccessor
-            .lksgUploaderFunction(
-                companyId,
-                modifiedData,
-                "2023",
-                bypassQa = false,
-            )
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val exception =
             assertThrows<ClientException> {
                 documentControllerClient.deleteDocument(documentId)
@@ -155,36 +129,10 @@ endobj"""
 
     @Test
     fun `test that document with LkSG dataset reference in Accepted status cannot be deleted`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
-        val testCompanyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getCompanyInformationWithoutIdentifiers(1)
-                .first()
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
-        val testData =
-            apiAccessor.testDataProviderForLksgData
-                .getTData(1)
-                .first()
-        val modifiedData = addDocumentReferenceToLksgDataset(testData, documentId)
-
-        val dataId =
-            apiAccessor
-                .lksgUploaderFunction(
-                    companyId,
-                    modifiedData,
-                    "2023",
-                    bypassQa = false,
-                ).dataId
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, QaStatus.Accepted)
-        awaitUntilQaStatusEquals(dataId, QaStatus.Accepted)
+        uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Accepted)
 
         val exception =
             assertThrows<ClientException> {
@@ -198,32 +146,7 @@ endobj"""
         val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
-        val testCompanyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getCompanyInformationWithoutIdentifiers(1)
-                .first()
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
-        val testData =
-            apiAccessor.testDataProviderForLksgData
-                .getTData(1)
-                .first()
-        val modifiedData = addDocumentReferenceToLksgDataset(testData, documentId)
-
-        val dataId =
-            apiAccessor
-                .lksgUploaderFunction(
-                    companyId,
-                    modifiedData,
-                    "2023",
-                    bypassQa = false,
-                ).dataId
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, QaStatus.Rejected)
-        awaitUntilQaStatusEquals(dataId, QaStatus.Rejected)
+        uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Rejected)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -232,16 +155,10 @@ endobj"""
 
     @Test
     fun `test that document with data point reference without QA review cannot be deleted`() {
-        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf())
-        val documentId = uploadResponse.documentId
+        val documentId = uploadDocumentAndGetId()
 
-        val companyId = createCompany()
+        uploadDataPointWithDocumentReference(documentId, qaStatus = null)
 
-        val dataPointJson =
-            """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId" } }"""
-        uploadDataPoint(companyId, dataPointJson, bypassQa = false)
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val exception =
             assertThrows<ClientException> {
                 documentControllerClient.deleteDocument(documentId)
@@ -253,15 +170,7 @@ endobj"""
     fun `test that document with data point reference in Rejected status can be deleted`() {
         val documentId = uploadDocumentAndGetId()
 
-        val companyId = createCompany()
-
-        val dataPointJson =
-            """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId" } }"""
-        val dataPointId = uploadDataPoint(companyId, dataPointJson, bypassQa = false).dataPointId
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
-        awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
+        uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -273,31 +182,7 @@ endobj"""
         val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
-        val testCompanyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getCompanyInformationWithoutIdentifiers(1)
-                .first()
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
-
-        val testData =
-            apiAccessor.testDataProviderForLksgData
-                .getTData(1)
-                .first()
-        val modifiedData = addDocumentReferenceToLksgDataset(testData, documentId)
-
-        val dataId =
-            apiAccessor
-                .lksgUploaderFunction(
-                    companyId,
-                    modifiedData,
-                    "2023",
-                    bypassQa = false,
-                ).dataId
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, QaStatus.Rejected)
+        val dataId = uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Rejected)
         awaitUntilQaStatusEquals(dataId, QaStatus.Rejected)
 
         documentControllerClient.deleteDocument(documentId)
@@ -316,23 +201,15 @@ endobj"""
     fun `test that document deletion nullifies file references in rejected datapoints`() {
         val documentId = uploadDocumentAndGetId()
 
-        val companyId = createCompany()
-
-        val dataPointJson =
-            """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId", "fileName": "test.pdf" } }"""
-        val dataPointId = uploadDataPoint(companyId, dataPointJson, bypassQa = false).dataPointId
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
-        awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
+        val dataPointId = uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
 
         documentControllerClient.deleteDocument(documentId)
 
         assertDocumentDeleted(documentId)
 
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-        val innerData = unwrapPossiblyEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
-        val dataSourceNode = innerData.get("dataSource")
+        val dataPointJson = objectMapperForJsonAssertion.readTree(retrievedDataPoint)
+        val dataSourceNode = dataPointJson.get("dataSource")
         assertTrue(dataSourceNode == null || dataSourceNode.isNull, "Entire dataSource object should be null after document deletion")
     }
 
@@ -372,39 +249,79 @@ endobj"""
         return dataset.copy(governance = updatedGovernance)
     }
 
-    private fun createCompany(): String {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val testCompanyInformation =
-            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-                .getCompanyInformationWithoutIdentifiers(1)
-                .first()
-        return Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
-    }
+    private fun createCompany(): String =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val testCompanyInformation =
+                apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                    .getCompanyInformationWithoutIdentifiers(1)
+                    .first()
+            Backend.companyDataControllerApi.postCompany(testCompanyInformation).companyId
+        }
 
     private fun uploadDataPoint(
         companyId: String,
         dataPointJson: String,
         bypassQa: Boolean,
-    ): DataPointMetaInformation {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val uploadedDataPoint =
-            UploadedDataPoint(
-                dataPoint = dataPointJson,
-                dataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
-                companyId = companyId,
-                reportingPeriod = "2022",
-            )
-        return Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, bypassQa)
+    ): DataPointMetaInformation =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val uploadedDataPoint =
+                UploadedDataPoint(
+                    dataPoint = dataPointJson,
+                    dataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
+                    companyId = companyId,
+                    reportingPeriod = "2022",
+                )
+            Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, bypassQa)
+        }
+
+    private fun uploadLksgDatasetWithDocumentReference(
+        documentId: String,
+        qaStatus: QaStatus? = null,
+    ): String {
+        val companyId = createCompany()
+        val testData =
+            apiAccessor.testDataProviderForLksgData
+                .getTData(1)
+                .first()
+        val testDataWithDocumentReference = addDocumentReferenceToLksgDataset(testData, documentId)
+
+        val dataId =
+            apiAccessor
+                .lksgUploaderFunction(
+                    companyId,
+                    testDataWithDocumentReference,
+                    "2023",
+                    false,
+                ).dataId
+
+        if (qaStatus != null) {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, qaStatus)
+                awaitUntilQaStatusEquals(dataId, qaStatus)
+            }
+        }
+
+        return dataId
     }
 
-    private fun unwrapPossiblyEncodedJson(
-        json: String,
-        mapper: ObjectMapper,
-    ): com.fasterxml.jackson.databind.JsonNode {
-        var node = mapper.readTree(json)
-        if (node.isTextual) node = mapper.readTree(node.asText())
-        val dataField = node.get("data")
-        return if (dataField != null && dataField.isTextual) mapper.readTree(dataField.asText()) else node
+    private fun uploadDataPointWithDocumentReference(
+        documentId: String,
+        qaStatus: QaStatus? = null,
+    ): String {
+        val companyId = createCompany()
+        val dataPointJson =
+            """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId" } }"""
+
+        val dataPointId = uploadDataPoint(companyId, dataPointJson, bypassQa = false).dataPointId
+
+        if (qaStatus == QaStatus.Rejected) {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
+                awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
+            }
+        }
+
+        return dataPointId
     }
 
     private fun awaitDocumentAvailable(documentId: String) {

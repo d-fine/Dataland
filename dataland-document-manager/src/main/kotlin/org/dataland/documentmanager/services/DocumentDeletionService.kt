@@ -43,8 +43,8 @@ class DocumentDeletionService
 
             val references = storageControllerApi.getDocumentReferences(documentId, correlationId)
 
-            if ((references["datasetIds"]?.any { isDatasetActive(it, correlationId) } == true) ||
-                (references["dataPointIds"]?.any { isDataPointActive(it, correlationId) } == true)
+            if (references.datasetIds.any { !isDatasetRejected(it, correlationId) } ||
+                references.dataPointIds.any { !isDataPointRejected(it, correlationId) }
             ) {
                 throw ConflictApiException(
                     summary = "Document $documentId cannot be deleted.",
@@ -70,27 +70,27 @@ class DocumentDeletionService
             }
         }
 
-        private fun isDatasetActive(
+        private fun isDatasetRejected(
             datasetId: String,
             correlationId: String,
         ): Boolean {
             try {
                 val qaReview = qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(datasetId))
-                return qaReview.qaStatus != QaStatus.Rejected
+                return qaReview.qaStatus == QaStatus.Rejected
             } catch (e: org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException) {
                 logger.error("Failed to get QA status for dataset $datasetId. Correlation ID: $correlationId", e)
                 throw e
             }
         }
 
-        private fun isDataPointActive(
+        private fun isDataPointRejected(
             dataPointId: String,
             correlationId: String,
         ): Boolean {
             try {
                 val qaReviews = qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
                 val latestReview = qaReviews.firstOrNull()
-                return latestReview?.qaStatus != QaStatus.Rejected
+                return latestReview?.qaStatus == QaStatus.Rejected
             } catch (e: org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException) {
                 logger.error("Failed to get QA status for data point $dataPointId. Correlation ID: $correlationId", e)
                 throw e

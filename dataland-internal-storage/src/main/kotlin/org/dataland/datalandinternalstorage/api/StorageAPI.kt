@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -109,17 +110,17 @@ interface StorageAPI {
     fun getDocumentReferences(
         @PathVariable("documentId") documentId: String,
         correlationId: String,
-    ): ResponseEntity<Map<String, List<String>>>
+    ): ResponseEntity<DocumentReferencesResponse>
 
     /**
-     * A method to delete a document from blob storage
+     * A method to delete a document from blob storage and to remove its references
      * @param documentId the ID of the document to delete
      * @param correlationId the correlation ID of the delete request
      * @return ResponseEntity with no content on success
      */
     @Operation(
         summary = "Delete document from blob storage.",
-        description = "Deletes a document entry from blob storage by document ID.",
+        description = "Deletes a document entry from blob storage by document ID and remove its references from data points and datasets.",
     )
     @ApiResponses(
         value = [

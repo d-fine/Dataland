@@ -26,7 +26,7 @@
           "storage-controller"
         ],
         "summary": "Delete document from blob storage.",
-        "description": "Deletes a document entry from blob storage by document ID.",
+        "description": "Deletes a document entry from blob storage by document ID and remove its references from data points and datasets.",
         "operationId": "deleteDocument",
         "parameters": [
           {
@@ -174,13 +174,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/DocumentReferencesResponse"
                 }
               }
             }
@@ -523,6 +517,27 @@
           },
           "reportingPeriod": {
             "type": "string"
+          }
+        }
+      },
+      "DocumentReferencesResponse": {
+        "required": [
+          "dataPointIds",
+          "datasetIds"
+        ],
+        "type": "object",
+        "properties": {
+          "datasetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataPointIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

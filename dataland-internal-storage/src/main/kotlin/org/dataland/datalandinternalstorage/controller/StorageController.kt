@@ -61,7 +61,7 @@ class StorageController(
     override fun getDocumentReferences(
         documentId: String,
         correlationId: String,
-    ): ResponseEntity<Map<String, List<String>>> {
+    ): ResponseEntity<org.dataland.datalandinternalstorage.model.DocumentReferencesResponse> {
         logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
         return ResponseEntity.ok(documentStorageService.getDocumentReferences(documentId, correlationId))
     }
@@ -70,7 +70,7 @@ class StorageController(
         documentId: String,
         correlationId: String,
     ): ResponseEntity<Unit> {
-        logger.info("Deleting document: $documentId. Correlation id: $correlationId.")
+        logger.info("Removing document: $documentId. Correlation id: $correlationId.")
         documentStorageService.deleteDocument(documentId, correlationId)
         return ResponseEntity.noContent().build()
     }
