@@ -192,6 +192,7 @@ async function handleDocumentUpload(): Promise<void> {
     documentName: documentName.value,
     documentCategory: documentCategory.value!,
     companyIds: [props.companyId] as unknown as Set<string>,
+    // 'en-CA' formats 'YYYY-MM-DD'
     publicationDate: publicationDate.value ? publicationDate.value.toLocaleDateString('en-CA') : undefined,
     reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
   };
