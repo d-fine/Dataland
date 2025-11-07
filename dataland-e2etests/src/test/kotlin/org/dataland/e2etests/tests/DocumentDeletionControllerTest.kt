@@ -308,6 +308,16 @@ endobj"""
 
         if (qaStatus == QaStatus.Rejected) {
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                // Wait for QA service to process the data point upload message
+                Awaitility
+                    .await()
+                    .atMost(3000, TimeUnit.MILLISECONDS)
+                    .pollInterval(200, TimeUnit.MILLISECONDS)
+                    .ignoreExceptions()
+                    .untilAsserted {
+                        apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
+                    }
+                // Now it's safe to change the status
                 apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
                 awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
             }
