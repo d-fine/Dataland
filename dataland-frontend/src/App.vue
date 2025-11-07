@@ -1,8 +1,8 @@
 <template>
   <DynamicDialog />
   <component
-      v-if="route.meta.requiresAuthentication !== undefined"
-      :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+    v-if="route.meta.requiresAuthentication !== undefined"
+    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
     <LandingPageHeader v-if="useLandingPageHeader" />
     <TheHeader v-else />
@@ -81,8 +81,8 @@ export default defineComponent({
         }
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
-            this.resolvedKeycloakPromise,
-            openSessionWarningModalBound
+          this.resolvedKeycloakPromise,
+          openSessionWarningModalBound
         );
       }
     },
@@ -128,8 +128,8 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
         this.apiClientProvider = apiClientProvider;
         this.keycloakPromise
-            .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
-            .catch((e) => console.log(e));
+          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
+          .catch((e) => console.log(e));
       }
     },
     /**
@@ -140,21 +140,21 @@ export default defineComponent({
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
-          .init({
-            onLoad: 'check-sso',
-            silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
-            pkceMethod: 'S256',
-          })
-          .then((authenticated) => {
-            this.keycloakAuthenticated = authenticated;
-          })
-          .catch((error) => {
-            console.log('Error in init Keycloak ', error);
-            this.keycloakAuthenticated = false;
-          })
-          .then((): Keycloak => {
-            return keycloak;
-          });
+        .init({
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
+          pkceMethod: 'S256',
+        })
+        .then((authenticated) => {
+          this.keycloakAuthenticated = authenticated;
+        })
+        .catch((error) => {
+          console.log('Error in init Keycloak ', error);
+          this.keycloakAuthenticated = false;
+        })
+        .then((): Keycloak => {
+          return keycloak;
+        });
     },
 
     /**
@@ -177,8 +177,8 @@ export default defineComponent({
      */
     async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
-          resolvedKeycloakPromise,
-          apiClientProvider
+        resolvedKeycloakPromise,
+        apiClientProvider
       );
     },
 
