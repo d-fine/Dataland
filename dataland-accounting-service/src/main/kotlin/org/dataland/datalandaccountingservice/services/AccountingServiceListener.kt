@@ -108,7 +108,7 @@ class AccountingServiceListener
 
             logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
 
-            val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.requestedCompanyId)
+            val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.triggeringUserId)
             if (billedCompanyId == null) {
                 logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
                 return
