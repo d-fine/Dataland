@@ -969,8 +969,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Assign a QA review status to a datapoint.",
-        "description": "Assign a QA review status to a datapoint.",
+        "summary": "Assign a QA review status to a data point.",
+        "description": "Assign a QA review status to a data point.",
         "operationId": "changeDataPointQaStatus",
         "parameters": [
           {

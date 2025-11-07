@@ -2405,7 +2405,7 @@
           {
             "name": "companyIds",
             "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
+            "description": "The unique identifiers under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
@@ -2413,7 +2413,10 @@
                 "type": "string"
               }
             },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "480238a8-a1d6-452c-93b8-5dc75c7dcd64"
+            ]
           },
           {
             "name": "frameworksOrDataPointTypes",
@@ -2434,7 +2437,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "type": "array",
@@ -2442,7 +2445,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           }
         ],
         "responses": {
@@ -17006,15 +17012,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
