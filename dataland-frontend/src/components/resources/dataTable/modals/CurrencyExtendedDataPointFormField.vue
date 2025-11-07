@@ -1,24 +1,24 @@
 <template>
   <h4>Value</h4>
   <div class="currency-value-fields">
-      <InputNumber
-        v-model="dataPointValue"
-        placeholder="Insert Value"
-        data-test="currency-value-input"
-        :maxFractionDigits="2"
-        fluid
-      />
-      <Select
-        v-model="currency"
-        placeholder="Currency"
-        :options="currencyList"
-        option-label="label"
-        option-value="value"
-        class="currency-select"
-        data-test="currency"
-        style="width: 10em"
-        fluid
-      />
+    <InputNumber
+      v-model="dataPointValue"
+      placeholder="Insert Value"
+      data-test="currency-value-input"
+      :maxFractionDigits="2"
+      fluid
+    />
+    <Select
+      v-model="currency"
+      placeholder="Currency"
+      :options="currencyList"
+      option-label="label"
+      option-value="value"
+      class="currency-select"
+      data-test="currency"
+      style="width: 10em"
+      fluid
+    />
   </div>
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"

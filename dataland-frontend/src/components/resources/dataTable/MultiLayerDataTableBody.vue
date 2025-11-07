@@ -50,12 +50,7 @@
                   ? 'Edit Data Point'
                   : 'Currently not implemented'
               "
-              @click.stop="
-                openEditDataPointModal(
-                  idx,
-                  cellOrSectionConfig
-                )
-              "
+              @click.stop="openEditDataPointModal(idx, cellOrSectionConfig)"
               :pt="{
                 root: {
                   class: isEditComponentAvailable(cellOrSectionConfig.uploadComponentName)
@@ -236,10 +231,7 @@ onMounted(() => {
 /**
  * Opens a modal dialog for editing a data point.
  */
-function openEditDataPointModal(
-  idx: number,
-  cellOrSectionConfig: MLDTCellConfig<T>,
-): void {
+function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig<T>): void {
   const reportingPeriod = props.dataAndMetaInfo[idx]?.metaInfo.reportingPeriod;
   const companyId = props.dataAndMetaInfo[idx]?.metaInfo.companyId;
   const dataType = props.dataAndMetaInfo[idx]?.metaInfo.dataType;

@@ -1,9 +1,5 @@
 <template>
-  <component
-    ref="componentRef"
-    :is="resolvedComponent"
-    :extendedDataPointObject="extendedDataPointObject"
-  />
+  <component ref="componentRef" :is="resolvedComponent" :extendedDataPointObject="extendedDataPointObject" />
   <Message v-if="errorMessage" severity="error" :life="3000">
     {{ errorMessage }}
   </Message>

@@ -87,30 +87,6 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-    it('should open EditDataPointDialog for a BigDecimalExtendedDataPointFormField modal and display its parts', () => {
-      navigateToEditMode();
-      openEditDialog('Scope 1 GHG emissions');
-
-      cy.get('div.p-dialog-content').within(() => {
-        cy.get('[data-test="big-decimal-input"]')
-          .should('exist')
-          .should('be.visible')
-          .find('input')
-          .should('have.value', '17,992.73');
-
-        cy.get('[data-test="quality-select"]')
-          .should('exist')
-          .should('be.visible')
-          .find('.p-select-label, .p-dropdown-label, .p-inputwrapper, .p-select')
-          .should('contain', 'Estimated');
-
-        cy.get('[data-test="comment-textarea"]')
-          .should('exist')
-          .should('be.visible')
-          .should('have.value', 'connect haptic program');
-      });
-    });
-
     it('should open a BigDecimal EditDataPointDialog, edit all fields and save changes successfully', () => {
       const newValue = '1234.56';
 
@@ -132,17 +108,11 @@ describeIf(
         .find('.p-select-label, .p-dropdown-label')
         .should('contain', 'Estimated');
 
-      cy.get('[data-test="quality-select"]').should('exist').should('be.visible');
-
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
       cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
       cy.get('div.p-dialog-content').within(() => {
-        cy.get('[data-test="big-decimal-input"] input').clear();
-      });
-
-      cy.get('div.p-dialog-content').within(() => {
-        cy.get('[data-test="big-decimal-input"] input').type(newValue);
+        cy.get('[data-test="big-decimal-input"] input').clear().type(newValue);
       });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
