@@ -2,21 +2,19 @@
   <h4>Quality</h4>
   <Select
     :placeholder="'Select Quality'"
+    v-model="chosenQuality"
     :options="qualityOptionsList ?? []"
     optionLabel="label"
     optionValue="value"
     data-test="quality-select"
-    @update:modelValue="(val) => (chosenQuality = val)"
-    :modelValue="chosenQuality"
     fluid
   />
   <h4>Data Source</h4>
   <div class="data-source-wrapper">
     <Select
       :placeholder="'Select Document'"
-      :modelValue="selectedDocument"
+      v-model="selectedDocument"
       :options="availableDocuments ?? []"
-      @update:modelValue="(val) => (selectedDocument = val)"
       optionLabel="label"
       optionValue="value"
       data-test="document-select"
@@ -24,8 +22,7 @@
       fluid
     />
     <InputText
-      :modelValue="insertedPage"
-      @update:modelValue="(val) => (insertedPage = val ?? null)"
+      v-model="insertedPage"
       placeholder="Page Number"
       data-test="page-number-input"
       style="width: 8em"
@@ -43,8 +40,7 @@
   <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"
-    :modelValue="insertedComment"
-    @update:modelValue="(val) => (insertedComment = val)"
+    v-model="insertedComment"
     data-test="comment-textarea"
     rows="5"
     :draggable="false"
@@ -126,7 +122,7 @@ function getFormData(): ExtendedDataPointMetaInfoType {
     comment: insertedComment.value ?? undefined,
     dataSource: {
       fileName: selectedDocumentMetaInformation.value?.documentName ?? undefined,
-      page: insertedPage.value ?? undefined,
+      page: insertedPage.value?.trim() || undefined,
       fileReference: selectedDocument.value ?? undefined,
       publicationDate: selectedDocumentMetaInformation.value?.publicationDate ?? undefined,
     },

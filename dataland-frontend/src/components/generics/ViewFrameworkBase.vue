@@ -62,7 +62,7 @@
             />
 
             <PrimeButton
-              v-if="isEditableByCurrentUser"
+              v-if="dataPointsAreEditableForCurrentUser"
               @click="editModeIsOn = !editModeIsOn"
               data-test="editDataPointsButton"
               :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
@@ -123,7 +123,7 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import {KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER} from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -172,6 +172,7 @@ const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 const editModeIsOn = ref(false);
+const hasUserAdminRights = ref(false);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -214,6 +215,10 @@ const reportingPeriodsPerFramework = computed(() =>
       metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod },
     }))
   )
+);
+
+const dataPointsAreEditableForCurrentUser = computed(
+    () => isEditableByCurrentUser.value && hasUserAdminRights.value
 );
 
 watch(
@@ -358,6 +363,7 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
 async function setViewPageAttributesForUser(): Promise<void> {
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
   hasUserUploaderRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
+  hasUserAdminRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
   if (!hasUserUploaderRights.value) {
     hasUserUploaderRights.value = await hasUserCompanyRoleForCompany(
