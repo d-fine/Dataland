@@ -123,7 +123,7 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import {KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER} from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -217,9 +217,7 @@ const reportingPeriodsPerFramework = computed(() =>
   )
 );
 
-const dataPointsAreEditableForCurrentUser = computed(
-    () => isEditableByCurrentUser.value && hasUserAdminRights.value
-);
+const dataPointsAreEditableForCurrentUser = computed(() => isEditableByCurrentUser.value && hasUserAdminRights.value);
 
 watch(
   () => props.companyID,
