@@ -1,6 +1,15 @@
 <template>
   <h4>Value</h4>
-  <InputNumber id="percentage" mode="decimal" suffix="%" :min="0" :max="100" fluid v-model="dataPointValue" />
+  <InputNumber
+    id="percentage"
+    mode="decimal"
+    suffix="%"
+    :min="0"
+    :max="100"
+    fluid
+    v-model="dataPointValue"
+    :maxFractionDigits="2"
+  />
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
