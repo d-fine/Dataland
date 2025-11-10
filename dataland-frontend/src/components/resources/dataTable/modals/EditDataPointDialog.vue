@@ -21,7 +21,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { QualityOptions, UploadedDataPoint } from '@clients/backend';
+import { QualityOptions, type UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
@@ -45,11 +45,11 @@ const buttonDisabled = ref(false);
 const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
 
 const extendedDataPointObject: ExtendedDataPointType = {
-  value: (() => {
+  value: ((): string | undefined => {
     const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
     return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
   })(),
-  quality: (() => {
+  quality: ((): string | undefined => {
     const quality = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
     return quality && Object.values(QualityOptions).includes(quality)
       ? quality
