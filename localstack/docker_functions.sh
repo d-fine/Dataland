@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
 
-login_to_docker_repository() {
-  echo "Please provide your GitHub credentials:"
-  echo "Note: Use your GitHub username and a GitHub Personal Access Token (PAT)"
-  echo ""
-  read -p "GitHub username: " github_user
-  read -sp "GitHub PAT: " github_token
-  echo ""
-  docker login ghcr.io -u "$github_user" -p "$github_token"
-}
-
 determine_compose_profiles() {
   local local_frontend="$1"
   local container_backend="$2"

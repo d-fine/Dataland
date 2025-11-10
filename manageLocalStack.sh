@@ -96,23 +96,22 @@ parse_arguments() {
   local do_stop=false
   local do_reset=false
   local do_start=false
-  local do_login=false
+  
   local self_signed=false
   local container_backend=false
 
   if [ $# -eq 0 ]; then
-    echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
+    echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
     echo "  --start: Start the development stack"
     echo "  --stop: Stop the development stack"
     echo "  --reset: Reset and restart the development stack from scratch"
-    echo "  --login: Login to Docker registry (ghcr.io)"
     echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
     echo "  --dev-env: Load environments/.env.dev before starting/resetting"
     echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
     echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
     echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
     echo ""
-    echo "Multiple options can be combined in any order. Execution order is: login, stop, reset, start"
+    echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
     exit 1
   fi
 
@@ -140,10 +139,6 @@ parse_arguments() {
         dev_env=true
         shift
         ;;
-      --login)
-        do_login=true
-        shift
-        ;;
       --self-signed-certs)
         self_signed=true
         shift
@@ -160,7 +155,7 @@ parse_arguments() {
         ;;
       *)
         echo "Unknown option: $1"
-        echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
+        echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
         exit 1
         ;;
     esac
@@ -170,9 +165,7 @@ parse_arguments() {
     load_dev_environment
   fi
 
-  if [ "$do_login" = true ]; then
-    login_to_docker_repository
-  fi
+  
 
   if [ "$do_stop" = true ]; then
     stop_development_stack
