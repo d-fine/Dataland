@@ -4,7 +4,13 @@
     {{ errorMessage }}
   </Message>
   <div style="display: flex; justify-content: flex-end; margin-top: var(--spacing-md)">
-    <PrimeButton label="SAVE CHANGES" icon="pi pi-save" @click="updateDataPoint" data-test="save-data-point-button" />
+    <PrimeButton
+      label="SAVE CHANGES"
+      icon="pi pi-save"
+      @click="updateDataPoint"
+      data-test="save-data-point-button"
+      :disabled="buttonDisabled"
+    />
   </div>
 </template>
 
@@ -34,6 +40,7 @@ const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
+const buttonDisabled = ref(false);
 
 const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
 
@@ -54,6 +61,7 @@ provide('companyId', companyId);
  */
 async function updateDataPoint(): Promise<void> {
   errorMessage.value = '';
+  buttonDisabled.value = true;
   try {
     const apiBody: UploadedDataPoint = {
       dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
@@ -63,7 +71,9 @@ async function updateDataPoint(): Promise<void> {
     };
     await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody, true);
     dialogRef?.value?.close({ dataUpdated: true });
-    emit('dataUpdated');
+    setTimeout(() => {
+      emit('dataUpdated');
+    }, 2000);
   } catch (error) {
     if (error instanceof AxiosError) {
       errorMessage.value = error.message;

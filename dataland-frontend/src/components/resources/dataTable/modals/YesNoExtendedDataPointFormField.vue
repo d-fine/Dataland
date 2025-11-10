@@ -1,11 +1,16 @@
 <template>
   <h4>Value</h4>
   <div style="gap: var(--spacing-xs); display: flex">
-    <RadioButton v-model="dataPointValue" :inputId="'yes-no-yes'" :value="'Yes'" data-test="yes-input" />
-    <label for="yes-no-yes">Yes</label>
-    <RadioButton v-model="dataPointValue" :inputId="'yes-no-no'" :value="'No'" data-test="no-input" />
-    <label for="yes-no-no">No</label>
+    <SelectButton
+      v-model="dataPointValue"
+      :options="options"
+      optionLabel="label"
+      optionValue="value"
+      :allowEmpty="true"
+      data-test="yes-no-select"
+    />
   </div>
+
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
@@ -17,7 +22,8 @@
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import { ref } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import RadioButton from 'primevue/radiobutton';
+import SelectButton from 'primevue/selectbutton';
+
 import {
   buildApiBody,
   type ExtendedDataPointType,
@@ -35,6 +41,10 @@ const dataPointValue = ref<string | null>(
 );
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
 const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType }>();
+const options = [
+  { label: 'Yes', value: 'Yes' },
+  { label: 'No', value: 'No' },
+];
 
 /**
  * Reference to the extended dialog to get form data
@@ -42,5 +52,6 @@ const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType
 function buildApiBodyWithExtendedInfo(): string {
   return buildApiBody(dataPointValue.value, undefined, extendedDialogRef.value?.getFormData());
 }
+
 defineExpose({ buildApiBodyWithExtendedInfo });
 </script>

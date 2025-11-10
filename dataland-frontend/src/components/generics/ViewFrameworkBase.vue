@@ -67,6 +67,7 @@
               data-test="editDataPointsButton"
               :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
               :icon="'pi pi-pencil'"
+              title="Enter Edit Mode to modify data points inline"
             />
             <PrimeButton
               v-if="isEditableByCurrentUser"
@@ -79,6 +80,7 @@
                   : 'pi pi-database'
               "
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+              title="Upload a dataset prefilled with data from the chosen reporting period"
             />
             <PrimeButton
               v-if="hasUserUploaderRights"
@@ -86,6 +88,7 @@
               label="NEW DATASET"
               data-test="goToNewDatasetButton"
               @click="linkToNewDataset"
+              title="Upload a new dataset for any framework"
             />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
