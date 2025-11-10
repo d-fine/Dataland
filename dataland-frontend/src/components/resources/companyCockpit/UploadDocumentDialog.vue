@@ -95,6 +95,7 @@
             v-model="publicationDate"
             :updateModelType="'date'"
             showIcon
+            dateFormat="D, M dd, yy"
             placeholder="Select publication date"
             data-test="publication-date"
           />
@@ -192,7 +193,8 @@ async function handleDocumentUpload(): Promise<void> {
     documentName: documentName.value,
     documentCategory: documentCategory.value!,
     companyIds: [props.companyId] as unknown as Set<string>,
-    publicationDate: publicationDate.value ? publicationDate.value.toISOString().split('T')[0] : undefined,
+    // 'en-CA' formats 'YYYY-MM-DD'
+    publicationDate: publicationDate.value ? publicationDate.value.toLocaleDateString('en-CA') : undefined,
     reportingPeriod: reportingPeriod.value ? reportingPeriod.value.getFullYear().toString() : undefined,
   };
   await documentControllerApi.postDocument(fileToUpload, documentMetaInfo);
