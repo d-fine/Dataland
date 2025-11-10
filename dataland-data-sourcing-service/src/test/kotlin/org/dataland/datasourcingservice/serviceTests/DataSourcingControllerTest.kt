@@ -28,6 +28,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultMatcher
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
@@ -67,6 +68,7 @@ class DataSourcingControllerTest(
 
     private val dataSourcingId = UUID.randomUUID()
     private val documentCollectorId = UUID.randomUUID()
+    private val providerCompanyId = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"
 
@@ -88,7 +90,7 @@ class DataSourcingControllerTest(
             mockDataSourcingValidator,
         )
 
-        stubRoleAssignments(adminUserId, emptyList())
+        stubRoleAssignments(adminUserId, documentCollectorId, emptyList())
 
         dataBaseCreationUtils.storeDataSourcing(
             dataSourcingId = dataSourcingId,
@@ -109,11 +111,12 @@ class DataSourcingControllerTest(
 
     private fun stubRoleAssignments(
         userId: UUID,
+        companyId: UUID,
         roles: List<CompanyRoleAssignmentExtended>,
     ) {
         doReturn(roles)
             .whenever(mockCompanyRolesControllerApi)
-            .getExtendedCompanyRoleAssignments(userId = userId, companyId = documentCollectorId)
+            .getExtendedCompanyRoleAssignments(userId = userId, companyId = companyId)
     }
 
     private fun performPatchDocumentsRequestAndExpect(resultMatcher: ResultMatcher) {
@@ -136,6 +139,15 @@ class DataSourcingControllerTest(
             ).andExpect(resultMatcher)
     }
 
+    private fun performGetDataSourcingByCompanyId(resultMatcher: ResultMatcher) {
+        mockMvc
+            .perform(
+                get("/data-sourcing/provider/$providerCompanyId")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(resultMatcher)
+    }
+
     @Test
     fun `admins can patch documents without company roles`() {
         setMockSecurityContext(dummyAdminAuthentication)
@@ -145,14 +157,14 @@ class DataSourcingControllerTest(
     @Test
     fun `regular users cannot patch documents without company roles`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, emptyList())
+        stubRoleAssignments(regularUserId, documentCollectorId, emptyList())
         performPatchDocumentsRequestAndExpect(status().isForbidden())
     }
 
     @Test
     fun `users with company roles can patch documents`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
         performPatchDocumentsRequestAndExpect(status().isOk())
     }
 
@@ -165,14 +177,42 @@ class DataSourcingControllerTest(
     @Test
     fun `regular users cannot patch next attempt date without company roles`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, emptyList())
+        stubRoleAssignments(regularUserId, documentCollectorId, emptyList())
         performPatchDateOfNextDocumentSourcingAttempt(status().isForbidden())
     }
 
     @Test
     fun `users with company roles can patch next attempt date`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
         performPatchDateOfNextDocumentSourcingAttempt(status().isOk())
+    }
+
+    @Test
+    fun `admins can get data sourcings by company ID`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+        performGetDataSourcingByCompanyId(status().isOk())
+    }
+
+    @Test
+    fun `regular users cannot get data sourcings by company ID without company roles`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
+        performGetDataSourcingByCompanyId(status().isForbidden())
+    }
+
+    @Test
+    fun `users with company roles can get data sourcings for their own company ID`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, providerCompanyId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        performGetDataSourcingByCompanyId(status().isOk())
+    }
+
+    @Test
+    fun `users with company roles cannot get data sourcings for other company IDs`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        performGetDataSourcingByCompanyId(status().isForbidden())
     }
 }

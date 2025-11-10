@@ -90,7 +90,9 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/provider/{providerCompanyId}"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToCompany(#providerCompanyId)",
+    )
     fun getDataSourcingForCompanyId(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_DESCRIPTION,

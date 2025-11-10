@@ -20,19 +20,19 @@ class AuthorizationUtils
     ) {
         /**
          * Checks whether the specified user has a CompanyRole in the specified company.
-         * @param userId of the user in question
          * @param companyId of the company in question
          * @return true if the user has a CompanyRole in the company, false otherwise
          */
-        private fun doesUserBelongToCompany(
-            userId: String,
-            companyId: String,
-        ): Boolean =
-            companyRolesControllerApi
+        fun doesUserBelongToCompany(companyId: String): Boolean {
+            val userId = DatalandAuthentication.fromContextOrNull()?.userId
+            if (userId == null) return false
+
+            return companyRolesControllerApi
                 .getExtendedCompanyRoleAssignments(
                     userId = ValidationUtils.convertToUUID(userId),
                     companyId = ValidationUtils.convertToUUID(companyId),
                 ).isNotEmpty()
+        }
 
         /**
          * Checks whether the specified user belongs to the document collector company
@@ -43,11 +43,10 @@ class AuthorizationUtils
         fun doesUserBelongToDocumentCollector(dataSourcingId: String): Boolean {
             val dataSourcing = dataSourcingRepository.findByIdOrNull(ValidationUtils.convertToUUID(dataSourcingId))
 
-            val userId = DatalandAuthentication.fromContextOrNull()?.userId
             val documentCollectorId = dataSourcing?.documentCollector
 
-            if (userId == null || documentCollectorId == null) return false
+            if (documentCollectorId == null) return false
 
-            return doesUserBelongToCompany(userId, documentCollectorId.toString())
+            return doesUserBelongToCompany(documentCollectorId.toString())
         }
     }
