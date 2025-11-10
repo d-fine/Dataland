@@ -36,7 +36,7 @@
     <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
   </div>
 
-  <PrimeButton label="Upload Document" icon="pi pi-upload" variant="link" @click="handleUploadDocumentClick" />
+  <PrimeButton label="Go to documents page" variant="link" @click="handleUploadDocumentClick" />
   <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"

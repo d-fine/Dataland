@@ -1,6 +1,7 @@
 <template>
   <h4>Value</h4>
   <InputNumber
+    :placeholder="'Insert Value'"
     id="percentage"
     mode="decimal"
     suffix="%"

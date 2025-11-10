@@ -21,7 +21,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import type { UploadedDataPoint } from '@clients/backend';
+import { QualityOptions, UploadedDataPoint } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
@@ -45,8 +45,16 @@ const buttonDisabled = ref(false);
 const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
 
 const extendedDataPointObject: ExtendedDataPointType = {
-  value: unref(dataPoint?.displayValue?.innerContents?.displayValue).trim(),
-  quality: unref(dataPoint?.displayValue?.quality ?? ''),
+  value: (() => {
+    const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
+    return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
+  })(),
+  quality: (() => {
+    const quality = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
+    return quality && Object.values(QualityOptions).includes(quality)
+      ? quality
+      : unref(dataPoint?.displayValue?.quality ?? '');
+  })(),
   comment: unref(dataPoint?.displayValue?.comment ?? ''),
   dataSource: {
     fileName: unref(dataPoint?.displayValue?.dataSource?.fileName ?? ''),
@@ -80,6 +88,8 @@ async function updateDataPoint(): Promise<void> {
     } else {
       errorMessage.value = 'Failed to edit Data Point.';
     }
+  } finally {
+    buttonDisabled.value = false;
   }
 }
 </script>
