@@ -75,11 +75,12 @@ class EuTaxonomyAssuranceComponent(
         createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder)
     }
 
+    override fun getUploadComponentName(): String = "AssuranceFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "AssuranceFormField",
         )
     }
 
@@ -113,6 +114,8 @@ class EuTaxonomyAssuranceComponent(
                         ),
                     ),
                 ),
+            uploadComponentName = getUploadComponentName(),
+            dataPointTypeId = identifier,
         )
     }
 

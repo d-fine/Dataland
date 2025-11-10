@@ -45,17 +45,17 @@ open class IntegerComponent(
         )
     }
 
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "NumberFormField"
+            is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
+            else ->
+                throw IllegalArgumentException("IntegerComponent does not support document support '$documentSupport")
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName =
-            when (documentSupport) {
-                is NoDocumentSupport -> "NumberFormField"
-                is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-                else ->
-                    throw IllegalArgumentException("IntegerComponent does not support document support '$documentSupport")
-            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = componentName,
             validation = "integer${getMinMaxValidationRule(minimumValue, maximumValue)?.let { "|$it" } ?: ""}",
             unit = constantUnitSuffix,
         )

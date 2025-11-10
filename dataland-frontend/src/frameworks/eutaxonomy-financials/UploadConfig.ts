@@ -108,7 +108,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -119,7 +119,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total amount of assets which are Taxonomy-eligible for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -130,7 +130,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total amount of assets which are Taxonomy-aligned for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -141,7 +141,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total amount of Taxonomy-aligned assets which are Use of Proceeds for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -152,7 +152,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total amount of Taxonomy-aligned assets which are Transitional for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -163,7 +163,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total amount of Taxonomy-aligned assets which are Enabling for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -986,7 +986,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - Turnover based monetary amount.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -997,7 +997,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1372,7 +1372,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1383,7 +1383,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-eligble but not Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1394,7 +1394,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total of Absolute Premiums of Taxonomy-non-eligible Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1471,7 +1471,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities, with following weights for investments in undertakings - Turnover based monetary amount.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1482,7 +1482,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1857,7 +1857,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -2171,7 +2171,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -2484,7 +2484,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               'Total Revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -2799,7 +2799,7 @@ export const eutaxonomyFinancialsDataModel = [
             description:
               "Total assets invested under investment firms\' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',

@@ -43,6 +43,11 @@ open class ComponentBase(
     var dataPointTypeName: String? = null
 
     /**
+     * Data point type identifier for assembled datasets
+     */
+    var dataPointTypeId: String? = null
+
+    /**
      * Shorter version of a human-readable name describing the component
      */
     var aliasExport: String? = null
@@ -240,6 +245,15 @@ open class ComponentBase(
      * using the default generator for this component
      */
     open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder): Unit =
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement view config conversion.",
+        )
+
+    /**
+     * Returns the name of the upload component.
+     */
+    open fun getUploadComponentName(): String =
         throw NotImplementedError(
             "This component (${javaClass.canonicalName})" +
                 " did not implement view config conversion.",

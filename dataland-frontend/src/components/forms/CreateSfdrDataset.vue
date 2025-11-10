@@ -138,7 +138,7 @@ import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { HighImpactClimateSectorsNaceCodes } from '@/types/HighImpactClimateSectors';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
@@ -188,7 +188,7 @@ export default defineComponent({
     HighImpactClimateSectorsFormField,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
-    CurrencyDataPointFormField,
+    CurrencyExtendedDataPointFormField,
     YesNoFormField,
     YesNoNaFormField,
     YesNoBaseDataPointFormField,

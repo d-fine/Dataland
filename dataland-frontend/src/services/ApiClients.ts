@@ -16,6 +16,7 @@ import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
+import { DataPointControllerApi } from '@clients/backend/api';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -35,6 +36,7 @@ interface ApiClients {
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
   emailAddressController: EmailAddressControllerApi;
+  dataPointController: DataPointControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -97,6 +99,7 @@ export class ApiClientProvider {
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
       emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
+      dataPointController: this.getClientFactory('/api')(DataPointControllerApi),
     };
   }
 
