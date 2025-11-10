@@ -131,7 +131,7 @@ describeIf(
       cy.contains('span.table-left-label', 'Quality').closest('th').next('td').should('contain', 'Reported');
     });
 
-    it.only('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
       navigateToEditMode();
       openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
 
