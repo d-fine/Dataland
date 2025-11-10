@@ -70,8 +70,8 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 * * MON")
         fun scheduledWeeklyEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
-            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
         /**
@@ -81,8 +81,8 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 * * *")
         fun scheduledDailyEmailSending() {
             val notificationFrequency = NotificationFrequency.Daily
-            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
-            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
         /**
@@ -92,13 +92,13 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 1 * *")
         fun scheduledMonthlyEmailSending() {
             val notificationFrequency = NotificationFrequency.Daily
-            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
-            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
         private fun sendEmailForTimeInterval(
             notificationFrequency: NotificationFrequency,
-            timeStampForInteval: Long,
+            timeStampForInterval: Long,
         ) {
             val portfoliosWithWeeklyUpdates =
                 portfolioRepository.findAllByNotificationFrequencyAndMonitoredIsTrue(notificationFrequency)
@@ -119,7 +119,7 @@ class NotificationScheduler
                 val eventEntitiesToProcess =
                     getRelevantNotificationEvents(
                         allCompanyIdFrameworkPairs,
-                        timeStampForInteval,
+                        timeStampForInterval,
                     )
 
                 processNotificationEvents(
