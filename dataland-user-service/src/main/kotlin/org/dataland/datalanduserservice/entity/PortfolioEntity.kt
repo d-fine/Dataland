@@ -4,6 +4,8 @@ import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -42,6 +44,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
+    @Enumerated(EnumType.STRING)
     val notificationFrequency: NotificationFrequency = NotificationFrequency.NoNotifications,
 ) {
     /**

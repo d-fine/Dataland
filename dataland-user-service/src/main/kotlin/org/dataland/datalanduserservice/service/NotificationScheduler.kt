@@ -111,15 +111,26 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInterval: Long,
         ) {
-            val portfoliosWithWeeklyUpdates =
+            val portfoliosWithUpdates =
                 portfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency)
 
-            val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
+            val portfoliosGroupedByUser = portfoliosWithUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
                 val allCompanyIdFrameworkPairs =
                     userPortfolios.flatMap { portfolio ->
-                        val frameworks = portfolio.monitoredFrameworks ?: emptySet()
+                        val frameworks =
+                            (portfolio.monitoredFrameworks ?: emptySet()).flatMap { fw ->
+                                when (fw) {
+                                    "eutaxonomy" ->
+                                        listOf(
+                                            "eutaxonomy-financials",
+                                            "eutaxonomy-non-financials",
+                                            "nuclear-and-gas",
+                                        )
+                                    else -> listOf(fw)
+                                }
+                            }
                         portfolio.companyIds.flatMap { companyId ->
                             frameworks.map { framework ->
                                 Pair(ValidationUtils.convertToUUID(companyId), DataTypeEnum.valueOf(framework))

@@ -26,6 +26,7 @@ data class NotificationEventEntity(
     val notificationEventType: NotificationEventType,
     val userId: UUID,
     val companyId: UUID,
+    @Enumerated(EnumType.STRING)
     val framework: DataTypeEnum,
     val reportingPeriod: String,
     val creationTimestamp: Long = Instant.now().toEpochMilli(),
