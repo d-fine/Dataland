@@ -120,20 +120,22 @@ class NotificationScheduler
                 val allCompanyIdFrameworkPairs =
                     userPortfolios.flatMap { portfolio ->
                         val frameworks =
-                            (portfolio.monitoredFrameworks ?: emptySet()).flatMap { fw ->
-                                when (fw) {
+                            (portfolio.monitoredFrameworks ?: emptySet()).flatMap { framework ->
+                                when (framework) {
                                     "eutaxonomy" ->
                                         listOf(
                                             "eutaxonomy-financials",
                                             "eutaxonomy-non-financials",
                                             "nuclear-and-gas",
                                         )
-                                    else -> listOf(fw)
+                                    else -> listOf(framework)
                                 }
                             }
                         portfolio.companyIds.flatMap { companyId ->
-                            frameworks.map { framework ->
-                                Pair(ValidationUtils.convertToUUID(companyId), DataTypeEnum.valueOf(framework))
+                            frameworks.mapNotNull { framework ->
+                                DataTypeEnum
+                                    .decode(framework)
+                                    ?.let { Pair(ValidationUtils.convertToUUID(companyId), it) }
                             }
                         }
                     }
