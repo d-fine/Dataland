@@ -100,7 +100,7 @@ class NotificationScheduler
 
             val queryToExecute =
                 """SELECT * FROM notification_events n
-                WHERE (n.company_id, b.framework) IN ($formattedTuples)
+                WHERE (n.company_id, n.framework) IN ($formattedTuples)
                 AND n.creation_timestamp >= '$timeStamp'"""
 
             return if (companyIdFrameworkPairs.isNotEmpty()) {
