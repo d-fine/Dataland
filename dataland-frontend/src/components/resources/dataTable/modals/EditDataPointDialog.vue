@@ -50,7 +50,8 @@ const extendedDataPointObject: ExtendedDataPointType = {
     return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
   })(),
   quality: ((): string | undefined => {
-    const valueOrPotentialQuality = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
+    const valueOrPotentialQuality =
+      unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
     return valueOrPotentialQuality && Object.values(QualityOptions).includes(valueOrPotentialQuality)
       ? valueOrPotentialQuality
       : unref(dataPoint?.displayValue?.quality ?? '');

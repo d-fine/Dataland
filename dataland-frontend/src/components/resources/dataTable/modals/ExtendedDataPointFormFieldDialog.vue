@@ -36,7 +36,8 @@
     <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
   </div>
 
-  <PrimeButton label="Go to documents page" variant="link" @click="handleUploadDocumentClick" />
+  <PrimeButton label="Go to documents page" variant="link" as="a" :href="`/companies/${companyId}/documents`" />
+
   <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"

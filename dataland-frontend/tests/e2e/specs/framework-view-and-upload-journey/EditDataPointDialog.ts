@@ -90,9 +90,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input')
-            .should('be.visible')
-            .should('have.value', '17,992.73');
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '17,992.73');
         });
 
       cy.get('[data-test="quality-select"]')
