@@ -101,7 +101,7 @@ class NotificationScheduler
             timeStampForInteval: Long,
         ) {
             val portfoliosWithWeeklyUpdates =
-                portfolioRepository.findAllByNotificationFrequencyAndMonitoredIsTrue(notificationFrequency)
+                portfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency)
 
             val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
 
