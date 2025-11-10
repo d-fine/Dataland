@@ -53,6 +53,17 @@ class NotificationScheduler
         }
 
         /**
+         * FOR TESTING PURPOSES ONLY
+         * Scheduled method to send test summary emails.
+         */
+        @Scheduled(cron = "0 1/10 * * * *")
+        fun scheduledTestEmailSending() {
+            val notificationFrequency = NotificationFrequency.Weekly
+            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+        }
+
+        /**
          * Scheduled method to send weekly summary emails.
          * Runs every monday at 7 am.
          */
@@ -89,7 +100,8 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInteval: Long,
         ) {
-            val portfoliosWithWeeklyUpdates = portfolioRepository.findAllByNotificationFrequency(notificationFrequency)
+            val portfoliosWithWeeklyUpdates =
+                portfolioRepository.findAllByNotificationFrequencyAndMonitoredIsTrue(notificationFrequency)
 
             val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
 
@@ -99,7 +111,6 @@ class NotificationScheduler
                         val frameworks = portfolio.monitoredFrameworks ?: emptySet()
                         portfolio.companyIds.flatMap { companyId ->
                             frameworks.map { framework ->
-                                // Adapt companyId to UUID if necessary
                                 Pair(ValidationUtils.convertToUUID(companyId), DataTypeEnum.valueOf(framework))
                             }
                         }
