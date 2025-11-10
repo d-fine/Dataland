@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.BaseDataPointYesNo
 import org.dataland.datalandbackend.openApiClient.model.BaseDocumentReference
@@ -31,11 +32,11 @@ class DocumentDeletionControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentControllerApiAccessor = DocumentControllerApiAccessor()
     private val documentControllerClient = documentControllerApiAccessor.documentControllerApi
-    private val objectMapperForJsonAssertion = ObjectMapper()
+    private val objectMapperForJsonAssertion = ObjectMapper().registerModule(JavaTimeModule())
 
     @BeforeEach
     fun setupAuth() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
     }
 
     companion object {
@@ -97,7 +98,9 @@ endobj"""
     fun `test that admin can delete any document`() {
         val documentId = uploadDocumentAndGetId()
 
-        documentControllerClient.deleteDocument(documentId)
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            documentControllerClient.deleteDocument(documentId)
+        }
 
         assertDocumentDeleted(documentId)
     }
@@ -157,7 +160,7 @@ endobj"""
     fun `test that document with data point reference in Rejected status can be deleted`() {
         val documentId = uploadDocumentAndGetId()
 
-        uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
+        uploadDataPointWithDocumentReference(documentId)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -189,8 +192,7 @@ endobj"""
         val documentId = uploadDocumentAndGetId()
         awaitDocumentAvailable(documentId)
 
-        val dataPointId = uploadDataPointWithDocumentReference(documentId, QaStatus.Rejected)
-        awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
+        val dataPointId = uploadDataPointWithDocumentReference(documentId)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -253,7 +255,6 @@ endobj"""
     private fun uploadDataPoint(
         companyId: String,
         dataPointJson: String,
-        bypassQa: Boolean,
     ): DataPointMetaInformation =
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val uploadedDataPoint =
@@ -263,7 +264,7 @@ endobj"""
                     companyId = companyId,
                     reportingPeriod = "2022",
                 )
-            Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, bypassQa)
+            Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, false)
         }
 
     private fun uploadLksgDatasetWithDocumentReference(
@@ -275,6 +276,7 @@ endobj"""
             apiAccessor.testDataProviderForLksgData
                 .getTData(1)
                 .first()
+
         val testDataWithDocumentReference = addDocumentReferenceToLksgDataset(testData, documentId)
 
         val dataId =
@@ -288,6 +290,14 @@ endobj"""
 
         if (qaStatus != null) {
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                Awaitility
+                    .await()
+                    .atMost(10000, TimeUnit.MILLISECONDS)
+                    .pollInterval(500, TimeUnit.MILLISECONDS)
+                    .ignoreExceptions()
+                    .untilAsserted {
+                        apiAccessor.qaServiceControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataId))
+                    }
                 apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, qaStatus)
                 awaitUntilQaStatusEquals(dataId, qaStatus)
             }
@@ -296,31 +306,24 @@ endobj"""
         return dataId
     }
 
-    private fun uploadDataPointWithDocumentReference(
-        documentId: String,
-        qaStatus: QaStatus? = null,
-    ): String {
+    private fun uploadDataPointWithDocumentReference(documentId: String): String {
         val companyId = createCompany()
         val dataPointJson =
             """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId" } }"""
 
-        val dataPointId = uploadDataPoint(companyId, dataPointJson, bypassQa = false).dataPointId
+        val dataPointId = uploadDataPoint(companyId, dataPointJson).dataPointId
 
-        if (qaStatus == QaStatus.Rejected) {
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                // Wait for QA service to process the data point upload message
-                Awaitility
-                    .await()
-                    .atMost(3000, TimeUnit.MILLISECONDS)
-                    .pollInterval(200, TimeUnit.MILLISECONDS)
-                    .ignoreExceptions()
-                    .untilAsserted {
-                        apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
-                    }
-                // Now it's safe to change the status
-                apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
-                awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
-            }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            Awaitility
+                .await()
+                .atMost(10000, TimeUnit.MILLISECONDS)
+                .pollInterval(500, TimeUnit.MILLISECONDS)
+                .ignoreExceptions()
+                .untilAsserted {
+                    apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
+                }
+            apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
+            awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
         }
 
         return dataPointId
@@ -356,11 +359,16 @@ endobj"""
         dataPointId: String,
         expectedStatus: QaStatus,
     ) {
-        Awaitility.await().atMost(3000, TimeUnit.MILLISECONDS).pollInterval(200, TimeUnit.MILLISECONDS).ignoreExceptions().untilAsserted {
-            val qaReviews = apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
-            val latestReview = qaReviews.firstOrNull()
-            assertEquals(expectedStatus, latestReview?.qaStatus)
-        }
+        Awaitility
+            .await()
+            .atMost(3000, TimeUnit.MILLISECONDS)
+            .pollInterval(200, TimeUnit.MILLISECONDS)
+            .ignoreExceptions()
+            .untilAsserted {
+                val qaReviews = apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
+                val latestReview = qaReviews.firstOrNull()
+                assertEquals(expectedStatus, latestReview?.qaStatus)
+            }
     }
 
     private fun createUniquePdf(): File {
