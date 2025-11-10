@@ -11,9 +11,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyRightsTestUtils
 import org.dataland.e2etests.utils.CompanyRolesTestUtils
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.lang.Thread.sleep
@@ -22,70 +20,52 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingServiceTest {
-    companion object {
-        private val apiAccessor = ApiAccessor()
-        private val companyRightsTestUtils = CompanyRightsTestUtils()
-        private val companyRolesTestUtils = CompanyRolesTestUtils()
+    private val apiAccessor = ApiAccessor()
+    private val companyRightsTestUtils = CompanyRightsTestUtils()
+    private val companyRolesTestUtils = CompanyRolesTestUtils()
 
-        private fun uploadCompanyAsUploader(): String =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
-
-        private fun assignCompanyOwnerRole(
-            companyId: String,
-            userId: UUID,
-        ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
+    private fun uploadCompanyAsUploader(): String =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         }
 
-        private fun removeCompanyOwnerRole(
-            companyId: String,
-            userId: UUID,
-        ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
-        }
-
-        private fun makeCompanyMember(companyId: String) =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                companyRightsTestUtils.assignCompanyRight(
-                    CompanyRightAssignmentString.CompanyRight.Member,
-                    UUID.fromString(companyId),
-                )
-            }
-
-        private fun removeCompanyMemberRights(companyId: String) =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                companyRightsTestUtils.removeCompanyRight(
-                    CompanyRightAssignmentString.CompanyRight.Member,
-                    UUID.fromString(companyId),
-                )
-            }
-
-        private val billableCompanyIdA = uploadCompanyAsUploader()
-        private val billableCompanyIdB = uploadCompanyAsUploader()
-
-        private val dataReaderUserId = TechnicalUser.Reader.technicalUserId
-        private val dataUploaderUserId = TechnicalUser.Uploader.technicalUserId
-
-        @BeforeAll
-        @JvmStatic
-        fun setup() {
-            assignCompanyOwnerRole(billableCompanyIdA, UUID.fromString(dataReaderUserId))
-            assignCompanyOwnerRole(billableCompanyIdB, UUID.fromString(dataUploaderUserId))
-            makeCompanyMember(billableCompanyIdA)
-            makeCompanyMember(billableCompanyIdB)
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun cleanup() {
-            removeCompanyOwnerRole(billableCompanyIdA, UUID.fromString(dataReaderUserId))
-            removeCompanyOwnerRole(billableCompanyIdB, UUID.fromString(dataUploaderUserId))
-            removeCompanyMemberRights(billableCompanyIdA)
-            removeCompanyMemberRights(billableCompanyIdB)
-        }
+    private fun assignCompanyOwnerRole(
+        companyId: String,
+        userId: UUID,
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
     }
+
+    private fun removeCompanyOwnerRole(
+        companyId: String,
+        userId: UUID,
+    ) = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), userId)
+    }
+
+    private fun makeCompanyMember(companyId: String) =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            companyRightsTestUtils.assignCompanyRight(
+                CompanyRightAssignmentString.CompanyRight.Member,
+                UUID.fromString(companyId),
+            )
+        }
+
+    private fun removeCompanyMemberRights(companyId: String) =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            companyRightsTestUtils.removeCompanyRight(
+                CompanyRightAssignmentString.CompanyRight.Member,
+                UUID.fromString(companyId),
+            )
+        }
+
+    private val billableCompanyIdReaderA = uploadCompanyAsUploader()
+    private val billableCompanyIdReaderB = uploadCompanyAsUploader()
+    private val billableCompanyIdReaderC = uploadCompanyAsUploader()
+    private val billableCompanyIdUploader = uploadCompanyAsUploader()
+
+    private val dataReaderUserId = TechnicalUser.Reader.technicalUserId
+    private val dataUploaderUserId = TechnicalUser.Uploader.technicalUserId
 
     private val initialCredit = BigDecimal("10.0")
 
@@ -122,42 +102,64 @@ class AccountingServiceTest {
 
     @Test
     fun `post a transaction then check the balance`() {
-        postTransaction(billableCompanyIdA)
-        val balance = getBalance(billableCompanyIdA)
+        assignCompanyOwnerRole(billableCompanyIdReaderA, UUID.fromString(dataReaderUserId))
+        makeCompanyMember(billableCompanyIdReaderA)
+
+        postTransaction(billableCompanyIdReaderA)
+        val balance = getBalance(billableCompanyIdReaderA)
         assertEquals(initialCredit, balance)
+
+        removeCompanyOwnerRole(billableCompanyIdReaderA, UUID.fromString(dataReaderUserId))
+        removeCompanyMemberRights(billableCompanyIdReaderA)
     }
 
     @Test
     fun `post a transaction then add a request and set it to processing and check the balance`() {
-        postTransaction(billableCompanyIdA)
+        assignCompanyOwnerRole(billableCompanyIdReaderB, UUID.fromString(dataReaderUserId))
+        makeCompanyMember(billableCompanyIdReaderB)
+
+        postTransaction(billableCompanyIdReaderB)
 
         val requestedCompanyId = uploadCompanyAsUploader()
         val requestId = createDummyRequestForCompany(requestedCompanyId)
         patchRequestStateToProcessing(requestId)
 
         sleep(2000)
-        assertEquals(initialCredit - BigDecimal(1.0), getBalance(billableCompanyIdA))
+        assertEquals(initialCredit - BigDecimal(1.0), getBalance(billableCompanyIdReaderB))
+
+        removeCompanyOwnerRole(billableCompanyIdReaderB, UUID.fromString(dataReaderUserId))
+        removeCompanyMemberRights(billableCompanyIdReaderB)
     }
 
     @Test
     fun `post a transaction then add two requests from different users for the same requestedCompanyId and check the balance`() {
-        postTransaction(billableCompanyIdA)
+        assignCompanyOwnerRole(billableCompanyIdReaderC, UUID.fromString(dataReaderUserId))
+        makeCompanyMember(billableCompanyIdReaderC)
+        assignCompanyOwnerRole(billableCompanyIdUploader, UUID.fromString(dataUploaderUserId))
+        makeCompanyMember(billableCompanyIdUploader)
+
+        postTransaction(billableCompanyIdReaderA)
 
         val requestedCompanyId = uploadCompanyAsUploader()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val requestIdA = createDummyRequestForCompany(requestedCompanyId)
+        val requestIdReader = createDummyRequestForCompany(requestedCompanyId)
 
-        patchRequestStateToProcessing(requestIdA)
+        patchRequestStateToProcessing(requestIdReader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val requestIdB = createDummyRequestForCompany(requestedCompanyId)
+        val requestIdUploader = createDummyRequestForCompany(requestedCompanyId)
 
-        patchRequestStateToProcessing(requestIdB)
+        patchRequestStateToProcessing(requestIdUploader)
 
         sleep(2000)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertEquals(initialCredit - BigDecimal(0.5), getBalance(billableCompanyIdA))
+        assertEquals(initialCredit - BigDecimal(0.5), getBalance(billableCompanyIdReaderC))
+
+        removeCompanyOwnerRole(billableCompanyIdReaderC, UUID.fromString(dataReaderUserId))
+        removeCompanyMemberRights(billableCompanyIdReaderC)
+        removeCompanyOwnerRole(billableCompanyIdUploader, UUID.fromString(dataUploaderUserId))
+        removeCompanyMemberRights(billableCompanyIdUploader)
     }
 }
