@@ -100,7 +100,8 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInteval: Long,
         ) {
-            val portfoliosWithWeeklyUpdates = portfolioRepository.findAllByNotificationFrequency(notificationFrequency)
+            val portfoliosWithWeeklyUpdates =
+                portfolioRepository.findAllByNotificationFrequencyAndMonitoredIsTrue(notificationFrequency)
 
             val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
 
@@ -110,7 +111,6 @@ class NotificationScheduler
                         val frameworks = portfolio.monitoredFrameworks ?: emptySet()
                         portfolio.companyIds.flatMap { companyId ->
                             frameworks.map { framework ->
-                                // Adapt companyId to UUID if necessary
                                 Pair(ValidationUtils.convertToUUID(companyId), DataTypeEnum.valueOf(framework))
                             }
                         }

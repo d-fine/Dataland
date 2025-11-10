@@ -66,7 +66,7 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     ): Boolean
 
     /**
-     * Find all portfolios with specific notification frequency
+     * Find all portfolios with specific notification frequency that are monitored
      */
-    fun findAllByNotificationFrequency(notificationFrequency: NotificationFrequency): List<PortfolioEntity>
+    fun findAllByNotificationFrequencyAndMonitoredIsTrue(notificationFrequency: NotificationFrequency): List<PortfolioEntity>
 }
