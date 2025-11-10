@@ -36,10 +36,8 @@ import java.util.UUID
 @AutoConfigureMockMvc
 class DataSourcingControllerTest(
     @Autowired private val dataSourcingRepository: DataSourcingRepository,
+    @Autowired private val mockMvc: MockMvc,
 ) {
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
     @MockitoBean
     private lateinit var mockCompanyRolesControllerApi: CompanyRolesControllerApi
 
@@ -51,6 +49,7 @@ class DataSourcingControllerTest(
     private val mockSecurityContext = mock<SecurityContext>()
 
     private val adminUserId = UUID.randomUUID()
+    private val regularUserId = UUID.randomUUID()
 
     private val dummyAdminAuthentication =
         AuthenticationMock.mockJwtAuthentication(
@@ -58,8 +57,6 @@ class DataSourcingControllerTest(
             userId = adminUserId.toString(),
             roles = setOf(DatalandRealmRole.ROLE_ADMIN),
         )
-
-    private val regularUserId = UUID.randomUUID()
 
     private val dummyUserAuthentication =
         AuthenticationMock.mockJwtAuthentication(
@@ -71,6 +68,17 @@ class DataSourcingControllerTest(
     private val dataSourcingId = UUID.randomUUID()
     private val documentCollectorId = UUID.randomUUID()
     private val documentId = "my-document-hash"
+    private val dateOfNextSourcingAttempt = "2026-01-01"
+
+    private val companyRoleAssignmentForRegularUserInDocumentCollector =
+        CompanyRoleAssignmentExtended(
+            companyRole = CompanyRole.Member,
+            userId = regularUserId.toString(),
+            companyId = documentCollectorId.toString(),
+            email = "test@example.com",
+            firstName = "Jane",
+            lastName = "Doe",
+        )
 
     @BeforeEach
     fun setup() {
@@ -80,10 +88,7 @@ class DataSourcingControllerTest(
             mockDataSourcingValidator,
         )
 
-        doReturn(emptyList<CompanyRoleAssignmentExtended>()).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
-            userId = adminUserId,
-            companyId = documentCollectorId,
-        )
+        stubRoleAssignments(adminUserId, emptyList())
 
         dataBaseCreationUtils.storeDataSourcing(
             dataSourcingId = dataSourcingId,
@@ -102,6 +107,15 @@ class DataSourcingControllerTest(
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
+    private fun stubRoleAssignments(
+        userId: UUID,
+        roles: List<CompanyRoleAssignmentExtended>,
+    ) {
+        doReturn(roles)
+            .whenever(mockCompanyRolesControllerApi)
+            .getExtendedCompanyRoleAssignments(userId = userId, companyId = documentCollectorId)
+    }
+
     private fun performPatchDocumentsRequestAndExpect(resultMatcher: ResultMatcher) {
         mockMvc
             .perform(
@@ -112,48 +126,53 @@ class DataSourcingControllerTest(
             ).andExpect(resultMatcher)
     }
 
-    private val companyRoleAssignmentForRegularUserInDocumentCollector =
-        CompanyRoleAssignmentExtended(
-            companyRole = CompanyRole.Member,
-            userId = regularUserId.toString(),
-            companyId = documentCollectorId.toString(),
-            email = "test@example.com",
-            firstName = "Jane",
-            lastName = "Doe",
-        )
+    private fun performPatchDateOfNextDocumentSourcingAttempt(resultMatcher: ResultMatcher) {
+        mockMvc
+            .perform(
+                patch("/data-sourcing/$dataSourcingId/document-sourcing-attempt")
+                    .queryParam("dateOfNextDocumentSourcingAttempt", dateOfNextSourcingAttempt)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(resultMatcher)
+    }
 
     @Test
-    fun `check that admins can patch documents of a data sourcing even if they have no company roles`() {
+    fun `admins can patch documents without company roles`() {
         setMockSecurityContext(dummyAdminAuthentication)
-
         performPatchDocumentsRequestAndExpect(status().isOk())
     }
 
     @Test
-    fun `check that regular users cannot patch documents of a data sourcing without proper company roles`() {
+    fun `regular users cannot patch documents without company roles`() {
         setMockSecurityContext(dummyUserAuthentication)
-
-        doReturn(
-            emptyList<CompanyRoleAssignmentExtended>(),
-        ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
-            userId = regularUserId,
-            companyId = documentCollectorId,
-        )
-
+        stubRoleAssignments(regularUserId, emptyList())
         performPatchDocumentsRequestAndExpect(status().isForbidden())
     }
 
     @Test
-    fun `check that users belonging to the document collector company can patch documents of a data sourcing`() {
+    fun `users with company roles can patch documents`() {
         setMockSecurityContext(dummyUserAuthentication)
-
-        doReturn(
-            listOf(companyRoleAssignmentForRegularUserInDocumentCollector),
-        ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
-            userId = regularUserId,
-            companyId = documentCollectorId,
-        )
-
+        stubRoleAssignments(regularUserId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
         performPatchDocumentsRequestAndExpect(status().isOk())
+    }
+
+    @Test
+    fun `admins can patch next document sourcing attempt date`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+        performPatchDateOfNextDocumentSourcingAttempt(status().isOk())
+    }
+
+    @Test
+    fun `regular users cannot patch next attempt date without company roles`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, emptyList())
+        performPatchDateOfNextDocumentSourcingAttempt(status().isForbidden())
+    }
+
+    @Test
+    fun `users with company roles can patch next attempt date`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        performPatchDateOfNextDocumentSourcingAttempt(status().isOk())
     }
 }

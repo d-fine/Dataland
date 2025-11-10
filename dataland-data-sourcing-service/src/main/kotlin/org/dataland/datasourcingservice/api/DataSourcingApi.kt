@@ -308,7 +308,9 @@ interface DataSourcingApi {
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}/document-sourcing-attempt"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToDocumentCollector(#dataSourcingId)",
+    )
     fun patchDateOfNextDocumentSourcingAttempt(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,

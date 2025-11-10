@@ -37,7 +37,6 @@ class AuthorizationUtils
         /**
          * Checks whether the specified user belongs to the document collector company
          * associated with the specified data sourcing.
-         * @param userId of the user in question
          * @param dataSourcingId of the data sourcing in question
          * @return true if the user belongs to the document collector company, false otherwise
          */
