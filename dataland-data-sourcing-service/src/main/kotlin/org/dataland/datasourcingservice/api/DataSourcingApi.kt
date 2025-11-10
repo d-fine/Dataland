@@ -157,7 +157,9 @@ interface DataSourcingApi {
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}/state"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.canUserPatchState(#dataSourcingId, #state)",
+    )
     fun patchDataSourcingState(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,

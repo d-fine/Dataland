@@ -14,6 +14,9 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -68,19 +71,26 @@ class DataSourcingControllerTest(
 
     private val dataSourcingId = UUID.randomUUID()
     private val documentCollectorId = UUID.randomUUID()
+    private val dataExtractorId = UUID.randomUUID()
     private val providerCompanyId = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"
 
-    private val companyRoleAssignmentForRegularUserInDocumentCollector =
+    private val generalMemberAssignment =
         CompanyRoleAssignmentExtended(
             companyRole = CompanyRole.Member,
             userId = regularUserId.toString(),
-            companyId = documentCollectorId.toString(),
+            companyId = providerCompanyId.toString(),
             email = "test@example.com",
             firstName = "Jane",
             lastName = "Doe",
         )
+
+    private val memberAssignmentForDocumentCollector =
+        generalMemberAssignment.copy(companyId = documentCollectorId.toString())
+
+    private val memberAssignmentForDataExtractor =
+        generalMemberAssignment.copy(companyId = dataExtractorId.toString())
 
     @BeforeEach
     fun setup() {
@@ -96,6 +106,7 @@ class DataSourcingControllerTest(
             dataSourcingId = dataSourcingId,
             state = DataSourcingState.DocumentSourcing,
             documentCollector = documentCollectorId,
+            dataExtractor = dataExtractorId,
         )
     }
 
@@ -148,6 +159,19 @@ class DataSourcingControllerTest(
             ).andExpect(resultMatcher)
     }
 
+    private fun performPatchStateAndExpect(
+        state: DataSourcingState,
+        resultMatcher: ResultMatcher,
+    ) {
+        mockMvc
+            .perform(
+                patch("/data-sourcing/$dataSourcingId/state")
+                    .queryParam("state", state.name)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(resultMatcher)
+    }
+
     @Test
     fun `admins can patch documents without company roles`() {
         setMockSecurityContext(dummyAdminAuthentication)
@@ -164,7 +188,7 @@ class DataSourcingControllerTest(
     @Test
     fun `users with company roles can patch documents`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performPatchDocumentsRequestAndExpect(status().isOk())
     }
 
@@ -184,7 +208,7 @@ class DataSourcingControllerTest(
     @Test
     fun `users with company roles can patch next attempt date`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performPatchDateOfNextDocumentSourcingAttempt(status().isOk())
     }
 
@@ -204,7 +228,7 @@ class DataSourcingControllerTest(
     @Test
     fun `users with company roles can get data sourcings for their own company ID`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, providerCompanyId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, providerCompanyId, listOf(generalMemberAssignment))
         performGetDataSourcingByCompanyId(status().isOk())
     }
 
@@ -212,7 +236,59 @@ class DataSourcingControllerTest(
     fun `users with company roles cannot get data sourcings for other company IDs`() {
         setMockSecurityContext(dummyUserAuthentication)
         stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
-        stubRoleAssignments(regularUserId, documentCollectorId, listOf(companyRoleAssignmentForRegularUserInDocumentCollector))
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performGetDataSourcingByCompanyId(status().isForbidden())
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataSourcingState::class)
+    fun `admins can patch data sourcing state to any state`(state: DataSourcingState) {
+        setMockSecurityContext(dummyAdminAuthentication)
+        performPatchStateAndExpect(state, status().isOk())
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["DocumentSourcingDone", "NonSourceable"])
+    fun `document collectors can set allowed states`(stateName: String) {
+        val state = DataSourcingState.valueOf(stateName)
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
+        performPatchStateAndExpect(state, status().isOk())
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["Initialized", "DocumentSourcing", "DataExtraction", "DataVerification", "Done"])
+    fun `document collectors cannot set restricted states`(stateName: String) {
+        val state = DataSourcingState.valueOf(stateName)
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
+        performPatchStateAndExpect(state, status().isForbidden())
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["NonSourceable"])
+    fun `data extractors can set allowed state NonSourceable`(stateName: String) {
+        val state = DataSourcingState.valueOf(stateName)
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, dataExtractorId, listOf(memberAssignmentForDataExtractor))
+        performPatchStateAndExpect(state, status().isOk())
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["Initialized", "DocumentSourcing", "DocumentSourcingDone", "DataExtraction", "DataVerification", "Done"])
+    fun `data extractors cannot set restricted states`(stateName: String) {
+        val state = DataSourcingState.valueOf(stateName)
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, dataExtractorId, listOf(memberAssignmentForDataExtractor))
+        performPatchStateAndExpect(state, status().isForbidden())
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataSourcingState::class)
+    fun `regular users without company roles cannot set any state`(state: DataSourcingState) {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, documentCollectorId, emptyList())
+        stubRoleAssignments(regularUserId, dataExtractorId, emptyList())
+        performPatchStateAndExpect(state, status().isForbidden())
     }
 }
