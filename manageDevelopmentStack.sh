@@ -24,13 +24,9 @@ start_backend() {
 
 start_development_stack() {
   local local_frontend="$1"
-  local dev_env="$2"
-  local self_signed="$3"
-  
-  if [ "$dev_env" = true ]; then
-    load_dev_environment
-  fi
-  
+  local self_signed="$2"
+  local container_backend="$3"
+
   set -x
   verify_environment_variables
   setup_certificates "$self_signed"
@@ -41,15 +37,18 @@ start_development_stack() {
   rebuild_docker_images
   source_github_env_log
   source_uncritical_environment
-  
+
   local compose_profiles
-  read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend")"
-  
+  read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
+
   stop_and_cleanup_containers
-  start_docker_services "${compose_profiles[@]}"
+  start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
   wait_for_admin_proxy
-  start_backend
+
+  if [ "$container_backend" = false ]; then
+    start_backend
+  fi
   set +x
 }
 
@@ -61,27 +60,18 @@ check_backend_not_running() {
   fi
 }
 
-write_eurodat_secret_files() {
-  ./dataland-eurodat-client/write_secret_files.sh
-}
-
 assemble_all_projects() {
   ./gradlew assemble dataland-frontend:npmInstall
 }
 
 reset_development_stack() {
-  local dev_env="$1"
-  local self_signed="$2"
-  
-  if [ "$dev_env" = true ]; then
-    load_dev_environment
-  fi
-  
+  local self_signed="$1"
+
   set -x
   verify_environment_variables
   check_backend_not_running
-  write_eurodat_secret_files
   clear_docker_completely
+  ./gradlew clean
   assemble_all_projects
   rebuild_gradle_dockerfile
   source_github_env_log
@@ -100,9 +90,10 @@ parse_arguments() {
   local do_start=false
   local do_login=false
   local self_signed=false
-  
+  local container_backend=false
+
   if [ $# -eq 0 ]; then
-    echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple]"
+    echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
     echo "  --start: Start the development stack"
     echo "  --stop: Stop the development stack"
     echo "  --reset: Reset and restart the development stack from scratch"
@@ -110,7 +101,8 @@ parse_arguments() {
     echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
     echo "  --dev-env: Load environments/.env.dev before starting/resetting"
     echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-    echo "  --simple: Shortcut for --dev-env --self-signed-certs"
+    echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
+    echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
     echo ""
     echo "Multiple options can be combined in any order. Execution order is: login, stop, reset, start"
     exit 1
@@ -151,15 +143,24 @@ parse_arguments() {
       --simple)
         dev_env=true
         self_signed=true
+        container_backend=true
+        shift
+        ;;
+      --container-backend)
+        container_backend=true
         shift
         ;;
       *)
         echo "Unknown option: $1"
-        echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple]"
+        echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--login] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
         exit 1
         ;;
     esac
   done
+
+  if [ "$dev_env" = true ]; then
+    load_dev_environment
+  fi
 
   if [ "$do_login" = true ]; then
     login_to_docker_repository
@@ -170,11 +171,11 @@ parse_arguments() {
   fi
 
   if [ "$do_reset" = true ]; then
-    reset_development_stack "$dev_env" "$self_signed"
+    reset_development_stack "$self_signed"
   fi
 
   if [ "$do_start" = true ]; then
-    start_development_stack "$local_frontend" "$dev_env" "$self_signed"
+    start_development_stack "$local_frontend" "$self_signed" "$container_backend"
   fi
 }
 

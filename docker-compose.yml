@@ -188,7 +188,7 @@ services:
       <<: *loki-logging
   backend:
     restart: always
-    profiles: [ "production", "testing" ]
+    profiles: [ "production", "testing", "developmentContainerBackend" ]
     networks:
       - internal
       - backend-db

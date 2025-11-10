@@ -13,4 +13,6 @@ set +o allexport
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_test ./dataland-internal-storage/DockerfileTest "" $dependencies
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_production ./dataland-internal-storage/Dockerfile "" $dependencies
+if [[ "${LOCAL:-}" != "true" ]]; then
+  ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_production ./dataland-internal-storage/Dockerfile "" $dependencies
+fi

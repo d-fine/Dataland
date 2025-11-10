@@ -45,7 +45,7 @@ if [[ "$images_found" == "1" ]] ; then
 fi
 
 # If we reach this point, a rebuild is needed. Run gradle build if target is specified.
-if [[ -n "$gradle_target" ]]; then
+if [[ -n "$gradle_target" && "${LOCAL:-}" != "true" ]]; then
   echo "Building gradle artifacts: $gradle_target"
   ./gradlew $gradle_target --no-daemon --stacktrace
 fi

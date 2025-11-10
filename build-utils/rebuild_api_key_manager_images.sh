@@ -10,6 +10,8 @@ set -o allexport
 source ./*github_env.log
 set +o allexport
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_production ./dataland-api-key-manager/Dockerfile "" $dependencies
+if [[ "${LOCAL:-}" != "true" ]]; then
+  ./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_production ./dataland-api-key-manager/Dockerfile "" $dependencies
+fi
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_api_key_manager_test ./dataland-api-key-manager/DockerfileTest "" $dependencies

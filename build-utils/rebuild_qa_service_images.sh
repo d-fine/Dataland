@@ -11,6 +11,8 @@ set -o allexport
 source ./*github_env.log
 set +o allexport
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_qa_service_production ./dataland-qa-service/Dockerfile "" $dependencies
+if [[ "${LOCAL:-}" != "true" ]]; then
+  ./build-utils/base_rebuild_single_docker_image.sh dataland_qa_service_production ./dataland-qa-service/Dockerfile "" $dependencies
+fi
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_qa_service_test ./dataland-qa-service/DockerfileTest "" $dependencies

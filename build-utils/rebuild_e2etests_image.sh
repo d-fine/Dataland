@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+if [[ "${LOCAL:-}" == "true" ]]; then
+  echo "Skipping e2etests image build in LOCAL mode"
+  exit 0
+fi
+
 gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_e2etests_base ./dataland-e2etests/DockerfileBase "" \
