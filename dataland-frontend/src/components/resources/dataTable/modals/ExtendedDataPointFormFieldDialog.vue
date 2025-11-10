@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import Select from 'primevue/select';
 import { QualityOptions } from '@clients/backend';
-import { computed, defineProps, inject, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
@@ -60,7 +60,6 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type {
   ExtendedDataPointType,
   ExtendedDataPointMetaInfoType,
@@ -81,8 +80,6 @@ const fileName = ref<string | null>(props.extendedDataPointObject?.dataSource?.f
 const insertedComment = ref<string | undefined>(props.extendedDataPointObject?.comment ?? undefined);
 const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
 const companyId = inject<string>('companyId');
-const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
-
 const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
 const selectedDocumentMetaInformation = computed(() => {
   return allDocuments.value.find((doc) => doc.documentId === selectedDocument.value) ?? null;
