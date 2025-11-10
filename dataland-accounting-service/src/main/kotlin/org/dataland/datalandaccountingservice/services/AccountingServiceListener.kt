@@ -3,8 +3,9 @@ package org.dataland.datalandaccountingservice.services
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
+import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -33,16 +34,16 @@ class AccountingServiceListener
     @Autowired
     constructor(
         private val billedRequestRepository: BilledRequestRepository,
-        private val companyRolesControllerApi: CompanyRolesControllerApi,
+        private val inheritedRolesControllerApi: InheritedRolesControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(AccountingServiceListener::class.java)
 
-        private fun getBilledCompanyId(triggeringUserId: String): String? =
-            companyRolesControllerApi
-                .getExtendedCompanyRoleAssignments(
-                    userId = ValidationUtils.convertToUUID(triggeringUserId),
-                ).firstOrNull()
-                ?.companyId
+        private fun getBilledCompanyId(triggeringUserId: String): String? {
+            val inheritedRolesMap = inheritedRolesControllerApi.getInheritedRoles(triggeringUserId)
+            return inheritedRolesMap.keys.firstOrNull {
+                inheritedRolesMap[it]?.contains(InheritedRole.DatalandMember.name) ?: false
+            }
+        }
 
         private fun logBilledRequestMessage(
             requestSetToProcessingMessage: RequestSetToProcessingMessage,

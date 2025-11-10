@@ -5,9 +5,7 @@ import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
@@ -30,7 +28,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingServiceListenerTest {
     private val mockBilledRequestRepository = mock<BilledRequestRepository>()
-    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
+    private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
     private lateinit var accountingServiceListener: AccountingServiceListener
 
@@ -63,28 +61,17 @@ class AccountingServiceListenerTest {
             requestedFramework = requestedFramework,
         )
 
-    private val companyRoleAssignmentExtended =
-        CompanyRoleAssignmentExtended(
-            companyRole = CompanyRole.Member,
-            companyId = billedCompanyId,
-            userId = triggeringUserId,
-            email = "test@example.com",
-            firstName = "Jane",
-            lastName = "Doe",
-        )
-
     @BeforeEach
     fun setup() {
-        reset(mockBilledRequestRepository)
-
-        doReturn(listOf(companyRoleAssignmentExtended))
-            .whenever(mockCompanyRolesControllerApi)
-            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(triggeringUserId))
+        reset(
+            mockBilledRequestRepository,
+            mockInheritedRolesControllerApi,
+        )
 
         accountingServiceListener =
             AccountingServiceListener(
                 billedRequestRepository = mockBilledRequestRepository,
-                companyRolesControllerApi = mockCompanyRolesControllerApi,
+                inheritedRolesControllerApi = mockInheritedRolesControllerApi,
             )
     }
 
@@ -101,10 +88,6 @@ class AccountingServiceListenerTest {
 
     @Test
     fun `check that no billed request is saved when the triggering user is not a Dataland member`() {
-        doReturn(emptyList<CompanyRoleAssignmentExtended>())
-            .whenever(mockCompanyRolesControllerApi)
-            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(triggeringUserId))
-
         accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
             payload = requestProcessingMessagePayload,
             type = MessageType.REQUEST_SET_TO_PROCESSING,
