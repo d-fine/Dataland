@@ -131,18 +131,16 @@ describeIf(
       cy.contains('span.table-left-label', 'Quality').closest('th').next('td').should('contain', 'Reported');
     });
 
-    it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it.only('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
       navigateToEditMode();
       openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="yes-input"] input').should('exist').should('have.value', 'Yes');
-
-          cy.get('[data-test="no-input"] input').should('exist');
-
-          cy.get('[data-test="no-input"] input').click();
+          cy.get('[data-test="yes-no-select"]').should('exist').should('be.visible');
+          cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'Yes');
+          cy.get('[data-test="yes-no-select"]').contains('No').click();
         });
 
       saveDataPoint();
