@@ -46,9 +46,9 @@ class DataRequestSummaryEmailBuilder
             unprocessedEvents: List<NotificationEventEntity>,
             userId: UUID,
             frequency: NotificationFrequency,
-            portfolioName: String,
+            portfolioNamesString: String,
         ) {
-            val emailContent = dataRequestSummaryEmailContent(unprocessedEvents, frequency, portfolioName)
+            val emailContent = dataRequestSummaryEmailContent(unprocessedEvents, frequency, portfolioNamesString)
             val receiver = listOf(EmailRecipient.UserId(userId.toString()))
             val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(

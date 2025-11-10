@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.service
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.entity.NotificationEventEntity
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
@@ -40,20 +41,18 @@ class NotificationScheduler
         fun processNotificationEvents(
             events: List<NotificationEventEntity>,
             frequency: NotificationFrequency,
-            portfolioName: String,
+            portfolioNamesString: String,
+            userId: UUID,
         ) {
-            val eventsGroupedByUser = events.groupBy { it.userId }
-            eventsGroupedByUser.forEach { (userId, userEvents) ->
-                logger.info(
-                    "Requirements for Data Request Summary notification are met. Sending notification email.",
-                )
-                dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
-                    unprocessedEvents = userEvents,
-                    userId = userId,
-                    frequency = frequency,
-                    portfolioName = portfolioName,
-                )
-            }
+            logger.info(
+                "Requirements for Data Request Summary notification are met. Sending notification email to user $userId.",
+            )
+            dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
+                unprocessedEvents = events,
+                userId = userId,
+                frequency = frequency,
+                portfolioNamesString = portfolioNamesString,
+            )
         }
 
         /**
@@ -66,25 +65,32 @@ class NotificationScheduler
             val oneWeekAgo = Instant.now().minus(DAYS_IN_A_WEEK, ChronoUnit.DAYS).toEpochMilli()
             val portfoliosWithWeeklyUpdates = portfolioRepository.findAllByNotificationFrequency(notificationFrequency)
 
-            portfoliosWithWeeklyUpdates.forEach { portfolio ->
-                val frameworks = portfolio.monitoredFrameworks ?: emptySet()
-                val companyIdFrameworkPairs: List<Pair<UUID, DataTypeEnum>> =
-                    portfolio.companyIds.flatMap { companyId ->
-                        frameworks.map { framework ->
-                            Pair(UUID.fromString(companyId), DataTypeEnum.valueOf(framework))
+            // Group portfolios by user
+            val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
+
+            portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
+                val allCompanyIdFrameworkPairs =
+                    userPortfolios.flatMap { portfolio ->
+                        val frameworks = portfolio.monitoredFrameworks ?: emptySet()
+                        portfolio.companyIds.flatMap { companyId ->
+                            frameworks.map { framework ->
+                                // Adapt companyId to UUID if necessary
+                                Pair(ValidationUtils.convertToUUID(companyId), DataTypeEnum.valueOf(framework))
+                            }
                         }
                     }
 
                 val eventEntitiesToProcess =
                     getRelevantNotificationEvents(
-                        companyIdFrameworkPairs,
+                        allCompanyIdFrameworkPairs,
                         oneWeekAgo,
                     )
 
                 processNotificationEvents(
-                    eventEntitiesToProcess,
-                    notificationFrequency,
-                    portfolio.portfolioName, // pass the portfolio name
+                    events = eventEntitiesToProcess,
+                    frequency = notificationFrequency,
+                    portfolioNamesString = userPortfolios.joinToString(", ") { it.portfolioName },
+                    userId = ValidationUtils.convertToUUID(userId),
                 )
             }
         }
