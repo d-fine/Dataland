@@ -21,7 +21,7 @@
     <#assign previousFramework = item.dataTypeLabel>
 </#list>
 </#macro>
-${frequency} Summary for your portfolio ${portfolioName} 📣
+${frequency} Summary for your portfolio(s): ${portfolioNamesString}📣
 
 Data for your request(s) has been updated on Dataland, listed in the sections below.
 Please note that you may have already reviewed these updates.
