@@ -144,7 +144,6 @@ describeIf(
         });
 
       saveDataPoint();
-
       verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
     });
 
