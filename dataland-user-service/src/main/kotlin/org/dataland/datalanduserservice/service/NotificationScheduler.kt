@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.collections.component1
@@ -29,6 +31,10 @@ class NotificationScheduler
         @PersistenceContext private val entityManager: EntityManager,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
+
+        companion object {
+            private const val DAYS_IN_WEEK = 7L
+        }
 
         /**
          * Processes data request summary events and sends emails to appropriate recipients.
@@ -59,7 +65,7 @@ class NotificationScheduler
         @Scheduled(cron = "0 1/10 * * * *")
         fun scheduledTestEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
+            val timeStampForInteval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
         }
 
@@ -70,7 +76,7 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 * * MON")
         fun scheduledWeeklyEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
+            val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
@@ -81,7 +87,7 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 * * *")
         fun scheduledDailyEmailSending() {
             val notificationFrequency = NotificationFrequency.Daily
-            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
+            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
@@ -91,8 +97,13 @@ class NotificationScheduler
          */
         @Scheduled(cron = "0 0 7 1 * *")
         fun scheduledMonthlyEmailSending() {
-            val notificationFrequency = NotificationFrequency.Daily
-            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
+            val notificationFrequency = NotificationFrequency.Monthly
+            val timeStampForInterval =
+                ZonedDateTime
+                    .now(ZoneOffset.UTC)
+                    .minusMonths(1)
+                    .toInstant()
+                    .toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
