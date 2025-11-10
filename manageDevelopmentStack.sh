@@ -41,6 +41,14 @@ start_development_stack() {
   local compose_profiles
   read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
 
+  if [ "$container_backend" = true ]; then
+    export INTERNAL_BACKEND_URL="http://backend:8080/api"
+    export BACKEND_URL="http://backend:8080/api/"
+  else
+    export INTERNAL_BACKEND_URL="http://host.docker.internal:8080/api"
+    export BACKEND_URL="http://host.docker.internal:8080/api/"
+  fi
+
   stop_and_cleanup_containers
   start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check

@@ -54,6 +54,7 @@ services:
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
+      DISABLE_HSTS: ${DISABLE_HSTS:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
