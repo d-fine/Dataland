@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -46,10 +46,10 @@ class DataSourcingWorkflowTest
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
         @MockitoBean
-        private lateinit var companyDataControllerApi: CompanyDataControllerApi
+        private lateinit var mockDataSourcingServiceMessageSender: DataSourcingServiceMessageSender
 
         @MockitoBean
-        private lateinit var mockDataSourcingServiceMessageSender: DataSourcingServiceMessageSender
+        private lateinit var mockInheritedRolesControllerApi: InheritedRolesControllerApi
 
         private val adminUserId = UUID.randomUUID()
 
@@ -76,6 +76,7 @@ class DataSourcingWorkflowTest
             )
 
         private val companyId = UUID.randomUUID().toString()
+        private val memberCompanyId = UUID.randomUUID().toString()
         private val basicCompanyInfo = BasicCompanyInformation(companyId, companyName, headquarters, countryCode)
         private val validationResult = CompanyIdentifierValidationResult("123LEI", basicCompanyInfo)
 
@@ -94,8 +95,8 @@ class DataSourcingWorkflowTest
             reset(
                 mockKeycloakUserService,
                 mockCompanyDataControllerApi,
-                mockCompanyDataControllerApi,
                 mockDataSourcingServiceMessageSender,
+                mockSecurityContext,
             )
 
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
@@ -110,44 +111,19 @@ class DataSourcingWorkflowTest
                         lastName = lastName,
                     ),
                 ).whenever(mockKeycloakUserService).getUser(it.toString())
-        private lateinit var mockInheritedRolesControllerApi: InheritedRolesControllerApi
 
-        @MockitoBean
-        private lateinit var mockRequestQueryManager: RequestQueryManager
-
-        private val mockSecurityContext = mock<SecurityContext>()
-        private val userId = "user-id"
-        private lateinit var mockAuthentication: DatalandAuthentication
-
-        @Test
-        fun `put three requests to processing then close data sourcing object`() {
-            reset(mockKeycloakUserService)
-            mockAuthentication =
-                AuthenticationMock.mockJwtAuthentication(
-                    "data-admin",
-                    userId,
-                    roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER),
-                )
-            doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
-            SecurityContextHolder.setContext(mockSecurityContext)
-
-            val companyId = UUID.randomUUID().toString()
-            val companyInfo = BasicCompanyInformation(companyId, "New Company", "Location", "DE")
-            val validationResult = CompanyIdentifierValidationResult("123LEI", companyInfo)
-            whenever(mockCompanyDataControllerApi.postCompanyValidation(any()))
-                .thenReturn(listOf(validationResult))
-            doReturn(emptyMap<String, List<String>>())
-                .whenever(mockInheritedRolesControllerApi)
-                .getInheritedRoles(userId)
-            whenever(
-                mockRequestQueryManager.transformRequestEntityToExtendedStoredRequest(any<RequestEntity>()),
-            ).thenAnswer { invocation ->
-                (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("New Company", null)
+                doReturn(
+                    mapOf(
+                        memberCompanyId to listOf(InheritedRole.DatalandMember.name),
+                    ),
+                ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(it.toString())
             }
 
-            doReturn(companyInfo).whenever(companyDataControllerApi).getCompanyInfo(companyId)
+            doReturn(listOf(validationResult))
+                .whenever(mockCompanyDataControllerApi)
+                .postCompanyValidation(listOf(companyId))
 
-            doReturn(listOf(validationResult)).whenever(mockCompanyDataControllerApi).postCompanyValidation(any())
+            doReturn(companyInfo).whenever(mockCompanyDataControllerApi).getCompanyInfo(companyId)
         }
 
         @Test
@@ -165,7 +141,10 @@ class DataSourcingWorkflowTest
             assertNotNull(dataSourcingId)
 
             val dataSourcingObject = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
-            dataSourcingController.patchDataSourcingState(dataSourcingObject.dataSourcingId, DataSourcingState.Done)
+            dataSourcingController.patchDataSourcingState(
+                dataSourcingObject.dataSourcingId,
+                DataSourcingState.Done,
+            )
 
             val storedRequests = requestIds.map { requestController.getRequest(it).body!! }
 

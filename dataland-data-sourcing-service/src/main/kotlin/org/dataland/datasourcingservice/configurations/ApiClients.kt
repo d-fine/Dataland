@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
     @Value("\${dataland.document-manager.base-url}") private val documentManagerBaseUrl: String,
 ) {
     /**
