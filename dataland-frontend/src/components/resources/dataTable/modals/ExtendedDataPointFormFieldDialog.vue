@@ -60,7 +60,6 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
-import router from '@/router';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import type {
   ExtendedDataPointType,
@@ -153,15 +152,6 @@ async function updateDocumentsList(): Promise<void> {
     allDocuments.value = [];
     availableDocuments.value = [];
   }
-}
-
-/**
- * Handles the click event for the "Upload Document" button.
- * Navigates to the document upload page for the current company.
- */
-async function handleUploadDocumentClick(): Promise<void> {
-  await router.push(`/companies/${companyId}/documents`);
-  dialogRef?.value?.close();
 }
 
 /**
