@@ -23,9 +23,7 @@ class DataRequestResponseEmailSenderTest {
     private var mockCompanyInfoService = mock<CompanyInfoService>()
     private val dataRequestResponseEmailBuilder =
         DataRequestResponseEmailBuilder(
-            mockCloudEventMessageHandler,
             mockCompanyInfoService,
-            objectMapper,
             staleDaysThreshold = "30",
         )
 

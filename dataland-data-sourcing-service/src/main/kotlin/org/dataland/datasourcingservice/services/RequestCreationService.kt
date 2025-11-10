@@ -9,9 +9,9 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.repositories.RequestRepository
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -30,7 +30,7 @@ class RequestCreationService
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
         private val requestRepository: RequestRepository,
-        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         @Value("\${dataland.data-sourcing-service.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         private val requestLogger = RequestLogger()
@@ -101,9 +101,9 @@ class RequestCreationService
             basicDataDimension: BasicDataDimensions,
             memberComment: String? = null,
         ): UUID {
-            val userIsPremiumUser = keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId.toString())
+            val userIsMemberOrAdmin = derivedRightsUtilsComponent.isUserDatalandMemberOrAdmin(userId.toString())
 
-            if (!userIsPremiumUser) performQuotaCheckForNonPremiumUser(userId)
+            if (!userIsMemberOrAdmin) performQuotaCheckForNonMember(userId)
 
             val dataRequestEntity =
                 RequestEntity(
@@ -113,7 +113,7 @@ class RequestCreationService
                     reportingPeriod = basicDataDimension.reportingPeriod,
                     memberComment = memberComment,
                     creationTimestamp = Instant.now().toEpochMilli(),
-                    requestPriority = if (userIsPremiumUser) RequestPriority.High else RequestPriority.Low,
+                    requestPriority = if (userIsMemberOrAdmin) RequestPriority.High else RequestPriority.Low,
                 )
 
             return requestRepository
@@ -123,7 +123,7 @@ class RequestCreationService
                 }.id
         }
 
-        private fun performQuotaCheckForNonPremiumUser(userId: UUID) {
+        private fun performQuotaCheckForNonMember(userId: UUID) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 requestRepository.countByUserIdAndCreationTimestampGreaterThanEqual(
                     userId, getEpochTimeStartOfDay(),

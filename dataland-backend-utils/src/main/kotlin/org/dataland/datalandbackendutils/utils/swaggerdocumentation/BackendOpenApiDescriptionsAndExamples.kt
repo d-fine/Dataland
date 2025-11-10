@@ -25,6 +25,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val SECTOR_DESCRIPTION = "The industry or sector in which the company operates."
     const val SECTOR_EXAMPLE = "Information Technology"
+    const val SECTOR_LIST_EXAMPLE = "[\"$SECTOR_EXAMPLE\"]"
 
     const val SECTOR_CODE_WZ_DESCRIPTION = "The industry classification code according to the NACE compliant WZ method."
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
@@ -41,6 +42,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val COUNTRY_CODE_DESCRIPTION = "The ISO 3166-1 alpha-2 code representing the country of origin."
     const val COUNTRY_CODE_EXAMPLE = "DE"
+    const val COUNTRY_CODE_LIST_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
 
     const val IS_TEASER_COMPANY_DESCRIPTION = "A boolean indicating if the company is a teaser company."
 
@@ -125,6 +127,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
 
     const val QA_REPORT_UPLOAD_TIME_DESCRIPTION =
         "The timestamp (epoch milliseconds) at which the QA report was uploaded."

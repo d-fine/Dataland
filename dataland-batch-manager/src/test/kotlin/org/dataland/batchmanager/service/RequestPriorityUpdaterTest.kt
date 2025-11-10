@@ -5,16 +5,19 @@ import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredReques
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbatchmanager.service.DerivedRightsUtilsComponent
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
@@ -25,16 +28,19 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class RequestPriorityUpdaterTest {
-    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockRequestControllerApi = mock<RequestControllerApi>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
+
     private val resultsPerPage = 100
     private lateinit var requestPriorityUpdater: RequestPriorityUpdater
 
     companion object {
-        private val premiumUserId = UUID.randomUUID().toString()
-        private val normalUserId = UUID.randomUUID().toString()
+        private val memberUserId = UUID.randomUUID().toString()
+        private val nonMemberUserId = UUID.randomUUID().toString()
 
-        private val userIds = listOf(premiumUserId, normalUserId)
+        private val userIds = listOf(memberUserId, nonMemberUserId)
         private val requestPriorities = RequestPriority.entries.toList()
         private val requestStates = RequestState.entries.toList()
 
@@ -92,13 +98,13 @@ class RequestPriorityUpdaterTest {
                 )
         }
 
-    private val adminUser = KeycloakUserInfo("admin@dataland.com", premiumUserId, "Admin", "Doe")
-
     @BeforeEach
     fun setup() {
         reset(
-            mockKeycloakUserService,
+            mockCompanyRolesControllerApi,
             mockRequestControllerApi,
+            mockKeycloakUserService,
+            mockDerivedRightsUtilsComponent,
         )
 
         requestPriorities.forEach { priority ->
@@ -126,12 +132,20 @@ class RequestPriorityUpdaterTest {
         }
 
         requestPriorityUpdater =
-            RequestPriorityUpdater(mockKeycloakUserService, mockRequestControllerApi, resultsPerPage)
+            RequestPriorityUpdater(
+                companyRolesControllerApi = mockCompanyRolesControllerApi,
+                keycloakUserService = mockKeycloakUserService,
+                requestControllerApi = mockRequestControllerApi,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
+                resultsPerPage = resultsPerPage,
+            )
     }
 
     @Test
-    fun `check that the update priority process exits if the list of premium users is empty`() {
-        doReturn(emptyList<KeycloakUserInfo>()).whenever(mockKeycloakUserService).getUsersByRole(any())
+    fun `check that the update priority process exits if there are no admins nor members`() {
+        doReturn(emptyList<CompanyRoleAssignmentExtended>())
+            .whenever(mockCompanyRolesControllerApi)
+            .getExtendedCompanyRoleAssignments(anyOrNull(), anyOrNull(), anyOrNull())
         assertThrows<IllegalArgumentException> { requestPriorityUpdater.processRequestPriorityUpdates() }
     }
 
@@ -141,8 +155,24 @@ class RequestPriorityUpdaterTest {
         index: Int,
         priorityInPatch: RequestPriority,
     ) {
-        doReturn(listOf(adminUser)).whenever(mockKeycloakUserService).getUsersByRole("ROLE_PREMIUM_USER")
-        doReturn(emptyList<KeycloakUserInfo>()).whenever(mockKeycloakUserService).getUsersByRole("ROLE_ADMIN")
+        doReturn(
+            listOf(
+                CompanyRoleAssignmentExtended(
+                    companyRole = CompanyRole.Member,
+                    companyId = UUID.randomUUID().toString(),
+                    userId = memberUserId.toString(),
+                    email = "test@example.com",
+                    firstName = "Jane",
+                    lastName = "Doe",
+                ),
+            ),
+        ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
+            role = null,
+            companyId = null,
+            userId = null,
+        )
+
+        doReturn(true).whenever(mockDerivedRightsUtilsComponent).isUserDatalandMember(memberUserId)
 
         requestPriorityUpdater.processRequestPriorityUpdates()
 
@@ -151,8 +181,8 @@ class RequestPriorityUpdaterTest {
         val requestState = requestState(index)
         val requestId = requestIdsMap[triple(index)] ?: UUID.randomUUID()
 
-        val requestPriorityToChange = if (userId == premiumUserId) RequestPriority.Low else RequestPriority.High
-        val desiredPriorityAfterChange = if (userId == premiumUserId) RequestPriority.High else RequestPriority.Low
+        val requestPriorityToChange = if (userId == memberUserId) RequestPriority.Low else RequestPriority.High
+        val desiredPriorityAfterChange = if (userId == memberUserId) RequestPriority.High else RequestPriority.Low
 
         val verificationMode =
             if (

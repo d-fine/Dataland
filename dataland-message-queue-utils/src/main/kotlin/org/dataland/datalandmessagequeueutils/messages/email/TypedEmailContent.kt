@@ -156,7 +156,7 @@ data class DataNonSourceableEmailContent(
 }
 
 /**
- * Content of an email sent to the user, when the user receives weekly update summaries (default) and
+ * Content of an email sent to the user, when the user receives regular update summaries and
  * data for data requests is available, updated or not sourceable.
  */
 data class DataRequestSummaryEmailContent(
