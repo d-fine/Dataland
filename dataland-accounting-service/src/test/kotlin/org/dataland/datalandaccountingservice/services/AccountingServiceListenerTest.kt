@@ -68,6 +68,12 @@ class AccountingServiceListenerTest {
             mockInheritedRolesControllerApi,
         )
 
+        doReturn(
+            mapOf(
+                billedCompanyId to listOf("DatalandMember"),
+            ),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+
         accountingServiceListener =
             AccountingServiceListener(
                 billedRequestRepository = mockBilledRequestRepository,
@@ -88,6 +94,10 @@ class AccountingServiceListenerTest {
 
     @Test
     fun `check that no billed request is saved when the triggering user is not a Dataland member`() {
+        doReturn(
+            mapOf(billedCompanyId to emptyList<String>()),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+
         accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
             payload = requestProcessingMessagePayload,
             type = MessageType.REQUEST_SET_TO_PROCESSING,
