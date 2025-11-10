@@ -23,12 +23,12 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CountryCodeParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CountryCodesParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorParameterNonRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorsParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -126,10 +126,10 @@ interface CompanyApi {
         @DataTypeParameterNonRequired
         dataTypes: Set<DataType>? = null,
         @RequestParam
-        @CountryCodeParameterNonRequired
+        @CountryCodesParameterNonRequired
         countryCodes: Set<String>? = null,
         @RequestParam
-        @SectorParameterNonRequired
+        @SectorsParameterNonRequired
         sectors: Set<String>? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
@@ -185,10 +185,10 @@ interface CompanyApi {
         @DataTypeParameterNonRequired
         dataTypes: Set<DataType>? = null,
         @RequestParam
-        @CountryCodeParameterNonRequired
+        @CountryCodesParameterNonRequired
         countryCodes: Set<String>? = null,
         @RequestParam
-        @SectorParameterNonRequired
+        @SectorsParameterNonRequired
         sectors: Set<String>? = null,
     ): ResponseEntity<Int>
 

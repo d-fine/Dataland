@@ -1346,7 +1346,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -1360,7 +1362,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           },
           {
             "name": "chunkSize",
@@ -2260,7 +2264,10 @@
                 "type": "string",
                 "format": "uuid"
               }
-            }
+            },
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ]
           },
           {
             "name": "qaStatus",
@@ -2398,7 +2405,7 @@
           {
             "name": "companyIds",
             "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
+            "description": "The unique identifiers under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
@@ -2406,7 +2413,10 @@
                 "type": "string"
               }
             },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "480238a8-a1d6-452c-93b8-5dc75c7dcd64"
+            ]
           },
           {
             "name": "frameworksOrDataPointTypes",
@@ -2427,7 +2437,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "type": "array",
@@ -2435,7 +2445,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           }
         ],
         "responses": {
@@ -5301,7 +5314,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -5315,7 +5330,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           }
         ],
         "responses": {
