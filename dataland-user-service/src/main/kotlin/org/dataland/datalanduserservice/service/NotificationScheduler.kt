@@ -28,10 +28,6 @@ class NotificationScheduler
         private val portfolioRepository: PortfolioRepository,
         @PersistenceContext private val entityManager: EntityManager,
     ) {
-        companion object {
-            private const val DAYS_IN_A_WEEK = 7L
-        }
-
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
         /**
@@ -45,7 +41,8 @@ class NotificationScheduler
             userId: UUID,
         ) {
             logger.info(
-                "Requirements for Data Request Summary notification are met. Sending notification email to user $userId.",
+                "Requirements for Data Request Summary notification are met." +
+                    " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
             )
             dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
                 unprocessedEvents = events,
@@ -56,16 +53,44 @@ class NotificationScheduler
         }
 
         /**
-         * Scheduled method to send emails for unprocessed notification events.
-         * Runs every Sunday at midnight.
+         * Scheduled method to send weekly summary emails.
+         * Runs every monday at 7 am.
          */
-        @Scheduled(cron = "0 0 0 * * SUN")
+        @Scheduled(cron = "0 0 7 * * MON")
         fun scheduledWeeklyEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val oneWeekAgo = Instant.now().minus(DAYS_IN_A_WEEK, ChronoUnit.DAYS).toEpochMilli()
+            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.WEEKS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+        }
+
+        /**
+         * Scheduled method to send daily summary emails.
+         * Runs every day at 7 am.
+         */
+        @Scheduled(cron = "0 0 7 * * *")
+        fun scheduledDailyEmailSending() {
+            val notificationFrequency = NotificationFrequency.Daily
+            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+        }
+
+        /**
+         * Scheduled method to send monthly summary emails.
+         * Runs every day at 7 am on the first day of every month.
+         */
+        @Scheduled(cron = "0 0 7 1 * *")
+        fun scheduledMonthlyEmailSending() {
+            val notificationFrequency = NotificationFrequency.Daily
+            val timeStampForInteval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+        }
+
+        private fun sendEmailForTimeInterval(
+            notificationFrequency: NotificationFrequency,
+            timeStampForInteval: Long,
+        ) {
             val portfoliosWithWeeklyUpdates = portfolioRepository.findAllByNotificationFrequency(notificationFrequency)
 
-            // Group portfolios by user
             val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
@@ -83,7 +108,7 @@ class NotificationScheduler
                 val eventEntitiesToProcess =
                     getRelevantNotificationEvents(
                         allCompanyIdFrameworkPairs,
-                        oneWeekAgo,
+                        timeStampForInteval,
                     )
 
                 processNotificationEvents(
