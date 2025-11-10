@@ -66,6 +66,12 @@ clear_docker_completely() {
 }
 
 rebuild_docker_images() {
+  if ! find ./dataland-*/build/libs -name "*.jar" 2>/dev/null | grep -q .; then
+    echo "ERROR: No JAR files found in build directories."
+    echo "Please run './gradlew assemble' before rebuilding Docker images."
+    exit 1
+  fi
+  
   local log_folder="./log/build/"
   local max_parallel=6
   mkdir -p "$log_folder"

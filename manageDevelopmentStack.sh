@@ -11,6 +11,11 @@ rebuild_gradle_dockerfile() {
   ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
 
+build_gradle_artifacts() {
+  echo "Building all Gradle artifacts..."
+  ./gradlew assemble
+}
+
 start_health_check() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
   ./health-check/healthCheck.sh &
@@ -32,6 +37,7 @@ start_development_stack() {
   set -x
   verify_environment_variables
   setup_certificates "$self_signed"
+  build_gradle_artifacts
   rebuild_gradle_dockerfile
   source_github_env_log
   source_uncritical_environment
