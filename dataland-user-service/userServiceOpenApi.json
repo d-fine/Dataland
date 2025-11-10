@@ -122,7 +122,7 @@
             }
           },
           "403": {
-            "description": "Only premium users can activate portfolio monitoring.",
+            "description": "Only Dataland members can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {
@@ -350,7 +350,7 @@
             }
           },
           "403": {
-            "description": "Only premium users can activate portfolio monitoring.",
+            "description": "Only Dataland members can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {
@@ -432,7 +432,7 @@
             }
           },
           "403": {
-            "description": "Only premium users can activate portfolio monitoring.",
+            "description": "Only Dataland members can activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {

@@ -16,20 +16,20 @@ annotation class DataTypeParameterNonRequired
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     description = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_EXAMPLE,
+    example = BackendOpenApiDescriptionsAndExamples.COUNTRY_CODE_LIST_EXAMPLE,
     required = false,
 )
-annotation class CountryCodeParameterNonRequired
+annotation class CountryCodesParameterNonRequired
 
 /** Sector annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
-    example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
+    example = BackendOpenApiDescriptionsAndExamples.SECTOR_LIST_EXAMPLE,
     required = false,
 )
-annotation class SectorParameterNonRequired
+annotation class SectorsParameterNonRequired
 
 /** CompanyId annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
