@@ -138,7 +138,7 @@ class AccountingServiceTest {
         assignCompanyOwnerRole(billableCompanyIdUploader, UUID.fromString(dataUploaderUserId))
         makeCompanyMember(billableCompanyIdUploader)
 
-        postTransaction(billableCompanyIdReaderA)
+        postTransaction(billableCompanyIdReaderC)
 
         val requestedCompanyId = uploadCompanyAsUploader()
 
