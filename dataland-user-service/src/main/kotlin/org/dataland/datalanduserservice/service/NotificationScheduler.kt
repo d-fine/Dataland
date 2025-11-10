@@ -111,10 +111,10 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInterval: Long,
         ) {
-            val portfoliosWithWeeklyUpdates =
+            val portfoliosWithRegularUpdates =
                 portfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency)
 
-            val portfoliosGroupedByUser = portfoliosWithWeeklyUpdates.groupBy { it.userId }
+            val portfoliosGroupedByUser = portfoliosWithRegularUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
                 val allCompanyIdFrameworkPairs =
