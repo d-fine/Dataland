@@ -91,13 +91,11 @@ describeIf(
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="big-decimal-input"] input')
-            .should('exist')
             .should('be.visible')
             .should('have.value', '17,992.73');
         });
 
       cy.get('[data-test="quality-select"]')
-        .should('exist')
         .should('be.visible')
         .find('.p-select-label, .p-dropdown-label')
         .should('contain', 'Estimated');
@@ -138,7 +136,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="yes-no-select"]').should('exist').should('be.visible');
+          cy.get('[data-test="yes-no-select"]').should('be.visible');
           cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'Yes');
           cy.get('[data-test="yes-no-select"]').contains('No').click();
         });
