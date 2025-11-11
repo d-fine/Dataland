@@ -198,15 +198,13 @@ endobj"""
 
         assertDocumentDeleted(documentId)
 
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-            val dataPointJson = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
-            val dataSourceNode = dataPointJson.get("dataSource")
-            assertTrue(
-                dataSourceNode == null || dataSourceNode.isNull,
-                "Entire dataSource object should be null after document deletion",
-            )
-        }
+        val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
+        val dataPointJson = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
+        val dataSourceNode = dataPointJson.get("dataSource")
+        assertTrue(
+            dataSourceNode == null || dataSourceNode.isNull,
+            "Entire dataSource object should be null after document deletion",
+        )
     }
 
     private fun uploadDocumentAndGetId(): String = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf()).documentId
@@ -257,17 +255,16 @@ endobj"""
     private fun uploadDataPoint(
         companyId: String,
         dataPointJson: String,
-    ): DataPointMetaInformation =
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val uploadedDataPoint =
-                UploadedDataPoint(
-                    dataPoint = dataPointJson,
-                    dataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
-                    companyId = companyId,
-                    reportingPeriod = "2022",
-                )
-            Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, false)
-        }
+    ): DataPointMetaInformation {
+        val uploadedDataPoint =
+            UploadedDataPoint(
+                dataPoint = dataPointJson,
+                dataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
+                companyId = companyId,
+                reportingPeriod = "2022",
+            )
+        return Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, false)
+    }
 
     private fun uploadLksgDatasetWithDocumentReference(
         documentId: String,
