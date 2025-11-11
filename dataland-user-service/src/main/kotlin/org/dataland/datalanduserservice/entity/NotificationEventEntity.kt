@@ -24,7 +24,6 @@ data class NotificationEventEntity(
     val notificationEventId: UUID = UUID.randomUUID(),
     @Enumerated(EnumType.STRING)
     val notificationEventType: NotificationEventType,
-    val userId: UUID,
     val companyId: UUID,
     @Enumerated(EnumType.STRING)
     val framework: DataTypeEnum,
