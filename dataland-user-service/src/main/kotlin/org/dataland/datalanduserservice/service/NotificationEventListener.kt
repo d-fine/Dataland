@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service
 /**
  * A service used to listen for notification events and process them accordingly
  */
-@Service
+@Service("NotificationEventListener")
 class NotificationEventListener
     @Autowired
     constructor(
