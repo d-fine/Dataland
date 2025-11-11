@@ -113,7 +113,10 @@ class NotificationEventListener
          */
         private fun checkThatDatasetWasSetToNonSourceable(sourceabilityMessage: SourceabilityMessage) {
             if (!sourceabilityMessage.isNonSourceable) {
-                throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable.")
+                throw MessageQueueRejectException(
+                    "Received event did not set a data " +
+                        "sourcing object to status non-sourceable.",
+                )
             }
         }
 

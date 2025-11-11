@@ -72,7 +72,6 @@ class NotificationSchedulerTest {
             NotificationEventEntity(
                 UUID.randomUUID(),
                 NotificationEventType.AvailableEvent,
-                UUID.randomUUID(),
                 companyId1,
                 DataTypeEnum.sfdr,
                 "2025",
@@ -81,7 +80,6 @@ class NotificationSchedulerTest {
             NotificationEventEntity(
                 UUID.randomUUID(),
                 NotificationEventType.AvailableEvent,
-                UUID.randomUUID(),
                 companyId2,
                 DataTypeEnum.sfdr,
                 "2024",
@@ -133,7 +131,6 @@ class NotificationSchedulerTest {
         whenever(mockEntityManager.createNativeQuery(any(), eq(NotificationEventEntity::class.java))).thenReturn(mockQuery)
         whenever(mockQuery.resultList)
             .thenReturn(listOf(mockNotificationEventEntity1, mockNotificationEventEntity2))
-        assert(mockNotificationEventEntity1.userId != mockNotificationEventEntity2.userId)
 
         ta.function()
 
