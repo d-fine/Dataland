@@ -12,7 +12,7 @@
           outerClass="short"
           data-test="relativeShareInPercent"
         />
-        <CurrencyDataPointFormField
+        <CurrencyExtendedDataPointFormField
           name="absoluteShare"
           label="Absolute Share"
           placeholder="Absolute Value"
@@ -29,11 +29,11 @@ import { FormKit } from '@formkit/vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
 
 export default defineComponent({
   name: 'FinancialShareExtendedDataPointFormField',
-  components: { CurrencyDataPointFormField, PercentageExtendedDataPointFormField, FormKit, UploadFormHeader },
+  components: { CurrencyExtendedDataPointFormField, PercentageExtendedDataPointFormField, FormKit, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
   },

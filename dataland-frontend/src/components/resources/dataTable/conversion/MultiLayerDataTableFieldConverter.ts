@@ -39,7 +39,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
-  CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
+  CurrencyExtendedDataPointFormField: currencyDataPointValueGetterFactory,
   SubsidiaryFormField: getModalGetterFactory('listOfSubsidiary', vsmeModalColumnHeaders),
   PollutionEmissionFormField: getModalGetterFactory('pollutionEmission', vsmeModalColumnHeaders),
 };
@@ -65,6 +65,8 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
       explanation: field.description,
       shouldDisplay: (dataset: FrameworkData) => field.showIf(dataset),
       valueGetter: valueGetter,
+      uploadComponentName: field.uploadComponentName,
+      dataPointTypeId: field.dataPointTypeId,
     };
   } else if (field.component == 'UploadReports') {
     return undefined;

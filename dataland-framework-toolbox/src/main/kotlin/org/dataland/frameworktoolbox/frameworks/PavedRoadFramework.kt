@@ -372,10 +372,10 @@ abstract class PavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileQaModel(datalandProject)
+        compileSpecifications(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
-        compileSpecifications(datalandProject)
         compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)

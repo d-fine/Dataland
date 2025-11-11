@@ -155,7 +155,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               "Total Revenue for the financial year. I.e. income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
             unit: '',
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -541,7 +541,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ',
             unit: '',
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -924,7 +924,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.',
             unit: '',
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },

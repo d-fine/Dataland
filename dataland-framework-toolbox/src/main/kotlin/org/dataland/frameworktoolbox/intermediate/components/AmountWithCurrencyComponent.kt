@@ -41,11 +41,12 @@ class AmountWithCurrencyComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "AmountWithCurrencyFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "AmountWithCurrencyFormField",
         )
         return
     }
