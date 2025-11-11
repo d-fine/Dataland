@@ -3,12 +3,25 @@
     id="documentMetaDataDialog"
     :dismissable-mask="true"
     :modal="true"
-    header="Document Details"
     class="col-6"
     v-model:visible="isOpen"
     @hide="closeDialog"
     data-test="document-details-modal"
   >
+    <template #header>
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+        <span class="p-dialog-title">Document Details</span>
+        <PrimeButton
+          class="p-0 h-auto"
+          v-if="!editMode"
+          icon="pi pi-pencil"
+          data-test="edit-icon"
+          variant="text"
+          @click.stop="editMode = true"
+          style="align-content: end"
+        />
+      </div>
+    </template>
     <div v-if="metaData" class="p-datatable p-component">
       <div class="p-datatable-wrapper overflow-auto">
         <table class="p-datatable-table" aria-label="Data point content">
@@ -60,6 +73,13 @@
           </tbody>
         </table>
       </div>
+      <div
+        v-if="editMode"
+        style="display: flex; justify-content: flex-end; gap: var(--spacing-md); margin-top: var(--spacing-md)"
+      >
+        <PrimeButton label="CANCEL" class="p-button-text" @click="editMode = false" data-test="cancel-edit-button" />
+        <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="cancel-edit-button" />
+      </div>
     </div>
   </PrimeDialog>
 </template>
@@ -74,6 +94,9 @@ import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import PrimeButton from 'primevue/button';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 const props = defineProps<{
   documentId: string;
@@ -89,9 +112,12 @@ export interface ExtendedDocumentMetaInfoEntity extends Omit<DocumentMetaInfoEnt
 }
 
 const isOpen = defineModel<boolean>('isOpen');
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const baseURL = ref(globalThis.location.origin);
+
+const editMode = ref<boolean>(false);
+const canUserPatchMetaData = ref<boolean>(false);
 
 /**
  * Get metadata of document
@@ -121,6 +147,24 @@ async function getDocumentMetaInformation(): Promise<void> {
   }
 }
 
+/**
+ * Determine if user has rights to patch document metadata and store it in canUserPatchMetaData
+ */
+async function getUserPatchRights(): Promise<void> {
+  const userId = await getUserId(getKeycloakPromise);
+  const isUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
+  const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  canUserPatchMetaData.value = (userId == metaData.value?.uploaderId && isUploader) || isAdmin;
+}
+
+/**
+ * Save changes made to document metadata
+ */
+function saveChanges(): void {
+  console.log('Saving changes for document:', metaData.value);
+  editMode.value = false;
+}
+
 watch(
   () => props.documentId,
   () => {
@@ -134,6 +178,7 @@ const closeDialog = (): void => {
 
 onMounted(() => {
   getDocumentMetaInformation().catch((error) => console.error(error));
+  getUserPatchRights().catch((error) => console.error(error));
 });
 </script>
 
@@ -320,5 +365,10 @@ onMounted(() => {
 
 .info-icon {
   cursor: help;
+}
+
+.p-dialog-title {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
 }
 </style>
