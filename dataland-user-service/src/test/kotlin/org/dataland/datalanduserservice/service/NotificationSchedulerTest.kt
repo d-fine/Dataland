@@ -104,7 +104,7 @@ class NotificationSchedulerTest {
         reset(mockDataRequestSummaryEmailBuilder)
     }
 
-    fun eMailSchedulerTwoDimensionalParameters(): Stream<TestArgument> =
+    fun eMailSchedulerParameters(): Stream<TestArgument> =
         Stream.of(
             TestArgument(
                 { notificationScheduler.scheduledDailyEmailSending() },
@@ -124,7 +124,7 @@ class NotificationSchedulerTest {
         )
 
     @ParameterizedTest
-    @MethodSource("eMailSchedulerTwoDimensionalParameters")
+    @MethodSource("eMailSchedulerParameters")
     fun `test scheduledWeeklyEmailSending does create the expected messages`(ta: TestArgument) {
         val mockQuery = mock(Query::class.java)
         whenever(mockPortfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(eq(ta.notificationFrequency)))
