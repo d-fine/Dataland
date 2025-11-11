@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPLE_EXTENDED_CURRENCY_COMPONENT
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -75,11 +76,17 @@ class CurrencyComponent(
         )
     }
 
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "CurrencyDataPointFormField"
+            is ExtendedDocumentSupport -> "CurrencyExtendedDataPointFormField"
+            else -> throw IllegalArgumentException("CurrencyComponent does not support document support '$documentSupport")
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "CurrencyDataPointFormField",
             validation = getMinMaxValidationRule(minimumValue, maximumValue),
         )
     }

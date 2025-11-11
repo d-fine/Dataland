@@ -59,6 +59,9 @@ class CategoryBuilder(
                     component.dataPointTypeName ?: component.identifier,
                     typeNameSuffix,
                 )
+
+        component.dataPointTypeId = dataPointTypeId
+
         val specification =
             addDatapointSpecification(
                 id = dataPointTypeId,

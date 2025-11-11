@@ -19,6 +19,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -37,8 +38,8 @@ class NotificationSchedulerTest {
                 UUID.randomUUID(),
                 "portfolio1",
                 userId1.toString(),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                Instant.now().toEpochMilli(),
+                Instant.now().toEpochMilli(),
                 mutableSetOf(companyId1.toString(), companyId2.toString()),
                 true,
                 setOf("sfdr"),
@@ -49,8 +50,8 @@ class NotificationSchedulerTest {
                 UUID.randomUUID(),
                 "portfolio2",
                 userId2.toString(),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                Instant.now().toEpochMilli(),
+                Instant.now().toEpochMilli(),
                 mutableSetOf(companyId1.toString(), companyId2.toString()),
                 true,
                 setOf("eutaxonomyMinusFinancials"),
@@ -103,7 +104,7 @@ class NotificationSchedulerTest {
         reset(mockDataRequestSummaryEmailBuilder)
     }
 
-    fun eMailSchedulerTwoDimensionalParameters(): Stream<TestArgument> =
+    fun eMailSchedulerParameters(): Stream<TestArgument> =
         Stream.of(
             TestArgument(
                 { notificationScheduler.scheduledDailyEmailSending() },
@@ -123,7 +124,7 @@ class NotificationSchedulerTest {
         )
 
     @ParameterizedTest
-    @MethodSource("eMailSchedulerTwoDimensionalParameters")
+    @MethodSource("eMailSchedulerParameters")
     fun `test scheduledWeeklyEmailSending does create the expected messages`(ta: TestArgument) {
         val mockQuery = mock(Query::class.java)
         whenever(mockPortfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(eq(ta.notificationFrequency)))

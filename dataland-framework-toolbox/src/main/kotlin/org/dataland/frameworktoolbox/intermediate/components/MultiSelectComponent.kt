@@ -76,6 +76,8 @@ open class MultiSelectComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "MultiSelectFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
@@ -85,7 +87,6 @@ open class MultiSelectComponent(
                     imports = null,
                 ),
             component = this,
-            uploadComponentName = "MultiSelectFormField",
         )
     }
 

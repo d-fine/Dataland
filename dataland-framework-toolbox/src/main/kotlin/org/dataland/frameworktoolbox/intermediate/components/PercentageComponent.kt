@@ -68,21 +68,20 @@ class PercentageComponent(
         )
     }
 
+    override fun getUploadComponentName(): String =
+        when (documentSupport) {
+            is NoDocumentSupport -> "NumberFormField"
+            is ExtendedDocumentSupport -> "PercentageExtendedDataPointFormField"
+            else -> throw IllegalArgumentException(
+                "Upload-page generation for this component " +
+                    "does not support $documentSupport",
+            )
+        }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport, ExtendedDocumentSupport))
-        val uploadComponent =
-            when (documentSupport) {
-                is NoDocumentSupport -> "NumberFormField"
-                is ExtendedDocumentSupport -> "PercentageExtendedDataPointFormField"
-                else -> throw IllegalArgumentException(
-                    "Upload-page generation for this component " +
-                        "does not support $documentSupport",
-                )
-            }
-
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = uploadComponent,
             unit = constantUnitSuffix,
             validation = getMinMaxValidationRule(MIN_PERCENTAGE, MAX_PERCENTAGE),
         )

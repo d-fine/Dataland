@@ -135,6 +135,7 @@ class NotificationScheduler
                                             "eutaxonomy-non-financials",
                                             "nuclear-and-gas",
                                         )
+
                                     else -> listOf(framework)
                                 }
                             }
@@ -166,22 +167,18 @@ class NotificationScheduler
             companyIdFrameworkPairs: List<Pair<UUID, DataTypeEnum>>,
             timeStamp: Long,
         ): List<NotificationEventEntity> {
-            val formattedTuples =
-                companyIdFrameworkPairs.joinToString(", ") {
-                    "('${it.first}', '${it.second}')"
-                }
+            if (companyIdFrameworkPairs.isEmpty()) return emptyList()
 
+            val conditions =
+                companyIdFrameworkPairs.joinToString(" OR ") {
+                    "(n.company_id = '${it.first}' AND n.framework = '${it.second.name}')"
+                }
             val queryToExecute =
                 """SELECT * FROM notification_events n
-                WHERE (n.company_id, n.framework) IN ($formattedTuples)
-                AND n.creation_timestamp >= '$timeStamp'"""
+           WHERE ($conditions)
+           AND n.creation_timestamp >= $timeStamp"""
 
-            return if (companyIdFrameworkPairs.isNotEmpty()) {
-                val query = entityManager.createNativeQuery(queryToExecute, NotificationEventEntity::class.java)
-                return query.resultList
-                    .filterIsInstance<NotificationEventEntity>()
-            } else {
-                emptyList()
-            }
+            val query = entityManager.createNativeQuery(queryToExecute, NotificationEventEntity::class.java)
+            return query.resultList.filterIsInstance<NotificationEventEntity>()
         }
     }

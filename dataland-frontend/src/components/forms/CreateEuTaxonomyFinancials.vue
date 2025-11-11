@@ -125,7 +125,7 @@
 <script lang="ts">
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -212,7 +212,7 @@ export default defineComponent({
     AssuranceFormField,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
-    CurrencyDataPointFormField,
+    CurrencyExtendedDataPointFormField,
     YesNoFormField,
     YesNoNaFormField,
     YesNoBaseDataPointFormField,
