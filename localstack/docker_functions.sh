@@ -72,12 +72,6 @@ clear_docker_completely() {
 }
 
 rebuild_docker_images() {
-  if ! find ./dataland-*/build/libs -name "*.jar" 2>/dev/null | grep -q .; then
-    echo "ERROR: No JAR files found in build directories."
-    echo "Please run './gradlew assemble' before rebuilding Docker images."
-    exit 1
-  fi
-
   local log_folder="./log/build/"
   local max_parallel=6
   mkdir -p "$log_folder"
@@ -109,15 +103,12 @@ rebuild_keycloak_image() {
 
 initialize_keycloak() {
   echo "Initializing Keycloak..."
-  docker compose --profile init up --build &
+  docker compose --profile init up --build -d
 
-  local project_name
-  project_name=$(basename "$(pwd)")
-  local lowercase_project_name
-  lowercase_project_name=$(echo "$project_name" | tr '[:upper:]' '[:lower:]')
-  local keycloak_initializer_container="$lowercase_project_name"-keycloak-initializer-1
-  
-  while ! docker logs "$keycloak_initializer_container" 2>/dev/null | grep -q "Added user 'admin' to realm 'master'"; do
+  while true; do
+    if docker compose --profile init logs --no-color | grep -q "Added user 'admin' to realm 'master'"; then
+      break
+    fi
     echo "Waiting for Keycloak to finish initializing..."
     sleep 5
   done
