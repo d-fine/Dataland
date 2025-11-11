@@ -28,6 +28,8 @@ export interface Field {
   description: string;
   unit?: string;
   component: string;
+  uploadComponentName?: string;
+  dataPointTypeId?: string;
   dependency?: string;
   showIf: (dataModel?: FrameworkData) => boolean;
   validation?: string;

@@ -27,7 +27,7 @@ class LksgFramework :
         enabledFeatures =
             FrameworkGenerationFeatures.allExcept(
                 FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications,
-                FrameworkGenerationFeatures.Translations,
+                FrameworkGenerationFeatures.Translations, FrameworkGenerationFeatures.ViewPage,
             ),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
