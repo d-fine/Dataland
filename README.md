@@ -22,6 +22,7 @@ Follow these steps to set up the dataland development stack on your computer.
 4. Clone this repository to your computer.
 5. Start the development stack by running `manageLocalStack.sh --reset --start --simple`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time.
 6. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
+7. You can stop the development stack by running `manageLocalStack.sh --stop --simple`.
 
 # Developer Remarks
 In this section, you find information that might be useful for you as a developer.
