@@ -257,7 +257,7 @@ class QaReviewManager(
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
                 companyId = qaReviewEntity.companyId,
-                framework = qaReviewEntity.framework,
+                dataType = qaReviewEntity.framework,
                 reportingPeriod = qaReviewEntity.reportingPeriod,
                 isUpdate = isUpdate,
             )
