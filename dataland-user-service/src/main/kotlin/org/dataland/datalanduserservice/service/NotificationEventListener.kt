@@ -9,6 +9,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.MessageWithTriple
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalanduserservice.entity.NotificationEventEntity
@@ -98,11 +100,68 @@ class NotificationEventListener
         }
 
         /**
+         * Listens for messages that specify data as available or updated
+         * and creates corresponding notification events in the database.
+         * @param payload the message describing the result of the data availability or update event
+         * @param type the type of the message
+         * @param correlationId the correlation id of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.ACCOUNTING_SERVICE_QA_STATUS_UPDATE_EVENT,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.DATA],
+                ),
+            ],
+        )
+        fun processMessageForAvailableDataAndUpdates(
+            @Payload payload: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        ) {
+            MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
+            val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
+
+            checkThatReceivedDataIsComplete(qaStatusChangeMessage)
+            val dataTypeDecoded = decodeDataTypeIfPossible(qaStatusChangeMessage)
+
+            logger.info(
+                "Received a qa status change message for data type: ${qaStatusChangeMessage.dataType}, " +
+                    "company ID: ${qaStatusChangeMessage.companyId} and reporting period: " +
+                    "${qaStatusChangeMessage.reportingPeriod} with isUpdate: ${qaStatusChangeMessage.isUpdate}. " +
+                    "Correlation ID: $correlationId",
+            )
+
+            val notificationEventEntity =
+                NotificationEventEntity(
+                    companyId = ValidationUtils.convertToUUID(qaStatusChangeMessage.companyId),
+                    framework = dataTypeDecoded,
+                    reportingPeriod = qaStatusChangeMessage.reportingPeriod,
+                    notificationEventType =
+                        if (qaStatusChangeMessage.isUpdate) {
+                            NotificationEventType.UpdatedEvent
+                        } else {
+                            NotificationEventType.AvailableEvent
+                        },
+                )
+            notificationEventRepository.save(notificationEventEntity)
+        }
+
+        /**
          * Checks whether at least one of the fields companyId or reportingPeriod in the message
          * is empty and, if so, throws an appropriate exception.
          */
-        private fun checkThatReceivedDataIsComplete(sourceabilityMessage: SourceabilityMessage) {
-            if (sourceabilityMessage.companyId.isEmpty() || sourceabilityMessage.reportingPeriod.isEmpty()) {
+        private fun checkThatReceivedDataIsComplete(messageWithTriple: MessageWithTriple) {
+            if (messageWithTriple.companyId.isEmpty() || messageWithTriple.reportingPeriod.isEmpty()) {
                 throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
             }
         }
@@ -124,7 +183,7 @@ class NotificationEventListener
          * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
          * If the decoding fails, an appropriate exception is thrown.
          */
-        private fun decodeDataTypeIfPossible(sourceabilityMessage: SourceabilityMessage): DataTypeEnum =
-            DataTypeEnum.decode(sourceabilityMessage.dataType)
+        private fun decodeDataTypeIfPossible(messageWithTriple: MessageWithTriple): DataTypeEnum =
+            DataTypeEnum.decode(messageWithTriple.dataType)
                 ?: throw MessageQueueRejectException("Framework name could not be understood.")
     }

@@ -5,9 +5,9 @@ package org.dataland.datalandmessagequeueutils.messages
  * BACKEND_DATA_NONSOURCEABLE exchange.
  */
 data class SourceabilityMessage(
-    val companyId: String,
-    val dataType: String,
-    val reportingPeriod: String,
+    override val companyId: String,
+    override val dataType: String,
+    override val reportingPeriod: String,
     val isNonSourceable: Boolean,
     val reason: String,
-)
+) : MessageWithTriple
