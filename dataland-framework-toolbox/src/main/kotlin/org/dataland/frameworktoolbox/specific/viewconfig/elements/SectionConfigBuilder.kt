@@ -52,6 +52,8 @@ data class SectionConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
+        uploadComponentName: String,
+        dataPointTypeId: String,
     ): CellConfigBuilder {
         val newCell =
             CellConfigBuilder(
@@ -60,6 +62,8 @@ data class SectionConfigBuilder(
                 explanation = explanation,
                 shouldDisplay = shouldDisplay,
                 valueGetter = valueGetter,
+                uploadComponentName = uploadComponentName,
+                dataPointTypeId = dataPointTypeId,
             )
         children.add(newCell)
         return newCell

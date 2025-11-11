@@ -31,6 +31,7 @@ class VsmeFramework :
                 FrameworkGenerationFeatures.QaModel,
                 FrameworkGenerationFeatures.DataPointSpecifications,
                 FrameworkGenerationFeatures.Translations,
+                FrameworkGenerationFeatures.ViewPage,
             ),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = VsmeComponentGenerationUtils()

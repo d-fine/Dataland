@@ -50,3 +50,74 @@ export function getOriginalNameFromTechnicalName<T extends string>(
 ): string {
   return mappingObject[technicalName];
 }
+
+export type ExtendedDataPointMetaInfoType = {
+  quality?: string;
+  comment?: string;
+  dataSource?: {
+    fileName?: string;
+    page?: string;
+    tagName?: string;
+    fileReference?: string;
+    publicationDate?: string;
+  };
+};
+
+export type ExtendedDataPointType = {
+  value?: number | string | null;
+  currency?: string;
+  quality?: string;
+  comment?: string;
+  dataSource?: {
+    fileName?: string;
+    page?: string;
+    tagName?: string;
+    fileReference?: string;
+    publicationDate?: string;
+  };
+};
+
+/**
+ * Builds the API body for the extended decimal estimated market capitalization data point.
+ * Only includes fields that are filled.
+ * @returns uploadedDataPoint
+ */
+export function buildApiBody(
+  dataPointValue?: number | string | null,
+  currency?: string,
+  extendedDataPoint?: ExtendedDataPointMetaInfoType
+): string {
+  if (dataPointValue === undefined && !currency && !extendedDataPoint) {
+    return '';
+  }
+  const dataPointObj: ExtendedDataPointType = {};
+  if (dataPointValue) dataPointObj.value = dataPointValue;
+  if (currency) dataPointObj.currency = currency;
+  if (extendedDataPoint?.quality) dataPointObj.quality = extendedDataPoint.quality;
+  if (extendedDataPoint?.comment) dataPointObj.comment = extendedDataPoint.comment;
+  if (extendedDataPoint?.dataSource?.fileReference) {
+    dataPointObj.dataSource = {
+      fileReference: extendedDataPoint.dataSource?.fileReference,
+      fileName: extendedDataPoint.dataSource.fileName,
+      page: extendedDataPoint.dataSource?.page ?? undefined,
+      publicationDate: extendedDataPoint.dataSource.publicationDate,
+    };
+  }
+
+  return JSON.stringify(dataPointObj);
+}
+
+/**
+ * Parses the input value to a number or null.
+ * @param val The input value as string, number, null, or undefined.
+ * @returns The parsed number or null if parsing fails.
+ */
+export function parseValue(val: string | number | null | undefined): number | null {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const regex = /-?\d+(\.\d+)?/;
+    const match = regex.exec(val.replaceAll(',', ''));
+    return match ? Number.parseFloat(match[0]) : null;
+  }
+  return null;
+}
