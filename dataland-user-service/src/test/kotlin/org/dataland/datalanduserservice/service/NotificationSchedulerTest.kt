@@ -19,6 +19,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -37,8 +38,8 @@ class NotificationSchedulerTest {
                 UUID.randomUUID(),
                 "portfolio1",
                 userId1.toString(),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                Instant.now().toEpochMilli(),
+                Instant.now().toEpochMilli(),
                 mutableSetOf(companyId1.toString(), companyId2.toString()),
                 true,
                 setOf("sfdr"),
@@ -49,8 +50,8 @@ class NotificationSchedulerTest {
                 UUID.randomUUID(),
                 "portfolio2",
                 userId2.toString(),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                Instant.now().toEpochMilli(),
+                Instant.now().toEpochMilli(),
                 mutableSetOf(companyId1.toString(), companyId2.toString()),
                 true,
                 setOf("eutaxonomyMinusFinancials"),
