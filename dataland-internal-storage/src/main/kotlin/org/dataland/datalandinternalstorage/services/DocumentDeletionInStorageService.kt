@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
  * Searches for document IDs in data points and datasets, and handles document deletion
  */
 @Service
-class DocumentStorageService
+class DocumentDeletionInStorageService
     @Autowired
     constructor(
         private val blobItemRepository: BlobItemRepository,
@@ -38,17 +38,11 @@ class DocumentStorageService
         ): DocumentReferencesResponse {
             logger.info("Searching for document references. DocumentId: $documentId. Correlation ID: $correlationId")
 
-            val allDataPoints = dataPointItemRepository.findAll()
-            val dataPointIds: List<String> =
-                allDataPoints
-                    .filter { containsDocumentReference(it.dataPoint, documentId) }
-                    .map { it.dataPointId }
+            val dataPointItems = dataPointItemRepository.findByDataPointContainingDocumentId(documentId)
+            val dataPointIds: Set<String> = dataPointItems.map { it.dataPointId }.toSet()
 
-            val allDatasets = dataItemRepository.findAll()
-            val datasetIds: List<String> =
-                allDatasets
-                    .filter { containsDocumentReference(it.data, documentId) }
-                    .map { it.id }
+            val dataItems = dataItemRepository.findByDataContainingDocumentId(documentId)
+            val datasetIds: Set<String> = dataItems.map { it.id }.toSet()
 
             logger.info(
                 "Found document references. DocumentId: $documentId. " +
@@ -61,32 +55,6 @@ class DocumentStorageService
                 dataPointIds = dataPointIds,
             )
         }
-
-        /**
-         * Checks if the given JSON data contains a reference to the specified document ID
-         * Handles datasets (wrapped with "data" field) and data points (direct content)
-         *
-         * @param jsonData the JSON data string from the database
-         * @param documentId the document ID to search for
-         * @return true if the data contains a reference to the document, false otherwise
-         */
-        private fun containsDocumentReference(
-            jsonData: String,
-            documentId: String,
-        ): Boolean =
-            try {
-                val parsedJson = defaultObjectMapper.readTree(jsonData)
-
-                if (parsedJson.has("data") && parsedJson.get("data").isTextual) {
-                    val innerDataString = parsedJson.get("data").asText()
-                    innerDataString.contains(documentId)
-                } else {
-                    jsonData.contains(documentId)
-                }
-            } catch (e: com.fasterxml.jackson.core.JsonProcessingException) {
-                logger.warn("Failed to parse JSON data while searching for document $documentId", e)
-                false
-            }
 
         /**
          * Deletes a document from blob storage

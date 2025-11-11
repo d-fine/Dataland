@@ -43,17 +43,17 @@ class DocumentDeletionService
 
             val references = storageControllerApi.getDocumentReferences(documentId, correlationId)
 
-            if (references.datasetIds.any { !isDatasetRejected(it, correlationId) } ||
-                references.dataPointIds.any { !isDataPointRejected(it, correlationId) }
+            if (references.datasetIds.all { isDatasetRejected(it, correlationId) } &&
+                references.dataPointIds.all { isDataPointRejected(it, correlationId) }
             ) {
+                deleteFromStorage(documentId, correlationId)
+                documentMetaInfoRepository.deleteById(documentId)
+            } else {
                 throw ConflictApiException(
                     summary = "Document $documentId cannot be deleted.",
                     message = "Document cannot be deleted because it has active references.",
                 )
             }
-
-            deleteFromStorage(documentId, correlationId)
-            documentMetaInfoRepository.deleteById(documentId)
 
             logger.info("Successfully deleted document. DocumentId: $documentId. Correlation ID: $correlationId")
         }

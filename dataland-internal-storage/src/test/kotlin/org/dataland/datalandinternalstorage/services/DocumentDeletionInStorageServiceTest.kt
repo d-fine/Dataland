@@ -14,11 +14,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class DocumentStorageServiceTest {
+class DocumentDeletionInStorageServiceTest {
     private lateinit var mockBlobItemRepository: BlobItemRepository
     private lateinit var mockDataItemRepository: DataItemRepository
     private lateinit var mockDataPointItemRepository: DataPointItemRepository
-    private lateinit var documentStorageService: DocumentStorageService
+    private lateinit var documentDeletionInStorageService: DocumentDeletionInStorageService
 
     private val documentId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
@@ -28,8 +28,8 @@ class DocumentStorageServiceTest {
         mockBlobItemRepository = mock<BlobItemRepository>()
         mockDataItemRepository = mock<DataItemRepository>()
         mockDataPointItemRepository = mock<DataPointItemRepository>()
-        documentStorageService =
-            DocumentStorageService(
+        documentDeletionInStorageService =
+            DocumentDeletionInStorageService(
                 mockBlobItemRepository,
                 mockDataItemRepository,
                 mockDataPointItemRepository,
@@ -43,10 +43,10 @@ class DocumentStorageServiceTest {
 
         setupMockRepositories(dataPointsWithDocument, emptyList())
 
-        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionInStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(dataPointIds, result.dataPointIds)
-        assertEquals(emptyList<String>(), result.datasetIds)
+        assertEquals(dataPointIds.toSet(), result.dataPointIds)
+        assertEquals(emptySet<String>(), result.datasetIds)
     }
 
     @Test
@@ -56,10 +56,10 @@ class DocumentStorageServiceTest {
 
         setupMockRepositories(emptyList(), datasetsWithDocument)
 
-        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionInStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(emptyList<String>(), result.dataPointIds)
-        assertEquals(datasetIds, result.datasetIds)
+        assertEquals(emptySet<String>(), result.dataPointIds)
+        assertEquals(datasetIds.toSet(), result.datasetIds)
     }
 
     @Test
@@ -72,30 +72,27 @@ class DocumentStorageServiceTest {
 
         setupMockRepositories(dataPointsWithDocument, datasetsWithDocument)
 
-        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionInStorageService.getDocumentReferences(documentId, correlationId)
 
-        assertEquals(dataPointIds, result.dataPointIds)
-        assertEquals(datasetIds, result.datasetIds)
+        assertEquals(dataPointIds.toSet(), result.dataPointIds)
+        assertEquals(datasetIds.toSet(), result.datasetIds)
     }
 
     @Test
     fun `check that getDocumentReferences returns empty lists when document is not found anywhere`() {
-        val dataPointsWithoutDocument = listOf(createDataPointItem(UUID.randomUUID().toString(), "otherDocumentId"))
-        val datasetsWithoutDocument = listOf(createDataItem(UUID.randomUUID().toString(), "anotherDocumentId"))
+        setupMockRepositories(emptyList(), emptyList())
 
-        setupMockRepositories(dataPointsWithoutDocument, datasetsWithoutDocument)
+        val result = documentDeletionInStorageService.getDocumentReferences(documentId, correlationId)
 
-        val result = documentStorageService.getDocumentReferences(documentId, correlationId)
-
-        assertEquals(emptyList<String>(), result.dataPointIds)
-        assertEquals(emptyList<String>(), result.datasetIds)
+        assertEquals(emptySet<String>(), result.dataPointIds)
+        assertEquals(emptySet<String>(), result.datasetIds)
     }
 
     @Test
     fun `check that deleteDocument calls repository deleteById with correct documentId`() {
         setupMockRepositories(emptyList(), emptyList())
 
-        documentStorageService.deleteDocument(documentId, correlationId)
+        documentDeletionInStorageService.deleteDocument(documentId, correlationId)
 
         verify(mockBlobItemRepository).deleteById(documentId)
     }
@@ -105,11 +102,11 @@ class DocumentStorageServiceTest {
         val lksgDatasetId = UUID.randomUUID().toString()
         val lksgDataset = createLksgDataset(lksgDatasetId, riskManagementSystemDocumentReference1 = documentId)
 
-        whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDataset))
+        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(listOf(lksgDataset))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDataset))
 
-        documentStorageService.deleteDocument(documentId, correlationId)
+        documentDeletionInStorageService.deleteDocument(documentId, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -135,11 +132,12 @@ class DocumentStorageServiceTest {
                 riskManagementSystemDocumentReference2 = documentIdToBeKept,
             )
 
-        whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithTwoDocuments))
+        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentIdToBeDeleted)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentIdToBeDeleted))
+            .thenReturn(listOf(lksgDatasetWithTwoDocuments))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithTwoDocuments))
 
-        documentStorageService.deleteDocument(documentIdToBeDeleted, correlationId)
+        documentDeletionInStorageService.deleteDocument(documentIdToBeDeleted, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -169,11 +167,11 @@ class DocumentStorageServiceTest {
         val lksgDatasetId = UUID.randomUUID().toString()
         val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, lksgAttachmentDoc = documentId)
 
-        whenever(mockDataPointItemRepository.findAll()).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findAll()).thenReturn(listOf(lksgDatasetWithAttachment))
+        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(listOf(lksgDatasetWithAttachment))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithAttachment))
 
-        documentStorageService.deleteDocument(documentId, correlationId)
+        documentDeletionInStorageService.deleteDocument(documentId, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -240,30 +238,21 @@ class DocumentStorageServiceTest {
         dataPoints: List<DataPointItem>,
         datasets: List<DataItem>,
     ) {
-        whenever(mockDataPointItemRepository.findAll()).thenReturn(dataPoints)
-        whenever(mockDataItemRepository.findAll()).thenReturn(datasets)
+        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(dataPoints)
+        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(datasets)
     }
 
     private fun createDataPointItem(
         dataPointId: String,
         documentId: String,
     ): DataPointItem {
-        val innerData = """{"dataSource":{"fileReference":"$documentId"}}"""
-        val outerData =
-            defaultObjectMapper.writeValueAsString(
-                mapOf(
-                    "companyId" to UUID.randomUUID().toString(),
-                    "dataPointType" to "testType",
-                    "reportingPeriod" to "2021",
-                    "data" to innerData,
-                ),
-            )
+        val businessData = """{"dataSource":{"fileReference":"$documentId"}}"""
         return DataPointItem(
             dataPointId = dataPointId,
-            companyId = UUID.randomUUID().toString(),
+            companyId = "test-company-id",
             reportingPeriod = "2021",
             dataPointType = "testType",
-            dataPoint = outerData,
+            dataPoint = businessData,
         )
     }
 

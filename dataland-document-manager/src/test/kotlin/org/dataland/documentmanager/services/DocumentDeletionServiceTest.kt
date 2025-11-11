@@ -50,8 +50,8 @@ class DocumentDeletionServiceTest {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             DocumentReferencesResponse(
-                datasetIds = listOf(),
-                dataPointIds = listOf(),
+                datasetIds = emptySet<String>(),
+                dataPointIds = emptySet<String>(),
             ),
         )
 
@@ -66,8 +66,8 @@ class DocumentDeletionServiceTest {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             DocumentReferencesResponse(
-                datasetIds = listOf(testDatasetId1),
-                dataPointIds = listOf(testDataPointId1),
+                datasetIds = setOf(testDatasetId1),
+                dataPointIds = setOf(testDataPointId1),
             ),
         )
 
@@ -96,8 +96,8 @@ class DocumentDeletionServiceTest {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             DocumentReferencesResponse(
-                datasetIds = listOf(testDatasetId1),
-                dataPointIds = listOf(),
+                datasetIds = setOf(testDatasetId1),
+                dataPointIds = emptySet<String>(),
             ),
         )
 
@@ -121,8 +121,8 @@ class DocumentDeletionServiceTest {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             DocumentReferencesResponse(
-                datasetIds = listOf(),
-                dataPointIds = listOf(testDataPointId1),
+                datasetIds = emptySet<String>(),
+                dataPointIds = setOf(testDataPointId1),
             ),
         )
 
@@ -155,8 +155,8 @@ class DocumentDeletionServiceTest {
         whenever(mockDocumentMetaInfoRepository.existsById(testDocumentId)).thenReturn(true)
         whenever(mockStorageControllerApi.getDocumentReferences(any(), any())).thenReturn(
             DocumentReferencesResponse(
-                datasetIds = listOf(),
-                dataPointIds = listOf(),
+                datasetIds = emptySet<String>(),
+                dataPointIds = emptySet<String>(),
             ),
         )
         whenever(mockStorageControllerApi.deleteDocument(eq(testDocumentId), any()))
