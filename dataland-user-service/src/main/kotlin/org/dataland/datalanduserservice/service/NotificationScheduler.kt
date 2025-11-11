@@ -46,16 +46,23 @@ class NotificationScheduler
             portfolioNamesString: String,
             userId: UUID,
         ) {
-            logger.info(
-                "Requirements for Data Request Summary notification are met." +
-                    " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
-            )
-            dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
-                unprocessedEvents = events,
-                userId = userId,
-                frequency = frequency,
-                portfolioNamesString = portfolioNamesString,
-            )
+            if (events.isNotEmpty()) {
+                logger.info(
+                    "Requirements for Data Request Summary notification are met." +
+                        " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
+                )
+                dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
+                    unprocessedEvents = events,
+                    userId = userId,
+                    frequency = frequency,
+                    portfolioNamesString = portfolioNamesString,
+                )
+            } else {
+                logger.info(
+                    "No new events found for Data Request Summary notification." +
+                        " No $frequency email will be sent to user $userId for portfolio(s) $portfolioNamesString.",
+                )
+            }
         }
 
         /**
