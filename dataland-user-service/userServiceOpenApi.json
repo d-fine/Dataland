@@ -487,7 +487,6 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "description": "The unique identifiers under which a company can be found on Dataland.",
                   "items": {
                     "type": "string"
                   }
