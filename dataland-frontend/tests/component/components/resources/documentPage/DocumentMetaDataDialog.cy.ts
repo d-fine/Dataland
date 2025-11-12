@@ -4,6 +4,7 @@ import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/Da
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { type DocumentMetaInfoEntity } from '@clients/documentmanager';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for the Document Meta Data Dialog', () => {
   let documentMetaInfoEntityFromFixture: DocumentMetaInfoEntity;
@@ -11,6 +12,7 @@ describe('Component test for the Document Meta Data Dialog', () => {
   let sampleDocumentCategory: string;
   let dummyCompanyId1: string;
   let dummyCompanyId2: string;
+  let dummyUploaderId: string;
   let samplePublicationDate: string;
   let sampleReportingPeriod: string;
 
@@ -21,6 +23,7 @@ describe('Component test for the Document Meta Data Dialog', () => {
       sampleDocumentCategory = documentMetaInfoEntityFromFixture.documentCategory!;
       dummyCompanyId1 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[0]!;
       dummyCompanyId2 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[1]!;
+      dummyUploaderId = documentMetaInfoEntityFromFixture.uploaderId;
       samplePublicationDate = documentMetaInfoEntityFromFixture.publicationDate!;
       sampleReportingPeriod = documentMetaInfoEntityFromFixture.reportingPeriod!;
     });
@@ -81,6 +84,45 @@ describe('Component test for the Document Meta Data Dialog', () => {
       cy.get("[data-test='upload-time']")
         .should('exist')
         .and('contain', `${convertUnixTimeInMsToDateString(1709565656858)}`);
+    });
+  });
+
+  it('Check that edit mode is enabled for the uploader who uploaded the document', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentMetaDataDialog, {
+      keycloak: minimalKeycloakMock({ userId: dummyUploaderId, roles: [KEYCLOAK_ROLE_UPLOADER] }),
+      props: {
+        documentId: dummyDocumentId,
+        isOpen: true,
+      },
+    }).then(() => {
+      cy.get("[data-test='edit-icon']").should('exist').should('be.visible');
+    });
+  });
+
+  it('Check that edit mode is disabled for an uploader who did not upload the document', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentMetaDataDialog, {
+      keycloak: minimalKeycloakMock({ userId: 'not-the-original-uploader', roles: [KEYCLOAK_ROLE_UPLOADER] }),
+      props: {
+        documentId: dummyDocumentId,
+        isOpen: true,
+      },
+    }).then(() => {
+      cy.get("[data-test='edit-icon']").should('not.exist');
+    });
+  });
+
+  it('Check that edit mode is enabled for admins', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentMetaDataDialog, {
+      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_ADMIN] }),
+      props: {
+        documentId: dummyDocumentId,
+        isOpen: true,
+      },
+    }).then(() => {
+      cy.get("[data-test='edit-icon']").should('exist').should('be.visible');
     });
   });
 });
