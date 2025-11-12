@@ -29,6 +29,20 @@ describeIf(
       cy.get('[data-test="upload-document-button"]').click();
     }
 
+    /** Views document details and edits the category */
+    function viewDocumentDetailsAndEditCategory(documentName: string, expectedCategory: string): void {
+      cy.contains(documentName)
+        .parent('tr')
+        .within(() => {
+          cy.contains(expectedCategory).should('exist');
+          cy.contains('VIEW DETAILS').click();
+        });
+      cy.get("[data-test='edit-icon']").should('exist').click();
+      cy.get('[data-test=document-category-select]').should('contain.text', 'Annual Report');
+      cy.get('[data-test=document-category-select]').click();
+      cy.get('.p-select-option').contains('Policy').click();
+    }
+
     before(() => {
       setupCommonInterceptions();
       fetchTestCompanies().then(([alpha, beta]) => {
@@ -56,12 +70,28 @@ describeIf(
       }
     });
 
-    it('Uploads a new document and verifies success', () => {
+    it('Uploads a new document and verifies success. Then edit the category and verify success.', () => {
       visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
       cy.get('[data-test="success-modal"]').should('be.visible');
       cy.contains('Document uploaded successfully.').should('be.visible');
       cy.get('[data-test="close-success-modal-button"]').click();
       cy.contains(testDocFileName).should('exist');
+
+      viewDocumentDetailsAndEditCategory(testDocFileName, 'Annual Report');
+      cy.get('[data-test="cancel-edit-button"]').click();
+      cy.get('[data-test="document-type"]').should('contain.text', 'Annual Report');
+      cy.get('.p-dialog-close-button').should('exist').click();
+
+      viewDocumentDetailsAndEditCategory(testDocFileName, 'Annual Report');
+      cy.get('[data-test="save-edit-button"]').click();
+      cy.get('[data-test="document-type"]').should('contain.text', 'Policy');
+      cy.get('.p-dialog-close-button').should('exist').click();
+
+      cy.contains(testDocFileName)
+        .parent('tr')
+        .within(() => {
+          cy.contains('Policy').should('exist');
+        });
     });
 
     it('Shows conflict modal for already associated document', () => {
