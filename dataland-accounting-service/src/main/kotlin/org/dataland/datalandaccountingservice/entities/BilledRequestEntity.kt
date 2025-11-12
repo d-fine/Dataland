@@ -34,8 +34,8 @@ class BilledRequestEntity(
     val dataSourcingId: UUID,
     @Column(name = "requested_company_id")
     val requestedCompanyId: UUID,
-    @Column(name = "requested_reporting_period")
+    @Column(name = "requested_reporting_period", nullable = false)
     val requestedReportingPeriod: String,
-    @Column(name = "requested_framework")
+    @Column(name = "requested_framework", nullable = false)
     val requestedFramework: String,
 )

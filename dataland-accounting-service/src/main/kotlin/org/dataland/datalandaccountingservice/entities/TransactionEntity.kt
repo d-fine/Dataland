@@ -2,6 +2,8 @@ package org.dataland.datalandaccountingservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Index
 import jakarta.persistence.Table
@@ -19,17 +21,18 @@ import java.util.UUID
 )
 class TransactionEntity(
     @Id
-    @Column(name = "transaction_id")
-    val transactionId: UUID = UUID.randomUUID(),
-    @Column(name = "value_of_change")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "transaction_id", nullable = false, updatable = false)
+    val transactionId: UUID? = null,
+    @Column(name = "value_of_change", nullable = false, precision = 14, scale = 4)
     val valueOfChange: BigDecimal,
     @Column(name = "company_id")
     val companyId: UUID,
-    @Column(name = "triggering_user")
+    @Column(name = "triggering_user", nullable = false)
     val triggeringUser: UUID,
     @Column(name = "reason_for_change")
     val reasonForChange: String?,
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     val timestamp: Long,
 ) {
     /**

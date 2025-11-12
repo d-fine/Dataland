@@ -1,6 +1,6 @@
 package org.dataland.datalandaccountingservice.repositories.utils
 
-object TemporaryTables {
+object JPQLQueryFragments {
     const val BILLED_DATA_SOURCING_IDS_FOR_MEMBER_TO_BILL =
         "SELECT e2.dataSourcingId FROM BilledRequestEntity e2 WHERE e2.billedCompanyId = :billedCompanyId"
 

@@ -23,9 +23,9 @@ class TransactionRepositoryIntegrationTest
     ) : BaseIntegrationTest() {
         @ParameterizedTest
         @CsvSource(
-            "1,10.00",
-            "2,20.00",
-            "3,33.00",
+            "1,10.0000",
+            "2,20.0000",
+            "3,33.0000",
         )
         fun `getTotalBalanceFromTransactions returns correct sum for company`(
             transactionCount: Int,
@@ -93,6 +93,6 @@ class TransactionRepositoryIntegrationTest
             )
 
             val result = transactionRepository.getTotalBalanceFromTransactions(targetCompany)
-            assertEquals(BigDecimal("5.00"), result)
+            assertEquals(BigDecimal("5.0000"), result)
         }
     }

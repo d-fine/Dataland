@@ -20,11 +20,13 @@ data class TransactionDto<IdType>(
     @field:Schema(
         description = AccountingServiceOpenApiDescriptionsAndExamples.TRANSACTION_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        format = "uuid",
     )
     val companyId: IdType,
     @field:Schema(
         description = AccountingServiceOpenApiDescriptionsAndExamples.TRANSACTION_TRIGGERING_USER_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        format = "uuid",
     )
     val triggeringUser: IdType,
     @field:Schema(

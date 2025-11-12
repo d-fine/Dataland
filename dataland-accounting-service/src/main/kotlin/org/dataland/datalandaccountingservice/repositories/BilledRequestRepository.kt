@@ -2,7 +2,7 @@ package org.dataland.datalandaccountingservice.repositories
 
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
-import org.dataland.datalandaccountingservice.repositories.utils.TemporaryTables
+import org.dataland.datalandaccountingservice.repositories.utils.JPQLQueryFragments
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -18,7 +18,7 @@ interface BilledRequestRepository : JpaRepository<BilledRequestEntity, BilledReq
      * based on billed requests in which they are involved.
      */
     @Query(
-        "SELECT COALESCE(SUM(credit_debts), 0) FROM (${TemporaryTables.CREDIT_DEBTS_FROM_BILLED_REQUESTS_FOR_MEMBER_TO_BILL})",
+        "SELECT COALESCE(SUM(credit_debts), 0) FROM (${JPQLQueryFragments.CREDIT_DEBTS_FROM_BILLED_REQUESTS_FOR_MEMBER_TO_BILL})",
     )
     fun getTotalCreditDebtFromBilledRequests(
         @Param("billedCompanyId") billedCompanyId: UUID,
