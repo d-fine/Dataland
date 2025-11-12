@@ -20,7 +20,7 @@ class AuthorizationUtils
         private val companyRolesControllerApi: CompanyRolesControllerApi,
     ) {
         /**
-         * Checks whether the specified user has a CompanyRole in the specified company.
+         * Checks whether the logged-in user has a CompanyRole in the specified company.
          * @param companyId of the company in question
          * @return true if the user has a CompanyRole in the company, false otherwise
          */
@@ -36,7 +36,7 @@ class AuthorizationUtils
         }
 
         /**
-         * Checks whether the specified user belongs to the document collector company
+         * Checks whether the logged-in user belongs to the document collector company
          * associated with the specified data sourcing.
          * @param dataSourcingId of the data sourcing in question
          * @return true if the user belongs to the document collector company, false otherwise
@@ -44,15 +44,11 @@ class AuthorizationUtils
         fun doesUserBelongToDocumentCollector(dataSourcingId: String): Boolean {
             val dataSourcing = dataSourcingRepository.findByIdOrNull(ValidationUtils.convertToUUID(dataSourcingId))
 
-            val documentCollectorId = dataSourcing?.documentCollector
-
-            if (documentCollectorId == null) return false
-
-            return doesUserBelongToCompany(documentCollectorId.toString())
+            return dataSourcing?.documentCollector?.let { doesUserBelongToCompany(it.toString()) } ?: false
         }
 
         /**
-         * Checks whether the specified user belongs to the data extractor company
+         * Checks whether the logged-in user belongs to the data extractor company
          * associated with the specified data sourcing.
          * @param dataSourcingId of the data sourcing in question
          * @return true if the user belongs to the data extractor company, false otherwise
@@ -60,15 +56,11 @@ class AuthorizationUtils
         fun doesUserBelongToDataExtractor(dataSourcingId: String): Boolean {
             val dataSourcing = dataSourcingRepository.findByIdOrNull(ValidationUtils.convertToUUID(dataSourcingId))
 
-            val dataExtractorId = dataSourcing?.dataExtractor
-
-            if (dataExtractorId == null) return false
-
-            return doesUserBelongToCompany(dataExtractorId.toString())
+            return dataSourcing?.dataExtractor?.let { doesUserBelongToCompany(it.toString()) } ?: false
         }
 
         /**
-         * Checks whether the specified user can patch the state of the specified data sourcing
+         * Checks whether the logged-in user can patch the state of the specified data sourcing
          * to the specified state.
          * @param dataSourcingId of the data sourcing in question
          * @param state to which the data sourcing state should be patched

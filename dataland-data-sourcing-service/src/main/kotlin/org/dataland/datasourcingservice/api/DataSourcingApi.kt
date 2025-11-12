@@ -79,7 +79,7 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing objects."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only uploaders are allowed to use this endpoint.",
+                description = "Only Dataland Admins and members of this company are allowed to use this endpoint.",
                 content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
@@ -146,7 +146,9 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "200", description = "Successfully patched state."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch states of data sourcing objects.",
+                description =
+                    "Only Dataland Admins have the right to patch states of data sourcing objects. " +
+                        "Document Collectors and Data Extractors have the right to patch to specific states.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -244,7 +246,9 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "200", description = "Successfully patched document IDs."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects.",
+                description =
+                    "Only Dataland Admins and Document Collectors have the right to patch documents associated " +
+                        "with data sourcing objects.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -301,7 +305,9 @@ interface DataSourcingApi {
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
+                description =
+                    "Only Dataland Admins and Document Collectors have the right to patch the dates of " +
+                        "document sourcing attempts.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
