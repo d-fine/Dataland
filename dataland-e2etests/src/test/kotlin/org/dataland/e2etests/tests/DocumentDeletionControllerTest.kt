@@ -119,7 +119,6 @@ endobj"""
     @Test
     fun `test that document with LkSG dataset reference in Pending status cannot be deleted`() {
         val documentId = uploadDocumentAndGetId()
-        awaitDocumentAvailable(documentId)
 
         uploadLksgDatasetWithDocumentReference(documentId, qaStatus = null)
 
@@ -133,7 +132,6 @@ endobj"""
     @Test
     fun `test that document with LkSG dataset reference in Accepted status cannot be deleted`() {
         val documentId = uploadDocumentAndGetId()
-        awaitDocumentAvailable(documentId)
 
         uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Accepted)
 
@@ -147,7 +145,6 @@ endobj"""
     @Test
     fun `test that document with LkSG dataset reference in Rejected status can be deleted`() {
         val documentId = uploadDocumentAndGetId()
-        awaitDocumentAvailable(documentId)
 
         uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Rejected)
 
@@ -170,7 +167,6 @@ endobj"""
     @Test
     fun `test that document deletion nullifies file references in rejected LkSG datasets`() {
         val documentId = uploadDocumentAndGetId()
-        awaitDocumentAvailable(documentId)
 
         val dataId = uploadLksgDatasetWithDocumentReference(documentId, QaStatus.Rejected)
         awaitUntilQaStatusEquals(dataId, QaStatus.Rejected)
@@ -190,7 +186,6 @@ endobj"""
     @Test
     fun `test that document deletion nullifies file references in rejected datapoints`() {
         val documentId = uploadDocumentAndGetId()
-        awaitDocumentAvailable(documentId)
 
         val dataPointId = uploadDataPointWithDocumentReference(documentId)
 
@@ -207,7 +202,11 @@ endobj"""
         )
     }
 
-    private fun uploadDocumentAndGetId(): String = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf()).documentId
+    private fun uploadDocumentAndGetId(): String {
+        val documentId = documentControllerApiAccessor.uploadDocumentAsUser(createUniquePdf()).documentId
+        awaitDocumentAvailable(documentId)
+        return documentId
+    }
 
     private fun assertDocumentDeleted(documentId: String) {
         val exception = assertThrows<ClientException> { documentControllerClient.checkDocument(documentId) }
@@ -287,7 +286,7 @@ endobj"""
                     false,
                 ).dataId
 
-        if (qaStatus != null) {
+        qaStatus?.let {
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 Awaitility
                     .await()
@@ -297,8 +296,8 @@ endobj"""
                     .untilAsserted {
                         apiAccessor.qaServiceControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataId))
                     }
-                apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, qaStatus)
-                awaitUntilQaStatusEquals(dataId, qaStatus)
+                apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, it)
+                awaitUntilQaStatusEquals(dataId, it)
             }
         }
 
@@ -321,8 +320,9 @@ endobj"""
                 .untilAsserted {
                     apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
                 }
-            apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
-            awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
+            val qaStatus = QaStatus.Rejected
+            apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, qaStatus)
+            awaitUntilDataPointQaStatusEquals(dataPointId, qaStatus)
         }
 
         return dataPointId

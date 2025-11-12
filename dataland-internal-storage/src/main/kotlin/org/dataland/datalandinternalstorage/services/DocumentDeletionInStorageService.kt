@@ -106,8 +106,7 @@ class DocumentDeletionInStorageService
         ): Boolean {
             val dataItem = dataItemRepository.findById(datasetId).get()
 
-            val storedData = defaultObjectMapper.readTree(dataItem.data)
-            val datasetWrapper = if (storedData.isTextual) defaultObjectMapper.readTree(storedData.asText()) else storedData
+            val datasetWrapper = defaultObjectMapper.readTree(defaultObjectMapper.readTree(dataItem.data).asText())
             val serializedDatasetData =
                 datasetWrapper.get("data")?.asText() ?: run {
                     logger.warn("Dataset $datasetId has no 'data' field")
@@ -122,8 +121,7 @@ class DocumentDeletionInStorageService
                 val updatedSerializedData = defaultObjectMapper.writeValueAsString(datasetData)
                 (datasetWrapper as ObjectNode).put("data", updatedSerializedData)
                 val updatedWrapper = defaultObjectMapper.writeValueAsString(datasetWrapper)
-                val finalData =
-                    if (storedData.isTextual) defaultObjectMapper.writeValueAsString(updatedWrapper) else updatedWrapper
+                val finalData = defaultObjectMapper.writeValueAsString(updatedWrapper)
                 val updatedDataItem = dataItem.copy(data = finalData)
                 dataItemRepository.save(updatedDataItem)
                 logger.info("Nullified references in dataset $datasetId")
@@ -134,7 +132,7 @@ class DocumentDeletionInStorageService
 
         /**
          * Nullifies file references to the specified document in a data point
-         * Handles both single-encoded and double-encoded JSON formats
+         * Handles double-encoded JSON format
          *
          * @param dataPointId the ID of the data point to update
          * @param documentId the ID of the document whose references should be nullified
@@ -146,15 +144,12 @@ class DocumentDeletionInStorageService
         ): Boolean {
             val dataPointItem = dataPointItemRepository.findById(dataPointId).get()
 
-            val storedDataPoint = defaultObjectMapper.readTree(dataPointItem.dataPoint)
-            val dataPointData =
-                if (storedDataPoint.isTextual) defaultObjectMapper.readTree(storedDataPoint.asText()) else storedDataPoint
+            val dataPointData = defaultObjectMapper.readTree(defaultObjectMapper.readTree(dataPointItem.dataPoint).asText())
             val modified = nullifyMatchingReferences(dataPointData, documentId)
 
             if (modified) {
                 val updatedJson = defaultObjectMapper.writeValueAsString(dataPointData)
-                val finalDataPoint =
-                    if (storedDataPoint.isTextual) defaultObjectMapper.writeValueAsString(updatedJson) else updatedJson
+                val finalDataPoint = defaultObjectMapper.writeValueAsString(updatedJson)
                 val updatedDataPointItem = dataPointItem.copy(dataPoint = finalDataPoint)
                 dataPointItemRepository.save(updatedDataPointItem)
                 logger.info("Nullified references in datapoint $dataPointId")

@@ -6,34 +6,32 @@ import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DocumentDeletionInStorageServiceTest {
-    private lateinit var mockBlobItemRepository: BlobItemRepository
-    private lateinit var mockDataItemRepository: DataItemRepository
-    private lateinit var mockDataPointItemRepository: DataPointItemRepository
-    private lateinit var documentDeletionInStorageService: DocumentDeletionInStorageService
+    private val mockBlobItemRepository: BlobItemRepository = mock<BlobItemRepository>()
+    private val mockDataItemRepository: DataItemRepository = mock<DataItemRepository>()
+    private val mockDataPointItemRepository: DataPointItemRepository = mock<DataPointItemRepository>()
+    private val documentDeletionInStorageService: DocumentDeletionInStorageService =
+        DocumentDeletionInStorageService(
+            mockBlobItemRepository,
+            mockDataItemRepository,
+            mockDataPointItemRepository,
+        )
 
     private val documentId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
 
-    @BeforeEach
-    fun setup() {
-        mockBlobItemRepository = mock<BlobItemRepository>()
-        mockDataItemRepository = mock<DataItemRepository>()
-        mockDataPointItemRepository = mock<DataPointItemRepository>()
-        documentDeletionInStorageService =
-            DocumentDeletionInStorageService(
-                mockBlobItemRepository,
-                mockDataItemRepository,
-                mockDataPointItemRepository,
-            )
+    @AfterEach
+    fun resetMocks() {
+        reset(mockBlobItemRepository, mockDataItemRepository, mockDataPointItemRepository)
     }
 
     @Test
@@ -100,7 +98,7 @@ class DocumentDeletionInStorageServiceTest {
     @Test
     fun `check that nullification handles LkSG dataset correctly`() {
         val lksgDatasetId = UUID.randomUUID().toString()
-        val lksgDataset = createLksgDataset(lksgDatasetId, riskManagementSystemDocumentReference1 = documentId)
+        val lksgDataset = createLksgDataset(lksgDatasetId, riskManagementSystemDocumentReference = documentId)
 
         whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(emptyList())
         whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(listOf(lksgDataset))
@@ -112,8 +110,7 @@ class DocumentDeletionInStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val storedDataItem = defaultObjectMapper.readTree(savedData)
-        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val wrappedDataset = defaultObjectMapper.readTree(defaultObjectMapper.readTree(savedData).asText())
         val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
         val dataSource = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
@@ -128,8 +125,8 @@ class DocumentDeletionInStorageServiceTest {
 
         val lksgDatasetWithTwoDocuments =
             createLksgDataset(
-                lksgDatasetId, riskManagementSystemDocumentReference1 = documentIdToBeDeleted,
-                riskManagementSystemDocumentReference2 = documentIdToBeKept,
+                lksgDatasetId, riskManagementSystemDocumentReference = documentIdToBeDeleted,
+                riskManagementProcessDocumentReference = documentIdToBeKept,
             )
 
         whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentIdToBeDeleted)).thenReturn(emptyList())
@@ -143,8 +140,7 @@ class DocumentDeletionInStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val storedDataItem = defaultObjectMapper.readTree(savedData)
-        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val wrappedDataset = defaultObjectMapper.readTree(defaultObjectMapper.readTree(savedData).asText())
         val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
         val removedDataSource = serializedDatasetData.at("/governance/riskManagementOwnOperations/riskManagementSystem/dataSource")
@@ -177,8 +173,7 @@ class DocumentDeletionInStorageServiceTest {
         verify(mockDataItemRepository).save(savedDataset.capture())
 
         val savedData = savedDataset.firstValue.data
-        val storedDataItem = defaultObjectMapper.readTree(savedData)
-        val wrappedDataset = if (storedDataItem.isTextual) defaultObjectMapper.readTree(storedDataItem.asText()) else storedDataItem
+        val wrappedDataset = defaultObjectMapper.readTree(defaultObjectMapper.readTree(savedData).asText())
         val serializedDatasetData = defaultObjectMapper.readTree(wrappedDataset.get("data").asText())
 
         val attachmentField = serializedDatasetData.at("/attachment/attachment/attachment")
@@ -187,20 +182,20 @@ class DocumentDeletionInStorageServiceTest {
 
     private fun createLksgDataset(
         datasetId: String,
-        riskManagementSystemDocumentReference1: String? = null,
-        riskManagementSystemDocumentReference2: String? = null,
+        riskManagementSystemDocumentReference: String? = null,
+        riskManagementProcessDocumentReference: String? = null,
         lksgAttachmentDoc: String? = null,
     ): DataItem {
-        val riskManagementSystemDataSource1 =
-            if (riskManagementSystemDocumentReference1 != null) {
-                """{"fileName":"TestDoc1","fileReference":"$riskManagementSystemDocumentReference1","publicationDate":null}"""
+        val riskManagementSystemDataSource =
+            if (riskManagementSystemDocumentReference != null) {
+                """{"fileName":"TestDoc1","fileReference":"$riskManagementSystemDocumentReference","publicationDate":null}"""
             } else {
                 "null"
             }
 
-        val riskManagementSystemDataSource2 =
-            if (riskManagementSystemDocumentReference2 != null) {
-                """{"fileName":"TestDoc2","fileReference":"$riskManagementSystemDocumentReference2","publicationDate":null}"""
+        val riskManagementProcessDataSource =
+            if (riskManagementProcessDocumentReference != null) {
+                """{"fileName":"TestDoc2","fileReference":"$riskManagementProcessDocumentReference","publicationDate":null}"""
             } else {
                 "null"
             }
@@ -214,8 +209,9 @@ class DocumentDeletionInStorageServiceTest {
 
         val lksgData =
             """
-            {"governance":{"riskManagementOwnOperations":{"riskManagementSystem":{"value":"Yes","dataSource":$riskManagementSystemDataSource1},
-            "riskManagementProcess":{"value":"Yes","dataSource":$riskManagementSystemDataSource2}}},
+            {"governance":{"riskManagementOwnOperations":{
+            "riskManagementSystem":{"value":"Yes","dataSource":$riskManagementSystemDataSource},
+            "riskManagementProcess":{"value":"Yes","dataSource":$riskManagementProcessDataSource}}},
             "attachment":{"attachment":{"attachment":$lksgAttachmentDataSource}}}
             """.trimIndent().replace("\n", "")
 
@@ -230,7 +226,7 @@ class DocumentDeletionInStorageServiceTest {
             )
         return DataItem(
             id = datasetId,
-            data = lksgDataEntry,
+            data = defaultObjectMapper.writeValueAsString(lksgDataEntry),
         )
     }
 
@@ -252,7 +248,7 @@ class DocumentDeletionInStorageServiceTest {
             companyId = "test-company-id",
             reportingPeriod = "2021",
             dataPointType = "testType",
-            dataPoint = businessData,
+            dataPoint = defaultObjectMapper.writeValueAsString(businessData),
         )
     }
 
@@ -272,7 +268,7 @@ class DocumentDeletionInStorageServiceTest {
             )
         return DataItem(
             id = datasetId,
-            data = outerData,
+            data = defaultObjectMapper.writeValueAsString(outerData),
         )
     }
 }
