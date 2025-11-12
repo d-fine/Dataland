@@ -131,7 +131,7 @@ describe('Component test for the Document Meta Data Dialog', () => {
     });
   });
 
-  it.only('Check that edit mode works correctly when activated and deactivated', () => {
+  it('Check that edit mode works correctly when activated and deactivated', () => {
     //@ts-ignore
     cy.mountWithPlugins(DocumentMetaDataDialog, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_ADMIN] }),
