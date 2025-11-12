@@ -157,7 +157,7 @@ endobj"""
     fun `test that document with data point reference in Rejected status can be deleted`() {
         val documentId = uploadDocumentAndGetId()
 
-        uploadDataPointWithDocumentReference(documentId)
+        uploadAndRejectDataPointWithDocumentReference(documentId)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -187,7 +187,7 @@ endobj"""
     fun `test that document deletion nullifies file references in rejected datapoints`() {
         val documentId = uploadDocumentAndGetId()
 
-        val dataPointId = uploadDataPointWithDocumentReference(documentId)
+        val dataPointId = uploadAndRejectDataPointWithDocumentReference(documentId)
 
         documentControllerClient.deleteDocument(documentId)
 
@@ -304,7 +304,7 @@ endobj"""
         return dataId
     }
 
-    private fun uploadDataPointWithDocumentReference(documentId: String): String {
+    private fun uploadAndRejectDataPointWithDocumentReference(documentId: String): String {
         val companyId = createCompany()
         val dataPointJson =
             """{"value": 0.5, "currency": "USD", "dataSource": { "fileReference": "$documentId" } }"""
@@ -320,9 +320,8 @@ endobj"""
                 .untilAsserted {
                     apiAccessor.qaServiceControllerApi.getDataPointQaReviewInformationByDataId(dataPointId)
                 }
-            val qaStatus = QaStatus.Rejected
-            apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, qaStatus)
-            awaitUntilDataPointQaStatusEquals(dataPointId, qaStatus)
+            apiAccessor.qaServiceControllerApi.changeDataPointQaStatus(dataPointId, QaStatus.Rejected)
+            awaitUntilDataPointQaStatusEquals(dataPointId, QaStatus.Rejected)
         }
 
         return dataPointId

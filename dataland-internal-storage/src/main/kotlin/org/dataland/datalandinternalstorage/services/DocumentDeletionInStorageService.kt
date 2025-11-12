@@ -38,11 +38,9 @@ class DocumentDeletionInStorageService
         ): DocumentReferencesResponse {
             logger.info("Searching for document references. DocumentId: $documentId. Correlation ID: $correlationId")
 
-            val dataPointItems = dataPointItemRepository.findByDataPointContaining(documentId)
-            val dataPointIds: Set<String> = dataPointItems.map { it.dataPointId }.toSet()
+            val dataPointIds = dataPointItemRepository.findByDataPointContaining(documentId).map { it.dataPointId }.toSet()
 
-            val dataItems = dataItemRepository.findByDataContaining(documentId)
-            val datasetIds: Set<String> = dataItems.map { it.id }.toSet()
+            val datasetIds = dataItemRepository.findByDataContaining(documentId).map { it.id }.toSet()
 
             logger.info(
                 "Found document references. DocumentId: $documentId. " +

@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface DataPointItemRepository : JpaRepository<DataPointItem, String> {
     /**
      * Finds all data point items where the dataPoint column contains the specified string
-     * @param dataPoint the string to search for within the dataPoint column
+     * @param dataSearchString the string to search for within the dataPoint column
      * @return list of DataPointItem entities containing the specified string
      */
-    fun findByDataPointContaining(dataPoint: String): List<DataPointItem>
+    fun findByDataPointContaining(dataSearchString: String): List<DataPointItem>
 }

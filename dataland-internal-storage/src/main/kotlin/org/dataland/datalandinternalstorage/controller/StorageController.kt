@@ -23,56 +23,58 @@ import java.io.ByteArrayInputStream
  */
 @RestController
 @Component("StorageController")
-class StorageController(
-    @Autowired val stringDataStore: DatabaseStringDataStore,
-    @Autowired val blobDataStore: DatabaseBlobDataStore,
-    @Autowired val documentDeletionInStorageService: DocumentDeletionInStorageService,
-) : StorageAPI {
-    private val logger = LoggerFactory.getLogger(javaClass)
+class StorageController
+    @Autowired
+    constructor(
+        private val stringDataStore: DatabaseStringDataStore,
+        private val blobDataStore: DatabaseBlobDataStore,
+        private val documentDeletionInStorageService: DocumentDeletionInStorageService,
+    ) : StorageAPI {
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun selectDataById(
-        dataId: String,
-        correlationId: String,
-    ): ResponseEntity<String> {
-        logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataset(dataId, correlationId))
-    }
+        override fun selectDataById(
+            dataId: String,
+            correlationId: String,
+        ): ResponseEntity<String> {
+            logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
+            return ResponseEntity.ok(stringDataStore.selectDataset(dataId, correlationId))
+        }
 
-    override fun selectBlobById(
-        blobId: String,
-        correlationId: String,
-    ): ResponseEntity<InputStreamResource> {
-        logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
-        val blob = blobDataStore.selectBlobById(blobId, correlationId)
-        val stream = ByteArrayInputStream(blob)
-        return ResponseEntity
-            .ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(InputStreamResource(stream))
-    }
+        override fun selectBlobById(
+            blobId: String,
+            correlationId: String,
+        ): ResponseEntity<InputStreamResource> {
+            logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
+            val blob = blobDataStore.selectBlobById(blobId, correlationId)
+            val stream = ByteArrayInputStream(blob)
+            return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(InputStreamResource(stream))
+        }
 
-    override fun selectBatchDataPointsByIds(
-        dataIds: List<String>,
-        correlationId: String,
-    ): ResponseEntity<Map<String, StorableDataPoint>> {
-        logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
-    }
+        override fun selectBatchDataPointsByIds(
+            dataIds: List<String>,
+            correlationId: String,
+        ): ResponseEntity<Map<String, StorableDataPoint>> {
+            logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
+            return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
+        }
 
-    override fun getDocumentReferences(
-        documentId: String,
-        correlationId: String,
-    ): ResponseEntity<DocumentReferencesResponse> {
-        logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
-        return ResponseEntity.ok(documentDeletionInStorageService.getDocumentReferences(documentId, correlationId))
-    }
+        override fun getDocumentReferences(
+            documentId: String,
+            correlationId: String,
+        ): ResponseEntity<DocumentReferencesResponse> {
+            logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
+            return ResponseEntity.ok(documentDeletionInStorageService.getDocumentReferences(documentId, correlationId))
+        }
 
-    override fun deleteDocument(
-        documentId: String,
-        correlationId: String,
-    ): ResponseEntity<Unit> {
-        logger.info("Removing document: $documentId. Correlation id: $correlationId.")
-        documentDeletionInStorageService.deleteDocument(documentId, correlationId)
-        return ResponseEntity.noContent().build()
+        override fun deleteDocument(
+            documentId: String,
+            correlationId: String,
+        ): ResponseEntity<Unit> {
+            logger.info("Removing document: $documentId. Correlation id: $correlationId.")
+            documentDeletionInStorageService.deleteDocument(documentId, correlationId)
+            return ResponseEntity.noContent().build()
+        }
     }
-}
