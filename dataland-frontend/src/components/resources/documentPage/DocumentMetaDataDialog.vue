@@ -13,7 +13,7 @@
         <span class="p-dialog-title">Document Details</span>
         <PrimeButton
           class="p-0 h-auto"
-          v-if="!editMode"
+          v-if="!editMode && canUserPatchMetaData"
           icon="pi pi-pencil"
           data-test="edit-icon"
           variant="text"
@@ -142,19 +142,20 @@ async function getDocumentMetaInformation(): Promise<void> {
       });
     }
     metaData.value = { ...data, company: companyDetails };
+    canUserPatchMetaData.value = await getUserPatchRights();
   } catch (error) {
     console.error(error);
   }
 }
 
 /**
- * Determine if user has rights to patch document metadata and store it in canUserPatchMetaData
+ * Determine if user has rights to patch document metadata
  */
-async function getUserPatchRights(): Promise<void> {
+async function getUserPatchRights(): Promise<boolean> {
   const userId = await getUserId(getKeycloakPromise);
   const isUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  canUserPatchMetaData.value = (userId == metaData.value?.uploaderId && isUploader) || isAdmin;
+  return (userId == metaData.value?.uploaderId && isUploader) || isAdmin;
 }
 
 /**
@@ -178,7 +179,6 @@ const closeDialog = (): void => {
 
 onMounted(() => {
   getDocumentMetaInformation().catch((error) => console.error(error));
-  getUserPatchRights().catch((error) => console.error(error));
 });
 </script>
 
