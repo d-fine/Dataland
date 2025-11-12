@@ -141,16 +141,7 @@
       "arguments": {}
     },
     {
-      "name": "accounting-service.processMessageForDataReportedAsNonSourceable",
-      "vhost": "vhost",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {}
-    },
-    {
-      "name": "accounting-service.processMessageForAvailableDataAndUpdates",
+      "name": "dataSourcing.dataNonSourceable",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
