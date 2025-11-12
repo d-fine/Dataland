@@ -1,12 +1,13 @@
 package org.dataland.datalanduserservice.entity
 
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Index
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalanduserservice.converter.DataTypeEnumConverter
+import org.dataland.datalanduserservice.converter.NotificationEventTypeAttributeConverter
 import org.dataland.datalanduserservice.model.enums.NotificationEventType
 import java.time.Instant
 import java.util.UUID
@@ -22,10 +23,10 @@ import java.util.UUID
 data class NotificationEventEntity(
     @Id
     val notificationEventId: UUID = UUID.randomUUID(),
-    @Enumerated(EnumType.STRING)
+    @Convert(NotificationEventTypeAttributeConverter::class)
     val notificationEventType: NotificationEventType,
     val companyId: UUID,
-    @Enumerated(EnumType.STRING)
+    @Convert(DataTypeEnumConverter::class)
     val framework: DataTypeEnum,
     val reportingPeriod: String,
     val creationTimestamp: Long = Instant.now().toEpochMilli(),
