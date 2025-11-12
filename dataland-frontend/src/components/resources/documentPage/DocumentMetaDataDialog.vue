@@ -28,7 +28,14 @@
           <tbody class="p-datatable-body">
             <tr>
               <th>Name</th>
-              <td class="nowrap" data-test="document-link">
+              <td v-if="editMode">
+                <InputText
+                  v-model="metaDataPatch.documentName"
+                  style="min-width: 15rem"
+                  data-test="document-name-input"
+                />
+              </td>
+              <td v-else class="nowrap" data-test="document-link">
                 <DocumentDownloadLink
                   :document-download-info="{
                     downloadName: metaData.documentName ? metaData.documentName : metaData.documentId,
@@ -39,18 +46,49 @@
               </td>
             </tr>
             <tr>
+              <th>Document type</th>
+              <td v-if="editMode">
+                <Select
+                  v-model="metaDataPatch.documentCategory"
+                  :options="documentCategories"
+                  optionLabel="label"
+                  optionValue="value"
+                  style="min-width: 15rem"
+                  data-test="document-category-select"
+                />
+              </td>
+              <td v-else data-test="document-type">{{ humanizeStringOrNumber(metaData?.documentCategory) }}</td>
+            </tr>
+            <tr>
               <th>Publication date</th>
-              <td data-test="publication-date">
+              <td v-if="editMode">
+                <DatePicker
+                  v-model="metaDataPatch.publicationDate"
+                  :updateModelType="'date'"
+                  showIcon
+                  dateFormat="D, M dd, yy"
+                  placeholder="Select publication date"
+                  data-test="publication-date-picker"
+                />
+              </td>
+              <td v-else data-test="publication-date">
                 {{ metaData.publicationDate ? dateStringFormatter(metaData.publicationDate) : '' }}
               </td>
             </tr>
             <tr>
-              <th>Document type</th>
-              <td data-test="document-type">{{ humanizeStringOrNumber(metaData?.documentCategory) }}</td>
-            </tr>
-            <tr v-if="metaData.reportingPeriod">
               <th>Reporting period</th>
-              <td class="nowrap" data-test="reporting-period">{{ metaData.reportingPeriod }}</td>
+              <td v-if="editMode">
+                <DatePicker
+                  v-model="metaDataPatch.reportingPeriod"
+                  :updateModelType="'date'"
+                  showIcon
+                  view="year"
+                  dateFormat="yy"
+                  placeholder="Select reporting period"
+                  data-test="reporting-period-picker"
+                />
+              </td>
+              <td v-else class="nowrap" data-test="reporting-period">{{ metaData.reportingPeriod }}</td>
             </tr>
             <tr>
               <th>Upload time</th>
@@ -73,11 +111,24 @@
           </tbody>
         </table>
       </div>
+      <Message v-if="errorMessage && editMode" severity="error" style="margin: var(--spacing-sm)">
+        {{ errorMessage }}
+      </Message>
       <div
         v-if="editMode"
         style="display: flex; justify-content: flex-end; gap: var(--spacing-md); margin-top: var(--spacing-md)"
       >
-        <PrimeButton label="CANCEL" class="p-button-text" @click="editMode = false" data-test="cancel-edit-button" />
+        <PrimeButton
+          label="CANCEL"
+          class="p-button-text"
+          @click="
+            () => {
+              editMode = false;
+              setMetaDataPatch();
+            }
+          "
+          data-test="cancel-edit-button"
+        />
         <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="cancel-edit-button" />
       </div>
     </div>
@@ -90,17 +141,28 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
-import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
+import {
+  DocumentMetaInfoDocumentCategoryEnum,
+  type DocumentMetaInfoEntity,
+  type DocumentMetaInfoPatch,
+} from '@clients/documentmanager';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import PrimeButton from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import Select from 'primevue/select';
+import Message from 'primevue/message';
+import DatePicker from 'primevue/datepicker';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { AxiosError } from 'axios';
 
 const props = defineProps<{
   documentId: string;
 }>();
+
+const emit = defineEmits(['data-patched']);
 
 export interface CompanyDetails {
   name: string;
@@ -112,12 +174,33 @@ export interface ExtendedDocumentMetaInfoEntity extends Omit<DocumentMetaInfoEnt
 }
 
 const isOpen = defineModel<boolean>('isOpen');
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const documentControllerApi = apiClientProvider.apiClients.documentController;
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
+const metaDataPatch = ref<{
+  documentName?: string;
+  documentCategory?: string;
+  publicationDate?: Date | null;
+  reportingPeriod?: Date | null;
+}>({
+  documentName: '',
+  documentCategory: undefined,
+  publicationDate: null,
+  reportingPeriod: null,
+});
 const baseURL = ref(globalThis.location.origin);
 
 const editMode = ref<boolean>(false);
 const canUserPatchMetaData = ref<boolean>(false);
+const errorMessage = ref<string>('');
+
+const documentCategories = ref(
+  Object.values(DocumentMetaInfoDocumentCategoryEnum).map((category) => ({
+    label: humanizeStringOrNumber(category),
+    value: category,
+  }))
+);
 
 /**
  * Get metadata of document
@@ -143,6 +226,7 @@ async function getDocumentMetaInformation(): Promise<void> {
     }
     metaData.value = { ...data, company: companyDetails };
     canUserPatchMetaData.value = await getUserPatchRights();
+    setMetaDataPatch();
   } catch (error) {
     console.error(error);
   }
@@ -152,18 +236,49 @@ async function getDocumentMetaInformation(): Promise<void> {
  * Determine if user has rights to patch document metadata
  */
 async function getUserPatchRights(): Promise<boolean> {
-  const userId = await getUserId(getKeycloakPromise);
+  const userId = await getUserId(assertDefined(getKeycloakPromise));
   const isUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   return (userId == metaData.value?.uploaderId && isUploader) || isAdmin;
 }
 
 /**
+ * Set metadata patch object based on current metadata
+ */
+function setMetaDataPatch(): void {
+  metaDataPatch.value = {
+    documentName: metaData.value?.documentName,
+    documentCategory: metaData.value?.documentCategory,
+    publicationDate: metaData.value?.publicationDate ? new Date(metaData.value.publicationDate) : null,
+    reportingPeriod: metaData.value?.reportingPeriod ? new Date(metaData.value.reportingPeriod) : null,
+  };
+}
+
+/**
  * Save changes made to document metadata
  */
-function saveChanges(): void {
-  console.log('Saving changes for document:', metaData.value);
+async function saveChanges(): Promise<void> {
+  const payload = {
+    ...metaDataPatch.value,
+    publicationDate: metaDataPatch.value.publicationDate
+      ? metaDataPatch.value.publicationDate.toLocaleDateString('en-CA')
+      : undefined,
+    reportingPeriod: metaDataPatch.value.reportingPeriod
+      ? metaDataPatch.value.reportingPeriod.getFullYear().toString()
+      : undefined,
+  } as DocumentMetaInfoPatch;
+  console.log('Saving changes for document:', payload);
+  try {
+    await documentControllerApi.patchDocumentMetaInfo(props.documentId, payload);
+  } catch (error: unknown) {
+    errorMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
+    console.error('Error saving document metadata changes:', error);
+    return;
+  }
+  errorMessage.value = '';
   editMode.value = false;
+  getDocumentMetaInformation().catch((error) => console.error(error));
+  emit('data-patched');
 }
 
 watch(
@@ -174,7 +289,9 @@ watch(
 );
 
 const closeDialog = (): void => {
+  errorMessage.value = '';
   isOpen.value = false;
+  editMode.value = false;
 };
 
 onMounted(() => {
