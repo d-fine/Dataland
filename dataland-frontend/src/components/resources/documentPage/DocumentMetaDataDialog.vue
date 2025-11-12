@@ -66,7 +66,7 @@
                   v-model="metaDataPatch.publicationDate"
                   :updateModelType="'date'"
                   showIcon
-                  dateFormat="D, M dd, yy"
+                  dateFormat="D, d M yy"
                   placeholder="Select publication date"
                   data-test="publication-date-picker"
                 />
@@ -129,7 +129,7 @@
           "
           data-test="cancel-edit-button"
         />
-        <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="cancel-edit-button" />
+        <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="save-edit-button" />
       </div>
     </div>
   </PrimeDialog>
