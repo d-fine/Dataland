@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.NotificationEventEntity
@@ -34,14 +35,14 @@ import java.util.UUID
 import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@SpringBootTest(classes = [DatalandUserService::class], properties = ["spring.profiles.active=nodb"])
+@SpringBootTest(classes = [DatalandUserService::class], properties = ["spring.profiles.active=containerized-db"])
 class NotificationSchedulerSpringbootTest
     @Autowired
     constructor(
         private val notificationEventRepository: NotificationEventRepository,
         private val entityManager: EntityManager,
         private val portfolioRepository: PortfolioRepository,
-    ) {
+    ) : BaseIntegrationTest() {
         private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
         private val mockCompanyApi = mock<CompanyDataControllerApi>()
         private val dataRequestSummaryEmailBuilder = DataRequestSummaryEmailBuilder(mockCloudEventMessageHandler, mockCompanyApi)
@@ -57,7 +58,7 @@ class NotificationSchedulerSpringbootTest
                 name: String,
                 companyIds: Set<String>,
                 frequencies: Set<NotificationFrequency> = NotificationFrequency.entries.toSet(),
-                frameworks: Set<String> = setOf("sfdr", "eutaxonomy-financials"),
+                frameworks: Set<String> = setOf("sfdr", "eutaxonomy"),
             ): Map<NotificationFrequency, PortfolioEntity> =
                 frequencies.associateWith {
                     PortfolioEntity(
@@ -79,7 +80,7 @@ class NotificationSchedulerSpringbootTest
                 createPortfolio(
                     "portfolio2",
                     setOf(companyId1.toString(), companyId2.toString()),
-                    frameworks = setOf("eutaxonomy-financials"),
+                    frameworks = setOf("eutaxonomy"),
                 )
 
             // This portfolio should not send an email

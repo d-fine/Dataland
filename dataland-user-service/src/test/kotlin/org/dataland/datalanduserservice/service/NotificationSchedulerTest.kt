@@ -135,7 +135,7 @@ class NotificationSchedulerTest {
 
         ta.function()
 
-        verify(mockDataRequestSummaryEmailBuilder, times(3)).buildDataRequestSummaryEmailAndSendCEMessage(
+        verify(mockDataRequestSummaryEmailBuilder, times(2)).buildDataRequestSummaryEmailAndSendCEMessage(
             any<List<NotificationEventEntity>>(),
             any<UUID>(),
             eq(ta.notificationFrequency),
