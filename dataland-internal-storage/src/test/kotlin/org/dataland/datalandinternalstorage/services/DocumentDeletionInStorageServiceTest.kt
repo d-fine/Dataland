@@ -100,8 +100,8 @@ class DocumentDeletionInStorageServiceTest {
         val lksgDatasetId = UUID.randomUUID().toString()
         val lksgDataset = createLksgDataset(lksgDatasetId, riskManagementSystemDocumentReference = documentId)
 
-        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(listOf(lksgDataset))
+        whenever(mockDataPointItemRepository.findByDataPointContaining(documentId)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContaining(documentId)).thenReturn(listOf(lksgDataset))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDataset))
 
         documentDeletionInStorageService.deleteDocument(documentId, correlationId)
@@ -129,8 +129,8 @@ class DocumentDeletionInStorageServiceTest {
                 riskManagementProcessDocumentReference = documentIdToBeKept,
             )
 
-        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentIdToBeDeleted)).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentIdToBeDeleted))
+        whenever(mockDataPointItemRepository.findByDataPointContaining(documentIdToBeDeleted)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContaining(documentIdToBeDeleted))
             .thenReturn(listOf(lksgDatasetWithTwoDocuments))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithTwoDocuments))
 
@@ -163,8 +163,8 @@ class DocumentDeletionInStorageServiceTest {
         val lksgDatasetId = UUID.randomUUID().toString()
         val lksgDatasetWithAttachment = createLksgDataset(lksgDatasetId, lksgAttachmentDoc = documentId)
 
-        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(emptyList())
-        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(listOf(lksgDatasetWithAttachment))
+        whenever(mockDataPointItemRepository.findByDataPointContaining(documentId)).thenReturn(emptyList())
+        whenever(mockDataItemRepository.findByDataContaining(documentId)).thenReturn(listOf(lksgDatasetWithAttachment))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithAttachment))
 
         documentDeletionInStorageService.deleteDocument(documentId, correlationId)
@@ -234,8 +234,8 @@ class DocumentDeletionInStorageServiceTest {
         dataPoints: List<DataPointItem>,
         datasets: List<DataItem>,
     ) {
-        whenever(mockDataPointItemRepository.findByDataPointContainingDocumentId(documentId)).thenReturn(dataPoints)
-        whenever(mockDataItemRepository.findByDataContainingDocumentId(documentId)).thenReturn(datasets)
+        whenever(mockDataPointItemRepository.findByDataPointContaining(documentId)).thenReturn(dataPoints)
+        whenever(mockDataItemRepository.findByDataContaining(documentId)).thenReturn(datasets)
     }
 
     private fun createDataPointItem(
