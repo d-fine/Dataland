@@ -142,5 +142,5 @@ class DataMetaInformationManager(
         dataType: String,
     ): DataMetaInformationEntity? =
         dataMetaInformationRepository
-            .findFirstByCompanyIdAndDataTypeAndCurrentlyActiveOrderByReportingPeriodDesc(companyId, dataType)
+            .findFirstByCompanyCompanyIdAndDataTypeAndCurrentlyActiveTrueOrderByReportingPeriodDesc(companyId, dataType)
 }

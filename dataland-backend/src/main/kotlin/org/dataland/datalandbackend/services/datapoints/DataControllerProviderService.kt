@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -26,7 +25,6 @@ class DataControllerProviderService
         private val assembledDataManager: AssembledDataManager,
         private val metaDataManager: DataMetaInformationManager,
         private val companyQueryManager: CompanyQueryManager,
-        private val objectMapper: ObjectMapper,
     ) {
         private val dataTypeClassCache = ConcurrentHashMap<DataType, Class<*>>()
 
@@ -38,7 +36,6 @@ class DataControllerProviderService
                 dataManager,
                 metaDataManager,
                 dataExportService,
-                objectMapper,
                 companyQueryManager,
                 dataTypeClass as? Class<Any>
                     ?: throw IllegalArgumentException("Class type for data type is not compatible."),

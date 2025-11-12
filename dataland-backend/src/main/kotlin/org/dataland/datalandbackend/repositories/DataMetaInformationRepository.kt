@@ -158,7 +158,7 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
      * @param dataType the data type
      * @returns the active DataMetaInformationEntity with the largest reporting period or null if none found
      */
-    fun findFirstByCompanyIdAndDataTypeAndCurrentlyActiveOrderByReportingPeriodDesc(
+    fun findFirstByCompanyCompanyIdAndDataTypeAndCurrentlyActiveTrueOrderByReportingPeriodDesc(
         companyId: String,
         dataType: String,
     ): DataMetaInformationEntity?
