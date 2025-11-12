@@ -150,4 +150,16 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         @Param("dataTypes") dataTypes: List<String>?,
         @Param("reportingPeriods") reportingPeriods: List<String>?,
     ): List<DataMetaInformationEntity>
+
+    /**
+     * Finds the most recent (in terms of reporting period) active DataMetaInformationEntity for a given companyId and dataType
+     *
+     * @param companyId the ID of the company
+     * @param dataType the data type
+     * @returns the active DataMetaInformationEntity with the largest reporting period or null if none found
+     */
+    fun findFirstByCompanyIdAndDataTypeAndCurrentlyActiveOrderByReportingPeriodDesc(
+        companyId: String,
+        dataType: String,
+    ): DataMetaInformationEntity?
 }

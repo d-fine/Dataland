@@ -57,4 +57,17 @@ interface DatasetStorageService {
         searchFilter: DataMetaInformationSearchFilter,
         correlationId: String,
     ): List<PlainDataAndMetaInformation>
+
+    /**
+     * Retrieves the latest available dataset for a certain company and data type
+     * @param companyId the id of the company
+     * @param dataType the type of dataset
+     * @param correlationId the correlation id for the operation
+     * @return the latest available reporting period and the corresponding dataset, or null if no dataset is found
+     */
+    fun getLatestAvailableData(
+        companyId: String,
+        dataType: String,
+        correlationId: String,
+    ): Pair<String, String>?
 }

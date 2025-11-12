@@ -15,6 +15,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -224,4 +225,31 @@ interface DataApi<T> {
         @ReportingPeriodParameterNonRequired
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
+
+    /**
+     * A method to retrieve the latest available data for a given [companyIdentifier] and the implicitly defined data type [T]
+     * @param companyIdentifier specifies the company
+     * @return the dataset stored or an error if no dataset can be found
+     */
+    @Operation(
+        summary = "Retrieve the latest data for the company provided.",
+        description = "The latest data identified by the company ID is retrieved, if available.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
+            ApiResponse(responseCode = "400", description = "Company identifier is not unique."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to make this query."),
+            ApiResponse(responseCode = "404", description = "Company or dataset could not be found."),
+        ],
+    )
+    @GetMapping(
+        value = ["/latest"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getLatestAvailableCompanyAssociatedData(
+        @IdentifierTypeParameterRequired
+        @RequestParam companyIdentifier: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
 }

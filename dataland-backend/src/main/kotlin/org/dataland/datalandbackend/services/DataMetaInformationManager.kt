@@ -130,4 +130,17 @@ class DataMetaInformationManager(
             )
         return dataMetaInformationEntities.map { it.toBasicDataDimensions() }
     }
+
+    /**
+     * Method to retrieve the latest available dataset meta information for a certain company and data type
+     * @param companyId the id of the company
+     * @param dataType the type of dataset
+     * @return the latest available dataset meta information, or null if no dataset is found
+     */
+    fun getLatestAvailableDatasetMetaInformation(
+        companyId: String,
+        dataType: String,
+    ): DataMetaInformationEntity? =
+        dataMetaInformationRepository
+            .findFirstByCompanyIdAndDataTypeAndCurrentlyActiveOrderByReportingPeriodDesc(companyId, dataType)
 }
