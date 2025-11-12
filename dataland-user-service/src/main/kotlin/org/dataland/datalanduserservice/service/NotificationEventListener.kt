@@ -1,7 +1,6 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -50,7 +49,7 @@ class NotificationEventListener
                 QueueBinding(
                     value =
                         Queue(
-                            QueueNames.ACCOUNTING_SERVICE_NON_SOURCABLE_EVENT,
+                            QueueNames.USER_SERVICE_NON_SOURCABLE_EVENT,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -64,8 +63,8 @@ class NotificationEventListener
         )
         fun processMessageForDataReportedAsNonSourceable(
             @Payload payload: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DATASOURCING_NONSOURCEABLE)
             val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
@@ -80,20 +79,11 @@ class NotificationEventListener
                     "Correlation ID: $correlationId",
             )
 
-            val sourceabilityInfo =
-                SourceabilityInfo(
-                    companyId = sourceabilityMessage.companyId,
-                    dataType = dataTypeDecoded,
-                    reportingPeriod = sourceabilityMessage.reportingPeriod,
-                    isNonSourceable = sourceabilityMessage.isNonSourceable,
-                    reason = sourceabilityMessage.reason,
-                )
-
             val notificationEventEntity =
                 NotificationEventEntity(
                     companyId = ValidationUtils.convertToUUID(sourceabilityMessage.companyId),
-                    framework = sourceabilityInfo.dataType,
-                    reportingPeriod = sourceabilityInfo.reportingPeriod,
+                    framework = dataTypeDecoded,
+                    reportingPeriod = sourceabilityMessage.reportingPeriod,
                     notificationEventType = NotificationEventType.NonSourceableEvent,
                 )
             notificationEventRepository.save(notificationEventEntity)
@@ -111,7 +101,7 @@ class NotificationEventListener
                 QueueBinding(
                     value =
                         Queue(
-                            QueueNames.ACCOUNTING_SERVICE_QA_STATUS_UPDATE_EVENT,
+                            QueueNames.USER_SERVICE_QA_STATUS_UPDATE_EVENT,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
