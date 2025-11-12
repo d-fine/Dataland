@@ -178,7 +178,7 @@ class NotificationSchedulerSpringbootTest
             ta.function()
 
             val bodyCaptor = argumentCaptor<String>()
-            verify(mockCloudEventMessageHandler, times(3)).buildCEMessageAndSendToQueue(
+            verify(mockCloudEventMessageHandler, times(2)).buildCEMessageAndSendToQueue(
                 bodyCaptor.capture(),
                 any<String>(),
                 any<String>(),
