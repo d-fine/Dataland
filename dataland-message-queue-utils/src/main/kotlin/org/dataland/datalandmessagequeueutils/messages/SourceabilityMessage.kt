@@ -10,7 +10,8 @@ data class SourceabilityMessage(
     override val companyId: String,
     override val dataType: String,
     override val reportingPeriod: String,
-    @JsonProperty(value = "isNonSourceable")
+    @get:JsonProperty(value = "isNonSourceable")
+    @field:JsonProperty(value = "isNonSourceable")
     val isNonSourceable: Boolean,
     val reason: String,
 ) : MessageWithTriple
