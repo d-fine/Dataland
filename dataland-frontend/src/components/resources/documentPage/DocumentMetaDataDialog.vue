@@ -4,6 +4,7 @@
     :dismissable-mask="true"
     :modal="true"
     class="col-4"
+    style="min-width: 20rem"
     v-model:visible="isOpen"
     @hide="closeDialog"
     data-test="document-details-modal"
