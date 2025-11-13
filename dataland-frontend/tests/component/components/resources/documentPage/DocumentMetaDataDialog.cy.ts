@@ -142,11 +142,6 @@ describe('Component test for the Document Meta Data Dialog', () => {
     }).then(() => {
       cy.get("[data-test='edit-icon']").should('exist').click();
       cy.get('[data-test=document-name-input]').should('have.value', sampleDocumentName);
-      cy.get('[data-test=document-name-input]').clear().type('Modified Document');
-      cy.get("[data-test='cancel-edit-button']").should('exist').click();
-
-      cy.get("[data-test='edit-icon']").should('exist').click();
-      cy.get('[data-test=document-name-input]').should('have.value', sampleDocumentName);
       cy.get('[data-test=document-category-select]').should(
         'contain.text',
         humanizeStringOrNumber(sampleDocumentCategory)
@@ -172,9 +167,31 @@ describe('Component test for the Document Meta Data Dialog', () => {
         const requestBody = interception.request.body as DocumentMetaInfoPatch;
         expect(requestBody.documentName).to.eq('Modified Document');
         expect(requestBody.documentCategory).to.eq('Policy');
-        expect(requestBody.publicationDate).to.exist;
+        expect(requestBody.publicationDate).to.not.eq(samplePublicationDate);
         expect(requestBody.reportingPeriod).to.eq('2025');
       });
+    });
+  });
+
+  it('Check that document name is a required field in edit mode and that error message disappears on cancel', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentMetaDataDialog, {
+      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_ADMIN] }),
+      props: {
+        documentId: dummyDocumentId,
+        isOpen: true,
+      },
+    }).then(() => {
+      cy.get("[data-test='edit-icon']").should('exist').click();
+      cy.get('[data-test=document-name-input]').clear();
+      cy.get("[data-test='save-edit-button']").should('exist').click();
+      cy.get('[data-test="metadata-error-message"]')
+        .should('exist')
+        .and('contain.text', 'Please fill in all required fields.');
+      cy.get("[data-test='cancel-edit-button']").should('exist').click();
+      cy.get("[data-test='edit-icon']").should('exist').click();
+      cy.get('[data-test="metadata-error-message"]').should('not.exist');
+      cy.get('[data-test=document-name-input]').should('have.value', sampleDocumentName);
     });
   });
 });

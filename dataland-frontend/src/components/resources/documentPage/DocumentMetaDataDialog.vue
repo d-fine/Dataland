@@ -3,7 +3,7 @@
     id="documentMetaDataDialog"
     :dismissable-mask="true"
     :modal="true"
-    class="col-6"
+    class="col-4"
     v-model:visible="isOpen"
     @hide="closeDialog"
     data-test="document-details-modal"
@@ -22,16 +22,18 @@
         />
       </div>
     </template>
-    <div v-if="metaData" class="p-datatable p-component">
-      <div class="p-datatable-wrapper overflow-auto">
+    <div v-if="metaData" class="p-datatable">
+      <div>
         <table class="p-datatable-table" aria-label="Data point content">
-          <tbody class="p-datatable-body">
+          <tbody>
             <tr>
               <th>Name</th>
               <td v-if="editMode">
                 <InputText
                   v-model="metaDataPatch.documentName"
                   style="min-width: 15rem"
+                  :invalid="!metaDataPatch.documentName"
+                  placeholder="Enter document name"
                   data-test="document-name-input"
                 />
               </td>
@@ -111,24 +113,16 @@
           </tbody>
         </table>
       </div>
-      <Message v-if="errorMessage && editMode" severity="error" style="margin: var(--spacing-sm)">
+      <Message
+        v-if="errorMessage && editMode"
+        severity="error"
+        style="margin: var(--spacing-sm)"
+        data-test="metadata-error-message"
+      >
         {{ errorMessage }}
       </Message>
-      <div
-        v-if="editMode"
-        style="display: flex; justify-content: flex-end; gap: var(--spacing-md); margin-top: var(--spacing-md)"
-      >
-        <PrimeButton
-          label="CANCEL"
-          class="p-button-text"
-          @click="
-            () => {
-              editMode = false;
-              setMetaDataPatch();
-            }
-          "
-          data-test="cancel-edit-button"
-        />
+      <div v-if="editMode" class="button-row">
+        <PrimeButton label="CANCEL" class="p-button-text" @click="onCancel" data-test="cancel-edit-button" />
         <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="save-edit-button" />
       </div>
     </div>
@@ -177,6 +171,7 @@ const isOpen = defineModel<boolean>('isOpen');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const documentControllerApi = apiClientProvider.apiClients.documentController;
+const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const metaDataPatch = ref<{
   documentName?: string;
@@ -208,10 +203,6 @@ const documentCategories = ref(
 async function getDocumentMetaInformation(): Promise<void> {
   if (!getKeycloakPromise || !props.documentId) return;
   try {
-    const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-      .documentController;
-    const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
-      .companyDataController;
     const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
       .data;
     const companyDetailsPromises = Array.from(data.companyIds).map((companyId) => {
@@ -258,6 +249,10 @@ function setMetaDataPatch(): void {
  * Save changes made to document metadata
  */
 async function saveChanges(): Promise<void> {
+  if (!metaDataPatch.value.documentName || !metaDataPatch.value.documentCategory) {
+    errorMessage.value = 'Please fill in all required fields.';
+    return;
+  }
   const payload = {
     ...metaDataPatch.value,
     publicationDate: metaDataPatch.value.publicationDate
@@ -279,6 +274,15 @@ async function saveChanges(): Promise<void> {
   editMode.value = false;
   getDocumentMetaInformation().catch((error) => console.error(error));
   emit('data-patched');
+}
+
+/**
+ * Cancel editing document metadata
+ */
+function onCancel(): void {
+  editMode.value = false;
+  errorMessage.value = '';
+  setMetaDataPatch();
 }
 
 watch(
@@ -328,14 +332,6 @@ onMounted(() => {
   }
 }
 
-.linked-companies {
-  border: 0 none;
-  text-decoration: none;
-  color: #ff6813;
-  display: block;
-  margin: 0.5em;
-}
-
 .p-datatable {
   border-radius: 0;
   background: var(--table-background-color);
@@ -352,13 +348,6 @@ onMounted(() => {
     border-bottom: 1px solid var(--table-border);
   }
 
-  .horizontal-headers-size {
-    background-color: var(--default-neutral-white);
-
-    &:first-of-type {
-      width: var(--first-table-column-width);
-    }
-  }
   tr {
     &:not(.p-rowgroup-header) {
       td {
@@ -374,118 +363,25 @@ onMounted(() => {
       padding: 1rem;
     }
   }
-  .p-datatable-tbody {
-    tr {
-      border-color: hsl(from var(--table-border-dark) h s 45);
-    }
-    .info-icon {
-      float: right;
-      max-width: 20%;
-    }
-    .table-left-label {
-      float: left;
-      max-width: 80%;
-    }
-  }
-  .p-sortable-column {
-    .p-sortable-column-icon {
-      color: var(--table-icon-color);
-      margin-left: 0.5rem;
-    }
-    &.p-highlight {
-      background: var(--table-background-color);
-      color: var(--main-color);
-      .p-sortable-column-icon {
-        color: var(--main-color);
-      }
-    }
-  }
-  .headers-bg {
-    background-color: var(--tables-headers-bg);
-    display: table-cell;
-    width: var(--first-table-column-width);
-  }
-  .auto-headers-size {
-    width: auto;
-  }
-  .p-rowgroup-header {
-    background-color: var(--table-background-hover-color-light);
-    cursor: pointer;
-
-    &.p-topmost-header {
-      background-color: var(--tables-headers-bg);
-    }
-
-    td {
-      position: relative;
-      width: var(--first-table-column-width);
-      button {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        margin-top: -7px;
-      }
-    }
-  }
-
-  .p-datatable-thead {
-    z-index: 1;
-    tr {
-      box-shadow: none;
-      &:hover {
-        background: var(--table-background-color);
-      }
-    }
-  }
-
-  &.activities-data-table {
-    $col-activity-width: 300px;
-    $col-nace-codes-width: 70px;
-    .group-row-header {
-      background-color: var(--tables-headers-bg);
-      border-bottom: 1px solid var(--table-border);
-      .p-column-header-content {
-        justify-content: center;
-      }
-      &:not(:first-of-type) {
-        border-left: 1px solid var(--table-border);
-      }
-    }
-    .first-group-column:not(:first-of-type) {
-      border-left: 1px solid var(--table-border);
-    }
-    .non-frozen-header {
-      vertical-align: top;
-    }
-    .frozen-row-header {
-      vertical-align: top;
-      background-color: var(--tables-headers-bg);
-    }
-    .col-activity {
-      width: $col-activity-width;
-      min-width: $col-activity-width;
-    }
-    .col-nace-codes {
-      width: $col-nace-codes-width;
-      min-width: $col-nace-codes-width;
-      border-right: 1px solid var(--table-border);
-    }
-    .col-value {
-      width: 160px;
-      min-width: 160px;
-    }
-    .col-percentage {
-      min-width: 6rem;
-    }
-  }
-}
-
-.info-icon {
-  cursor: help;
 }
 
 .p-dialog-title {
   font-size: 1.25rem;
   font-weight: var(--font-weight-semibold);
+}
+
+.linked-companies {
+  border: 0 none;
+  text-decoration: none;
+  color: #ff6813;
+  display: block;
+  margin: 0.5em;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 </style>

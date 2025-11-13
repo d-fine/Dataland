@@ -5,6 +5,20 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import type { CompanyIdAndName } from '@clients/backend';
 
+/** Views document details and edits the category */
+function viewDocumentDetailsAndEditCategory(documentName: string, expectedCategory: string): void {
+  cy.contains(documentName)
+    .parent('tr')
+    .within(() => {
+      cy.contains(expectedCategory).should('exist');
+      cy.contains('VIEW DETAILS').click();
+    });
+  cy.get("[data-test='edit-icon']").should('exist').click();
+  cy.get('[data-test=document-category-select]').should('contain.text', 'Annual Report');
+  cy.get('[data-test=document-category-select]').click();
+  cy.get('.p-select-option').contains('Policy').click();
+}
+
 describeIf(
   'As an admin, I want to be able to upload documents via the UI',
   {
@@ -27,20 +41,6 @@ describeIf(
       cy.get('[data-test="document-category"]').click();
       cy.get('.p-select-option').first().click();
       cy.get('[data-test="upload-document-button"]').click();
-    }
-
-    /** Views document details and edits the category */
-    function viewDocumentDetailsAndEditCategory(documentName: string, expectedCategory: string): void {
-      cy.contains(documentName)
-        .parent('tr')
-        .within(() => {
-          cy.contains(expectedCategory).should('exist');
-          cy.contains('VIEW DETAILS').click();
-        });
-      cy.get("[data-test='edit-icon']").should('exist').click();
-      cy.get('[data-test=document-category-select]').should('contain.text', 'Annual Report');
-      cy.get('[data-test=document-category-select]').click();
-      cy.get('.p-select-option').contains('Policy').click();
     }
 
     before(() => {
