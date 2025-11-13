@@ -74,7 +74,11 @@ class CreditsManagerTest {
             mockCompanyDataControllerApi,
         )
 
-        doThrow(ClientException::class).whenever(mockCompanyDataControllerApi).isCompanyIdValid(invalidCompanyId.toString())
+        val notFoundException = ClientException("Not found", 404)
+
+        doThrow(notFoundException)
+            .whenever(mockCompanyDataControllerApi)
+            .isCompanyIdValid(invalidCompanyId.toString())
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockTransactionRepository).save(any())
 
         creditsManager =

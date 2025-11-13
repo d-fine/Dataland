@@ -90,9 +90,7 @@ class DataSourcingManagerTest {
 
     @ParameterizedTest
     @EnumSource(DataSourcingState::class)
-    fun `verify that only marking a sourcing process as Answered or NonSourceable will patch requests to Processed`(
-        state: DataSourcingState,
-    ) {
+    fun `verify that only marking a sourcing process as Done or NonSourceable will patch requests to Processed`(state: DataSourcingState) {
         val reducedDataSourcing = dataSourcingManager.patchDataSourcingState(newDataSourcingEntity.dataSourcingId, state)
 
         assertEquals(state, reducedDataSourcing.state)

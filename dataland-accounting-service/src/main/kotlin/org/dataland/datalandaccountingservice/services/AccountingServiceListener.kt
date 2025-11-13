@@ -95,7 +95,6 @@ class AccountingServiceListener(
             ),
         ],
     )
-    @Transactional
     fun createBilledRequestOnRequestPatchToStateProcessing(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
@@ -113,32 +112,44 @@ class AccountingServiceListener(
         }
 
         MessageQueueUtils.rejectMessageOnException {
-            val existingBilledRequest =
-                billedRequestRepository.findByIdOrNull(
-                    BilledRequestEntityId(
-                        billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                        dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                    ),
-                )
+            saveBilledRequest(billedCompanyId, requestSetToProcessingMessage, correlationId)
+        }
+    }
 
-            if (existingBilledRequest != null) {
-                logDuplicateBilledRequestMessage(
-                    requestSetToProcessingMessage.triggeringUserId,
-                    requestSetToProcessingMessage.dataSourcingId,
-                    correlationId,
-                )
-                return@rejectMessageOnException
-            }
-
-            billedRequestRepository.save(
-                BilledRequestEntity(
+    /** Saves a billed request to the database if one does not already exist for the given billed company ID
+     * and data sourcing ID.
+     */
+    @Transactional
+    fun saveBilledRequest(
+        billedCompanyId: String,
+        requestSetToProcessingMessage: RequestSetToProcessingMessage,
+        correlationId: String,
+    ) {
+        val existingBilledRequest =
+            billedRequestRepository.findByIdOrNull(
+                BilledRequestEntityId(
                     billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
                     dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                    requestedCompanyId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId),
-                    requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
-                    requestedFramework = requestSetToProcessingMessage.requestedFramework,
                 ),
             )
+
+        if (existingBilledRequest != null) {
+            logDuplicateBilledRequestMessage(
+                requestSetToProcessingMessage.triggeringUserId,
+                requestSetToProcessingMessage.dataSourcingId,
+                correlationId,
+            )
+            return
         }
+
+        billedRequestRepository.save(
+            BilledRequestEntity(
+                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
+                requestedCompanyId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId),
+                requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
+                requestedFramework = requestSetToProcessingMessage.requestedFramework,
+            ),
+        )
     }
 }

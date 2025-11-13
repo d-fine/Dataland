@@ -21,14 +21,22 @@ class CreditsManager(
     private val billedRequestRepository: BilledRequestRepository,
     private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
+    companion object {
+        const val HTTP_STATUS_NOT_FOUND = 404
+    }
+
     private fun validateCompanyId(companyId: UUID) {
         try {
             companyDataControllerApi.isCompanyIdValid(companyId.toString())
-        } catch (_: ClientException) {
-            throw ResourceNotFoundApiException(
-                summary = "Company ID not found.",
-                message = "Dataland does not know the company ID $companyId.",
-            )
+        } catch (ex: ClientException) {
+            if (ex.statusCode == HTTP_STATUS_NOT_FOUND) {
+                throw ResourceNotFoundApiException(
+                    summary = "Company ID not found.",
+                    message = "Dataland does not know the company ID $companyId.",
+                )
+            } else {
+                throw ex
+            }
         }
     }
 

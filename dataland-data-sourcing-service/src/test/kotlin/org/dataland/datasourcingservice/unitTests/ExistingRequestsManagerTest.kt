@@ -93,7 +93,7 @@ class ExistingRequestsManagerTest {
 
     @ParameterizedTest
     @EnumSource(RequestState::class)
-    fun `verify that a request is appended to the its sourcing object and a message is sent only when request set to Processing`(
+    fun `verify that a request is appended to its sourcing object and a message is sent only when request set to Processing`(
         requestState: RequestState,
     ) {
         existingRequestsManager.patchRequestState(dataRequestId, requestState, null)

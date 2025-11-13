@@ -5,6 +5,11 @@ import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
+    private val uuidRegex =
+        Regex(
+            "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\$",
+        )
+
     /**
      * Checks if the given string corresponds to a reporting period.
      * @param testString the string to check
@@ -25,10 +30,6 @@ object ValidationUtils {
      * @return true if the string is a valid UUID, false otherwise
      */
     private fun isUuid(testString: String): Boolean {
-        val uuidRegex =
-            Regex(
-                "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\$",
-            )
         if (!uuidRegex.matches(testString)) return false
         return try {
             UUID.fromString(testString)
@@ -39,7 +40,7 @@ object ValidationUtils {
     }
 
     /**
-     * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
+     * Converts the given string to a UUID, throwing an ResourceNotFoundApiException if the string is not a valid UUID.
      * @param testString the string to convert
      * @return the UUID corresponding to the string
      * @throws ResourceNotFoundApiException if the string is not a valid UUID (so there is no resource with such an ID)
