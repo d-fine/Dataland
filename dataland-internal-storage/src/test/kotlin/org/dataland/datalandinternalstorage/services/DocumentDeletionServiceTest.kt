@@ -15,12 +15,12 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class DocumentReferenceRemovalServiceTest {
+class DocumentDeletionServiceTest {
     private val mockBlobItemRepository: BlobItemRepository = mock<BlobItemRepository>()
     private val mockDataItemRepository: DataItemRepository = mock<DataItemRepository>()
     private val mockDataPointItemRepository: DataPointItemRepository = mock<DataPointItemRepository>()
-    private val documentReferenceRemovalService: DocumentReferenceRemovalService =
-        DocumentReferenceRemovalService(
+    private val documentDeletionService: DocumentDeletionService =
+        DocumentDeletionService(
             mockBlobItemRepository,
             mockDataItemRepository,
             mockDataPointItemRepository,
@@ -41,7 +41,7 @@ class DocumentReferenceRemovalServiceTest {
 
         setupMockRepositories(dataPointsWithDocument, emptyList())
 
-        val result = documentReferenceRemovalService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(dataPointIds.toSet(), result.dataPointIds)
         assertEquals(emptySet<String>(), result.datasetIds)
@@ -54,7 +54,7 @@ class DocumentReferenceRemovalServiceTest {
 
         setupMockRepositories(emptyList(), datasetsWithDocument)
 
-        val result = documentReferenceRemovalService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(emptySet<String>(), result.dataPointIds)
         assertEquals(datasetIds.toSet(), result.datasetIds)
@@ -70,7 +70,7 @@ class DocumentReferenceRemovalServiceTest {
 
         setupMockRepositories(dataPointsWithDocument, datasetsWithDocument)
 
-        val result = documentReferenceRemovalService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(dataPointIds.toSet(), result.dataPointIds)
         assertEquals(datasetIds.toSet(), result.datasetIds)
@@ -80,7 +80,7 @@ class DocumentReferenceRemovalServiceTest {
     fun `check that getDocumentReferences returns empty lists when document is not found anywhere`() {
         setupMockRepositories(emptyList(), emptyList())
 
-        val result = documentReferenceRemovalService.getDocumentReferences(documentId, correlationId)
+        val result = documentDeletionService.getDocumentReferences(documentId, correlationId)
 
         assertEquals(emptySet<String>(), result.dataPointIds)
         assertEquals(emptySet<String>(), result.datasetIds)
@@ -90,7 +90,7 @@ class DocumentReferenceRemovalServiceTest {
     fun `check that deleteDocument calls repository deleteById with correct documentId`() {
         setupMockRepositories(emptyList(), emptyList())
 
-        documentReferenceRemovalService.deleteDocument(documentId, correlationId)
+        documentDeletionService.deleteDocument(documentId, correlationId)
 
         verify(mockBlobItemRepository).deleteById(documentId)
     }
@@ -104,7 +104,7 @@ class DocumentReferenceRemovalServiceTest {
         whenever(mockDataItemRepository.findByDataContaining(documentId)).thenReturn(listOf(lksgDataset))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDataset))
 
-        documentReferenceRemovalService.deleteDocument(documentId, correlationId)
+        documentDeletionService.deleteDocument(documentId, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -134,7 +134,7 @@ class DocumentReferenceRemovalServiceTest {
             .thenReturn(listOf(lksgDatasetWithTwoDocuments))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithTwoDocuments))
 
-        documentReferenceRemovalService.deleteDocument(documentIdToBeDeleted, correlationId)
+        documentDeletionService.deleteDocument(documentIdToBeDeleted, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())
@@ -167,7 +167,7 @@ class DocumentReferenceRemovalServiceTest {
         whenever(mockDataItemRepository.findByDataContaining(documentId)).thenReturn(listOf(lksgDatasetWithAttachment))
         whenever(mockDataItemRepository.findById(lksgDatasetId)).thenReturn(java.util.Optional.of(lksgDatasetWithAttachment))
 
-        documentReferenceRemovalService.deleteDocument(documentId, correlationId)
+        documentDeletionService.deleteDocument(documentId, correlationId)
 
         val savedDataset = org.mockito.kotlin.argumentCaptor<DataItem>()
         verify(mockDataItemRepository).save(savedDataset.capture())

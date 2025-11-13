@@ -5,7 +5,7 @@ import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.services.DatabaseBlobDataStore
 import org.dataland.datalandinternalstorage.services.DatabaseStringDataStore
-import org.dataland.datalandinternalstorage.services.DocumentReferenceRemovalService
+import org.dataland.datalandinternalstorage.services.DocumentDeletionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream
  * Implementation of Storage Controller
  * @param stringDataStore a database store for strings
  * @param blobDataStore a database store for blobs
- * @param documentReferenceRemovalService service for handling document reference removal operations
+ * @param documentDeletionService service for handling document deletion operations
  */
 @RestController
 @Component("StorageController")
@@ -28,7 +28,7 @@ class StorageController
     constructor(
         private val stringDataStore: DatabaseStringDataStore,
         private val blobDataStore: DatabaseBlobDataStore,
-        private val documentReferenceRemovalService: DocumentReferenceRemovalService,
+        private val documentDeletionService: DocumentDeletionService,
     ) : StorageAPI {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -66,7 +66,7 @@ class StorageController
             correlationId: String,
         ): ResponseEntity<DocumentReferencesResponse> {
             logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
-            return ResponseEntity.ok(documentReferenceRemovalService.getDocumentReferences(documentId, correlationId))
+            return ResponseEntity.ok(documentDeletionService.getDocumentReferences(documentId, correlationId))
         }
 
         override fun deleteDocument(
@@ -74,7 +74,7 @@ class StorageController
             correlationId: String,
         ): ResponseEntity<Unit> {
             logger.info("Removing document: $documentId. Correlation id: $correlationId.")
-            documentReferenceRemovalService.deleteDocument(documentId, correlationId)
+            documentDeletionService.deleteDocument(documentId, correlationId)
             return ResponseEntity.noContent().build()
         }
     }
