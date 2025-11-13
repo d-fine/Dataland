@@ -3,7 +3,6 @@ package org.dataland.datalandaccountingservice.services
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service
  */
 @Service("AccountingAuthorizationService")
 class AccountingAuthorizationService(
-    @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
+    private val companyRolesControllerApi: CompanyRolesControllerApi,
 ) {
     /**
      * Check whether the currently authenticated user has any role in the specified company.

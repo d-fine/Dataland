@@ -19,7 +19,6 @@ import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
@@ -30,118 +29,116 @@ import org.springframework.transaction.annotation.Transactional
  * Listener class handling RabbitMQ messages sent to the accounting service.
  */
 @Service("AccountingServiceListener")
-class AccountingServiceListener
-    @Autowired
-    constructor(
-        private val billedRequestRepository: BilledRequestRepository,
-        private val inheritedRolesControllerApi: InheritedRolesControllerApi,
-    ) {
-        private val logger = LoggerFactory.getLogger(AccountingServiceListener::class.java)
+class AccountingServiceListener(
+    private val billedRequestRepository: BilledRequestRepository,
+    private val inheritedRolesControllerApi: InheritedRolesControllerApi,
+) {
+    private val logger = LoggerFactory.getLogger(AccountingServiceListener::class.java)
 
-        private fun getBilledCompanyId(triggeringUserId: String): String? {
-            val inheritedRolesMap = inheritedRolesControllerApi.getInheritedRoles(triggeringUserId)
-            return inheritedRolesMap.keys.firstOrNull {
-                inheritedRolesMap[it]?.contains(InheritedRole.DatalandMember.name) ?: false
-            }
-        }
-
-        private fun logBilledRequestMessage(
-            requestSetToProcessingMessage: RequestSetToProcessingMessage,
-            correlationId: String,
-        ) = logger.info(
-            "Received a message to create a billed request. Triggering user ID is ${requestSetToProcessingMessage.triggeringUserId} " +
-                "and data sourcing ID is ${requestSetToProcessingMessage.dataSourcingId}. " +
-                "Requested company ID is ${requestSetToProcessingMessage.requestedCompanyId}, " +
-                "reporting period is ${requestSetToProcessingMessage.requestedReportingPeriod}, " +
-                "and requested framework is ${requestSetToProcessingMessage.requestedFramework}. " +
-                "Correlation ID: $correlationId.",
-        )
-
-        private fun logBilledRequestAbortionMessage(
-            triggeringUserId: String,
-            correlationId: String,
-        ) = logger.info(
-            "The user with ID $triggeringUserId is not a Dataland member. " +
-                "Aborting the creation of an associated billed request object. Correlation ID: $correlationId.",
-        )
-
-        private fun logDuplicateBilledRequestMessage(
-            triggeringUserId: String,
-            dataSourcingId: String,
-            correlationId: String,
-        ) = logger.info(
-            "A billed request for user ID $triggeringUserId and data sourcing ID $dataSourcingId already exists. " +
-                "Skipping creation. Correlation ID: $correlationId.",
-        )
-
-        /**
-         * Creates a billed request when a request is patched to the "Processing" state and the company to bill does not
-         * already have a billed request for the given data sourcing ID.
-         * @param payload the message payload
-         * @param type the message type
-         * @param correlationId the correlation ID of the message
-         */
-        @RabbitListener(
-            bindings = [
-                QueueBinding(
-                    value =
-                        Queue(
-                            QueueNames.ACCOUNTING_SERVICE_REQUEST_PROCESSING,
-                            arguments = [
-                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                                Argument(name = "defaultRequeueRejected", value = "false"),
-                            ],
-                        ),
-                    exchange = Exchange(ExchangeName.DATA_SOURCING_SERVICE_REQUEST_EVENTS),
-                    key = [RoutingKeyNames.REQUEST_PATCH],
-                ),
-            ],
-        )
-        @Transactional
-        fun createBilledRequestOnRequestPatchToStateProcessing(
-            @Payload payload: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
-            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
-            val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
-
-            logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
-
-            val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.triggeringUserId)
-            if (billedCompanyId == null) {
-                logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
-                return
-            }
-
-            MessageQueueUtils.rejectMessageOnException {
-                val existingBilledRequest =
-                    billedRequestRepository.findByIdOrNull(
-                        BilledRequestEntityId(
-                            billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                            dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                        ),
-                    )
-
-                if (existingBilledRequest != null) {
-                    logDuplicateBilledRequestMessage(
-                        requestSetToProcessingMessage.triggeringUserId,
-                        requestSetToProcessingMessage.dataSourcingId,
-                        correlationId,
-                    )
-                    return@rejectMessageOnException
-                }
-
-                billedRequestRepository.save(
-                    BilledRequestEntity(
-                        billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                        dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                        requestedCompanyId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId),
-                        requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
-                        requestedFramework = requestSetToProcessingMessage.requestedFramework,
-                    ),
-                )
-            }
+    private fun getBilledCompanyId(triggeringUserId: String): String? {
+        val inheritedRolesMap = inheritedRolesControllerApi.getInheritedRoles(triggeringUserId)
+        return inheritedRolesMap.keys.firstOrNull {
+            inheritedRolesMap[it]?.contains(InheritedRole.DatalandMember.name) ?: false
         }
     }
+
+    private fun logBilledRequestMessage(
+        requestSetToProcessingMessage: RequestSetToProcessingMessage,
+        correlationId: String,
+    ) = logger.info(
+        "Received a message to create a billed request. Triggering user ID is ${requestSetToProcessingMessage.triggeringUserId} " +
+            "and data sourcing ID is ${requestSetToProcessingMessage.dataSourcingId}. " +
+            "Requested company ID is ${requestSetToProcessingMessage.requestedCompanyId}, " +
+            "reporting period is ${requestSetToProcessingMessage.requestedReportingPeriod}, " +
+            "and requested framework is ${requestSetToProcessingMessage.requestedFramework}. " +
+            "Correlation ID: $correlationId.",
+    )
+
+    private fun logBilledRequestAbortionMessage(
+        triggeringUserId: String,
+        correlationId: String,
+    ) = logger.info(
+        "The user with ID $triggeringUserId is not a Dataland member. " +
+            "Aborting the creation of an associated billed request object. Correlation ID: $correlationId.",
+    )
+
+    private fun logDuplicateBilledRequestMessage(
+        triggeringUserId: String,
+        dataSourcingId: String,
+        correlationId: String,
+    ) = logger.info(
+        "A billed request for user ID $triggeringUserId and data sourcing ID $dataSourcingId already exists. " +
+            "Skipping creation. Correlation ID: $correlationId.",
+    )
+
+    /**
+     * Creates a billed request when a request is patched to the "Processing" state and the company to bill does not
+     * already have a billed request for the given data sourcing ID.
+     * @param payload the message payload
+     * @param type the message type
+     * @param correlationId the correlation ID of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.ACCOUNTING_SERVICE_REQUEST_PROCESSING,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_SOURCING_SERVICE_REQUEST_EVENTS),
+                key = [RoutingKeyNames.REQUEST_PATCH],
+            ),
+        ],
+    )
+    @Transactional
+    fun createBilledRequestOnRequestPatchToStateProcessing(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
+        val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
+
+        logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
+
+        val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.triggeringUserId)
+        if (billedCompanyId == null) {
+            logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
+            return
+        }
+
+        MessageQueueUtils.rejectMessageOnException {
+            val existingBilledRequest =
+                billedRequestRepository.findByIdOrNull(
+                    BilledRequestEntityId(
+                        billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                        dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
+                    ),
+                )
+
+            if (existingBilledRequest != null) {
+                logDuplicateBilledRequestMessage(
+                    requestSetToProcessingMessage.triggeringUserId,
+                    requestSetToProcessingMessage.dataSourcingId,
+                    correlationId,
+                )
+                return@rejectMessageOnException
+            }
+
+            billedRequestRepository.save(
+                BilledRequestEntity(
+                    billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                    dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
+                    requestedCompanyId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId),
+                    requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
+                    requestedFramework = requestSetToProcessingMessage.requestedFramework,
+                ),
+            )
+        }
+    }
+}
