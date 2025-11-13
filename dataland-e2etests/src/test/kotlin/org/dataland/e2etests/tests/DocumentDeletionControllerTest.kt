@@ -1,7 +1,5 @@
 package org.dataland.e2etests.tests
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.BaseDataPointYesNo
 import org.dataland.datalandbackend.openApiClient.model.BaseDocumentReference
@@ -9,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackend.openApiClient.model.YesNo
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.auth.GlobalAuth
@@ -32,7 +31,6 @@ class DocumentDeletionControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentControllerApiAccessor = DocumentControllerApiAccessor()
     private val documentControllerClient = documentControllerApiAccessor.documentControllerApi
-    private val objectMapperForJsonAssertion = ObjectMapper().registerModule(JavaTimeModule())
 
     @BeforeEach
     fun setupAuth() {
@@ -194,7 +192,7 @@ endobj"""
         assertDocumentDeleted(documentId)
 
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-        val dataPointContent = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
+        val dataPointContent = unwrapEncodedJson(retrievedDataPoint)
         val dataSourceNode = dataPointContent.get("dataSource")
         assertTrue(
             dataSourceNode == null || dataSourceNode.isNull,
@@ -327,14 +325,11 @@ endobj"""
         return dataPointId
     }
 
-    private fun unwrapEncodedJson(
-        json: String,
-        mapper: ObjectMapper,
-    ): com.fasterxml.jackson.databind.JsonNode {
-        var node = mapper.readTree(json)
-        if (node.isTextual) node = mapper.readTree(node.asText())
+    private fun unwrapEncodedJson(json: String): com.fasterxml.jackson.databind.JsonNode {
+        var node = defaultObjectMapper.readTree(json)
+        if (node.isTextual) node = defaultObjectMapper.readTree(node.asText())
         val dataField = node.get("data")
-        return if (dataField != null && dataField.isTextual) mapper.readTree(dataField.asText()) else node
+        return if (dataField != null && dataField.isTextual) defaultObjectMapper.readTree(dataField.asText()) else node
     }
 
     private fun awaitDocumentAvailable(documentId: String) {
