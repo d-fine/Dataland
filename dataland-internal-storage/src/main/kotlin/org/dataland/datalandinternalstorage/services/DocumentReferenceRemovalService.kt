@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
  * Searches for document IDs in data points and datasets, and handles document deletion
  */
 @Service
-class DocumentDeletionInStorageService
+class DocumentReferenceRemovalService
     @Autowired
     constructor(
         private val blobItemRepository: BlobItemRepository,

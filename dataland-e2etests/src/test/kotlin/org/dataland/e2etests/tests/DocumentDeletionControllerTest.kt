@@ -194,8 +194,8 @@ endobj"""
         assertDocumentDeleted(documentId)
 
         val retrievedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-        val dataPointJson = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
-        val dataSourceNode = dataPointJson.get("dataSource")
+        val dataPointContent = unwrapEncodedJson(retrievedDataPoint, objectMapperForJsonAssertion)
+        val dataSourceNode = dataPointContent.get("dataSource")
         assertTrue(
             dataSourceNode == null || dataSourceNode.isNull,
             "Entire dataSource object should be null after document deletion",
