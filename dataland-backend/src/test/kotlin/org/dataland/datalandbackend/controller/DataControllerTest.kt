@@ -121,7 +121,6 @@ internal class DataControllerTest {
                 mockDataMetaInformationManager,
                 dataExportService,
                 mockCompanyQueryManager,
-                objectMapper,
             )
     }
 

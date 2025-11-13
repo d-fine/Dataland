@@ -29,7 +29,7 @@ open class DataManagerTest(
         reset(mockStorageClient, mockMessageQueuePublications)
         dataManager =
             DataManager(
-                objectMapper, companyQueryManager, dataMetaInformationManager,
+                companyQueryManager, dataMetaInformationManager,
                 mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
             )
         spyDataManager = spy(dataManager)
