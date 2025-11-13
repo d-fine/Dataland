@@ -323,7 +323,7 @@ open class DataController<T>(
                 message = "The provided identifier: $companyIdentifier is ambiguous and matches multiple companies.",
             )
         }
-        val companyId: String =
+        val companyId =
             companyIds.firstOrNull() ?: throw ResourceNotFoundApiException(
                 summary = "Company with identifier $companyIdentifier not found.",
                 message = "No company matches the provided identifier: $companyIdentifier.",
