@@ -18,6 +18,7 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -89,6 +90,7 @@ class CreditsManagerTest {
         assertThrows<ResourceNotFoundApiException> {
             creditsManager.postTransaction(invalidTransactionDto)
         }
+        verifyNoInteractions(mockTransactionRepository)
     }
 
     @Test
@@ -110,6 +112,7 @@ class CreditsManagerTest {
         assertThrows<ResourceNotFoundApiException> {
             creditsManager.getBalance(invalidCompanyId)
         }
+        verifyNoInteractions(mockTransactionRepository)
     }
 
     @Test

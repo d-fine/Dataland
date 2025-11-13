@@ -21,6 +21,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import java.util.Optional
 import java.util.UUID
@@ -103,8 +104,7 @@ class AccountingServiceListenerTest {
             type = MessageType.REQUEST_SET_TO_PROCESSING,
             correlationId = correlationId,
         )
-
-        verify(mockBilledRequestRepository, times(0)).save(any())
+        verifyNoInteractions(mockBilledRequestRepository)
     }
 
     @Test
@@ -121,7 +121,12 @@ class AccountingServiceListenerTest {
             type = MessageType.REQUEST_SET_TO_PROCESSING,
             correlationId = correlationId,
         )
-
+        verify(mockBilledRequestRepository, times(1)).findById(
+            BilledRequestEntityId(
+                billedCompanyId = UUID.fromString(billedCompanyId),
+                dataSourcingId = UUID.fromString(dataSourcingId),
+            ),
+        )
         verify(mockBilledRequestRepository, times(0)).save(any())
     }
 
@@ -144,7 +149,10 @@ class AccountingServiceListenerTest {
         verify(mockBilledRequestRepository, times(1)).save(
             argThat {
                 billedCompanyId == billedRequestEntity.billedCompanyId &&
-                    dataSourcingId == billedRequestEntity.dataSourcingId
+                    dataSourcingId == billedRequestEntity.dataSourcingId &&
+                    requestedCompanyId == billedRequestEntity.requestedCompanyId &&
+                    requestedReportingPeriod == billedRequestEntity.requestedReportingPeriod &&
+                    requestedFramework == billedRequestEntity.requestedFramework
             },
         )
     }

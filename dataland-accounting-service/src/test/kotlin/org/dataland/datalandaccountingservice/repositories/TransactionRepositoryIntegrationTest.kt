@@ -39,9 +39,9 @@ class TransactionRepositoryIntegrationTest
             repeat(transactionCount) { idx ->
                 val value =
                     when (transactionCount) {
-                        1, 2 -> BigDecimal("10.0")
+                        1, 2 -> BigDecimal("10.0000")
                         3 -> BigDecimal((idx + 10).toString())
-                        else -> BigDecimal("0.0")
+                        else -> BigDecimal("0.0000")
                     }
                 transactionRepository.save(
                     TransactionEntity(
@@ -75,7 +75,7 @@ class TransactionRepositoryIntegrationTest
 
             transactionRepository.save(
                 TransactionEntity(
-                    valueOfChange = BigDecimal("5.0"),
+                    valueOfChange = BigDecimal("5.0000"),
                     companyId = targetCompany,
                     triggeringUser = triggeringUser,
                     reasonForChange = reasonForChange,
@@ -84,7 +84,7 @@ class TransactionRepositoryIntegrationTest
             )
             transactionRepository.save(
                 TransactionEntity(
-                    valueOfChange = BigDecimal("100.0"),
+                    valueOfChange = BigDecimal("100.0000"),
                     companyId = otherCompany,
                     triggeringUser = triggeringUser,
                     reasonForChange = reasonForChange,
