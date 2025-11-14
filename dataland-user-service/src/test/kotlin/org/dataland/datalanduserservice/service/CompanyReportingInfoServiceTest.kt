@@ -114,7 +114,7 @@ class CompanyReportingInfoServiceTest {
                 headquarters = "testHeadquarters",
                 identifiers = emptyMap(),
                 countryCode = "DE",
-                fiscalYearEnd = LocalDate.of(2024, 1, 31),
+                fiscalYearEnd = LocalDate.of(2024, 9, 30),
                 reportingPeriodShift = 0,
                 sector = "testSector",
             )
@@ -210,7 +210,7 @@ class CompanyReportingInfoServiceTest {
             headquarters = "HQ",
             identifiers = emptyMap(),
             countryCode = "DE",
-            fiscalYearEnd = LocalDate.of(2023, 12, 31),
+            fiscalYearEnd = LocalDate.of(2023, 9, 30),
             reportingPeriodShift = 1,
             sector = "financials",
         )
