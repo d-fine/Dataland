@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.serviceTests
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -44,6 +46,9 @@ class DataSourcingControllerTest(
 ) {
     @MockitoBean
     private lateinit var mockCompanyRolesControllerApi: CompanyRolesControllerApi
+
+    @MockitoBean
+    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     @MockitoBean
     private lateinit var mockDataSourcingValidator: DataSourcingValidator
@@ -98,7 +103,12 @@ class DataSourcingControllerTest(
             mockSecurityContext,
             mockCompanyRolesControllerApi,
             mockDataSourcingValidator,
+            mockCompanyDataControllerApi,
         )
+
+        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(providerCompanyId.toString())
+        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(documentCollectorId.toString())
+        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(dataExtractorId.toString())
 
         stubRoleAssignments(adminUserId, documentCollectorId, emptyList())
 
