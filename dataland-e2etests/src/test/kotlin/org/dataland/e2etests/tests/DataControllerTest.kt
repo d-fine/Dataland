@@ -4,9 +4,14 @@ import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.LksgSocial
+import org.dataland.datalandbackend.openApiClient.model.LksgSocialChildLabor
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -24,6 +29,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import java.math.BigDecimal
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -36,6 +42,11 @@ class DataControllerTest {
 
     private val testDataEuTaxonomyNonFinancials =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)
+            .first()
+
+    private val testDataLksg =
+        apiAccessor.testDataProviderForLksgData
             .getTData(1)
             .first()
 
@@ -213,12 +224,90 @@ class DataControllerTest {
             }
     }
 
-    private fun uploadEuTaxoDataset(companyId: UUID) {
+    @Test
+    fun `test that latest-endpoint retrieves dataset of most recent available reporting period`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
+        mapOf(
+            "2023" to "2023",
+            "2024" to "2024",
+            "2022" to "2024",
+        ).forEach { (reportingPeriod, latestAvailableReportingPeriod) ->
+            uploadLksgDataset(companyId, reportingPeriod)
+            assertEquals(
+                "Test Description $latestAvailableReportingPeriod",
+                apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedData3(companyId).let {
+                    it.data.social
+                        ?.childLabor
+                        ?.additionalChildLaborOtherMeasuresDescription
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `test that latest-endpoint retrieves assembled dataset of most recent available reporting period`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
+        mapOf(
+            "2023" to "2023",
+            "2024" to "2024",
+            "2022" to "2024",
+        ).forEach { (reportingPeriod, latestAvailableReportingPeriod) ->
+            uploadEuTaxoDataset(
+                UUID.fromString(companyId),
+                reportingPeriod,
+                testDataEuTaxonomyNonFinancials.copy(
+                    revenue =
+                        EutaxonomyNonFinancialsRevenue(
+                            totalAmount = CurrencyDataPoint(value = BigDecimal(reportingPeriod)),
+                        ),
+                ),
+            )
+            assertEquals(
+                latestAvailableReportingPeriod,
+                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                    .getLatestAvailableCompanyAssociatedData4(
+                        companyId,
+                    ).let {
+                        it.data.revenue
+                            ?.totalAmount
+                            ?.value
+                            ?.toPlainString()
+                    },
+            )
+        }
+    }
+
+    private fun uploadEuTaxoDataset(
+        companyId: UUID,
+        reportingPeriod: String = "2022",
+        data: EutaxonomyNonFinancialsData = testDataEuTaxonomyNonFinancials,
+    ) {
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
             companyId.toString(),
-            testDataEuTaxonomyNonFinancials,
-            "2022",
+            data,
+            reportingPeriod,
             false,
         )
     }
+
+    private fun uploadLksgDataset(
+        companyId: String,
+        reportingPeriod: String,
+    ) = apiAccessor
+        .lksgUploaderFunction(
+            companyId,
+            testDataLksg.copy(
+                social =
+                    LksgSocial(
+                        childLabor =
+                            LksgSocialChildLabor(
+                                additionalChildLaborOtherMeasuresDescription = "Test Description $reportingPeriod",
+                            ),
+                    ),
+            ),
+            reportingPeriod,
+            bypassQa = true,
+        ).dataId
 }
