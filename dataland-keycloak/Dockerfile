@@ -18,13 +18,13 @@ COPY --from=ubi-micro-build /mnt/rootfs /
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
 ENV KC_DB_USERNAME=keycloak
-ENV KC_HOSTNAME_STRICT=false
-ENV KC_HOSTNAME_STRICT_HTTPS=false
+ENV KC_HTTP_ACCEPT_NON_NORMALIZED_PATHS=true
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_ADDRESS_FORWARDING=true
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
-ENV KC_HOSTNAME_ADMIN=dataland-admin:6789
+ENV KC_HOSTNAME=https://dataland-admin:6789
+ENV KC_HOSTNAME_ADMIN=https://dataland-admin:6789
 COPY --from=builder /app/dataland-keycloak/dataland_theme/login/build/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin

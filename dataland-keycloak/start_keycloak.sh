@@ -19,7 +19,7 @@ if [[ "$mode" == initialize ]]; then
       echo "Error: Required variable $variable not set in environmental variables."
       exit 1
     fi
-    if echo ${!variable} | grep -q %; then
+    if echo "${!variable}" | grep -q %; then
       echo "Error: $variable contains delimiter for the sed command (%), which is not allowed."
       exit 1
     fi

@@ -44,7 +44,7 @@ docker compose --profile init up --build &
 project_name=$(basename "$(pwd)")
 lowercase_project_name=$(echo "$project_name" | tr '[:upper:]' '[:lower:]')
 keycloak_initializer_container="$lowercase_project_name"-keycloak-initializer-1
-while ! docker logs $keycloak_initializer_container 2>/dev/null | grep -q "Added user 'admin' to realm 'master'"; do
+while ! docker logs $keycloak_initializer_container 2>/dev/null | grep -q "Created temporary admin user with username admin"; do
  echo "Waiting for Keycloak to finish initializing..."
  sleep 5
 done

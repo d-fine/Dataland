@@ -30,7 +30,7 @@ sealed class DatalandAuthentication : Authentication {
     val roles: Set<DatalandRealmRole>
         get() {
             val allUserRoles = authorities.map { it.toString() }
-            return DatalandRealmRole.values().filter { allUserRoles.contains(it.toString()) }.toSet()
+            return DatalandRealmRole.entries.filter { allUserRoles.contains(it.toString()) }.toSet()
         }
 
     private var authenticated = false

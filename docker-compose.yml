@@ -1,4 +1,3 @@
-version: "3.8"
 # Docker-compose file for the dataland stack.
 # Things can be configured by using docker-compose profiles. Valid profiles:
 # production: The profile to be used if the stack is deployed in a production-like setup
