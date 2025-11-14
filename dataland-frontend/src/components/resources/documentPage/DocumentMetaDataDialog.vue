@@ -230,7 +230,7 @@ async function getUserPatchRights(): Promise<boolean> {
   const userId = await getUserId(assertDefined(getKeycloakPromise));
   const isUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  return (userId == metaData.value?.uploaderId && isUploader) || isAdmin;
+  return (userId === metaData.value?.uploaderId && isUploader) || isAdmin;
 }
 
 /**
@@ -366,7 +366,7 @@ onMounted(() => {
 }
 
 .p-dialog-title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
 }
 
