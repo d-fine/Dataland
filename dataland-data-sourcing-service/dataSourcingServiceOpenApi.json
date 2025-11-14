@@ -709,7 +709,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch states of data sourcing objects."
+            "description": "Only Dataland Admins have the right to patch states of data sourcing objects. Document Collectors and Data Extractors have the right to patch to specific states."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -805,7 +805,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects."
+            "description": "Only Dataland Admins and Document Collectors have the right to patch documents associated with data sourcing objects."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -884,7 +884,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts."
+            "description": "Only Dataland Admins and Document Collectors have the right to patch the dates of document sourcing attempts."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -1335,10 +1335,10 @@
             }
           },
           "403": {
-            "description": "Only uploaders are allowed to use this endpoint."
+            "description": "Only Dataland Admins and members of this company are allowed to use this endpoint."
           },
           "404": {
-            "description": "DataSourcing object not found."
+            "description": "Provider company not found."
           },
           "default": {
             "description": "An error occurred",

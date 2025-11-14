@@ -15,6 +15,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.validator.CompanyExists
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -84,7 +85,7 @@ interface DataSourcingApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "DataSourcing object not found.",
+                description = "Provider company not found.",
                 content = [Content(array = ArraySchema())],
             ),
         ],
@@ -98,6 +99,7 @@ interface DataSourcingApi {
             description = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_DESCRIPTION,
             example = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_EXAMPLE,
         )
+        @CompanyExists
         @PathVariable providerCompanyId: String,
     ): ResponseEntity<List<ReducedDataSourcing>>
 
