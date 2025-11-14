@@ -8,13 +8,12 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import kotlin.reflect.KClass
 
 /**
  * Annotation to validate that a company exists on Dataland
  */
-@Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.VALUE_PARAMETER)
 @Constraint(
     validatedBy = [
         CompanyExistsValidator::class,
@@ -30,7 +29,6 @@ annotation class CompanyExists(
  * Validator to check that a company exists on Dataland
  */
 class CompanyExistsValidator(
-    @Qualifier("getCompanyDataControllerApi")
     @Autowired
     val companyDataControllerApi: CompanyDataControllerApi,
 ) : ConstraintValidator<CompanyExists, String> {
