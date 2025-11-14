@@ -1715,7 +1715,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1724,7 +1724,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyName",
@@ -1814,7 +1817,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1823,7 +1826,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyName",
@@ -2000,7 +2006,9 @@
                 "format": "uuid"
               }
             },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ]
           },
           {
             "name": "showOnlyActive",

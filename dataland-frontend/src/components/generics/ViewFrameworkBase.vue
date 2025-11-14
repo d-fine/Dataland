@@ -62,16 +62,25 @@
             />
 
             <PrimeButton
+              v-if="dataPointsAreEditableForCurrentUser"
+              @click="editModeIsOn = !editModeIsOn"
+              data-test="editDataPointsButton"
+              :label="!editModeIsOn ? 'ENTER EDIT MODE' : 'LEAVE EDIT MODE'"
+              :icon="'pi pi-pencil'"
+              title="Enter Edit Mode to modify data points inline"
+            />
+            <PrimeButton
               v-if="isEditableByCurrentUser"
               @click="editDataset"
               data-test="editDatasetButton"
-              label="EDIT DATA"
+              label="EDIT DATASET"
               :icon="
                 availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
                   ? 'pi pi-chevron-down'
-                  : 'pi pi-pencil'
+                  : 'pi pi-database'
               "
               :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
+              title="Upload a dataset prefilled with data from the chosen reporting period"
             />
             <PrimeButton
               v-if="hasUserUploaderRights"
@@ -79,6 +88,7 @@
               label="NEW DATASET"
               data-test="goToNewDatasetButton"
               @click="linkToNewDataset"
+              title="Upload a new dataset for any framework"
             />
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
@@ -116,7 +126,7 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -164,6 +174,8 @@ const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
+const editModeIsOn = ref(false);
+const hasUserAdminRights = ref(false);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -175,6 +187,7 @@ const mapOfReportingPeriodToActiveDataset = computed(() => {
 
 provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
+provide('editModeIsOn', editModeIsOn);
 
 const availableReportingPeriods = computed(() => {
   const set = new Set<string>();
@@ -206,6 +219,8 @@ const reportingPeriodsPerFramework = computed(() =>
     }))
   )
 );
+
+const dataPointsAreEditableForCurrentUser = computed(() => isEditableByCurrentUser.value && hasUserAdminRights.value);
 
 watch(
   () => props.companyID,
@@ -349,6 +364,7 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
 async function setViewPageAttributesForUser(): Promise<void> {
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
   hasUserUploaderRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
+  hasUserAdminRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
   if (!hasUserUploaderRights.value) {
     hasUserUploaderRights.value = await hasUserCompanyRoleForCompany(

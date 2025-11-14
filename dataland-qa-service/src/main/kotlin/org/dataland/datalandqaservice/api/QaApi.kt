@@ -53,8 +53,8 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,
@@ -208,8 +208,8 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,

@@ -12,6 +12,8 @@ export interface MLDTCellConfig<FrameworkDataType> {
   label: string;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
+  uploadComponentName?: string;
+  dataPointTypeId?: string;
   explanation?: string;
   class?: string;
   name?: string;

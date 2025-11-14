@@ -92,11 +92,12 @@ class SfdrHighImpactClimateSectors(
         )
     }
 
+    override fun getUploadComponentName(): String = "HighImpactClimateSectorsFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "HighImpactClimateSectorsFormField",
         )
     }
 

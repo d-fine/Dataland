@@ -40,11 +40,12 @@ class StringComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "InputTextFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "InputTextFormField",
         )
     }
 

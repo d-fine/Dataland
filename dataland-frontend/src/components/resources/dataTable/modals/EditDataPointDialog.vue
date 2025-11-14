@@ -1,0 +1,96 @@
+<template>
+  <component ref="componentRef" :is="resolvedComponent" :extendedDataPointObject="extendedDataPointObject" />
+  <Message v-if="errorMessage" severity="error" :life="3000">
+    {{ errorMessage }}
+  </Message>
+  <div style="display: flex; justify-content: flex-end; margin-top: var(--spacing-md)">
+    <PrimeButton
+      label="SAVE CHANGES"
+      icon="pi pi-save"
+      @click="updateDataPoint"
+      data-test="save-data-point-button"
+      :disabled="buttonDisabled"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { inject, type Ref, ref, computed, unref, type Component, provide } from 'vue';
+import PrimeButton from 'primevue/button';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { QualityOptions, type UploadedDataPoint } from '@clients/backend';
+import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
+import Message from 'primevue/message';
+import { AxiosError } from 'axios';
+import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const errorMessage = ref('');
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
+const companyId = dialogRef?.value?.data?.companyId;
+const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
+const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
+const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
+const dataPoint = dialogRef?.value?.data?.dataPoint;
+const emit = defineEmits<(e: 'dataUpdated') => void>();
+const resolvedComponent = computed<Component | null>(() => {
+  return componentDictionary[uploadComponentName ?? ''] ?? null;
+});
+const buttonDisabled = ref(false);
+
+const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
+
+const extendedDataPointObject: ExtendedDataPointType = {
+  value: ((): string | undefined => {
+    const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
+    return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
+  })(),
+  quality: ((): string | undefined => {
+    const valueOrPotentialQuality =
+      unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
+    return valueOrPotentialQuality && Object.values(QualityOptions).includes(valueOrPotentialQuality)
+      ? valueOrPotentialQuality
+      : unref(dataPoint?.displayValue?.quality ?? '');
+  })(),
+  comment: unref(dataPoint?.displayValue?.comment ?? ''),
+  dataSource: {
+    fileName: unref(dataPoint?.displayValue?.dataSource?.fileName ?? ''),
+    page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
+  },
+};
+
+provide('companyId', companyId);
+
+/**
+ * Updates the data point with the current API body.
+ */
+async function updateDataPoint(): Promise<void> {
+  errorMessage.value = '';
+  buttonDisabled.value = true;
+  try {
+    const apiBody: UploadedDataPoint = {
+      dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
+      dataPointType: dataPointTypeId,
+      companyId: companyId,
+      reportingPeriod: reportingPeriod,
+    };
+    await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody, true);
+    dialogRef?.value?.close({ dataUpdated: true });
+    setTimeout(() => {
+      emit('dataUpdated');
+    }, 2000);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = 'Failed to edit Data Point.';
+    }
+  } finally {
+    buttonDisabled.value = false;
+  }
+}
+</script>
