@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.serviceTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
@@ -20,6 +21,7 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
@@ -78,6 +80,7 @@ class DataSourcingControllerTest(
     private val documentCollectorId = UUID.randomUUID()
     private val dataExtractorId = UUID.randomUUID()
     private val providerCompanyId = UUID.randomUUID()
+    private val invalidCompanyId = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"
 
@@ -109,6 +112,7 @@ class DataSourcingControllerTest(
         doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(providerCompanyId.toString())
         doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(documentCollectorId.toString())
         doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(dataExtractorId.toString())
+        doThrow(ClientException("Company not found")).whenever(mockCompanyDataControllerApi).isCompanyIdValid(invalidCompanyId.toString())
 
         stubRoleAssignments(adminUserId, documentCollectorId, emptyList())
 
@@ -160,10 +164,13 @@ class DataSourcingControllerTest(
             ).andExpect(resultMatcher)
     }
 
-    private fun performGetDataSourcingByCompanyId(resultMatcher: ResultMatcher) {
+    private fun performGetDataSourcingByCompanyId(
+        resultMatcher: ResultMatcher,
+        companyId: UUID = providerCompanyId,
+    ) {
         mockMvc
             .perform(
-                get("/data-sourcing/provider/$providerCompanyId")
+                get("/data-sourcing/provider/$companyId")
                     .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(resultMatcher)
@@ -248,6 +255,13 @@ class DataSourcingControllerTest(
         stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
         stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performGetDataSourcingByCompanyId(status().isForbidden())
+    }
+
+    @Test
+    fun `using an invalid companyId leads to an appropriate error`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, invalidCompanyId, listOf(generalMemberAssignment))
+        performGetDataSourcingByCompanyId(status().isBadRequest(), invalidCompanyId)
     }
 
     @ParameterizedTest
