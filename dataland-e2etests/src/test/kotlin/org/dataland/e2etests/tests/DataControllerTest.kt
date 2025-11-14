@@ -29,6 +29,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.springframework.http.HttpStatus
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -41,24 +42,15 @@ class DataControllerTest {
     val jwtHelper = JwtAuthenticationHelper()
 
     private val testDataEuTaxonomyNonFinancials =
-        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1)
-            .first()
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
 
-    private val testDataLksg =
-        apiAccessor.testDataProviderForLksgData
-            .getTData(1)
-            .first()
+    private val testDataLksg = apiAccessor.testDataProviderForLksgData.getTData(1).first()
 
     private val testCompanyInformation =
-        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1)
-            .first()
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1).first()
 
-    private val testCompanyInformationNonTeaser =
-        testCompanyInformation.copy(isTeaserCompany = false)
-    private val testCompanyInformationTeaser =
-        testCompanyInformation.copy(isTeaserCompany = true)
+    private val testCompanyInformationNonTeaser = testCompanyInformation.copy(isTeaserCompany = false)
+    private val testCompanyInformationTeaser = testCompanyInformation.copy(isTeaserCompany = true)
 
     @BeforeAll
     fun postTestDocuments() {
@@ -73,8 +65,9 @@ class DataControllerTest {
                 testDataEuTaxonomyNonFinancials,
             )
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
-            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEutaxonomyNonFinancialsData(
+                mapOfIds.getValue("dataId"),
+            )
 
         val ignoredKeys = setOf("publicationDate")
         assertEqualsByJsonComparator(
@@ -97,8 +90,9 @@ class DataControllerTest {
             )
 
         val getDataByIdResponse =
-            apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
-                .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
+            apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi.getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                mapOfIds.getValue("dataId"),
+            )
         val expectedCompanyAssociatedData =
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds.getValue("companyId"),
@@ -109,8 +103,7 @@ class DataControllerTest {
         val ignoredKeys = setOf("publicationDate")
         assertEqualsByJsonComparator(
             expectedCompanyAssociatedData, getDataByIdResponse,
-            JsonComparator
-                .JsonComparisonOptions(ignoredKeys),
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -125,8 +118,9 @@ class DataControllerTest {
         // a timeout exception will be thrown.
         val exception =
             assertThrows<ConditionTimeoutException> {
-                apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
-                    .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
+                apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi.getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                    mapOfIds.getValue("dataId"),
+                )
             }
 
         assertTrue(exception.message!!.contains("code=403"))
@@ -135,7 +129,8 @@ class DataControllerTest {
     @ParameterizedTest
     @EnumSource(CompanyRole::class)
     fun `check that keycloak reader role can only upload data as company owner or company data uploader`(role: CompanyRole) {
-        val companyId = UUID.fromString(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
+        val companyId =
+            UUID.fromString(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
         val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -193,7 +188,11 @@ class DataControllerTest {
             condition = { it == 1 },
         )
 
-        assertDoesNotThrow { apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId) }
+        assertDoesNotThrow {
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(
+                dataId,
+            )
+        }
 
         assertThrows<ClientException> {
             apiAccessor.dataControllerApiForLksgData.getCompanyAssociatedLksgData(dataId)
@@ -225,7 +224,7 @@ class DataControllerTest {
     }
 
     @Test
-    fun `test that latest-endpoint retrieves dataset of most recent available reporting period`() {
+    fun `test fetching of dataset of the latest available reporting period`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         mapOf(
@@ -236,18 +235,24 @@ class DataControllerTest {
             uploadLksgDataset(companyId, reportingPeriod)
             assertEquals(
                 "Test Description $latestAvailableReportingPeriod",
-                apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedData3(companyId).let {
-                    it.data.social
-                        ?.childLabor
-                        ?.additionalChildLaborOtherMeasuresDescription
+                ApiAwait.waitForData {
+                    apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedData3(companyId).let {
+                        it.data.social
+                            ?.childLabor
+                            ?.additionalChildLaborOtherMeasuresDescription
+                    }
                 },
             )
         }
     }
 
     @Test
-    fun `test that latest-endpoint retrieves assembled dataset of most recent available reporting period`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+    fun `test fetching of assembled dataset of the latest available reporting period`() {
+        val storedCompany = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany
+        val companyIdentifier =
+            storedCompany.companyInformation.identifiers.values
+                .first { it.isNotEmpty() }
+                .first()
 
         mapOf(
             "2023" to "2023",
@@ -255,7 +260,7 @@ class DataControllerTest {
             "2022" to "2024",
         ).forEach { (reportingPeriod, latestAvailableReportingPeriod) ->
             uploadEuTaxoDataset(
-                UUID.fromString(companyId),
+                UUID.fromString(storedCompany.companyId),
                 reportingPeriod,
                 testDataEuTaxonomyNonFinancials.copy(
                     revenue =
@@ -263,19 +268,21 @@ class DataControllerTest {
                             totalAmount = CurrencyDataPoint(value = BigDecimal(reportingPeriod)),
                         ),
                 ),
+                bypassQa = true,
             )
-            assertEquals(
-                latestAvailableReportingPeriod,
-                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                    .getLatestAvailableCompanyAssociatedData4(
-                        companyId,
-                    ).let {
-                        it.data.revenue
-                            ?.totalAmount
-                            ?.value
-                            ?.toPlainString()
-                    },
-            )
+            ApiAwait.untilAsserted(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                val latestResponse =
+                    apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getLatestAvailableCompanyAssociatedData4(
+                        companyIdentifier,
+                    )
+                assertEquals(
+                    latestAvailableReportingPeriod,
+                    latestResponse.data.revenue
+                        ?.totalAmount
+                        ?.value
+                        ?.toPlainString(),
+                )
+            }
         }
     }
 
@@ -283,12 +290,13 @@ class DataControllerTest {
         companyId: UUID,
         reportingPeriod: String = "2022",
         data: EutaxonomyNonFinancialsData = testDataEuTaxonomyNonFinancials,
+        bypassQa: Boolean = false,
     ) {
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
             companyId.toString(),
             data,
             reportingPeriod,
-            false,
+            bypassQa,
         )
     }
 
