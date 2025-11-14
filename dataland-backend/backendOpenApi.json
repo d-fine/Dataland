@@ -3005,13 +3005,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -3423,13 +3424,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData_1",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -3841,13 +3843,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData_2",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -4259,13 +4262,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData_3",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -4677,13 +4681,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData_4",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -5095,13 +5100,14 @@
         "operationId": "getLatestAvailableCompanyAssociatedData_5",
         "parameters": [
           {
-            "name": "identifierType",
+            "name": "identifier",
             "in": "query",
-            "description": "The type of identifier that is used.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
@@ -17558,15 +17564,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

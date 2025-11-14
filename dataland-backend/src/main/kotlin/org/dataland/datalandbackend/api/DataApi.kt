@@ -15,7 +15,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -249,7 +249,7 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getLatestAvailableCompanyAssociatedData(
-        @IdentifierTypeParameterRequired
-        @RequestParam companyIdentifier: String,
+        @IdentifierParameterRequired
+        @RequestParam identifier: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 }

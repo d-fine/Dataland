@@ -310,23 +310,23 @@ open class DataController<T>(
         }
     }
 
-    override fun getLatestAvailableCompanyAssociatedData(companyIdentifier: String): ResponseEntity<CompanyAssociatedData<T>> {
+    override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<T>> {
         val correlationId = IdUtils.generateUUID()
-        logger.info(logMessageBuilder.getLatestCompanyAssociatedDataMessage(companyIdentifier, correlationId))
+        logger.info(logMessageBuilder.getLatestCompanyAssociatedDataMessage(identifier, correlationId))
         val companyIds =
-            companyQueryManager.validateCompanyIdentifiers(listOf(companyIdentifier)).mapNotNull {
+            companyQueryManager.validateCompanyIdentifiers(listOf(identifier)).mapNotNull {
                 it.companyInformation?.companyId
             }
         if (companyIds.size > 1) {
             throw InvalidInputApiException(
-                summary = "Multiple companies found for identifier $companyIdentifier.",
-                message = "The provided identifier: $companyIdentifier is ambiguous and matches multiple companies.",
+                summary = "Multiple companies found for identifier $identifier.",
+                message = "The provided identifier: $identifier is ambiguous and matches multiple companies.",
             )
         }
         val companyId =
             companyIds.firstOrNull() ?: throw ResourceNotFoundApiException(
-                summary = "Company with identifier $companyIdentifier not found.",
-                message = "No company matches the provided identifier: $companyIdentifier.",
+                summary = "Company with identifier $identifier not found.",
+                message = "No company matches the provided identifier: $identifier.",
             )
 
         val dataAndReportingPeriod =
