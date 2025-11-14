@@ -13,13 +13,12 @@
       <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
         <span class="p-dialog-title">Document Details</span>
         <PrimeButton
-          class="p-0 h-auto"
           v-if="!editMode && canUserPatchMetaData"
           icon="pi pi-pencil"
           data-test="edit-icon"
           variant="text"
           @click.stop="editMode = true"
-          style="align-content: end"
+          style="align-content: end; margin: var(--spacing-xxs)"
         />
       </div>
     </template>
@@ -124,7 +123,7 @@
       </Message>
       <div v-if="editMode" class="button-row">
         <PrimeButton label="CANCEL" class="p-button-text" @click="onCancel" data-test="cancel-edit-button" />
-        <PrimeButton label="SAVE CHANGES" @click="saveChanges()" data-test="save-edit-button" />
+        <PrimeButton label="SAVE CHANGES" @click="saveChanges" data-test="save-edit-button" />
       </div>
     </div>
   </PrimeDialog>
@@ -176,7 +175,7 @@ const companyDataControllerApi = apiClientProvider.backendClients.companyDataCon
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const metaDataPatch = ref<{
   documentName?: string;
-  documentCategory?: string;
+  documentCategory?: DocumentMetaInfoDocumentCategoryEnum;
   publicationDate?: Date | null;
   reportingPeriod?: Date | null;
 }>({
