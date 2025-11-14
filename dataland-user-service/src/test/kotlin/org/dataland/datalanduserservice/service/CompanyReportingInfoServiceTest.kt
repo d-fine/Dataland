@@ -53,8 +53,8 @@ class CompanyReportingInfoServiceTest {
                 Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
                 Arguments.of(LocalDate.of(2018, 1, 31), -1, LocalDate.of(2025, 5, 31), 2024),
                 Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 5, 31), 2024),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 6, 1), 2024),
-                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 1), null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 6, 1), 2025),
+                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), null),
             )
     }
 
