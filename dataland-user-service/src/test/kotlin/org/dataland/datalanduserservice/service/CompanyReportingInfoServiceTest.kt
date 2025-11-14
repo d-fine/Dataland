@@ -49,11 +49,12 @@ class CompanyReportingInfoServiceTest {
         @JvmStatic
         fun paramStream(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 12, 1), 2025),
-                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2021, 12, 1), 2022),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 6, 1), null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 1, 16), null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
+                Arguments.of(LocalDate.of(2018, 1, 31), -1, LocalDate.of(2025, 5, 31), 2024),
+                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 5, 31), 2024),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 6, 1), 2025),
+                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), null),
             )
     }
 
@@ -113,7 +114,7 @@ class CompanyReportingInfoServiceTest {
                 headquarters = "testHeadquarters",
                 identifiers = emptyMap(),
                 countryCode = "DE",
-                fiscalYearEnd = LocalDate.of(2024, 1, 31),
+                fiscalYearEnd = LocalDate.of(2024, 9, 30),
                 reportingPeriodShift = 0,
                 sector = "testSector",
             )
@@ -209,7 +210,7 @@ class CompanyReportingInfoServiceTest {
             headquarters = "HQ",
             identifiers = emptyMap(),
             countryCode = "DE",
-            fiscalYearEnd = LocalDate.of(2023, 12, 31),
+            fiscalYearEnd = LocalDate.of(2023, 9, 30),
             reportingPeriodShift = 1,
             sector = "financials",
         )
