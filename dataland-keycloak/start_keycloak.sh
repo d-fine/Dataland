@@ -35,7 +35,7 @@ if [[ "$mode" == initialize ]]; then
   ./kc.sh start --http-access-log-enabled=true --log-level=DEBUG
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
-  ./kc.sh export --dir /keycloak_users --users different_files --users-per-file 1 --realm datalandsecurity
+  ./kc.sh export --dir /keycloak_users --users different_files --users-per-file 1 --realm datalandsecurity --verbose
 else
   echo "Starting keycloak using: $*"
   ./kc.sh "$@"
