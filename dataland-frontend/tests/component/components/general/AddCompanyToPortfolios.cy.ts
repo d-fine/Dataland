@@ -27,7 +27,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p1',
       portfolioName: 'One',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 0,
       lastUpdateTimestamp: 1,
@@ -37,7 +37,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p2',
       portfolioName: 'Two',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 123,
       lastUpdateTimestamp: 456,
@@ -47,7 +47,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p3',
       portfolioName: 'Three',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 999,
       lastUpdateTimestamp: 9999,
