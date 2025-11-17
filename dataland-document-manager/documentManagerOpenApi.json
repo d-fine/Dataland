@@ -20,6 +20,322 @@
     }
   ],
   "paths": {
+    "/{documentId}": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Receive a document.",
+        "description": "Receive a document by its ID from internal storage.",
+        "operationId": "getDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully received document.",
+            "headers": {
+              "Content-Disposition": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "style": "simple",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "Content-Type": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.ms-excel": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.oasis.opendocument.spreadsheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Replace the metainformation of a document.",
+        "description": "Replace the metainformation of an existing document entirely.",
+        "operationId": "replaceDocumentMetaInfo",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentMetaInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully replaced the document\u0027s metainformation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to replace the document\u0027s metainformation."
+          },
+          "404": {
+            "description": "Document ID does not match any stored document."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "head": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Check if a document exists.",
+        "description": "Check for a given document ID (hash) if the document already exists in the database.",
+        "operationId": "checkDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked document existence."
+          },
+          "404": {
+            "description": "Successfully checked that a document does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Update the metainformation of a document.",
+        "description": "Update the metainformation of a document. All fields are optional, and only mentioned fields will be overwritten.",
+        "operationId": "patchDocumentMetaInfo",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the document\u0027s metainformation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to update the document\u0027s metainformation."
+          },
+          "404": {
+            "description": "Document ID does not match any stored document."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/": {
       "get": {
         "tags": [
@@ -174,246 +490,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/{documentId}": {
-      "get": {
-        "tags": [
-          "document-controller"
-        ],
-        "summary": "Receive a document.",
-        "description": "Receive a document by its ID from internal storage.",
-        "operationId": "getDocument",
-        "parameters": [
-          {
-            "name": "documentId",
-            "in": "path",
-            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully received document.",
-            "headers": {
-              "Content-Disposition": {
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Content-Length": {
-                "style": "simple",
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              },
-              "Content-Type": {
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              },
-              "application/pdf": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              },
-              "application/vnd.ms-excel": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              },
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              },
-              "application/vnd.oasis.opendocument.spreadsheet": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "head": {
-        "tags": [
-          "document-controller"
-        ],
-        "summary": "Check if a document exists.",
-        "description": "Check for a given document ID (hash) if the document already exists in the database.",
-        "operationId": "checkDocument",
-        "parameters": [
-          {
-            "name": "documentId",
-            "in": "path",
-            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully checked document existence."
-          },
-          "404": {
-            "description": "Successfully checked that a document does not exist."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "document-controller"
-        ],
-        "summary": "Update the metainformation of a document.",
-        "description": "Update the metainformation of a document. All fields are optional, and only mentioned fields will be overwritten.",
-        "operationId": "patchDocumentMetaInfo",
-        "parameters": [
-          {
-            "name": "documentId",
-            "in": "path",
-            "description": "The unique identifier of the document on Dataland. It is contained in the HTTP response after posting a new document and is a SHA-256 value.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully updated the document\u0027s metainformation.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "You do not have the right to update the document\u0027s metainformation."
-          },
-          "404": {
-            "description": "Document ID does not match any stored document."
           },
           "default": {
             "description": "An error occurred",

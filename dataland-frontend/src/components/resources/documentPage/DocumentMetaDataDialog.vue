@@ -136,9 +136,9 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import {
+  type DocumentMetaInfo,
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoEntity,
-  type DocumentMetaInfoPatch,
 } from '@clients/documentmanager';
 import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/DocumentDownloadLink.vue';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
@@ -149,7 +149,7 @@ import Select from 'primevue/select';
 import Message from 'primevue/message';
 import DatePicker from 'primevue/datepicker';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { AxiosError } from 'axios';
 
 const props = defineProps<{
@@ -228,9 +228,8 @@ async function getDocumentMetaInformation(): Promise<void> {
  */
 async function getUserPatchRights(): Promise<boolean> {
   const userId = await getUserId(assertDefined(getKeycloakPromise));
-  const isUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  return (userId === metaData.value?.uploaderId && isUploader) || isAdmin;
+  return userId === metaData.value?.uploaderId || isAdmin;
 }
 
 /**
@@ -261,10 +260,11 @@ async function saveChanges(): Promise<void> {
     reportingPeriod: metaDataPatch.value.reportingPeriod
       ? metaDataPatch.value.reportingPeriod.getFullYear().toString()
       : undefined,
-  } as DocumentMetaInfoPatch;
+    companyIds: metaData.value?.company?.map((company) => company.id) ?? [],
+  } as unknown as DocumentMetaInfo;
   console.log('Saving changes for document:', payload);
   try {
-    await documentControllerApi.patchDocumentMetaInfo(props.documentId, payload);
+    await documentControllerApi.replaceDocumentMetaInfo(props.documentId, payload);
   } catch (error: unknown) {
     errorMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.error('Error saving document metadata changes:', error);
