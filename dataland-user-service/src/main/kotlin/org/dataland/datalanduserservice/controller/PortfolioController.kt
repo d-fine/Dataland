@@ -58,16 +58,6 @@ class PortfolioController
                     .mapNotNull { it.companyInformation?.companyId }
                     .toSet()
 
-            val validPortfolioUpload =
-                PortfolioUpload(
-                    portfolioName = portfolioUpload.portfolioName,
-                    identifiers = validCompanyIds,
-                    isMonitored = portfolioUpload.isMonitored,
-                    monitoredFrameworks = portfolioUpload.monitoredFrameworks,
-                )
-
-            val basePortfolio = BasePortfolio(validPortfolioUpload)
-
             if (validCompanyIds.size != portfolioUpload.identifiers.size) {
                 throw ResourceNotFoundApiException(
                     "Some companyIds were invalid",
@@ -75,12 +65,17 @@ class PortfolioController
                 )
             }
 
-            // ToDo: throw error if identifier matches more than one company
+            // ToDo: Throw error if identifier matches with more than one company
 
-            return ResponseEntity(
-                portfolioService.createPortfolio(basePortfolio, correlationId),
-                HttpStatus.CREATED,
-            )
+            val validPortfolioUpload =
+                portfolioUpload.copy(
+                    identifiers = validCompanyIds,
+                )
+
+            val basePortfolio = BasePortfolio(validPortfolioUpload)
+
+            val createdPortfolio = portfolioService.createPortfolio(basePortfolio, correlationId)
+            return ResponseEntity(createdPortfolio, HttpStatus.CREATED)
         }
 
         override fun replacePortfolio(
