@@ -410,4 +410,54 @@ class DocumentManagerTest(
                 offset = 150,
             )
     }
+
+    @Test
+    fun `check that replacing meta information for an existing documentId results in the desired changes`() {
+        val mockDocument = setupMockDocument()
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
+        val newMetaInfo =
+            DocumentMetaInfo(
+                documentName = "replaced name",
+                documentCategory = DocumentCategory.SustainabilityReport,
+                companyIds = mutableSetOf("company-id-2", "company-id-3"),
+                publicationDate = LocalDate.parse("2023-01-05"),
+                reportingPeriod = "2024",
+            )
+
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(any())
+        doReturn(dummyDocumentMetaInfoEntity)
+            .whenever(mockDocumentMetaInfoRepository)
+            .getByDocumentId(uploadResponse.documentId)
+        doReturn(dummyDocumentMetaInfoEntity).whenever(mockDocumentMetaInfoRepository).save(dummyDocumentMetaInfoEntity)
+
+        val response =
+            documentManager.replaceDocumentMetaInformation(
+                uploadResponse.documentId,
+                newMetaInfo,
+            )
+
+        assertEquals(newMetaInfo.documentName, dummyDocumentMetaInfoEntity.documentName)
+        assertEquals(newMetaInfo.documentCategory, dummyDocumentMetaInfoEntity.documentCategory)
+        assertEquals(newMetaInfo.companyIds, dummyDocumentMetaInfoEntity.companyIds)
+        assertEquals(newMetaInfo.publicationDate, dummyDocumentMetaInfoEntity.publicationDate)
+        assertEquals(newMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
+        assertEquals(response.documentId, uploadResponse.documentId)
+        assertEquals(response.documentName, newMetaInfo.documentName)
+        assertEquals(response.documentCategory, newMetaInfo.documentCategory)
+        assertEquals(response.companyIds, newMetaInfo.companyIds)
+        assertEquals(response.publicationDate, newMetaInfo.publicationDate)
+        assertEquals(response.reportingPeriod, newMetaInfo.reportingPeriod)
+    }
+
+    @Test
+    fun `check that replacing meta information for a non-existing document throws exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.replaceDocumentMetaInformation(
+                unknownDocumentId,
+                dummyDocumentMetaInfo,
+            )
+        }
+    }
 }

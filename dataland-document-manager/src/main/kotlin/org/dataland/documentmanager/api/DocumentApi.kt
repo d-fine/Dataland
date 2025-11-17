@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -110,8 +111,7 @@ interface DocumentApi {
         consumes = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') " +
-            "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
+        "hasRole('ROLE_ADMIN') or @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId)",
     )
     fun patchDocumentMetaInfo(
         @Parameter(
@@ -123,6 +123,63 @@ interface DocumentApi {
         @PathVariable("documentId")
         documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentMetaInfoResponse>
+
+    /**
+     * Replace the metadata information of a document. The fields in
+     * documentMetaInfoPatch will entirely replace the stored metainformation of the document.
+     * @param documentId the id of the document whose meta info shall be replaced.
+     * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to set.
+     */
+    @Operation(
+        summary = "Replace the metainformation of a document.",
+        description =
+            "Replace the metainformation of an existing document entirely.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully replaced the document's metainformation.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to replace the document's metainformation.",
+                content = [
+                    Content(
+                        schema = Schema(),
+                    ),
+                ],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document ID does not match any stored document.",
+                content = [
+                    Content(
+                        schema = Schema(),
+                    ),
+                ],
+            ),
+        ],
+    )
+    @PutMapping(
+        value = ["/{documentId}"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId)",
+    )
+    fun replaceDocumentMetaInfo(
+        @Parameter(
+            name = "documentId",
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
+        @Valid @RequestBody(required = true) documentMetaInfo: DocumentMetaInfo,
     ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**

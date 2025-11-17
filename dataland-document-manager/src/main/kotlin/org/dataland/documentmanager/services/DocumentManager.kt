@@ -188,6 +188,31 @@ class DocumentManager
         }
 
         /**
+         * Replace the document meta information with [documentId].
+         * @param documentId identifier of document to be replaced
+         * @param documentMetaInfo meta data object
+         * @return DocumentMetaInfoResponse object to be sent to replacing user
+         */
+        @Transactional
+        fun replaceDocumentMetaInformation(
+            documentId: String,
+            documentMetaInfo: DocumentMetaInfo,
+        ): DocumentMetaInfoResponse {
+            val correlationId = randomUUID().toString()
+            val documentMetaInfoEntity = retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
+            logger.info("Replacing meta information for document with ID $documentId. CorrelationID: $correlationId.")
+
+            documentMetaInfoEntity.documentName = documentMetaInfo.documentName
+            documentMetaInfoEntity.documentCategory = documentMetaInfo.documentCategory
+            documentMetaInfoEntity.companyIds.clear()
+            documentMetaInfoEntity.companyIds.addAll(documentMetaInfo.companyIds)
+            documentMetaInfoEntity.publicationDate = documentMetaInfo.publicationDate
+            documentMetaInfoEntity.reportingPeriod = documentMetaInfo.reportingPeriod
+
+            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentMetaInfoResponse()
+        }
+
+        /**
          * Update the document meta information with [documentId].
          * This version only adds a single companyId to the companyIds list.
          * @param documentId identifier of document to be patched

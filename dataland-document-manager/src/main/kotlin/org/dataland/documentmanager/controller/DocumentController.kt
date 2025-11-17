@@ -82,6 +82,16 @@ class DocumentController(
         )
     }
 
+    override fun replaceDocumentMetaInfo(
+        documentId: String,
+        documentMetaInfo: DocumentMetaInfo,
+    ): ResponseEntity<DocumentMetaInfoResponse> {
+        documentMetaInfo.companyIds.forEach { isCompanyIdValid(it) }
+        return ResponseEntity.ok(
+            documentManager.replaceDocumentMetaInformation(documentId, documentMetaInfo),
+        )
+    }
+
     override fun patchDocumentMetaInfoCompanyIds(
         documentId: String,
         companyId: String,
