@@ -32,7 +32,7 @@ class BilledRequestEntity(
     @Id
     @Column(name = "data_sourcing_id")
     val dataSourcingId: UUID,
-    @Column(name = "requested_company_id")
+    @Column(name = "requested_company_id", nullable = false)
     val requestedCompanyId: UUID,
     @Column(name = "requested_reporting_period", nullable = false)
     val requestedReportingPeriod: String,

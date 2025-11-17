@@ -26,11 +26,11 @@ class TransactionEntity(
     val transactionId: UUID? = null,
     @Column(name = "value_of_change", nullable = false, precision = 14, scale = 4)
     val valueOfChange: BigDecimal,
-    @Column(name = "company_id")
+    @Column(name = "company_id", nullable = false)
     val companyId: UUID,
     @Column(name = "triggering_user", nullable = false)
     val triggeringUser: UUID,
-    @Column(name = "reason_for_change")
+    @Column(name = "reason_for_change", nullable = false)
     val reasonForChange: String?,
     @Column(name = "timestamp", nullable = false)
     val timestamp: Long,

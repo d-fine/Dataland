@@ -25,19 +25,11 @@ object ValidationUtils {
     fun isCompanyId(testString: String) = isUuid(testString)
 
     /**
-     * Checks if the given string is a valid UUID by trying to construct a UUID from it.
+     * Checks if the given string is a valid UUID.
      * @param testString the string to check
      * @return true if the string is a valid UUID, false otherwise
      */
-    private fun isUuid(testString: String): Boolean {
-        if (!uuidRegex.matches(testString)) return false
-        return try {
-            UUID.fromString(testString)
-            true
-        } catch (_: IllegalArgumentException) {
-            false
-        }
-    }
+    private fun isUuid(testString: String): Boolean = uuidRegex.matches(testString)
 
     /**
      * Converts the given string to a UUID, throwing an ResourceNotFoundApiException if the string is not a valid UUID.
