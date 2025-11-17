@@ -3,7 +3,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import { type DocumentMetaInfoEntity, type DocumentMetaInfoPatch } from '@clients/documentmanager';
+import { type DocumentMetaInfo, type DocumentMetaInfoEntity } from '@clients/documentmanager';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for the Document Meta Data Dialog', () => {
@@ -63,9 +63,9 @@ describe('Component test for the Document Meta Data Dialog', () => {
     cy.intercept(`**/api/companies/${dummyCompanyId2}/info`, { body: dummyCompanyInformation2 }).as(
       'fetchSecondCompanyInformation'
     );
-    cy.intercept('PATCH', '**/documents/*', {
+    cy.intercept('PUT', '**/documents/*', {
       statusCode: 200,
-    }).as('patchDocumentMetaData');
+    }).as('replaceDocumentMetaData');
   });
 
   it('Check if all expected elements are displayed correctly', () => {
@@ -162,9 +162,9 @@ describe('Component test for the Document Meta Data Dialog', () => {
       cy.get('.p-datepicker-year').contains('2025').click();
 
       cy.get("[data-test='save-edit-button']").should('exist').click();
-      cy.wait('@patchDocumentMetaData').then((interception) => {
+      cy.wait('@replaceDocumentMetaData').then((interception) => {
         expect(interception.response?.statusCode).to.eq(200);
-        const requestBody = interception.request.body as DocumentMetaInfoPatch;
+        const requestBody = interception.request.body as DocumentMetaInfo;
         expect(requestBody.documentName).to.eq('Modified Document');
         expect(requestBody.documentCategory).to.eq('Policy');
         expect(requestBody.publicationDate).to.not.eq(samplePublicationDate);
