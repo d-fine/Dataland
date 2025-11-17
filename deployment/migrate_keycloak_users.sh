@@ -20,7 +20,7 @@ fi
 
 mkdir -p "$keycloak_backup_dir"
 volume=$(search_volume "$keycloak_volume_name")
-if [[ -n $volume && false]]; then
+if [[ -n $volume ]]; then
   echo "Found existing Keycloak volume. Exporting Users."
   sudo docker compose run keycloak-initializer export
   sudo docker compose --profile init down
