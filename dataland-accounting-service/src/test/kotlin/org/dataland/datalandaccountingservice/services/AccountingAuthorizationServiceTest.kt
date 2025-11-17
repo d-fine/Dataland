@@ -1,7 +1,7 @@
 package org.dataland.datalandaccountingservice.services
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
+import org.dataland.datalandbackendutils.model.InheritedRole
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
@@ -17,7 +17,7 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingAuthorizationServiceTest {
-    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
+    private val mockIngeritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
     private lateinit var accountingAuthorizationService: AccountingAuthorizationService
 
@@ -35,23 +35,21 @@ class AccountingAuthorizationServiceTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockCompanyRolesControllerApi, mockSecurityContext)
+        reset(mockIngeritedRolesControllerApi, mockSecurityContext)
 
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
 
-        accountingAuthorizationService = AccountingAuthorizationService(companyRolesControllerApi = mockCompanyRolesControllerApi)
+        accountingAuthorizationService = AccountingAuthorizationService(inheritedRolesControllerApi = mockIngeritedRolesControllerApi)
     }
 
     @Test
     fun `hasUserSomeRoleInCompany returns false when there are no matching role assignments`() {
-        doReturn(emptyList<CompanyRoleAssignmentExtended>()).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
-            role = null,
-            companyId = companyId,
-            userId = userId,
+        doReturn(emptyMap<String, List<String>>()).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+            userId.toString(),
         )
 
-        val result = accountingAuthorizationService.hasUserSomeRoleInCompany(companyId.toString())
+        val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
         assert(!result)
     }
@@ -59,14 +57,14 @@ class AccountingAuthorizationServiceTest {
     @Test
     fun `hasUserSomeRoleInCompany returns true when there is at least one matching role`() {
         doReturn(
-            listOf(mock<CompanyRoleAssignmentExtended>()),
-        ).whenever(mockCompanyRolesControllerApi).getExtendedCompanyRoleAssignments(
-            role = null,
-            companyId = companyId,
-            userId = userId,
+            mapOf(
+                companyId.toString() to listOf(InheritedRole.DatalandMember.name),
+            ),
+        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+            userId.toString(),
         )
 
-        val result = accountingAuthorizationService.hasUserSomeRoleInCompany(companyId.toString())
+        val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
         assert(result)
     }

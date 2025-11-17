@@ -50,7 +50,7 @@ interface CreditsApi {
         value = ["/{companyId}/balance"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @AccountingAuthorizationService.hasUserSomeRoleInCompany(#companyId)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @AccountingAuthorizationService.hasUserRoleInMemberCompany(#companyId)")
     fun getBalance(
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<BigDecimal>

@@ -6,6 +6,7 @@ import org.dataland.datalandaccountingservice.repositories.TransactionRepository
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -21,15 +22,11 @@ class CreditsManager(
     private val billedRequestRepository: BilledRequestRepository,
     private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
-    companion object {
-        const val HTTP_STATUS_NOT_FOUND = 404
-    }
-
     private fun validateCompanyId(companyId: UUID) {
         try {
             companyDataControllerApi.isCompanyIdValid(companyId.toString())
         } catch (ex: ClientException) {
-            if (ex.statusCode == HTTP_STATUS_NOT_FOUND) {
+            if (ex.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(
                     summary = "Company ID not found.",
                     message = "Dataland does not know the company ID $companyId.",

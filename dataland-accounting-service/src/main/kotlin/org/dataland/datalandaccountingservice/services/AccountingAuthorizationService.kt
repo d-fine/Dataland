@@ -1,7 +1,7 @@
 package org.dataland.datalandaccountingservice.services
 
-import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandbackendutils.model.InheritedRole
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Service
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service
  */
 @Service("AccountingAuthorizationService")
 class AccountingAuthorizationService(
-    private val companyRolesControllerApi: CompanyRolesControllerApi,
+    private val inheritedRolesControllerApi: InheritedRolesControllerApi,
 ) {
     /**
      * Check whether the currently authenticated user has any role in the specified company.
      */
 
-    fun hasUserSomeRoleInCompany(companyId: String): Boolean {
+    fun hasUserRoleInMemberCompany(companyId: String): Boolean {
         val authentication =
             try {
                 DatalandAuthentication.fromContext()
@@ -28,12 +28,7 @@ class AccountingAuthorizationService(
         if (userId.isBlank()) {
             throw InsufficientAuthenticationException("userId is blank or missing in authentication.")
         }
-
-        return companyRolesControllerApi
-            .getExtendedCompanyRoleAssignments(
-                role = null,
-                companyId = ValidationUtils.convertToUUID(companyId),
-                userId = ValidationUtils.convertToUUID(userId),
-            ).isNotEmpty()
+        val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
+        return inheritedRoles[companyId]?.contains(InheritedRole.DatalandMember.name) == true
     }
 }
