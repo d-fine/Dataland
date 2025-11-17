@@ -14,6 +14,7 @@ import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
+import kotlin.collections.listOf
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingAuthorizationServiceTest {
@@ -44,7 +45,7 @@ class AccountingAuthorizationServiceTest {
     }
 
     @Test
-    fun `hasUserSomeRoleInCompany returns false when there are no matching role assignments`() {
+    fun `hasUserRoleInMemberCompany returns false when the user does not belong tio any company`() {
         doReturn(emptyMap<String, List<String>>()).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
@@ -55,7 +56,37 @@ class AccountingAuthorizationServiceTest {
     }
 
     @Test
-    fun `hasUserSomeRoleInCompany returns true when there is at least one matching role`() {
+    fun `hasUserRoleInMemberCompany returns false when the company is not a member`() {
+        doReturn(
+            mapOf(
+                companyId.toString() to emptyList<String>(),
+            ),
+        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+            userId.toString(),
+        )
+
+        val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
+
+        assert(!result)
+    }
+
+    @Test
+    fun `hasUserRoleInMemberCompany returns false when the user belongs to a different member company`() {
+        doReturn(
+            mapOf(
+                UUID.randomUUID() to listOf(InheritedRole.DatalandMember.name),
+            ),
+        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+            userId.toString(),
+        )
+
+        val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
+
+        assert(!result)
+    }
+
+    @Test
+    fun `hasUserRoleInMemberCompany returns true when the user belongs to a member company`() {
         doReturn(
             mapOf(
                 companyId.toString() to listOf(InheritedRole.DatalandMember.name),
