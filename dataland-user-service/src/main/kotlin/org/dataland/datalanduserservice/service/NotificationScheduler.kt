@@ -118,6 +118,7 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInterval: Long,
         ) {
+            logger.info("Sending notifications for $notificationFrequency")
             val portfoliosWithRegularUpdates =
                 portfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency)
 
@@ -179,6 +180,7 @@ class NotificationScheduler
 
             return if (companyIdFrameworkPairs.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, NotificationEventEntity::class.java)
+                logger.info("Executing query: $queryToExecute")
                 return query.resultList
                     .filterIsInstance<NotificationEventEntity>()
             } else {
