@@ -44,13 +44,19 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(project(":dataland-keycloak-adapter"))
     runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     testImplementation(libs.mockito.kotlin)
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.5")
 }
 
 openApi {
