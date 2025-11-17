@@ -122,7 +122,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     const newCompanyId = 'NEW-COMPANY-ID';
     const mockDialogRef = getMockDialogRef(
       mockPortfolios.map((p) => {
-        return p.portfolioId === 'p2' ? { ...p, companyIds: new Set(newCompanyId) } : p;
+        return p.portfolioId === 'p2' ? { ...p, identifiers: new Set(newCompanyId) } : p;
       })
     );
 
@@ -143,7 +143,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       expect(['p1', 'p2'].some((id) => url.includes(id))).to.be.true;
 
       const body = interception.request.body;
-      expect(body.companyIds).to.include(newCompanyId);
+      expect(body.identifiers).to.include(newCompanyId);
       expect(body.portfolioName).to.be.a('string');
     });
 
