@@ -958,7 +958,7 @@
     "schemas": {
       "PortfolioUpload": {
         "required": [
-          "companyIds",
+          "identifiers",
           "isMonitored",
           "monitoredFrameworks",
           "portfolioName"
@@ -970,7 +970,7 @@
             "description": "The name of the portfolio on Dataland.",
             "example": "My Portfolio"
           },
-          "companyIds": {
+          "identifiers": {
             "minItems": 1,
             "uniqueItems": true,
             "type": "array",
@@ -1001,8 +1001,8 @@
       },
       "BasePortfolio": {
         "required": [
-          "companyIds",
           "creationTimestamp",
+          "identifiers",
           "isMonitored",
           "lastUpdateTimestamp",
           "monitoredFrameworks",
@@ -1039,7 +1039,7 @@
             "format": "int64",
             "example": 1751291891271
           },
-          "companyIds": {
+          "identifiers": {
             "uniqueItems": true,
             "type": "array",
             "description": "A list of company IDs that are contained in the portfolio.",

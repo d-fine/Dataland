@@ -38,7 +38,7 @@ class PortfolioMonitoringServiceTest {
             userId = dummyUserId,
             creationTimestamp = Instant.now().toEpochMilli(),
             lastUpdateTimestamp = Instant.now().toEpochMilli(),
-            companyIds = setOf("companyId"),
+            identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
         )
@@ -106,7 +106,7 @@ class PortfolioMonitoringServiceTest {
 
         assertEquals(originalPortfolio.portfolioName, updatedPortfolio.portfolioName)
         assertEquals(originalPortfolio.userId, updatedPortfolio.userId)
-        assertEquals(originalPortfolio.companyIds, updatedPortfolio.companyIds)
+        assertEquals(originalPortfolio.identifiers, updatedPortfolio.identifiers)
         assertEquals(portfolioMonitoringPatch.isMonitored, updatedPortfolio.isMonitored)
         assertEquals(portfolioMonitoringPatch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
     }

@@ -39,10 +39,10 @@ class PortfolioBulkDataRequestService
         fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
             if (!basePortfolio.isMonitored) return
             logger.info(
-                "Updating company reporting info for ${basePortfolio.companyIds.size} unique company ids for" +
+                "Updating company reporting info for ${basePortfolio.identifiers.size} unique company ids for" +
                     " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
             )
-            companyReportingInfoService.updateCompanies(basePortfolio.companyIds)
+            companyReportingInfoService.updateCompanies(basePortfolio.identifiers)
             postBulkDataRequest(basePortfolio)
         }
 
@@ -85,7 +85,7 @@ class PortfolioBulkDataRequestService
          * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
          */
         private fun postBulkDataRequest(basePortfolio: BasePortfolio) {
-            val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.companyIds)
+            val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.identifiers)
 
             groupedCompanyIds.forEach { (key, companyIds) ->
                 if ("eutaxonomy" in basePortfolio.monitoredFrameworks) {

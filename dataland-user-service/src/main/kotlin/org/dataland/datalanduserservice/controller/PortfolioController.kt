@@ -1,5 +1,7 @@
 package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
@@ -31,6 +33,7 @@ class PortfolioController
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
         private val portfolioMonitoringService: PortfolioMonitoringService,
         private val messageQueuePublisherService: MessageQueuePublisherService,
+        private val companyDataControllerApi: CompanyDataControllerApi
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -46,14 +49,37 @@ class PortfolioController
             chunkIndex: Int,
         ): ResponseEntity<List<BasePortfolio>> = ResponseEntity.ok(portfolioService.getAllPortfolios(chunkSize, chunkIndex))
 
-        override fun createPortfolio(portfolioUpload: PortfolioUpload): ResponseEntity<BasePortfolio> {
-            val correlationId = UUID.randomUUID().toString()
-            validator.validatePortfolioCreation(portfolioUpload, correlationId)
-            return ResponseEntity(
-                portfolioService.createPortfolio(BasePortfolio(portfolioUpload), correlationId),
-                HttpStatus.CREATED,
-            )
+    override fun createPortfolio(portfolioUpload: PortfolioUpload): ResponseEntity<BasePortfolio> {
+        val correlationId = UUID.randomUUID().toString()
+
+        val validationResults = companyDataControllerApi.postCompanyValidation(portfolioUpload.identifiers.toList())
+        val validCompanyIds = validationResults
+            .mapNotNull { it.companyInformation?.companyId }
+            .toSet()
+
+        val validPortfolioUpload = PortfolioUpload(
+            portfolioName = portfolioUpload.portfolioName,
+            identifiers = validCompanyIds,
+            isMonitored = portfolioUpload.isMonitored,
+            monitoredFrameworks = portfolioUpload.monitoredFrameworks
+        )
+
+        val basePortfolio = BasePortfolio(validPortfolioUpload)
+
+        if (validCompanyIds.size != portfolioUpload.identifiers.size) {
+            throw ResourceNotFoundApiException("Some companyIds were invalid",
+                "Some company identifiers are invalid. CorrelationId: $correlationId")
         }
+
+        //ToDo: throw error if identifier matches more than one company
+
+        return ResponseEntity(
+            portfolioService.createPortfolio(basePortfolio, correlationId),
+            HttpStatus.CREATED
+        )
+    }
+
+
 
         override fun replacePortfolio(
             portfolioId: String,
