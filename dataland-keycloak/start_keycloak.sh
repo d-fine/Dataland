@@ -32,7 +32,7 @@ if [[ "$mode" == initialize ]]; then
   ./kc.sh import --dir $dataland_realm_folder
   # Do not remove echo below without adjusting resetDevelomentStack.sh accordingly.
   echo "Initialization of Keycloak finished."
-  ./kc.sh start
+  ./kc.sh start --http-access-log-enabled=true --log-level=DEBUG
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
   ./kc.sh export --dir /keycloak_users --users different_files --users-per-file 1 --realm datalandsecurity
