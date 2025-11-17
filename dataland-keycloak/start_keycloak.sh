@@ -15,6 +15,7 @@ if [[ "$mode" == initialize ]]; then
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   realm_file=$dataland_realm_folder/datalandsecurity-realm.json
   for variable in $(grep -oP '\$\{([A-Z_]+)\}' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
+    echo "Looking at $variable in $realm_file to replace or not."
     if env | grep -eq "^$variable="; then
       echo "Error: Required variable $variable not set in environmental variables."
       exit 1
@@ -25,8 +26,12 @@ if [[ "$mode" == initialize ]]; then
     fi
     sed s%\$\{"$variable"\}%"${!variable}"%g -i $realm_file
   done
+  echo "Importing master realm"
   ./kc.sh import --file /keycloak_realms/master-realm.json
+  echo "Importing dataland realm(s)"
   ./kc.sh import --dir $dataland_realm_folder
+  # Do not remove echo below without adjusting resetDevelomentStack.sh accordingly.
+  echo "Initialization of Keycloak finished."
   ./kc.sh start
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
