@@ -38,4 +38,6 @@ class BilledRequestEntity(
     val requestedReportingPeriod: String,
     @Column(name = "requested_framework", nullable = false)
     val requestedFramework: String,
+    @Column(name = "timestamp", nullable = false)
+    val timestamp: Long,
 )

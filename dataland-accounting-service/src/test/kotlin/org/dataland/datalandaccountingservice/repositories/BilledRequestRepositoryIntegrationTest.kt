@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.math.BigDecimal
+import java.time.Instant
 import java.util.UUID
 
 @SpringBootTest(
@@ -48,6 +49,7 @@ class BilledRequestRepositoryIntegrationTest
                         requestedCompanyId = requestedCompanyId,
                         requestedReportingPeriod = "2024",
                         requestedFramework = "sfdr",
+                        timestamp = Instant.now().toEpochMilli(),
                     ),
                 )
             }
@@ -68,6 +70,7 @@ class BilledRequestRepositoryIntegrationTest
                     requestedCompanyId = requestedCompanyId,
                     requestedReportingPeriod = "2024",
                     requestedFramework = "sfdr",
+                    timestamp = Instant.now().toEpochMilli(),
                 ),
             )
             billedRequestRepository.save(
@@ -77,6 +80,7 @@ class BilledRequestRepositoryIntegrationTest
                     requestedCompanyId = requestedCompanyId,
                     requestedReportingPeriod = "2020",
                     requestedFramework = "sfdr",
+                    timestamp = Instant.now().toEpochMilli(),
                 ),
             )
             val result = billedRequestRepository.getTotalCreditDebtFromBilledRequests(billedCompanyId)

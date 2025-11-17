@@ -24,6 +24,7 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 /**
  * Listener class handling RabbitMQ messages sent to the accounting service.
@@ -63,11 +64,11 @@ class AccountingServiceListener(
     )
 
     private fun logDuplicateBilledRequestMessage(
-        triggeringUserId: String,
+        billedCompanyId: String,
         dataSourcingId: String,
         correlationId: String,
     ) = logger.info(
-        "A billed request for user ID $triggeringUserId and data sourcing ID $dataSourcingId already exists. " +
+        "A billed request for company ID $billedCompanyId and data sourcing ID $dataSourcingId already exists. " +
             "Skipping creation. Correlation ID: $correlationId.",
     )
 
@@ -102,16 +103,14 @@ class AccountingServiceListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
         val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
-
-        logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
-
-        val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.triggeringUserId)
-        if (billedCompanyId == null) {
-            logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
-            return
-        }
-
         MessageQueueUtils.rejectMessageOnException {
+            logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
+
+            val billedCompanyId = getBilledCompanyId(requestSetToProcessingMessage.triggeringUserId)
+            if (billedCompanyId == null) {
+                logBilledRequestAbortionMessage(requestSetToProcessingMessage.triggeringUserId, correlationId)
+                return@rejectMessageOnException
+            }
             saveBilledRequest(billedCompanyId, requestSetToProcessingMessage, correlationId)
         }
     }
@@ -125,31 +124,34 @@ class AccountingServiceListener(
         requestSetToProcessingMessage: RequestSetToProcessingMessage,
         correlationId: String,
     ) {
-        val existingBilledRequest =
-            billedRequestRepository.findByIdOrNull(
-                BilledRequestEntityId(
-                    billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                    dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                ),
+        val billedCompanyUUID = ValidationUtils.convertToUUID(billedCompanyId)
+        val dataSourcingUUID = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId)
+        val requestedCompanyUUID = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId)
+
+        val billedRequestEntityId =
+            BilledRequestEntityId(
+                billedCompanyId = billedCompanyUUID,
+                dataSourcingId = dataSourcingUUID,
             )
 
+        val existingBilledRequest = billedRequestRepository.findByIdOrNull(billedRequestEntityId)
         if (existingBilledRequest != null) {
             logDuplicateBilledRequestMessage(
-                requestSetToProcessingMessage.triggeringUserId,
+                billedCompanyUUID.toString(),
                 requestSetToProcessingMessage.dataSourcingId,
                 correlationId,
             )
-            return
+        } else {
+            val billedRequestEntity =
+                BilledRequestEntity(
+                    billedCompanyId = billedCompanyUUID,
+                    dataSourcingId = dataSourcingUUID,
+                    requestedCompanyId = requestedCompanyUUID,
+                    requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
+                    requestedFramework = requestSetToProcessingMessage.requestedFramework,
+                    timestamp = Instant.now().toEpochMilli(),
+                )
+            billedRequestRepository.save(billedRequestEntity)
         }
-
-        billedRequestRepository.save(
-            BilledRequestEntity(
-                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                dataSourcingId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.dataSourcingId),
-                requestedCompanyId = ValidationUtils.convertToUUID(requestSetToProcessingMessage.requestedCompanyId),
-                requestedReportingPeriod = requestSetToProcessingMessage.requestedReportingPeriod,
-                requestedFramework = requestSetToProcessingMessage.requestedFramework,
-            ),
-        )
     }
 }

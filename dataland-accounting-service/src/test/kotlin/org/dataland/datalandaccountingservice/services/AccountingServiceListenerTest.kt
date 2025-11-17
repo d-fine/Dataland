@@ -23,6 +23,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
+import java.time.Instant
 import java.util.Optional
 import java.util.UUID
 
@@ -60,6 +61,7 @@ class AccountingServiceListenerTest {
             requestedCompanyId = ValidationUtils.convertToUUID(requestedCompanyId),
             requestedReportingPeriod = requestedReportingPeriod,
             requestedFramework = requestedFramework,
+            timestamp = Instant.now().toEpochMilli(),
         )
 
     @BeforeEach
