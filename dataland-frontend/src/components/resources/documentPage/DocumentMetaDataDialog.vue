@@ -313,8 +313,7 @@ onMounted(() => {
 
     th {
       width: 2rem;
-      padding-right: 1rem;
-      font-weight: normal;
+      padding-right: var(--spacing-md);
     }
 
     &:hover {
@@ -328,7 +327,7 @@ onMounted(() => {
     th,
     td {
       text-align: left;
-      padding: 1rem;
+      padding: var(--spacing-md);
     }
   }
 }
@@ -341,7 +340,7 @@ onMounted(() => {
 .linked-companies {
   border: 0 none;
   text-decoration: none;
-  color: #ff6813;
+  color: var(--primary-color);
   display: block;
   margin: 0.5em;
 }
