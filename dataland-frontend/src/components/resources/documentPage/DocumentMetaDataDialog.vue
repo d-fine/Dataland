@@ -311,52 +311,20 @@ onMounted(() => {
   tr {
     border-bottom: 1px solid #e3e2df;
 
-    &:last-child {
-      border: none;
-    }
-
-    td {
-      padding: 0.5rem;
-      border: none;
-
-      &.nowrap {
-        white-space: nowrap;
-      }
-    }
-
     th {
       width: 2rem;
       padding-right: 1rem;
       font-weight: normal;
     }
+
+    &:hover {
+      background: none;
+    }
   }
 }
 
 .p-datatable {
-  border-radius: 0;
-  background: var(--table-background-color);
-
-  .border-left {
-    border-left: 1px solid var(--table-border);
-  }
-
-  .border-right {
-    border-right: 1px solid var(--table-border);
-  }
-
-  .border-bottom {
-    border-bottom: 1px solid var(--table-border);
-  }
-
   tr {
-    &:not(.p-rowgroup-header) {
-      td {
-        border-bottom: 1px solid var(--table-border);
-      }
-    }
-    &:hover {
-      background: var(--table-background-hover-color);
-    }
     th,
     td {
       text-align: left;
