@@ -201,7 +201,7 @@ class CompanyReportingInfoServiceTest {
             identifiers = emptyMap(),
             countryCode = "DE",
             fiscalYearEnd = LocalDate.of(2023, 12, 31),
-            reportingPeriodShift = 1,
+            reportingPeriodShift = 0,
             sector = "financials",
         )
 }
