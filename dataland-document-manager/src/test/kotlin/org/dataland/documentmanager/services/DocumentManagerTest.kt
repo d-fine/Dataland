@@ -423,7 +423,7 @@ class DocumentManagerTest(
                 documentCategory = DocumentCategory.SustainabilityReport,
                 companyIds = mutableSetOf("company-id-2", "company-id-3"),
                 publicationDate = LocalDate.parse("2023-01-05"),
-                reportingPeriod = "2024",
+                reportingPeriod = null,
             )
 
         doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(any())
@@ -452,7 +452,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that replacing meta information for a non-existing document throws exception`() {
+    fun `check that replacing meta information for a non existing document throws exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.replaceDocumentMetaInformation(
                 unknownDocumentId,

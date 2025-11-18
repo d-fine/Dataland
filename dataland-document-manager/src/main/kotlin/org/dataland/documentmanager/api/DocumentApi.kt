@@ -127,9 +127,9 @@ interface DocumentApi {
 
     /**
      * Replace the metadata information of a document. The fields in
-     * documentMetaInfoPatch will entirely replace the stored metainformation of the document.
+     * documentMetaInfo will entirely replace the stored metainformation of the document.
      * @param documentId the id of the document whose meta info shall be replaced.
-     * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to set.
+     * @param documentMetaInfo an object of type DocumentMetaInfo which holds all field values to set.
      */
     @Operation(
         summary = "Replace the metainformation of a document.",

@@ -293,9 +293,8 @@ watch(
 );
 
 const closeDialog = (): void => {
-  errorMessage.value = '';
+  onCancel();
   isOpen.value = false;
-  editMode.value = false;
 };
 
 onMounted(() => {
