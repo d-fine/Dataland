@@ -2082,6 +2082,16 @@
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date"
+          },
+          "documentCollector": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
+          },
+          "dataExtractor": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           }
         }
       },
