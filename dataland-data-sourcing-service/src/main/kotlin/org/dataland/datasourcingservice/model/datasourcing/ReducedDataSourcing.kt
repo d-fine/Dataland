@@ -10,8 +10,7 @@ import java.time.LocalDate
 
 /**
  * DTO for transferring a reduced set of stored data sourcing information. This is used to provide data to users
- * with limited permissions, omitting sensitive fields such as documentCollector, dataExtractor, adminComment,
- * and associatedRequestIds.
+ * with limited permissions, omitting sensitive fields such as adminComment and associatedRequestIds.
  */
 data class ReducedDataSourcing(
     @field:Schema(
@@ -59,4 +58,14 @@ data class ReducedDataSourcing(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATE_OF_NEXT_DOCUMENT_SOURCING_ATTEMPT_DESCRIPTION,
     )
     val dateOfNextDocumentSourcingAttempt: LocalDate? = null,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,
+    )
+    val documentCollector: String? = null,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_EXAMPLE,
+    )
+    val dataExtractor: String? = null,
 )

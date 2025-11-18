@@ -119,6 +119,8 @@ class DataSourcingEntity(
             documentIds = documentIds,
             expectedPublicationDatesOfDocuments = expectedPublicationDatesOfDocuments,
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
+            documentCollector = documentCollector?.toString(),
+            dataExtractor = dataExtractor?.toString(),
         )
 
     /**
