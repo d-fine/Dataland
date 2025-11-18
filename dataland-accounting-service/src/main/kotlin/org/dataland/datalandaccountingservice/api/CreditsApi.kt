@@ -86,6 +86,7 @@ interface CreditsApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postTransaction(
+        @CompanyExists
         @PathVariable("companyId") companyId: String,
         @RequestBody transactionPost: TransactionPost,
     ): ResponseEntity<TransactionDto<String>>
