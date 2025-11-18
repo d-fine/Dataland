@@ -16,7 +16,6 @@ import org.dataland.datalanduserservice.entity.NotificationEventEntity
 import org.dataland.datalanduserservice.model.enums.NotificationEventType
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.utils.readableFrameworkNameMapping
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -32,7 +31,6 @@ class DataRequestSummaryEmailBuilder
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val companyApi: CompanyDataControllerApi,
     ) {
-        private val logger = LoggerFactory.getLogger(this.javaClass)
         private val objectMapper = defaultObjectMapper
         private val exceptionSummaryDueToCompanyNotFound = "Company not found"
 
@@ -50,16 +48,9 @@ class DataRequestSummaryEmailBuilder
             frequency: NotificationFrequency,
             portfolioNamesString: String,
         ) {
-            logger.info("Building Data Request Summary email for user with userId: $userId.")
-            logger.info("Data Request Summary email will contain the following events: $unprocessedEvents.")
-            logger.info("Data Request Summary email will be sent at frequency: $frequency.")
-            logger.info("Data Request Summary email will be sent for portfolio(s): $portfolioNamesString.")
             val emailContent = dataRequestSummaryEmailContent(unprocessedEvents, frequency, portfolioNamesString)
-            logger.info("Data Request Summary email content: $emailContent.")
             val receiver = listOf(EmailRecipient.UserId(userId.toString()))
-            logger.info("Data Request Summary email receiver: $receiver.")
             val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
-            logger.info("Data Request Summary CE message: $message.")
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(message),
                 MessageType.SEND_EMAIL,

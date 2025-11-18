@@ -63,12 +63,7 @@ class CloudEventMessageHandler(
         exchange: String,
         routingKey: String = "",
     ) {
-        logger.info("CorrelationId: $correlationId")
-        logger.info("Type: $type")
-        logger.info("Body: $body")
         val messageInput = buildCEMessage(body, type, correlationId)
-        logger.info("MessageInput: $messageInput")
-        logger.info("Exchange: $exchange, RoutingKey: $routingKey")
         try {
             rabbitTemplate.send(exchange, routingKey, messageInput)
         } catch (exception: AmqpException) {

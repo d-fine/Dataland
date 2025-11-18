@@ -118,13 +118,10 @@ class NotificationScheduler
             notificationFrequency: NotificationFrequency,
             timeStampForInterval: Long,
         ) {
-            logger.info("Sending notifications for $notificationFrequency")
             val portfoliosWithRegularUpdates =
                 portfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency)
-            logger.info("Found ${portfoliosWithRegularUpdates.size} portfolios with regular updates.")
 
             val portfoliosGroupedByUser = portfoliosWithRegularUpdates.groupBy { it.userId }
-            logger.info("Found ${portfoliosGroupedByUser.size} unique users with regular updates.")
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
                 val allCompanyIdFrameworkPairs =
@@ -156,8 +153,6 @@ class NotificationScheduler
                         allCompanyIdFrameworkPairs,
                         timeStampForInterval,
                     )
-                logger.info("Found ${eventEntitiesToProcess.size} relevant events for user $userId")
-                logger.info("The events are: ${eventEntitiesToProcess.joinToString(",")}")
 
                 processNotificationEvents(
                     events = eventEntitiesToProcess,
@@ -184,7 +179,6 @@ class NotificationScheduler
 
             return if (companyIdFrameworkPairs.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, NotificationEventEntity::class.java)
-                logger.info("Executing query: $queryToExecute")
                 return query.resultList
                     .filterIsInstance<NotificationEventEntity>()
             } else {

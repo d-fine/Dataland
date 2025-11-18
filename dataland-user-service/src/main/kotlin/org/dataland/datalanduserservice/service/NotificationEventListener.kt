@@ -63,16 +63,12 @@ class NotificationEventListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        logger.info("Payload: $payload")
-        logger.info("The types to validate are: $type and $MessageType")
         MessageQueueUtils.validateMessageType(type, MessageType.DATASOURCING_NONSOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
-        logger.info("The message payload is: $sourceabilityMessage")
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
         val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
-        logger.info("The decoded data type is: $dataTypeDecoded")
 
         logger.info(
             "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
@@ -119,15 +115,11 @@ class NotificationEventListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        logger.info("Payload: $payload")
-        logger.info("The types to validate are: $type and $MessageType")
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
-        logger.info("The message payload is: $qaStatusChangeMessage")
 
         checkThatReceivedDataIsComplete(qaStatusChangeMessage)
         val dataTypeDecoded = decodeDataTypeIfPossible(qaStatusChangeMessage)
-        logger.info("The decoded data type is: $dataTypeDecoded")
 
         logger.info(
             "Received a qa status change message for data type: ${qaStatusChangeMessage.dataType}, " +

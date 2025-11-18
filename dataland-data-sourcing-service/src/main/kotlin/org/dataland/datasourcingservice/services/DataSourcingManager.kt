@@ -138,12 +138,10 @@ class DataSourcingManager
                         true,
                         "",
                     )
-                logger.info("Message body: $messageBody")
                 logger.info(
                     "Sending non-sourceable message to message queue for data sourcing entity with id: " +
                         "${dataSourcingEntityWithFetchedRequests.dataSourcingId}. CorrelationId: $correlationId.",
                 )
-                logger.info("MessageBodyAsString: ${objectMapper.writeValueAsString(messageBody)}")
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     objectMapper.writeValueAsString(messageBody),
                     MessageType.DATASOURCING_NONSOURCEABLE,
