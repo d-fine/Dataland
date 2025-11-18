@@ -23,8 +23,8 @@ ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_ADDRESS_FORWARDING=true
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
-ENV KC_HOSTNAME=https://dataland-admin:6789
-ENV KC_HOSTNAME_ADMIN=https://dataland-admin:6789
+ENV KC_HOSTNAME=http://dataland-admin:6789
+ENV KC_HOSTNAME_ADMIN=http://dataland-admin:6789/keycloak
 COPY --from=builder /app/dataland-keycloak/dataland_theme/login/build/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin

@@ -63,8 +63,7 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.get('#password').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN_PASSWORD'), { force: true });
       cy.get('#kc-login').should('exist').click();
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com').as('typedUsernameInSearch');
-      cy.get('input')
-        .should('have.class', 'pf-c-text-input-group__text-input')
+      cy.get('input.pf-v5-c-text-input-group__text-input')
         .type(`${returnEmail}{enter}`, { force: true });
       cy.wait('@typedUsernameInSearch');
       cy.get('table');
@@ -74,8 +73,8 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.intercept('GET', 'keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true').as(
         'savedUserProfileSettings'
       );
-      cy.get('input[id="kc-user-email-verified"]').click({ force: true });
-      cy.get('button[data-testid="save-user"]').click({ force: true });
+      cy.get('input[id="emailVerified"]').click({ force: true });
+      cy.get('button[data-testid="user-creation-save"]').click({ force: true });
       cy.wait('@savedUserProfileSettings');
     });
   });
