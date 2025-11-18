@@ -194,7 +194,7 @@ class DocumentManager
          * @return DocumentMetaInfoResponse object to be sent to replacing user
          */
         @Transactional
-        fun replaceDocumentMetaInformation(
+        fun putDocumentMetaInformation(
             documentId: String,
             documentMetaInfo: DocumentMetaInfo,
         ): DocumentMetaInfoResponse {

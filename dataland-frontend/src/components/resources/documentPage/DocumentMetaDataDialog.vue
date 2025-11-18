@@ -17,7 +17,7 @@
           icon="pi pi-pencil"
           data-test="edit-icon"
           variant="text"
-          v-tooltip="{ value: 'Edit Document Metadata' }"
+          v-tooltip="'Edit Document Details'"
           @click.stop="editMode = true"
           style="align-content: end; margin: var(--spacing-xxs)"
         />

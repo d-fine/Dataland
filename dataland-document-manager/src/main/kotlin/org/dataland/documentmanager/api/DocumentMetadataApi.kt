@@ -134,7 +134,7 @@ interface DocumentMetadataApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId)",
     )
-    fun replaceDocumentMetaInfo(
+    fun putDocumentMetaInfo(
         @Parameter(
             name = "documentId",
             description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,

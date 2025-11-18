@@ -420,7 +420,7 @@ class DocumentManagerTest(
         doReturn(dummyDocumentMetaInfoEntity).whenever(mockDocumentMetaInfoRepository).save(dummyDocumentMetaInfoEntity)
 
         val response =
-            documentManager.replaceDocumentMetaInformation(
+            documentManager.putDocumentMetaInformation(
                 uploadResponse.documentId,
                 newMetaInfo,
             )
@@ -441,7 +441,7 @@ class DocumentManagerTest(
     @Test
     fun `check that replacing meta information for a non existing document throws exception`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.replaceDocumentMetaInformation(
+            documentManager.putDocumentMetaInformation(
                 unknownDocumentId,
                 dummyDocumentMetaInfo,
             )
