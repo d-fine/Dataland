@@ -51,13 +51,11 @@ class DocumentManagerTest(
     private val mockDocumentMetaInfoRepository = mock<DocumentMetaInfoRepository>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockUserRolesChecker = mock<UserRolesChecker>()
     lateinit var documentManager: DocumentManager
 
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknownDocumentId"
     private val knownCompanyId = "knownCompanyId"
-    private val knownDocumentId = "known-document-id"
     private val knownButNonRetrievableDocumentId = "knownButNonRetrievableDocumentId"
 
     private val dummyDocumentMetaInfo =
@@ -71,7 +69,7 @@ class DocumentManagerTest(
 
     private val dummyDocumentUploadResponse =
         DocumentMetaInfoResponse(
-            documentId = knownDocumentId,
+            documentId = "known-document-id",
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyId),
@@ -87,7 +85,6 @@ class DocumentManagerTest(
             mockDocumentMetaInfoRepository,
             mockSecurityContext,
             mockCloudEventMessageHandler,
-            mockUserRolesChecker,
         )
 
         val mockAuthentication =
