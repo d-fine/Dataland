@@ -148,37 +148,27 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is not possible if document does not exist`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocument(unknownDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocument(unknownDocumentId) }
     }
 
     @Test
     fun `check that retrieving an existing but nonretrievable document throws the appropriate exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocument(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocument(knownButNonRetrievableDocumentId) }
     }
 
     @Test
     fun `check that document meta info retrieval is not possible if document does not exist`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(unknownDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(unknownDocumentId) }
     }
 
     @Test
     fun `check that retrieving meta info of an existing but nonretrievable document throws the appropriate exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId) }
     }
 
     @Test
     fun `check that trying to retrieve the metainfo of an existing but nonretrievable document throws exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId) }
     }
 
     @Test
