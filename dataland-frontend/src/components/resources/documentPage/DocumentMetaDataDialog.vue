@@ -17,6 +17,7 @@
           icon="pi pi-pencil"
           data-test="edit-icon"
           variant="text"
+          v-tooltip="{ value: 'Edit Document Metadata' }"
           @click.stop="editMode = true"
           style="align-content: end; margin: var(--spacing-xxs)"
         />
@@ -148,6 +149,7 @@ import InputText from 'primevue/inputtext';
 import Select from 'primevue/select';
 import Message from 'primevue/message';
 import DatePicker from 'primevue/datepicker';
+import Tooltip from 'primevue/tooltip';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { AxiosError } from 'axios';
@@ -157,6 +159,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['data-patched']);
+
+const vTooltip = Tooltip;
 
 export interface CompanyDetails {
   name: string;
