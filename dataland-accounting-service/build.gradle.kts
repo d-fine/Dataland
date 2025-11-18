@@ -45,6 +45,7 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(project(":dataland-keycloak-adapter"))
     runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
