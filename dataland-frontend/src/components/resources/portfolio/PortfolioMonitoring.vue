@@ -175,7 +175,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
-
+  selectedNotificationOption.value = portfolio.value.notificationFrequency ?? 'Daily';
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,

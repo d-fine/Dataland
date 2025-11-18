@@ -69,7 +69,7 @@ class NotificationScheduler
          * FOR TESTING PURPOSES ONLY
          * Scheduled method to send test summary emails.
          */
-        @Scheduled(cron = "0 1/10 * * * *")
+        @Scheduled(cron = "0 */5 * * * *")
         fun scheduledTestEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
             val timeStampForInteval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
