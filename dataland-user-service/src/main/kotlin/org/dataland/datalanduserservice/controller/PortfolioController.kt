@@ -55,24 +55,22 @@ class PortfolioController
             validator.validatePortfolioCreation(portfolioUpload, correlationId)
 
             val validationResults = companyDataControllerApi.postCompanyValidation(portfolioUpload.identifiers.toList())
+
+            val failedIdentifiers = validationResults.filter { it.companyInformation == null }
+
+            if (failedIdentifiers.isNotEmpty()) {
+                throw ResourceNotFoundApiException(
+                    "Some companyIds were invalid",
+                    "The following company identifiers are invalid: $failedIdentifiers. CorrelationId: $correlationId",
+                )
+            }
+
             val validCompanyIds =
                 validationResults
                     .mapNotNull { it.companyInformation?.companyId }
                     .toSet()
 
-            if (validCompanyIds.size != portfolioUpload.identifiers.size) {
-                throw ResourceNotFoundApiException(
-                    "Some companyIds were invalid",
-                    "Some company identifiers are invalid. CorrelationId: $correlationId",
-                )
-            }
-
-            // ToDo: Throw error if identifier matches with more than one company
-
-            val validPortfolioUpload =
-                portfolioUpload.copy(
-                    identifiers = validCompanyIds,
-                )
+            val validPortfolioUpload = portfolioUpload.copy(identifiers = validCompanyIds)
 
             return ResponseEntity(
                 portfolioService.createPortfolio(BasePortfolio(validPortfolioUpload), correlationId),
