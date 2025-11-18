@@ -1,7 +1,6 @@
 package org.dataland.datalandaccountingservice.configurations
 
 import okhttp3.OkHttpClient
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class ApiClients(
-    @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Value("\${dataland.community-manager.base-url}") private val communitymanagerBaseUrl: String,
 ) {
     /**
@@ -32,12 +30,4 @@ class ApiClients(
     fun getInheritedRolesControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): InheritedRolesControllerApi = InheritedRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
-
-    /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
-     */
-    @Bean
-    fun getCompanyDataControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 }
