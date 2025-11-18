@@ -22,9 +22,8 @@ ENV KC_HTTP_ACCEPT_NON_NORMALIZED_PATHS=true
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_HEADERS=forwarded
 ENV KC_HTTP_RELATIVE_PATH=keycloak
-ENV KC_HOSTNAME=http://keycloak:8080
+ENV KC_HOSTNAME=https://keycloak:8080
 ENV KC_HOSTNAME_ADMIN=http://dataland-admin:6789/keycloak
-ENV KC_HOSTNAME_DEBUG=true
 COPY --from=builder /app/dataland-keycloak/dataland_theme/login/build/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
