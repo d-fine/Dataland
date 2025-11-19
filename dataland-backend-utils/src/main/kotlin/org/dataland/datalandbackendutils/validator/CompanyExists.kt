@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -42,13 +41,10 @@ class CompanyExistsValidator(
         context: ConstraintValidatorContext?,
     ): Boolean {
         if (companyId == null) return true
-        return callCompanyDataApiAndCheckCompanyId(companyId, logger)
+        return callCompanyDataApiAndCheckCompanyId(companyId)
     }
 
-    private fun callCompanyDataApiAndCheckCompanyId(
-        companyId: String,
-        logger: Logger,
-    ): Boolean {
+    private fun callCompanyDataApiAndCheckCompanyId(companyId: String): Boolean {
         val request =
             Request
                 .Builder()
