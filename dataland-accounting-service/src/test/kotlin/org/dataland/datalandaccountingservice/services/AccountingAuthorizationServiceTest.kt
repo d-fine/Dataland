@@ -4,6 +4,8 @@ import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -52,7 +54,7 @@ class AccountingAuthorizationServiceTest {
 
         val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
-        assert(!result)
+        assertFalse(result)
     }
 
     @Test
@@ -67,7 +69,7 @@ class AccountingAuthorizationServiceTest {
 
         val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
-        assert(!result)
+        assertFalse(result)
     }
 
     @Test
@@ -82,7 +84,7 @@ class AccountingAuthorizationServiceTest {
 
         val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
-        assert(!result)
+        assertFalse(result)
     }
 
     @Test
@@ -97,6 +99,6 @@ class AccountingAuthorizationServiceTest {
 
         val result = accountingAuthorizationService.hasUserRoleInMemberCompany(companyId.toString())
 
-        assert(result)
+        assertTrue(result)
     }
 }
