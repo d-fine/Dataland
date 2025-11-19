@@ -51,11 +51,9 @@ class PortfolioController
 
         override fun createPortfolio(portfolioUpload: PortfolioUpload): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
-
             validator.validatePortfolioCreation(portfolioUpload, correlationId)
 
             val validationResults = companyDataControllerApi.postCompanyValidation(portfolioUpload.identifiers.toList())
-
             val failedIdentifiers = validationResults.filter { it.companyInformation == null }
 
             if (failedIdentifiers.isNotEmpty()) {
@@ -71,7 +69,6 @@ class PortfolioController
                     .toSet()
 
             val validPortfolioUpload = portfolioUpload.copy(identifiers = validCompanyIds)
-
             return ResponseEntity(
                 portfolioService.createPortfolio(BasePortfolio(validPortfolioUpload), correlationId),
                 HttpStatus.CREATED,
