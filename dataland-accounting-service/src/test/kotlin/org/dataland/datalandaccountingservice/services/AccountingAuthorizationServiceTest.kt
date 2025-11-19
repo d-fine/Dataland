@@ -47,7 +47,7 @@ class AccountingAuthorizationServiceTest {
     }
 
     @Test
-    fun `hasUserRoleInMemberCompany returns false when the user does not belong tio any company`() {
+    fun `hasUserRoleInMemberCompany returns false when the user does not belong to any company`() {
         doReturn(emptyMap<String, List<String>>()).whenever(mockInheritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
