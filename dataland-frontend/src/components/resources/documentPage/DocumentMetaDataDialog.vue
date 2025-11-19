@@ -268,7 +268,7 @@ async function saveChanges(): Promise<void> {
   } as unknown as DocumentMetaInfo;
   console.log('Saving changes for document:', payload);
   try {
-    await documentControllerApi.replaceDocumentMetaInfo(props.documentId, payload);
+    await documentControllerApi.putDocumentMetaInfo(props.documentId, payload);
   } catch (error: unknown) {
     errorMessage.value = error instanceof AxiosError ? error.message : 'An unknown error occurred.';
     console.error('Error saving document metadata changes:', error);
