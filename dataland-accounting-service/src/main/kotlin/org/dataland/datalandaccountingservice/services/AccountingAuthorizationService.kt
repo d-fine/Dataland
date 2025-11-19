@@ -18,16 +18,17 @@ class AccountingAuthorizationService(
      */
 
     fun hasUserRoleInMemberCompany(companyId: String): Boolean {
-        val authentication =
+        val userId =
             try {
-                DatalandAuthentication.fromContext()
+                DatalandAuthentication.fromContext().userId
             } catch (ex: IllegalArgumentException) {
                 throw InsufficientAuthenticationException("No authentication found in context", ex)
             }
-        val userId = authentication.userId
+
         if (userId.isBlank()) {
-            throw InsufficientAuthenticationException("userId is blank or missing in authentication.")
+            throw InsufficientAuthenticationException("userId is blank in authentication.")
         }
+
         val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
         return inheritedRoles[companyId]?.contains(InheritedRole.DatalandMember.name) == true
     }
