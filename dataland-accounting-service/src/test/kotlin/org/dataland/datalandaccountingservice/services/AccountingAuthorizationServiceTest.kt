@@ -18,7 +18,7 @@ import kotlin.collections.listOf
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountingAuthorizationServiceTest {
-    private val mockIngeritedRolesControllerApi = mock<InheritedRolesControllerApi>()
+    private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
     private lateinit var accountingAuthorizationService: AccountingAuthorizationService
 
@@ -36,17 +36,17 @@ class AccountingAuthorizationServiceTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockIngeritedRolesControllerApi, mockSecurityContext)
+        reset(mockInheritedRolesControllerApi, mockSecurityContext)
 
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
 
-        accountingAuthorizationService = AccountingAuthorizationService(inheritedRolesControllerApi = mockIngeritedRolesControllerApi)
+        accountingAuthorizationService = AccountingAuthorizationService(inheritedRolesControllerApi = mockInheritedRolesControllerApi)
     }
 
     @Test
     fun `hasUserRoleInMemberCompany returns false when the user does not belong tio any company`() {
-        doReturn(emptyMap<String, List<String>>()).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+        doReturn(emptyMap<String, List<String>>()).whenever(mockInheritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
 
@@ -61,7 +61,7 @@ class AccountingAuthorizationServiceTest {
             mapOf(
                 companyId.toString() to emptyList<String>(),
             ),
-        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
 
@@ -76,7 +76,7 @@ class AccountingAuthorizationServiceTest {
             mapOf(
                 UUID.randomUUID() to listOf(InheritedRole.DatalandMember.name),
             ),
-        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
 
@@ -91,7 +91,7 @@ class AccountingAuthorizationServiceTest {
             mapOf(
                 companyId.toString() to listOf(InheritedRole.DatalandMember.name),
             ),
-        ).whenever(mockIngeritedRolesControllerApi).getInheritedRoles(
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(
             userId.toString(),
         )
 
