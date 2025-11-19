@@ -22,7 +22,7 @@ import java.util.UUID
 class TransactionEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "transaction_id", nullable = false, updatable = false)
+    @Column(name = "transaction_id", updatable = false)
     val transactionId: UUID? = null,
     @Column(name = "value_of_change", nullable = false, precision = 14, scale = 4)
     val valueOfChange: BigDecimal,
