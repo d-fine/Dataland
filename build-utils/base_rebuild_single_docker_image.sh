@@ -19,7 +19,7 @@ echo Rebuilding docker image. Parameters: "$0" "$docker_image_name" "$dockerfile
 
 regex=$(echo "$0" "$docker_image_name" "$dockerfile" "$@" | sed 's/ /|/g' | sed 's/\./\\./g')
 input_sha=$( \
-  git ls-tree -r HEAD --name-only | awk '{print "./" $1 }' | \
+  { git ls-tree -r HEAD --name-only | awk '{print "./" $1 }'; [[ -f ./gitinfo ]] && echo "./gitinfo"; } | \
   grep -E "$regex" | \
   sort -u | \
   xargs shasum | awk '{print $1}' | \
