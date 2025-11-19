@@ -3,7 +3,6 @@ package org.dataland.datalandaccountingservice.services
 import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Service
 
 /**
@@ -21,15 +20,17 @@ class AccountingAuthorizationService(
         val userId =
             try {
                 DatalandAuthentication.fromContext().userId
-            } catch (ex: IllegalArgumentException) {
-                throw InsufficientAuthenticationException("No authentication found in context", ex)
+            } catch (_: IllegalArgumentException) {
+                null
             }
 
-        if (userId.isBlank()) {
-            throw InsufficientAuthenticationException("userId is blank in authentication.")
-        }
-
-        val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
-        return inheritedRoles[companyId]?.contains(InheritedRole.DatalandMember.name) == true
+        val hasRole =
+            if (userId.isNullOrBlank()) {
+                false
+            } else {
+                val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
+                inheritedRoles[companyId]?.contains(InheritedRole.DatalandMember.name) == true
+            }
+        return hasRole
     }
 }
