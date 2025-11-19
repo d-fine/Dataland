@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.api.DocumentApi
+import org.dataland.documentmanager.api.DocumentMetadataApi
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
@@ -33,7 +34,8 @@ class DocumentController(
     @Autowired private val documentManager: DocumentManager,
     @Autowired private val documentDeletionService: DocumentDeletionService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-) : DocumentApi {
+) : DocumentApi,
+    DocumentMetadataApi {
     override fun postDocument(
         document: MultipartFile,
         documentMetaInfo: DocumentMetaInfo?,
@@ -88,6 +90,16 @@ class DocumentController(
         documentMetaInfoPatch.companyIds?.forEach { isCompanyIdValid(it) }
         return ResponseEntity.ok(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
+        )
+    }
+
+    override fun putDocumentMetaInfo(
+        documentId: String,
+        documentMetaInfo: DocumentMetaInfo,
+    ): ResponseEntity<DocumentMetaInfoResponse> {
+        documentMetaInfo.companyIds.forEach { isCompanyIdValid(it) }
+        return ResponseEntity.ok(
+            documentManager.putDocumentMetaInformation(documentId, documentMetaInfo),
         )
     }
 
