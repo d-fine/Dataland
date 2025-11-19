@@ -17,13 +17,13 @@ any contributor that allows us to re-license the software including the contribu
 # Quick Start Guide
 Follow these steps to set up the dataland development stack on your computer.
 1. Install Java (>= 21), Node.JS (>=24), and docker.
-2. In your environment variables: Set JAVA_HOME to your java installation path and set %JAVA_HOME%/bin in PATH
+2. In your environment variables: Set `JAVA_HOME` to your java installation path and make sure java is in your `PATH` (On Windows, add `%JAVA_HOME%/bin` to `PATH`).
 3. Add a link for `local-dev.dataland.com` and `dataland-admin` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`).
 4. (If on Windows): Enable long paths in git (`git config --global core.longpaths true`) and [in Windows](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry).
 5. Clone this repository to your computer.
 6. Start the development stack by running `manageLocalStack.sh --reset --start --simple`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time, make sure that Docker is running in the background. Note: on Windows run this command in bash terminal e.g. GitBash.
 7. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
-8.  You can stop the development stack by running `manageLocalStack.sh --stop --simple`.
+8. You can stop the development stack by running `manageLocalStack.sh --stop --simple`.
 
 # Developer Remarks
 In this section, you find information that might be useful for you as a developer.
