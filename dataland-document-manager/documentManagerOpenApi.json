@@ -133,7 +133,7 @@
         ],
         "summary": "Replace the metainformation of a document.",
         "description": "Replace the metainformation of an existing document entirely.",
-        "operationId": "replaceDocumentMetaInfo",
+        "operationId": "putDocumentMetaInfo",
         "parameters": [
           {
             "name": "documentId",
