@@ -150,11 +150,16 @@ class AccountingServiceListenerTest {
 
         verify(mockBilledRequestRepository, times(1)).save(
             argThat {
-                billedCompanyId == billedRequestEntity.billedCompanyId &&
-                    dataSourcingId == billedRequestEntity.dataSourcingId &&
-                    requestedCompanyId == billedRequestEntity.requestedCompanyId &&
+                val idsMatch =
+                    billedCompanyId == billedRequestEntity.billedCompanyId &&
+                        dataSourcingId == billedRequestEntity.dataSourcingId
+
+                val tripleMatches =
                     requestedReportingPeriod == billedRequestEntity.requestedReportingPeriod &&
-                    requestedFramework == billedRequestEntity.requestedFramework
+                        requestedFramework == billedRequestEntity.requestedFramework &&
+                        requestedCompanyId == billedRequestEntity.requestedCompanyId
+
+                idsMatch && tripleMatches
             },
         )
     }
