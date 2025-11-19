@@ -3,6 +3,7 @@ package org.dataland.e2etests.utils.api
 import org.dataland.datalandbackend.openApiClient.api.AssembledDatasetMigrationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
@@ -17,4 +18,5 @@ object Backend {
     val dataMigrationControllerApi: AssembledDatasetMigrationControllerApi =
         AssembledDatasetMigrationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val sfdrDataControllerApi = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val lksgDataControllerApi = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 }

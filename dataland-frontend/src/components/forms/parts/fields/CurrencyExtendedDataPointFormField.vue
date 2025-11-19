@@ -43,7 +43,7 @@ import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: 'CurrencyDataPointFormField',
+  name: 'CurrencyExtendedDataPointFormField',
   computed: {
     DropdownDatasetIdentifier() {
       return DropdownDatasetIdentifier;

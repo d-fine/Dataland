@@ -22,7 +22,7 @@ open class VsmeSimpleCustomComponentBase(
     identifier: String,
     parent: FieldNodeParent,
     val viewFormattingFunctionName: String,
-    val uploadComponentName: String,
+    private val uploadComponentName: String,
     val guaranteedFixtureExpression: String,
     val randomFixtureExpression: String?,
 ) : ComponentBase(identifier, parent) {
@@ -50,7 +50,6 @@ open class VsmeSimpleCustomComponentBase(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = uploadComponentName,
         )
     }
 
@@ -67,4 +66,6 @@ open class VsmeSimpleCustomComponentBase(
             fixtureExpression,
         )
     }
+
+    override fun getUploadComponentName(): String = uploadComponentName
 }

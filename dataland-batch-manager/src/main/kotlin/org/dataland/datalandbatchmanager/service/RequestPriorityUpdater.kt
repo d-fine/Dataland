@@ -6,6 +6,7 @@ import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Service
 class RequestPriorityUpdater
     @Autowired
     constructor(
+        private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
         private val requestControllerApi: RequestControllerApi,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -27,34 +30,36 @@ class RequestPriorityUpdater
         /**
          * Processes request priority updates for data requests.
          *
-         * This method identifies premium users and administrators by their roles and updates the priority
-         * of their associated requests to high. Similarly, it lowers the priority of requests for users
-         * who do not belong to these roles.
+         * This method identifies Dataland members by their roles and updates the priority of their associated requests
+         * to High. Similarly, it lowers the priority of requests for non-member users.
          */
         fun processRequestPriorityUpdates() {
-            val premiumUserIds = mutableSetOf<String>()
-            for (roleName in listOf("ROLE_PREMIUM_USER", "ROLE_ADMIN")) {
-                premiumUserIds.addAll(
-                    keycloakUserService.getUsersByRole(roleName).map { it.userId },
-                )
-            }
-            require(premiumUserIds.isNotEmpty()) {
-                "No premium users or administrators found. Scheduled update of request priorities failed."
+            val userIdsOfAdmins = keycloakUserService.getUsersByRole("ROLE_ADMIN").map { it.userId }.toSet()
+            val userIdsOfMembers =
+                companyRolesControllerApi
+                    .getExtendedCompanyRoleAssignments()
+                    .map { it.userId }
+                    .filter { derivedRightsUtilsComponent.isUserDatalandMember(it) }
+                    .toSet()
+
+            val userIdsOfAdminsAndMembers = userIdsOfAdmins + userIdsOfMembers
+            require(userIdsOfAdminsAndMembers.isNotEmpty()) {
+                "No Dataland admins or members found. Scheduled update of request priorities failed."
             }
 
-            logger.info("Found ${premiumUserIds.size} premium users and administrators.")
+            logger.info("Found ${userIdsOfAdminsAndMembers.size} users who are Dataland admins or members.")
 
-            logger.info("Upgrading request priorities from Low to High for premium users.")
+            logger.info("Upgrading request priorities from Low to High for Dataland admins and members.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
-            ) { request -> request.userId in premiumUserIds }
+            ) { request -> request.userId in userIdsOfAdminsAndMembers }
 
-            logger.info("Downgrading request priorities from High to Low for regular users.")
+            logger.info("Downgrading request priorities from High to Low for users who are neither admins nor members.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.High,
                 newPriority = RequestPriority.Low,
-            ) { request -> request.userId !in premiumUserIds }
+            ) { request -> request.userId !in userIdsOfAdminsAndMembers }
         }
 
         /**

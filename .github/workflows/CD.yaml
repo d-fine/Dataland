@@ -70,7 +70,7 @@ jobs:
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
       - name: Store generated frontend API clients for use by cypress
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -80,19 +80,19 @@ jobs:
       - e2e-tests
     steps:
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: dockerImageVersions
           pattern: dockerImageVersions-*
           delete-merged: true
       - name: Merge Parameter Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Cypress Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: cypress
           pattern: cypress-*
@@ -239,13 +239,13 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Download frontend API clients
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -295,7 +295,7 @@ jobs:
           mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.SENSITIVE_ARTIFACT_ENCRYPTION_KEY }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: cypress-${{ matrix.testGroup }}
           path: ./dataland-frontend/cypressresult/

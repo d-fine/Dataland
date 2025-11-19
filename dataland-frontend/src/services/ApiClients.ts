@@ -5,6 +5,7 @@ import {
   CompanyRolesControllerApi,
   type CompanyRolesControllerApiInterface,
   EmailAddressControllerApi,
+  InheritedRolesControllerApi,
   RequestControllerApi as CommunityManagerRequestControllerApi,
 } from '@clients/communitymanager';
 import { RequestControllerApi } from '@clients/datasourcingservice';
@@ -15,6 +16,7 @@ import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
+import { DataPointControllerApi } from '@clients/backend/api';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -29,10 +31,12 @@ interface ApiClients {
   requestController: RequestControllerApi;
   communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
+  inheritedRolesController: InheritedRolesControllerApi;
   qaController: QaControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
   emailAddressController: EmailAddressControllerApi;
+  dataPointController: DataPointControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -90,10 +94,12 @@ export class ApiClientProvider {
       requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
       communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
+      inheritedRolesController: this.getClientFactory('/community')(InheritedRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
       emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
+      dataPointController: this.getClientFactory('/api')(DataPointControllerApi),
     };
   }
 

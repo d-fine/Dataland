@@ -41,6 +41,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.masterData?.dataDate),
+            uploadComponentName: 'DateFormField',
+            dataPointTypeId: 'dataDate',
           },
           {
             type: 'cell',
@@ -50,6 +52,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.headOfficeInGermany),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'headOfficeInGermany',
           },
           {
             type: 'cell',
@@ -58,6 +62,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.groupOfCompanies),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'groupOfCompanies',
           },
           {
             type: 'cell',
@@ -66,6 +72,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.masterData?.groupOfCompaniesName),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'groupOfCompaniesName',
           },
           {
             type: 'cell',
@@ -74,6 +82,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNaceCodesForDatatable(dataset.general?.masterData?.industry, 'Industry'),
+            uploadComponentName: 'NaceCodeFormField',
+            dataPointTypeId: 'industry',
           },
           {
             type: 'cell',
@@ -82,6 +92,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ''),
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfEmployees',
           },
           {
             type: 'cell',
@@ -90,6 +102,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.masterData?.seasonalOrMigrantWorkers),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'seasonalOrMigrantWorkers',
           },
           {
             type: 'cell',
@@ -111,6 +125,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                     : ''
                 );
               })(),
+            uploadComponentName: 'RadioButtonsFormField',
+            dataPointTypeId: 'shareOfTemporaryWorkers',
           },
           {
             type: 'cell',
@@ -119,6 +135,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
+            uploadComponentName: 'AmountWithCurrencyFormField',
+            dataPointTypeId: 'annualTotalRevenue',
           },
           {
             type: 'cell',
@@ -128,6 +146,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
+            uploadComponentName: 'AmountWithCurrencyFormField',
+            dataPointTypeId: 'fixedAndWorkingCapital',
           },
         ],
       },
@@ -144,6 +164,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.manufacturingCompany),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'manufacturingCompany',
           },
           {
             type: 'cell',
@@ -153,6 +175,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.productionSpecific?.capacity),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'capacity',
           },
           {
             type: 'cell',
@@ -162,6 +186,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionViaSubcontracting),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'productionViaSubcontracting',
           },
           {
             type: 'cell',
@@ -174,6 +200,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
                 'Subcontracting Companies Countries'
               ),
+            uploadComponentName: 'LksgSubcontractingCompaniesFormField',
+            dataPointTypeId: 'subcontractingCompaniesCountries',
           },
           {
             type: 'cell',
@@ -183,6 +211,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionSites),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'productionSites',
           },
           {
             type: 'cell',
@@ -192,6 +222,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.productionSites == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, ''),
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'numberOfProductionSites',
           },
           {
             type: 'cell',
@@ -204,6 +236,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecific?.listOfProductionSites,
                 'List Of Production Sites'
               ),
+            uploadComponentName: 'ProductionSitesFormField',
+            dataPointTypeId: 'listOfProductionSites',
           },
           {
             type: 'cell',
@@ -224,6 +258,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                     : ''
                 );
               })(),
+            uploadComponentName: 'RadioButtonsFormField',
+            dataPointTypeId: 'market',
           },
           {
             type: 'cell',
@@ -246,6 +282,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Specific Procurement'
               );
             },
+            uploadComponentName: 'MultiSelectFormField',
+            dataPointTypeId: 'specificProcurement',
           },
         ],
       },
@@ -267,6 +305,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecificOwnOperations?.mostImportantProducts,
                 'Most Important Products'
               ),
+            uploadComponentName: 'MostImportantProductsFormField',
+            dataPointTypeId: 'mostImportantProducts',
           },
           {
             type: 'cell',
@@ -279,6 +319,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.general?.productionSpecificOwnOperations?.procurementCategories,
                 'Procurement Categories'
               ),
+            uploadComponentName: 'ProcurementCategoriesFormField',
+            dataPointTypeId: 'procurementCategories',
           },
         ],
       },
@@ -310,6 +352,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Risk Management System',
                 dataset.governance?.riskManagementOwnOperations?.riskManagementSystem
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'riskManagementSystem',
           },
           {
             type: 'cell',
@@ -319,6 +363,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'riskAnalysisInFiscalYear',
           },
           {
             type: 'cell',
@@ -328,6 +374,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.risksIdentified),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'risksIdentified',
           },
           {
             type: 'cell',
@@ -340,6 +388,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.riskManagementOwnOperations?.identifiedRisks,
                 'Identified Risks'
               ),
+            uploadComponentName: 'RiskAssessmentsFormField',
+            dataPointTypeId: 'identifiedRisks',
           },
           {
             type: 'cell',
@@ -352,6 +402,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.riskManagementOwnOperations?.regulatedRiskManagementResponsibility
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'regulatedRiskManagementResponsibility',
           },
         ],
       },
@@ -375,6 +427,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Grievance Handling Mechanism',
                 dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'grievanceHandlingMechanism',
           },
           {
             type: 'cell',
@@ -387,6 +441,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingReportingAccessible
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'grievanceHandlingReportingAccessible',
           },
           {
             type: 'cell',
@@ -399,6 +455,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingInformation
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'appropriateGrievanceHandlingInformation',
           },
           {
             type: 'cell',
@@ -411,6 +469,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingSupport
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'appropriateGrievanceHandlingSupport',
           },
           {
             type: 'cell',
@@ -423,6 +483,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.accessToExpertiseForGrievanceHandling
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'accessToExpertiseForGrievanceHandling',
           },
           {
             type: 'cell',
@@ -432,6 +494,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'grievanceComplaints',
           },
           {
             type: 'cell',
@@ -441,6 +505,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ''),
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'complaintsNumber',
           },
           {
             type: 'cell',
@@ -453,6 +519,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
                 'Complaints Risk Position'
               ),
+            uploadComponentName: 'GrievanceMechanismAssessmentsFormField',
+            dataPointTypeId: 'complaintsRiskPosition',
           },
           {
             type: 'cell',
@@ -465,6 +533,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.publicAccessToGrievanceHandling
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'publicAccessToGrievanceHandling',
           },
           {
             type: 'cell',
@@ -476,6 +546,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.whistleblowerProtection
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'whistleblowerProtection',
           },
           {
             type: 'cell',
@@ -487,6 +559,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.dueDiligenceProcessForGrievanceHandling
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'dueDiligenceProcessForGrievanceHandling',
           },
         ],
       },
@@ -510,6 +584,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Code of Conduct',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'codeOfConduct',
           },
           {
             type: 'cell',
@@ -522,6 +598,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConductTraining
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'codeOfConductTraining',
           },
           {
             type: 'cell',
@@ -537,6 +615,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Supplier Code of Conduct',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'supplierCodeOfConduct',
           },
           {
             type: 'cell',
@@ -552,6 +632,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Policy Statement',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'policyStatement',
           },
           {
             type: 'cell',
@@ -564,6 +646,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.humanRightsStrategy
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'humanRightsStrategy',
           },
           {
             type: 'cell',
@@ -579,6 +663,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Environmental Impact Policy',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'environmentalImpactPolicy',
           },
           {
             type: 'cell',
@@ -594,6 +680,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Fair Working Conditions Policy',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'fairWorkingConditionsPolicy',
           },
           {
             type: 'cell',
@@ -605,6 +693,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForFairWorkingConditions
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'responsibilitiesForFairWorkingConditions',
           },
           {
             type: 'cell',
@@ -616,6 +706,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForTheEnvironment
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'responsibilitiesForTheEnvironment',
           },
           {
             type: 'cell',
@@ -627,6 +719,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForOccupationalSafety
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'responsibilitiesForOccupationalSafety',
           },
           {
             type: 'cell',
@@ -642,6 +736,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Amfori BSCI',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.amforiBsci
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'amforiBsci',
           },
           {
             type: 'cell',
@@ -657,6 +753,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Better Work Program',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.betterWorkProgram
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'betterWorkProgram',
           },
           {
             type: 'cell',
@@ -671,6 +769,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Eco-Management and Audit Scheme (EMAS)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.ecoManagementAndAuditSchemeEmas
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'ecoManagementAndAuditSchemeEmas',
           },
           {
             type: 'cell',
@@ -688,6 +788,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.certificationsPoliciesAndResponsibilities
                   ?.flaFairLaborCodeAndComplianceBenchmarksForAgriculture
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'flaFairLaborCodeAndComplianceBenchmarksForAgriculture',
           },
           {
             type: 'cell',
@@ -705,6 +807,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.certificationsPoliciesAndResponsibilities
                   ?.flaFairLaborCodeAndComplianceBenchmarksForManufacturing
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'flaFairLaborCodeAndComplianceBenchmarksForManufacturing',
           },
           {
             type: 'cell',
@@ -720,6 +824,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Fairtrade Trader Standard',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.fairtradeTraderStandard
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'fairtradeTraderStandard',
           },
           {
             type: 'cell',
@@ -735,6 +841,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Global Organic Textile Standard (GOTS)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.globalOrganicTextileStandardGots
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'globalOrganicTextileStandardGots',
           },
           {
             type: 'cell',
@@ -750,6 +858,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'GOTS - Organic in Conversion',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'gotsOrganicInConversion',
           },
           {
             type: 'cell',
@@ -764,6 +874,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'IATF 16949',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iatf16949
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iatf16949',
           },
           {
             type: 'cell',
@@ -779,6 +891,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 10007',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso10007
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso10007',
           },
           {
             type: 'cell',
@@ -793,6 +907,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 14001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso14001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso14001',
           },
           {
             type: 'cell',
@@ -808,6 +924,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 20400',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso20400
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso20400',
           },
           {
             type: 'cell',
@@ -823,6 +941,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 26000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso26000
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso26000',
           },
           {
             type: 'cell',
@@ -837,6 +957,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 31000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso31000
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso31000',
           },
           {
             type: 'cell',
@@ -851,6 +973,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso37001',
           },
           {
             type: 'cell',
@@ -865,6 +989,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37002',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37002
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso37002',
           },
           {
             type: 'cell',
@@ -879,6 +1005,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 37301',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37301
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso37301',
           },
           {
             type: 'cell',
@@ -894,6 +1022,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 44001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso44001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso44001',
           },
           {
             type: 'cell',
@@ -908,6 +1038,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 45001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso45001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso45001',
           },
           {
             type: 'cell',
@@ -922,6 +1054,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 50001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso50001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso50001',
           },
           {
             type: 'cell',
@@ -936,6 +1070,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO 9001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.iso9001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'iso9001',
           },
           {
             type: 'cell',
@@ -950,6 +1086,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC 27001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'isoIec27001',
           },
           {
             type: 'cell',
@@ -965,6 +1103,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC TS 33061',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'isoIecTs33061',
           },
           {
             type: 'cell',
@@ -979,6 +1119,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ISO\/IEC\/IEEE 15288',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'isoIecIeee15288',
           },
           {
             type: 'cell',
@@ -994,6 +1136,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Naturland Standards',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.naturlandStandards
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'naturlandStandards',
           },
           {
             type: 'cell',
@@ -1009,6 +1153,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Responsible Business Alliance',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibleBusinessAlliance
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'responsibleBusinessAlliance',
           },
           {
             type: 'cell',
@@ -1023,6 +1169,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'SA8000',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.sa8000
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'sa8000',
           },
           {
             type: 'cell',
@@ -1039,6 +1187,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Sedex Members Ethical Trade Audit (SMETA)',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.sedexMembersEthicalTradeAuditSmeta
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'sedexMembersEthicalTradeAuditSmeta',
           },
           {
             type: 'cell',
@@ -1055,6 +1205,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Textile Exchange Global Recycled Standard',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.textileExchangeGlobalRecycledStandard
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'textileExchangeGlobalRecycledStandard',
           },
           {
             type: 'cell',
@@ -1070,6 +1222,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'ZNU-Standard Nachhaltiger Wirtschaften',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.znuStandardNachhaltigerWirtschaften
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'znuStandardNachhaltigerWirtschaften',
           },
           {
             type: 'cell',
@@ -1085,6 +1239,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Additional Certifications',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'additionalCertifications',
           },
         ],
       },
@@ -1102,6 +1258,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.legalProceedings),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'legalProceedings',
           },
           {
             type: 'cell',
@@ -1111,6 +1269,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'humanRightsOrEnvironmentalViolations',
           },
           {
             type: 'cell',
@@ -1123,6 +1283,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition,
                 'Human Rights or Environmental Violations Definition'
               ),
+            uploadComponentName: 'GeneralViolationsAssessmentsFormField',
+            dataPointTypeId: 'humanRightsOrEnvironmentalViolationsDefinition',
           },
           {
             type: 'cell',
@@ -1131,6 +1293,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesRawMaterials),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'highRiskCountriesRawMaterials',
           },
           {
             type: 'cell',
@@ -1147,6 +1311,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries Raw Materials Location'
               );
             },
+            uploadComponentName: 'MultiSelectFormField',
+            dataPointTypeId: 'highRiskCountriesRawMaterialsLocation',
           },
           {
             type: 'cell',
@@ -1156,6 +1322,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesActivity),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'highRiskCountriesActivity',
           },
           {
             type: 'cell',
@@ -1172,6 +1340,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries'
               );
             },
+            uploadComponentName: 'MultiSelectFormField',
+            dataPointTypeId: 'highRiskCountries',
           },
           {
             type: 'cell',
@@ -1181,6 +1351,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesProcurement),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'highRiskCountriesProcurement',
           },
           {
             type: 'cell',
@@ -1197,6 +1369,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'High Risk Countries Procurement Name'
               );
             },
+            uploadComponentName: 'MultiSelectFormField',
+            dataPointTypeId: 'highRiskCountriesProcurementName',
           },
         ],
       },
@@ -1222,6 +1396,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employeeSUnder18',
           },
           {
             type: 'cell',
@@ -1231,6 +1407,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder15),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employeeSUnder15',
           },
           {
             type: 'cell',
@@ -1240,6 +1418,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18InApprenticeship),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employeeSUnder18InApprenticeship',
           },
           {
             type: 'cell',
@@ -1249,6 +1429,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'worstFormsOfChildLaborProhibition',
           },
           {
             type: 'cell',
@@ -1258,6 +1440,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == 'No',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'worstFormsOfChildLaborForms',
           },
           {
             type: 'cell',
@@ -1269,6 +1453,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'measuresForPreventionOfEmploymentUnderLocalMinimumAge',
           },
           {
             type: 'cell',
@@ -1280,6 +1466,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionEmploymentContracts
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employmentUnderLocalMinimumAgePreventionEmploymentContracts',
           },
           {
             type: 'cell',
@@ -1292,6 +1480,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionJobDescription
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employmentUnderLocalMinimumAgePreventionJobDescription',
           },
           {
             type: 'cell',
@@ -1303,6 +1493,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionIdentityDocuments
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employmentUnderLocalMinimumAgePreventionIdentityDocuments',
           },
           {
             type: 'cell',
@@ -1319,6 +1511,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Employment Under Local Minimum Age Prevention - Training',
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'employmentUnderLocalMinimumAgePreventionTraining',
           },
           {
             type: 'cell',
@@ -1330,6 +1524,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge',
           },
           {
             type: 'cell',
@@ -1344,6 +1540,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Child Labor Prevention Policy',
                 dataset.social?.childLabor?.childLaborPreventionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'childLaborPreventionPolicy',
           },
           {
             type: 'cell',
@@ -1358,6 +1556,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Additional Child Labor Other Measures',
                 dataset.social?.childLabor?.additionalChildLaborOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'additionalChildLaborOtherMeasures',
           },
           {
             type: 'cell',
@@ -1368,6 +1568,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasuresDescription),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'additionalChildLaborOtherMeasuresDescription',
           },
         ],
       },
@@ -1385,6 +1587,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPractices',
           },
           {
             type: 'cell',
@@ -1394,6 +1598,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPracticesSpecification),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPracticesSpecification',
           },
           {
             type: 'cell',
@@ -1402,6 +1608,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionMeasures',
           },
           {
             type: 'cell',
@@ -1414,6 +1622,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionEmploymentContracts
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionEmploymentContracts',
           },
           {
             type: 'cell',
@@ -1425,6 +1635,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionIdentityDocuments
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionIdentityDocuments',
           },
           {
             type: 'cell',
@@ -1437,6 +1649,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionFreeMovement
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionFreeMovement',
           },
           {
             type: 'cell',
@@ -1448,6 +1662,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets',
           },
           {
             type: 'cell',
@@ -1464,6 +1680,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor and Slavery Prevention - Training',
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionTraining',
           },
           {
             type: 'cell',
@@ -1478,6 +1696,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor Prevention Policy',
                 dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'forcedLaborPreventionPolicy',
           },
           {
             type: 'cell',
@@ -1493,6 +1713,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Forced Labor and Slavery Prevention Other Measures',
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionOtherMeasures',
           },
           {
             type: 'cell',
@@ -1504,6 +1726,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatFreeTextForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription
               ),
+            uploadComponentName: 'FreeTextFormField',
+            dataPointTypeId: 'forcedLaborAndSlaveryPreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -1520,6 +1744,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageWithholding),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'adequateWageWithholding',
           },
           {
             type: 'cell',
@@ -1528,6 +1754,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWagesMeasures),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'adequateWagesMeasures',
           },
           {
             type: 'cell',
@@ -1543,6 +1771,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Documented Working Hours and Wages',
                 dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'documentedWorkingHoursAndWages',
           },
           {
             type: 'cell',
@@ -1557,6 +1787,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Adequate Living Wage',
                 dataset.social?.withholdingAdequateWages?.adequateLivingWage
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'adequateLivingWage',
           },
           {
             type: 'cell',
@@ -1567,6 +1799,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.regularWagesProcessFlow),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'regularWagesProcessFlow',
           },
           {
             type: 'cell',
@@ -1576,6 +1810,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedHourlyWages),
+            uploadComponentName: 'YesNoNaFormField',
+            dataPointTypeId: 'fixedHourlyWages',
           },
           {
             type: 'cell',
@@ -1585,6 +1821,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedPieceworkWages),
+            uploadComponentName: 'YesNoNaFormField',
+            dataPointTypeId: 'fixedPieceworkWages',
           },
           {
             type: 'cell',
@@ -1600,6 +1838,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Adequate Wage Other Measures',
                 dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'adequateWageOtherMeasures',
           },
           {
             type: 'cell',
@@ -1609,6 +1849,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasuresDescription),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'adequateWageOtherMeasuresDescription',
           },
         ],
       },
@@ -1625,6 +1867,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.lowSkillWork),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'lowSkillWork',
           },
           {
             type: 'cell',
@@ -1633,6 +1877,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.hazardousMachines),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousMachines',
           },
           {
             type: 'cell',
@@ -1641,6 +1887,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'oshMeasures',
           },
           {
             type: 'cell',
@@ -1655,6 +1903,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'OSH Policy',
                 dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'oshPolicy',
           },
           {
             type: 'cell',
@@ -1668,6 +1918,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'OSH Training',
                 dataset.social?.disregardForOccupationalHealthSafety?.oshTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'oshTraining',
           },
           {
             type: 'cell',
@@ -1683,6 +1935,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Health and Safety Policy',
                 dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'healthAndSafetyPolicy',
           },
           {
             type: 'cell',
@@ -1699,6 +1953,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Other OSH Measures',
                 dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'otherOshMeasures',
           },
           {
             type: 'cell',
@@ -1711,6 +1967,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'otherOshMeasuresDescription',
           },
           {
             type: 'cell',
@@ -1722,6 +1980,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForOccupationalHealthSafety?.under10WorkplaceAccidents
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'under10WorkplaceAccidents',
           },
         ],
       },
@@ -1738,6 +1998,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'freedomOfAssociation',
           },
           {
             type: 'cell',
@@ -1747,6 +2009,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.social?.disregardForFreedomOfAssociation?.employeeRepresentation),
+            uploadComponentName: 'NumberFormField',
+            dataPointTypeId: 'employeeRepresentation',
           },
           {
             type: 'cell',
@@ -1757,6 +2021,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'freedomOfAssociationDisregardPrevention',
           },
           {
             type: 'cell',
@@ -1769,6 +2035,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.discriminationForTradeUnionMembers
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'discriminationForTradeUnionMembers',
           },
           {
             type: 'cell',
@@ -1781,6 +2049,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfOperationForTradeUnion
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'freedomOfOperationForTradeUnion',
           },
           {
             type: 'cell',
@@ -1797,6 +2067,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Freedom of Association Training',
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'freedomOfAssociationTraining',
           },
           {
             type: 'cell',
@@ -1811,6 +2083,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Works Council',
                 dataset.social?.disregardForFreedomOfAssociation?.worksCouncil
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'worksCouncil',
           },
           {
             type: 'cell',
@@ -1826,6 +2100,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Freedom of Association Other Measures',
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'freedomOfAssociationOtherMeasures',
           },
           {
             type: 'cell',
@@ -1838,6 +2114,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'freedomOfAssociationOtherMeasuresDescription',
           },
         ],
       },
@@ -1855,6 +2133,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'unequalTreatmentOfEmployment',
           },
           {
             type: 'cell',
@@ -1865,6 +2145,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'unequalTreatmentOfEmploymentPreventionMeasures',
           },
           {
             type: 'cell',
@@ -1875,6 +2157,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'diversityAndInclusionRole',
           },
           {
             type: 'cell',
@@ -1885,6 +2169,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'preventionOfMistreatments',
           },
           {
             type: 'cell',
@@ -1901,6 +2187,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Unequal Treatment Prevention Training',
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'unequalTreatmentPreventionTraining',
           },
           {
             type: 'cell',
@@ -1910,6 +2198,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'equalOpportunitiesOfficer',
           },
           {
             type: 'cell',
@@ -1925,6 +2215,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Equal Employment Policy',
                 dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'equalEmploymentPolicy',
           },
           {
             type: 'cell',
@@ -1940,6 +2232,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Unequal Treatment Prevention Other Measures',
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'unequalTreatmentPreventionOtherMeasures',
           },
           {
             type: 'cell',
@@ -1952,6 +2246,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'unequalTreatmentPreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -1970,6 +2266,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'harmfulSoilChange',
           },
           {
             type: 'cell',
@@ -1983,6 +2281,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilDegradation
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'soilDegradation',
           },
           {
             type: 'cell',
@@ -1996,6 +2296,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilErosion
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'soilErosion',
           },
           {
             type: 'cell',
@@ -2009,6 +2311,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilBorneDiseases
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'soilBorneDiseases',
           },
           {
             type: 'cell',
@@ -2022,6 +2326,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilContamination
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'soilContamination',
           },
           {
             type: 'cell',
@@ -2034,6 +2340,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSalinization
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'soilSalinization',
           },
           {
             type: 'cell',
@@ -2051,6 +2359,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Soil Protection Policy',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilProtectionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'soilProtectionPolicy',
           },
           {
             type: 'cell',
@@ -2069,6 +2379,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Soil Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'soilSpotChecks',
           },
           {
             type: 'cell',
@@ -2080,6 +2392,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.harmfulWaterPollution
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'harmfulWaterPollution',
           },
           {
             type: 'cell',
@@ -2093,6 +2407,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.fertilizersOrPollutants
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'fertilizersOrPollutants',
           },
           {
             type: 'cell',
@@ -2105,6 +2421,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.wasteWaterFiltration
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'wasteWaterFiltration',
           },
           {
             type: 'cell',
@@ -2123,6 +2441,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterProtectionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'waterProtectionPolicy',
           },
           {
             type: 'cell',
@@ -2141,6 +2461,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Water Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'waterSpotChecks',
           },
           {
             type: 'cell',
@@ -2151,6 +2473,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'harmfulAirPollution',
           },
           {
             type: 'cell',
@@ -2163,6 +2487,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airFiltration
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'airFiltration',
           },
           {
             type: 'cell',
@@ -2182,6 +2508,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.airQualityProtectionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'airQualityProtectionPolicy',
           },
           {
             type: 'cell',
@@ -2200,6 +2528,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Air Quality Spot Checks',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualitySpotChecks
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'airQualitySpotChecks',
           },
           {
             type: 'cell',
@@ -2210,6 +2540,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'harmfulNoiseEmission',
           },
           {
             type: 'cell',
@@ -2223,6 +2555,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.reductionOfNoiseEmissions
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'reductionOfNoiseEmissions',
           },
           {
             type: 'cell',
@@ -2240,6 +2574,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Noise Reduction Policy',
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseReductionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'noiseReductionPolicy',
           },
           {
             type: 'cell',
@@ -2259,6 +2595,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.noiseEmissionsSpotChecks
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'noiseEmissionsSpotChecks',
           },
           {
             type: 'cell',
@@ -2270,6 +2608,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.excessiveWaterConsumption
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'excessiveWaterConsumption',
           },
           {
             type: 'cell',
@@ -2282,6 +2622,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'waterSavingMeasures',
           },
           {
             type: 'cell',
@@ -2295,6 +2637,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterSavingMeasuresName
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'waterSavingMeasuresName',
           },
           {
             type: 'cell',
@@ -2314,6 +2658,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterUseReductionPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'waterUseReductionPolicy',
           },
           {
             type: 'cell',
@@ -2333,6 +2679,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.waterConsumptionSpotChecks
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'waterConsumptionSpotChecks',
           },
           {
             type: 'cell',
@@ -2346,6 +2694,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSources
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'waterSources',
           },
           {
             type: 'cell',
@@ -2363,6 +2713,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.contaminationPreventionMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'contaminationPreventionMeasures',
           },
           {
             type: 'cell',
@@ -2377,6 +2729,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                   ?.contaminationPreventionMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'contaminationPreventionMeasuresDescription',
           },
         ],
       },
@@ -2396,6 +2750,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'unlawfulEvictionAndTakingOfLand',
           },
           {
             type: 'cell',
@@ -2407,6 +2763,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandRisk
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'unlawfulEvictionAndTakingOfLandRisk',
           },
           {
             type: 'cell',
@@ -2418,6 +2776,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'unlawfulEvictionAndTakingOfLandMeasures',
           },
           {
             type: 'cell',
@@ -2435,6 +2795,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Model Contracts for Land Purchase or Leasing',
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'modelContractsForLandPurchaseOrLeasing',
           },
           {
             type: 'cell',
@@ -2447,6 +2809,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.involvementOfLocalsInDecisionMaking
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'involvementOfLocalsInDecisionMaking',
           },
           {
             type: 'cell',
@@ -2463,6 +2827,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Governance of Tenure Policy',
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'governanceOfTenurePolicy',
           },
           {
             type: 'cell',
@@ -2482,6 +2848,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'unlawfulEvictionAndTakingOfLandOtherMeasures',
           },
           {
             type: 'cell',
@@ -2496,6 +2864,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'unlawfulEvictionAndTakingOfLandOtherMeasuresDescription',
           },
         ],
       },
@@ -2515,6 +2885,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForces
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'useOfPrivatePublicSecurityForces',
           },
           {
             type: 'cell',
@@ -2529,6 +2901,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights',
           },
           {
             type: 'cell',
@@ -2546,6 +2920,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Instruction of Security Forces',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.instructionOfSecurityForces
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'instructionOfSecurityForces',
           },
           {
             type: 'cell',
@@ -2563,6 +2939,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Human Rights Training',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'humanRightsTraining',
           },
           {
             type: 'cell',
@@ -2576,6 +2954,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.stateSecurityForces
               ),
+            uploadComponentName: 'YesNoNaFormField',
+            dataPointTypeId: 'stateSecurityForces',
           },
           {
             type: 'cell',
@@ -2594,6 +2974,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Private Security Forces',
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces
               ),
+            uploadComponentName: 'YesNoNaBaseDataPointFormField',
+            dataPointTypeId: 'privateSecurityForces',
           },
           {
             type: 'cell',
@@ -2613,6 +2995,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'useOfPrivatePublicSecurityForcesMeasures',
           },
           {
             type: 'cell',
@@ -2627,6 +3011,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                   ?.useOfPrivatePublicSecurityForcesMeasuresDescription
               ),
+            uploadComponentName: 'FreeTextFormField',
+            dataPointTypeId: 'useOfPrivatePublicSecurityForcesMeasuresDescription',
           },
         ],
       },
@@ -2654,6 +3040,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAndMercuryWasteHandling',
           },
           {
             type: 'cell',
@@ -2667,6 +3055,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAddedProductsHandling',
           },
           {
             type: 'cell',
@@ -2681,6 +3071,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAddedProductsHandlingRiskOfExposure
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAddedProductsHandlingRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2695,6 +3087,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAddedProductsHandlingRiskOfDisposal
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAddedProductsHandlingRiskOfDisposal',
           },
           {
             type: 'cell',
@@ -2708,6 +3102,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryCompoundsProductionAndUse
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAndMercuryCompoundsProductionAndUse',
           },
           {
             type: 'cell',
@@ -2722,6 +3118,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2735,6 +3133,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'mercuryAndMercuryWasteUsePreventionMeasures',
           },
           {
             type: 'cell',
@@ -2753,6 +3153,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Mercury and Mercury Waste Handling Policy',
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'mercuryAndMercuryWasteHandlingPolicy',
           },
           {
             type: 'cell',
@@ -2771,6 +3173,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'mercuryAndMercuryWasteUsePreventionOtherMeasures',
           },
           {
             type: 'cell',
@@ -2785,6 +3189,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
                   ?.mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -2805,6 +3211,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUse
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsProductionAndUse',
           },
           {
             type: 'cell',
@@ -2818,6 +3226,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsed
               ),
+            uploadComponentName: 'InputTextFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsUsed',
           },
           {
             type: 'cell',
@@ -2832,6 +3242,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskOfExposure
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsProductionAndUseRiskOfExposure',
           },
           {
             type: 'cell',
@@ -2846,6 +3258,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskOfDisposal
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsProductionAndUseRiskOfDisposal',
           },
           {
             type: 'cell',
@@ -2859,6 +3273,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsUsePreventionMeasures',
           },
           {
             type: 'cell',
@@ -2878,6 +3294,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsUsePolicy',
           },
           {
             type: 'cell',
@@ -2896,6 +3314,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsUsePreventionOtherMeasures',
           },
           {
             type: 'cell',
@@ -2910,6 +3330,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription
               ),
+            uploadComponentName: 'FreeTextFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsUsePreventionOtherMeasuresDescription',
           },
         ],
       },
@@ -2930,6 +3352,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsProductionAndUseTransboundaryMovements',
           },
           {
             type: 'cell',
@@ -2944,6 +3368,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'persistentOrganicPollutantsProductionAndUseRiskForImportingState',
           },
           {
             type: 'cell',
@@ -2957,6 +3383,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein',
           },
           {
             type: 'cell',
@@ -2971,6 +3399,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein',
           },
           {
             type: 'cell',
@@ -2984,6 +3414,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionMeasures
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteTransportPreventionMeasures',
           },
           {
             type: 'cell',
@@ -3000,6 +3432,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Waste Policy',
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'wastePolicy',
           },
           {
             type: 'cell',
@@ -3018,6 +3452,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasures
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'hazardousWasteTransportPreventionOtherMeasures',
           },
           {
             type: 'cell',
@@ -3032,6 +3468,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasuresDescription
               ),
+            uploadComponentName: 'FreeTextFormField',
+            dataPointTypeId: 'hazardousWasteTransportPreventionOtherMeasuresDescription',
           },
           {
             type: 'cell',
@@ -3043,6 +3481,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteDisposal',
           },
           {
             type: 'cell',
@@ -3055,6 +3495,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalRiskOfImport
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteDisposalRiskOfImport',
           },
           {
             type: 'cell',
@@ -3068,6 +3510,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImport
               ),
+            uploadComponentName: 'YesNoFormField',
+            dataPointTypeId: 'hazardousWasteDisposalOtherWasteImport',
           },
           {
             type: 'cell',
@@ -3082,6 +3526,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImportDescription
               ),
+            uploadComponentName: 'FreeTextFormField',
+            dataPointTypeId: 'hazardousWasteDisposalOtherWasteImportDescription',
           },
         ],
       },
@@ -3111,6 +3557,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 'Attachment',
                 dataset.attachment?.attachment?.attachment
               ),
+            uploadComponentName: 'YesNoBaseDataPointFormField',
+            dataPointTypeId: 'attachment',
           },
         ],
       },

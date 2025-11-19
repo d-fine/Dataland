@@ -77,6 +77,7 @@
             :config="config"
             :isTopLevel="true"
             :isVisible="true"
+            @dataUpdated="onDataUpdated"
           />
         </tbody>
       </table>
@@ -106,7 +107,17 @@ import {
   type NuclearAndGasData,
 } from '@clients/backend';
 
+const emit = defineEmits<{
+  dataUpdated: [];
+}>();
 const vTooltip = Tooltip;
+
+/**
+ * Emits the dataUpdated event to the parent component.
+ */
+function onDataUpdated(): void {
+  emit('dataUpdated');
+}
 
 /**
  *  Checks if at least one singleDataAndMetaInfo has a publication date.

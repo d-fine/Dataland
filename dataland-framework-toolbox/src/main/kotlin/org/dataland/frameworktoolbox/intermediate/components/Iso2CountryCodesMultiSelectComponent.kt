@@ -73,6 +73,8 @@ open class Iso2CountryCodesMultiSelectComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "MultiSelectFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
@@ -86,7 +88,6 @@ open class Iso2CountryCodesMultiSelectComponent(
                         ),
                 ),
             component = this,
-            uploadComponentName = "MultiSelectFormField",
         )
     }
 

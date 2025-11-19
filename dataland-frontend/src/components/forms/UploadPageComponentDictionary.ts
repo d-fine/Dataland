@@ -2,7 +2,7 @@ import AddressFormField from '@/components/forms/parts/fields/AddressFormField.v
 import AmountWithCurrencyFormField from '@/components/forms/parts/fields/AmountWithCurrencyFormField.vue';
 import BigDecimalBaseDataPointFormField from '@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
@@ -42,7 +42,7 @@ const componentNameMap: { [key: string]: any } = {
   AmountWithCurrencyFormField,
   BigDecimalBaseDataPointFormField,
   BigDecimalExtendedDataPointFormField,
-  CurrencyDataPointFormField,
+  CurrencyExtendedDataPointFormField,
   DateFormField,
   DateExtendedDataPointFormField,
   EmployeesPerCountryFormField,
