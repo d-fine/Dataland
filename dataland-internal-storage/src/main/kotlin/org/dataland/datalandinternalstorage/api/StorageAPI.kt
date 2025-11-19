@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -86,4 +87,51 @@ interface StorageAPI {
         @RequestBody dataIds: List<String>,
         correlationId: String,
     ): ResponseEntity<Map<String, StorableDataPoint>>
+
+    /**
+     * A method to check which data is associated to a given document ID
+     * @param documentId the ID of the document
+     * @param correlationId the correlation ID of the data get request
+     * @return ResponseEntity containing associated data points and dataset IDs
+     */
+    @Operation(
+        summary = "Get document references.",
+        description = "Gets data point IDs and dataset IDs that reference this document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs and dataset IDs."),
+        ],
+    )
+    @GetMapping(
+        value = ["/documents/{documentId}/references"],
+        produces = ["application/json"],
+    )
+    fun getDocumentReferences(
+        @PathVariable("documentId") documentId: String,
+        correlationId: String,
+    ): ResponseEntity<DocumentReferencesResponse>
+
+    /**
+     * A method to delete a document from blob storage and to remove its references
+     * @param documentId the ID of the document to delete
+     * @param correlationId the correlation ID of the delete request
+     * @return ResponseEntity with no content on success
+     */
+    @Operation(
+        summary = "Delete document from blob storage.",
+        description = "Deletes a document entry from blob storage by document ID and remove its references from data points and datasets.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully deleted document."),
+        ],
+    )
+    @PostMapping(
+        value = ["/documents/{documentId}/deleteRequest"],
+    )
+    fun deleteDocument(
+        @PathVariable("documentId") documentId: String,
+        correlationId: String,
+    ): ResponseEntity<Unit>
 }

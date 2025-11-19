@@ -3,6 +3,7 @@ package org.dataland.documentmanager.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -14,6 +15,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -86,6 +88,53 @@ interface DocumentApi {
         @PathVariable("documentId")
         documentId: String,
     )
+
+    /**
+     * Delete a document and its metadata
+     * @param documentId the ID of the document to delete
+     * @return ResponseEntity with no content on success
+     */
+    @Operation(
+        summary = "Delete a document and its metadata.",
+        description = "Deletes a document and its metadata.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully deleted document."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to delete this document.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document ID does not match any stored document.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "409",
+                description = "Document cannot be deleted because it has active references.",
+                content = [Content(schema = Schema())],
+            ),
+        ],
+    )
+    @DeleteMapping(
+        value = ["/{documentId}/deletion-request"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') " +
+            "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
+    )
+    fun deleteDocument(
+        @Parameter(
+            name = "documentId",
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("documentId")
+        documentId: String,
+    ): ResponseEntity<Unit>
 
     /**
      * Retrieve a document by its ID

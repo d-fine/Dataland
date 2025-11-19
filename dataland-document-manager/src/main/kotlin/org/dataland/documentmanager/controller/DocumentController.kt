@@ -12,6 +12,7 @@ import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
+import org.dataland.documentmanager.services.DocumentDeletionService
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -25,10 +26,13 @@ import java.io.ByteArrayInputStream
 /**
  * Controller for the document API
  * @param documentManager the document manager
+ * @param documentDeletionService the document deletion service
+ * @param companyDataControllerApi the company data controller API
  */
 @RestController
 class DocumentController(
     @Autowired private val documentManager: DocumentManager,
+    @Autowired private val documentDeletionService: DocumentDeletionService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) : DocumentApi,
     DocumentMetadataApi {
@@ -47,6 +51,11 @@ class DocumentController(
                 "Document with ID $documentId does not exist.",
             )
         }
+    }
+
+    override fun deleteDocument(documentId: String): ResponseEntity<Unit> {
+        documentDeletionService.deleteDocument(documentId)
+        return ResponseEntity.noContent().build()
     }
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
