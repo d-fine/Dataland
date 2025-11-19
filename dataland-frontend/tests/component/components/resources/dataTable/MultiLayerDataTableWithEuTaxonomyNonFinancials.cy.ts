@@ -116,7 +116,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
       getCellValueContainer('Total Amount', 2)
         .invoke('text')
-        .should('match', new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
+        .should('match', new RegExp(String.raw`^${gammaCapexTotalAmountFormattedString}\s.*$`));
       getCellValueContainer('Total Amount', 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
@@ -148,7 +148,9 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           .invoke('text')
           .should(
             'match',
-            new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`)
+            new RegExp(
+              String.raw`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\s.*$`
+            )
           );
       });
     });
