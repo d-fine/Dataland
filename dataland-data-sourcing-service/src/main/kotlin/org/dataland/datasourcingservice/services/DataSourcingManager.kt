@@ -115,7 +115,7 @@ class DataSourcingManager
 
         /**
          * Performs the state patch on the given data sourcing entity, of which the associated Requests
-         * field must already have been fetched.
+         * field must already have been fetched. If state was changed to NonSourceable also send Message to RabbitMQ.
          */
         private fun performStatePatch(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
@@ -123,13 +123,16 @@ class DataSourcingManager
             correlationId: String,
         ) {
             if (state == null) return
-            dataSourcingEntityWithFetchedRequests.state = state
+
             if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
             }
-            if (state == DataSourcingState.NonSourceable) {
+
+            if (state == DataSourcingState.NonSourceable &&
+                dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable
+            ) {
                 val messageBody =
                     SourceabilityMessage(
                         dataSourcingEntityWithFetchedRequests.companyId.toString(),
@@ -150,6 +153,7 @@ class DataSourcingManager
                     RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
                 )
             }
+            dataSourcingEntityWithFetchedRequests.state = state
         }
 
         /**
