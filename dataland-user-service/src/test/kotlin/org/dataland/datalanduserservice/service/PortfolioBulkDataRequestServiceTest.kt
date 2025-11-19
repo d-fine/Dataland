@@ -29,7 +29,7 @@ import java.time.ZoneOffset
 
 class PortfolioBulkDataRequestServiceTest {
     companion object {
-        private val TODAY: LocalDate = LocalDate.of(2025, 1, 15)
+        private val TODAY: LocalDate = LocalDate.of(2025, 2, 15)
         private val FYE: LocalDate = LocalDate.of(2024, 12, 31)
         private const val USER_ID = "user id"
         private const val PORTFOLIO_ID = "Portfolio id"
