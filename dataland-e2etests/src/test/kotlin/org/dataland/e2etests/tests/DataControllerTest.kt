@@ -189,9 +189,7 @@ class DataControllerTest {
         )
 
         assertDoesNotThrow {
-            apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(
-                dataId,
-            )
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials.getCompanyAssociatedEutaxonomyFinancialsData(dataId)
         }
 
         assertThrows<ClientException> {
