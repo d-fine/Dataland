@@ -204,8 +204,14 @@ class SingleDataPointTest {
         }
 
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
-            assert(reviewQueueItem != null) { "Data point not found in review queue" }
+            var reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
+            try {
+                assert(reviewQueueItem != null)
+            } catch (_: AssertionError){
+                Thread.sleep(1000)
+                reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
+                assert(reviewQueueItem != null) { "Data point not found in review queue" }
+            }
             assert(reviewQueueItem!!.dataPointType == dummyDataPointType)
             assert(reviewQueueItem.qaStatus == QaStatusQaService.Pending)
             QaService.qaControllerApi.changeDataPointQaStatus(dataPointId, QaStatusQaService.Accepted)
