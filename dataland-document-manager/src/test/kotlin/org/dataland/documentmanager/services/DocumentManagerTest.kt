@@ -51,13 +51,11 @@ class DocumentManagerTest(
     private val mockDocumentMetaInfoRepository = mock<DocumentMetaInfoRepository>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockUserRolesChecker = mock<UserRolesChecker>()
     lateinit var documentManager: DocumentManager
 
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknownDocumentId"
     private val knownCompanyId = "knownCompanyId"
-    private val knownDocumentId = "known-document-id"
     private val knownButNonRetrievableDocumentId = "knownButNonRetrievableDocumentId"
 
     private val dummyDocumentMetaInfo =
@@ -71,7 +69,7 @@ class DocumentManagerTest(
 
     private val dummyDocumentUploadResponse =
         DocumentMetaInfoResponse(
-            documentId = knownDocumentId,
+            documentId = "known-document-id",
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyId),
@@ -87,7 +85,6 @@ class DocumentManagerTest(
             mockDocumentMetaInfoRepository,
             mockSecurityContext,
             mockCloudEventMessageHandler,
-            mockUserRolesChecker,
         )
 
         val mockAuthentication =
@@ -148,37 +145,27 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is not possible if document does not exist`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocument(unknownDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocument(unknownDocumentId) }
     }
 
     @Test
     fun `check that retrieving an existing but nonretrievable document throws the appropriate exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocument(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocument(knownButNonRetrievableDocumentId) }
     }
 
     @Test
     fun `check that document meta info retrieval is not possible if document does not exist`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(unknownDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(unknownDocumentId) }
     }
 
     @Test
     fun `check that retrieving meta info of an existing but nonretrievable document throws the appropriate exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId) }
     }
 
     @Test
     fun `check that trying to retrieve the metainfo of an existing but nonretrievable document throws exception`() {
-        assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
-        }
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId) }
     }
 
     @Test
@@ -409,5 +396,55 @@ class DocumentManagerTest(
                 limit = 50,
                 offset = 150,
             )
+    }
+
+    @Test
+    fun `check that replacing meta information for an existing documentId results in the desired changes`() {
+        val mockDocument = setupMockDocument()
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
+        val newMetaInfo =
+            DocumentMetaInfo(
+                documentName = "replaced name",
+                documentCategory = DocumentCategory.SustainabilityReport,
+                companyIds = mutableSetOf("company-id-2", "company-id-3"),
+                publicationDate = LocalDate.parse("2023-01-05"),
+                reportingPeriod = null,
+            )
+
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(any())
+        doReturn(dummyDocumentMetaInfoEntity)
+            .whenever(mockDocumentMetaInfoRepository)
+            .getByDocumentId(uploadResponse.documentId)
+        doReturn(dummyDocumentMetaInfoEntity).whenever(mockDocumentMetaInfoRepository).save(dummyDocumentMetaInfoEntity)
+
+        val response =
+            documentManager.putDocumentMetaInformation(
+                uploadResponse.documentId,
+                newMetaInfo,
+            )
+
+        assertEquals(newMetaInfo.documentName, dummyDocumentMetaInfoEntity.documentName)
+        assertEquals(newMetaInfo.documentCategory, dummyDocumentMetaInfoEntity.documentCategory)
+        assertEquals(newMetaInfo.companyIds, dummyDocumentMetaInfoEntity.companyIds)
+        assertEquals(newMetaInfo.publicationDate, dummyDocumentMetaInfoEntity.publicationDate)
+        assertEquals(newMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
+        assertEquals(response.documentId, uploadResponse.documentId)
+        assertEquals(response.documentName, newMetaInfo.documentName)
+        assertEquals(response.documentCategory, newMetaInfo.documentCategory)
+        assertEquals(response.companyIds, newMetaInfo.companyIds)
+        assertEquals(response.publicationDate, newMetaInfo.publicationDate)
+        assertEquals(response.reportingPeriod, newMetaInfo.reportingPeriod)
+    }
+
+    @Test
+    fun `check that replacing meta information for a non existing document throws exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.putDocumentMetaInformation(
+                unknownDocumentId,
+                dummyDocumentMetaInfo,
+            )
+        }
     }
 }
