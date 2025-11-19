@@ -49,11 +49,13 @@ class CompanyReportingInfoServiceTest {
         @JvmStatic
         fun paramStream(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 12, 1), 2025),
-                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 12, 1), 2026),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2021, 12, 1), 2022),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 6, 1), null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
+                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 3, 16), 2024),
+                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
+                Arguments.of(LocalDate.of(2030, 1, 31), 0, LocalDate.of(2025, 3, 31), 2025),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 2, 16), null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
+                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), null),
             )
     }
 
@@ -107,23 +109,10 @@ class CompanyReportingInfoServiceTest {
     fun `test resetData clears cache`() {
         val companyId = "123"
         val mockedStatic = mockLocalDateNow()
-        val testCompanyInformation =
-            CompanyInformation(
-                companyName = "testCompany",
-                headquarters = "testHeadquarters",
-                identifiers = emptyMap(),
-                countryCode = "DE",
-                fiscalYearEnd = LocalDate.of(2024, 1, 31),
-                reportingPeriodShift = 0,
-                sector = "testSector",
-            )
-        val testCompany =
-            StoredCompany(
-                companyId = companyId,
-                companyInformation = testCompanyInformation,
-                dataRegisteredByDataland = emptyList(),
-            )
-        whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(testCompany)
+        val info = validCompanyInfo()
+        whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
+            StoredCompany(companyId, info, emptyList()),
+        )
 
         companyReportingInfoService.updateCompanies(listOf(companyId))
 
@@ -181,12 +170,14 @@ class CompanyReportingInfoServiceTest {
     fun `updateCompanies ignores duplicate IDs`() {
         val companyId = "dup"
         val info = validCompanyInfo()
+        val mockedStatic = mockLocalDateNow()
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
         companyReportingInfoService.updateCompanies(listOf(companyId, companyId, companyId))
         val map = companyReportingInfoService.getCachedReportingYearAndSectorInformation()
         assertEquals(1, map.size)
+        mockedStatic.close()
     }
 
     @Test
@@ -197,7 +188,7 @@ class CompanyReportingInfoServiceTest {
     }
 
     private fun mockLocalDateNow(): MockedStatic<LocalDate> {
-        val today = LocalDate.of(2025, 12, 1)
+        val today = LocalDate.of(2025, 3, 31)
         val mockedStatic = mockStatic(LocalDate::class.java, Answers.CALLS_REAL_METHODS)
         mockedStatic.`when`<LocalDate> { LocalDate.now() }.thenReturn(today)
         return mockedStatic
@@ -210,7 +201,7 @@ class CompanyReportingInfoServiceTest {
             identifiers = emptyMap(),
             countryCode = "DE",
             fiscalYearEnd = LocalDate.of(2023, 12, 31),
-            reportingPeriodShift = 1,
+            reportingPeriodShift = 0,
             sector = "financials",
         )
 }
