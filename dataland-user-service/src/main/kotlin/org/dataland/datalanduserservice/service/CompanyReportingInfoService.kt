@@ -25,8 +25,8 @@ class CompanyReportingInfoService
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         companion object {
-            private const val THRESHOLD_1_IN_MONTHS = 1L
-            private const val THRESHOLD_2_IN_MONTHS = 3L
+            private const val STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS = 6L
+            private const val END_OF_SOURCING_WINDOW_THRESHOLD_2_IN_MONTHS = 1L
         }
 
         private val companyIdsWithoutReportingYearInfo: MutableSet<CompanyId> = mutableSetOf()
@@ -117,8 +117,8 @@ class CompanyReportingInfoService
             reportingPeriodShift: Int,
         ): Int? {
             val today = LocalDate.now()
-            val lowerBoundary = today.minusMonths(THRESHOLD_1_IN_MONTHS)
-            val upperBoundary = today.plusMonths(THRESHOLD_2_IN_MONTHS)
+            val lowerBoundary = today.minusMonths(STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS)
+            val upperBoundary = today.minusMonths(END_OF_SOURCING_WINDOW_THRESHOLD_2_IN_MONTHS)
 
             val candidateFiscalYearEnd =
                 listOf(
