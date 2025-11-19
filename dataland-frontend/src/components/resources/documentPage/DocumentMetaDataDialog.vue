@@ -266,7 +266,6 @@ async function saveChanges(): Promise<void> {
       : undefined,
     companyIds: metaData.value?.company?.map((company) => company.id) ?? [],
   } as unknown as DocumentMetaInfo;
-  console.log('Saving changes for document:', payload);
   try {
     await documentControllerApi.putDocumentMetaInfo(props.documentId, payload);
   } catch (error: unknown) {

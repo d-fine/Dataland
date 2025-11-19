@@ -169,6 +169,7 @@ describe('Component test for the Document Meta Data Dialog', () => {
         expect(requestBody.documentCategory).to.eq('Policy');
         expect(requestBody.publicationDate).to.not.eq(samplePublicationDate);
         expect(requestBody.reportingPeriod).to.eq('2025');
+        expect(requestBody.companyIds).to.deep.equal(documentMetaInfoEntityFromFixture.companyIds);
       });
     });
   });
