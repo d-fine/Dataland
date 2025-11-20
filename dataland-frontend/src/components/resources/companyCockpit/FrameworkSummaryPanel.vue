@@ -39,9 +39,41 @@
           <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
             {{ numberOfProvidedReportingPeriods }}
           </span>
-          <template v-if="numberOfProvidedReportingPeriods === 1"> Reporting Period</template>
-          <template v-else> Reporting Periods</template>
+          <template v-if="numberOfProvidedReportingPeriods === 1"> Reporting Period available</template>
+          <template v-else> Reporting Periods available</template>
         </span>
+        <div v-if="title === 'SFDR'" class="meta-flags" style="padding-left: 1rem">
+          <span v-tooltip.bottom="'huhu'">
+            <i class="pi pi-exclamation-circle"></i>
+            2 proxied
+          </span>
+          <span v-tooltip.bottom="'huhu'">
+            <i class="pi pi-times-circle"></i>
+            1 non-sourceable
+          </span>
+          <span v-tooltip.bottom="'huhu'">
+            (1 non-sourceable proxy)
+          </span>
+        </div>
+        <div v-else-if="subtitle === 'for financial companies'" class="meta-flags-stacked" style="padding-left: 1rem">
+          <span v-tooltip.bottom="'The 2021 dataset is proxied by Adidas AG. The 2023 dataset is proxied by Adidas AG 2.'">
+            <i class="pi pi-exclamation-circle"></i>
+            2 proxied
+          </span>
+          <span v-tooltip.bottom="'The 2021 dataset is non-sourceable.'">
+            <i class="pi pi-times-circle"></i>
+            1 non-sourceable
+          </span>
+          <span v-tooltip.bottom="'The 2021 dataset is proxied and non-sourceable'" style="padding-left: 1.1rem">
+            1 non-sourceable proxy
+          </span>
+        </div>
+        <div v-else-if="subtitle === 'for non-financial companies'" class="meta-flags-stacked" style="padding-left: 1rem">
+          <span v-tooltip.bottom="'The 2021 dataset is non-sourceable.'">
+            <i class="pi pi-times-circle"></i>
+            1 non-sourceable
+          </span>
+        </div>
       </div>
     </template>
     <template #footer>
@@ -75,6 +107,9 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import Tooltip from 'primevue/tooltip';
+
+const vTooltip = Tooltip;
 
 const props = defineProps<{
   companyId: string;
@@ -226,6 +261,7 @@ function onCursorLeaveProvideButton(): void {
   }
 
   &__data {
+    display: block;
     font-size: 16px;
     font-weight: 300;
     line-height: 21px;
@@ -234,5 +270,30 @@ function onCursorLeaveProvideButton(): void {
   &__value {
     font-weight: 600;
   }
+}
+
+.meta-flags {
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.meta-flags i {
+  margin-right: 4px;
+  font-size: 0.85rem;
+}
+.meta-flags span + span {
+  margin-left: 12px;
+}
+
+.meta-flags-stacked {
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.meta-flags-stacked i {
+  font-size: 0.85rem;
+}
+.meta-flags-stacked span + span {
+  display: block;
 }
 </style>

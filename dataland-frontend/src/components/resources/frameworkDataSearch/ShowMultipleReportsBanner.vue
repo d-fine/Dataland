@@ -1,8 +1,13 @@
 <template>
   <div class="next-to-each-other my-4">
-    <h4 class="m-0" data-test="frameworkNewDataTableTitle">
-      Data extracted from the company report. Company Reports ({{ reportingPeriods[indexOfNewestReportingPeriod] }}):
-    </h4>
+    <div style="display: flex; flex-direction: column">
+      <h4 class="m-0" data-test="frameworkNewDataTableTitle">
+        Data extracted from the company report. Company Reports ({{ reportingPeriods[indexOfNewestReportingPeriod] }}):
+      </h4>
+      <h4>
+        2021, 2023 – data is non-sourceable.
+      </h4>
+    </div>
     <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <a @click="openReportDataTableModal(report, name as string)" class="link" :data-test="`report-link-${name}`">

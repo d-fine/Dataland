@@ -16,7 +16,16 @@
               :data-dataset-index="idx"
             >
               <div class="p-column-header-content">
-                <span class="p-column-title" style="display: flex; align-items: center">
+                <div v-if="singleDataAndMetaInfo.metaInfo.reportingPeriod === '2022'" style="display: flex; align-items: center;">
+                  <span class="p-column-title" style="display: flex; align-items: center">
+                    {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
+                  </span>
+                  <Button
+                    label="(proxied by Adidas AG)"
+                    variant="link"
+                  />
+                </div>
+                <span v-else class="p-column-title" style="display: flex; align-items: center">
                   {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
                 </span>
               </div>
@@ -97,6 +106,7 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import Tooltip from 'primevue/tooltip';
+import Button from 'primevue/button';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,

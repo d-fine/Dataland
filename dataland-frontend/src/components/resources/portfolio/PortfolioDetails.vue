@@ -130,12 +130,12 @@
         :showFilterMatchModes="false"
       >
         <template #body="portfolioEntry">
-          <Button
-            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-            variant="link"
-            @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
-            :pt="{
+          <div v-if="framework === DataTypeEnum.EutaxonomyNonFinancials">
+            <Button
+              :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
+              variant="link"
+              @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
+              :pt="{
               label: {
                 style: 'font-weight: normal; text-align: left;',
               },
@@ -143,8 +143,65 @@
                 style: 'padding-left: 0;',
               },
             }"
-          />
-          <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
+            />
+          </div>
+          <div v-else-if="framework === DataTypeEnum.NuclearAndGas">
+            <span>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
+          </div>
+          <div v-else-if="framework === DataTypeEnum.Sfdr">
+            <Button
+              label="2024,  "
+              variant="link"
+              style="padding: 0 0 0 1.5rem;"
+            />
+            <Button
+              label="2023,  "
+              disabled
+              variant="link"
+              icon="pi pi-times-circle"
+              icon-pos="left"
+              v-tooltip="'Non-sourceable'"
+              style="padding: 0"
+            />
+            <Button
+              label="2022"
+              variant="link"
+              icon="pi pi-exclamation-circle"
+              v-tooltip="'Data proxied by Adidas AG'"
+              style="padding: 0"
+            />
+            <Button
+              label="2021"
+              variant="link"
+              disabled
+              icon="pi pi-times-circle"
+              v-tooltip="'Non-sourceable'"
+              style="padding: 0"
+            />
+          </div>
+          <div v-else>
+            <Button
+              label="2024,  "
+              variant="link"
+              style="padding: 0 0.5rem 0 0;"
+            />
+            <Button
+              label="2023,  "
+              disabled
+              variant="link"
+              icon="pi pi-times-circle"
+              icon-pos="left"
+              v-tooltip="'Non-sourceable'"
+              style="padding: 0 0.5rem 0 0;"
+            />
+            <Button
+              label="2022"
+              variant="link"
+              icon="pi pi-exclamation-circle"
+              v-tooltip="'Data proxied by Adidas AG'"
+              style="padding: 0"
+            />
+          </div>
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
@@ -206,6 +263,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import Tooltip from 'primevue/tooltip';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -262,6 +320,7 @@ const sectorOptions = ref<string[]>([]);
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
+const vTooltip = Tooltip;
 let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
@@ -350,7 +409,7 @@ async function checkDatalandMembershipOrAdminRights(): Promise<void> {
 function widthOfFrameworkColumn(framework: string): string {
   switch (framework) {
     case 'sfdr':
-      return '10';
+      return '5';
     case 'eutaxonomy-financials':
       return '15';
     case 'eutaxonomy-non-financials':

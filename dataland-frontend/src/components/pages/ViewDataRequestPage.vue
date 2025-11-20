@@ -83,6 +83,8 @@
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
+          <div class="side-header">Proxy company</div>
+          <div class="data" data-test="request-details-year">Adidas AG</div>
           <PrimeButton
             v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
