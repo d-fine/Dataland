@@ -227,8 +227,8 @@ interface DataApi<T> {
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
 
     /**
-     * A method to retrieve the latest available data for a given [companyIdentifier] and the implicitly defined data type [T]
-     * @param companyIdentifier specifies the company
+     * A method to retrieve the latest available data for a given [identifier] and the implicitly defined data type [T]
+     * @param identifier specifies the company
      * @return the dataset stored or an error if no dataset can be found
      */
     @Operation(

@@ -58,7 +58,7 @@ class PortfolioController
 
             if (failedIdentifiers.isNotEmpty()) {
                 throw ResourceNotFoundApiException(
-                    "Some companyIds were invalid",
+                    "Some company identifiers were invalid",
                     "The following company identifiers are invalid: $failedIdentifiers. CorrelationId: $correlationId",
                 )
             }

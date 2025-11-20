@@ -39,7 +39,7 @@ class PortfolioBulkDataRequestService
         fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
             if (!basePortfolio.isMonitored) return
             logger.info(
-                "Updating company reporting info for ${basePortfolio.identifiers.size} unique company ids for" +
+                "Updating company reporting info for ${basePortfolio.identifiers.size} unique company identifiers for" +
                     " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
             )
             companyReportingInfoService.updateCompanies(basePortfolio.identifiers)
