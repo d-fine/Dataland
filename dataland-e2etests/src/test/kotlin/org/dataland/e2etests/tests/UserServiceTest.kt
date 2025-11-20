@@ -1,12 +1,18 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
+import org.dataland.e2etests.utils.api.Backend
+import org.dataland.e2etests.utils.api.QaService
 import org.dataland.e2etests.utils.api.UserService
 import org.dataland.userService.openApiClient.model.EnrichedPortfolio
 import org.dataland.userService.openApiClient.model.NotificationFrequency
@@ -182,5 +188,45 @@ class UserServiceTest {
 
         assertEquals(3, requests.size)
         assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
+    }
+
+    @Test
+    fun `portfolio subscription leads to notifications in the RabbitMQ`() {
+        val portfolio =
+            PortfolioUpload(
+                portfolioName = "Test Portfolio ${UUID.randomUUID()}",
+                companyIds = setOf(companyId),
+                isMonitored = true,
+                monitoredFrameworks = setOf("sfdr"),
+                notificationFrequency = NotificationFrequency.Monthly,
+            )
+        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+            ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolio) }
+        }
+        val sfdrData = SfdrData()
+        val companyAssociatedDataSfdrData = CompanyAssociatedDataSfdrData(companyId, "2025", sfdrData)
+        var dataUploadResponse: DataMetaInformation? = null
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            ApiAwait.waitForSuccess {
+                dataUploadResponse =
+                    Backend.sfdrDataControllerApi
+                        .postCompanyAssociatedSfdrData(companyAssociatedDataSfdrData)
+            }
+        }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Reviewer) {
+            ApiAwait.waitForSuccess { QaService.qaControllerApi.changeQaStatus(dataUploadResponse!!.dataId, QaStatus.Accepted) }
+        }
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+            ApiAwait.waitForSuccess {
+                dataUploadResponse =
+                    Backend.sfdrDataControllerApi
+                        .postCompanyAssociatedSfdrData(companyAssociatedDataSfdrData)
+            }
+        }
+        GlobalAuth.withTechnicalUser(TechnicalUser.Reviewer) {
+            ApiAwait.waitForSuccess { QaService.qaControllerApi.changeQaStatus(dataUploadResponse!!.dataId, QaStatus.Accepted) }
+        }
     }
 }

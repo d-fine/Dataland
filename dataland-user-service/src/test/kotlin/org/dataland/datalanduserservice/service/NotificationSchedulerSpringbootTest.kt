@@ -138,27 +138,27 @@ class NotificationSchedulerSpringbootTest
                     { notificationScheduler.scheduledDailyEmailSending() },
                     NotificationFrequency.Daily,
                     listOf(
-                        mockPortfolioMap1[NotificationFrequency.Daily]!!,
-                        mockPortfolioMap2[NotificationFrequency.Daily]!!,
-                        mockPortfolioMap3[NotificationFrequency.Daily]!!,
+                        mockPortfolioMap1.getValue(NotificationFrequency.Daily),
+                        mockPortfolioMap2.getValue(NotificationFrequency.Daily),
+                        mockPortfolioMap3.getValue(NotificationFrequency.Daily),
                     ),
                 ),
                 TestArgument(
                     { notificationScheduler.scheduledWeeklyEmailSending() },
                     NotificationFrequency.Weekly,
                     listOf(
-                        mockPortfolioMap1[NotificationFrequency.Weekly]!!,
-                        mockPortfolioMap2[NotificationFrequency.Weekly]!!,
-                        mockPortfolioMap3[NotificationFrequency.Weekly]!!,
+                        mockPortfolioMap1.getValue(NotificationFrequency.Weekly),
+                        mockPortfolioMap2.getValue(NotificationFrequency.Weekly),
+                        mockPortfolioMap3.getValue(NotificationFrequency.Weekly),
                     ),
                 ),
                 TestArgument(
                     { notificationScheduler.scheduledMonthlyEmailSending() },
                     NotificationFrequency.Monthly,
                     listOf(
-                        mockPortfolioMap1[NotificationFrequency.Monthly]!!,
-                        mockPortfolioMap2[NotificationFrequency.Monthly]!!,
-                        mockPortfolioMap3[NotificationFrequency.Monthly]!!,
+                        mockPortfolioMap1.getValue(NotificationFrequency.Monthly),
+                        mockPortfolioMap2.getValue(NotificationFrequency.Monthly),
+                        mockPortfolioMap3.getValue(NotificationFrequency.Monthly),
                     ),
                 ),
             )
