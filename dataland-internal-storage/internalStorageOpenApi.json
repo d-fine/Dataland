@@ -20,6 +20,60 @@
     }
   ],
   "paths": {
+    "/documents/{documentId}/deleteRequest": {
+      "post": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Delete document from blob storage.",
+        "description": "Deletes a document entry from blob storage by document ID and remove its references from data points and datasets.",
+        "operationId": "deleteDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted document.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data/data-points/get-batch": {
       "post": {
         "tags": [
@@ -61,6 +115,66 @@
                   "additionalProperties": {
                     "$ref": "#/components/schemas/StorableDataPoint"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/{documentId}/references": {
+      "get": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Get document references.",
+        "description": "Gets data point IDs and dataset IDs that reference this document.",
+        "operationId": "getDocumentReferences",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of data point IDs and dataset IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentReferencesResponse"
                 }
               }
             }
@@ -403,6 +517,29 @@
           },
           "reportingPeriod": {
             "type": "string"
+          }
+        }
+      },
+      "DocumentReferencesResponse": {
+        "required": [
+          "dataPointIds",
+          "datasetIds"
+        ],
+        "type": "object",
+        "properties": {
+          "datasetIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataPointIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
