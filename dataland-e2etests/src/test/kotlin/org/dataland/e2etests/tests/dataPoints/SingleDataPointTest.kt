@@ -207,7 +207,6 @@ class SingleDataPointTest {
             val reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
             Thread.sleep(4000)
             assert(reviewQueueItem != null) { "Data point not found in review queue" }
-
             assert(reviewQueueItem!!.dataPointType == dummyDataPointType)
             assert(reviewQueueItem.qaStatus == QaStatusQaService.Pending)
             QaService.qaControllerApi.changeDataPointQaStatus(dataPointId, QaStatusQaService.Accepted)
