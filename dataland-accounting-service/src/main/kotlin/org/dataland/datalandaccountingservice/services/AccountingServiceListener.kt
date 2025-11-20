@@ -134,8 +134,7 @@ class AccountingServiceListener(
                 dataSourcingId = dataSourcingUUID,
             )
 
-        val existingBilledRequest = billedRequestRepository.findByIdOrNull(billedRequestEntityId)
-        if (existingBilledRequest != null) {
+        if (billedRequestRepository.findByIdOrNull(billedRequestEntityId) != null) {
             logDuplicateBilledRequestMessage(
                 billedCompanyUUID.toString(),
                 requestSetToProcessingMessage.dataSourcingId,
