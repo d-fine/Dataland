@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import kotlin.reflect.KClass
 
 /**
- * Annotation to validate that a company exists on Dataland
+ * Annotation to validate that a provided test string is a uuid
  */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Constraint(
@@ -27,10 +27,10 @@ annotation class UUIDIsValid(
  */
 class UUIDIsValidValidatorClass : ConstraintValidator<UUIDIsValid, String> {
     override fun isValid(
-        companyId: String?,
+        testString: String?,
         context: ConstraintValidatorContext?,
     ): Boolean {
-        if (companyId == null) return true
-        return ValidationUtils.isUuid(companyId)
+        if (testString == null) return true
+        return ValidationUtils.isUuid(testString)
     }
 }

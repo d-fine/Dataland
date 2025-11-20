@@ -1,6 +1,7 @@
 package org.dataland.datalandaccountingservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -8,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.model.TransactionPost
+import org.dataland.datalandaccountingservice.validator.CompanyIsMember
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.dataland.datalandbackendutils.validator.UUIDIsValid
 import org.springframework.http.ResponseEntity
@@ -42,8 +45,10 @@ interface CreditsApi {
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
-                responseCode = "404",
-                description = "The specified company ID was not found.",
+                responseCode = "400",
+                description =
+                    "The specified company ID was invalid. It was not a valid UUID, the company ID " +
+                        "does not exist on Dataland, or the company is not a member company.",
                 content = [Content(schema = Schema())],
             ),
         ],
@@ -54,6 +59,11 @@ interface CreditsApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @AccountingAuthorizationService.hasUserRoleInMemberCompany(#companyId)")
     fun getBalance(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        )
+        @CompanyIsMember
         @CompanyExists
         @UUIDIsValid
         @PathVariable("companyId") companyId: String,
@@ -75,8 +85,10 @@ interface CreditsApi {
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
-                responseCode = "404",
-                description = "The specified company ID was not found.",
+                responseCode = "400",
+                description =
+                    "The specified company ID was invalid. It was not a valid UUID, the company ID " +
+                        "does not exist on Dataland, or the company is not a member company.",
                 content = [Content(schema = Schema())],
             ),
         ],
@@ -88,6 +100,11 @@ interface CreditsApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postTransaction(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+        )
+        @CompanyIsMember
         @CompanyExists
         @UUIDIsValid
         @PathVariable("companyId") companyId: String,
