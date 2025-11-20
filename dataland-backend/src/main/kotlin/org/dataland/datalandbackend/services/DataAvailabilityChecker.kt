@@ -110,9 +110,9 @@ class DataAvailabilityChecker
                     .findByCompanyIdAndDataPointTypeInAndCurrentlyActiveTrue(
                         companyId,
                         dataPointTypes,
-                    ).groupBy { it -> it.reportingPeriod }
-                    .filter { dataPoint ->
-                        DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPoint.value.map { it.dataPointType })
+                    ).groupBy { it.reportingPeriod }
+                    .filter { dataPoints ->
+                        DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPoints.value.map { it.dataPointType })
                     }
             val latestReportingPeriod = allRelevantDataPoints.maxOfOrNull { it.key } ?: return emptyList()
             return allRelevantDataPoints.getValue(latestReportingPeriod)
