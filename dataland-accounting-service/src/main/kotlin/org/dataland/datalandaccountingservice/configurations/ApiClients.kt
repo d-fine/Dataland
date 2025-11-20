@@ -1,6 +1,7 @@
 package org.dataland.datalandaccountingservice.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -22,6 +23,14 @@ class ApiClients(
     fun getCompanyRolesApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyRolesControllerApi = CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the CompanyRightsControllerApi of the community manager
+     */
+    @Bean
+    fun getCompanyRightsApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): CompanyRightsControllerApi = CompanyRightsControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
