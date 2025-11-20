@@ -104,7 +104,11 @@
       </div>
     </div>
   </TheContent>
-  <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
+  <DocumentMetaDataDialog
+    v-model:isOpen="isMetaInfoDialogOpen"
+    :document-id="selectedDocumentId"
+    @data-patched="handleDocumentUpload"
+  />
   <UploadDocumentDialog
     v-if="showUploadModal"
     :visible="showUploadModal"
