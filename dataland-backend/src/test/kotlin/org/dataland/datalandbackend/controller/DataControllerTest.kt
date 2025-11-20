@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
-import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
@@ -281,12 +280,14 @@ internal class DataControllerTest {
             .whenever(mockDataManager)
             .getLatestAvailableData(eq(companyId), any(), any())
 
-        dataController.getLatestAvailableCompanyAssociatedData(companyLei).let {
-            Assertions.assertEquals(
-                it.body,
-                CompanyAssociatedData<LksgData>(companyId, testReportingPeriod, someEuTaxoData),
-            )
-        }
+        val response = dataController.getLatestAvailableCompanyAssociatedData(companyLei)
+        Assertions.assertNotNull(response, "Controller should not return null")
+        Assertions.assertNotNull(response.body, "Response body should not be null")
+
+        Assertions.assertEquals(
+            CompanyAssociatedData(companyId, testReportingPeriod, someEuTaxoData),
+            response.body,
+        )
     }
 
     private fun randomLei(): String = (1..20).map { "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".random() }.joinToString("")

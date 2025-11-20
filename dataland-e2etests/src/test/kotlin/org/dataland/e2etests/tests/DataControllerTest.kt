@@ -20,6 +20,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.assertEqualsByJsonComparator
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -273,14 +274,13 @@ class DataControllerTest {
                     apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getLatestAvailableCompanyAssociatedData4(
                         companyIdentifier,
                     )
-                assertEquals(
-                    latestAvailableReportingPeriod,
-                    latestResponse.data.revenue
-                        ?.totalAmount
-                        ?.value
-                        ?.toPlainString(),
-                )
+                Assertions.assertNotNull(latestResponse, "Controller should not return null")
+                assertEquals(latestAvailableReportingPeriod, latestResponse.data.revenue
+                    ?.totalAmount
+                    ?.value
+                    ?.toPlainString())
             }
+
         }
     }
 
