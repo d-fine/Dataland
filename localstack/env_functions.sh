@@ -17,7 +17,3 @@ source_uncritical_environment() {
   source ./environments/.env.uncritical
   set +o allexport
 }
-
-verify_environment_variables() {
-  ./verifyEnvironmentVariables.sh
-}
