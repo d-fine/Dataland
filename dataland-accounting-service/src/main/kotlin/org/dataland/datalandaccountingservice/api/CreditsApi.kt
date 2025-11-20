@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.model.TransactionPost
 import org.dataland.datalandbackendutils.validator.CompanyExists
+import org.dataland.datalandbackendutils.validator.UUIDIsValid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -54,6 +55,7 @@ interface CreditsApi {
     @PreAuthorize("hasRole('ROLE_ADMIN') or @AccountingAuthorizationService.hasUserRoleInMemberCompany(#companyId)")
     fun getBalance(
         @CompanyExists
+        @UUIDIsValid
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<BigDecimal>
 
@@ -87,6 +89,7 @@ interface CreditsApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postTransaction(
         @CompanyExists
+        @UUIDIsValid
         @PathVariable("companyId") companyId: String,
         @RequestBody transactionPost: TransactionPost,
     ): ResponseEntity<TransactionDto<String>>

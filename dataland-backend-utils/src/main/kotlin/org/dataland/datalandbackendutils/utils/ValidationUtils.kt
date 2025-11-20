@@ -29,7 +29,7 @@ object ValidationUtils {
      * @param testString the string to check
      * @return true if the string is a valid UUID, false otherwise
      */
-    private fun isUuid(testString: String): Boolean = uuidRegex.matches(testString)
+    fun isUuid(testString: String): Boolean = uuidRegex.matches(testString)
 
     /**
      * Converts the given string to a UUID, throwing an ResourceNotFoundApiException if the string is not a valid UUID.
