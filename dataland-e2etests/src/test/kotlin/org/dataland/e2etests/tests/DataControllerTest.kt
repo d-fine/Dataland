@@ -275,12 +275,14 @@ class DataControllerTest {
                         companyIdentifier,
                     )
                 Assertions.assertNotNull(latestResponse, "Controller should not return null")
-                assertEquals(latestAvailableReportingPeriod, latestResponse.data.revenue
-                    ?.totalAmount
-                    ?.value
-                    ?.toPlainString())
+                assertEquals(
+                    latestAvailableReportingPeriod,
+                    latestResponse.data.revenue
+                        ?.totalAmount
+                        ?.value
+                        ?.toPlainString(),
+                )
             }
-
         }
     }
 
