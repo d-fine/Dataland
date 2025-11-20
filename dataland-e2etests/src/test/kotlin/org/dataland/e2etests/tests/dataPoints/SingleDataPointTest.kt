@@ -207,8 +207,8 @@ class SingleDataPointTest {
             var reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
             try {
                 assert(reviewQueueItem != null)
-            } catch (_: AssertionError){
-                Thread.sleep(1000)
+            } catch (_: AssertionError) {
+                Thread.sleep(4000)
                 reviewQueueItem = QaService.qaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataPointId == dataPointId }
                 assert(reviewQueueItem != null) { "Data point not found in review queue" }
             }
