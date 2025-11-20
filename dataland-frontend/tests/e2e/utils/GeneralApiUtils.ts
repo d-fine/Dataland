@@ -17,8 +17,7 @@ interface InterceptRequest {
   headers: Record<string, string>;
   url: string;
   query: Record<string, string>;
-  continue: (callback: (response: InterceptResponse) => void) => void;
-  on: (event:string, callback: (response: InterceptResponse) => void) => void;
+  on: (event: string, callback: (response: InterceptResponse) => void) => void;
 }
 
 interface InterceptResponse {

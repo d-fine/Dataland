@@ -75,15 +75,9 @@ class KeycloakTokenManager(
                 .addHeader("Authorization", "Basic $authorizationHeader")
                 .build()
         val response = httpClient.newCall(request).execute()
-        val rawResponseBody = response.body!!.string()
-        val requestString = request.toString()
-        val requestBody = request.body!!.toString()
-        logger.info("Request: $requestString")
-        logger.info("Request body: $requestBody")
-        logger.info("Response body: $rawResponseBody")
         val parsedResponseBody =
             objectMapper.readValue(
-                rawResponseBody,
+                response.body!!.string(),
                 KeycloakAccessTokenResponse::class.java,
             )
         currentAccessToken = parsedResponseBody.accessToken
