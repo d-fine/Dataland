@@ -340,7 +340,7 @@ interface QaApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully assigned QA review status to dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully assigned QA review status to data point."),
         ],
     )
     @PostMapping(

@@ -1004,7 +1004,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully assigned QA review status to dataset."
+            "description": "Successfully assigned QA review status to data point."
           },
           "default": {
             "description": "An error occurred",

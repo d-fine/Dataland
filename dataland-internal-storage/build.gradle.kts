@@ -53,6 +53,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.postgresql)
+    testImplementation(libs.mockito.kotlin)
 }
 
 openApi {
