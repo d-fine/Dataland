@@ -13,6 +13,8 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -37,6 +39,8 @@ class DataSourcingManager
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
 
+        private fun isUserAdmin(): Boolean = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
          * @param dataSourcingEntityId the ID of the data sourcing entity to retrieve
@@ -45,8 +49,9 @@ class DataSourcingManager
         @Transactional(readOnly = true)
         fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
             getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
-                .toStoredDataSourcing()
-                .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
+                .toStoredDataSourcing(
+                    isUserAdmin(),
+                ).also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
@@ -62,7 +67,7 @@ class DataSourcingManager
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Patch data sourcing entity with id: $dataSourcingEntityId.")
-            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
+            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing(isAdmin = true)
         }
 
         /**
@@ -250,7 +255,7 @@ class DataSourcingManager
                     dataExtractor = dataExtractor,
                     adminComment = adminComment,
                 ),
-            ).toStoredDataSourcing()
+            ).toStoredDataSourcing(isAdmin = true)
         }
 
         /**
@@ -260,16 +265,17 @@ class DataSourcingManager
          * @return A list of StoredDataSourcing objects associated with the specified company ID, or null if none exist.
          */
         @Transactional(readOnly = true)
-        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing> {
+        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<StoredDataSourcing> {
             logger.info(
                 "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
+            val isUserAdmin = isUserAdmin()
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity -> entity.toReducedDataSourcing() }
+            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin) }
         }
 
         /**

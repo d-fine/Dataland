@@ -61,7 +61,7 @@ class DataSourcingWorkflowTest
                 AuthenticationMock.mockJwtAuthentication(
                     "data-admin",
                     userId,
-                    roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER),
+                    roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_USER),
                 )
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
             SecurityContextHolder.setContext(mockSecurityContext)

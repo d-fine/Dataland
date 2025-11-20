@@ -3,6 +3,8 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -34,13 +36,17 @@ class DataSourcingQueryManager(
         state: DataSourcingState?,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<StoredDataSourcing> =
-        dataSourcingRepository
+    ): List<StoredDataSourcing> {
+        val isUserAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
                     .searchDataSourcingEntities(
                         companyId, dataType, reportingPeriod, state,
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
-            ).map { it.toStoredDataSourcing() }
+            ).map {
+                it.toStoredDataSourcing(isUserAdmin)
+            }
+    }
 }

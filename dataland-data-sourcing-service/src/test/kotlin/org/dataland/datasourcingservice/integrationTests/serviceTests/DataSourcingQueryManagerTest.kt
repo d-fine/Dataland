@@ -15,12 +15,21 @@ import org.dataland.datasourcingservice.utils.DATA_TYPE_2
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(
@@ -35,6 +44,22 @@ class DataSourcingQueryManagerTest
     ) : BaseIntegrationTest() {
         private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
         private lateinit var dataSourcingEntities: List<DataSourcingEntity>
+        private val mockSecurityContext = mock<SecurityContext>()
+        private lateinit var mockAuthentication: DatalandAuthentication
+
+        /**
+         * Setting the security context to use the specified userId and set of roles.
+         */
+        private fun resetSecurityContext(isUserAdmin: Boolean) {
+            mockAuthentication =
+                AuthenticationMock.mockJwtAuthentication(
+                    "userName",
+                    "userId",
+                    if (isUserAdmin) setOf(DatalandRealmRole.ROLE_ADMIN) else setOf(DatalandRealmRole.ROLE_USER),
+                )
+            doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
+            SecurityContextHolder.setContext(mockSecurityContext)
+        }
 
         /**
          * Store 8 data sourcings covering all combinations of the three filter parameters other than state.
@@ -64,10 +89,14 @@ class DataSourcingQueryManagerTest
         @ParameterizedTest
         @CsvSource(
             value = [
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${DATA_SOURCING_STATE_1}, 0",
-                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0",
-                "null, null, null, ${DATA_SOURCING_STATE_1}, 0;3;6",
-                "null, null, null, null, 0;1;2;3;4;5;6;7",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${DATA_SOURCING_STATE_1}, 0, true",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0, true",
+                "null, null, null, ${DATA_SOURCING_STATE_1}, 0;3;6, true",
+                "null, null, null, null, 0;1;2;3;4;5;6;7, true",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, ${DATA_SOURCING_STATE_1}, 0, false",
+                "${COMPANY_ID_1}, ${DATA_TYPE_1}, ${REPORTING_PERIOD_1}, null, 0, false",
+                "null, null, null, ${DATA_SOURCING_STATE_1}, 0;3;6, false",
+                "null, null, null, null, 0;1;2;3;4;5;6;7, false",
             ],
             nullValues = ["null"],
         )
@@ -77,11 +106,13 @@ class DataSourcingQueryManagerTest
             reportingPeriod: String?,
             dataSourcingState: String?,
             indexString: String,
+            isUserAdmin: Boolean,
         ) {
+            resetSecurityContext(isUserAdmin)
             val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
                 indicesOfExpectedResults
-                    .map { dataSourcingEntities[it].toStoredDataSourcing() }
+                    .map { dataSourcingEntities[it].toStoredDataSourcing(isUserAdmin) }
             val actualResults =
                 dataSourcingQueryManager.searchDataSourcings(
                     companyId = companyId?.let { UUID.fromString(it) },
@@ -93,5 +124,23 @@ class DataSourcingQueryManagerTest
             expectedResults.forEach {
                 assert(it in actualResults) { "Expected result $it not found in actual results" }
             }
+        }
+
+        @Test
+        fun `ensure that non admin users cannot see sensitive fields`() {
+            resetSecurityContext(isUserAdmin = false)
+            dataSourcingQueryManager
+                .searchDataSourcings(
+                    companyId = null,
+                    dataType = null,
+                    reportingPeriod = null,
+                    state = null,
+                ).forEach {
+                    Assertions.assertNull(it.adminComment, "Non-admin user should not see adminComment")
+                    Assertions.assertTrue(
+                        it.associatedRequestIds.isEmpty(),
+                        "Non-admin user should not see associatedRequestIds",
+                    )
+                }
         }
     }

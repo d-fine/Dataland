@@ -88,9 +88,9 @@ class DataSourcingEntity(
     }
 
     /**
-     * Converts this DataSourcingEntity to a StoredDataSourcing.
+     * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields for non-admins.
      */
-    fun toStoredDataSourcing(): StoredDataSourcing =
+    fun toStoredDataSourcing(isAdmin: Boolean): StoredDataSourcing =
         StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -102,8 +102,8 @@ class DataSourcingEntity(
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
-            adminComment = adminComment,
-            associatedRequestIds = associatedRequests.map { it.id.toString() }.toMutableSet(),
+            adminComment = if (isAdmin) adminComment else null,
+            associatedRequestIds = if (isAdmin) associatedRequests.map { it.id.toString() }.toMutableSet() else emptySet(),
         )
 
     /**

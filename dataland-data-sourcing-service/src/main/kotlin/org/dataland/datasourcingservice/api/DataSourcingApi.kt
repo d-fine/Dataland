@@ -44,11 +44,6 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query data sourcing objects.",
-                content = [Content(schema = Schema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
                 description = "DataSourcing object not found.",
                 content = [Content(schema = Schema())],
@@ -56,7 +51,7 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingById(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -79,11 +74,6 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing objects."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland Admins and members of this company are allowed to use this endpoint.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
                 description = "Provider company not found.",
                 content = [Content(array = ArraySchema())],
@@ -91,9 +81,7 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/provider/{providerCompanyId}"], produces = ["application/json"])
-    @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToCompany(#providerCompanyId)",
-    )
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingForCompanyId(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_DESCRIPTION,
@@ -101,7 +89,7 @@ interface DataSourcingApi {
         )
         @CompanyExists
         @PathVariable providerCompanyId: String,
-    ): ResponseEntity<List<ReducedDataSourcing>>
+    ): ResponseEntity<List<StoredDataSourcing>>
 
     /**
      * Retrieve the history of a DataSourcing object by its ID.
@@ -114,11 +102,6 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing history."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query data sourcing history.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
                 description = "DataSourcing object not found.",
                 content = [Content(array = ArraySchema())],
@@ -126,7 +109,7 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/{dataSourcingId}/history"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingHistoryById(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -349,15 +332,10 @@ interface DataSourcingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved matching data sourcing objects."),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins have the right to search for data sourcing objects.",
-                content = [Content(array = ArraySchema())],
-            ),
         ],
     )
     @GetMapping(produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun searchDataSourcings(
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
