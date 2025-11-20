@@ -126,7 +126,7 @@ class DataSourcingEntity(
     /**
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
      */
-    fun toDataSourcingWithoutReferences(): DataSourcingWithoutReferences =
+    fun toDataSourcingWithoutReferences(isAdmin: Boolean): DataSourcingWithoutReferences =
         DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -136,6 +136,6 @@ class DataSourcingEntity(
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
-            adminComment = adminComment,
+            adminComment = if (isAdmin) adminComment else null,
         )
 }

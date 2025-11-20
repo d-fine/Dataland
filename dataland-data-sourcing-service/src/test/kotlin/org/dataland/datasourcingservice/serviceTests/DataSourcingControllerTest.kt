@@ -66,7 +66,7 @@ class DataSourcingControllerTest(
         AuthenticationMock.mockJwtAuthentication(
             username = "DATA_ADMIN",
             userId = adminUserId.toString(),
-            roles = setOf(DatalandRealmRole.ROLE_ADMIN),
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_USER),
         )
 
     private val dummyUserAuthentication =
@@ -236,25 +236,9 @@ class DataSourcingControllerTest(
     }
 
     @Test
-    fun `regular users cannot get data sourcings by company ID without company roles`() {
+    fun `regular users can get data sourcings by company ID`() {
         setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
-        performGetDataSourcingByCompanyId(status().isForbidden())
-    }
-
-    @Test
-    fun `users with company roles can get data sourcings for their own company ID`() {
-        setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, providerCompanyId, listOf(generalMemberAssignment))
         performGetDataSourcingByCompanyId(status().isOk())
-    }
-
-    @Test
-    fun `users with company roles cannot get data sourcings for other company IDs`() {
-        setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, providerCompanyId, emptyList())
-        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
-        performGetDataSourcingByCompanyId(status().isForbidden())
     }
 
     @Test

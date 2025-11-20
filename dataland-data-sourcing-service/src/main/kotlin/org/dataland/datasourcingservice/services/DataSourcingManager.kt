@@ -290,7 +290,7 @@ class DataSourcingManager
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences() }
+                .map { it.toDataSourcingWithoutReferences(isUserAdmin()) }
                 .ifEmpty {
                     throw DataSourcingNotFoundApiException(id)
                 }

@@ -536,9 +536,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing objects."
-          },
           "404": {
             "description": "DataSourcing object not found."
           },
@@ -1195,9 +1192,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only Dataland admins have the right to search for data sourcing objects."
-          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -1263,9 +1257,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing history."
-          },
           "404": {
             "description": "DataSourcing object not found."
           },
@@ -1328,14 +1319,11 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReducedDataSourcing"
+                    "$ref": "#/components/schemas/StoredDataSourcing"
                   }
                 }
               }
             }
-          },
-          "403": {
-            "description": "Only Dataland Admins and members of this company are allowed to use this endpoint."
           },
           "404": {
             "description": "Provider company not found."

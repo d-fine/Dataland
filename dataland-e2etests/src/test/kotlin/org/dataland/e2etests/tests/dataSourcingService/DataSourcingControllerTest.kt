@@ -18,14 +18,6 @@ import java.time.LocalDate
 class DataSourcingControllerTest : DataSourcingTest() {
     private val documentControllerApiAccessor = DocumentControllerApiAccessor()
 
-    private fun assertForbiddenException(function: () -> Unit) {
-        val exception =
-            assertThrows<ClientException> {
-                function()
-            }
-        assertEquals(403, exception.statusCode)
-    }
-
     private fun verifyDataSourcingDocuments(
         dataSourcingObjectId: String,
         expectedDocuments: Set<String>,
@@ -50,15 +42,17 @@ class DataSourcingControllerTest : DataSourcingTest() {
     fun `verify that data sourcing objects behave as they should during the early stages of their lifecycle`() {
         val (companyId, requestId) = createNewCompanyAndRequestAndReturnTheirIds()
 
-        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
-            assertForbiddenException {
-                apiAccessor.dataSourcingControllerApi.searchDataSourcings(
-                    companyId = companyId,
-                    dataType = testDataType,
-                    reportingPeriod = testReportingPeriod,
-                )
-            }
-        }
+        assert(
+            GlobalAuth
+                .withTechnicalUser(TechnicalUser.Reader) {
+                    apiAccessor.dataSourcingControllerApi
+                        .searchDataSourcings(
+                            companyId = companyId,
+                            dataType = testDataType,
+                            reportingPeriod = testReportingPeriod,
+                        )
+                }.isEmpty(),
+        )
 
         assert(
             apiAccessor.dataSourcingControllerApi
