@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-script_dirname="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$script_dirname/localstack/docker_functions.sh"
-source "$script_dirname/localstack/env_functions.sh"
-source "$script_dirname/localstack/cert_functions.sh"
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$project_root/localstack/docker_functions.sh"
+source "$project_root/localstack/env_functions.sh"
+source "$project_root/localstack/cert_functions.sh"
+
+print_usage() {
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
+  echo "  --start: Start the development stack"
+  echo "  --stop: Stop the development stack"
+  echo "  --reset: Reset and restart the development stack from scratch"
+  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
+  echo "  --dev-env: Load environments/.env.dev before starting/resetting"
+  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
+  echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
+  echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
+  echo ""
+  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
+}
 
 rebuild_gradle_dockerfile() {
   rm ./*github_env.log || true
@@ -26,7 +40,7 @@ start_development_stack() {
   local container_backend="$3"
 
   set -x
-  verify_environment_variables
+  ./verifyEnvironmentVariables.sh
   setup_certificates "$self_signed"
   assemble_all_projects
   rebuild_gradle_dockerfile
@@ -52,7 +66,7 @@ start_development_stack() {
   start_health_check
   wait_for_admin_proxy
 
-  if [ "$container_backend" = false ]; then
+  if [[ "$container_backend" = false ]]; then
     start_backend
   fi
   set +x
@@ -74,7 +88,7 @@ reset_development_stack() {
   local self_signed="$1"
 
   set -x
-  verify_environment_variables
+  ./verifyEnvironmentVariables.sh
   check_backend_not_running
   clear_docker_completely
   ./gradlew clean
@@ -88,21 +102,6 @@ reset_development_stack() {
   set +x
 }
 
-usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
-  echo "  --start: Start the development stack"
-  echo "  --stop: Stop the development stack"
-  echo "  --reset: Reset and restart the development stack from scratch"
-  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
-  echo "  --dev-env: Load environments/.env.dev before starting/resetting"
-  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-  echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
-  echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
-  echo ""
-  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
-  exit 1
-}
-
 parse_arguments() {
   local local_frontend=false
   local dev_env=false
@@ -114,7 +113,8 @@ parse_arguments() {
   local container_backend=false
 
   if [[ $# -eq 0 ]]; then
-    usage
+    print_usage
+    exit 1
   fi
 
   while [[ $# -gt 0 ]]; do
@@ -159,7 +159,8 @@ parse_arguments() {
         ;;
       *)
         echo "Unknown option: $1"
-        usage
+        print_usage
+        exit 1
         ;;
     esac
   done
