@@ -8,7 +8,6 @@ import org.dataland.datalandbackendutils.validator.CompanyExistsValidator
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRightAssignmentString
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.client.RestClientException
 import java.io.IOException
 import kotlin.reflect.KClass
@@ -32,8 +31,8 @@ annotation class CompanyIsMember(
  * Validator to check that a company is a Dataland member
  */
 class CompanyIsMemberValidator(
-    @Autowired private val companyRightsControllerApi: CompanyRightsControllerApi,
-    @Autowired private val companyExistsValidator: CompanyExistsValidator
+    private val companyRightsControllerApi: CompanyRightsControllerApi,
+    private val companyExistsValidator: CompanyExistsValidator
 ) : ConstraintValidator<CompanyIsMember, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -44,7 +43,7 @@ class CompanyIsMemberValidator(
         if (companyId == null) return false
 
         if (!companyExistsValidator.isValid(companyId, context)) {
-            return true
+            return false
         }
 
         return callCompanyRightsAPIAndCheckIfCompanyIsMember(companyId)
