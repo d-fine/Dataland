@@ -30,7 +30,7 @@ class NotificationEventListenerTest {
     }
 
     @Test
-    fun `test non-sourceable messages`() {
+    fun `test nonSourceable messages`() {
         val payload =
             SourceabilityMessage(
                 companyId.toString(),
@@ -58,7 +58,7 @@ class NotificationEventListenerTest {
     }
 
     @Test
-    fun `test data-availability messages`() {
+    fun `test data availability messages`() {
         val payload =
             QaStatusChangeMessage(
                 dataId.toString(),

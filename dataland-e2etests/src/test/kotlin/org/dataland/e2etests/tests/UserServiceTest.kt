@@ -200,7 +200,7 @@ class UserServiceTest {
                 monitoredFrameworks = setOf("sfdr"),
                 notificationFrequency = NotificationFrequency.Monthly,
             )
-        GlobalAuth.withTechnicalUser(TechnicalUser.Reader) {
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             ApiAwait.waitForSuccess { UserService.portfolioControllerApi.createPortfolio(portfolio) }
         }
         val sfdrData = SfdrData()
