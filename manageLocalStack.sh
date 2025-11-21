@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/localstack/docker_functions.sh"
-source "$SCRIPT_DIR/localstack/env_functions.sh"
-source "$SCRIPT_DIR/localstack/cert_functions.sh"
+script_dirname="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$script_dirname/localstack/docker_functions.sh"
+source "$script_dirname/localstack/env_functions.sh"
+source "$script_dirname/localstack/cert_functions.sh"
 
 rebuild_gradle_dockerfile() {
   rm ./*github_env.log || true
   ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
-
-
 
 start_health_check() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
@@ -41,7 +39,7 @@ start_development_stack() {
   local compose_profiles
   read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
 
-  if [ "$container_backend" = true ]; then
+  if [[ "$container_backend" = true ]]; then
     export INTERNAL_BACKEND_URL="http://backend:8080/api"
     export BACKEND_URL="http://backend:8080/api/"
   else
@@ -90,6 +88,21 @@ reset_development_stack() {
   set +x
 }
 
+usage() {
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
+  echo "  --start: Start the development stack"
+  echo "  --stop: Stop the development stack"
+  echo "  --reset: Reset and restart the development stack from scratch"
+  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
+  echo "  --dev-env: Load environments/.env.dev before starting/resetting"
+  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
+  echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
+  echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
+  echo ""
+  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
+  exit 1
+}
+
 parse_arguments() {
   local local_frontend=false
   local dev_env=false
@@ -100,29 +113,20 @@ parse_arguments() {
   local self_signed=false
   local container_backend=false
 
-  if [ $# -eq 0 ]; then
-    echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
-    echo "  --start: Start the development stack"
-    echo "  --stop: Stop the development stack"
-    echo "  --reset: Reset and restart the development stack from scratch"
-    echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
-    echo "  --dev-env: Load environments/.env.dev before starting/resetting"
-    echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-    echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
-    echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
-    echo ""
-    echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
-    exit 1
+  if [[ $# -eq 0 ]]; then
+    usage
   fi
 
-  while [ $# -gt 0 ]; do
+  while [[ $# -gt 0 ]]; do
     case "$1" in
       --stop)
         do_stop=true
         shift
         ;;
       --reset)
+        do_stop=true
         do_reset=true
+        do_start=true
         shift
         ;;
       --start)
@@ -155,27 +159,24 @@ parse_arguments() {
         ;;
       *)
         echo "Unknown option: $1"
-        echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
-        exit 1
+        usage
         ;;
     esac
   done
 
-  if [ "$dev_env" = true ]; then
+  if [[ "$dev_env" = true ]]; then
     load_dev_environment
   fi
 
-  
-
-  if [ "$do_stop" = true ]; then
+  if [[ "$do_stop" = true ]]; then
     stop_development_stack
   fi
 
-  if [ "$do_reset" = true ]; then
+  if [[ "$do_reset" = true ]]; then
     reset_development_stack "$self_signed"
   fi
 
-  if [ "$do_start" = true ]; then
+  if [[ "$do_start" = true ]]; then
     start_development_stack "$local_frontend" "$self_signed" "$container_backend"
   fi
 }
