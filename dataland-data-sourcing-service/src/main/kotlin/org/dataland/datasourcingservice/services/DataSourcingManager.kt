@@ -39,7 +39,8 @@ class DataSourcingManager
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
 
-        private fun isUserAdmin(): Boolean = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        private fun isUserAdmin(): Boolean =
+            DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
 
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
@@ -67,7 +68,7 @@ class DataSourcingManager
         ): StoredDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Patch data sourcing entity with id: $dataSourcingEntityId.")
-            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing(isAdmin = true)
+            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
         }
 
         /**
@@ -255,7 +256,7 @@ class DataSourcingManager
                     dataExtractor = dataExtractor,
                     adminComment = adminComment,
                 ),
-            ).toStoredDataSourcing(isAdmin = true)
+            ).toStoredDataSourcing(isUserAdmin())
         }
 
         /**

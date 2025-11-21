@@ -90,7 +90,7 @@ class DataSourcingEntity(
     /**
      * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields for non-admins.
      */
-    fun toStoredDataSourcing(isAdmin: Boolean): StoredDataSourcing =
+    fun toStoredDataSourcing(isAdmin: Boolean = false): StoredDataSourcing =
         StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),

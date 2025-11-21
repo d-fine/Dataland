@@ -37,7 +37,7 @@ class DataSourcingQueryManager(
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
     ): List<StoredDataSourcing> {
-        val isUserAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        val isUserAdmin = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
         return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
