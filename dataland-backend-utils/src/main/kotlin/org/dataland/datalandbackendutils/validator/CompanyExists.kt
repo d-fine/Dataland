@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -41,6 +42,7 @@ class CompanyExistsValidator(
         context: ConstraintValidatorContext?,
     ): Boolean {
         if (companyId == null) return true
+        if (!ValidationUtils.isUuid(companyId)) return true
         return callCompanyDataApiAndCheckCompanyId(companyId)
     }
 

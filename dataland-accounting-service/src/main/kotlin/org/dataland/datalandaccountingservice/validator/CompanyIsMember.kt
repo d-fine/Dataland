@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRightAssignmentString
 import org.slf4j.LoggerFactory
@@ -46,6 +47,8 @@ class CompanyIsMemberValidator(
         context: ConstraintValidatorContext?,
     ): Boolean {
         if (companyId == null) return false
+
+        if (!ValidationUtils.isUuid(companyId)) return true
 
         if (!callCompanyDataApiAndCheckCompanyId(companyId)) {
             return false
