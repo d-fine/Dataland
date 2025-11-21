@@ -19,19 +19,19 @@ const allTldsRegexGroup =
 const validDomainSegment = String.raw`(\p{L}|\p{N}|[_-]){0,63}`;
 
 // A domain can have multiple segments separated by dots. The last segment must be a TLD.
-const validDomainNames = `(${validDomainSegment}\\.)+${allTldsRegexGroup}`;
+const validDomainNames = String.raw`(${validDomainSegment}\.)+${allTldsRegexGroup}`;
 
 // Domain paths, querys, etc.. are quite complex. This approximation should cover most cases.
-const approximatelyValidPaths = `(\\/([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-]))?`;
+const approximatelyValidPaths = String.raw`(\/([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-]))?`;
 
 // A domain is preceded by a space, dot, comma, or a bracket (or at start of string).
-const validPrefix = `(?<=\\s|\\.|,|\\(|\\)|^)`;
+const validPrefix = String.raw`(?<=\s|\.|,|\(|\)|^)`;
 
 // A domain is followed by a space, dot, comma, or a bracket (or at end of string).
-const validPostfix = `(?=\\s|\\.|,|\\(|\\)|$)`;
+const validPostfix = String.raw`(?=\s|\.|,|\(|\)|$)`;
 
 const domainIdentificationRegex = new RegExp(
-  `${validPrefix}(https:\\/\\/|http:\\/\\/)?${validDomainNames}${approximatelyValidPaths}${validPostfix}`,
+  String.raw`${validPrefix}(https:\/\/|http:\/\/)?${validDomainNames}${approximatelyValidPaths}${validPostfix}`,
   'gui'
 );
 
