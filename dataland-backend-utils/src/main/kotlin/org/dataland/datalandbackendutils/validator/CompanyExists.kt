@@ -5,12 +5,10 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
-import java.io.IOException
 import kotlin.reflect.KClass
 
 /**
@@ -43,30 +41,11 @@ class CompanyExistsValidator(
     ): Boolean {
         if (companyId == null) return true
         if (!ValidationUtils.isUuid(companyId)) return true
-        return callCompanyDataApiAndCheckCompanyId(companyId)
-    }
-
-    private fun callCompanyDataApiAndCheckCompanyId(companyId: String): Boolean {
-        val request =
-            Request
-                .Builder()
-                .url("$backendBaseUrl/companies/$companyId")
-                .head()
-                .build()
-        return try {
-            authenticatedOkHttpClient.newCall(request).execute().use { response ->
-                if (response.isSuccessful) {
-                    true
-                } else {
-                    logger.info(
-                        "Company with id $companyId not found: Status code ${response.code}",
-                    )
-                    false
-                }
-            }
-        } catch (exception: IOException) {
-            logger.warn("Error validating company existence: ${exception.message}")
-            false
-        }
+        return callCompanyDataApiAndCheckCompanyId(
+            backendBaseUrl,
+            authenticatedOkHttpClient,
+            companyId,
+            logger,
+        )
     }
 }

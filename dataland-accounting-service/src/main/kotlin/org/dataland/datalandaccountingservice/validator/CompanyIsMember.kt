@@ -5,8 +5,8 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandbackendutils.validator.callCompanyDataApiAndCheckCompanyId
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRightAssignmentString
 import org.slf4j.LoggerFactory
@@ -50,8 +50,14 @@ class CompanyIsMemberValidator(
 
         if (!ValidationUtils.isUuid(companyId)) return true
 
-        if (!callCompanyDataApiAndCheckCompanyId(companyId)) {
-            return false
+        if (!callCompanyDataApiAndCheckCompanyId(
+                backendBaseUrl,
+                authenticatedOkHttpClient,
+                companyId,
+                logger,
+            )
+        ) {
+            return true
         }
 
         return callCompanyRightsAPIAndCheckIfCompanyIsMember(companyId)
@@ -72,28 +78,4 @@ class CompanyIsMemberValidator(
             logger.info("I/O error checking if company with id $companyId is a dataland member: ${e.message}")
             false
         }
-
-    private fun callCompanyDataApiAndCheckCompanyId(companyId: String): Boolean {
-        val request =
-            Request
-                .Builder()
-                .url("$backendBaseUrl/companies/$companyId")
-                .head()
-                .build()
-        return try {
-            authenticatedOkHttpClient.newCall(request).execute().use { response ->
-                if (response.isSuccessful) {
-                    true
-                } else {
-                    logger.info(
-                        "Company with id $companyId not found: Status code ${response.code}",
-                    )
-                    false
-                }
-            }
-        } catch (exception: IOException) {
-            logger.warn("Error validating company existence: ${exception.message}")
-            false
-        }
-    }
 }
