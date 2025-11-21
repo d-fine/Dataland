@@ -88,7 +88,7 @@ services:
     networks:
       - internal
       - api-key-manager-db
-    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
+    image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_production:${DATALAND_API_KEY_MANAGER_PRODUCTION_VERSION}}
     expose:
       - "8080"
     depends_on:
@@ -98,6 +98,13 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -113,6 +120,18 @@ services:
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   data-sourcing-service:
@@ -121,7 +140,7 @@ services:
         networks:
           - internal
           - data-sourcing-service-db
-        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_production:${DATALAND_DATA_SOURCING_SERVICE_PRODUCTION_VERSION}}
         expose:
           - "8080"
         depends_on:
@@ -133,6 +152,13 @@ services:
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        deploy:
+          resources:
+            limits:
+              memory: 768M
+              cpus: '1.0'
+            reservations:
+              memory: 256M
         logging:
           <<: *loki-logging
   data-sourcing-service-db:
@@ -148,6 +174,18 @@ services:
           POSTGRES_USER: data_sourcing_service
           POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           PGUSER: data_sourcing_service
+        command:
+          -c shared_buffers=128MB
+          -c effective_cache_size=512MB
+          -c work_mem=16MB
+          -c maintenance_work_mem=128MB
+        deploy:
+          resources:
+            limits:
+              memory: 384M
+              cpus: '0.5'
+            reservations:
+              memory: 128M
         logging:
           <<: *loki-logging
   document-manager:
@@ -156,7 +194,7 @@ services:
     networks:
       - internal
       - document-manager-db
-    image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
+    image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_production:${DATALAND_DOCUMENT_MANAGER_PRODUCTION_VERSION}}
     expose:
       - "8080"
     <<: *uncritical-constants-env
@@ -169,6 +207,13 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - document-manager-db
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   document-manager-db:
@@ -184,6 +229,18 @@ services:
       POSTGRES_USER: document_manager
       POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGUSER: document_manager
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   backend:
@@ -192,7 +249,7 @@ services:
     networks:
       - internal
       - backend-db
-    image: ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
+    image: ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_production:${DATALAND_BACKEND_PRODUCTION_VERSION}}
     expose:
       - "8080"
     depends_on:
@@ -204,6 +261,13 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: '2.0'
+        reservations:
+          memory: 512M
     logging:
       <<: *loki-logging
   backend-db:
@@ -228,6 +292,13 @@ services:
       -c shared_buffers=1GB
       -c temp_buffers=512MB
       -c max_stack_depth=7680kB
+    deploy:
+      resources:
+        limits:
+          memory: 6144M
+          cpus: '2.0'
+        reservations:
+          memory: 1024M
     logging:
       <<: *loki-logging
   e2etests:
@@ -277,21 +348,35 @@ services:
     <<: *uncritical-constants-env
     environment:
       POLLING: "false"
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+          cpus: '2.0'
+        reservations:
+          memory: 512M
     logging:
       <<: *loki-logging
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
-    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
+    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_production:${DATALAND_FRONTEND_PRODUCTION_VERSION}}
     networks:
       - internal
     <<: *uncritical-constants-env
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${INTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_internal_storage_test:${DATALAND_INTERNAL_STORAGE_TEST_VERSION}}
+    image: ${INTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_internal_storage_production:${DATALAND_INTERNAL_STORAGE_PRODUCTION_VERSION}}
     networks:
       - internal
       - internal-storage-db
@@ -305,6 +390,13 @@ services:
       - internal-storage-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   internal-storage-db:
@@ -320,6 +412,18 @@ services:
       POSTGRES_USER: internal_storage
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGUSER: internal_storage
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   keycloak-db:
@@ -335,6 +439,18 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       PGUSER: keycloak
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   keycloak:
@@ -352,6 +468,13 @@ services:
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+          cpus: '1.0'
+        reservations:
+          memory: 512M
     logging:
       <<: *loki-logging
   keycloak-initializer:
@@ -464,7 +587,7 @@ services:
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}}
+    image: ${QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_qa_service_production:${DATALAND_QA_SERVICE_PRODUCTION_VERSION}}
     networks:
       - internal
       - qa-service-db
@@ -481,6 +604,13 @@ services:
       - qa-service-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   qa-service-db:
@@ -496,6 +626,18 @@ services:
       POSTGRES_USER: qa_service
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   user-service:
@@ -504,7 +646,7 @@ services:
     networks:
       - internal
       - user-service-db
-    image: ${USER_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_user_service_test:${DATALAND_USER_SERVICE_TEST_VERSION}}
+    image: ${USER_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_user_service_production:${DATALAND_USER_SERVICE_PRODUCTION_VERSION}}
     expose:
       - "8080"
     <<: *uncritical-constants-env
@@ -516,6 +658,13 @@ services:
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
     depends_on:
       - user-service-db
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   user-service-db:
@@ -531,6 +680,18 @@ services:
       POSTGRES_USER: user_service
       POSTGRES_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       PGUSER: user_service
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   batch-manager:
@@ -550,12 +711,19 @@ services:
       - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${COMMUNITY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_community_manager_test:${DATALAND_COMMUNITY_MANAGER_TEST_VERSION}}
+    image: ${COMMUNITY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_community_manager_production:${DATALAND_COMMUNITY_MANAGER_PRODUCTION_VERSION}}
     networks:
       - internal
       - community-manager-db
@@ -572,6 +740,13 @@ services:
       - community-manager-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   community-manager-db:
@@ -588,13 +763,24 @@ services:
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
     command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
       -c max_stack_depth=7680kB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_production:${DATALAND_SPECIFICATION_SERVICE_PRODUCTION_VERSION}}
     expose:
       - "8489"
     networks:
@@ -602,12 +788,19 @@ services:
     <<: *uncritical-constants-env
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_production:${DATALAND_EMAIL_SERVICE_PRODUCTION_VERSION}}
     expose:
       - "8080"
     networks:
@@ -624,6 +817,13 @@ services:
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       EMAIL_SERVICE_DRY_RUN: ${EMAIL_SERVICE_DRY_RUN:-false}
       ADDITIONAL_RECIPIENTS_BCC: ${ADDITIONAL_RECIPIENTS_BCC}
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   email-service-db:
@@ -639,12 +839,24 @@ services:
       POSTGRES_USER: email_service
       POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGUSER: email_service
+    command:
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=16MB
+      -c maintenance_work_mem=128MB
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${EXTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_external_storage_test:${DATALAND_EXTERNAL_STORAGE_TEST_VERSION}}
+    image: ${EXTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_external_storage_production:${DATALAND_EXTERNAL_STORAGE_PRODUCTION_VERSION}}
     networks:
       - internal
     environment:
@@ -655,6 +867,13 @@ services:
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
     logging:
       <<: *loki-logging
   eurodat-client:
@@ -674,7 +893,7 @@ services:
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
-    image: ghcr.io/d-fine/dataland/dataland_dummy_eurodat_client_test:${DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_dummy_eurodat_client_production:${DATALAND_DUMMY_EURODAT_CLIENT_PRODUCTION_VERSION}
     networks:
       - internal
     expose:
@@ -705,7 +924,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal
-    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_TEST_VERSION}}
+    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_production:${DATALAND_DATA_EXPORTER_PRODUCTION_VERSION}}
     expose:
       - "8080"
     <<: *uncritical-constants-env
@@ -715,6 +934,13 @@ services:
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   grafana:
@@ -737,6 +963,13 @@ services:
     networks:
       - grafana
       - loki
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   loki:
@@ -751,6 +984,13 @@ services:
       - ${LOKI_VOLUME}:/loki
     networks:
       - loki
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
   alloy:
@@ -770,6 +1010,13 @@ services:
       - loki
     networks:
       - loki
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
     logging:
       <<: *loki-logging
 networks:

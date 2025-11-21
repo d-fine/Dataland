@@ -8,12 +8,14 @@ dependencies+=" ./dataland-internal-storage/internalStorageOpenApi.json ./enviro
 dependencies+=" ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-external-storage/externalStorageOpenApi.json"
 dependencies+=" ./dataland-document-manager/documentManagerOpenApi.json"
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase $dependencies
+./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase "dataland-backend:assemble" $dependencies
 
 set -o allexport
 source ./*github_env.log
 set +o allexport
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_backend_production ./dataland-backend/Dockerfile $dependencies
+./build-utils/base_rebuild_single_docker_image.sh dataland_backend_production ./dataland-backend/Dockerfile "" $dependencies
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_backend_test ./dataland-backend/DockerfileTest $dependencies
+if [[ "${LOCAL:-}" != "true" ]]; then
+  ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_test ./dataland-backend/DockerfileTest "" $dependencies
+fi
