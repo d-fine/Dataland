@@ -47,13 +47,6 @@
             <i class="pi pi-exclamation-circle"></i>
             2 proxied
           </span>
-          <span v-tooltip.bottom="'huhu'">
-            <i class="pi pi-times-circle"></i>
-            1 non-sourceable
-          </span>
-          <span v-tooltip.bottom="'huhu'">
-            (1 non-sourceable proxy)
-          </span>
         </div>
         <div v-else-if="subtitle === 'for financial companies'" class="meta-flags-stacked" style="padding-left: 1rem">
           <span v-tooltip.bottom="'The 2021 dataset is proxied by Adidas AG. The 2023 dataset is proxied by Adidas AG 2.'">
@@ -63,9 +56,6 @@
           <span v-tooltip.bottom="'The 2021 dataset is non-sourceable.'">
             <i class="pi pi-times-circle"></i>
             1 non-sourceable
-          </span>
-          <span v-tooltip.bottom="'The 2021 dataset is proxied and non-sourceable'" style="padding-left: 1.1rem">
-            1 non-sourceable proxy
           </span>
         </div>
         <div v-else-if="subtitle === 'for non-financial companies'" class="meta-flags-stacked" style="padding-left: 1rem">

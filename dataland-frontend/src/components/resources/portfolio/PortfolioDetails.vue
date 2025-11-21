@@ -145,62 +145,28 @@
             }"
             />
           </div>
-          <div v-else-if="framework === DataTypeEnum.NuclearAndGas">
-            <span>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
-          </div>
-          <div v-else-if="framework === DataTypeEnum.Sfdr">
+          <div v-else-if="framework === DataTypeEnum.EutaxonomyFinancials">
             <Button
               label="2024,  "
               variant="link"
-              style="padding: 0 0 0 1.5rem;"
+              style="padding: 0 0.5rem 0 0;"
             />
             <Button
               label="2023,  "
               disabled
               variant="link"
-              icon="pi pi-times-circle"
-              icon-pos="left"
               v-tooltip="'Non-sourceable'"
-              style="padding: 0"
+              style="padding: 0 0.5rem 0 0;"
             />
             <Button
               label="2022"
               variant="link"
-              icon="pi pi-exclamation-circle"
               v-tooltip="'Data proxied by Adidas AG'"
-              style="padding: 0"
-            />
-            <Button
-              label="2021"
-              variant="link"
-              disabled
-              icon="pi pi-times-circle"
-              v-tooltip="'Non-sourceable'"
               style="padding: 0"
             />
           </div>
           <div v-else>
-            <Button
-              label="2024,  "
-              variant="link"
-              style="padding: 0 0.5rem 0 0;"
-            />
-            <Button
-              label="2023,  "
-              disabled
-              variant="link"
-              icon="pi pi-times-circle"
-              icon-pos="left"
-              v-tooltip="'Non-sourceable'"
-              style="padding: 0 0.5rem 0 0;"
-            />
-            <Button
-              label="2022"
-              variant="link"
-              icon="pi pi-exclamation-circle"
-              v-tooltip="'Data proxied by Adidas AG'"
-              style="padding: 0"
-            />
+            <span>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
           </div>
         </template>
         <template #filter="{ filterModel, filterCallback }">
@@ -409,7 +375,7 @@ async function checkDatalandMembershipOrAdminRights(): Promise<void> {
 function widthOfFrameworkColumn(framework: string): string {
   switch (framework) {
     case 'sfdr':
-      return '5';
+      return '10';
     case 'eutaxonomy-financials':
       return '15';
     case 'eutaxonomy-non-financials':
