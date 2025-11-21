@@ -63,9 +63,9 @@ interface CreditsApi {
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
+        @UUIDIsValid
         @CompanyIsMember
         @CompanyExists
-        @UUIDIsValid
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<BigDecimal>
 
@@ -104,9 +104,9 @@ interface CreditsApi {
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
+        @UUIDIsValid
         @CompanyIsMember
         @CompanyExists
-        @UUIDIsValid
         @PathVariable("companyId") companyId: String,
         @RequestBody transactionPost: TransactionPost,
     ): ResponseEntity<TransactionDto<String>>
