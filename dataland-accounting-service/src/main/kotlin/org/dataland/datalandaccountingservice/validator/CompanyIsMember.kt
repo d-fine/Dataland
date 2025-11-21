@@ -4,7 +4,6 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-import org.dataland.datalandbackendutils.validator.CompanyExistsValidator
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRightAssignmentString
 import org.slf4j.LoggerFactory
@@ -33,7 +32,6 @@ annotation class CompanyIsMember(
  */
 class CompanyIsMemberValidator(
     @Autowired private val companyRightsControllerApi: CompanyRightsControllerApi,
-    @Autowired private val companyExistsValidator: CompanyExistsValidator
 ) : ConstraintValidator<CompanyIsMember, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -42,11 +40,6 @@ class CompanyIsMemberValidator(
         context: ConstraintValidatorContext?,
     ): Boolean {
         if (companyId == null) return false
-
-        if (!companyExistsValidator.isValid(companyId, context)) {
-            return false
-        }
-
         return callCompanyRightsAPIAndCheckIfCompanyIsMember(companyId)
     }
 
