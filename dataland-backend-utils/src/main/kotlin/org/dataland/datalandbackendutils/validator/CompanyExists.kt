@@ -9,7 +9,6 @@ import okhttp3.Request
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 import java.io.IOException
 import kotlin.reflect.KClass
 
@@ -31,7 +30,6 @@ annotation class CompanyExists(
 /**
  * Validator to check that a company exists on Dataland
  */
-@Component
 class CompanyExistsValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
