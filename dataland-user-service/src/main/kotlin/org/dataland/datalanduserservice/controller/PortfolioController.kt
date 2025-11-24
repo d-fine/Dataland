@@ -1,5 +1,7 @@
 package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
@@ -31,6 +33,7 @@ class PortfolioController
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
         private val portfolioMonitoringService: PortfolioMonitoringService,
         private val messageQueuePublisherService: MessageQueuePublisherService,
+        private val companyDataControllerApi: CompanyDataControllerApi,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
@@ -49,8 +52,25 @@ class PortfolioController
         override fun createPortfolio(portfolioUpload: PortfolioUpload): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioCreation(portfolioUpload, correlationId)
+
+            val validationResults = companyDataControllerApi.postCompanyValidation(portfolioUpload.identifiers.toList())
+            val failedIdentifiers = validationResults.filter { it.companyInformation == null }
+
+            if (failedIdentifiers.isNotEmpty()) {
+                throw ResourceNotFoundApiException(
+                    "Some company identifiers were invalid",
+                    "The following company identifiers are invalid: $failedIdentifiers. CorrelationId: $correlationId",
+                )
+            }
+
+            val validCompanyIds =
+                validationResults
+                    .mapNotNull { it.companyInformation?.companyId }
+                    .toSet()
+
+            val validPortfolioUpload = portfolioUpload.copy(identifiers = validCompanyIds)
             return ResponseEntity(
-                portfolioService.createPortfolio(BasePortfolio(portfolioUpload), correlationId),
+                portfolioService.createPortfolio(BasePortfolio(validPortfolioUpload), correlationId),
                 HttpStatus.CREATED,
             )
         }

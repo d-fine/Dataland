@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
@@ -18,11 +17,13 @@ import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.DataTypeNameMapper
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
@@ -39,14 +40,12 @@ import java.time.format.DateTimeFormatter
  * @param datasetStorageService service to handle data storage
  * @param dataMetaInformationManager service for retrieving data meta-information
  * @param dataExportService service for handling data export to CSV and JSON
- * @param objectMapper the mapper to transform strings into classes and vice versa
  * @param companyQueryManager service to retrieve company information
  */
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService,
-    private val objectMapper: ObjectMapper,
     private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -125,7 +124,7 @@ open class DataController<T>(
             CompanyAssociatedData(
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
-                data = objectMapper.readValue(frameworkData.values.first(), clazz),
+                data = defaultObjectMapper.readValue(frameworkData.values.first(), clazz),
             ),
         )
     }
@@ -135,7 +134,7 @@ open class DataController<T>(
         correlationId: String,
     ): T {
         val dataAsString = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
-        return objectMapper.readValue(dataAsString, clazz)
+        return defaultObjectMapper.readValue(dataAsString, clazz)
     }
 
     override fun getFrameworkDatasetsForCompany(
@@ -159,7 +158,7 @@ open class DataController<T>(
             allRelevantData.map {
                 DataAndMetaInformation(
                     it.metaInfo,
-                    objectMapper.readValue(it.data, clazz),
+                    defaultObjectMapper.readValue(it.data, clazz),
                 )
             },
         )
@@ -245,7 +244,7 @@ open class DataController<T>(
             uploaderUserId = userId,
             uploadTime = uploadTime,
             reportingPeriod = companyAssociatedData.reportingPeriod,
-            data = objectMapper.writeValueAsString(companyAssociatedData.data),
+            data = defaultObjectMapper.writeValueAsString(companyAssociatedData.data),
         )
 
     private fun buildCompanyAssociatedData(
@@ -299,7 +298,7 @@ open class DataController<T>(
                 companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
                 companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
                 reportingPeriod = it.key.reportingPeriod,
-                data = objectMapper.readValue(it.value, clazz),
+                data = defaultObjectMapper.readValue(it.value, clazz),
             )
         }
     }
@@ -309,5 +308,43 @@ open class DataController<T>(
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
+    }
+
+    override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<T>> {
+        val correlationId = IdUtils.generateUUID()
+        logger.info(logMessageBuilder.getLatestCompanyAssociatedDataMessage(identifier, correlationId))
+        val companyIds =
+            companyQueryManager.validateCompanyIdentifiers(listOf(identifier)).mapNotNull {
+                it.companyInformation?.companyId
+            }
+        if (companyIds.size > 1) {
+            throw InvalidInputApiException(
+                summary = "Multiple companies found for identifier $identifier.",
+                message = "The provided identifier: $identifier is ambiguous and matches multiple companies.",
+            )
+        }
+        val companyId =
+            companyIds.firstOrNull() ?: throw ResourceNotFoundApiException(
+                summary = "Company with identifier $identifier not found.",
+                message = "No company matches the provided identifier: $identifier.",
+            )
+
+        val dataAndReportingPeriod =
+            datasetStorageService.getLatestAvailableData(
+                companyId,
+                dataType.toString(),
+                correlationId,
+            ) ?: throw ResourceNotFoundApiException(
+                summary = "No available data found for company $companyId and data type $dataType.",
+                message = "The company with ID $companyId has no available data for the requested data type: $dataType.",
+            )
+
+        return ResponseEntity.ok(
+            CompanyAssociatedData(
+                companyId = companyId,
+                reportingPeriod = dataAndReportingPeriod.first,
+                data = defaultObjectMapper.readValue(dataAndReportingPeriod.second, clazz),
+            ),
+        )
     }
 }

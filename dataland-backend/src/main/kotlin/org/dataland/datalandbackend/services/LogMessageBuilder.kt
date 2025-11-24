@@ -172,4 +172,16 @@ class LogMessageBuilder {
         "Received a request to patchMetaDataInfo by user $userId to patch metadata of dataset with dataId $dataId and " +
             "data dimensions (companyId $companyId, dataType $dataType, reportingPeriod $reportingPeriod). " +
             "CorrelationID $correlationId."
+
+    /**
+     * Generates a message to inform that a request was received to return the latest data for the given company identifier
+     * @param companyIdentifier The identifier of the company for which the data shall be returned
+     * @returns the message to log
+     */
+    fun getLatestCompanyAssociatedDataMessage(
+        companyIdentifier: String,
+        correlationId: String,
+    ): String =
+        "Received a request to get the latest data for company identified by '$companyIdentifier'. " +
+            "The correlation ID is '$correlationId'."
 }
