@@ -26,7 +26,8 @@ class ExistingRequestsManager
         private val requestRepository: RequestRepository,
         private val dataSourcingManager: DataSourcingManager,
         private val dataRevisionRepository: DataRevisionRepository,
-        private val requestQueryManager: RequestQueryManager, // Inject RequestQueryManager
+        private val dataSourcingServiceMessageSender: DataSourcingServiceMessageSender,
+        private val requestQueryManager: RequestQueryManager,
     ) {
         private val requestLogger = RequestLogger()
 
@@ -75,7 +76,11 @@ class ExistingRequestsManager
             }
 
             if (newRequestState == RequestState.Processing) {
-                dataSourcingManager.resetOrCreateDataSourcingObjectAndAddRequest(requestEntity)
+                val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
+                dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
+                    dataSourcingEntity = dataSourcingEntity,
+                    requestEntity = requestEntity,
+                )
             } else {
                 requestRepository.save(requestEntity)
             }
