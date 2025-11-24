@@ -42,6 +42,7 @@ class CompanyIsMemberValidator(
 ) : ConstraintValidator<CompanyIsMemberIfCompanyExists, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @Suppress("ReturnCount")
     override fun isValid(
         companyId: String?,
         context: ConstraintValidatorContext?,
