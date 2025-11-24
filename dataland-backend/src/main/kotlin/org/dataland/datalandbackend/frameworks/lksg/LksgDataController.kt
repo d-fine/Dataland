@@ -76,4 +76,8 @@ class LksgDataController
         ): ResponseEntity<List<DataAndMetaInformation<LksgData>>> =
             super
                 .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+        @Operation(operationId = "getLatestAvailableCompanyAssociatedLksgData")
+        override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<LksgData>> =
+            super.getLatestAvailableCompanyAssociatedData(identifier)
     }

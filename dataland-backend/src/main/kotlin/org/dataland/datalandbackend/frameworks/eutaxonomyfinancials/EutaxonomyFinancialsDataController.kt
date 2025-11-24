@@ -78,4 +78,9 @@ class EutaxonomyFinancialsDataController
         ): ResponseEntity<List<DataAndMetaInformation<EutaxonomyFinancialsData>>> =
             super
                 .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+        @Operation(operationId = "getLatestAvailableCompanyAssociatedEutaxonomyFinancialsData")
+        override fun getLatestAvailableCompanyAssociatedData(
+            identifier: String,
+        ): ResponseEntity<CompanyAssociatedData<EutaxonomyFinancialsData>> = super.getLatestAvailableCompanyAssociatedData(identifier)
     }

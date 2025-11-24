@@ -3000,9 +3000,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData",
+        "operationId": "getLatestAvailableCompanyAssociatedSfdrData",
         "parameters": [
           {
             "name": "identifier",
@@ -3419,9 +3417,7 @@
         "tags": [
           "pcaf-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData_1",
+        "operationId": "getLatestAvailableCompanyAssociatedPcafData",
         "parameters": [
           {
             "name": "identifier",
@@ -3838,9 +3834,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData_2",
+        "operationId": "getLatestAvailableCompanyAssociatedNuclearAndGasData",
         "parameters": [
           {
             "name": "identifier",
@@ -4257,9 +4251,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData_3",
+        "operationId": "getLatestAvailableCompanyAssociatedLksgData",
         "parameters": [
           {
             "name": "identifier",
@@ -4676,9 +4668,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData_4",
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
           {
             "name": "identifier",
@@ -5095,9 +5085,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Retrieve the latest data for the company provided.",
-        "description": "The latest data identified by the company ID is retrieved, if available.",
-        "operationId": "getLatestAvailableCompanyAssociatedData_5",
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyFinancialsData",
         "parameters": [
           {
             "name": "identifier",

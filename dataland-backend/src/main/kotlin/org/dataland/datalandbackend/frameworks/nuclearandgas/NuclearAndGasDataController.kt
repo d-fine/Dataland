@@ -76,4 +76,8 @@ class NuclearAndGasDataController
         ): ResponseEntity<List<DataAndMetaInformation<NuclearAndGasData>>> =
             super
                 .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+        @Operation(operationId = "getLatestAvailableCompanyAssociatedNuclearAndGasData")
+        override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
+            super.getLatestAvailableCompanyAssociatedData(identifier)
     }

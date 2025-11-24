@@ -76,4 +76,8 @@ class PcafDataController
         ): ResponseEntity<List<DataAndMetaInformation<PcafData>>> =
             super
                 .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+        @Operation(operationId = "getLatestAvailableCompanyAssociatedPcafData")
+        override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<PcafData>> =
+            super.getLatestAvailableCompanyAssociatedData(identifier)
     }

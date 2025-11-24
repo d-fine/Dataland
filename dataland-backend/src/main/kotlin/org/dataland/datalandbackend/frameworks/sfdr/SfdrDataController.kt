@@ -76,4 +76,8 @@ class SfdrDataController
         ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> =
             super
                 .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+        @Operation(operationId = "getLatestAvailableCompanyAssociatedSfdrData")
+        override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
+            super.getLatestAvailableCompanyAssociatedData(identifier)
     }
