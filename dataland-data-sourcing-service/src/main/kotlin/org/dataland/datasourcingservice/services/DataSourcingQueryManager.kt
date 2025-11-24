@@ -1,10 +1,9 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackendutils.utils.roles.isUserAdmin
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.springframework.beans.factory.annotation.Autowired
+import org.dataland.datasourcingservice.utils.AuthorizationUtils
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +14,8 @@ import java.util.UUID
  */
 @Service("DataSourcingQueryManager")
 class DataSourcingQueryManager(
-    @Autowired private val dataSourcingRepository: DataSourcingRepository,
+    private val dataSourcingRepository: DataSourcingRepository,
+    private val authorizationUtils: AuthorizationUtils,
 ) {
     /**
      * Search data sourcings based on the provided filters and return a paginated chunk.
@@ -44,6 +44,6 @@ class DataSourcingQueryManager(
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
             ).map {
-                it.toStoredDataSourcing(isUserAdmin())
+                it.toStoredDataSourcing(authorizationUtils.isUserAdmin())
             }
 }
