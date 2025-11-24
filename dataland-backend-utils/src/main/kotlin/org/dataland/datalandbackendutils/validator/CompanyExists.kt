@@ -24,7 +24,9 @@ import kotlin.reflect.KClass
     ],
 )
 annotation class CompanyExists(
-    val message: String = "Input validation failed: The company does not exist on Dataland.",
+    val message: String =
+        "Input validation failed: The company does not exist on Dataland. " +
+            "There is no resource with this companyId on Dataland",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
