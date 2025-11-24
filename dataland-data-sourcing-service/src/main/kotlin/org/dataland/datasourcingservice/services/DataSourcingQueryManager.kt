@@ -1,10 +1,9 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datalandbackendutils.utils.roles.isUserAdmin
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -36,9 +35,8 @@ class DataSourcingQueryManager(
         state: DataSourcingState?,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<StoredDataSourcing> {
-        val isUserAdmin = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
-        return dataSourcingRepository
+    ): List<StoredDataSourcing> =
+        dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
                     .searchDataSourcingEntities(
@@ -46,7 +44,6 @@ class DataSourcingQueryManager(
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
             ).map {
-                it.toStoredDataSourcing(isUserAdmin)
+                it.toStoredDataSourcing(isUserAdmin())
             }
-    }
 }

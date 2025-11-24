@@ -25,8 +25,7 @@ class AuthorizationUtils
          * @return true if the user has a CompanyRole in the company, false otherwise
          */
         fun doesUserBelongToCompany(companyId: String): Boolean {
-            val userId = DatalandAuthentication.fromContextOrNull()?.userId
-            if (userId == null) return false
+            val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
 
             return companyRolesControllerApi
                 .getExtendedCompanyRoleAssignments(

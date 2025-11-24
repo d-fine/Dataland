@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.roles.isUserAdmin
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
@@ -13,8 +14,6 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -38,9 +37,6 @@ class DataSourcingManager
         private fun getFullyFetchedDataSourcingEntityById(dataSourcingEntityId: UUID): DataSourcingEntity =
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
-
-        private fun isUserAdmin(): Boolean =
-            DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
 
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
