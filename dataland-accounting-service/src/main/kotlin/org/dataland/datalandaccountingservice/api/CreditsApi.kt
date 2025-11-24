@@ -9,10 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.model.TransactionPost
-import org.dataland.datalandaccountingservice.validator.CompanyIsMemberIfCompanyExists
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.validator.CompanyExistsIfUuidIsValid
-import org.dataland.datalandbackendutils.validator.UUIDIsValid
+import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -47,8 +45,8 @@ interface CreditsApi {
             ApiResponse(
                 responseCode = "400",
                 description =
-                    "The specified company ID was invalid. It was not a valid UUID, the company ID " +
-                        "does not exist on Dataland, or the company is not a member company.",
+                    "The specified company ID was invalid. It was not a valid UUID or the company ID " +
+                        "does not exist on Dataland.",
                 content = [Content(schema = Schema())],
             ),
         ],
@@ -63,9 +61,7 @@ interface CreditsApi {
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
-        @UUIDIsValid
-        @CompanyIsMemberIfCompanyExists
-        @CompanyExistsIfUuidIsValid
+        @CompanyExists
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<BigDecimal>
 
@@ -87,8 +83,8 @@ interface CreditsApi {
             ApiResponse(
                 responseCode = "400",
                 description =
-                    "The specified company ID was invalid. It was not a valid UUID, the company ID " +
-                        "does not exist on Dataland, or the company is not a member company.",
+                    "The specified company ID was invalid. It was not a valid UUID or the company ID " +
+                        "does not exist on Dataland.",
                 content = [Content(schema = Schema())],
             ),
         ],
@@ -104,9 +100,7 @@ interface CreditsApi {
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
-        @UUIDIsValid
-        @CompanyIsMemberIfCompanyExists
-        @CompanyExistsIfUuidIsValid
+        @CompanyExists
         @PathVariable("companyId") companyId: String,
         @RequestBody transactionPost: TransactionPost,
     ): ResponseEntity<TransactionDto<String>>
