@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.accountingService.openApiClient.api.CreditsControllerApi
 import org.dataland.communitymanager.openApiClient.api.CompanyRightsControllerApi
 import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.EmailAddressControllerApi
@@ -26,6 +27,7 @@ import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.e2etests.BASE_PATH_TO_ACCOUNTING_SERVICE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.BASE_PATH_TO_DATA_SOURCING_SERVICE
@@ -55,6 +57,8 @@ class ApiAccessor {
     val emailAddressControllerApi = EmailAddressControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+
+    val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
     val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
