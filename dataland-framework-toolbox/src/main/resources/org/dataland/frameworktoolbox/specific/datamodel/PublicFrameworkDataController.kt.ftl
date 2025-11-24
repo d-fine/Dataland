@@ -85,7 +85,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
             .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
     }
 
-    @Operation(operationId = "getLatestAvailableCompanyAssociated${frameworkDataType.shortenedQualifier}Data")
+    @Operation(operationId = "getLatestAvailableCompanyAssociated${frameworkDataType.shortenedQualifier}")
     override fun getLatestAvailableCompanyAssociatedData(
     identifier: String
     ): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>>
