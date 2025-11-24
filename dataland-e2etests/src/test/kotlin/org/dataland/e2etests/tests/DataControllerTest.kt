@@ -235,7 +235,7 @@ class DataControllerTest {
             assertEquals(
                 "Test Description $latestAvailableReportingPeriod",
                 ApiAwait.waitForData {
-                    apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedData3(companyId).let {
+                    apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedLksgData(companyId).let {
                         it.data.social
                             ?.childLabor
                             ?.additionalChildLaborOtherMeasuresDescription
@@ -271,7 +271,7 @@ class DataControllerTest {
             )
             ApiAwait.untilAsserted(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
                 val latestResponse =
-                    apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getLatestAvailableCompanyAssociatedData4(
+                    apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getLatestAvailableCompanyAssociatedEutaxonomyNonFinancialsData(
                         companyIdentifier,
                     )
                 Assertions.assertNotNull(latestResponse, "Controller should not return null")
