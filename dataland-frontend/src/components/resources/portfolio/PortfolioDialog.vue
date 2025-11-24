@@ -222,7 +222,7 @@ async function savePortfolio(): Promise<void> {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       // as unknown as Set<string> cast required to ensure proper json is created
-      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      identifiers: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
       // as unknown as Set<string> cast required to ensure proper json is created
       monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,

@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataset
@@ -27,6 +26,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.messages.data.InitialQaStatus
 import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
@@ -48,7 +48,6 @@ class AssembledDataManager
         private val dataManager: DataManager,
         private val messageQueuePublications: MessageQueuePublications,
         private val dataPointValidator: DataPointValidator,
-        private val objectMapper: ObjectMapper,
         private val datasetDatapointRepository: DatasetDatapointRepository,
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
@@ -103,7 +102,7 @@ class AssembledDataManager
             dataType: String,
         ): SplitDataset {
             val frameworkSpecification = specificationService.getFrameworkSpecification(dataType)
-            val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val frameworkSchema = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
             referencedReportsUtilities
@@ -116,7 +115,7 @@ class AssembledDataManager
                 JsonSpecificationUtils
                     .dehydrateJsonSpecification(
                         frameworkSchema,
-                        objectMapper.readTree(data) as ObjectNode,
+                        defaultObjectMapper.readTree(data) as ObjectNode,
                     ).toMutableMap()
 
             val referencedReports =
@@ -187,7 +186,7 @@ class AssembledDataManager
                 dataPointManager.storeDataPoint(
                     uploadedDataPoint =
                         UploadedDataPoint(
-                            dataPoint = objectMapper.writeValueAsString(dataPoint),
+                            dataPoint = defaultObjectMapper.writeValueAsString(dataPoint),
                             dataPointType = dataPointType,
                             companyId = uploadedDataset.companyId,
                             reportingPeriod = uploadedDataset.reportingPeriod,
@@ -359,4 +358,11 @@ class AssembledDataManager
                 )
             }
         }
+
+        @Transactional(readOnly = true)
+        override fun getLatestAvailableData(
+            companyId: String,
+            dataType: String,
+            correlationId: String,
+        ): Pair<String, String>? = dataDeliveryService.getLatestAvailableAssembledDataset(companyId, dataType, correlationId)
     }

@@ -87,7 +87,7 @@ class DataAvailabilityCheckerTest {
 
     @BeforeEach
     fun setUp() {
-        dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService)
+        dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService, dataPointMetaInformationRepository)
         whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
             listOf(SimpleFrameworkSpecification(IdWithRef(framework, "dummy"), "Test Framework")),
         )

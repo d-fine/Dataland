@@ -27,7 +27,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p1',
       portfolioName: 'One',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 0,
       lastUpdateTimestamp: 1,
@@ -37,7 +37,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p2',
       portfolioName: 'Two',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 123,
       lastUpdateTimestamp: 456,
@@ -47,7 +47,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p3',
       portfolioName: 'Three',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 999,
       lastUpdateTimestamp: 9999,
@@ -122,7 +122,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     const newCompanyId = 'NEW-COMPANY-ID';
     const mockDialogRef = getMockDialogRef(
       mockPortfolios.map((p) => {
-        return p.portfolioId === 'p2' ? { ...p, companyIds: new Set(newCompanyId) } : p;
+        return p.portfolioId === 'p2' ? { ...p, identifiers: new Set(newCompanyId) } : p;
       })
     );
 
@@ -143,7 +143,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       expect(['p1', 'p2'].some((id) => url.includes(id))).to.be.true;
 
       const body = interception.request.body;
-      expect(body.companyIds).to.include(newCompanyId);
+      expect(body.identifiers).to.include(newCompanyId);
       expect(body.portfolioName).to.be.a('string');
     });
 
