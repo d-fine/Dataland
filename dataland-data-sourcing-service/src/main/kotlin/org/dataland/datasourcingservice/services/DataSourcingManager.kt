@@ -194,33 +194,35 @@ class DataSourcingManager(
         ).toReducedDataSourcing()
     }
 
-    /**
-     * Resets an existing DataSourcingEntity to the Initialized state or creates a new one if none exists.
-     *
-     * Associates the given RequestEntity with the DataSourcingEntity and stores it in the database. This will also
-     * cascade the save operation to the associated RequestEntity automatically.
-     *
-     * @param requestEntity the RequestEntity to associate with the DataSourcingEntity
-     * @return the reset or newly created DataSourcingEntity
-     */
-    fun resetOrCreateDataSourcingObjectAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
-        val dataSourcingEntity =
-            dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(
-                requestEntity.companyId,
-                requestEntity.dataType,
-                requestEntity.reportingPeriod,
-            ) ?: DataSourcingEntity(
-                companyId = requestEntity.companyId,
-                reportingPeriod = requestEntity.reportingPeriod,
-                dataType = requestEntity.dataType,
+        /**
+         * Resets an existing DataSourcingEntity to the Initialized state or creates a new one if none exists.
+         *
+         * Associates the given RequestEntity with the DataSourcingEntity and stores it in the database. This will also
+         * cascade the save operation to the associated RequestEntity automatically.
+         *
+         * @param requestEntity the RequestEntity to associate with the DataSourcingEntity
+         * @return the reset or newly created DataSourcingEntity
+         */
+        fun useExistingOrCreateDataSourcingAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
+            val dataSourcingEntity =
+                dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(
+                    requestEntity.companyId,
+                    requestEntity.dataType,
+                    requestEntity.reportingPeriod,
+                ) ?: DataSourcingEntity(
+                    companyId = requestEntity.companyId,
+                    reportingPeriod = requestEntity.reportingPeriod,
+                    dataType = requestEntity.dataType,
+                )
+            logger.info(
+                "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
             )
-        logger.info(
-            "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
-        )
-        dataSourcingEntity.state = DataSourcingState.Initialized
-        dataSourcingEntity.addAssociatedRequest(requestEntity)
-        return dataSourcingRepository.save(dataSourcingEntity)
-    }
+            if (dataSourcingEntity.state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
+                dataSourcingEntity.state = DataSourcingState.Initialized
+            }
+            dataSourcingEntity.addAssociatedRequest(requestEntity)
+            return dataSourcingRepository.save(dataSourcingEntity)
+        }
 
     /**
      * Patches the document collector and/or data extractor of the data sourcing entity with the given ID.

@@ -5,6 +5,11 @@ import org.dataland.datalandbackendutils.interfaces.BaseDimensions
 import java.util.UUID
 
 object ValidationUtils {
+    private val uuidRegex =
+        Regex(
+            "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\$",
+        )
+
     /**
      * Checks if the given string corresponds to a reporting period.
      * @param testString the string to check
@@ -20,34 +25,27 @@ object ValidationUtils {
     fun isCompanyId(testString: String) = isUuid(testString)
 
     /**
-     * Checks if the given string is a valid UUID by trying to construct a UUID from it.
+     * Checks if the given string is a valid UUID.
      * @param testString the string to check
      * @return true if the string is a valid UUID, false otherwise
      */
-    private fun isUuid(testString: String): Boolean {
-        try {
-            UUID.fromString(testString)
-            return true
-        } catch (_: Exception) {
-            return false
-        }
-    }
+    fun isUuid(testString: String): Boolean = uuidRegex.matches(testString)
 
     /**
-     * Converts the given string to a UUID, throwing an IllegalArgumentException if the string is not a valid UUID.
+     * Converts the given string to a UUID, throwing an ResourceNotFoundApiException if the string is not a valid UUID.
      * @param testString the string to convert
      * @return the UUID corresponding to the string
      * @throws ResourceNotFoundApiException if the string is not a valid UUID (so there is no resource with such an ID)
      */
-    fun convertToUUID(testString: String): UUID =
-        try {
-            UUID.fromString(testString)
-        } catch (_: IllegalArgumentException) {
+    fun convertToUUID(testString: String): UUID {
+        if (!isUuid(testString)) {
             throw ResourceNotFoundApiException(
                 summary = "Unknown ID.",
-                message = "The string $testString is not a valid UUID. In particular, the resource requested under it is unknown.",
+                message = "The string '$testString' is not a valid UUID; the requested resource is unknown.",
             )
         }
+        return UUID.fromString(testString)
+    }
 
     /**
      * Checks if a given base dimension contains valid reporting period and company ID
