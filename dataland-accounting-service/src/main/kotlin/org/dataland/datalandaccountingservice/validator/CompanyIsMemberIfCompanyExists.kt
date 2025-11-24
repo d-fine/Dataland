@@ -26,7 +26,7 @@ import kotlin.reflect.KClass
         CompanyIsMemberValidator::class,
     ],
 )
-annotation class CompanyIsMember(
+annotation class CompanyIsMemberIfCompanyExists(
     val message: String = "Input validation failed: The company is not a Dataland member.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -39,7 +39,7 @@ class CompanyIsMemberValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Autowired private val companyRightsControllerApi: CompanyRightsControllerApi,
-) : ConstraintValidator<CompanyIsMember, String> {
+) : ConstraintValidator<CompanyIsMemberIfCompanyExists, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun isValid(

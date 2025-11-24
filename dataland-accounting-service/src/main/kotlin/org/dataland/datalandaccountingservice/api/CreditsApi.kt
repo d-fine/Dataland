@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.model.TransactionPost
-import org.dataland.datalandaccountingservice.validator.CompanyIsMember
+import org.dataland.datalandaccountingservice.validator.CompanyIsMemberIfCompanyExists
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.validator.CompanyExists
+import org.dataland.datalandbackendutils.validator.CompanyExistsIfUuidIsValid
 import org.dataland.datalandbackendutils.validator.UUIDIsValid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -64,8 +64,8 @@ interface CreditsApi {
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
         @UUIDIsValid
-        @CompanyIsMember
-        @CompanyExists
+        @CompanyIsMemberIfCompanyExists
+        @CompanyExistsIfUuidIsValid
         @PathVariable("companyId") companyId: String,
     ): ResponseEntity<BigDecimal>
 
@@ -105,8 +105,8 @@ interface CreditsApi {
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
         )
         @UUIDIsValid
-        @CompanyIsMember
-        @CompanyExists
+        @CompanyIsMemberIfCompanyExists
+        @CompanyExistsIfUuidIsValid
         @PathVariable("companyId") companyId: String,
         @RequestBody transactionPost: TransactionPost,
     ): ResponseEntity<TransactionDto<String>>

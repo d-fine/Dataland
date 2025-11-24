@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
         CompanyExistsValidator::class,
     ],
 )
-annotation class CompanyExists(
+annotation class CompanyExistsIfUuidIsValid(
     val message: String = "Input validation failed: The company does not exist on Dataland.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
@@ -32,7 +32,7 @@ annotation class CompanyExists(
 class CompanyExistsValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-) : ConstraintValidator<CompanyExists, String> {
+) : ConstraintValidator<CompanyExistsIfUuidIsValid, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun isValid(
