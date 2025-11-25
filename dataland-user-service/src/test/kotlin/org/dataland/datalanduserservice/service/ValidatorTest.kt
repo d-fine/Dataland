@@ -125,7 +125,7 @@ class ValidatorTest {
 
     @Test
     fun `test that replacing an existing portfolio by portfolio with invalid companyId throws ResourceNotFoundException`() {
-        val invalidPortfolioPayload = validPortfolioUpload.copy(companyIds = setOf(validCompanyId, invalidCompanyId))
+        val invalidPortfolioPayload = validPortfolioUpload.copy(identifiers = setOf(validCompanyId, invalidCompanyId))
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioForUser(dummyPortfolioId.toString(), dummyCorrelationId)

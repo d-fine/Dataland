@@ -272,7 +272,7 @@ class PortfolioServiceTest {
         userId = userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = setOf(dummyCompanyId),
+        identifiers = setOf(dummyCompanyId),
         isMonitored = false,
         monitoredFrameworks = emptySet(),
         NotificationFrequency.Weekly,

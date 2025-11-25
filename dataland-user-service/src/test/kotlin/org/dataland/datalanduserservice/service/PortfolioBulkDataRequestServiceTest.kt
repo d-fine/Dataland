@@ -115,7 +115,7 @@ class PortfolioBulkDataRequestServiceTest {
     ) = BasePortfolio(
         portfolioId = PORTFOLIO_ID,
         userId = USER_ID,
-        companyIds = companyIds,
+        identifiers = companyIds,
         monitoredFrameworks = frameworks,
         isMonitored = isMonitored,
         portfolioName = portfolioName,

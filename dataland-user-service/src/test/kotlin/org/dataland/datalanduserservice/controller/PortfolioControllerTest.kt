@@ -2,6 +2,7 @@
 
 package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
@@ -38,6 +39,7 @@ class PortfolioControllerTest {
     private val mockPortfolioEnrichmentService = mock<PortfolioEnrichmentService>()
     private val mockPortfolioMonitoringService = mock<PortfolioMonitoringService>()
     private val mockMessageQueuePublisherService = mock<MessageQueuePublisherService>()
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private lateinit var mockAuthentication: DatalandAuthentication
     private lateinit var portfolioController: PortfolioController
 
@@ -74,6 +76,7 @@ class PortfolioControllerTest {
                 mockPortfolioEnrichmentService,
                 mockPortfolioMonitoringService,
                 mockMessageQueuePublisherService,
+                mockCompanyDataControllerApi,
             )
     }
 

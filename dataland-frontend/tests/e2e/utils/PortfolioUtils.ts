@@ -15,7 +15,7 @@ export function createPortfolio(): void {
 
     const dummyPortfolioUpload = {
       portfolioName: 'Dummy Portfolio ' + Date.now(),
-      companyIds: [companyId] as unknown as Set<string>,
+      identifiers: [companyId] as unknown as Set<string>,
       isMonitored: false,
       monitoredFrameworks: [] as unknown as Set<string>,
       notificationFrequency: NotificationFrequency.Weekly,

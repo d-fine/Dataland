@@ -16,7 +16,7 @@ class ValidationTest {
         val portfolio =
             PortfolioUpload(
                 portfolioName = "Invalid Portfolio",
-                companyIds = emptySet(),
+                identifiers = emptySet(),
                 isMonitored = true,
                 monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
                 NotificationFrequency.Weekly,

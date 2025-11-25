@@ -2995,6 +2995,96 @@
         ]
       }
     },
+    "/data/sfdr/latest": {
+      "get": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedSfdrData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/export": {
       "get": {
         "tags": [
@@ -3283,6 +3373,96 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/latest": {
+      "get": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedPcafData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3649,6 +3829,96 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/latest": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas/export": {
       "get": {
         "tags": [
@@ -3937,6 +4207,96 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksg/latest": {
+      "get": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedLksgData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4303,6 +4663,96 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials/latest": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyNonFinancialsData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/export": {
       "get": {
         "tags": [
@@ -4591,6 +5041,96 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-financials/latest": {
+      "get": {
+        "tags": [
+          "eutaxonomy-financials-data-controller"
+        ],
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyFinancialsData",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "Unique identifier to find a company.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5493001KJX4BT0IHAG73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company or dataset could not be found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -17012,15 +17552,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

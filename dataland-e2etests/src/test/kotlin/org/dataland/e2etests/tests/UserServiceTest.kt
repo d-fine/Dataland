@@ -33,7 +33,7 @@ class UserServiceTest {
     private fun createDummyPortfolioUpload(companyIds: Set<String>): PortfolioUpload =
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
-            companyIds = companyIds,
+            identifiers = companyIds,
             isMonitored = false,
             monitoredFrameworks = emptySet(),
             notificationFrequency = NotificationFrequency.NoNotifications,
@@ -141,7 +141,7 @@ class UserServiceTest {
         val portfolioUpload =
             PortfolioUpload(
                 portfolioName = "Test Portfolio ${UUID.randomUUID()}",
-                companyIds = setOf(dummyCompanyId),
+                identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 notificationFrequency = NotificationFrequency.NoNotifications,

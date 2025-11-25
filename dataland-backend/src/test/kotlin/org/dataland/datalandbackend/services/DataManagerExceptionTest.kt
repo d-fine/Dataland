@@ -217,7 +217,7 @@ class DataManagerExceptionTest
             )
             dataManager =
                 DataManager(
-                    objectMapper, companyQueryManager, mockDataMetaInformationManager,
+                    companyQueryManager, mockDataMetaInformationManager,
                     mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
                 )
             assertThrows<ResourceNotFoundApiException> {

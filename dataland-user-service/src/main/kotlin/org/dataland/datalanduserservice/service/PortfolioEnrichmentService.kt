@@ -129,7 +129,7 @@ class PortfolioEnrichmentService
                 userId = portfolio.userId,
                 entries =
                     getEnrichedEntries(
-                        portfolio.companyIds.toList(),
+                        portfolio.identifiers.toList(),
                         majorFrameworks,
                     ),
                 isMonitored = portfolio.isMonitored,

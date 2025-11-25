@@ -76,7 +76,7 @@ class DatalandUserServiceSpringbootTest
         private val dummyPortfolioUpload1 =
             PortfolioUpload(
                 portfolioName = "Test Portfolio",
-                companyIds = setOf(validCompanyId1, validCompanyId2),
+                identifiers = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
                 dummyMonitoredFrameworks,
                 NotificationFrequency.Weekly,
@@ -85,7 +85,7 @@ class DatalandUserServiceSpringbootTest
         private val dummyPortfolioUpload2 =
             PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
-                companyIds = setOf(validCompanyId1),
+                identifiers = setOf(validCompanyId1),
                 isMonitored,
                 dummyMonitoredFrameworks,
                 NotificationFrequency.Weekly,
@@ -145,7 +145,7 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(dummyPortfolioUpload2.portfolioName, portfolioResponse.portfolioName)
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
-                assertEquals(dummyPortfolioUpload2.companyIds, portfolioResponse.companyIds)
+                assertEquals(dummyPortfolioUpload2.identifiers, portfolioResponse.identifiers)
             }
 
             @Test
@@ -225,7 +225,7 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that posting portfolio with invalid companyId throws ClientException`() {
-                val portfolio = dummyPortfolioUpload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
+                val portfolio = dummyPortfolioUpload1.copy(identifiers = setOf(validCompanyId1, invalidCompanyId))
 
                 assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
             }

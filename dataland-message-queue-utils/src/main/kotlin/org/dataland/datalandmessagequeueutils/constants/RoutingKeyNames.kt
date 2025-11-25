@@ -21,4 +21,5 @@ object RoutingKeyNames {
     const val DATA_NONSOURCEABLE = "dataNonSourceable"
     const val DATASOURCING_NONSOURCEABLE = "dataSourcingNonSourceable"
     const val PORTFOLIO_UPDATE = "portfolio.update"
+    const val REQUEST_PATCH = "request.patch"
 }
