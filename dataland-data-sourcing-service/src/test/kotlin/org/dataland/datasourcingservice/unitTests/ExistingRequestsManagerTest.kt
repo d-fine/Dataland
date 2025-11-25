@@ -10,9 +10,11 @@ import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingServiceMessageSender
+import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Assertions
@@ -35,11 +37,21 @@ import java.util.UUID
 
 class ExistingRequestsManagerTest {
     private val mockRequestRepository = mock<RequestRepository>()
+    private val mockDataSourcingRepository = mock<DataSourcingRepository>()
     private val mockDataSourcingManager = mock<DataSourcingManager>()
+    private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockDataSourcingServiceMessageSender = mock<DataSourcingServiceMessageSender>()
     private val mockRequestQueryManager = mock<RequestQueryManager>()
-    private val mockCloudEventMessageHandler = Mockito.mock<CloudEventMessageHandler>()
+    private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
+
+    private lateinit var dataRequestId: UUID
+    private lateinit var companyId: UUID
+    private var reportingPeriod = "2025"
+    private var dataType = "sfdr"
+    private lateinit var userId: UUID
+    private lateinit var requestEntity: RequestEntity
+    private lateinit var dataSourcingEntity: DataSourcingEntity
 
     private val existingRequestsManager =
         ExistingRequestsManager(
@@ -52,37 +64,36 @@ class ExistingRequestsManagerTest {
 
     private val testDataSourcingManager =
         DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator, mockCloudEventMessageHandler)
-    private val dataRequestId = UUID.randomUUID()
-    private val companyId = UUID.randomUUID()
-    private val reportingPeriod = "2025"
-    private val dataType = "sfdr"
-    private val userId = UUID.randomUUID()
-
-    private val requestEntity =
-        RequestEntity(
-            id = dataRequestId,
-            companyId = companyId,
-            reportingPeriod = reportingPeriod,
-            dataType = dataType,
-            userId = userId,
-            creationTimestamp = 1000000000,
-            memberComment = null,
-            adminComment = null,
-            lastModifiedDate = 1000000000,
-            requestPriority = RequestPriority.High,
-            state = RequestState.Open,
-            dataSourcingEntity = null,
-        )
-
-    private val dataSourcingEntity =
-        DataSourcingEntity(
-            companyId = companyId,
-            dataType = dataType,
-            reportingPeriod = reportingPeriod,
-        )
 
     @BeforeEach
     fun setup() {
+        dataRequestId = UUID.randomUUID()
+        companyId = UUID.randomUUID()
+        userId = UUID.randomUUID()
+
+        requestEntity =
+            RequestEntity(
+                id = dataRequestId,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                userId = userId,
+                creationTimestamp = 1000000000,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = 1000000000,
+                requestPriority = RequestPriority.High,
+                state = RequestState.Open,
+                dataSourcingEntity = null,
+            )
+
+        dataSourcingEntity =
+            DataSourcingEntity(
+                companyId = companyId,
+                dataType = dataType,
+                reportingPeriod = reportingPeriod,
+            )
+
         reset(
             mockRequestRepository,
             mockDataSourcingManager,
@@ -138,7 +149,7 @@ class ExistingRequestsManagerTest {
                 reportingPeriod = "2025",
                 dataType = "sfdr",
                 state = DataSourcingState.Initialized,
-                associatedRequests = mutableSetOf(newRequest),
+                associatedRequests = mutableSetOf(requestEntity),
             )
 
         whenever(mockDataSourcingRepository.findByIdAndFetchAllStoredFields(any())).thenReturn(
@@ -165,9 +176,9 @@ class ExistingRequestsManagerTest {
         }
         Assertions.assertEquals(state, reducedDataSourcing.state)
         if (state == DataSourcingState.Done || state == DataSourcingState.NonSourceable) {
-            Assertions.assertEquals(RequestState.Processed, newRequest.state)
+            Assertions.assertEquals(RequestState.Processed, requestEntity.state)
         } else {
-            Assertions.assertNotEquals(RequestState.Processed, newRequest.state)
+            Assertions.assertNotEquals(RequestState.Processed, requestEntity.state)
         }
     }
 }
