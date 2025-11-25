@@ -12,8 +12,8 @@ import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.utils.AuthorizationUtils
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
+import org.dataland.datasourcingservice.utils.isUserAdmin
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,7 +28,6 @@ class DataSourcingManager(
     private val dataSourcingRepository: DataSourcingRepository,
     private val dataRevisionRepository: DataRevisionRepository,
     private val dataSourcingValidator: DataSourcingValidator,
-    private val authorizationUtils: AuthorizationUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -45,7 +44,7 @@ class DataSourcingManager(
     fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
         getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             .toStoredDataSourcing(
-                authorizationUtils.isUserAdmin(),
+                isUserAdmin(),
             ).also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
 
     /**
@@ -252,7 +251,7 @@ class DataSourcingManager(
                 dataExtractor = dataExtractor,
                 adminComment = adminComment,
             ),
-        ).toStoredDataSourcing(authorizationUtils.isUserAdmin())
+        ).toStoredDataSourcing(isUserAdmin())
     }
 
     /**
@@ -271,7 +270,7 @@ class DataSourcingManager(
             dataSourcingRepository
                 .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                 .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-        return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(authorizationUtils.isUserAdmin()) }
+        return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin()) }
     }
 
     /**
@@ -286,7 +285,7 @@ class DataSourcingManager(
         logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
         return dataRevisionRepository
             .listDataSourcingRevisionsById(id)
-            .map { it.toDataSourcingWithoutReferences(authorizationUtils.isUserAdmin()) }
+            .map { it.toDataSourcingWithoutReferences(isUserAdmin()) }
             .ifEmpty {
                 throw DataSourcingNotFoundApiException(id)
             }

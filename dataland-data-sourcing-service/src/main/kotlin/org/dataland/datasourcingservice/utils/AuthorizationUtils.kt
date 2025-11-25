@@ -6,7 +6,6 @@ import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -20,13 +19,6 @@ class AuthorizationUtils
         private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val dataSourcingManager: DataSourcingManager,
     ) {
-        /**
-         * Checks whether the current user has the admin role in the Dataland security realm.
-         *
-         * @return true if the user has the ROLE_ADMIN role, false otherwise or if the user context is null.
-         */
-        fun isUserAdmin(): Boolean = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
-
         /**
          * Checks whether the logged-in user has a CompanyRole in the specified company.
          * @param companyId of the company in question
