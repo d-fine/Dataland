@@ -115,7 +115,7 @@ class DataSourcingManager
 
         /**
          * Performs the state patch on the given data sourcing entity, of which the associated Requests
-         * field must already have been fetched. If state was changed to NonSourceable also send Message to RabbitMQ.
+         * field must already have been fetched. If state is changed to NonSourceable also send Message to RabbitMQ.
          */
         private fun performStatePatch(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
