@@ -153,6 +153,12 @@ class BulkRequestManagerTest {
 
     @BeforeEach
     fun setup() {
+        resetMocks()
+        setupMocks()
+        createBulkRequestManager()
+    }
+
+    private fun resetMocks() {
         reset(
             mockDataSourcingValidator,
             mockDataSourcingQueryManager,
@@ -160,8 +166,9 @@ class BulkRequestManagerTest {
             mockMetaDataControllerApi,
             mockEntityManager,
         )
+    }
 
-        // Build mocks for DataRequestValidationResult with companyIdValidation, dataTypeValidation, reportingPeriodValidation
+    private fun setupMocks() {
         val companyIdValidSet = companyIdentifiers - invalidCompanyId
         val dataTypeValidSet = dataTypes - invalidDataType
         val reportingPeriodValidSet = reportingPeriods - invalidReportingPeriod
@@ -202,7 +209,9 @@ class BulkRequestManagerTest {
                     )
                 },
             )
+    }
 
+    private fun createBulkRequestManager() {
         bulkRequestManager =
             BulkRequestManager(
                 dataSourcingValidator = mockDataSourcingValidator,
