@@ -3,17 +3,15 @@ set -eu
 
 mode=$1
 dataland_realm_folder=/opt/keycloak/datalandsecurity
-dataland_users_folder=/opt/keycloak/users
 cd "$(dirname "$0")"
 
 if [[ "$mode" == initialize ]]; then
   echo "Initializing new keycloak realms"
   mkdir -p $dataland_realm_folder
-  mkdir -p $dataland_users_folder
-  cp /keycloak_users/datalandsecurity-users-*.json $dataland_users_folder || echo "No importable users exist"
-  rm $(grep -E -l '"username" : "data_(reader|uploader|reviewer|premium_user|admin)"' "$dataland_users_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
-  rm $(grep -E -l '"username" : "test_user.*@example.com"' "$dataland_users_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
-  rm $(grep -E -l '"username" : "service-account-dataland-[a-z-]+"' "$dataland_users_folder"/datalandsecurity-users-*.json) || echo "No service account users to be cleaned up"
+  cp /keycloak_users/datalandsecurity-users-*.json $dataland_realm_folder || echo "No importable users exist"
+  rm $(grep -E -l '"username" : "data_(reader|uploader|reviewer|premium_user|admin)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
+  rm $(grep -E -l '"username" : "test_user.*@example.com"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
+  rm $(grep -E -l '"username" : "service-account-dataland-[a-z-]+"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No service account users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   realm_file=$dataland_realm_folder/datalandsecurity-realm.json
   for variable in $(grep -oP '\$\{([A-Z_]+)\}' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
@@ -28,9 +26,8 @@ if [[ "$mode" == initialize ]]; then
     sed s%\$\{"$variable"\}%"${!variable}"%g -i $realm_file
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
-  ./kc.sh import --file $realm_file
-  ./kc.sh import --dir $dataland_users_folder
-  # Do not remove echo below without adjusting resetDevelomentStack.sh accordingly.
+  ./kc.sh import --dir $dataland_realm_folder
+  # Do not remove echo below without adjusting resetDevelopmentStack.sh accordingly.
   echo "Initialization of Keycloak finished."
   ./kc.sh start --http-access-log-enabled=true --log-level=DEBUG --verbose
 elif [[ "$mode" == export ]]; then
