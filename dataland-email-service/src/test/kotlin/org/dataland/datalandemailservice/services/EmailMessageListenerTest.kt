@@ -182,7 +182,7 @@ class EmailMessageListenerTest {
         keywords.forEach { keyword ->
             assert(
                 sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
-            ) { "Neither htmlContent nor textContent contains '$keyword'" }
+            ) { "Either htmlContent or textContent does not contain '$keyword'" }
         }
     }
 

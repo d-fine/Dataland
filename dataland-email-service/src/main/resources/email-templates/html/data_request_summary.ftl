@@ -69,10 +69,10 @@
             <td colspan="3">${frequency} summary for your portfolio(s): ${portfolioNamesString} 📣
                 <br><br>Data for your portfolio(s) has been updated on Dataland,
                 listed in the sections below. Please note that you may have already reviewed these updates.
-                <br><br>Check details for all your requests using the following link:</td>
+                <br><br>Check details for all your portfolios using the following link:</td>
         </tr>
         <@spacerRow/>
-        <@buttonLink url="${baseUrl}/requests" linkText="VIEW MY DATA REQUESTS" />
+        <@buttonLink url="${baseUrl}/portfolios" linkText="VIEW MY PORTFOLIOS" />
         <@spacerRow/>
         <!-- NEW DATA -->
         <#if newData?? && (newData?size > 0)>
