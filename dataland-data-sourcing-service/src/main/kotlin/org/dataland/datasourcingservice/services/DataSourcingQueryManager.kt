@@ -35,13 +35,17 @@ class DataSourcingQueryManager(
         state: DataSourcingState?,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<StoredDataSourcing> =
-        dataSourcingRepository
+    ): List<StoredDataSourcing> {
+        val isUserAdmin = isUserAdmin()
+        return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
                     .searchDataSourcingEntities(
                         companyId, dataType, reportingPeriod, state,
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
-            ).map { it.toStoredDataSourcing(isUserAdmin()) }
+            ).map {
+                it.toStoredDataSourcing(isUserAdmin)
+            }
+    }
 }

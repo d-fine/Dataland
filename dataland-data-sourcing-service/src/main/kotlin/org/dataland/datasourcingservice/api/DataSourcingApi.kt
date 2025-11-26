@@ -145,7 +145,7 @@ interface DataSourcingApi {
     )
     @PatchMapping(value = ["/{dataSourcingId}/state"], produces = ["application/json"])
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.canUserPatchState(#dataSourcingId, #state)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchState(#dataSourcingId, #state)",
     )
     fun patchDataSourcingState(
         @Parameter(
@@ -249,7 +249,7 @@ interface DataSourcingApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToDocumentCollector(#dataSourcingId)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.doesUserBelongToDocumentCollector(#dataSourcingId)",
     )
     fun patchDataSourcingDocuments(
         @Parameter(
@@ -304,7 +304,7 @@ interface DataSourcingApi {
     )
     @PatchMapping(value = ["/{dataSourcingId}/document-sourcing-attempt"], produces = ["application/json"])
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or @AuthorizationUtils.doesUserBelongToDocumentCollector(#dataSourcingId)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.doesUserBelongToDocumentCollector(#dataSourcingId)",
     )
     fun patchDateOfNextDocumentSourcingAttempt(
         @Parameter(

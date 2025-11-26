@@ -268,11 +268,12 @@ class DataSourcingManager
                 "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
+            val isUserAdmin = isUserAdmin()
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin()) }
+            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin) }
         }
 
         /**
