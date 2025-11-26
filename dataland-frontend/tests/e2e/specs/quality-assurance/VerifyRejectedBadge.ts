@@ -47,7 +47,6 @@ describeIf(
           cy.intercept('**/api/users/**').as('getMyDatasets');
           cy.visit(`/datasets`);
           cy.wait('@getMyDatasets');
-          cy.pause();
           cy.get(`[data-test="view-dataset-button"]`)
             .parents('tr[role=row]')
             .find('[data-test="qa-status"]')

@@ -210,7 +210,7 @@ class SingleDataPointTest {
             assert(reviewQueueItem.qaStatus == QaStatusQaService.Pending)
             QaService.qaControllerApi.changeDataPointQaStatus(dataPointId, QaStatusQaService.Accepted)
         }
-
+        Thread.sleep(1000)
         withTechnicalUser(TechnicalUser.Reader) {
             val dataPointInstance = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
