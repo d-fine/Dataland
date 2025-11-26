@@ -1,7 +1,12 @@
 package org.dataland.datasourcingservice.serviceTests
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody
+import okio.Buffer
+import okio.BufferedSource
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
@@ -19,13 +24,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
-import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -50,10 +55,11 @@ class DataSourcingControllerTest(
     private lateinit var mockCompanyRolesControllerApi: CompanyRolesControllerApi
 
     @MockitoBean
-    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private lateinit var mockDataSourcingValidator: DataSourcingValidator
 
     @MockitoBean
-    private lateinit var mockDataSourcingValidator: DataSourcingValidator
+    @Qualifier("AuthenticatedOkHttpClient")
+    private lateinit var authenticatedOkHttpClient: OkHttpClient
 
     private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
 
@@ -80,7 +86,6 @@ class DataSourcingControllerTest(
     private val documentCollectorId = UUID.randomUUID()
     private val dataExtractorId = UUID.randomUUID()
     private val providerCompanyId = UUID.randomUUID()
-    private val invalidCompanyId = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"
 
@@ -106,13 +111,8 @@ class DataSourcingControllerTest(
             mockSecurityContext,
             mockCompanyRolesControllerApi,
             mockDataSourcingValidator,
-            mockCompanyDataControllerApi,
+            authenticatedOkHttpClient,
         )
-
-        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(providerCompanyId.toString())
-        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(documentCollectorId.toString())
-        doNothing().whenever(mockCompanyDataControllerApi).isCompanyIdValid(dataExtractorId.toString())
-        doThrow(ClientException("Company not found")).whenever(mockCompanyDataControllerApi).isCompanyIdValid(invalidCompanyId.toString())
 
         stubRoleAssignments(adminUserId, documentCollectorId, emptyList())
 
@@ -142,6 +142,34 @@ class DataSourcingControllerTest(
         doReturn(roles)
             .whenever(mockCompanyRolesControllerApi)
             .getExtendedCompanyRoleAssignments(userId = userId, companyId = companyId)
+    }
+
+    private fun setupCompanyExistsValidatorMocks() {
+        val mockCall = mock<okhttp3.Call>()
+        val dummyBody =
+            object : ResponseBody() {
+                override fun contentType(): okhttp3.MediaType? = null
+
+                override fun contentLength(): Long = 0
+
+                override fun source(): BufferedSource = Buffer()
+            }
+        val response =
+            Response
+                .Builder()
+                .request(
+                    Request
+                        .Builder()
+                        .url("http://localhost/dummy")
+                        .build(),
+                ).protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body(dummyBody)
+                .build()
+
+        whenever(authenticatedOkHttpClient.newCall(any())).thenReturn(mockCall)
+        whenever(mockCall.execute()).thenReturn(response)
     }
 
     private fun performPatchDocumentsRequestAndExpect(resultMatcher: ResultMatcher) {
@@ -231,21 +259,16 @@ class DataSourcingControllerTest(
 
     @Test
     fun `admins can get data sourcings by company ID`() {
+        setupCompanyExistsValidatorMocks()
         setMockSecurityContext(dummyAdminAuthentication)
         performGetDataSourcingByCompanyId(status().isOk())
     }
 
     @Test
     fun `regular users can get data sourcings by company ID`() {
+        setupCompanyExistsValidatorMocks()
         setMockSecurityContext(dummyUserAuthentication)
         performGetDataSourcingByCompanyId(status().isOk())
-    }
-
-    @Test
-    fun `using an invalid companyId leads to an appropriate error`() {
-        setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, invalidCompanyId, listOf(generalMemberAssignment))
-        performGetDataSourcingByCompanyId(status().isBadRequest(), invalidCompanyId)
     }
 
     @ParameterizedTest

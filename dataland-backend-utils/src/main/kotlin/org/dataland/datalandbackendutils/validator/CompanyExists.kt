@@ -44,7 +44,7 @@ class CompanyExistsValidator(
         companyId: String?,
         context: ConstraintValidatorContext?,
     ): Boolean {
-        if (companyId == null || !ValidationUtils.isUuid(companyId)) return false
+        if (companyId == null || !ValidationUtils.isCompanyId(companyId)) return false
 
         return callCompanyDataApiAndCheckCompanyId(
             backendBaseUrl,
