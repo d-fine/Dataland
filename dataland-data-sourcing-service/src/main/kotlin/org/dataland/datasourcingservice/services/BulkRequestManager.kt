@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -22,6 +24,7 @@ class BulkRequestManager
     @Autowired
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
+        private val dataSourcingQueryManager: DataSourcingQueryManager,
         private val requestCreationService: RequestCreationService,
         private val metaDataController: MetaDataControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
@@ -45,8 +48,9 @@ class BulkRequestManager
             val (invalidRequests, validatedRequests) = getValidatedAndInvalidRequests(validationResult, bulkDataRequest)
             val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
             val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
+            val nonSourceableRequests = getExistingNonSourceableDataRequests(validatedRequests - existingRequests - existingDatasets)
 
-            val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets
+            val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets - nonSourceableRequests
 
             acceptedDataRequests.forEach { dataDimension ->
                 requestCreationService.storeRequest(userIdToUse, dataDimension)
@@ -57,6 +61,7 @@ class BulkRequestManager
                 invalidDataRequests = invalidRequests,
                 existingDataRequests = existingRequests,
                 existingDataSets = existingDatasets,
+                nonSourceableDataRequests = nonSourceableRequests,
             )
         }
 
@@ -141,6 +146,24 @@ class BulkRequestManager
             } else {
                 emptyList()
             }
+        }
+
+        private fun getExistingNonSourceableDataRequests(dataDimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
+            val result =
+                dataDimensions.filter { dim ->
+                    val found =
+                        dataSourcingQueryManager.searchDataSourcings(
+                            companyId = UUID.fromString(dim.companyId),
+                            dataType = dim.dataType,
+                            reportingPeriod = dim.reportingPeriod,
+                            state = DataSourcingState.NonSourceable,
+                            chunkSize = 1,
+                            chunkIndex = 0,
+                        )
+                    found.isNotEmpty()
+                }
+
+            return result
         }
 
         private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {
