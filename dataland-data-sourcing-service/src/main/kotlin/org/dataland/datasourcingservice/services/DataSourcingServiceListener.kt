@@ -66,48 +66,51 @@ class DataSourcingServiceListener
             val dataUploadedPayload = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
             val dataId = dataUploadedPayload.dataId
             val updatedQaStatus = dataUploadedPayload.updatedQaStatus
-            val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
-            val companyId = UUID.fromString(dataMetaInformation.companyId)
-            val reportingPeriod = dataMetaInformation.reportingPeriod
-            val dataType = dataMetaInformation.dataType
+            MessageQueueUtils.rejectMessageOnException {
+                val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
+                val companyId = UUID.fromString(dataMetaInformation.companyId)
+                val reportingPeriod = dataMetaInformation.reportingPeriod
+                val dataType = dataMetaInformation.dataType
 
-            val storedDataSourcing =
-                dataSourcingQueryManager
-                    .searchDataSourcings(
-                        companyId = companyId,
-                        dataType = dataType.toString(),
-                        reportingPeriod = reportingPeriod,
-                        state = null,
-                        chunkSize = 1,
-                        chunkIndex = 0,
-                    ).firstOrNull()
+                val storedDataSourcing =
+                    dataSourcingQueryManager
+                        .searchDataSourcings(
+                            companyId = companyId,
+                            dataType = dataType.toString(),
+                            reportingPeriod = reportingPeriod,
+                            state = null,
+                            chunkSize = 1,
+                            chunkIndex = 0,
+                        ).firstOrNull()
 
-            if (storedDataSourcing == null) {
-                logger.info(
-                    "Received QA status update message for dataset with ID $dataId. However, no data sourcing " +
-                        "object exists for the associated company ID $companyId, reporting period $reportingPeriod and " +
-                        "data type $dataType.",
-                )
-                return
-            }
-
-            when (updatedQaStatus) {
-                QaStatus.Accepted -> {
-                    dataSourcingManager.patchDataSourcingEntityById(
-                        UUID.fromString(storedDataSourcing.dataSourcingId),
-                        DataSourcingPatch(state = DataSourcingState.Done),
+                if (storedDataSourcing == null) {
+                    logger.info(
+                        "Received QA status update message for dataset with ID $dataId. However, no data sourcing " +
+                            "object exists for the associated company ID $companyId, reporting period $reportingPeriod and " +
+                            "data type $dataType.",
                     )
+                    return@rejectMessageOnException
                 }
 
-                QaStatus.Pending -> {
-                    if (storedDataSourcing.state == DataSourcingState.Done) return
-                    dataSourcingManager.patchDataSourcingEntityById(
-                        UUID.fromString(storedDataSourcing.dataSourcingId),
-                        DataSourcingPatch(state = DataSourcingState.DataVerification),
-                    )
-                }
+                when (updatedQaStatus) {
+                    QaStatus.Accepted -> {
+                        dataSourcingManager.patchDataSourcingEntityById(
+                            UUID.fromString(storedDataSourcing.dataSourcingId),
+                            DataSourcingPatch(state = DataSourcingState.Done),
+                        )
+                    }
 
-                else -> Unit
+                    QaStatus.Pending -> {
+                        if (storedDataSourcing.state != DataSourcingState.Done) {
+                            dataSourcingManager.patchDataSourcingEntityById(
+                                UUID.fromString(storedDataSourcing.dataSourcingId),
+                                DataSourcingPatch(state = DataSourcingState.DataVerification),
+                            )
+                        }
+                    }
+
+                    else -> Unit
+                }
             }
         }
     }
