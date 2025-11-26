@@ -45,11 +45,22 @@ class BulkRequestManager
                     bulkDataRequest,
                 )
             val (invalidRequests, validatedRequests) = getValidatedAndInvalidRequests(validationResult, bulkDataRequest)
-            val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
-            val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
-            val nonSourceableRequests = getExistingNonSourceableDataRequests(validatedRequests - existingRequests - existingDatasets)
+            val setOfValidatedRequestsSet = validatedRequests.toSet()
 
-            val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets - nonSourceableRequests
+            val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
+            val setOfExistingRequests = existingRequests.toSet() // if needed
+
+            val existingDatasets = getExistingDatasets((setOfValidatedRequestsSet - setOfExistingRequests).toList())
+            val setOfExistingDatasets = existingDatasets.toSet()
+
+            val nonSourceableRequests =
+                getExistingNonSourceableDataRequests(
+                    (setOfValidatedRequestsSet - setOfExistingRequests - setOfExistingDatasets).toList(),
+                )
+            val setOfNonSourceableRequests = nonSourceableRequests.toSet()
+
+            val acceptedDataRequests =
+                (setOfValidatedRequestsSet - setOfExistingRequests - setOfExistingDatasets - setOfNonSourceableRequests).toList()
 
             acceptedDataRequests.forEach { dataDimension ->
                 requestCreationService.storeRequest(userIdToUse, dataDimension)
