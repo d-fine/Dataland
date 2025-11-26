@@ -19,9 +19,6 @@ determine_compose_profiles() {
 
 stop_and_cleanup_containers() {
   docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  docker volume ls -q | grep _pgadmin_config | xargs -r docker volume rm || true
-  docker volume ls -q | grep _qa_service_data | xargs -r docker volume rm || true
-  docker volume ls -q | grep _community_manager_data | xargs -r docker volume rm || true
   docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
 }
 
