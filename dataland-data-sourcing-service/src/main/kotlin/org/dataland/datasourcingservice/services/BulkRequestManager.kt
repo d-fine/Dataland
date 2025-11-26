@@ -45,40 +45,36 @@ class BulkRequestManager
                     bulkDataRequest,
                 )
             val (invalidRequests, validatedRequests) = getValidatedAndInvalidRequests(validationResult, bulkDataRequest)
-            val setOfValidatedRequestsSet = validatedRequests.toSet()
 
             val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
-            val setOfExistingRequests = existingRequests.toSet() // if needed
 
-            val existingDatasets = getExistingDatasets((setOfValidatedRequestsSet - setOfExistingRequests).toList())
-            val setOfExistingDatasets = existingDatasets.toSet()
+            val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
 
             val nonSourceableRequests =
                 getExistingNonSourceableDataRequests(
-                    (setOfValidatedRequestsSet - setOfExistingRequests - setOfExistingDatasets).toList(),
+                    validatedRequests - existingRequests - existingDatasets,
                 )
-            val setOfNonSourceableRequests = nonSourceableRequests.toSet()
 
             val acceptedDataRequests =
-                (setOfValidatedRequestsSet - setOfExistingRequests - setOfExistingDatasets - setOfNonSourceableRequests).toList()
+                validatedRequests - existingRequests - existingDatasets - nonSourceableRequests
 
             acceptedDataRequests.forEach { dataDimension ->
                 requestCreationService.storeRequest(userIdToUse, dataDimension)
             }
 
             return BulkDataRequestResponse(
-                acceptedDataRequests = acceptedDataRequests,
-                invalidDataRequests = invalidRequests,
-                existingDataRequests = existingRequests,
-                existingDataSets = existingDatasets,
-                nonSourceableDataRequests = nonSourceableRequests,
+                acceptedDataRequests = acceptedDataRequests.toList(),
+                invalidDataRequests = invalidRequests.toList(),
+                existingDataRequests = existingRequests.toList(),
+                existingDataSets = existingDatasets.toList(),
+                nonSourceableDataRequests = nonSourceableRequests.toList(),
             )
         }
 
         private fun getValidatedAndInvalidRequests(
             validationResult: DataSourcingValidator.DataRequestValidationResult,
             bulkDataRequest: BulkDataRequest,
-        ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
+        ): Pair<Set<BasicDataDimensions>, Set<BasicDataDimensions>> {
             val validCompanyIds =
                 validationResult.companyIdValidation.filter { it.value != null }.map { it.key }
             val validDataTypes =
@@ -102,7 +98,7 @@ class BulkRequestManager
             return Pair(invalidDataDimensionTuples, validatedDataDimensionTuples)
         }
 
-        private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =
+        private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
             metaDataController
                 .retrieveMetaDataOfActiveDatasets(
                     basicDataDimensions =
@@ -119,7 +115,7 @@ class BulkRequestManager
                         dataType = it.dataType.toString(),
                         reportingPeriod = it.reportingPeriod,
                     )
-                }
+                }.toSet()
 
         /**
          * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
@@ -129,9 +125,9 @@ class BulkRequestManager
          * @param userId The ID of the user for whom to retrieve the active requests.
          */
         private fun getExistingRequests(
-            dataDimensions: List<BasicDataDimensions>,
+            dataDimensions: Set<BasicDataDimensions>,
             userId: UUID,
-        ): List<BasicDataDimensions> {
+        ): Set<BasicDataDimensions> {
             val formattedTuples =
                 dataDimensions.joinToString(", ") {
                     "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
@@ -152,15 +148,15 @@ class BulkRequestManager
                             reportingPeriod = it.reportingPeriod,
                             dataType = it.dataType,
                         )
-                    }
+                    }.toSet()
             } else {
-                emptyList()
+                emptySet()
             }
         }
 
-        private fun getExistingNonSourceableDataRequests(dataDimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
-            val result =
-                dataDimensions.filter { dim ->
+        private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
+            dataDimensions
+                .filter { dim ->
                     val found =
                         dataSourcingQueryManager.searchDataSourcings(
                             companyId = UUID.fromString(dim.companyId),
@@ -171,10 +167,7 @@ class BulkRequestManager
                             chunkIndex = 0,
                         )
                     found.isNotEmpty()
-                }
-
-            return result
-        }
+                }.toSet()
 
         private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {
             val identifiers = bulkDataRequest.companyIdentifiers
@@ -193,7 +186,7 @@ class BulkRequestManager
             companyIdentifiers: Set<String>,
             dataTypes: Set<String>,
             reportingPeriods: Set<String>,
-        ): List<BasicDataDimensions> =
+        ): Set<BasicDataDimensions> =
             companyIdentifiers
                 .flatMap { companyId ->
                     dataTypes.flatMap { dataType ->
@@ -205,5 +198,5 @@ class BulkRequestManager
                             )
                         }
                     }
-                }
+                }.toSet()
     }
