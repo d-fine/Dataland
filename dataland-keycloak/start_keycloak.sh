@@ -26,6 +26,7 @@ if [[ "$mode" == initialize ]]; then
     sed s%\$\{"$variable"\}%"${!variable}"%g -i $realm_file
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
+  ./kc.sh import --file $realm_file
   ./kc.sh import --dir $dataland_realm_folder
   # Do not remove echo below without adjusting resetDevelopmentStack.sh accordingly.
   echo "Initialization of Keycloak finished."
