@@ -46,6 +46,11 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
       - name: Login to Github Packages
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
         with:

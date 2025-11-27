@@ -109,7 +109,7 @@ Discuss findings with the team.
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] It's verified that everything seems to be working fine by manually using the website
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
+- [ ] The local Dev stack still works: execute `manageDevelopmentStack.sh --start` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] It is assured that deploying this feature branch over the current main does not break anything (depending on the actual changes this step may be skipped)
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)

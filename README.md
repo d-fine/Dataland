@@ -1,17 +1,10 @@
 # Dataland
 Dataland is a platform to distribute ESG data. This repository contains the code for the Dataland Platform.
 
-# Getting Started
-Clone the repository and set environmental variables by executing `setEnvironmentVariables.ps1`. Some of the required 
-variables are left blank and have to be set by the user locally since they contain sensitiv information. To start the 
-application locally you can run `resetDevelopmentStack.sh` or `startDevelopmentStack.sh`. Please note that you will have
-to use your own certificates if you do not have access to the dataland infrastructure. The corresponding parts in the
-scripts have to be adapted manually. 
-
 # License
 This project is free and open-source software licensed under the [GNU Affero General Public License v3](LICENSE)
-(AGPL-3.0). Commercial use of this software is allowed. If derivative works are distributed, you need to be published
-the derivative work under the same license. Here, derivative works includes web publications. That means, if you build
+(AGPL-3.0). Commercial use of this software is allowed. If derivative works are distributed, you need to publish
+the derivative work under the same license. Here, derivative works include web publications. That means, if you build
 a web service using this software, you need to publish your source code under the same license (AGPL-3.0)
 
 In case this does not work for you, please contact dataland@d-fine.de for individual license agreements.
@@ -21,8 +14,19 @@ Contributions are highly welcome. Please refer to our [contribution guideline](c
 To allow for individual licenses and eventual future license changes, we require a contributor license agreement from
 any contributor that allows us to re-license the software including the contribution.
 
+# Quick Start Guide
+Follow these steps to set up the dataland development stack on your computer.
+1. Install Java (>= 21), Node.JS (>=24), and docker.
+2. In your environment variables: Set `JAVA_HOME` to your java installation path and make sure java is in your `PATH` (On Windows, add `%JAVA_HOME%/bin` to `PATH`).
+3. Add a link for `local-dev.dataland.com` and `dataland-admin` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`).
+4. (If on Windows): Enable long paths in git (`git config --global core.longpaths true`) and [in Windows](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry).
+5. Clone this repository to your computer.
+6. Start the development stack by running `manageLocalStack.sh --reset --start --simple`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time, make sure that Docker is running in the background. Note: on Windows run this command in bash terminal e.g. GitBash.
+7. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
+8. You can stop the development stack by running `manageLocalStack.sh --stop --simple`.
+
 # Developer Remarks
-In this section, you find information that might be useful for you as developer.
+In this section, you find information that might be useful for you as a developer.
 
 ## Add scripts to git with the executable flag
 Especially under Windows, it's unclear which file permissions a script will get. 
@@ -33,13 +37,8 @@ To explicitly mark a script executable, do:
 To add the provided git pre-hooks to your local development environment execute:
 `git config --local core.hookspath ./.githooks/`
 
-## Environment Variables
+## Environment Variables for Development
 Environmental variables can be set via the script `setEnvironmentVariables.ps1`.
-
-## Local HTTPS testing
-* Add A link for `local-dev.dataland.com` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`)
-* The `startDevelopmentStack.sh` script will automatically retrieve signed SSL-Certificates for this domain.
-* Access the development stack at https://local-dev.dataland.com
 
 ## API Documentation
 Links to the interactive swagger API documentation are available on all running instances of dataland 
@@ -47,18 +46,18 @@ Links to the interactive swagger API documentation are available on all running 
 located [here](https://test.dataland.com/api/swagger-ui/index.html). Requests can be authorized via two different methods:
 - Option A: Manually obtain a bearer token from KeyCloak and enter it in the `default-bearer-auth` field.
 - Option B: Automatically obtain a bearer token from KeyCloak by entering `dataland-public` for `client_id` and 
-  leaving `client_secret`empty (in the `default-oauth` section). Swagger will then redirect you two the KeyCloak Login
+  leaving `client_secret` empty (in the `default-oauth` section). Swagger will then redirect you to the KeyCloak Login
   form for authentication.
 
 ## Run Cypress Tests locally
-* start the local stack using "startDevelopmentStack.sh". Set the env-variables (see above). 
+* start the local stack using "manageLocalStack.sh --start". Set the env-variables (see above). 
 * The backend will be started automatically. You can kill it and run it from the IDE if you like (e.g. for Debugging)
 * Either use cypress while watching the browser:
   * start the cypress UI by using `npm run cypress`
   * Select `E2E Testing` or `Component Testing` and run the tests
-* Or se cypress without visible browser (more robust):
+* Or use cypress without visible browser (more robust):
   * run `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` 
 
 ## Licenses
-This project makes use of open source dependencies. To see a list gradle dependencies along with their 
-licenses, run `\gradlew generateLicenseReport` 
+This project makes use of open source dependencies. To see a list of gradle dependencies along with their 
+licenses, run `./gradlew generateLicenseReport` 

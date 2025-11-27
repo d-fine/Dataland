@@ -1,9 +1,4 @@
-ARG DATALAND_GRADLE_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
+FROM scratch AS builder
 
 WORKDIR /app
-COPY ./dataland-specification-service/ ./dataland-specification-service/
-COPY ./dataland-specification-lib/ ./dataland-specification-lib/
-COPY ./dataland-backend-utils/ ./dataland-backend-utils/
-COPY ./.git/ ./.git
-RUN ./gradlew dataland-specification-service:bootJar --no-daemon --stacktrace
+COPY ./dataland-specification-service/build/libs/*.jar ./dataland-specification-service/build/libs/
