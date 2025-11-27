@@ -17,10 +17,11 @@ import kotlin.reflect.KClass
 /**
  * Annotation to validate that a company exists on Dataland
  */
-@Target(AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Constraint(
     validatedBy = [
-        CompanyExistsValidator::class,
+        CompanyExistsStringValidator::class,
+        CompanyExistsUuidValidator::class,
     ],
 )
 annotation class CompanyExists(
@@ -34,7 +35,7 @@ annotation class CompanyExists(
 /**
  * Validator to check that a company exists on Dataland
  */
-class CompanyExistsValidator(
+class CompanyExistsStringValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
 ) : ConstraintValidator<CompanyExists, String> {
