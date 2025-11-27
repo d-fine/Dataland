@@ -111,6 +111,8 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
+import {checkIfUserHasRole} from "@/utils/KeycloakUtils.ts";
+import {KEYCLOAK_ROLE_ADMIN} from "@/utils/KeycloakRoles.ts";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -193,10 +195,9 @@ async function checkIfCompanyIsDatalandMember(): Promise<void> {
 async function getCompanyUserInformation(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
+  const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   if (!props.companyId) return;
   try {
-    console.log('current user id is:', keycloakUserId);
-    console.log('company id is:', props.companyId);
     const userRoleResponse =
       await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
         undefined,
@@ -205,11 +206,9 @@ async function getCompanyUserInformation(): Promise<void> {
       );
     const userRoles = userRoleResponse.data;
     isMemberOfCompanyOrAdmin.value = userRoles.some(
-      (role) => role.companyRole.includes('Admin') || role.companyRole.includes('Member')
-    );
-    console.log('the user roles are:', userRoles);
+      (role) => role.companyRole.includes('MemberAdmin') || role.companyRole.includes('Member')
+    ) || isAdmin;
   } catch (error) {
-    console.error('Failed to load company users:', error);
   }
 }
 
