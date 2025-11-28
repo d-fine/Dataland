@@ -74,9 +74,7 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val PROXIED_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is being proxied."
     const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."
     const val PROXIED_FRAMEWORKS_DESCRIPTION =
-        "List of frameworks for which proxying is permitted. Empty means all frameworks."
-    const val PROXIED_FRAMEWORKS_EXAMPLE = """["sfdr", "pcaf"]"""
+        "Framework for which proxying is permitted. Null means all frameworks."
     const val PROXIED_REPORTING_PERIODS_DESCRIPTION =
-        "List of reporting periods for which proxying is permitted. Empty means all reporting periods."
-    const val PROXIED_REPORTING_PERIODS_EXAMPLE = """["2022", "2023", "2025"]"""
+        "Reporting period for which proxying is permitted. Null means all reporting periods."
 }

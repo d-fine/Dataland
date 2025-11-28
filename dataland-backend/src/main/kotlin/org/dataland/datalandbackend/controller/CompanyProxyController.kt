@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.api.CompanyProxyApi
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRelationResponse
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
+import org.dataland.datalandbackend.model.proxies.toDomainModel
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,35 +28,27 @@ class CompanyProxyController
         /**
          * POST /company-data-proxy-relation
          */
-        override fun postCompanyProxy(companyProxy: CompanyProxyRequest): ResponseEntity<List<CompanyProxyRelationResponse>> {
+        override fun postCompanyProxy(companyProxy: CompanyProxyRequest): ResponseEntity<CompanyProxyRelationResponse> {
             logger.info(
-                "Received request to upsert proxy relation for " +
+                "Received request to create proxy relation for " +
                     "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
                     "proxyCompanyId='${companyProxy.proxyCompanyId}', " +
-                    "frameworks='${companyProxy.frameworks}', " +
-                    "reportingPeriods='${companyProxy.reportingPeriods}'",
+                    "framework='${companyProxy.framework}', " +
+                    "reportingPeriod='${companyProxy.reportingPeriod}'",
             )
 
-            val domainRelation =
-                CompanyProxy(
-                    proxiedCompanyId = UUID.fromString(companyProxy.proxiedCompanyId),
-                    proxyCompanyId = UUID.fromString(companyProxy.proxyCompanyId),
-                    frameworks = companyProxy.frameworks,
-                    reportingPeriods = companyProxy.reportingPeriods,
-                )
+            val domainRelation = companyProxy.toDomainModel()
 
-            val savedEntities = companyProxyManager.addProxyRelation(domainRelation)
+            val savedEntity = companyProxyManager.addProxyRelation(domainRelation)
 
             val responseBody =
-                savedEntities.map {
-                    CompanyProxyRelationResponse(
-                        proxyId = it.proxyId.toString(),
-                        proxiedCompanyId = it.proxiedCompanyId.toString(),
-                        proxyCompanyId = it.proxyCompanyId.toString(),
-                        framework = it.framework,
-                        reportingPeriod = it.reportingPeriod,
-                    )
-                }
+                CompanyProxyRelationResponse(
+                    proxyId = savedEntity.proxyId.toString(),
+                    proxiedCompanyId = savedEntity.proxiedCompanyId.toString(),
+                    proxyCompanyId = savedEntity.proxyCompanyId.toString(),
+                    framework = savedEntity.framework,
+                    reportingPeriod = savedEntity.reportingPeriod,
+                )
 
             return ResponseEntity.ok(responseBody)
         }
@@ -69,17 +62,17 @@ class CompanyProxyController
                     "proxiedCompanyId='$proxiedCompanyId'",
             )
             val relation =
-                companyProxyManager.getProxyRelation(UUID.fromString(proxiedCompanyId))
+                companyProxyManager.getProxyRelations(UUID.fromString(proxiedCompanyId))
             return ResponseEntity.ok(relation)
         }
 
         /**
          * DELETE /company-proxies/company-proxy
          */
-        override fun deleteCompanyProxy(technicalId: String): ResponseEntity<CompanyProxyRelationResponse> {
-            logger.info("Received request to delete proxy rule with technicalId='$technicalId'")
+        override fun deleteCompanyProxy(proxyId: String): ResponseEntity<CompanyProxyRelationResponse> {
+            logger.info("Received request to delete proxy rule with proxyId='$proxyId'")
 
-            val uuid = UUID.fromString(technicalId)
+            val uuid = UUID.fromString(proxyId)
 
             val deleted = companyProxyManager.deleteProxyRelation(uuid)
 

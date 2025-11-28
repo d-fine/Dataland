@@ -30,19 +30,20 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
     /**
-     * Creates or replaces a proxy for a given (proxiedCompanyId, proxyCompanyId) pair.
+     * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
      *
      * The submitted resource defines which data of one company may be substituted by
      * the corresponding data of another company.
      *
-     * If the framework or reportingPeriod lists are empty or null, the proxy applies to all of them.
+     * If the framework or reportingPeriod are null, the proxy applies to all frameworks
+     * or all reporting periods respectively.
      */
     @Operation(
         summary = "Create a proxy.",
         description =
             "Creates a proxy describing which data of one company may be substituted " +
-                "by data of another company. If the lists for frameworks or reportingPeriods are empty " +
-                "or null, the proxy applies to all of them.",
+                "by data of another company. If framework or reportingPeriod are null, " +
+                "the proxy applies to all frameworks or all reporting periods respectively.",
     )
     @ApiResponses(
         value = [
@@ -52,7 +53,7 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland admins may query company rights.",
+                description = "Only Dataland admins may create company proxies.",
                 content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
@@ -70,7 +71,7 @@ interface CompanyProxyApi {
     fun postCompanyProxy(
         @Valid @RequestBody
         companyProxy: CompanyProxyRequest,
-    ): ResponseEntity<List<CompanyProxyRelationResponse>>
+    ): ResponseEntity<CompanyProxyRelationResponse>
 
     /**
      * Retrieves the proxy for a given (proxiedCompanyId, proxyCompanyId) pair.
@@ -145,10 +146,10 @@ interface CompanyProxyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun deleteCompanyProxy(
         @Parameter(
-            name = "technicalId",
-            description = "The technical ID of the proxy rule entry.",
+            name = "proxyId",
+            description = "The proxy ID of the proxy rule entry.",
             required = true,
         )
-        @RequestParam technicalId: String,
+        @RequestParam proxyId: String,
     ): ResponseEntity<CompanyProxyRelationResponse>
 }
