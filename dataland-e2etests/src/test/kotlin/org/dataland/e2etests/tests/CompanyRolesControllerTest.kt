@@ -280,7 +280,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that company member admin without keycloak admin role can only modify member and member admin roles`() {
+    fun `assure that company admins without keycloak admin role can only modify analyst and admin roles`() {
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
         val rolesThatCanBeModified = listOf(CompanyRole.Admin, CompanyRole.Analyst)
         val rolesThatCannotBeModified =
