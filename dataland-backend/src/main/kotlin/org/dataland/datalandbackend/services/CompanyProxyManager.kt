@@ -2,8 +2,10 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,6 +26,19 @@ class CompanyProxyManager
         private val companyDataProxyRuleRepository: CompanyProxyRepository,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+
+        /**
+         * Returns the CompanyProxyEntity for the given proxyId.
+         *
+         * @throws InvalidInputApiException if no proxy rule exists for the given id.
+         */
+        @Transactional(readOnly = true)
+        fun getCompanyProxyById(proxyId: UUID): StoredCompanyProxy =
+            companyDataProxyRuleRepository.findByProxyId(proxyId)?.toStoredCompanyProxy()
+                ?: throw ResourceNotFoundApiException(
+                    summary = "Company proxy not found.",
+                    message = "No company proxy rule exists for the proxyId=$proxyId.",
+                )
 
         /**
          * Creates or replaces all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.

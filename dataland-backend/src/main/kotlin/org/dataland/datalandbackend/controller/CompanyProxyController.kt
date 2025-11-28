@@ -2,8 +2,8 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
-import org.dataland.datalandbackend.model.proxies.CompanyProxyRelationResponse
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
+import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.model.proxies.toDomainModel
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.slf4j.LoggerFactory
@@ -28,7 +28,7 @@ class CompanyProxyController
         /**
          * POST /company-data-proxy-relation
          */
-        override fun postCompanyProxy(companyProxy: CompanyProxyRequest): ResponseEntity<CompanyProxyRelationResponse> {
+        override fun postCompanyProxy(companyProxy: CompanyProxyRequest): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to create proxy relation for " +
                     "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
@@ -42,7 +42,7 @@ class CompanyProxyController
             val savedEntity = companyProxyManager.addProxyRelation(domainRelation)
 
             val responseBody =
-                CompanyProxyRelationResponse(
+                StoredCompanyProxy(
                     proxyId = savedEntity.proxyId.toString(),
                     proxiedCompanyId = savedEntity.proxiedCompanyId.toString(),
                     proxyCompanyId = savedEntity.proxyCompanyId.toString(),
@@ -58,20 +58,20 @@ class CompanyProxyController
         /**
          * GET /company-data-proxy-relation
          */
-        override fun getCompanyProxy(proxiedCompanyId: String): ResponseEntity<List<CompanyProxy>> {
+        override fun getCompanyProxyById(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to get proxy relation for " +
-                    "proxiedCompanyId='$proxiedCompanyId'",
+                    "proxyId='$proxyId'",
             )
-            val relation =
-                companyProxyManager.getProxyRelations(UUID.fromString(proxiedCompanyId))
-            return ResponseEntity.ok(relation)
+            return ResponseEntity.ok(
+                companyProxyManager.getCompanyProxyById(UUID.fromString(proxyId)),
+            )
         }
 
         /**
          * DELETE /company-proxies/company-proxy
          */
-        override fun deleteCompanyProxy(proxyId: String): ResponseEntity<CompanyProxyRelationResponse> {
+        override fun deleteCompanyProxy(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info("Received request to delete proxy rule with proxyId='$proxyId'")
 
             val uuid = UUID.fromString(proxyId)
@@ -79,7 +79,7 @@ class CompanyProxyController
             val deleted = companyProxyManager.deleteProxyRelation(uuid)
 
             val response =
-                CompanyProxyRelationResponse(
+                StoredCompanyProxy(
                     proxyId = deleted.proxyId.toString(),
                     proxiedCompanyId = deleted.proxiedCompanyId.toString(),
                     proxyCompanyId = deleted.proxyCompanyId.toString(),

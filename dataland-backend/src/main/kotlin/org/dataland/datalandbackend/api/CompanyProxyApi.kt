@@ -9,11 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
-import org.dataland.datalandbackend.model.proxies.CompanyProxyRelationResponse
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
+import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -77,20 +75,13 @@ interface CompanyProxyApi {
     fun postCompanyProxy(
         @Valid @RequestBody
         companyProxy: CompanyProxyRequest,
-    ): ResponseEntity<CompanyProxyRelationResponse>
+    ): ResponseEntity<StoredCompanyProxy>
 
     // TODO: No work has been put into any get feature. Should be similar to the /data-points endpoint in the QA-Controller.
 
-    /**
-     * Retrieves the proxy for a given (proxiedCompanyId, proxyCompanyId) pair.
-     *
-     * The returned object merges all stored proxy rows into a single DTO.
-     * Empty lists indicate that proxying applies to all frameworks or all reporting periods.
-     */
     @Operation(
-        summary = "Retrieve proxy  for a company pair.",
-        description =
-            "Returns the proxy defined for the given proxied company and proxy company. ",
+        summary = "Get the company proxy for a given id.",
+        description = "Retrieve the company proxy for the given proxy id. ",
     )
     @ApiResponses(
         value = [
@@ -100,31 +91,29 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland admins may query company rights.",
+                description = "Only Dataland admins may query company proxies.",
                 content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "No proxy found for the specified company pair.",
+                description = "No proxy found for the specified proxy id.",
                 content = [Content(mediaType = "application/json")],
             ),
         ],
     )
     @GetMapping(
-        value = ["/company-proxy"],
+        value = ["/company-proxy/{proxyId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getCompanyProxy(
-        @CompanyIdParameterRequired
+    fun getCompanyProxyById(
         @Parameter(
-            name = "proxiedCompanyId",
-            description = "The company whose data may be proxied.",
+            description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
             required = true,
         )
-        @CompanyExists
-        @RequestParam proxiedCompanyId: String,
-    ): ResponseEntity<List<CompanyProxy>>
+        @PathVariable proxyId: String,
+    ): ResponseEntity<StoredCompanyProxy>
 
     /**
      * Deletes a single proxy relation by its technical ID.
@@ -159,7 +148,7 @@ interface CompanyProxyApi {
             required = true,
         )
         @RequestParam proxyId: String,
-    ): ResponseEntity<CompanyProxyRelationResponse>
+    ): ResponseEntity<StoredCompanyProxy>
 
     /**
      * Replace the proxy for a given (unique) company proxy-ID.
@@ -204,7 +193,7 @@ interface CompanyProxyApi {
         @Parameter(
             name = "proxyId",
             description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
+            example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
             required = true,
         )
         @PathVariable("proxyId")

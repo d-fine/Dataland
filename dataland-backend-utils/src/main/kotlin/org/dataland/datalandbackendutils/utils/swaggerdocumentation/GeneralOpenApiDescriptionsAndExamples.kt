@@ -72,6 +72,7 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
 
     const val PROXY_ID_DESCRIPTION = "The unique identifier of the proxy (a pair of a proxied company and a proxy company)."
+    const val PROXY_ID_EXAMPLE = GENERAL_UUID_EXAMPLE
 
     const val PROXIED_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is being proxied."
     const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."

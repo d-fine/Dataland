@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
+    fun findByProxyId(proxyId: UUID): CompanyProxyEntity?
+
     fun findAllByProxiedCompanyId(proxiedCompanyId: UUID): List<CompanyProxyEntity>
 
     fun findAllByProxiedCompanyIdAndProxyCompanyIdAndFrameworkAndReportingPeriod(

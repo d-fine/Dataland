@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import java.util.UUID
 
 @Entity
@@ -33,4 +34,16 @@ class CompanyProxyEntity(
     val framework: String? = null, // null => all frameworks
     @Column(name = "reporting_period")
     val reportingPeriod: String? = null, // null => all periods
-)
+) {
+    /**
+     * Converts this CompanyProxyEntity to a StoredCompanyProxy.
+     */
+    fun toStoredCompanyProxy(): StoredCompanyProxy =
+        StoredCompanyProxy(
+            proxyId = proxyId.toString(),
+            proxiedCompanyId = proxiedCompanyId.toString(),
+            proxyCompanyId = proxyCompanyId.toString(),
+            framework = framework,
+            reportingPeriod = reportingPeriod,
+        )
+}
