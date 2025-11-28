@@ -72,22 +72,11 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
 
     const val PROXY_ID_DESCRIPTION = "The unique identifier of the proxy (a pair of a proxied company and a proxy company)."
-    const val PROXY_ID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 
     const val PROXIED_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is being proxied."
     const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."
     const val PROXIED_FRAMEWORKS_DESCRIPTION =
-        "List of frameworks for which proxying is permitted. Empty means all frameworks."
-    const val PROXIED_FRAMEWORKS_EXAMPLE = """["sfdr", "pcaf"]"""
-
-    const val PROXIED_FRAMEWORK_DESCRIPTION = "The reporting framework for which proxying is permitted."
-    const val PROXIED_FRAMEWORK_EXAMPLE = "sfdr"
-
+        "Framework for which proxying is permitted. Null means all frameworks."
     const val PROXIED_REPORTING_PERIODS_DESCRIPTION =
-        "List of reporting periods for which proxying is permitted. Empty means all reporting periods."
-    const val PROXIED_REPORTING_PERIODS_EXAMPLE = """["2022", "2023", "2025"]"""
-
-    const val PROXIED_REPORTING_PERIOD_DESCRIPTION =
-        "List of reporting periods for which proxying is permitted. Empty means all reporting periods."
-    const val PROXIED_REPORTING_PERIOD_EXAMPLE = "2022"
+        "Reporting period for which proxying is permitted. Null means all reporting periods."
 }

@@ -42,93 +42,49 @@ class CompanyProxyManager
          *      → full cross product of (framework, reportingPeriod).
          */
         @Transactional
-        fun addProxyRelation(relation: BulkCompanyProxy): BulkCompanyProxy {
+        fun addProxyRelation(relation: CompanyProxy): CompanyProxyEntity {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
             logger.info(
-                "Upserting proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Adding proxy relation for proxiedCompanyId=$proxiedCompanyId, " +
+                    "proxyCompanyId=$proxyCompanyId, " +
+                    "framework='${relation.framework}', " +
+                    "reportingPeriod='${relation.reportingPeriod}'",
             )
 
-            // Delete existing rules for this pair
-            companyDataProxyRuleRepository
-                .deleteAllByProxiedCompanyIdAndProxyCompanyId(proxiedCompanyId, proxyCompanyId)
-            // TODO: Instead of deleting check check if that company pair already exists and if yes post should not allow it.
+            // TODO: Check if that company pair already exists and if yes post should not allow it.
+            // TODO: Add check that this is not a contradiction. E.g. for a proxiedCompanyId=A,
+            //  and fixed reportingPeriod and framework, there can not be more than one proxyCompany.
 
-            val frameworks = relation.frameworks.orEmpty()
-            val reportingPeriods = relation.reportingPeriods.orEmpty()
+            val entity =
+                CompanyProxyEntity(
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
+                    framework = relation.framework,
+                    reportingPeriod = relation.reportingPeriod,
+                )
 
-            // TODO: Check if the post endpoint should be called with a list for reporting periods and frameworks and
-            // translate it internally or if it only should only accept a single reporting period or framework.
-            val entities: List<CompanyProxyEntity> =
-                when {
-                    frameworks.isEmpty() && reportingPeriods.isEmpty() -> {
-                        listOf(
-                            CompanyProxyEntity(
-                                proxiedCompanyId = proxiedCompanyId,
-                                proxyCompanyId = proxyCompanyId,
-                                framework = null,
-                                reportingPeriod = null,
-                            ),
-                        )
-                    }
+            val saved = companyDataProxyRuleRepository.save(entity)
 
-                    frameworks.isEmpty() -> {
-                        reportingPeriods.map { period ->
-                            CompanyProxyEntity(
-                                proxiedCompanyId = proxiedCompanyId,
-                                proxyCompanyId = proxyCompanyId,
-                                framework = null,
-                                reportingPeriod = period,
-                            )
-                        }
-                    }
-
-                    reportingPeriods.isEmpty() -> {
-                        frameworks.map { framework ->
-                            CompanyProxyEntity(
-                                proxiedCompanyId = proxiedCompanyId,
-                                proxyCompanyId = proxyCompanyId,
-                                framework = framework,
-                                reportingPeriod = null,
-                            )
-                        }
-                    }
-
-                    else -> {
-                        frameworks.flatMap { framework ->
-                            reportingPeriods.map { period ->
-                                CompanyProxyEntity(
-                                    proxiedCompanyId = proxiedCompanyId,
-                                    proxyCompanyId = proxyCompanyId,
-                                    framework = framework,
-                                    reportingPeriod = period,
-                                )
-                            }
-                        }
-                    }
-                }
-
-            companyDataProxyRuleRepository.saveAll(entities)
             logger.info(
-                "Saved ${entities.size} proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Saved proxy rule with id=${saved.proxyId} for proxiedCompanyId=$proxiedCompanyId, " +
+                    "proxyCompanyId=$proxyCompanyId",
             )
-            return relation
+
+            return saved
         }
 
         /**
-         * Returns the aggregated proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair
-         * as a single API model.
+         * Returns all proxy rules for a given proxiedCompanyId as domain models.
          *
-         * Aggregation semantics:
-         *  - If any stored rule has framework = null, the result frameworks list is interpreted as "all"
-         *    (returned as empty list in the DTO, matching the documented semantics).
-         *  - If any stored rule has reportingPeriod = null, the result reportingPeriods list is interpreted
-         *    as "all" (returned as empty list).
+         * Semantics:
+         *  - Each row in company_proxy_relations becomes one CompanyProxy.
+         *  - framework = null → applies to all frameworks
+         *  - reportingPeriod = null → applies to all reporting periods
          */
         @Transactional(readOnly = true)
-        fun getProxyRelation(proxiedCompanyId: UUID): List<BulkCompanyProxy> {
-            // TODO: change function name to plural
+        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxy> {
             val entities =
                 companyDataProxyRuleRepository
                     .findAllByProxiedCompanyId(proxiedCompanyId)
@@ -136,34 +92,18 @@ class CompanyProxyManager
             if (entities.isEmpty()) {
                 throw InvalidInputApiException(
                     "No proxy rules found for proxiedCompanyId=$proxiedCompanyId",
-                    message = "ThisStillNeedsAMessage",
+                    message = "No proxy rules exist for the specified company.",
                 )
             }
 
-            return entities
-                .groupBy { it.proxyCompanyId }
-                .map { (proxyCompanyId, rows) ->
-                    val hasAllFrameworks = rows.any { it.framework == null }
-                    val hasAllPeriods = rows.any { it.reportingPeriod == null }
-
-                    val distinctFrameworks =
-                        rows.mapNotNull { it.framework }.distinct().sorted()
-                    val distinctPeriods =
-                        rows.mapNotNull { it.reportingPeriod }.distinct().sorted()
-
-                    val dtoFrameworks =
-                        if (hasAllFrameworks) emptyList() else distinctFrameworks
-
-                    val dtoReportingPeriods =
-                        if (hasAllPeriods) emptyList() else distinctPeriods
-
-                    BulkCompanyProxy(
-                        proxiedCompanyId = proxiedCompanyId,
-                        proxyCompanyId = proxyCompanyId,
-                        frameworks = dtoFrameworks,
-                        reportingPeriods = dtoReportingPeriods,
-                    )
-                }
+            return entities.map { row ->
+                CompanyProxy(
+                    proxiedCompanyId = row.proxiedCompanyId,
+                    proxyCompanyId = row.proxyCompanyId,
+                    framework = row.framework, // null => all frameworks
+                    reportingPeriod = row.reportingPeriod, // null => all periods
+                )
+            }
         }
 
         /**
@@ -172,27 +112,27 @@ class CompanyProxyManager
          * If no rules exist for this pair, an InvalidInputApiException is thrown.
          */
         @Transactional
-        fun deleteProxyRelation(
-            proxiedCompanyId: UUID,
-            proxyCompanyId: UUID,
-        ) {
+        fun deleteProxyRelation(technicalId: UUID): CompanyProxyEntity {
             val existing =
                 companyDataProxyRuleRepository
-                    .findAllByProxiedCompanyIdAndProxyCompanyIdAndFrameworkAndReportingPeriod(proxiedCompanyId, proxyCompanyId, null, null)
-
-            if (existing.isEmpty()) {
-                throw InvalidInputApiException(
-                    "No proxy rules found for proxiedCompanyId=$proxiedCompanyId and proxyCompanyId=$proxyCompanyId",
-                    message = "No proxy rules exist for the specified companies.",
-                )
-            }
+                    .findById(technicalId)
+                    .orElseThrow {
+                        InvalidInputApiException(
+                            "No proxy rule found for id=$technicalId",
+                            message = "No proxy rule exists for the specified id.",
+                        )
+                    }
 
             logger.info(
-                "Deleting ${existing.size} proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Deleting proxy rule with id=$technicalId " +
+                    "(proxiedCompanyId=${existing.proxiedCompanyId}, " +
+                    "proxyCompanyId=${existing.proxyCompanyId}, " +
+                    "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",
             )
 
-            companyDataProxyRuleRepository
-                .deleteAllByProxiedCompanyIdAndProxyCompanyId(proxiedCompanyId, proxyCompanyId)
+            companyDataProxyRuleRepository.delete(existing)
+
+            return existing
         }
 
         @Transactional

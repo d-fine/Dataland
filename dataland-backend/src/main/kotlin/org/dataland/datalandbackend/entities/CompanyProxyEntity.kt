@@ -24,7 +24,7 @@ import java.util.UUID
 class CompanyProxyEntity(
     @Id
     @Column(name = "id", nullable = false)
-    val id: UUID = UUID.randomUUID(),
+    val proxyId: UUID = UUID.randomUUID(),
     @Column(name = "proxied_company_id", nullable = false)
     val proxiedCompanyId: UUID,
     @Column(name = "proxy_company_id", nullable = false)

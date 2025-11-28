@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxyRelationResponse
+import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
@@ -33,19 +35,20 @@ import java.util.UUID
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
     /**
-     * Creates a proxy for a given (proxiedCompanyId, proxyCompanyId) pair.
+     * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
      *
      * The submitted resource defines which data of one company may be substituted by
      * the corresponding data of another company.
      *
-     * If the framework or reportingPeriod lists are empty or null, the proxy applies to all of them.
+     * If the framework or reportingPeriod are null, the proxy applies to all frameworks
+     * or all reporting periods respectively.
      */
     @Operation(
-        summary = "Create or replace a proxy.",
+        summary = "Create a proxy.",
         description =
             "Creates a proxy describing which data of one company may be substituted " +
-                "by data of another company. If the lists for frameworks or reportingPeriods are empty " +
-                "or null, the proxy applies to all of them.",
+                "by data of another company. If framework or reportingPeriod are null, " +
+                "the proxy applies to all frameworks or all reporting periods respectively.",
     )
     @ApiResponses(
         value = [
@@ -55,7 +58,7 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland admins may query company rights.",
+                description = "Only Dataland admins may create company proxies.",
                 content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
@@ -72,8 +75,8 @@ interface CompanyProxyApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postCompanyProxy(
         @Valid @RequestBody
-        bulkCompanyProxy: BulkCompanyProxy,
-    ): ResponseEntity<Void>
+        companyProxy: CompanyProxyRequest,
+    ): ResponseEntity<CompanyProxyRelationResponse>
 
     /**
      * Retrieves the proxy for a given (proxiedCompanyId, proxyCompanyId) pair.
@@ -118,49 +121,42 @@ interface CompanyProxyApi {
         )
         @CompanyExists
         @RequestParam proxiedCompanyId: String,
-    ): ResponseEntity<List<BulkCompanyProxy>>
+    ): ResponseEntity<List<CompanyProxy>>
 
     /**
-     * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
+     * Deletes a single proxy relation by its technical ID.
      */
     @Operation(
-        summary = "Delete proxy rules for a company pair.",
+        summary = "Delete a proxy relation by technical ID.",
         description =
-            "Deletes all proxy rules defined for the given proxied company and proxy company.",
+            "Deletes a single proxy relation identified by its technical ID and returns the deleted rule.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "204",
-                description = "Successfully deleted proxy rules.",
+                responseCode = "200",
+                description = "Successfully deleted proxy rule.",
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "No proxy rules found for the specified company pair.",
+                description = "No proxy relation found for the specified technical ID.",
                 content = [Content(mediaType = "application/json")],
             ),
         ],
     )
     @DeleteMapping(
-        value = ["/company-proxy"],
+        value = ["/company-proxies"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun deleteCompanyProxy(
-        @CompanyIdParameterRequired
         @Parameter(
-            name = "proxiedCompanyId",
-            description = "The company whose data may be proxied.",
+            name = "proxyId",
+            description = "The proxy ID of the proxy rule entry.",
             required = true,
         )
-        @CompanyExists
-        @RequestParam proxiedCompanyId: String,
-        @CompanyIdParameterRequired
-        @Parameter(
-            name = "proxyCompanyId",
-            description = "The company whose data may act as the proxy.",
-            required = true,
-        )
+        @RequestParam proxyId: String,
+    ): ResponseEntity<CompanyProxyRelationResponse>
         @CompanyExists
         @RequestParam proxyCompanyId: String,
     ): ResponseEntity<Void>
