@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
 import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -67,5 +68,19 @@ class CompanyProxyController
             // TODO: Do we want to delete all relations for a given company pair?
             companyProxyManager.deleteProxyRelation(UUID.fromString(proxiedCompanyId), UUID.fromString(proxyCompanyId))
             return ResponseEntity.noContent().build()
+        }
+
+        /**
+         * PUT /company-proxies/company-proxy
+         */
+        override fun putCompanyProxy(
+            proxyId: UUID,
+            companyProxy: CompanyProxy,
+        ): ResponseEntity<CompanyProxy> {
+            logger.info(
+                "Received request to update proxy rule for " +
+                    "proxiedCompanyId = '$companyProxy.proxiedCompanyId', proxyCompanyId = '$companyProxy.proxyCompanyId'",
+            )
+            return ResponseEntity.ok(companyProxyManager.editCompanyProxy(proxyId, companyProxy))
         }
     }

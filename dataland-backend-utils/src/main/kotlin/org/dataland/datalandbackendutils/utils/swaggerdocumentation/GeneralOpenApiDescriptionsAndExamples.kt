@@ -79,7 +79,15 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val PROXIED_FRAMEWORKS_DESCRIPTION =
         "List of frameworks for which proxying is permitted. Empty means all frameworks."
     const val PROXIED_FRAMEWORKS_EXAMPLE = """["sfdr", "pcaf"]"""
+
+    const val PROXIED_FRAMEWORK_DESCRIPTION = "The reporting framework for which proxying is permitted."
+    const val PROXIED_FRAMEWORK_EXAMPLE = "sfdr"
+
     const val PROXIED_REPORTING_PERIODS_DESCRIPTION =
         "List of reporting periods for which proxying is permitted. Empty means all reporting periods."
     const val PROXIED_REPORTING_PERIODS_EXAMPLE = """["2022", "2023", "2025"]"""
+
+    const val PROXIED_REPORTING_PERIOD_DESCRIPTION =
+        "List of reporting periods for which proxying is permitted. Empty means all reporting periods."
+    const val PROXIED_REPORTING_PERIOD_EXAMPLE = "2022"
 }

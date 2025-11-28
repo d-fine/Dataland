@@ -2,8 +2,10 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
 import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.hibernate.jdbc.Expectation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -192,4 +194,10 @@ class CompanyProxyManager
             companyDataProxyRuleRepository
                 .deleteAllByProxiedCompanyIdAndProxyCompanyId(proxiedCompanyId, proxyCompanyId)
         }
+
+        @Transactional
+        fun editCompanyProxy(
+            proxyID: UUID,
+            companyProxy: CompanyProxy,
+        ): CompanyProxy = companyProxy
     }

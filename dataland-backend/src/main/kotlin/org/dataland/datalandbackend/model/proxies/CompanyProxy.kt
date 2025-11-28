@@ -29,14 +29,14 @@ data class CompanyProxy(
     val proxyCompanyId: UUID,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORK_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORK_EXAMPLE,
     )
     val framework: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIOD_EXAMPLE,
     )
     val reportingPeriod: String?,
 )

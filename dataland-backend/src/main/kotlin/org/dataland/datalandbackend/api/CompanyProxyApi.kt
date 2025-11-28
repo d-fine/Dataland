@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * Defines the REST API for managing proxies between companies.
@@ -210,7 +211,8 @@ interface CompanyProxyApi {
             example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
             required = true,
         )
-        @PathVariable proxyId: String,
+        @PathVariable("proxyId")
+        proxyId: UUID,
         @Valid
         @RequestBody
         companyProxy: CompanyProxy,
