@@ -33,6 +33,8 @@ import java.util.UUID
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
+    // TODO: Add validation for the input. Check if companyIds are companyIds, frameworks are frameworks and reportingPeriods are reportingPeriods.
+
     /**
      * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
      *
@@ -76,6 +78,8 @@ interface CompanyProxyApi {
         @Valid @RequestBody
         companyProxy: CompanyProxyRequest,
     ): ResponseEntity<CompanyProxyRelationResponse>
+
+    // TODO: No work has been put into any get feature. Should be similar to the /data-points endpoint in the QA-Controller.
 
     /**
      * Retrieves the proxy for a given (proxiedCompanyId, proxyCompanyId) pair.

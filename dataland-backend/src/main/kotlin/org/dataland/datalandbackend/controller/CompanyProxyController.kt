@@ -53,6 +53,8 @@ class CompanyProxyController
             return ResponseEntity.ok(responseBody)
         }
 
+        // TODO: Just a dummy implementation
+
         /**
          * GET /company-data-proxy-relation
          */

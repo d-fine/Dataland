@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.CompanyProxyEntity
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.hibernate.jdbc.Expectation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -52,7 +51,7 @@ class CompanyProxyManager
                     "reportingPeriod='${relation.reportingPeriod}'",
             )
 
-            // TODO: Check if that company pair already exists and if yes post should not allow it.
+            // TODO: Check if that company full combination already exists and if yes post should not allow it.
             // TODO: Add check that this is not a contradiction. E.g. for a proxiedCompanyId=A,
             //  and fixed reportingPeriod and framework, there can not be more than one proxyCompany.
 
@@ -97,7 +96,6 @@ class CompanyProxyManager
 
             return entities.map { row ->
                 CompanyProxy(
-                    proxyId = row.proxyId,
                     proxiedCompanyId = row.proxiedCompanyId,
                     proxyCompanyId = row.proxyCompanyId,
                     framework = row.framework, // null => all frameworks
@@ -112,19 +110,19 @@ class CompanyProxyManager
          * If no rules exist for this pair, an InvalidInputApiException is thrown.
          */
         @Transactional
-        fun deleteProxyRelation(technicalId: UUID): CompanyProxyEntity {
+        fun deleteProxyRelation(proxyId: UUID): CompanyProxyEntity {
             val existing =
                 companyDataProxyRuleRepository
-                    .findById(technicalId)
+                    .findById(proxyId)
                     .orElseThrow {
                         InvalidInputApiException(
-                            "No proxy rule found for id=$technicalId",
-                            message = "No proxy rule exists for the specified id.",
+                            "No proxy rule found for id=$proxyId",
+                            message = "No proxy rule exists for the specified proxyId.",
                         )
                     }
 
             logger.info(
-                "Deleting proxy rule with id=$technicalId " +
+                "Deleting proxy rule with id=$proxyId " +
                     "(proxiedCompanyId=${existing.proxiedCompanyId}, " +
                     "proxyCompanyId=${existing.proxyCompanyId}, " +
                     "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",

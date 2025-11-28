@@ -20,12 +20,6 @@ import java.util.UUID
 data class CompanyProxy(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
-    )
-    val proxyId: UUID,
-    @field:JsonProperty(required = true)
-    @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
