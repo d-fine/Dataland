@@ -53,4 +53,13 @@ data class BulkDataRequestResponse(
             ),
     )
     val existingDataSets: List<BasicDataDimensions>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = BasicDataDimensions::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.NON_SOURCEABLE_REQUESTS_DESCRIPTION,
+            ),
+    )
+    val nonSourceableDataRequests: List<BasicDataDimensions>,
 )
