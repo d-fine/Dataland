@@ -121,7 +121,7 @@ class BulkRequestManager
          * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
          * For performance reasons tuple matching is used and requires a native query via entity manager.
          * JPA does not support tuple matching.
-         * @param dataDimensions List of data dimensions to filter the requests.
+         * @param dataDimensions Set of data dimensions to filter the requests.
          * @param userId The ID of the user for whom to retrieve the active requests.
          */
         private fun getExistingRequests(
@@ -157,16 +157,15 @@ class BulkRequestManager
         private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
             dataDimensions
                 .filter { dim ->
-                    val found =
-                        dataSourcingQueryManager.searchDataSourcings(
+                    dataSourcingQueryManager
+                        .searchDataSourcings(
                             companyId = UUID.fromString(dim.companyId),
                             dataType = dim.dataType,
                             reportingPeriod = dim.reportingPeriod,
                             state = DataSourcingState.NonSourceable,
                             chunkSize = 1,
                             chunkIndex = 0,
-                        )
-                    found.isNotEmpty()
+                        ).isNotEmpty()
                 }.toSet()
 
         private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {

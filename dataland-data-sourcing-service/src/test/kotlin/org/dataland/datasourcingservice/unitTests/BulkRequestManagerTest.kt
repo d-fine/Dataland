@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
@@ -187,7 +188,7 @@ class BulkRequestManagerTest {
         ).whenever(mockDataSourcingValidator).validateBulkDataRequest(any())
 
         doReturn(listOf(mockStoredDataSourcing)).whenever(mockDataSourcingQueryManager).searchDataSourcings(
-            eq(UUID.fromString(companyIdentifier1)), eq(dataType1), eq(reportingPeriod1), any(), any(), any(),
+            eq(UUID.fromString(companyIdentifier1)), eq(dataType1), eq(reportingPeriod1), DataSourcingState.NonSourceable, any(), any(),
         )
 
         doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(
