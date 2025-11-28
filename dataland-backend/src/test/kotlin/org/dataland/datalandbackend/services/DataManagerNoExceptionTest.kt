@@ -102,6 +102,10 @@ class DataManagerNoExceptionTest
                         dataId = dataId,
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = null,
+                        storableEuTaxonomyDatasetForNonFinancials.companyId,
+                        storableEuTaxonomyDatasetForNonFinancials.dataType.toString(),
+                        storableEuTaxonomyDatasetForNonFinancials.reportingPeriod,
+                        false,
                     ),
                 )
 
@@ -138,14 +142,21 @@ class DataManagerNoExceptionTest
 
         @Test
         fun `test changing the QA status of a pending dataset to Accepted and setting it to active`() {
-            val dataId = "someDataId"
+            val dataId = UUID.randomUUID().toString()
             val newQaStatus = QaStatus.Accepted
 
             createNewDataMetaInformationWithQaStatus(dataId, QaStatus.Pending)
 
             val messageWithChangedQAStatus =
                 objectMapper.writeValueAsString(
-                    QaStatusChangeMessage(dataId, newQaStatus, dataId),
+                    QaStatusChangeMessage(
+                        dataId, newQaStatus,
+                        dataId,
+                        UUID.randomUUID().toString(),
+                        "sfdr",
+                        "2025",
+                        false,
+                    ),
                 )
             assertDoesNotThrow {
                 messageQueueListenerForDataManager.changeQaStatus(
@@ -164,15 +175,19 @@ class DataManagerNoExceptionTest
 
         @Test
         fun `test rejecting an accepted dataset and setting it to inactive and setting a second dataset to active`() {
-            val oldDataId = "oldDatasetDataId"
-            val newDataId = "newDatasetDataId"
+            val oldDataId = UUID.randomUUID().toString()
+            val newDataId = UUID.randomUUID().toString()
 
             createNewDataMetaInformationWithQaStatus(oldDataId, QaStatus.Accepted)
             createNewDataMetaInformationWithQaStatus(newDataId, QaStatus.Accepted)
 
             val messageWithChangedQAStatus =
                 objectMapper.writeValueAsString(
-                    QaStatusChangeMessage(oldDataId, QaStatus.Rejected, newDataId),
+                    QaStatusChangeMessage(
+                        oldDataId, QaStatus.Rejected, newDataId,
+                        UUID.randomUUID().toString(),
+                        "sfdr", "2025", false,
+                    ),
                 )
             assertDoesNotThrow {
                 messageQueueListenerForDataManager.changeQaStatus(

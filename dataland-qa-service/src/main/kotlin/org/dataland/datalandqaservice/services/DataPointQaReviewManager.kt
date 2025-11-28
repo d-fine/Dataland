@@ -263,6 +263,7 @@ class DataPointQaReviewManager
                     .associate { Triple(it.companyId, it.dataPointType, it.reportingPeriod) to it.dataPointId }
 
             reviewEntitiesWithCorrelationIds.forEach { (reviewEntity, correlationId) ->
+                // this function misuses QaStatusChangeMessage originally made for datasets not datapoints.
                 val qaStatusChangeMessage =
                     QaStatusChangeMessage(
                         dataId = reviewEntity.dataPointId,
@@ -275,6 +276,7 @@ class DataPointQaReviewManager
                                     reviewEntity.reportingPeriod,
                                 ),
                             ],
+                        reviewEntity.companyId, "", reviewEntity.reportingPeriod, true,
                     )
 
                 logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")

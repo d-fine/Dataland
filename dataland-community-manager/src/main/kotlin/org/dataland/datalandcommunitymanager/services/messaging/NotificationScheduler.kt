@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.DataRequestSummaryNotificationService
 import org.dataland.datalandcommunitymanager.services.InvestorRelationsNotificationService
 import org.dataland.datalandcommunitymanager.utils.NotificationUtils
 import org.slf4j.LoggerFactory
@@ -23,7 +22,6 @@ class NotificationScheduler
         private val notificationEventRepository: NotificationEventRepository,
         private val notificationUtils: NotificationUtils,
         private val investorRelationsNotificationService: InvestorRelationsNotificationService,
-        private val dataRequestSummaryNotificationService: DataRequestSummaryNotificationService,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -37,16 +35,6 @@ class NotificationScheduler
                 "Investor Relations",
                 listOf(NotificationEventType.InvestorRelationsEvent),
                 investorRelationsNotificationService::processNotificationEvents,
-            )
-
-            processNotificationEvents(
-                "Data Request Summary",
-                listOf(
-                    NotificationEventType.AvailableEvent,
-                    NotificationEventType.UpdatedEvent,
-                    NotificationEventType.NonSourceableEvent,
-                ),
-                dataRequestSummaryNotificationService::processNotificationEvents,
             )
         }
 

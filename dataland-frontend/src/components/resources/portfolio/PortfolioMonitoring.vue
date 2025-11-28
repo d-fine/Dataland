@@ -6,7 +6,16 @@
       data-test="activateMonitoringToggle"
       @update:modelValue="onMonitoringToggled"
     />
-
+    <p class="header-styling">Notification Frequency</p>
+    <Select
+      v-model="selectedNotificationOption"
+      :options="notificationOptions"
+      :disabled="!isMonitoringActive"
+      optionLabel="label"
+      optionValue="value"
+      data-test="notification-options"
+      style="min-width: 14rem"
+    />
     <p class="header-styling">Frameworks</p>
     <div>
       <div
@@ -48,13 +57,15 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import { type EnrichedPortfolio, NotificationFrequency, type PortfolioMonitoringPatch } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
+import Select from 'primevue/select';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 type MonitoringOption = {
   value: string;
@@ -68,6 +79,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
   .portfolioController;
 
+const notificationOptions = ref(
+  Object.values(NotificationFrequency).map((category) => ({
+    label: humanizeStringOrNumber(category),
+    value: category,
+  }))
+);
+const selectedNotificationOption = ref('Weekly');
 const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'sfdr', label: 'SFDR', isActive: false },
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
@@ -129,6 +147,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
+    notificationFrequency: selectedNotificationOption.value as NotificationFrequency,
   };
 
   if (isMonitoringActive.value) {
@@ -156,7 +175,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
-
+  selectedNotificationOption.value = portfolio.value.notificationFrequency ?? 'Daily';
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,

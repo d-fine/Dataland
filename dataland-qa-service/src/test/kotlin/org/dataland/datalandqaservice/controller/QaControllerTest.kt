@@ -160,6 +160,7 @@ class QaControllerTest(
                 dataId = dataId,
                 updatedQaStatus = updatedQaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
+                companyId, "", reportingPeriod, true,
             ),
         )
 

@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.SectorType
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -120,6 +121,7 @@ class PortfolioBulkDataRequestServiceTest {
         portfolioName = portfolioName,
         creationTimestamp = TIMESTAMP,
         lastUpdateTimestamp = TIMESTAMP,
+        notificationFrequency = NotificationFrequency.Weekly,
     )
 
     @Test

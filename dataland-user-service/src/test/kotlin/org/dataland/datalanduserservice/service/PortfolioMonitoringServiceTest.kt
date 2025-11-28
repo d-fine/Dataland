@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -41,6 +42,7 @@ class PortfolioMonitoringServiceTest {
             identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            NotificationFrequency.Weekly,
         )
 
     @BeforeEach
@@ -68,6 +70,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
+                NotificationFrequency.Weekly,
             )
 
         doReturn(null)
@@ -91,6 +94,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                NotificationFrequency.Weekly,
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())

@@ -6,6 +6,7 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignmentExtended
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -74,7 +75,7 @@ class CompanyRolesTestUtils {
     ) {
         assertErrorCodeInCommunityManagerClientException(communityManagerClientException, 404)
         val responseBody = (communityManagerClientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("Company not found"))
+        assertTrue(responseBody.contains(COMPANY_NOT_FOUND))
         assertTrue(
             responseBody.contains(
                 "\"Dataland does not know the company ID $companyId\"",

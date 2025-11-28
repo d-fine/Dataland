@@ -236,7 +236,7 @@ class DataRequestUpdateManager
 
         /**
          * Change the request status of all data requests of all subsidiaries of a given company, reporting period and framework.
-         * At the moment, this is only used to patch from request status open or non-sourceable to answered.
+         * At the moment, this is only used to patch from request status open or non-sourceable to 'answered'.
          * @param parentCompanyId the ID of the company whose subsidiaries shall be processed
          * @param reportingPeriod the reporting period for which data requests shall be patched
          * @param dataType the framework for which data requests shall be patched

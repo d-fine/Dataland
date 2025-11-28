@@ -22,6 +22,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import java.util.UUID
 
 /**
  * Tests if the listener processes the incoming non-sourceable data information correctly.
@@ -32,9 +33,9 @@ class CommunityManagerListenerUnitTest {
     private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
     private val mockInvestorRelationsManager = mock<InvestorRelationsManager>()
-    private val validDataId = "valid-data-id"
+    private val validDataId = UUID.randomUUID().toString()
     private val invalidDataId = ""
-    private val correlationId = "test correlation id"
+    private val correlationId = UUID.randomUUID().toString()
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
@@ -62,6 +63,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = validDataId,
                 updatedQaStatus = qaStatus,
                 currentlyActiveDataId = validDataId,
+                UUID.randomUUID().toString(), "sfdr", "2025", false,
             )
         communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
@@ -97,6 +99,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = invalidDataId,
                 updatedQaStatus = QaStatus.Accepted,
                 currentlyActiveDataId = invalidDataId,
+                UUID.randomUUID().toString(), "sfdr", "2025", false,
             )
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.changeRequestStatusAfterQaDecision(

@@ -164,12 +164,17 @@ class QaEventListenerQaService
                 logger.info(
                     "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
+                // this function misuses QaStatusChangeMessage originally made for datasets not documents.
                 val messageToSend =
                     objectMapper.writeValueAsString(
                         QaStatusChangeMessage(
                             documentId,
                             QaStatus.Accepted,
                             null,
+                            "",
+                            "",
+                            "",
+                            true,
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
