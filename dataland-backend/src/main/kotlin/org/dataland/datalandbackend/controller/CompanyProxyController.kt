@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
-import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRelationResponse
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest

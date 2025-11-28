@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
-import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -98,6 +97,7 @@ class CompanyProxyManager
 
             return entities.map { row ->
                 CompanyProxy(
+                    proxyId = row.proxyId,
                     proxiedCompanyId = row.proxiedCompanyId,
                     proxyCompanyId = row.proxyCompanyId,
                     framework = row.framework, // null => all frameworks

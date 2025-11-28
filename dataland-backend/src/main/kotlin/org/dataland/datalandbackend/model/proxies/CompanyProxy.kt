@@ -21,7 +21,7 @@ data class CompanyProxy(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
     )
     val proxyId: UUID,
     @field:JsonProperty(required = true)
