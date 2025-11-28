@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -8,7 +9,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.MessageWithTriple
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -65,10 +65,7 @@ class NotificationEventListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATASOURCING_NONSOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
-
-        checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
-        val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
             "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
@@ -76,14 +73,7 @@ class NotificationEventListener(
                 "Correlation ID: $correlationId",
         )
 
-        val notificationEventEntity =
-            NotificationEventEntity(
-                companyId = ValidationUtils.convertToUUID(sourceabilityMessage.companyId),
-                framework = dataTypeDecoded,
-                reportingPeriod = sourceabilityMessage.reportingPeriod,
-                notificationEventType = NotificationEventType.NonSourceableEvent,
-            )
-        notificationEventRepository.save(notificationEventEntity)
+        processMessage(sourceabilityMessage, NotificationEventType.NonSourceableEvent)
     }
 
     /**
@@ -118,9 +108,6 @@ class NotificationEventListener(
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
 
-        checkThatReceivedDataIsComplete(qaStatusChangeMessage)
-        val dataTypeDecoded = decodeDataTypeIfPossible(qaStatusChangeMessage)
-
         logger.info(
             "Received a qa status change message for data type: ${qaStatusChangeMessage.dataType}, " +
                 "company ID: ${qaStatusChangeMessage.companyId} and reporting period: " +
@@ -128,17 +115,29 @@ class NotificationEventListener(
                 "Correlation ID: $correlationId",
         )
 
+        processMessage(
+            qaStatusChangeMessage,
+            if (qaStatusChangeMessage.isUpdate) {
+                NotificationEventType.UpdatedEvent
+            } else {
+                NotificationEventType.AvailableEvent
+            },
+        )
+    }
+
+    private fun processMessage(
+        statusChangeMessage: DataDimensions,
+        notificationEventType: NotificationEventType,
+    ) {
+        checkThatReceivedDataIsComplete(statusChangeMessage)
+        val dataTypeDecoded = decodeDataTypeIfPossible(statusChangeMessage)
+
         val notificationEventEntity =
             NotificationEventEntity(
-                companyId = ValidationUtils.convertToUUID(qaStatusChangeMessage.companyId),
+                companyId = ValidationUtils.convertToUUID(statusChangeMessage.companyId),
                 framework = dataTypeDecoded,
-                reportingPeriod = qaStatusChangeMessage.reportingPeriod,
-                notificationEventType =
-                    if (qaStatusChangeMessage.isUpdate) {
-                        NotificationEventType.UpdatedEvent
-                    } else {
-                        NotificationEventType.AvailableEvent
-                    },
+                reportingPeriod = statusChangeMessage.reportingPeriod,
+                notificationEventType = notificationEventType,
             )
         notificationEventRepository.save(notificationEventEntity)
     }
@@ -147,8 +146,8 @@ class NotificationEventListener(
      * Checks whether at least one of the fields companyId or reportingPeriod in the message
      * is empty and, if so, throws an appropriate exception.
      */
-    private fun checkThatReceivedDataIsComplete(messageWithTriple: MessageWithTriple) {
-        if (messageWithTriple.companyId.isEmpty() || messageWithTriple.reportingPeriod.isEmpty()) {
+    private fun checkThatReceivedDataIsComplete(dataDimensions: DataDimensions) {
+        if (dataDimensions.companyId.isEmpty() || dataDimensions.reportingPeriod.isEmpty()) {
             throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
         }
     }
@@ -170,7 +169,7 @@ class NotificationEventListener(
      * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
      * If the decoding fails, an appropriate exception is thrown.
      */
-    private fun decodeDataTypeIfPossible(messageWithTriple: MessageWithTriple): DataTypeEnum =
-        DataTypeEnum.decode(messageWithTriple.dataType)
+    private fun decodeDataTypeIfPossible(dataDimensions: DataDimensions): DataTypeEnum =
+        DataTypeEnum.decode(dataDimensions.dataType)
             ?: throw MessageQueueRejectException("Framework name could not be understood.")
 }

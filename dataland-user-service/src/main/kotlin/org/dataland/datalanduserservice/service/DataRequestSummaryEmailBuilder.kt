@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -32,7 +33,6 @@ class DataRequestSummaryEmailBuilder
         private val companyApi: CompanyDataControllerApi,
     ) {
         private val objectMapper = defaultObjectMapper
-        private val exceptionSummaryDueToCompanyNotFound = "Company not found"
 
         private fun buildExceptionMessageDueToCompanyNotFound(companyId: String) = "Dataland does not know the company ID $companyId"
 
@@ -123,7 +123,7 @@ class DataRequestSummaryEmailBuilder
             } catch (e: ClientException) {
                 if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                     throw ResourceNotFoundApiException(
-                        exceptionSummaryDueToCompanyNotFound,
+                        COMPANY_NOT_FOUND,
                         buildExceptionMessageDueToCompanyNotFound(companyId),
                     )
                 } else {

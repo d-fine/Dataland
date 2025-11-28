@@ -1,6 +1,7 @@
 package org.dataland.datalandmessagequeueutils.messages
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
@@ -21,7 +22,7 @@ data class QaStatusChangeMessage(
     override val companyId: String,
     override val dataType: String,
     override val reportingPeriod: String,
-    // necessary since jackson automatically removed the 'is' when writing to JSON
+    // necessary since jackson automatically removes the 'is' when writing to JSON
     @param:JsonProperty("update")
     val isUpdate: Boolean,
-) : MessageWithTriple
+) : DataDimensions

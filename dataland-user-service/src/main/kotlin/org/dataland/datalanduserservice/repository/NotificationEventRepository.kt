@@ -10,13 +10,11 @@ import java.util.UUID
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
     /**
-     * * Find all notification events by company ID, framework, reporting period, and creation timestamp greater
-     * than the specified value
+     * Returns all NotificationEventEntities matching framework, list of companyIds, and newer than given timestamp.
      */
-    fun findAllByCompanyIdAndFrameworkAndReportingPeriodAndCreationTimestampGreaterThan(
-        companyId: UUID,
+    fun findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
         framework: DataTypeEnum,
-        reportingPeriod: String,
+        companyIds: List<UUID>,
         creationTimestamp: Long,
     ): List<NotificationEventEntity>
 }

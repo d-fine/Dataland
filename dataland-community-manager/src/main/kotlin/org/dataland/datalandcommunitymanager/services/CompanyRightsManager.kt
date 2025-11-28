@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
 import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRightAssignment
@@ -41,7 +42,7 @@ class CompanyRightsManager(
             companyDataControllerApi.isCompanyIdValid(companyRightAssignment.companyId.toString())
         } catch (_: ClientException) {
             throw ResourceNotFoundApiException(
-                summary = "Company not found.",
+                summary = COMPANY_NOT_FOUND,
                 message = "Dataland does not know the company ID ${companyRightAssignment.companyId}.",
             )
         }

@@ -1,6 +1,7 @@
 package org.dataland.datalandmessagequeueutils.messages
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
 
 /**
  * Payload of a message concerning the sourceability status of a dataset sent by the backend to the
@@ -14,4 +15,4 @@ data class SourceabilityMessage(
     @field:JsonProperty(value = "isNonSourceable")
     val isNonSourceable: Boolean,
     val reason: String,
-) : MessageWithTriple
+) : DataDimensions

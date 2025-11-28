@@ -1,11 +1,10 @@
 package org.dataland.datalanduserservice.service
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.entity.NotificationEventEntity
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
+import org.dataland.datalanduserservice.repository.NotificationEventRepository
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +27,7 @@ class NotificationScheduler
     constructor(
         private val dataRequestSummaryEmailBuilder: DataRequestSummaryEmailBuilder,
         private val portfolioRepository: PortfolioRepository,
-        @PersistenceContext private val entityManager: EntityManager,
+        private val notificationEventRepository: NotificationEventRepository,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -40,7 +39,7 @@ class NotificationScheduler
          * Processes data request summary events and sends emails to appropriate recipients.
          * @param events List of unprocessed data request summary notification events.
          */
-        fun processNotificationEvents(
+        private fun processNotificationEvents(
             events: List<NotificationEventEntity>,
             frequency: NotificationFrequency,
             portfolioNamesString: String,
@@ -124,33 +123,32 @@ class NotificationScheduler
             val portfoliosGroupedByUser = portfoliosWithRegularUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
-                val allCompanyIdFrameworkPairs =
-                    userPortfolios.flatMap { portfolio ->
-                        val frameworks =
-                            (portfolio.monitoredFrameworks ?: emptySet()).flatMap { framework ->
-                                when (framework) {
-                                    "eutaxonomy" ->
-                                        listOf(
-                                            "eutaxonomy-financials",
-                                            "eutaxonomy-non-financials",
-                                            "nuclear-and-gas",
-                                        )
+                val frameworkToCompanyIds =
+                    userPortfolios
+                        .asSequence()
+                        .filter { it.monitoredFrameworks != null }
+                        .flatMap { portfolio ->
+                            portfolio.monitoredFrameworks!!.map { framework ->
+                                framework to portfolio.companyIds
+                            }
+                        }.groupBy({ it.first }, { it.second })
+                        .mapValues { (_, companyIdsList) ->
+                            companyIdsList.flatten().distinct()
+                        }.toMutableMap()
 
-                                    else -> listOf(framework)
-                                }
-                            }
-                        portfolio.companyIds.flatMap { companyId ->
-                            frameworks.mapNotNull { framework ->
-                                DataTypeEnum
-                                    .decode(framework)
-                                    ?.let { Pair(ValidationUtils.convertToUUID(companyId), it) }
-                            }
-                        }
-                    }
+                frameworkToCompanyIds["eutaxonomy"]?.let { ids ->
+                    frameworkToCompanyIds["eutaxonomy-financials"] = ids
+                    frameworkToCompanyIds["eutaxonomy-non-financials"] = ids
+                    frameworkToCompanyIds["nuclear-and-gas"] = ids
+                    frameworkToCompanyIds.remove("eutaxonomy")
+                }
 
                 val eventEntitiesToProcess =
                     getRelevantNotificationEvents(
-                        allCompanyIdFrameworkPairs,
+                        frameworkToCompanyIds.mapKeys { (framework, _) ->
+                            DataTypeEnum
+                                .decode(framework)!!
+                        },
                         timeStampForInterval,
                     )
 
@@ -164,25 +162,17 @@ class NotificationScheduler
         }
 
         private fun getRelevantNotificationEvents(
-            companyIdFrameworkPairs: List<Pair<UUID, DataTypeEnum>>,
+            frameworkToCompanyIds: Map<DataTypeEnum, List<String>>,
             timeStamp: Long,
         ): List<NotificationEventEntity> {
-            val formattedTuples =
-                companyIdFrameworkPairs.joinToString(", ") {
-                    "('${it.first}', '${it.second}')"
+            val notificationEventEntities =
+                frameworkToCompanyIds.flatMap { (framework, companyIds) ->
+                    notificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
+                        framework,
+                        companyIds.map { UUID.fromString(it) },
+                        timeStamp,
+                    )
                 }
-
-            val queryToExecute =
-                """SELECT * FROM notification_events n
-                WHERE (n.company_id, n.framework) IN ($formattedTuples)
-                AND n.creation_timestamp >= '$timeStamp'"""
-
-            return if (companyIdFrameworkPairs.isNotEmpty()) {
-                val query = entityManager.createNativeQuery(queryToExecute, NotificationEventEntity::class.java)
-                return query.resultList
-                    .filterIsInstance<NotificationEventEntity>()
-            } else {
-                emptyList()
-            }
+            return notificationEventEntities
         }
     }

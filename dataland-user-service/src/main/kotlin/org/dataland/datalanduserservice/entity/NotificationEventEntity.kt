@@ -18,7 +18,9 @@ import java.util.UUID
 @Entity
 @Table(
     name = "notification_events",
-    indexes = [Index(name = "idx_notification_events", columnList = "notificationEventType")],
+    indexes = [
+        Index(name = "idx_notification_events", columnList = "notificationEventType"),
+    ],
 )
 data class NotificationEventEntity(
     @Id
