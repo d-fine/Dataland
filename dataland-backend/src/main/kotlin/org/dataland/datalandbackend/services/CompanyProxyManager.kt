@@ -40,19 +40,17 @@ class CompanyProxyManager
          *      → full cross product of (framework, reportingPeriod).
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxy): CompanyProxy {
+        fun addProxyRelation(relation: CompanyProxy): List<CompanyProxyEntity> {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
             logger.info(
-                "Upserting proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Adding relations for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
             )
 
-            // Delete existing rules for this pair
-            companyDataProxyRuleRepository
-                .deleteAllByProxiedCompanyIdAndProxyCompanyId(proxiedCompanyId, proxyCompanyId)
-            // TODO: Instead of deleting check check if that company pair already exists and if yes post should not allow it.
-
+            // TODO: Check if that company pair already exists and if yes post should not allow it.
+            // TODO: Add check that this is not a contradiction. E.g. for a proxiedCompanyId=A,
+            //  and fixed reportingPeriod and framework, there can not be more than one proxyCompany.
             val frameworks = relation.frameworks.orEmpty()
             val reportingPeriods = relation.reportingPeriods.orEmpty()
 
@@ -107,11 +105,11 @@ class CompanyProxyManager
                     }
                 }
 
-            companyDataProxyRuleRepository.saveAll(entities)
+            val savedRelations = companyDataProxyRuleRepository.saveAll(entities)
             logger.info(
-                "Saved ${entities.size} proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Saved ${savedRelations.size} proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
             )
-            return relation
+            return savedRelations
         }
 
         /**
@@ -170,26 +168,26 @@ class CompanyProxyManager
          * If no rules exist for this pair, an InvalidInputApiException is thrown.
          */
         @Transactional
-        fun deleteProxyRelation(
-            proxiedCompanyId: UUID,
-            proxyCompanyId: UUID,
-        ) {
+        fun deleteProxyRelation(technicalId: UUID): CompanyProxyEntity {
             val existing =
                 companyDataProxyRuleRepository
-                    .findAllByProxiedCompanyIdAndProxyCompanyIdAndFrameworkAndReportingPeriod(proxiedCompanyId, proxyCompanyId, null, null)
-
-            if (existing.isEmpty()) {
-                throw InvalidInputApiException(
-                    "No proxy rules found for proxiedCompanyId=$proxiedCompanyId and proxyCompanyId=$proxyCompanyId",
-                    message = "No proxy rules exist for the specified companies.",
-                )
-            }
+                    .findById(technicalId)
+                    .orElseThrow {
+                        InvalidInputApiException(
+                            "No proxy rule found for id=$technicalId",
+                            message = "No proxy rule exists for the specified id.",
+                        )
+                    }
 
             logger.info(
-                "Deleting ${existing.size} proxy rules for proxiedCompanyId=$proxiedCompanyId, proxyCompanyId=$proxyCompanyId",
+                "Deleting proxy rule with id=$technicalId " +
+                    "(proxiedCompanyId=${existing.proxiedCompanyId}, " +
+                    "proxyCompanyId=${existing.proxyCompanyId}, " +
+                    "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",
             )
 
-            companyDataProxyRuleRepository
-                .deleteAllByProxiedCompanyIdAndProxyCompanyId(proxiedCompanyId, proxyCompanyId)
+            companyDataProxyRuleRepository.delete(existing)
+
+            return existing
         }
     }
