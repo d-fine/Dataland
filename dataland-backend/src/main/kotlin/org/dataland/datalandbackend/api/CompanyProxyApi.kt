@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -114,6 +115,68 @@ interface CompanyProxyApi {
         )
         @PathVariable proxyId: String,
     ): ResponseEntity<StoredCompanyProxy>
+
+    /**
+     * Searches for company proxies matching the given filters.
+     */
+    @Operation(
+        summary = "Search company proxies.",
+        description = "Searches for company proxies matching the given filters.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved proxies."),
+        ],
+    )
+    @GetMapping(
+        value = ["/company-proxy"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun searchCompanyProxies(
+        @RequestParam
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        @CompanyExists
+        proxiedCompanyId: String?,
+        @RequestParam
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = false,
+        )
+        @CompanyExists
+        proxyCompanyId: String?,
+        @RequestParam
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPES_FRAMEWORK_EXAMPLE,
+            required = false,
+        )
+        frameworks: Set<String>?,
+        @RequestParam
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
+            required = false,
+        )
+        reportingPeriods: Set<String>?,
+        @RequestParam(defaultValue = "10")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
+            required = false,
+        )
+        chunkSize: Int,
+        @RequestParam(defaultValue = "0")
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
+            required = false,
+        )
+        chunkIndex: Int,
+    ): ResponseEntity<List<StoredCompanyProxy>>
 
     /**
      * Deletes a single proxy relation by its technical ID.

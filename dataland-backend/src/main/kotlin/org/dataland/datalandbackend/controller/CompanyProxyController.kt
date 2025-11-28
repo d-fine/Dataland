@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.model.proxies.toDomainModel
 import org.dataland.datalandbackend.services.CompanyProxyManager
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -65,6 +66,30 @@ class CompanyProxyController
             )
             return ResponseEntity.ok(
                 companyProxyManager.getCompanyProxyById(UUID.fromString(proxyId)),
+            )
+        }
+
+        /**
+         * GET /company-proxies/company-proxy
+         */
+        override fun searchCompanyProxies(
+            proxiedCompanyId: String?,
+            proxyCompanyId: String?,
+            frameworks: Set<String>?,
+            reportingPeriods: Set<String>?,
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): ResponseEntity<List<StoredCompanyProxy>> {
+            logger.info("Received request to get all company proxies")
+            return ResponseEntity.ok(
+                companyProxyManager.getCompanyProxiesByFilters(
+                    proxiedCompanyId = proxiedCompanyId?.let { ValidationUtils.convertToUUID(it) },
+                    proxyCompanyId = proxyCompanyId?.let { ValidationUtils.convertToUUID(it) },
+                    frameworks = frameworks,
+                    reportingPeriods = reportingPeriods,
+                    chunkSize = chunkSize,
+                    chunkIndex = chunkIndex,
+                ),
             )
         }
 
