@@ -260,17 +260,17 @@ const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, tru
 
 const groups: CompanyRoleDetails[] = [
   {
-    role: CompanyRole.MemberAdmin,
+    role: CompanyRole.Admin,
     title: 'Admins',
     icon: 'pi pi-shield',
     info: 'The User Admin has the rights to add or remove other user admins and members. Admins manage other users and can control who has access to what data or features within Dataland.',
     description: 'Manage users and roles.',
   },
   {
-    role: CompanyRole.Member,
-    title: 'Members',
+    role: CompanyRole.Analyst,
+    title: 'Analyst',
     icon: 'pi pi-users',
-    info: 'Members have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
+    info: 'Analysts have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
     description: 'Unlimited access to data requests.',
   },
   {
@@ -338,8 +338,8 @@ const rowMenuItems = computed<MenuItem[]>(() =>
 const roleModificationPermissionsMap: Record<CompanyRole, CompanyRole[]> = {
   [CompanyRole.CompanyOwner]: Object.values(CompanyRole),
   [CompanyRole.DataUploader]: [],
-  [CompanyRole.MemberAdmin]: [CompanyRole.MemberAdmin, CompanyRole.Member],
-  [CompanyRole.Member]: [],
+  [CompanyRole.Admin]: [CompanyRole.Admin, CompanyRole.Analyst],
+  [CompanyRole.Analyst]: [],
 };
 
 const roleHasUsers = computed(() => rowsForRole.value.length > 0);

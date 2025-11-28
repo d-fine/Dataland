@@ -122,7 +122,7 @@ class SecurityUtilsService(
      * @param companyId Dataland company ID
      */
     @Transactional(readOnly = true)
-    fun isUserOwnerOrMemberAdminOfTheCompany(companyId: UUID?): Boolean {
+    fun isUserOwnerOrAdminOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false
         return companyRoleAssignmentRepository.findByCompanyIdAndUserIdAndCompanyRoleIsIn(
