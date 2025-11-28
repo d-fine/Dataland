@@ -207,7 +207,7 @@ async function getCompanyUserInformation(): Promise<void> {
     isMemberOfCompanyOrAdmin.value =
       userRoles.some((role) => role.companyRole.includes('Admin') || role.companyRole.includes('Analyst')) || isAdmin;
   } catch (error) {
-    console.error('Error in retrieving company role:',error);
+    console.error('Error in retrieving company role:', error);
   }
 }
 
