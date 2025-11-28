@@ -34,12 +34,26 @@ class CompanyProxyManager
          * @throws InvalidInputApiException if no proxy rule exists for the given id.
          */
         @Transactional(readOnly = true)
-        fun getCompanyProxyById(proxyId: UUID): StoredCompanyProxy =
-            companyDataProxyRuleRepository.findByProxyId(proxyId)?.toStoredCompanyProxy()
-                ?: throw ResourceNotFoundApiException(
-                    summary = "Company proxy not found.",
-                    message = "No company proxy rule exists for the proxyId=$proxyId.",
-                )
+        fun getCompanyProxyById(proxyId: UUID): StoredCompanyProxy = retrieveCompanyProxyEntityById(proxyId).toStoredCompanyProxy()
+
+        private fun retrieveCompanyProxyEntityById(proxyId: UUID): CompanyProxyEntity =
+            companyDataProxyRuleRepository
+                .findById(proxyId)
+                .orElseThrow {
+                    ResourceNotFoundApiException(
+                        summary = "Company proxy not found.",
+                        message = "No company proxy rule exists for the proxyId=$proxyId.",
+                    )
+                }
+
+        fun getCompanyProxiesByFilters(
+            proxiedCompanyId: UUID?,
+            proxyCompanyId: UUID?,
+            frameworks: Set<String>?,
+            reportingPeriods: Set<String>?,
+            chunkSize: Int?,
+            chunkIndex: Int?,
+        ): List<StoredCompanyProxy> = emptyList()
 
         /**
          * Creates or replaces all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
