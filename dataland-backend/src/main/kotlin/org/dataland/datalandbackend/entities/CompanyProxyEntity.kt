@@ -27,13 +27,13 @@ class CompanyProxyEntity(
     @Column(name = "id", nullable = false)
     val proxyId: UUID = UUID.randomUUID(),
     @Column(name = "proxied_company_id", nullable = false)
-    val proxiedCompanyId: UUID,
+    var proxiedCompanyId: UUID,
     @Column(name = "proxy_company_id", nullable = false)
-    val proxyCompanyId: UUID,
+    var proxyCompanyId: UUID,
     @Column(name = "framework")
-    val framework: String? = null, // null => all frameworks
+    var framework: String? = null, // null => all frameworks
     @Column(name = "reporting_period")
-    val reportingPeriod: String? = null, // null => all periods
+    var reportingPeriod: String? = null, // null => all periods
 ) {
     /**
      * Converts this CompanyProxyEntity to a StoredCompanyProxy.

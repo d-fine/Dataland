@@ -8,7 +8,6 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -168,21 +167,13 @@ class CompanyProxyManager
             proxyID: UUID,
             updatedCompanyProxy: CompanyProxy,
         ): StoredCompanyProxy {
-            val existing = getCompanyProxyById(proxyID)
+            val existing = retrieveCompanyProxyEntityById(proxyID)
 
-            existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId.toString()
-            existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId.toString()
+            existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
+            existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId
             existing.framework = updatedCompanyProxy.framework
             existing.reportingPeriod = updatedCompanyProxy.reportingPeriod
 
-            val saved = companyDataProxyRuleRepository.save(existing).toStoredCompanyProxy()
-
-            return StoredCompanyProxy(
-                proxyId = existing.proxyId,
-                proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId,
-                proxyCompanyId = saved.proxyCompanyId,
-                framework = saved.framework,
-                reportingPeriod = saved.reportingPeriod,
-            )
+            return companyDataProxyRuleRepository.save(existing).toStoredCompanyProxy()
         }
     }
