@@ -157,9 +157,6 @@ interface CompanyProxyApi {
         )
         @RequestParam proxyId: String,
     ): ResponseEntity<CompanyProxyRelationResponse>
-        @CompanyExists
-        @RequestParam proxyCompanyId: String,
-    ): ResponseEntity<Void>
 
     /**
      * Replace the proxy for a given (unique) company proxy-ID.
@@ -204,7 +201,7 @@ interface CompanyProxyApi {
         @Parameter(
             name = "proxyId",
             description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
             required = true,
         )
         @PathVariable("proxyId")
