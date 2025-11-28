@@ -6,13 +6,18 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 import org.dataland.datalandbackendutils.validator.CompanyExists
 import java.util.UUID
 
-data class CompanyProxy(
-    @field:JsonProperty(required = true)
-    @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
-    )
-    val proxyId: UUID,
+/**
+ * --- API model ---
+ * Class defining the proxying rules between two companies.
+ *
+ * @param proxiedCompanyId The company whose data may be substituted.
+ * @param proxyCompanyId The company whose data may serve as a proxy.
+ * @param frameworks A list of frameworks for which proxying is allowed.
+ *        Empty or null means all frameworks may be proxied.
+ * @param reportingPeriods A list of reporting periods (e.g. years) for which proxying is allowed.
+ *        Empty or null means all reporting periods may be proxied.
+ */
+data class BulkCompanyProxy(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
@@ -32,11 +37,11 @@ data class CompanyProxy(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_EXAMPLE,
     )
-    val framework: String?,
+    val frameworks: List<String>?,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_EXAMPLE,
     )
-    val reportingPeriod: String?,
+    val reportingPeriods: List<String>?,
 )

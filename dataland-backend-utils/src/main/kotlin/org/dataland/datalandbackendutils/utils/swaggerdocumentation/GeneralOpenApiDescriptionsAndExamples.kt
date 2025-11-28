@@ -71,6 +71,9 @@ object GeneralOpenApiDescriptionsAndExamples {
         "Search string used for company substring matching. Matched against company names and identifiers."
     const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
 
+    const val PROXY_ID_DESCRIPTION = "The unique identifier of the proxy (a pair of a proxied company and a proxy company)."
+    const val PROXY_ID_EXAMPLE = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
     const val PROXIED_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is being proxied."
     const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."
     const val PROXIED_FRAMEWORKS_DESCRIPTION =

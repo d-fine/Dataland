@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
-import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
@@ -40,7 +40,7 @@ class CompanyProxyManager
          *      → full cross product of (framework, reportingPeriod).
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxy): CompanyProxy {
+        fun addProxyRelation(relation: BulkCompanyProxy): BulkCompanyProxy {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
@@ -125,7 +125,7 @@ class CompanyProxyManager
          *    as "all" (returned as empty list).
          */
         @Transactional(readOnly = true)
-        fun getProxyRelation(proxiedCompanyId: UUID): List<CompanyProxy> {
+        fun getProxyRelation(proxiedCompanyId: UUID): List<BulkCompanyProxy> {
             // TODO: change function name to plural
             val entities =
                 companyDataProxyRuleRepository
@@ -155,7 +155,7 @@ class CompanyProxyManager
                     val dtoReportingPeriods =
                         if (hasAllPeriods) emptyList() else distinctPeriods
 
-                    CompanyProxy(
+                    BulkCompanyProxy(
                         proxiedCompanyId = proxiedCompanyId,
                         proxyCompanyId = proxyCompanyId,
                         frameworks = dtoFrameworks,

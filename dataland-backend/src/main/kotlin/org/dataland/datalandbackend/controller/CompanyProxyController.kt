@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
-import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.BulkCompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,23 +25,23 @@ class CompanyProxyController
         /**
          * POST /company-data-proxy-rules
          */
-        override fun postCompanyProxy(companyProxy: CompanyProxy): ResponseEntity<Void> {
+        override fun postCompanyProxy(bulkCompanyProxy: BulkCompanyProxy): ResponseEntity<Void> {
             logger.info(
                 "Received request to upsert proxy rules for " +
-                    "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
-                    "proxyCompanyId='${companyProxy.proxyCompanyId}', " +
-                    "frameworks='${companyProxy.frameworks}', " +
-                    "reportingPeriods='${companyProxy.reportingPeriods}'",
+                    "proxiedCompanyId='${bulkCompanyProxy.proxiedCompanyId}', " +
+                    "proxyCompanyId='${bulkCompanyProxy.proxyCompanyId}', " +
+                    "frameworks='${bulkCompanyProxy.frameworks}', " +
+                    "reportingPeriods='${bulkCompanyProxy.reportingPeriods}'",
             )
 
-            companyProxyManager.addProxyRelation(companyProxy)
+            companyProxyManager.addProxyRelation(bulkCompanyProxy)
             return ResponseEntity.ok().build()
         }
 
         /**
          * GET /company-data-proxy-rules
          */
-        override fun getCompanyProxy(proxiedCompanyId: String): ResponseEntity<List<CompanyProxy>> {
+        override fun getCompanyProxy(proxiedCompanyId: String): ResponseEntity<List<BulkCompanyProxy>> {
             logger.info(
                 "Received request to get proxy rules for " +
                     "proxiedCompanyId='$proxiedCompanyId'",
