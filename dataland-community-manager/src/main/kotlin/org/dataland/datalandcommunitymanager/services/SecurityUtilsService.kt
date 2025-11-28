@@ -31,8 +31,8 @@ class SecurityUtilsService(
         mapOf(
             CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
             CompanyRole.DataUploader to emptyList(),
-            CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
-            CompanyRole.Member to emptyList(),
+            CompanyRole.Admin to listOf(CompanyRole.Admin, CompanyRole.Analyst),
+            CompanyRole.Admin to emptyList(),
         )
 
     /**
@@ -128,7 +128,7 @@ class SecurityUtilsService(
         return companyRoleAssignmentRepository.findByCompanyIdAndUserIdAndCompanyRoleIsIn(
             companyId = companyId.toString(),
             userId = userId,
-            companyRoles = listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin),
+            companyRoles = listOf(CompanyRole.CompanyOwner, CompanyRole.Admin),
         ) != null
     }
 

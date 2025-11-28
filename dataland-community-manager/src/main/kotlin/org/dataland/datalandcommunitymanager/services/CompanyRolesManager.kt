@@ -252,7 +252,7 @@ class CompanyRolesManager(
             .getCompanyRoleAssignmentsByProvidedParameters(
                 companyId = null, userId = userId, companyRole = null,
             ).any {
-                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
             }
     }
 

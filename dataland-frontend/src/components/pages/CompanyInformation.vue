@@ -111,8 +111,8 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
-import {checkIfUserHasRole} from "@/utils/KeycloakUtils.ts";
-import {KEYCLOAK_ROLE_ADMIN} from "@/utils/KeycloakRoles.ts";
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -135,7 +135,6 @@ const hasParentCompany = ref<boolean | undefined>(undefined);
 const parentCompany = ref<CompanyIdAndName | null>(null);
 
 let allUserPortfolios: BasePortfolio[] = [];
-let currentUserId: string | undefined = undefined;
 
 const displaySector = computed(() => {
   if (companyInformation.value?.sector) {
@@ -160,10 +159,10 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
+onMounted(async () => {
   fetchDataForThisPage();
-  checkIfCompanyIsDatalandMember();
-  getCompanyUserInformation();
+  await checkIfCompanyIsDatalandMember();
+  await getCompanyUserInformation();
 });
 
 watch(
@@ -205,10 +204,10 @@ async function getCompanyUserInformation(): Promise<void> {
         keycloakUserId
       );
     const userRoles = userRoleResponse.data;
-    isMemberOfCompanyOrAdmin.value = userRoles.some(
-      (role) => role.companyRole.includes('MemberAdmin') || role.companyRole.includes('Member')
-    ) || isAdmin;
+    isMemberOfCompanyOrAdmin.value =
+      userRoles.some((role) => role.companyRole.includes('Admin') || role.companyRole.includes('Analyst')) || isAdmin;
   } catch (error) {
+    console.error('Error in retrieving company role:',error);
   }
 }
 
