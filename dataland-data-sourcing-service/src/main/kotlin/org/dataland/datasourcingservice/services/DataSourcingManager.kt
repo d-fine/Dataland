@@ -203,7 +203,7 @@ class DataSourcingManager
          * @param requestEntity the RequestEntity to associate with the DataSourcingEntity
          * @return the reset or newly created DataSourcingEntity
          */
-        fun resetOrCreateDataSourcingObjectAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
+        fun useExistingOrCreateDataSourcingAndAddRequest(requestEntity: RequestEntity): DataSourcingEntity {
             val dataSourcingEntity =
                 dataSourcingRepository.findByDataDimensionAndFetchAllStoredFields(
                     requestEntity.companyId,
@@ -217,7 +217,9 @@ class DataSourcingManager
             logger.info(
                 "Add request with id ${requestEntity.id} to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
             )
-            dataSourcingEntity.state = DataSourcingState.Initialized
+            if (dataSourcingEntity.state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
+                dataSourcingEntity.state = DataSourcingState.Initialized
+            }
             dataSourcingEntity.addAssociatedRequest(requestEntity)
             return dataSourcingRepository.save(dataSourcingEntity)
         }

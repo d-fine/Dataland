@@ -124,7 +124,7 @@ class AssembledDataManagerTest {
         dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
         assembledDataManager =
             AssembledDataManager(
-                dataManager, messageQueuePublications, dataPointValidator, defaultObjectMapper,
+                dataManager, messageQueuePublications, dataPointValidator,
                 datasetDatapointRepository, spyDataPointManager,
                 referencedReportsUtilities,
                 companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler, specificationService,

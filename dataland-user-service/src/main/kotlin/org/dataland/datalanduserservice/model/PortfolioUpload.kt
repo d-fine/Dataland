@@ -29,7 +29,7 @@ data class PortfolioUpload(
                 example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_COMPANY_IDS_EXAMPLE,
             ),
     )
-    override val companyIds: Set<String>,
+    override val identifiers: Set<String>,
     @field:JsonProperty(required = false)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,

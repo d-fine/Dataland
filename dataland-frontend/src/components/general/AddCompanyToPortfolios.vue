@@ -84,12 +84,12 @@ async function handleCompanyAddition(): Promise<void> {
   try {
     await Promise.all(
       selectedPortfolios.value.map((selectedPortfolio) => {
-        const updatedCompanyIds = [...new Set([...selectedPortfolio.companyIds, companyId])];
+        const updatedCompanyIdentifiers = [...new Set([...selectedPortfolio.identifiers, companyId])];
 
         return apiClientProvider.apiClients.portfolioController.replacePortfolio(selectedPortfolio.portfolioId, {
           portfolioName: selectedPortfolio.portfolioName,
           // as unknown as Set<string> cast required to ensure proper json is created
-          companyIds: updatedCompanyIds as unknown as Set<string>,
+          identifiers: updatedCompanyIdentifiers as unknown as Set<string>,
           isMonitored: selectedPortfolio.isMonitored,
           monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
         });
