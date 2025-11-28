@@ -108,7 +108,7 @@ interface EmailAddressApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
-            "@SecurityUtilsService.isUserOwnerOrMemberAdminOfTheCompany(#companyId)",
+            "@SecurityUtilsService.isUserOwnerOrAdminOfTheCompany(#companyId)",
     )
     fun getUsersByCompanyAssociatedSubdomains(
         @CompanyIdParameterRequired

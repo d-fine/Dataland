@@ -92,7 +92,7 @@ class EmailAddressControllerTest {
 
         CompanyRole.entries.forEach { role ->
             when (role) {
-                CompanyRole.CompanyOwner, CompanyRole.MemberAdmin -> {
+                CompanyRole.CompanyOwner, CompanyRole.Admin -> {
                     val keycloakUserInfos =
                         assignCompanyRoleAndEnsureEmailSubdomainEndpointDoesNotThrow(
                             user, companyId, role,

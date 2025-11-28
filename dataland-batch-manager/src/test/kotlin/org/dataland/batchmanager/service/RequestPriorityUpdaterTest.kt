@@ -158,7 +158,7 @@ class RequestPriorityUpdaterTest {
         doReturn(
             listOf(
                 CompanyRoleAssignmentExtended(
-                    companyRole = CompanyRole.Member,
+                    companyRole = CompanyRole.Analyst,
                     companyId = UUID.randomUUID().toString(),
                     userId = memberUserId.toString(),
                     email = "test@example.com",

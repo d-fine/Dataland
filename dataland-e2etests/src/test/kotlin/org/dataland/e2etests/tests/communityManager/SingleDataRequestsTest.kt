@@ -320,7 +320,7 @@ class SingleDataRequestsTest {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.Member,
+            CompanyRole.Analyst,
             UUID.fromString(companyId),
             dataReaderUserId,
         )

@@ -158,12 +158,12 @@ function mountCompanyRolesCard(
 /**
  * Mounts the Member role card component with Company Owner privileges or with custom role assignments
  * @param userRole The role of the user mounting the card
- * @param roleOfCard The role to display on the card (default: CompanyRole.Member)
+ * @param roleOfCard The role to display on the card (default: CompanyRole.Analyst)
  * @param existingCompanyRoleAssignments Optional: existing role assignments to use instead of default
  */
 function mountCardAs(
   userRole: CompanyRole = CompanyRole.CompanyOwner,
-  roleOfCard: CompanyRole = CompanyRole.Member,
+  roleOfCard: CompanyRole = CompanyRole.Analyst,
   existingCompanyRoleAssignments?: CompanyRoleAssignmentExtended[]
 ): void {
   const roleAssignments = existingCompanyRoleAssignments ?? [generateCompanyRoleAssignment(roleOfCard, dummyCompanyId)];
@@ -212,16 +212,16 @@ describe('Company Roles Card Tests', () => {
       expectedInfo: 'Company owners have the highest level of access and can add other users as company owners',
     },
     {
-      role: CompanyRole.MemberAdmin,
+      role: CompanyRole.Admin,
       expectedTitle: 'Admins',
       expectedIcon: 'pi pi-shield',
       expectedInfo: 'The User Admin has the rights to add or remove other user admins and members',
     },
     {
-      role: CompanyRole.Member,
-      expectedTitle: 'Members',
+      role: CompanyRole.Analyst,
+      expectedTitle: 'Analyst',
       expectedIcon: 'pi pi-users',
-      expectedInfo: 'Members have the ability to request unlimited data',
+      expectedInfo: 'Analysts have the ability to request unlimited data',
     },
     {
       role: CompanyRole.DataUploader,
@@ -240,9 +240,9 @@ describe('Company Roles Card Tests', () => {
 
     it('displays users in the role correctly', () => {
       const roleAssignments = [
-        generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId),
+        generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId),
         generateCompanyRoleAssignment(
-          CompanyRole.Member,
+          CompanyRole.Analyst,
           dummyCompanyId,
           anotherUserId,
           anotherUserEmail,
@@ -273,13 +273,13 @@ describe('Company Roles Card Tests', () => {
       keycloakRoles: [],
     },
     {
-      allowedRoles: [CompanyRole.Member, CompanyRole.MemberAdmin],
-      userRole: CompanyRole.MemberAdmin,
+      allowedRoles: [CompanyRole.Analyst, CompanyRole.Admin],
+      userRole: CompanyRole.Admin,
       keycloakRoles: [],
     },
     {
       allowedRoles: [],
-      userRole: CompanyRole.Member,
+      userRole: CompanyRole.Analyst,
       keycloakRoles: [],
     },
     {
@@ -364,14 +364,14 @@ describe('Company Roles Card Tests', () => {
     cy.get('[data-test="dialog-button"]').click();
     cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
     cy.get('[role="listbox"]').within(() => {
-      cy.contains('[role="option"]', 'Members').should('have.class', 'p-disabled');
+      cy.contains('[role="option"]', 'Analysts').should('have.class', 'p-disabled');
     });
   });
 
   it('emits users-changed event after successful role change', () => {
-    const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    const roleAssignments = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     mockCompanyRoleAssignments(roleAssignments);
-    mountCompanyRolesCard(CompanyRole.Member, CompanyRole.CompanyOwner).then(({ wrapper }) => {
+    mountCompanyRolesCard(CompanyRole.Analyst, CompanyRole.CompanyOwner).then(({ wrapper }) => {
       cy.wait('@getRoleAssignments');
       cy.get('[data-test="dialog-button"]').click();
       cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();

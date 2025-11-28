@@ -15,6 +15,13 @@
             icon="pi pi-check-circle"
             severity="success"
           />
+          <Tag
+            v-if="isDatalandMember && isMemberOfCompanyOrAdmin"
+            data-test="datalandMemberBadge"
+            value="Dataland Member"
+            icon="pi pi-star"
+            severity="warning"
+          />
         </div>
         <div class="right-elements">
           <PrimeButton
@@ -104,8 +111,10 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
 const dialog = useDialog();
 
@@ -118,6 +127,8 @@ const waitingForData = ref<boolean>(true);
 const companyIdDoesNotExist = ref<boolean>(false);
 const isUserCompanyOwner = ref<boolean>(false);
 const hasCompanyOwner = ref<boolean>(false);
+const isDatalandMember = ref<boolean>(false);
+const isMemberOfCompanyOrAdmin = ref<boolean>(false);
 const dialogIsOpen = ref<boolean>(false);
 const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
@@ -148,8 +159,10 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
+onMounted(async () => {
   fetchDataForThisPage();
+  await checkIfCompanyIsDatalandMember();
+  await getCompanyUserInformation();
 });
 
 watch(
@@ -158,6 +171,45 @@ watch(
     fetchDataForThisPage();
   }
 );
+
+/**
+ * Checks if the current user is a member of the company or an admin of the company.
+ */
+async function checkIfCompanyIsDatalandMember(): Promise<void> {
+  try {
+    const companyRoleResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
+      props.companyId
+    );
+    const companyRoles = companyRoleResponse.data;
+    isDatalandMember.value = companyRoles.some((role) => role.includes('Member'));
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+/**
+ * Fetches the company user information for the current role and company.
+ */
+async function getCompanyUserInformation(): Promise<void> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
+  const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  if (!props.companyId) return;
+  try {
+    const userRoleResponse =
+      await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
+        undefined,
+        props.companyId,
+        keycloakUserId
+      );
+    const userRoles = userRoleResponse.data;
+    isMemberOfCompanyOrAdmin.value =
+      userRoles.some((role) => role.companyRole.includes('Admin') || role.companyRole.includes('Analyst')) || isAdmin;
+  } catch (error) {
+    console.error('Error in retrieving company role:', error);
+  }
+}
 
 /**
  * A complete fetch of all data that is relevant for UI elements of this page

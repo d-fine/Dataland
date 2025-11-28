@@ -52,8 +52,8 @@ describe('Component test for the authorization of company cockpit components', (
     }
   });
 
-  it('Users Page is visible for a Company Member', () => {
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+  it('Users Page is visible for a Company Analyst', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
     cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
@@ -74,15 +74,15 @@ describe('Component test for the authorization of company cockpit components', (
   });
 
   it('Users are being displayed correctly in the Users Page', () => {
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
       const q = req.query as Record<string, string | undefined>;
-      if (q.role === CompanyRole.Member) {
+      if (q.role === CompanyRole.Analyst) {
         req.reply({
           statusCode: 200,
           body: [
             {
-              companyRole: 'Member',
+              companyRole: 'Analyst',
               companyId: dummyCompanyId,
               userId: dummyUserId,
               email: dummyEmail,
