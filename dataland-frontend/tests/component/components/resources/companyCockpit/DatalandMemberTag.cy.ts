@@ -10,7 +10,30 @@ import {
   type LksgData,
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { CompanyRole } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+
+/**
+ * Intercepts the company rights API call and returns the provided body.
+ * @param dummyCompanyId
+ * @param body
+ */
+function interceptCompanyRights(dummyCompanyId: string, body: string[]): void {
+  cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, {
+    statusCode: 200,
+    body,
+  }).as('companyRights');
+}
+
+/**
+ * Intercepts the company role assignments API call and returns the provided body.
+ * @param body
+ */
+function interceptExtendedCompanyRoleAssignments(body: CompanyRoleAssignmentExtended[]): void {
+  cy.intercept('GET', `**/community/company-role-assignments*`, {
+    statusCode: 200,
+    body,
+  }).as('extendedCompanyRoleAssignments');
+}
 
 describe('Component test for Dataland Member Badge in Company Cockpit', () => {
   let companyInformationForTest: CompanyInformation;
@@ -30,20 +53,6 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
       >;
     });
   });
-
-  function interceptCompanyRights(dummyCompanyId: string, body: any) {
-    cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, {
-      statusCode: 200,
-      body,
-    }).as('companyRights');
-  }
-
-  function interceptExtendedCompanyRoleAssignments(body: any) {
-    cy.intercept('GET', `**/community/company-role-assignments*`, {
-      statusCode: 200,
-      body,
-    }).as('extendedCompanyRoleAssignments');
-  }
 
   it('Dataland Member badge is visible when user is Dataland Member and Company Admin', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
@@ -70,7 +79,7 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
   });
 
   it('Dataland Member badge is NOT visible for non-admin users', () => {
-    const companyRoleAssignmentsOfUser: any[] = [];
+    const companyRoleAssignmentsOfUser: CompanyRoleAssignmentExtended[] = [];
     const hasCompanyAtLeastOneOwner = true;
 
     interceptCompanyRights(dummyCompanyId, ['Member']);
@@ -84,8 +93,6 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
 
-    cy.wait('@companyRights');
-    cy.wait('@extendedCompanyRoleAssignments');
     cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
   });
 

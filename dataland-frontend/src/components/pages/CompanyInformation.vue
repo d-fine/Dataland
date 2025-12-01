@@ -161,8 +161,12 @@ const props = defineProps({
 
 onMounted(async () => {
   fetchDataForThisPage();
-  await checkIfCompanyIsDatalandMember();
   await checkIfUserIsMemberOrAdmin();
+  if (isMemberOfCompanyOrAdmin.value) {
+    await checkIfCompanyIsDatalandMember();
+  } else {
+    isDatalandMember.value = false;
+  }
 });
 
 watch(
@@ -176,10 +180,6 @@ watch(
  * Checks if the company is a Dataland Member.
  */
 async function checkIfCompanyIsDatalandMember(): Promise<void> {
-  if (!isMemberOfCompanyOrAdmin) {
-    return;
-  }
-
   try {
     const companyRoleResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
       props.companyId
