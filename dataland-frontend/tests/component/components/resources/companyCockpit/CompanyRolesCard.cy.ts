@@ -219,7 +219,7 @@ describe('Company Roles Card Tests', () => {
     },
     {
       role: CompanyRole.Analyst,
-      expectedTitle: 'Analyst',
+      expectedTitle: 'Analysts',
       expectedIcon: 'pi pi-users',
       expectedInfo: 'Analysts have the ability to request unlimited data',
     },

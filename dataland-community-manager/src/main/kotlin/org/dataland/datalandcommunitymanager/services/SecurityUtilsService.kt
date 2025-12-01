@@ -32,7 +32,7 @@ class SecurityUtilsService(
             CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
             CompanyRole.DataUploader to emptyList(),
             CompanyRole.Admin to listOf(CompanyRole.Admin, CompanyRole.Analyst),
-            CompanyRole.Admin to emptyList(),
+            CompanyRole.Analyst to emptyList(),
         )
 
     /**

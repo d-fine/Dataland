@@ -268,7 +268,7 @@ const groups: CompanyRoleDetails[] = [
   },
   {
     role: CompanyRole.Analyst,
-    title: 'Analyst',
+    title: 'Analysts',
     icon: 'pi pi-users',
     info: 'Analysts have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
     description: 'Unlimited access to data requests.',
