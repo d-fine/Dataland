@@ -99,7 +99,7 @@ class CompanyProxyController
         override fun deleteCompanyProxy(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info("Received request to delete proxy rule with proxyId='$proxyId'")
 
-            val uuid = UUID.fromString(proxyId)
+            val uuid = ValidationUtils.convertToUUID(proxyId)
 
             val deleted = companyProxyManager.deleteProxyRelation(uuid)
 
@@ -119,13 +119,18 @@ class CompanyProxyController
          * PUT /company-proxies/company-proxy
          */
         override fun putCompanyProxy(
-            proxyId: UUID,
+            proxyId: String,
             companyProxy: CompanyProxy,
-        ): ResponseEntity<CompanyProxy> {
+        ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to update proxy rule for " +
                     "proxiedCompanyId = '$companyProxy.proxiedCompanyId', proxyCompanyId = '$companyProxy.proxyCompanyId'",
             )
-            return ResponseEntity.ok(companyProxyManager.editCompanyProxy(proxyId, companyProxy))
+            return ResponseEntity.ok(
+                companyProxyManager.editCompanyProxy(
+                    proxyId = ValidationUtils.convertToUUID(proxyId),
+                    updatedCompanyProxy = companyProxy,
+                ),
+            )
         }
     }

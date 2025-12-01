@@ -164,10 +164,10 @@ class CompanyProxyManager
 
         @Transactional
         fun editCompanyProxy(
-            proxyID: UUID,
+            proxyId: UUID,
             updatedCompanyProxy: CompanyProxy,
         ): StoredCompanyProxy {
-            val existing = retrieveCompanyProxyEntityById(proxyID)
+            val existing = retrieveCompanyProxyEntityById(proxyId)
 
             existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
             existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId

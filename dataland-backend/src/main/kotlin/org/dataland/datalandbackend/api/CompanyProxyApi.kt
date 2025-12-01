@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.UUID
 
 /**
  * Defines the REST API for managing proxies between companies.
@@ -200,7 +199,7 @@ interface CompanyProxyApi {
         ],
     )
     @DeleteMapping(
-        value = ["/company-proxies"],
+        value = ["/company-proxies/{proxyId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -210,7 +209,7 @@ interface CompanyProxyApi {
             description = "The proxy ID of the proxy rule entry.",
             required = true,
         )
-        @RequestParam proxyId: String,
+        @PathVariable proxyId: String,
     ): ResponseEntity<StoredCompanyProxy>
 
     /**
@@ -247,22 +246,20 @@ interface CompanyProxyApi {
         ],
     )
     @PutMapping(
-        value = ["/company-proxy"],
+        value = ["/company-proxy/{proxyId}"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyProxy(
         @Parameter(
-            name = "proxyId",
             description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_EXAMPLE,
             required = true,
         )
-        @PathVariable("proxyId")
-        proxyId: UUID,
+        @PathVariable proxyId: String,
         @Valid
         @RequestBody
         companyProxy: CompanyProxy,
-    ): ResponseEntity<CompanyProxy>
+    ): ResponseEntity<StoredCompanyProxy>
 }
