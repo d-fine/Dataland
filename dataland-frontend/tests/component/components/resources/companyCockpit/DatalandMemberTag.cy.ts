@@ -54,8 +54,32 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     });
   });
 
-  it('Dataland Member badge is visible when user is Dataland Member and Company Admin', () => {
+  it('Dataland Member badge is visible when Company is Dataland Member and user is Admin', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
+    const hasCompanyAtLeastOneOwner = true;
+
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
+
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
+
+    mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@companyRights');
+    cy.wait('@extendedCompanyRoleAssignments');
+    cy.get('[data-test="datalandMemberBadge"]')
+      .should('be.visible')
+      .should('contain.text', 'Dataland Member')
+      .find('.pi-star')
+      .should('exist');
+  });
+
+  it('Dataland Member badge is visible when Company is Dataland Member and user is Analyst', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
     interceptCompanyRights(dummyCompanyId, ['Member']);

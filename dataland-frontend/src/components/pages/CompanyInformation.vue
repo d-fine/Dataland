@@ -98,7 +98,11 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import {
+  getCompanyRoleAssignmentsForCurrentUser,
+  hasCompanyAtLeastOneCompanyOwner,
+  hasUserCompanyRoleForCompany,
+} from '@/utils/CompanyRolesUtils';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -129,6 +133,9 @@ const isUserCompanyOwner = ref<boolean>(false);
 const hasCompanyOwner = ref<boolean>(false);
 const isDatalandMember = ref<boolean>(false);
 const isMemberOfCompanyOrAdmin = ref<boolean>(false);
+const userRole = ref<CompanyRole | null>(null);
+const isUserCompanyMember = ref(false);
+const isUserDatalandAdmin = ref(false);
 const dialogIsOpen = ref<boolean>(false);
 const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
@@ -195,22 +202,12 @@ async function checkIfCompanyIsDatalandMember(): Promise<void> {
  * Fetches the company user information for the current role and company.
  */
 async function checkIfUserIsMemberOrAdmin(): Promise<void> {
-  const keycloak = await assertDefined(getKeycloakPromise)();
-  const keycloakUserId = keycloak.idTokenParsed?.sub;
-  const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  if (!props.companyId) return;
-  try {
-    const userRoleResponse =
-      await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
-        undefined,
-        props.companyId,
-        keycloakUserId
-      );
-    const userRoles = userRoleResponse.data;
-    isMemberOfCompanyOrAdmin.value = userRoles.length > 0 || isAdmin;
-  } catch (error) {
-    console.error('Error in retrieving company role:', error);
-  }
+  const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
+  const assignment = assignments.find((a) => a.companyId === props.companyId);
+  userRole.value = assignment ? assignment.companyRole : null;
+  isUserCompanyMember.value = userRole.value !== null;
+  isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  isMemberOfCompanyOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
 }
 
 /**
