@@ -98,10 +98,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import {
-  hasCompanyAtLeastOneCompanyOwner,
-  hasUserCompanyRoleForCompany,
-} from '@/utils/CompanyRolesUtils';
+import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -132,9 +129,6 @@ const isUserCompanyOwner = ref<boolean>(false);
 const hasCompanyOwner = ref<boolean>(false);
 const isDatalandMember = ref<boolean>(false);
 const isMemberOfCompanyOrAdmin = ref<boolean>(false);
-const userRole = ref<CompanyRole | null>(null);
-const isUserCompanyMember = ref(false);
-const isUserDatalandAdmin = ref(false);
 const dialogIsOpen = ref<boolean>(false);
 const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
