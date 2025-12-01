@@ -101,7 +101,7 @@ describe('Component test for the authorization of company cockpit components', (
     cy.get('[data-test="usersTab"]').click();
     cy.wait('@roleFetch');
     cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
-    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
       cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('exist');
       cy.get('td').contains(dummyLastName).should('exist');
