@@ -15,7 +15,7 @@ function checkThatUrlResolvesToErrorPage(url: string): void {
 
 describe('As a user I expect the admin console only to be reachable using admin-proxy and not from remote', (): void => {
   it(`Test Admin Console not reachable from remote`, () => {
-    checkThatUrlResolvesToErrorPage('/keycloak/admin');
+    checkThatUrlResolvesToErrorPage('/keycloak/admin/master/console/');
   });
 
   it(`Master Realm not reachable from remote`, () => {
