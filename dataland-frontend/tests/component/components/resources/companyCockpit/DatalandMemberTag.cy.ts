@@ -31,19 +31,26 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     });
   });
 
+  function interceptCompanyRights(dummyCompanyId: string, body: any) {
+    cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, {
+      statusCode: 200,
+      body,
+    }).as('companyRights');
+  }
+
+  function interceptExtendedCompanyRoleAssignments(body: any) {
+    cy.intercept('GET', `**/community/company-role-assignments*`, {
+      statusCode: 200,
+      body,
+    }).as('extendedCompanyRoleAssignments');
+  }
+
   it('Dataland Member badge is visible when user is Dataland Member and Company Admin', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
-    cy.intercept('POST', '**/community/company-rights*', {
-      statusCode: 200,
-      body: [
-        {
-          companyId: dummyCompanyId,
-          companyRight: 'Member',
-        },
-      ],
-    }).as('companyRights');
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
@@ -54,10 +61,51 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
 
     cy.wait('@companyRights');
-    cy.get('[data-test="datalandMemberBadge"]', { timeout: 10000 })
+    cy.wait('@extendedCompanyRoleAssignments');
+    cy.get('[data-test="datalandMemberBadge"]')
       .should('be.visible')
       .should('contain.text', 'Dataland Member')
       .find('.pi-star')
       .should('exist');
+  });
+
+  it('Dataland Member badge is NOT visible for non-admin users', () => {
+    const companyRoleAssignmentsOfUser: any[] = [];
+    const hasCompanyAtLeastOneOwner = true;
+
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
+
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
+
+    mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@companyRights');
+    cy.wait('@extendedCompanyRoleAssignments');
+    cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
+  });
+
+  it('Dataland Member badge is NOT visible for non-member users', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
+    const hasCompanyAtLeastOneOwner = true;
+
+    interceptCompanyRights(dummyCompanyId, []);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
+
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
+
+    mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@companyRights');
+    cy.wait('@extendedCompanyRoleAssignments');
+    cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
   });
 });
