@@ -2,52 +2,52 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <DatalandProgressSpinner />
+      <DatalandProgressSpinner/>
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
       <div class="company-title-row">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
           <Tag
-            v-if="hasCompanyOwner"
-            data-test="verifiedCompanyOwnerBadge"
-            value="Verified Company Owner"
-            icon="pi pi-check-circle"
-            severity="success"
+              v-if="hasCompanyOwner"
+              data-test="verifiedCompanyOwnerBadge"
+              value="Verified Company Owner"
+              icon="pi pi-check-circle"
+              severity="success"
           />
           <Tag
-            v-if="isDatalandMember && isMemberOfCompanyOrAdmin"
-            data-test="datalandMemberBadge"
-            value="Dataland Member"
-            icon="pi pi-star"
-            severity="warning"
+              v-if="isDatalandMember && isMemberOfCompanyOrAdmin"
+              data-test="datalandMemberBadge"
+              value="Dataland Member"
+              icon="pi pi-star"
+              severity="warning"
           />
         </div>
         <div class="right-elements">
           <PrimeButton
-            v-if="authenticated"
-            icon="pi pi-plus"
-            label="ADD TO PORTFOLIO"
-            @click="openPortfolioModal"
-            data-test="addCompanyToPortfoliosButton"
+              v-if="authenticated"
+              icon="pi pi-plus"
+              label="ADD TO PORTFOLIO"
+              @click="openPortfolioModal"
+              data-test="addCompanyToPortfoliosButton"
           />
           <PrimeButton
-            v-if="showSingleDataRequestButton"
-            icon="pi pi-file"
-            label="REQUEST DATA"
-            @click="handleSingleDataRequest"
-            data-test="singleDataRequestButton"
+              v-if="showSingleDataRequestButton"
+              icon="pi pi-file"
+              label="REQUEST DATA"
+              @click="handleSingleDataRequest"
+              data-test="singleDataRequestButton"
           />
         </div>
       </div>
 
       <ClaimOwnershipDialog
-        :company-id="companyId"
-        :company-name="companyInformation.companyName"
-        :dialog-is-open="dialogIsOpen"
-        :claim-is-submitted="claimIsSubmitted"
-        @claim-submitted="claimIsSubmitted = true"
-        @close-dialog="onCloseDialog"
+          :company-id="companyId"
+          :company-name="companyInformation.companyName"
+          :dialog-is-open="dialogIsOpen"
+          :claim-is-submitted="claimIsSubmitted"
+          @claim-submitted="claimIsSubmitted = true"
+          @close-dialog="onCloseDialog"
       />
 
       <div class="company-info-row">
@@ -58,8 +58,8 @@
         <div>
           <span class="company-info-title">Headquarter:</span>
           <span class="company-info-content" data-test="headquarter-visible">{{
-            companyInformation.headquarters
-          }}</span>
+              companyInformation.headquarters
+            }}</span>
         </div>
         <div>
           <span class="company-info-title">LEI:</span>
@@ -68,12 +68,12 @@
         <div>
           <span class="company-info-title">Parent Company: </span>
           <PrimeButton
-            v-if="hasParentCompany"
-            :label="parentCompany?.companyName"
-            variant="link"
-            data-test="parent-visible"
-            @click="visitParentCompany"
-            :pt="{
+              v-if="hasParentCompany"
+              :label="parentCompany?.companyName"
+              variant="link"
+              data-test="parent-visible"
+              @click="visitParentCompany"
+              :pt="{
               root: {
                 style: 'padding-left: 0;',
               },
@@ -97,22 +97,24 @@ import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils';
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
-import { CompanyRole } from '@clients/communitymanager';
-import type { BasePortfolio } from '@clients/userservice';
+import {ApiClientProvider} from '@/services/ApiClients';
+import {hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany} from '@/utils/CompanyRolesUtils';
+import {getErrorMessage} from '@/utils/ErrorMessageUtils';
+import {
+  getCompanyDataForFrameworkDataSearchPageWithoutFilters
+} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import {assertDefined} from '@/utils/TypeScriptUtils';
+import {type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType} from '@clients/backend';
+import {CompanyRole} from '@clients/communitymanager';
+import type {BasePortfolio} from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Tag from 'primevue/tag';
-import { useDialog } from 'primevue/usedialog';
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import {useDialog} from 'primevue/usedialog';
+import {computed, inject, onMounted, ref, watch} from 'vue';
+import {type NavigationFailure, type RouteLocationNormalizedLoaded} from 'vue-router';
+import {checkIfUserHasRole} from '@/utils/KeycloakUtils.ts';
+import {KEYCLOAK_ROLE_ADMIN} from '@/utils/KeycloakRoles.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -162,54 +164,53 @@ const props = defineProps({
 onMounted(async () => {
   fetchDataForThisPage();
   await checkIfCompanyIsDatalandMember();
-  await getCompanyUserInformation();
+  await checkIfUserIsMemberOrAdmin();
 });
 
 watch(
-  () => props.companyId,
-  () => {
-    fetchDataForThisPage();
-  }
+    () => props.companyId,
+    () => {
+      fetchDataForThisPage();
+    }
 );
 
 /**
  * Checks if the company is a Dataland Member.
  */
 async function checkIfCompanyIsDatalandMember(): Promise<void> {
+
+  if (!isMemberOfCompanyOrAdmin) {
+    return;
+  }
+
   try {
     const companyRoleResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
         props.companyId
     );
     const companyRoles = companyRoleResponse.data;
     isDatalandMember.value = companyRoles.some((role) => role.includes('Member'));
-  } catch (error: any) {
-    if (error?.response?.status === 403) {
-      isDatalandMember.value = false;
-    } else {
-      console.error(error);
-      throw error;
-    }
+  } catch (error) {
+    console.error(error);
   }
 }
 
 /**
  * Fetches the company user information for the current role and company.
  */
-async function getCompanyUserInformation(): Promise<void> {
+async function checkIfUserIsMemberOrAdmin(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   if (!props.companyId) return;
   try {
     const userRoleResponse =
-      await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
-        undefined,
-        props.companyId,
-        keycloakUserId
-      );
+        await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
+            undefined,
+            props.companyId,
+            keycloakUserId
+        );
     const userRoles = userRoleResponse.data;
-    isMemberOfCompanyOrAdmin.value =
-      userRoles.some((role) => role.companyRole.includes('Admin') || role.companyRole.includes('Analyst')) || isAdmin;
+    isMemberOfCompanyOrAdmin.value = userRoles.length > 0 || isAdmin;
   } catch (error) {
     console.error('Error in retrieving company role:', error);
   }
@@ -264,22 +265,22 @@ async function fetchUserPortfolios(): Promise<void> {
  */
 function openPortfolioModal(): void {
   fetchUserPortfolios()
-    .then(() => {
-      dialog.open(AddCompanyToPortfolios, {
-        props: {
-          header: 'Add company to a portfolio',
-          modal: true,
-        },
-        data: {
-          companyId: props.companyId,
-          allUserPortfolios: allUserPortfolios,
-        },
+      .then(() => {
+        dialog.open(AddCompanyToPortfolios, {
+          props: {
+            header: 'Add company to a portfolio',
+            modal: true,
+          },
+          data: {
+            companyId: props.companyId,
+            allUserPortfolios: allUserPortfolios,
+          },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error;
       });
-    })
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
 }
 
 /**
@@ -314,9 +315,9 @@ function onCloseDialog(): void {
 async function getParentCompany(parentCompanyLei: string): Promise<void> {
   try {
     const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-      parentCompanyLei,
-      assertDefined(getKeycloakPromise)(),
-      1
+        parentCompanyLei,
+        assertDefined(getKeycloakPromise)(),
+        1
     );
     if (companyIdAndNames.length > 0) {
       parentCompany.value = companyIdAndNames[0]!;
