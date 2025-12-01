@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.integrationTests
+package org.dataland.datasourcingservice.serviceTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
@@ -58,7 +58,7 @@ class DataSourcingWorkflowTest
             AuthenticationMock.mockJwtAuthentication(
                 "data-admin",
                 adminUserId.toString(),
-                roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER),
+                roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_USER),
             )
 
         private val userIds = List(3) { UUID.randomUUID() }
