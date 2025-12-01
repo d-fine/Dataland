@@ -173,18 +173,22 @@ watch(
 );
 
 /**
- * Checks if the current user is a member of the company or an admin of the company.
+ * Checks if the company is a Dataland Member.
  */
 async function checkIfCompanyIsDatalandMember(): Promise<void> {
   try {
     const companyRoleResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
-      props.companyId
+        props.companyId
     );
     const companyRoles = companyRoleResponse.data;
     isDatalandMember.value = companyRoles.some((role) => role.includes('Member'));
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (error: any) {
+    if (error?.response?.status === 403) {
+      isDatalandMember.value = false;
+    } else {
+      console.error(error);
+      throw error;
+    }
   }
 }
 
