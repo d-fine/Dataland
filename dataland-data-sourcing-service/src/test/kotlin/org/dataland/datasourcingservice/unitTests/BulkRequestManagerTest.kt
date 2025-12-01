@@ -188,7 +188,7 @@ class BulkRequestManagerTest {
         ).whenever(mockDataSourcingValidator).validateBulkDataRequest(any())
 
         doReturn(listOf(mockStoredDataSourcing)).whenever(mockDataSourcingQueryManager).searchDataSourcings(
-            eq(UUID.fromString(companyIdentifier1)), eq(dataType1), eq(reportingPeriod1), DataSourcingState.NonSourceable, any(), any(),
+            eq(UUID.fromString(companyIdentifier1)), eq(dataType1), eq(reportingPeriod1), eq(DataSourcingState.NonSourceable), any(), any(),
         )
 
         doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(

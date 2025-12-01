@@ -1,7 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandcommunitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
