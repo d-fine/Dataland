@@ -167,7 +167,7 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation with null framework rejects if another with null or any reportingPeriod exists`() {
+        fun `addProxyRelation with null framework allows adding relations with different reporting periods`() {
             val proxiedId = UUID.randomUUID()
             val proxyId = UUID.randomUUID()
             val base =
@@ -196,10 +196,10 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation with null reportingPeriod rejects if another with null or any framework exists`() {
+        fun `addProxyRelation with null reportingPeriod allows adding relation with different framework `() {
             val proxiedId = UUID.randomUUID()
             val proxyId = UUID.randomUUID()
-            // Save entry with specific framework, null reportingPeriod (should be catch-all for all periods)
+
             val base =
                 CompanyProxy(
                     proxiedCompanyId = proxiedId,
@@ -227,7 +227,7 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation with only null values rejects if any exist for proxiedId`() {
+        fun `addProxyRelation with only null values rejects if any relation exists for proxiedId`() {
             val proxiedId = UUID.randomUUID()
 
             val generic =
