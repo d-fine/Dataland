@@ -86,7 +86,7 @@ class CompanyProxyManager
          *      → full cross product of (framework, reportingPeriod).
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxy): CompanyProxyEntity {
+        fun addProxyRelation(relation: CompanyProxy<UUID>): CompanyProxyEntity {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
@@ -128,7 +128,7 @@ class CompanyProxyManager
          *  - reportingPeriod = null → applies to all reporting periods
          */
         @Transactional(readOnly = true)
-        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxy> {
+        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxy<UUID>> {
             val entities =
                 companyDataProxyRuleRepository
                     .findAllByProxiedCompanyId(proxiedCompanyId)
@@ -182,7 +182,7 @@ class CompanyProxyManager
         @Transactional
         fun editCompanyProxy(
             proxyId: UUID,
-            updatedCompanyProxy: CompanyProxy,
+            updatedCompanyProxy: CompanyProxy<UUID>,
         ): StoredCompanyProxy {
             val existing = retrieveCompanyProxyEntityById(proxyId)
 

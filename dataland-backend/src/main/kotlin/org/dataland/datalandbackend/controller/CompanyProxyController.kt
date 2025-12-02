@@ -2,9 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
-import org.dataland.datalandbackend.model.proxies.CompanyProxyRequest
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
-import org.dataland.datalandbackend.model.proxies.toDomainModel
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.slf4j.LoggerFactory
@@ -29,7 +27,7 @@ class CompanyProxyController
         /**
          * POST /company-data-proxy-relation
          */
-        override fun postCompanyProxy(companyProxy: CompanyProxyRequest): ResponseEntity<StoredCompanyProxy> {
+        override fun postCompanyProxy(companyProxy: CompanyProxy<String>): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to create proxy relation for " +
                     "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
@@ -38,9 +36,7 @@ class CompanyProxyController
                     "reportingPeriod='${companyProxy.reportingPeriod}'",
             )
 
-            val domainRelation = companyProxy.toDomainModel()
-
-            val savedEntity = companyProxyManager.addProxyRelation(domainRelation)
+            val savedEntity = companyProxyManager.addProxyRelation(companyProxy.convertToCompanyProxyWithUUIDs())
 
             val responseBody =
                 StoredCompanyProxy(
@@ -120,7 +116,7 @@ class CompanyProxyController
          */
         override fun putCompanyProxy(
             proxyId: String,
-            companyProxy: CompanyProxy,
+            companyProxy: CompanyProxy<String>,
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to update proxy rule for " +
@@ -129,7 +125,7 @@ class CompanyProxyController
             return ResponseEntity.ok(
                 companyProxyManager.editCompanyProxy(
                     proxyId = ValidationUtils.convertToUUID(proxyId),
-                    updatedCompanyProxy = companyProxy,
+                    updatedCompanyProxy = companyProxy.convertToCompanyProxyWithUUIDs(),
                 ),
             )
         }
