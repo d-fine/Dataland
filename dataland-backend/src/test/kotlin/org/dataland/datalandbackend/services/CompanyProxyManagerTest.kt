@@ -35,7 +35,7 @@ class CompanyProxyManagerTest
                     reportingPeriod = "2025",
                 )
             val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
-            val retrievedEntity = companyDataProxyRuleRepository.findByProxyId(proxyCompanyId)
+            val retrievedEntity = companyDataProxyRuleRepository.findAllByProxiedCompanyId(proxiedCompanyId).first()
 
             assertNotNull(retrievedEntity)
             assertEquals(savedEntity, retrievedEntity)
