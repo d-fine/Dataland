@@ -46,6 +46,13 @@ class CompanyProxyManager
                     )
                 }
 
+        /**
+         * Returns all stored company proxies matching the given filters as domain models.
+         *
+         * If a filter parameter is null or empty, it is ignored.
+         *
+         * Results are paginated using chunkSize and chunkIndex.
+         */
         @Transactional(readOnly = true)
         fun getCompanyProxiesByFilters(
             proxiedCompanyId: UUID?,
