@@ -412,7 +412,7 @@ class CompanyProxyManagerTest
             assertNotNull(retrievedEntity)
 
             companyProxyManager.deleteProxyRelation(savedEntity.proxyId)
-            assertThrows<ResourceNotFoundApiException> {
+            assertThrows(ResourceNotFoundApiException::class.java) {
                 companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
             }
         }
