@@ -394,4 +394,26 @@ class CompanyProxyManagerTest
                 companyProxyManager.editCompanyProxy(randomProxyId, altCompanyProxy)
             }
         }
+
+        @Test
+        fun `test that deleteProxyRelation deletes a proxy relation`() {
+            val proxiedCompanyId = UUID.randomUUID()
+            val proxyCompanyId = UUID.randomUUID()
+            val proxyRelation =
+                CompanyProxy(
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
+                    framework = "sfdr",
+                    reportingPeriod = "2025",
+                )
+
+            val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
+            val retrievedEntity = companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
+            assertNotNull(retrievedEntity)
+
+            companyProxyManager.deleteProxyRelation(savedEntity.proxyId)
+            assertThrows<ResourceNotFoundApiException> {
+                companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
+            }
+        }
     }
