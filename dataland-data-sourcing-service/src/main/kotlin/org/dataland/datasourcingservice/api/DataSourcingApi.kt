@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -43,11 +44,6 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing object."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query data sourcing objects.",
-                content = [Content(schema = Schema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
                 description = "DataSourcing object not found.",
                 content = [Content(schema = Schema())],
@@ -55,7 +51,7 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingById(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -78,26 +74,22 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing objects."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only uploaders are allowed to use this endpoint.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
-                description = "DataSourcing object not found.",
+                description = "Provider company not found.",
                 content = [Content(array = ArraySchema())],
             ),
         ],
     )
     @GetMapping(value = ["/provider/{providerCompanyId}"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingForCompanyId(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_DESCRIPTION,
             example = DataSourcingOpenApiDescriptionsAndExamples.PROVIDER_COMPANY_ID_EXAMPLE,
         )
+        @CompanyExists
         @PathVariable providerCompanyId: String,
-    ): ResponseEntity<List<ReducedDataSourcing>>
+    ): ResponseEntity<List<StoredDataSourcing>>
 
     /**
      * Retrieve the history of a DataSourcing object by its ID.
@@ -110,11 +102,6 @@ interface DataSourcingApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved DataSourcing history."),
             ApiResponse(
-                responseCode = "403",
-                description = "Only admins are allowed to query data sourcing history.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "404",
                 description = "DataSourcing object not found.",
                 content = [Content(array = ArraySchema())],
@@ -122,7 +109,7 @@ interface DataSourcingApi {
         ],
     )
     @GetMapping(value = ["/{dataSourcingId}/history"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataSourcingHistoryById(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -144,7 +131,9 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "200", description = "Successfully patched state."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch states of data sourcing objects.",
+                description =
+                    "Only Dataland Admins have the right to patch states of data sourcing objects. " +
+                        "Document Collectors and Data Extractors have the right to patch to specific states.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -155,7 +144,9 @@ interface DataSourcingApi {
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}/state"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchState(#dataSourcingId, #state)",
+    )
     fun patchDataSourcingState(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -240,7 +231,9 @@ interface DataSourcingApi {
             ApiResponse(responseCode = "200", description = "Successfully patched document IDs."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects.",
+                description =
+                    "Only Dataland Admins and Document Collectors have the right to patch documents associated " +
+                        "with data sourcing objects.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -255,7 +248,9 @@ interface DataSourcingApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.doesUserBelongToDocumentCollector(#dataSourcingId)",
+    )
     fun patchDataSourcingDocuments(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -295,7 +290,9 @@ interface DataSourcingApi {
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts.",
+                description =
+                    "Only Dataland Admins and Document Collectors have the right to patch the dates of " +
+                        "document sourcing attempts.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -306,7 +303,9 @@ interface DataSourcingApi {
         ],
     )
     @PatchMapping(value = ["/{dataSourcingId}/document-sourcing-attempt"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.doesUserBelongToDocumentCollector(#dataSourcingId)",
+    )
     fun patchDateOfNextDocumentSourcingAttempt(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
@@ -333,15 +332,10 @@ interface DataSourcingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved matching data sourcing objects."),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins have the right to search for data sourcing objects.",
-                content = [Content(array = ArraySchema())],
-            ),
         ],
     )
     @GetMapping(produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun searchDataSourcings(
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
