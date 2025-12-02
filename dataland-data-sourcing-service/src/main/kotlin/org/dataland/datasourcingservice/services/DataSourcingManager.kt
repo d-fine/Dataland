@@ -19,6 +19,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
+import org.dataland.datasourcingservice.utils.isUserAdmin
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -53,7 +54,7 @@ class DataSourcingManager
         @Transactional(readOnly = true)
         fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
             getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
-                .toStoredDataSourcing()
+                .toStoredDataSourcing(isUserAdmin())
                 .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
 
         /**
@@ -297,7 +298,7 @@ class DataSourcingManager
                     adminComment = adminComment,
                 ),
                 correlationId,
-            ).toStoredDataSourcing()
+            ).toStoredDataSourcing(isUserAdmin())
         }
 
         /**
@@ -307,16 +308,17 @@ class DataSourcingManager
          * @return A list of StoredDataSourcing objects associated with the specified company ID, or null if none exist.
          */
         @Transactional(readOnly = true)
-        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<ReducedDataSourcing> {
+        fun getStoredDataSourcingForCompanyId(companyId: UUID): List<StoredDataSourcing> {
             logger.info(
                 "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
+            val isUserAdmin = isUserAdmin()
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity -> entity.toReducedDataSourcing() }
+            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin) }
         }
 
         /**
@@ -331,7 +333,7 @@ class DataSourcingManager
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences() }
+                .map { it.toDataSourcingWithoutReferences(isUserAdmin()) }
                 .ifEmpty {
                     throw DataSourcingNotFoundApiException(id)
                 }
