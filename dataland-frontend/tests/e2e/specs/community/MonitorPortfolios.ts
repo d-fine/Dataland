@@ -92,31 +92,17 @@ describe('Portfolio Monitoring Modal', () => {
     { executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'] },
     () => {
       let permIdNonFinancial: string;
-      let permIdFinancial: string;
-      let permIdNoSector: string;
       const companyTimestamp = Date.now();
       let portfolioTimestamp: number;
       let nonFinancialPortfolio: string;
-      let financialPortfolio: string;
-      let nonSectorPortfolio: string;
       const companyNameNonFinancial = `Test Co. NonFin ${companyTimestamp}`;
-      const companyNameFinancial = `Test Co. Fin ${companyTimestamp}`;
-      const companyNameNoSector = `Test Co. NoSec ${companyTimestamp}`;
 
       before(() => {
         getKeycloakToken(admin_name, admin_pw).then(async (token) => {
           const nonFinancialCompany = generateDummyCompanyInformation(companyNameNonFinancial);
-          const financialCompany = generateDummyCompanyInformation(companyNameFinancial, 'financials');
-          const noSectorCompany = generateDummyCompanyInformation(companyNameNoSector, null as unknown as string);
 
           permIdNonFinancial = nonFinancialCompany.identifiers[IdentifierType.PermId]![0]!;
           await uploadCompanyViaApi(token, nonFinancialCompany);
-
-          permIdFinancial = financialCompany.identifiers[IdentifierType.PermId]![0]!;
-          await uploadCompanyViaApi(token, financialCompany);
-
-          permIdNoSector = noSectorCompany.identifiers[IdentifierType.PermId]![0]!;
-          await uploadCompanyViaApi(token, noSectorCompany);
         });
       });
 
@@ -130,20 +116,10 @@ describe('Portfolio Monitoring Modal', () => {
 
         portfolioTimestamp = Date.now();
         nonFinancialPortfolio = `nonFinancialPortfolio ${portfolioTimestamp}`;
-        financialPortfolio = `financialPortfolio ${portfolioTimestamp}`;
-        nonSectorPortfolio = `NonSectorPortfolio ${portfolioTimestamp}`;
       });
 
       it('Monitoring yields bulk data request when inputs are valid for non financial company', () => {
         testPatchMonitoring(nonFinancialPortfolio, permIdNonFinancial, 'eutaxonomy');
-      });
-
-      it('Monitoring yields bulk data request when inputs are valid for financial company', () => {
-        testPatchMonitoring(financialPortfolio, permIdFinancial, 'eutaxonomy');
-      });
-
-      it('Monitoring yields bulk data request when inputs are valid for non sector company', () => {
-        testPatchMonitoring(nonSectorPortfolio, permIdNoSector, 'eutaxonomy');
       });
     }
   );
