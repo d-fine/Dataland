@@ -6328,9 +6328,8 @@
           "fiscalYearEnd": {
             "type": "string",
             "description": "The fiscal year-end of the company.",
-            "format": "date",
             "nullable": true,
-            "example": "2024-06-30"
+            "example": "31-Mar"
           },
           "reportingPeriodShift": {
             "type": "integer",
@@ -17226,9 +17225,8 @@
           "fiscalYearEnd": {
             "type": "string",
             "description": "The fiscal year-end of the company.",
-            "format": "date",
             "nullable": true,
-            "example": "2024-06-30"
+            "example": "31-Mar"
           },
           "reportingPeriodShift": {
             "type": "integer",
