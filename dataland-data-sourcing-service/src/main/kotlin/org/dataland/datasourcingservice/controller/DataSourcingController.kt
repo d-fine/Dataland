@@ -34,7 +34,7 @@ class DataSourcingController
                         ),
                 )
 
-        override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<ReducedDataSourcing>> =
+        override fun getDataSourcingForCompanyId(providerCompanyId: String): ResponseEntity<List<StoredDataSourcing>> =
             ResponseEntity.ok(
                 dataSourcingManager
                     .getStoredDataSourcingForCompanyId(
