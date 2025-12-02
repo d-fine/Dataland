@@ -6,12 +6,14 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
@@ -145,5 +147,89 @@ class CompanyProxyManagerTest
                     chunkIndex = 0,
                 )
             assertTrue(result.isEmpty())
+        }
+
+        @Test
+        fun `getCompanyProxyById returns the correct StoredCompanyProxy when found`() {
+            val proxiedCompanyId = UUID.randomUUID()
+            val proxyCompanyId = UUID.randomUUID()
+            val framework = "sfdr"
+            val reportingPeriod = "2025"
+            val proxyRelation =
+                CompanyProxy(
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
+                    framework = framework,
+                    reportingPeriod = reportingPeriod,
+                )
+            val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
+            val result = companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
+            assertEquals(savedEntity.toStoredCompanyProxy(), result)
+        }
+
+        @Test
+        fun `getCompanyProxyById throws ResourceNotFoundApiException when not found`() {
+            val randomProxyId = UUID.randomUUID()
+            assertThrows<ResourceNotFoundApiException> {
+                companyProxyManager.getCompanyProxyById(randomProxyId)
+            }
+        }
+
+        @Test
+        fun `editCompanyProxy updates the proxy relation and returns the updated StoredCompanyProxy`() {
+            val proxiedCompanyId = UUID.randomUUID()
+            val proxyCompanyId = UUID.randomUUID()
+            val initialFramework = "sfdr"
+            val initialReportingPeriod = "2025"
+            val proxyRelation =
+                CompanyProxy(
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
+                    framework = initialFramework,
+                    reportingPeriod = initialReportingPeriod,
+                )
+            val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
+
+            val updatedProxiedCompanyId = UUID.randomUUID()
+            val updatedProxyCompanyId = UUID.randomUUID()
+            val updatedFramework = "eutaxonomy-financials"
+            val updatedReportingPeriod = "2026"
+            val updatedProxy =
+                CompanyProxy(
+                    proxiedCompanyId = updatedProxiedCompanyId,
+                    proxyCompanyId = updatedProxyCompanyId,
+                    framework = updatedFramework,
+                    reportingPeriod = updatedReportingPeriod,
+                )
+
+            val updatedStoredProxy = companyProxyManager.editCompanyProxy(savedEntity.proxyId, updatedProxy)
+
+            val persisted = companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
+
+            val expected =
+                StoredCompanyProxy(
+                    proxyId = savedEntity.proxyId.toString(),
+                    proxiedCompanyId = updatedProxiedCompanyId.toString(),
+                    proxyCompanyId = updatedProxyCompanyId.toString(),
+                    framework = updatedFramework,
+                    reportingPeriod = updatedReportingPeriod,
+                )
+            assertEquals(expected, updatedStoredProxy)
+            assertEquals(expected, persisted)
+        }
+
+        @Test
+        fun `editCompanyProxy throws ResourceNotFoundApiException when proxy does not exist`() {
+            val randomProxyId = UUID.randomUUID()
+            val updatedProxy =
+                CompanyProxy(
+                    proxiedCompanyId = UUID.randomUUID(),
+                    proxyCompanyId = UUID.randomUUID(),
+                    framework = "sfdr",
+                    reportingPeriod = "2027",
+                )
+            assertThrows<ResourceNotFoundApiException> {
+                companyProxyManager.editCompanyProxy(randomProxyId, updatedProxy)
+            }
         }
     }
