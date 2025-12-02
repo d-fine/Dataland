@@ -154,19 +154,26 @@ class BulkRequestManager
             }
         }
 
-        private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
-            dataDimensions
-                .filter { dim ->
-                    dataSourcingQueryManager
-                        .searchDataSourcings(
-                            companyId = UUID.fromString(dim.companyId),
-                            dataType = dim.dataType,
-                            reportingPeriod = dim.reportingPeriod,
-                            state = DataSourcingState.NonSourceable,
-                            chunkSize = 1,
-                            chunkIndex = 0,
-                        ).isNotEmpty()
-                }.toSet()
+        private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
+            val nonSourceableDimensions =
+                dataSourcingQueryManager
+                    .searchDataSourcings(
+                        companyId = null,
+                        dataType = null,
+                        reportingPeriod = null,
+                        state = DataSourcingState.NonSourceable,
+                        chunkSize = Int.MAX_VALUE,
+                        chunkIndex = 0,
+                    ).map {
+                        BasicDataDimensions(
+                            companyId = it.companyId,
+                            dataType = it.dataType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }.toSet()
+
+            return dataDimensions.intersect(nonSourceableDimensions)
+        }
 
         private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {
             val identifiers = bulkDataRequest.companyIdentifiers

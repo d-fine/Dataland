@@ -42,7 +42,6 @@ class BulkRequestManagerTest {
     private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockEntityManager = mock<EntityManager>()
     private val mockQuery = mock<Query>()
-    private val mockStoredDataSourcing = mock<StoredDataSourcing>()
 
     private val userId = UUID.randomUUID()
 
@@ -187,8 +186,16 @@ class BulkRequestManagerTest {
             ),
         ).whenever(mockDataSourcingValidator).validateBulkDataRequest(any())
 
-        doReturn(listOf(mockStoredDataSourcing)).whenever(mockDataSourcingQueryManager).searchDataSourcings(
-            eq(UUID.fromString(companyIdentifier1)), eq(dataType1), eq(reportingPeriod1), eq(DataSourcingState.NonSourceable), any(), any(),
+        doReturn(
+            dataDimensionsWithNonSourceableRequests.map {
+                val mockStored = mock<StoredDataSourcing>()
+                whenever(mockStored.companyId).thenReturn(it.companyId)
+                whenever(mockStored.dataType).thenReturn(it.dataType)
+                whenever(mockStored.reportingPeriod).thenReturn(it.reportingPeriod)
+                mockStored
+            },
+        ).whenever(mockDataSourcingQueryManager).searchDataSourcings(
+            eq(null), eq(null), eq(null), eq(DataSourcingState.NonSourceable), any(), any(),
         )
 
         doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(
