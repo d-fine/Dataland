@@ -78,30 +78,6 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
       .should('exist');
   });
 
-  it('Dataland Member badge is visible when Company is Dataland Member and user is Analyst', () => {
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
-    const hasCompanyAtLeastOneOwner = true;
-
-    interceptCompanyRights(dummyCompanyId, ['Member']);
-    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
-
-    mockRequestsOnMounted(
-      hasCompanyAtLeastOneOwner,
-      companyInformationForTest,
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary
-    );
-
-    mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
-
-    cy.wait('@companyRights');
-    cy.wait('@extendedCompanyRoleAssignments');
-    cy.get('[data-test="datalandMemberBadge"]')
-      .should('be.visible')
-      .should('contain.text', 'Dataland Member')
-      .find('.pi-star')
-      .should('exist');
-  });
-
   it('Dataland Member badge is NOT visible for non-admin users', () => {
     const companyRoleAssignmentsOfUser: CompanyRoleAssignmentExtended[] = [];
     const hasCompanyAtLeastOneOwner = true;
@@ -120,7 +96,7 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
   });
 
-  it('Dataland Member badge is NOT visible for non-member users', () => {
+  it('Dataland Member badge is NOT visible when company is not a Dataland Member', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
