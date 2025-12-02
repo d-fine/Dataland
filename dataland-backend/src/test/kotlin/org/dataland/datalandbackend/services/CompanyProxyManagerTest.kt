@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -15,6 +16,7 @@ import java.util.UUID
     classes = [DatalandBackend::class],
     properties = ["spring.profiles.active=containerized-db"],
 )
+@DefaultMocks
 class CompanyProxyManagerTest
     @Autowired
     constructor(
