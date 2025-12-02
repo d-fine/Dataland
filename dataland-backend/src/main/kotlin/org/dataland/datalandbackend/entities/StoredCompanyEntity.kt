@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import java.time.LocalDate
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -43,7 +42,7 @@ data class StoredCompanyEntity(
     @Column(name = "headquarters_postal_code")
     var headquartersPostalCode: String?,
     @Column(name = "fiscal_year_end")
-    var fiscalYearEnd: LocalDate?,
+    var fiscalYearEnd: String?,
     @Column(name = "reporting_period_shift")
     var reportingPeriodShift: Int?,
     @Column(name = "sector")
@@ -179,7 +178,7 @@ data class StoredCompanyEntity(
         updateIfNotNull(patch.companyLegalForm) { storedCompanyEntity.companyLegalForm = it }
         updateIfNotNull(patch.headquarters) { storedCompanyEntity.headquarters = it }
         updateIfNotNull(patch.headquartersPostalCode) { storedCompanyEntity.headquartersPostalCode = it }
-        updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it }
+        updateIfNotNull(patch.fiscalYearEnd) { storedCompanyEntity.fiscalYearEnd = it.toString() }
         updateIfNotNull(patch.reportingPeriodShift) { storedCompanyEntity.reportingPeriodShift = it }
         updateIfNotNull(patch.sector) { storedCompanyEntity.sector = it }
         updateIfNotNull(patch.sectorCodeWz) { storedCompanyEntity.sectorCodeWz = it }
