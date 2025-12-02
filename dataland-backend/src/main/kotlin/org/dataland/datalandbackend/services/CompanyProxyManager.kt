@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -50,9 +51,25 @@ class CompanyProxyManager
             proxyCompanyId: UUID?,
             frameworks: Set<String>?,
             reportingPeriods: Set<String>?,
-            chunkSize: Int?,
-            chunkIndex: Int?,
-        ): List<StoredCompanyProxy> = emptyList()
+            chunkSize: Int = 100,
+            chunkIndex: Int = 0,
+        ): List<StoredCompanyProxy> {
+            val frameworksSet = frameworks ?: emptySet()
+            val reportingPeriodsSet = reportingPeriods ?: emptySet()
+
+            val page =
+                companyDataProxyRuleRepository.findByFilters(
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
+                    frameworks = frameworksSet,
+                    frameworksEmpty = frameworksSet.isEmpty(),
+                    reportingPeriods = reportingPeriodsSet,
+                    reportingPeriodsEmpty = reportingPeriodsSet.isEmpty(),
+                    pageable = PageRequest.of(chunkIndex, chunkSize),
+                )
+
+            return page.content.map { it.toStoredCompanyProxy() }
+        }
 
         /**
          * Creates or replaces all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
