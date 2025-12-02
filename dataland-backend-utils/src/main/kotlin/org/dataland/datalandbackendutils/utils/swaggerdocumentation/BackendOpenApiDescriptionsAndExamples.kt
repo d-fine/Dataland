@@ -18,7 +18,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val HEADQUARTERS_POSTAL_CODE_EXAMPLE = "10123"
 
     const val FISCAL_YEAR_END_DESCRIPTION = "The fiscal year-end of the company."
-    const val FISCAL_YEAR_END_EXAMPLE = "2024-06-30"
+    const val FISCAL_YEAR_END_EXAMPLE = "31-Mar"
 
     const val REPORTING_PERIOD_SHIFT_DESCRIPTION = "Difference between fiscal year-end and reporting period."
     const val REPORTING_PERIOD_SHIFT_EXAMPLE = "-1"
