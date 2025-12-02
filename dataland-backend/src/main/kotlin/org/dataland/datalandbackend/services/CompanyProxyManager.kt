@@ -46,6 +46,7 @@ class CompanyProxyManager
                     )
                 }
 
+        @Transactional(readOnly = true)
         fun getCompanyProxiesByFilters(
             proxiedCompanyId: UUID?,
             proxyCompanyId: UUID?,
