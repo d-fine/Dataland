@@ -17,7 +17,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import kotlin.random.Random
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioControllerTest {
@@ -52,7 +52,7 @@ class PortfolioControllerTest {
     }
 
     @Test
-    fun `check that eu-taxonomy portfolios create the right requests depending on the company sector`() {
+    fun `check that eutaxonomy portfolios create the right requests depending on the company sector`() {
         val generalTestDataProvider = GeneralTestDataProvider()
         val financialCompanyInformation =
             generalTestDataProvider.generateCompanyInformation("FinancialCompany", "Financials")
@@ -68,7 +68,7 @@ class PortfolioControllerTest {
 
             val testPortfolio =
                 PortfolioUpload(
-                    "Test Portfolio" + Random.nextInt(0, 100),
+                    "Test Portfolio " + UUID.randomUUID().toString(),
                     setOf(financialCompanyId, nonFinancialCompanyId, noSectorCompanyId),
                     true,
                     setOf("eutaxonomy"),
@@ -76,42 +76,23 @@ class PortfolioControllerTest {
             UserService.portfolioControllerApi.createPortfolio(testPortfolio)
             Thread.sleep(3000)
 
-            val financialRequests =
-                apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
-                    RequestSearchFilterString(
-                        companyId = financialCompanyId,
-                        requestStates =
-                            listOf(
-                                RequestState.Open,
-                            ),
-                    ),
-                )
+            val financialRequests = getOpenRequests(financialCompanyId)
 
-            val nonFinancialRequests =
-                apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
-                    RequestSearchFilterString(
-                        companyId = nonFinancialCompanyId,
-                        requestStates =
-                            listOf(
-                                RequestState.Open,
-                            ),
-                    ),
-                )
+            val nonFinancialRequests = getOpenRequests(nonFinancialCompanyId)
 
-            val noSectorRequests =
-                apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
-                    RequestSearchFilterString(
-                        companyId = noSectorCompanyId,
-                        requestStates =
-                            listOf(
-                                RequestState.Open,
-                            ),
-                    ),
-                )
+            val noSectorRequests = getOpenRequests(noSectorCompanyId)
 
             assertEquals(2, financialRequests.size)
             assertEquals(2, nonFinancialRequests.size)
             assertEquals(3, noSectorRequests.size)
         }
     }
+
+    private fun getOpenRequests(companyId: String) =
+        apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
+            RequestSearchFilterString(
+                companyId = companyId,
+                requestStates = listOf(RequestState.Open),
+            ),
+        )
 }
