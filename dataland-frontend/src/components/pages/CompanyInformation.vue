@@ -179,24 +179,25 @@ watch(
  */
 async function checkIfCompanyIsDatalandMember(): Promise<void> {
   try {
-    const companyRoleResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
+    const companyRightResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
       props.companyId
     );
-    const companyRoles = companyRoleResponse.data;
-    isDatalandMember.value = companyRoles.some((role) => role.includes('Member'));
+    isDatalandMember.value = companyRightResponse.data.some((role) => role === 'Member');
   } catch (error) {
+    isDatalandMember.value = false;
     console.error(error);
   }
 }
 
 /**
- * Fetches the company user information for the current role and company.
+ * Checks if the user has any role in the company or is a Dataland admin
  */
 async function checkIfUserIsMemberOrAdmin(): Promise<void> {
+  if (!props.companyId) return;
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  if (!props.companyId) return;
+
   try {
     const userRoleResponse =
       await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
@@ -204,8 +205,7 @@ async function checkIfUserIsMemberOrAdmin(): Promise<void> {
         props.companyId,
         keycloakUserId
       );
-    const userRoles = userRoleResponse.data;
-    isMemberOfCompanyOrAdmin.value = userRoles.length > 0 || isAdmin;
+    isMemberOfCompanyOrAdmin.value = userRoleResponse.data.length > 0 || isAdmin;
   } catch (error) {
     console.error('Error in retrieving company role:', error);
   }
