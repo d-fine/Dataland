@@ -81,4 +81,42 @@ class CompanyProxyControllerTest {
         val ex = assertThrows<Exception> { companyProxyApi.getCompanyProxyById(proxyId) }
         assertTrue(ex.message?.contains("404") == true)
     }
+
+    @Test
+    fun `change existing company proxy using put request`() {
+        // 1: create a proxy
+        val companyIdProxyCompany = uploadCompanyAsUploader()
+        val companyIdProxiedCompany = uploadCompanyAsUploader()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val proxyId =
+            companyProxyApi
+                .postCompanyProxy(
+                    companyProxyString =
+                        CompanyProxyString(
+                            proxiedCompanyId = companyIdProxiedCompany,
+                            proxyCompanyId = companyIdProxyCompany,
+                            framework = "sfdr",
+                            reportingPeriod = "2024",
+                        ),
+                ).proxyId
+
+        // 2: change the proxy using put endpoint
+        companyProxyApi.putCompanyProxy(
+            proxyId,
+            CompanyProxyString(
+                proxiedCompanyId = companyIdProxiedCompany,
+                proxyCompanyId = companyIdProxyCompany,
+                framework = "Lksg",
+                reportingPeriod = "2023",
+            ),
+        )
+        // 3: assert that the change was successful
+        val retrievedProxy = companyProxyApi.getCompanyProxyById(proxyId)
+
+        assertEquals(retrievedProxy.proxiedCompanyId, companyIdProxiedCompany)
+        assertEquals(retrievedProxy.proxyCompanyId, companyIdProxyCompany)
+        assertEquals(retrievedProxy.framework, "Lksg")
+        assertEquals(retrievedProxy.reportingPeriod, "2023")
+    }
 }
