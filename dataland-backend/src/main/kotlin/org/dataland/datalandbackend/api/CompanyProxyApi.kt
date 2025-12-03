@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxyString
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
@@ -73,7 +73,7 @@ interface CompanyProxyApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postCompanyProxy(
         @Valid @RequestBody
-        companyProxy: CompanyProxy<String>,
+        companyProxy: CompanyProxyString,
     ): ResponseEntity<StoredCompanyProxy>
 
     // TODO: No work has been put into any get feature. Should be similar to the /data-points endpoint in the QA-Controller.
@@ -259,6 +259,6 @@ interface CompanyProxyApi {
         @PathVariable proxyId: String,
         @Valid
         @RequestBody
-        companyProxy: CompanyProxy<String>,
+        companyProxy: CompanyProxyString,
     ): ResponseEntity<StoredCompanyProxy>
 }

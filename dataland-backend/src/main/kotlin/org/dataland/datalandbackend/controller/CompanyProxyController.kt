@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyProxyApi
-import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxyString
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.dataland.datalandbackendutils.utils.ValidationUtils
@@ -27,7 +27,7 @@ class CompanyProxyController
         /**
          * POST /company-data-proxy-relation
          */
-        override fun postCompanyProxy(companyProxy: CompanyProxy<String>): ResponseEntity<StoredCompanyProxy> {
+        override fun postCompanyProxy(companyProxy: CompanyProxyString): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to create proxy relation for " +
                     "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
@@ -116,7 +116,7 @@ class CompanyProxyController
          */
         override fun putCompanyProxy(
             proxyId: String,
-            companyProxy: CompanyProxy<String>,
+            companyProxy: CompanyProxyString,
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to update proxy rule for " +

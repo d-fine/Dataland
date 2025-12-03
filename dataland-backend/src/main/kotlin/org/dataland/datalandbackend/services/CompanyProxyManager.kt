@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
-import org.dataland.datalandbackend.model.proxies.CompanyProxy
+import org.dataland.datalandbackend.model.proxies.CompanyProxyUUID
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -87,7 +87,7 @@ class CompanyProxyManager
          * @throws InvalidInputApiException if a conflicting rule already exists.
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxy<UUID>): CompanyProxyEntity {
+        fun addProxyRelation(relation: CompanyProxyUUID): CompanyProxyEntity {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
@@ -132,7 +132,7 @@ class CompanyProxyManager
 
         private fun findConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
-            relation: CompanyProxy<UUID>,
+            relation: CompanyProxyUUID,
         ): List<CompanyProxyEntity> =
             when {
                 relation.framework.isNullOrEmpty() && relation.reportingPeriod.isNullOrEmpty() ->
@@ -170,7 +170,7 @@ class CompanyProxyManager
          *  - reportingPeriod = null → applies to all reporting periods
          */
         @Transactional(readOnly = true)
-        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxy<UUID>> {
+        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxyUUID> {
             val entities =
                 companyDataProxyRuleRepository
                     .findAllByProxiedCompanyId(proxiedCompanyId)
@@ -183,7 +183,7 @@ class CompanyProxyManager
             }
 
             return entities.map { row ->
-                CompanyProxy(
+                CompanyProxyUUID(
                     proxiedCompanyId = row.proxiedCompanyId,
                     proxyCompanyId = row.proxyCompanyId,
                     framework = row.framework, // null => all frameworks
@@ -224,7 +224,7 @@ class CompanyProxyManager
         @Transactional
         fun editCompanyProxy(
             proxyId: UUID,
-            updatedCompanyProxy: CompanyProxy<UUID>,
+            updatedCompanyProxy: CompanyProxyUUID,
         ): StoredCompanyProxy {
             val existing = retrieveCompanyProxyEntityById(proxyId)
 
