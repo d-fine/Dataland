@@ -27,7 +27,11 @@ describe('Component test for the authorization of company cockpit components', (
     cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      companyInformationForTest = lksgFixtures[0]!.companyInformation;
+      const firstFixture = lksgFixtures[0];
+      if (!firstFixture) {
+        throw new Error('Expected at least one fixture');
+      }
+      companyInformationForTest = firstFixture.companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
