@@ -27,6 +27,25 @@ class CompanyProxyControllerTest {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         }
 
+    private fun postProxyRelationForRandomCompanies(role: TechnicalUser): String {
+        val companyIdProxiedCompany = uploadCompanyAsUploader()
+        val companyIdProxyCompany = uploadCompanyAsUploader()
+        GlobalAuth.withTechnicalUser(role) {
+            val proxyId =
+                companyProxyApi
+                    .postCompanyProxy(
+                        CompanyProxyString(
+                            proxiedCompanyId = companyIdProxiedCompany,
+                            proxyCompanyId = companyIdProxyCompany,
+                            framework = "sfdr",
+                            reportingPeriod = "2024",
+                        ),
+                    ).proxyId
+
+            return proxyId
+        }
+    }
+
     @Test
     fun `create proxy then get by id returns correct data`() {
         val companyIdProxyCompany = uploadCompanyAsUploader()
@@ -49,27 +68,6 @@ class CompanyProxyControllerTest {
         assertEquals(retrievedProxy.proxyCompanyId, companyIdProxyCompany)
         assertEquals(retrievedProxy.framework, "sfdr")
         assertEquals(retrievedProxy.reportingPeriod, "2024")
-    }
-
-    @Test
-    fun `trying to create a proxy as a non-admin user results in a 403`() {
-        val companyIdProxyCompany = uploadCompanyAsUploader()
-        val companyIdProxiedCompany = uploadCompanyAsUploader()
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-
-        val ex =
-            assertThrows<ClientException> {
-                companyProxyApi.postCompanyProxy(
-                    CompanyProxyString(
-                        proxiedCompanyId = companyIdProxiedCompany,
-                        proxyCompanyId = companyIdProxyCompany,
-                        framework = "sfdr",
-                        reportingPeriod = "2024",
-                    ),
-                )
-            }
-
-        assertTrue(ex.message?.contains("403") == true)
     }
 
     @Test
@@ -150,5 +148,37 @@ class CompanyProxyControllerTest {
         assertEquals(retrievedProxy.proxyCompanyId, companyIdProxyCompany)
         assertEquals(retrievedProxy.framework, "lksg")
         assertEquals(retrievedProxy.reportingPeriod, "2023")
+    }
+
+    @Test
+    fun `trying to create a proxy as a non-admin user results in a 403`() {
+        val ex =
+            assertThrows<ClientException> {
+                postProxyRelationForRandomCompanies(TechnicalUser.Uploader)
+            }
+
+        assertTrue(ex.message?.contains("403") == true)
+    }
+
+    @Test
+    fun `trying to delete a proxy as a non-admin user results in a 401`() {
+        val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
+
+        assertThrows<ClientException> {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                companyProxyApi.deleteCompanyProxy(proxyId)
+            }
+        }
+    }
+
+    @Test
+    fun `trying to get a proxy relation by proxyId as a non-admin user results in a 401`() {
+        val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
+
+        assertThrows<ClientException> {
+            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                companyProxyApi.getCompanyProxyById(proxyId)
+            }
+        }
     }
 }
