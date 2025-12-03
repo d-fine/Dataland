@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -276,7 +277,7 @@ class DataPointQaReviewManager
                                     reviewEntity.reportingPeriod,
                                 ),
                             ],
-                        reviewEntity.companyId, "", reviewEntity.reportingPeriod, true,
+                        BasicDataDimensions(reviewEntity.companyId, "", reviewEntity.reportingPeriod), true,
                     )
 
                 logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")

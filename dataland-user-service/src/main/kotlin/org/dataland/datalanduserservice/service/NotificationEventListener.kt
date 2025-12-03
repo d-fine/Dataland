@@ -68,12 +68,13 @@ class NotificationEventListener(
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
 
         logger.info(
-            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
-                "company ID: ${sourceabilityMessage.companyId} and reporting period: ${sourceabilityMessage.reportingPeriod}. " +
+            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.basicDataDimensions.dataType}, " +
+                "company ID: ${sourceabilityMessage.basicDataDimensions.companyId} and reporting period: " +
+                "${sourceabilityMessage.basicDataDimensions.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
 
-        processMessage(sourceabilityMessage, NotificationEventType.NonSourceableEvent)
+        validateMessageAndStoreNotificationEvent(sourceabilityMessage.basicDataDimensions, NotificationEventType.NonSourceableEvent)
     }
 
     /**
@@ -109,14 +110,14 @@ class NotificationEventListener(
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
 
         logger.info(
-            "Received a qa status change message for data type: ${qaStatusChangeMessage.dataType}, " +
-                "company ID: ${qaStatusChangeMessage.companyId} and reporting period: " +
-                "${qaStatusChangeMessage.reportingPeriod} with isUpdate: ${qaStatusChangeMessage.isUpdate}. " +
+            "Received a qa status change message for data type: ${qaStatusChangeMessage.basicDataDimensions.dataType}, " +
+                "company ID: ${qaStatusChangeMessage.basicDataDimensions.companyId} and reporting period: " +
+                "${qaStatusChangeMessage.basicDataDimensions.reportingPeriod} with isUpdate: ${qaStatusChangeMessage.isUpdate}. " +
                 "Correlation ID: $correlationId",
         )
 
-        processMessage(
-            qaStatusChangeMessage,
+        validateMessageAndStoreNotificationEvent(
+            qaStatusChangeMessage.basicDataDimensions,
             if (qaStatusChangeMessage.isUpdate) {
                 NotificationEventType.UpdatedEvent
             } else {
@@ -125,18 +126,17 @@ class NotificationEventListener(
         )
     }
 
-    private fun processMessage(
-        statusChangeMessage: DataDimensions,
+    private fun validateMessageAndStoreNotificationEvent(
+        basicDataDimensions: DataDimensions,
         notificationEventType: NotificationEventType,
     ) {
-        checkThatReceivedDataIsComplete(statusChangeMessage)
-        val dataTypeDecoded = decodeDataTypeIfPossible(statusChangeMessage)
+        checkThatReceivedDataIsComplete(basicDataDimensions)
 
         val notificationEventEntity =
             NotificationEventEntity(
-                companyId = ValidationUtils.convertToUUID(statusChangeMessage.companyId),
-                framework = dataTypeDecoded,
-                reportingPeriod = statusChangeMessage.reportingPeriod,
+                companyId = ValidationUtils.convertToUUID(basicDataDimensions.companyId),
+                framework = decodeDataType(basicDataDimensions),
+                reportingPeriod = basicDataDimensions.reportingPeriod,
                 notificationEventType = notificationEventType,
             )
         notificationEventRepository.save(notificationEventEntity)
@@ -166,10 +166,10 @@ class NotificationEventListener(
     }
 
     /**
-     * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
-     * If the decoding fails, an appropriate exception is thrown.
+     * Decode the dataType string field in the message to a DataTypeEnum object to return.
+     * @throws MessageQueueRejectException when dataType cannot be decoded
      */
-    private fun decodeDataTypeIfPossible(dataDimensions: DataDimensions): DataTypeEnum =
+    private fun decodeDataType(dataDimensions: DataDimensions): DataTypeEnum =
         DataTypeEnum.decode(dataDimensions.dataType)
             ?: throw MessageQueueRejectException("Framework name could not be understood.")
 }

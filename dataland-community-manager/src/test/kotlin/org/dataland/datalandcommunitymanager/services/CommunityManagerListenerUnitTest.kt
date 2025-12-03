@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -63,7 +64,8 @@ class CommunityManagerListenerUnitTest {
                 dataId = validDataId,
                 updatedQaStatus = qaStatus,
                 currentlyActiveDataId = validDataId,
-                UUID.randomUUID().toString(), "sfdr", "2025", false,
+                BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                false,
             )
         communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
@@ -88,7 +90,9 @@ class CommunityManagerListenerUnitTest {
                 ).saveNotificationEventForInvestorRelationsEmails(any<String>())
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 
@@ -99,7 +103,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = invalidDataId,
                 updatedQaStatus = QaStatus.Accepted,
                 currentlyActiveDataId = invalidDataId,
-                UUID.randomUUID().toString(), "sfdr", "2025", false,
+                BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"), false,
             )
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.changeRequestStatusAfterQaDecision(
@@ -150,9 +154,11 @@ class CommunityManagerListenerUnitTest {
     fun `valid nonsourceable message should be processed successfully`() {
         val sourceabilityMessageValid =
             SourceabilityMessage(
-                "exampleCompany",
-                "sfdr",
-                "2023",
+                BasicDataDimensions(
+                    "exampleCompany",
+                    "sfdr",
+                    "2023",
+                ),
                 true,
                 "test",
             )
@@ -186,9 +192,11 @@ class CommunityManagerListenerUnitTest {
     ) {
         val sourceabilityMessageIncomplete =
             SourceabilityMessage(
-                companyId,
-                "sdfr",
-                reportingPeriod,
+                BasicDataDimensions(
+                    companyId,
+                    "sdfr",
+                    reportingPeriod,
+                ),
                 true,
                 "test",
             )
@@ -206,9 +214,11 @@ class CommunityManagerListenerUnitTest {
         assertThrows<MessageQueueRejectException> {
             val sourceability =
                 SourceabilityMessage(
-                    "exampleCompany",
-                    "sfdr",
-                    "2023",
+                    BasicDataDimensions(
+                        "exampleCompany",
+                        "sfdr",
+                        "2023",
+                    ),
                     false,
                     "test",
                 )

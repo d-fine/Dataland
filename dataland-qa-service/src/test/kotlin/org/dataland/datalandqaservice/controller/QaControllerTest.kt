@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -160,7 +161,8 @@ class QaControllerTest(
                 dataId = dataId,
                 updatedQaStatus = updatedQaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
-                companyId, "", reportingPeriod, true,
+                BasicDataDimensions(companyId, "", reportingPeriod),
+                true,
             ),
         )
 

@@ -66,7 +66,7 @@
         </tr>
         <!-- EMAIL TEXT -->
         <tr>
-            <td colspan="3">${frequency} summary for your portfolio(s): ${portfolioNamesString} 📣
+            <td colspan="3">${frequency} summary for your portfolio(s): ${portfolioNamesString}
                 <br><br>Data for your portfolio(s) has been updated on Dataland,
                 listed in the sections below. Please note that you may have already reviewed these updates.
                 <br><br>Check details for all your portfolios using the following link:</td>

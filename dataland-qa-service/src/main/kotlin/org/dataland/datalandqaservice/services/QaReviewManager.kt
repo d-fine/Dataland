@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -256,9 +257,12 @@ class QaReviewManager(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
-                companyId = qaReviewEntity.companyId,
-                dataType = qaReviewEntity.framework,
-                reportingPeriod = qaReviewEntity.reportingPeriod,
+                basicDataDimensions =
+                    BasicDataDimensions(
+                        companyId = qaReviewEntity.companyId,
+                        dataType = qaReviewEntity.framework,
+                        reportingPeriod = qaReviewEntity.reportingPeriod,
+                    ),
                 isUpdate = isUpdate,
             )
 

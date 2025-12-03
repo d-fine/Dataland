@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Instant
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.collections.component1
@@ -79,8 +77,9 @@ class NotificationScheduler
          * Scheduled method to send weekly summary emails.
          * Runs every monday at 7 am.
          */
-        @Scheduled(cron = "0 0 7 * * MON")
-        fun scheduledWeeklyEmailSending() {
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 0 7 * * MON", zone = "Europe/Berlin")
+        internal fun scheduledWeeklyEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
             val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
@@ -90,8 +89,9 @@ class NotificationScheduler
          * Scheduled method to send daily summary emails.
          * Runs every day at 7 am.
          */
-        @Scheduled(cron = "0 0 7 * * *")
-        fun scheduledDailyEmailSending() {
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 0 7 * * *", zone = "Europe/Berlin")
+        internal fun scheduledDailyEmailSending() {
             val notificationFrequency = NotificationFrequency.Daily
             val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
@@ -101,15 +101,11 @@ class NotificationScheduler
          * Scheduled method to send monthly summary emails.
          * Runs every day at 7 am on the first day of every month.
          */
-        @Scheduled(cron = "0 0 7 1 * *")
-        fun scheduledMonthlyEmailSending() {
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 0 7 1 * *", zone = "Europe/Berlin")
+        internal fun scheduledMonthlyEmailSending() {
             val notificationFrequency = NotificationFrequency.Monthly
-            val timeStampForInterval =
-                ZonedDateTime
-                    .now(ZoneOffset.UTC)
-                    .minusMonths(1)
-                    .toInstant()
-                    .toEpochMilli()
+            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
@@ -126,7 +122,6 @@ class NotificationScheduler
                 val frameworkToCompanyIds =
                     userPortfolios
                         .asSequence()
-                        .filter { it.monitoredFrameworks != null }
                         .flatMap { portfolio ->
                             portfolio.monitoredFrameworks!!.map { framework ->
                                 framework to portfolio.companyIds

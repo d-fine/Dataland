@@ -9,6 +9,7 @@ import org.dataland.datalanduserservice.repository.NotificationEventRepository
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -133,6 +134,16 @@ class NotificationSchedulerTest {
                 listOf(mockPortfolio1, mockPortfolio2, mockPortfolio3),
             ),
         )
+
+    @Test
+    fun sadsa() {
+        val estTimeZone = java.util.TimeZone.getTimeZone("EST")
+        val berlinTimeZone = java.util.TimeZone.getTimeZone("Europe/Berlin")
+        val nonValidTimeZone = java.util.TimeZone.getTimeZone("somethingsomething")
+        assertEquals("EST", estTimeZone.id)
+        assertEquals("Europe/Berlin", berlinTimeZone.id)
+        assertEquals("somethingsomething", nonValidTimeZone.id)
+    }
 
     @ParameterizedTest
     @MethodSource("eMailSchedulerParameters")

@@ -1,8 +1,9 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.DataPointUtils.objectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
@@ -33,15 +34,17 @@ class NotificationEventListenerTest {
     fun `test nonSourceable messages`() {
         val payload =
             SourceabilityMessage(
-                companyId.toString(),
-                dataType.value,
-                REPORTINGPERIOD,
+                BasicDataDimensions(
+                    companyId.toString(),
+                    dataType.value,
+                    REPORTINGPERIOD,
+                ),
                 true,
                 "",
             )
 
         notificationEventListener.processMessageForDataReportedAsNonSourceable(
-            objectMapper.writeValueAsString(payload),
+            JsonUtils.defaultObjectMapper.writeValueAsString(payload),
             MessageType.DATASOURCING_NONSOURCEABLE,
             UUID.randomUUID().toString(),
         )
@@ -64,14 +67,16 @@ class NotificationEventListenerTest {
                 dataId.toString(),
                 qaStatus,
                 null,
-                companyId.toString(),
-                dataType.value,
-                REPORTINGPERIOD,
+                BasicDataDimensions(
+                    companyId.toString(),
+                    dataType.value,
+                    REPORTINGPERIOD,
+                ),
                 isUpdate = true,
             )
 
         notificationEventListener.processMessageForAvailableDataAndUpdates(
-            objectMapper.writeValueAsString(payload),
+            JsonUtils.defaultObjectMapper.writeValueAsString(payload),
             MessageType.QA_STATUS_UPDATED,
             UUID.randomUUID().toString(),
         )

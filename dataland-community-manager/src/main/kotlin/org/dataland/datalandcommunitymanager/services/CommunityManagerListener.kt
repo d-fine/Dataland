@@ -133,7 +133,9 @@ class CommunityManagerListener(
      * is empty and, if so, throws an appropriate exception.
      */
     private fun checkThatReceivedDataIsComplete(sourceabilityMessage: SourceabilityMessage) {
-        if (sourceabilityMessage.companyId.isEmpty() || sourceabilityMessage.reportingPeriod.isEmpty()) {
+        if (sourceabilityMessage.basicDataDimensions.companyId.isEmpty() ||
+            sourceabilityMessage.basicDataDimensions.reportingPeriod.isEmpty()
+        ) {
             throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
         }
     }
@@ -153,7 +155,7 @@ class CommunityManagerListener(
      * If the decoding fails, an appropriate exception is thrown.
      */
     private fun decodeDataTypeIfPossible(sourceabilityMessage: SourceabilityMessage): DataTypeEnum =
-        DataTypeEnum.decode(sourceabilityMessage.dataType)
+        DataTypeEnum.decode(sourceabilityMessage.basicDataDimensions.dataType)
             ?: throw MessageQueueRejectException("Framework name could not be understood.")
 
     /**
@@ -193,16 +195,17 @@ class CommunityManagerListener(
         val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
-            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
-                "company ID: ${sourceabilityMessage.companyId} and reporting period: ${sourceabilityMessage.reportingPeriod}. " +
+            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.basicDataDimensions.dataType}, " +
+                "company ID: ${sourceabilityMessage.basicDataDimensions.companyId} and reporting period: " +
+                "${sourceabilityMessage.basicDataDimensions.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
 
         val sourceabilityInfo =
             SourceabilityInfo(
-                companyId = sourceabilityMessage.companyId,
+                companyId = sourceabilityMessage.basicDataDimensions.companyId,
                 dataType = dataTypeDecoded,
-                reportingPeriod = sourceabilityMessage.reportingPeriod,
+                reportingPeriod = sourceabilityMessage.basicDataDimensions.reportingPeriod,
                 isNonSourceable = sourceabilityMessage.isNonSourceable,
                 reason = sourceabilityMessage.reason,
             )

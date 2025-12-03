@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -117,10 +118,12 @@ class QaEventListenerQaService
                         )
                     }
 
-                    else -> throw MessageQueueRejectException(
-                        "Routing Key '$receivedRoutingKey' unknown. " +
-                            "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
-                    )
+                    else -> {
+                        throw MessageQueueRejectException(
+                            "Routing Key '$receivedRoutingKey' unknown. " +
+                                "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+                        )
+                    }
                 }
             }
         }
@@ -171,9 +174,7 @@ class QaEventListenerQaService
                             documentId,
                             QaStatus.Accepted,
                             null,
-                            "",
-                            "",
-                            "",
+                            BasicDataDimensions("", "", ""),
                             true,
                         ),
                     )

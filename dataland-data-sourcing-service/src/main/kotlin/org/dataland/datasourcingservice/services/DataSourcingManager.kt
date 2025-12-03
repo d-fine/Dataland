@@ -1,7 +1,8 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.utils.DataPointUtils.objectMapper
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -131,14 +132,30 @@ class DataSourcingManager
                 }
             }
 
+            sendNonSourceableMessage(dataSourcingEntityWithFetchedRequests, state, correlationId)
+
+            dataSourcingEntityWithFetchedRequests.state = state
+        }
+
+        /**
+         * Checks if data sourcing entity is set to non-sourceable state, starting from any other state.
+         * If yes, logs message and send non-sourceability message to RabbitMQ
+         */
+        private fun sendNonSourceableMessage(
+            dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
+            state: DataSourcingState?,
+            correlationId: String,
+        ) {
             if (state == DataSourcingState.NonSourceable &&
                 dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable
             ) {
                 val messageBody =
                     SourceabilityMessage(
-                        dataSourcingEntityWithFetchedRequests.companyId.toString(),
-                        dataSourcingEntityWithFetchedRequests.dataType,
-                        dataSourcingEntityWithFetchedRequests.reportingPeriod,
+                        BasicDataDimensions(
+                            dataSourcingEntityWithFetchedRequests.companyId.toString(),
+                            dataSourcingEntityWithFetchedRequests.dataType,
+                            dataSourcingEntityWithFetchedRequests.reportingPeriod,
+                        ),
                         true,
                         "",
                     )
@@ -147,14 +164,13 @@ class DataSourcingManager
                         "${dataSourcingEntityWithFetchedRequests.dataSourcingId}. CorrelationId: $correlationId.",
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    objectMapper.writeValueAsString(messageBody),
+                    JsonUtils.defaultObjectMapper.writeValueAsString(messageBody),
                     MessageType.DATASOURCING_NONSOURCEABLE,
                     correlationId,
                     ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
                     RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
                 )
             }
-            dataSourcingEntityWithFetchedRequests.state = state
         }
 
         /**

@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -237,9 +238,11 @@ class DataManagerExceptionTest
                         changedQaStatusDataId,
                         QaStatus.Accepted,
                         UUID.randomUUID().toString(),
-                        UUID.randomUUID().toString(),
-                        "sfdr",
-                        "2025",
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr",
+                            "2025",
+                        ),
                         true,
                     ),
                 )
@@ -265,9 +268,11 @@ class DataManagerExceptionTest
                         dataId = "",
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = "1273091",
-                        UUID.randomUUID().toString(),
-                        "sfdr",
-                        "2025",
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr",
+                            "2025",
+                        ),
                         true,
                     ),
                 )

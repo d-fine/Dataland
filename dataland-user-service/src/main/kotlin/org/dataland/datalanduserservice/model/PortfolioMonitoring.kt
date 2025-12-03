@@ -8,5 +8,5 @@ import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 interface PortfolioMonitoring {
     val isMonitored: Boolean
     val monitoredFrameworks: Set<String>
-    val notificationFrequency: NotificationFrequency?
+    val notificationFrequency: NotificationFrequency
 }

@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -56,7 +57,8 @@ class MessageQueueListenerTest(
                     dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = UUID.randomUUID().toString(),
-                    UUID.randomUUID().toString(), "sfdr", "2025", false,
+                    BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                    false,
                 ),
             )
         val thrown =
@@ -75,7 +77,8 @@ class MessageQueueListenerTest(
                     dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = null,
-                    UUID.randomUUID().toString(), "sfdr", "2025", false,
+                    BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                    false,
                 ),
             )
 
