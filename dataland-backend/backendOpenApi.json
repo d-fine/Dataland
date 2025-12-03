@@ -113,7 +113,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyProxy"
+                "$ref": "#/components/schemas/CompanyProxyString"
               }
             }
           },
@@ -1470,7 +1470,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyProxyRequest"
+                "$ref": "#/components/schemas/CompanyProxyString"
               }
             }
           },
@@ -6695,7 +6695,7 @@
   },
   "components": {
     "schemas": {
-      "CompanyProxy": {
+      "CompanyProxyString": {
         "required": [
           "proxiedCompanyId",
           "proxyCompanyId"
@@ -6705,13 +6705,11 @@
           "proxiedCompanyId": {
             "type": "string",
             "description": "The Dataland company ID of the company whose data is being proxied.",
-            "format": "uuid",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "proxyCompanyId": {
             "type": "string",
             "description": "The Dataland company ID of the company whose data is used as the proxy.",
-            "format": "uuid",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "framework": {
@@ -17568,37 +17566,6 @@
           }
         }
       },
-      "CompanyProxyRequest": {
-        "required": [
-          "proxiedCompanyId",
-          "proxyCompanyId"
-        ],
-        "type": "object",
-        "properties": {
-          "proxiedCompanyId": {
-            "type": "string",
-            "description": "The Dataland company ID of the company whose data is being proxied.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "proxyCompanyId": {
-            "type": "string",
-            "description": "The Dataland company ID of the company whose data is used as the proxy.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "framework": {
-            "type": "string",
-            "description": "Framework for which proxying is permitted. Null means all frameworks.",
-            "nullable": true,
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
-            "nullable": true,
-            "example": "2023"
-          }
-        }
-      },
       "BasicCompanyInformation": {
         "required": [
           "companyId",
@@ -18076,15 +18043,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
