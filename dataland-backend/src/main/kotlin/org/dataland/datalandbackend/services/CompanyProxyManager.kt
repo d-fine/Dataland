@@ -175,7 +175,7 @@ class CompanyProxyManager
         /**
          * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
          *
-         * If no rules exist for this pair, an InvalidInputApiException is thrown.
+         * If no rules exist for this pair, an ResourceNotFoundApiException is thrown.
          */
         @Transactional
         fun deleteProxyRelation(proxyId: UUID): CompanyProxyEntity {
@@ -183,7 +183,7 @@ class CompanyProxyManager
                 companyDataProxyRuleRepository
                     .findById(proxyId)
                     .orElseThrow {
-                        InvalidInputApiException(
+                        ResourceNotFoundApiException(
                             "No proxy rule found for id=$proxyId",
                             message = "No proxy rule exists for the specified proxyId.",
                         )
