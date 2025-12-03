@@ -9,9 +9,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.PortfolioMonitoringUpdateSummaryEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalanduserservice.entity.NotificationEventEntity
 import org.dataland.datalanduserservice.model.enums.NotificationEventType
@@ -26,7 +26,7 @@ import java.util.UUID
  * A service used to build scheduled data request summary emails, containing all data requests updates for one user
  */
 @Service("DataRequestSummaryEmailBuilder")
-class DataRequestSummaryEmailBuilder
+class PortfolioUpdateSummaryEmailBuilder
     @Autowired
     constructor(
         private val cloudEventMessageHandler: CloudEventMessageHandler,
@@ -48,7 +48,7 @@ class DataRequestSummaryEmailBuilder
             frequency: NotificationFrequency,
             portfolioNamesString: String,
         ) {
-            val emailContent = dataRequestSummaryEmailContent(unprocessedEvents, frequency, portfolioNamesString)
+            val emailContent = portfolioMonitoringUpdateSummaryEmailContent(unprocessedEvents, frequency, portfolioNamesString)
             val receiver = listOf(EmailRecipient.UserId(userId.toString()))
             val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -65,7 +65,7 @@ class DataRequestSummaryEmailBuilder
          * @param events A list of notification event entities to process.
          * @return The email content that encapsulates the summary of data requests.
          */
-        private fun dataRequestSummaryEmailContent(
+        private fun portfolioMonitoringUpdateSummaryEmailContent(
             events: List<NotificationEventEntity>,
             frequency: NotificationFrequency,
             portfolioName: String,
@@ -74,7 +74,7 @@ class DataRequestSummaryEmailBuilder
             val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
             val nonSourceableData =
                 aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
-            return DataRequestSummaryEmailContent(
+            return PortfolioMonitoringUpdateSummaryEmailContent(
                 newData,
                 updatedData,
                 nonSourceableData,
@@ -92,14 +92,14 @@ class DataRequestSummaryEmailBuilder
         private fun aggregateFrameworkDataForOneEventType(
             events: List<NotificationEventEntity>,
             eventType: NotificationEventType,
-        ): List<DataRequestSummaryEmailContent.FrameworkData> {
+        ): List<PortfolioMonitoringUpdateSummaryEmailContent.FrameworkData> {
             val filteredEventTypeEvents = events.filter { it.notificationEventType == eventType }
             val groupedEvents = filteredEventTypeEvents.groupBy { Pair(it.framework, it.reportingPeriod) }
 
             return groupedEvents.map { (key, group) ->
                 val (dataType, reportingPeriod) = key
                 val companies = group.map { getValidCompanyNameOrId(it.companyId.toString()) }.distinct()
-                DataRequestSummaryEmailContent.FrameworkData(
+                PortfolioMonitoringUpdateSummaryEmailContent.FrameworkData(
                     dataTypeLabel = readableFrameworkNameMapping[dataType] ?: dataType.toString(),
                     reportingPeriod = reportingPeriod,
                     companies = companies,

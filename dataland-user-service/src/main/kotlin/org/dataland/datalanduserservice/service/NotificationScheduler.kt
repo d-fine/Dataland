@@ -23,7 +23,7 @@ import kotlin.collections.component2
 class NotificationScheduler
     @Autowired
     constructor(
-        private val dataRequestSummaryEmailBuilder: DataRequestSummaryEmailBuilder,
+        private val portfolioUpdateSummaryEmailBuilder: PortfolioUpdateSummaryEmailBuilder,
         private val portfolioRepository: PortfolioRepository,
         private val notificationEventRepository: NotificationEventRepository,
     ) {
@@ -48,7 +48,7 @@ class NotificationScheduler
                     "Requirements for Data Request Summary notification are met." +
                         " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
                 )
-                dataRequestSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
+                portfolioUpdateSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
                     unprocessedEvents = events,
                     userId = userId,
                     frequency = frequency,
@@ -74,18 +74,6 @@ class NotificationScheduler
         }
 
         /**
-         * Scheduled method to send weekly summary emails.
-         * Runs every monday at 7 am.
-         */
-        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
-        @Scheduled(cron = "0 0 7 * * MON", zone = "Europe/Berlin")
-        internal fun scheduledWeeklyEmailSending() {
-            val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
-            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
-        }
-
-        /**
          * Scheduled method to send daily summary emails.
          * Runs every day at 7 am.
          */
@@ -94,6 +82,18 @@ class NotificationScheduler
         internal fun scheduledDailyEmailSending() {
             val notificationFrequency = NotificationFrequency.Daily
             val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
+        }
+
+        /**
+         * Scheduled method to send weekly summary emails.
+         * Runs every monday at 7 am.
+         */
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
+        @Scheduled(cron = "0 0 7 * * MON", zone = "Europe/Berlin")
+        internal fun scheduledWeeklyEmailSending() {
+            val notificationFrequency = NotificationFrequency.Weekly
+            val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
@@ -119,34 +119,22 @@ class NotificationScheduler
             val portfoliosGroupedByUser = portfoliosWithRegularUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
-                val frameworkToCompanyIds =
-                    userPortfolios
-                        .asSequence()
-                        .flatMap { portfolio ->
-                            portfolio.monitoredFrameworks!!.map { framework ->
-                                framework to portfolio.companyIds
-                            }
-                        }.groupBy({ it.first }, { it.second })
-                        .mapValues { (_, companyIdsList) ->
-                            companyIdsList.flatten().distinct()
-                        }.toMutableMap()
-
-                frameworkToCompanyIds["eutaxonomy"]?.let { ids ->
-                    frameworkToCompanyIds["eutaxonomy-financials"] = ids
-                    frameworkToCompanyIds["eutaxonomy-non-financials"] = ids
-                    frameworkToCompanyIds["nuclear-and-gas"] = ids
-                    frameworkToCompanyIds.remove("eutaxonomy")
-                }
-
                 val eventEntitiesToProcess =
-                    getRelevantNotificationEvents(
-                        frameworkToCompanyIds.mapKeys { (framework, _) ->
-                            DataTypeEnum
-                                .decode(framework)!!
-                        },
-                        timeStampForInterval,
-                    )
+                    userPortfolios.flatMap { it.monitoredFrameworks.orEmpty() }.toSet().flatMap { framework ->
+                        val monitoredCompanies =
+                            userPortfolios
+                                .filter { it.monitoredFrameworks.orEmpty().contains(framework) }
+                                .flatMap { it.companyIds }
+                                .toSet()
 
+                        mapPortfolioFrameworksToDataTypes(framework).flatMap { dataType ->
+                            notificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
+                                dataType,
+                                monitoredCompanies.map { UUID.fromString(it) },
+                                timeStampForInterval,
+                            )
+                        }
+                    }
                 processNotificationEvents(
                     events = eventEntitiesToProcess,
                     frequency = notificationFrequency,
@@ -156,18 +144,14 @@ class NotificationScheduler
             }
         }
 
-        private fun getRelevantNotificationEvents(
-            frameworkToCompanyIds: Map<DataTypeEnum, List<String>>,
-            timeStamp: Long,
-        ): List<NotificationEventEntity> {
-            val notificationEventEntities =
-                frameworkToCompanyIds.flatMap { (framework, companyIds) ->
-                    notificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
-                        framework,
-                        companyIds.map { UUID.fromString(it) },
-                        timeStamp,
-                    )
-                }
-            return notificationEventEntities
+        private fun mapPortfolioFrameworksToDataTypes(framework: String): List<DataTypeEnum> {
+            if (framework == "eutaxonomy") {
+                return listOf(
+                    DataTypeEnum.eutaxonomyMinusFinancials,
+                    DataTypeEnum.eutaxonomyMinusFinancials,
+                    DataTypeEnum.nuclearMinusAndMinusGas,
+                )
+            }
+            return listOf(DataTypeEnum.valueOf(framework))
         }
     }

@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
@@ -102,9 +103,11 @@ class DataManagerNoExceptionTest
                         dataId = dataId,
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = null,
-                        storableEuTaxonomyDatasetForNonFinancials.companyId,
-                        storableEuTaxonomyDatasetForNonFinancials.dataType.toString(),
-                        storableEuTaxonomyDatasetForNonFinancials.reportingPeriod,
+                        BasicDataDimensions(
+                            storableEuTaxonomyDatasetForNonFinancials.companyId,
+                            storableEuTaxonomyDatasetForNonFinancials.dataType.toString(),
+                            storableEuTaxonomyDatasetForNonFinancials.reportingPeriod,
+                        ),
                         false,
                     ),
                 )
@@ -152,9 +155,11 @@ class DataManagerNoExceptionTest
                     QaStatusChangeMessage(
                         dataId, newQaStatus,
                         dataId,
-                        UUID.randomUUID().toString(),
-                        "sfdr",
-                        "2025",
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr",
+                            "2025",
+                        ),
                         false,
                     ),
                 )
@@ -185,8 +190,11 @@ class DataManagerNoExceptionTest
                 objectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         oldDataId, QaStatus.Rejected, newDataId,
-                        UUID.randomUUID().toString(),
-                        "sfdr", "2025", false,
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr", "2025",
+                        ),
+                        false,
                     ),
                 )
             assertDoesNotThrow {

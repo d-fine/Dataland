@@ -44,17 +44,17 @@ class NotificationSchedulerSpringbootTest
     ) : BaseIntegrationTest() {
         private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
         private val mockCompanyApi = mock<CompanyDataControllerApi>()
-        private val dataRequestSummaryEmailBuilder = DataRequestSummaryEmailBuilder(mockCloudEventMessageHandler, mockCompanyApi)
+        private val portfolioUpdateSummaryEmailBuilder = PortfolioUpdateSummaryEmailBuilder(mockCloudEventMessageHandler, mockCompanyApi)
         private val notificationScheduler =
-            NotificationScheduler(dataRequestSummaryEmailBuilder, portfolioRepository, notificationEventRepository)
+            NotificationScheduler(portfolioUpdateSummaryEmailBuilder, portfolioRepository, notificationEventRepository)
 
         companion object {
-            val companyId1 = UUID.randomUUID()
-            val companyId2 = UUID.randomUUID()
-            val companyId3 = UUID.randomUUID()
-            const val PORTFOLIONAME1 = "OnlyCompany1And2"
-            const val PORTFOLIONAME2 = "OnlyTaxonomy"
-            const val PORTFOLIONAME3 = "NoNotificationExpected"
+            val companyIdsfdrAndEuTaxo = UUID.randomUUID()
+            val companyIdOnlySfdr = UUID.randomUUID()
+            val companyIdNoNotifications = UUID.randomUUID()
+            const val PORTFOLIOALLFRAMEWORKS = "Portfolioname 1"
+            const val PORTOFLIOONLYEUTAXO = "Taxonomy only"
+            const val PORTFOLIOONLYCOMPANY3 = "NoNotificationExpected"
 
             private fun createNotificationFrequencyToPortfolioMap(
                 portfolioName: String,
@@ -76,39 +76,46 @@ class NotificationSchedulerSpringbootTest
                     )
                 }
 
-            val mockPortfolioMap1 =
-                createNotificationFrequencyToPortfolioMap(PORTFOLIONAME1, setOf(companyId1.toString(), companyId2.toString()))
-            val mockPortfolioMap2 =
+            val portfolioMapAllFrameworks =
                 createNotificationFrequencyToPortfolioMap(
-                    PORTFOLIONAME2,
-                    setOf(companyId1.toString(), companyId2.toString()),
+                    PORTFOLIOALLFRAMEWORKS,
+                    setOf(
+                        companyIdsfdrAndEuTaxo.toString(),
+                        companyIdOnlySfdr
+                            .toString(),
+                    ),
+                )
+            val portfolioMapOnlyEuTaxo =
+                createNotificationFrequencyToPortfolioMap(
+                    PORTOFLIOONLYEUTAXO,
+                    setOf(companyIdsfdrAndEuTaxo.toString(), companyIdOnlySfdr.toString()),
                     frameworks = setOf("eutaxonomy"),
                 )
 
             // This portfolio should not send an email
-            val mockPortfolioMap3 =
-                createNotificationFrequencyToPortfolioMap(PORTFOLIONAME3, setOf(companyId3.toString()))
+            val portfolioMapNoNotifications =
+                createNotificationFrequencyToPortfolioMap(PORTFOLIOONLYCOMPANY3, setOf(companyIdNoNotifications.toString()))
 
             val mockNotifications =
                 listOf(
                     NotificationEventEntity(
                         UUID.randomUUID(),
                         NotificationEventType.AvailableEvent,
-                        companyId1,
+                        companyIdsfdrAndEuTaxo,
                         DataTypeEnum.sfdr,
                         "2025",
                     ),
                     NotificationEventEntity(
                         UUID.randomUUID(),
                         NotificationEventType.UpdatedEvent,
-                        companyId1,
+                        companyIdsfdrAndEuTaxo,
                         DataTypeEnum.eutaxonomyMinusFinancials,
                         "2024",
                     ),
                     NotificationEventEntity(
                         UUID.randomUUID(),
                         NotificationEventType.NonSourceableEvent,
-                        companyId2,
+                        companyIdOnlySfdr,
                         DataTypeEnum.sfdr,
                         "2025",
                     ),
@@ -124,9 +131,9 @@ class NotificationSchedulerSpringbootTest
         @BeforeAll
         fun setUp() {
             notificationEventRepository.saveAll(mockNotifications)
-            portfolioRepository.saveAll(mockPortfolioMap1.values)
-            portfolioRepository.saveAll(mockPortfolioMap2.values)
-            portfolioRepository.saveAll(mockPortfolioMap3.values)
+            portfolioRepository.saveAll(portfolioMapAllFrameworks.values)
+            portfolioRepository.saveAll(portfolioMapOnlyEuTaxo.values)
+            portfolioRepository.saveAll(portfolioMapNoNotifications.values)
         }
 
         @BeforeEach
@@ -140,27 +147,27 @@ class NotificationSchedulerSpringbootTest
                     NotificationScheduler::scheduledDailyEmailSending,
                     NotificationFrequency.Daily,
                     listOf(
-                        mockPortfolioMap1.getValue(NotificationFrequency.Daily),
-                        mockPortfolioMap2.getValue(NotificationFrequency.Daily),
-                        mockPortfolioMap3.getValue(NotificationFrequency.Daily),
+                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Daily),
+                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Daily),
+                        portfolioMapNoNotifications.getValue(NotificationFrequency.Daily),
                     ),
                 ),
                 TestArgument(
                     NotificationScheduler::scheduledWeeklyEmailSending,
                     NotificationFrequency.Weekly,
                     listOf(
-                        mockPortfolioMap1.getValue(NotificationFrequency.Weekly),
-                        mockPortfolioMap2.getValue(NotificationFrequency.Weekly),
-                        mockPortfolioMap3.getValue(NotificationFrequency.Weekly),
+                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Weekly),
+                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Weekly),
+                        portfolioMapNoNotifications.getValue(NotificationFrequency.Weekly),
                     ),
                 ),
                 TestArgument(
                     NotificationScheduler::scheduledMonthlyEmailSending,
                     NotificationFrequency.Monthly,
                     listOf(
-                        mockPortfolioMap1.getValue(NotificationFrequency.Monthly),
-                        mockPortfolioMap2.getValue(NotificationFrequency.Monthly),
-                        mockPortfolioMap3.getValue(NotificationFrequency.Monthly),
+                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Monthly),
+                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Monthly),
+                        portfolioMapNoNotifications.getValue(NotificationFrequency.Monthly),
                     ),
                 ),
             )
@@ -168,13 +175,13 @@ class NotificationSchedulerSpringbootTest
         @ParameterizedTest
         @MethodSource("eMailSchedulerParameters")
         fun `test scheduledWeeklyEmailSending does create the expected messages`(ta: TestArgument) {
-            whenever(mockCompanyApi.getCompanyById(eq(companyId1.toString()))).thenReturn(
+            whenever(mockCompanyApi.getCompanyById(eq(companyIdsfdrAndEuTaxo.toString()))).thenReturn(
                 StoredCompany("", CompanyInformation(companyName = "company1", "", mapOf(), ""), listOf()),
             )
-            whenever(mockCompanyApi.getCompanyById(eq(companyId2.toString()))).thenReturn(
+            whenever(mockCompanyApi.getCompanyById(eq(companyIdOnlySfdr.toString()))).thenReturn(
                 StoredCompany("", CompanyInformation(companyName = "company2", "", mapOf(), ""), listOf()),
             )
-            whenever(mockCompanyApi.getCompanyById(eq(companyId3.toString()))).thenReturn(
+            whenever(mockCompanyApi.getCompanyById(eq(companyIdNoNotifications.toString()))).thenReturn(
                 StoredCompany("", CompanyInformation(companyName = "company3", "", mapOf(), ""), listOf()),
             )
 
@@ -205,11 +212,11 @@ class NotificationSchedulerSpringbootTest
                 }
 
             val emailKeywords1 =
-                listOf(PORTFOLIONAME1, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
-            val emailKeywordsBlacklist1 = listOf(PORTFOLIONAME2, PORTFOLIONAME3, "company3", "\"nonSourceableData\":[]")
+                listOf(PORTFOLIOALLFRAMEWORKS, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
+            val emailKeywordsBlacklist1 = listOf(PORTOFLIOONLYEUTAXO, PORTFOLIOONLYCOMPANY3, "company3", "\"nonSourceableData\":[]")
             val emailKeywords2 =
-                listOf(PORTFOLIONAME2, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
-            val emailKeywordsBlacklist2 = listOf(PORTFOLIONAME1, PORTFOLIONAME3, "SFDR", "2025", "company2", "company3")
+                listOf(PORTOFLIOONLYEUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
+            val emailKeywordsBlacklist2 = listOf(PORTFOLIOALLFRAMEWORKS, PORTFOLIOONLYCOMPANY3, "SFDR", "2025", "company2", "company3")
 
             emailKeywords1.forEach { assertTrue(it in email1, "Expected '$it' to be in '$email1'") }
             emailKeywordsBlacklist1.forEach { assertTrue(it !in email1, "Expected '$it' to not be in '$email1'") }

@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = DataNonSourceableEmailContent::class, name = "DataNonSourceableEmailContent"),
     JsonSubTypes.Type(value = DataUpdatedEmailContent::class, name = "DataUpdatedEmailContent"),
     JsonSubTypes.Type(value = DataRequestSummaryEmailContent::class, name = "DataRequestSummaryEmailContent"),
+    JsonSubTypes.Type(value = PortfolioMonitoringUpdateSummaryEmailContent::class, name = "PortfolioMonitoringUpdateSummaryEmailContent"),
     JsonSubTypes.Type(value = CompanyOwnershipClaimApprovedEmailContent::class, name = "CompanyOwnershipClaimApprovedEmailContent"),
     JsonSubTypes
         .Type(value = DatasetRequestedClaimCompanyOwnershipEmailContent::class, name = "DatasetRequestedClaimCompanyOwnershipEmailContent"),
@@ -150,6 +151,34 @@ data class DataNonSourceableEmailContent(
     InitializeBaseUrlLater {
     override val subject = "There are no sources for your requested data available!"
     override val templateName = "data_request_immediate_notification_on_data_non_sourceable.ftl"
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
+ * Content of an email sent to the user, when the user receives regular update summaries and
+ * data for data requests is available, updated or not sourceable.
+ */
+data class PortfolioMonitoringUpdateSummaryEmailContent(
+    val newData: List<FrameworkData>,
+    val updatedData: List<FrameworkData>,
+    val nonSourceableData: List<FrameworkData>,
+    val frequency: String,
+    val portfolioNamesString: String,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "Your regular portfolio update!"
+    override val templateName = "portfolio_changes_summary"
+
+    /**
+     * A class that stores the information about the multiple frameworks that have been changed.
+     */
+    data class FrameworkData(
+        val dataTypeLabel: String,
+        val reportingPeriod: String,
+        val companies: List<String>,
+    )
 
     @JsonIgnore
     override lateinit var baseUrl: String

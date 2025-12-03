@@ -21,13 +21,13 @@
     <#assign previousFramework = item.dataTypeLabel>
 </#list>
 </#macro>
-Weekly Summary 📣
+${frequency} summary for your portfolio(s): ${portfolioNamesString}
 
-Data for your request(s) has been updated on Dataland this week, listed in the sections below.
+Data for your portfolio(s) has been updated on Dataland, listed in the sections below.
 Please note that you may have already reviewed these updates.
 
-Check details for all your requests using the link below.
-VIEW MY DATA REQUESTS: [${baseUrl}/requests]
+Check details for all your portfolios using the link below.
+VIEW MY PORTFOLIOS: [${baseUrl}/portfolios]
 
 <#if newData?? && newData?has_content>
 ----------------------------

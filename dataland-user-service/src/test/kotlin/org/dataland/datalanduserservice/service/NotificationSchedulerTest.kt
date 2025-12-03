@@ -9,7 +9,6 @@ import org.dataland.datalanduserservice.repository.NotificationEventRepository
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -29,46 +28,46 @@ import kotlin.reflect.KFunction
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationSchedulerTest {
     companion object {
-        const val PORTFOLIONAME1 = "OnlySFDR"
-        const val PORTFOLIONAME2 = "NoNotificationExpected"
-        const val PORTFOLIONAME3 = "AllNotificationsExpected"
-        val companyId1: UUID = UUID.randomUUID()
-        val companyId2: UUID = UUID.randomUUID()
-        val userId1: UUID = UUID.randomUUID()
-        val userId2: UUID = UUID.randomUUID()
-        val userId3: UUID = UUID.randomUUID()
-        val mockPortfolio1 =
+        const val PORTFOLIOONLYSFDR = "OnlySFDR"
+        const val PORTFOLIONONOTIFICATIONS = "NoNotificationExpected"
+        const val PORTFOLIOALLNOTIFICATIONS = "AllNotificationsExpected"
+        val companyIdOnlySfdr: UUID = UUID.randomUUID()
+        val companyIdSfdrAndEuTaxo: UUID = UUID.randomUUID()
+        val userIdOnlySfdr: UUID = UUID.randomUUID()
+        val userIdNoNotifications: UUID = UUID.randomUUID()
+        val userAllNotifications: UUID = UUID.randomUUID()
+        val portfolioOnlySfdr =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIONAME1,
-                userId1.toString(),
+                PORTFOLIOONLYSFDR,
+                userIdOnlySfdr.toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
-                mutableSetOf(companyId1.toString(), companyId2.toString()),
+                mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
                 true,
                 setOf("sfdr"),
             )
 
-        val mockPortfolio2 =
+        val portfolioNoNotifications =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIONAME2,
-                userId2.toString(),
+                PORTFOLIONONOTIFICATIONS,
+                userIdNoNotifications.toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
-                mutableSetOf(companyId1.toString()),
+                mutableSetOf(companyIdOnlySfdr.toString()),
                 true,
                 setOf("eutaxonomy"),
             )
 
-        val mockPortfolio3 =
+        val portfolioAllNotifications =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIONAME3,
-                userId3.toString(),
+                PORTFOLIOALLNOTIFICATIONS,
+                userAllNotifications.toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
-                mutableSetOf(companyId1.toString(), companyId2.toString()),
+                mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
                 true,
                 setOf("sfdr", "eutaxonomy"),
             )
@@ -78,32 +77,32 @@ class NotificationSchedulerTest {
                 NotificationEventEntity(
                     UUID.randomUUID(),
                     NotificationEventType.AvailableEvent,
-                    companyId1,
+                    companyIdOnlySfdr,
                     DataTypeEnum.sfdr,
                     "2025",
                 ),
                 NotificationEventEntity(
                     UUID.randomUUID(),
                     NotificationEventType.AvailableEvent,
-                    companyId2,
+                    companyIdSfdrAndEuTaxo,
                     DataTypeEnum.sfdr,
                     "2024",
                 ),
                 NotificationEventEntity(
                     UUID.randomUUID(),
                     NotificationEventType.AvailableEvent,
-                    companyId2,
+                    companyIdSfdrAndEuTaxo,
                     DataTypeEnum.eutaxonomyMinusFinancials,
                     "2024",
                 ),
             )
     }
 
-    private val mockDataRequestSummaryEmailBuilder = mock<DataRequestSummaryEmailBuilder>()
+    private val mockPortfolioUpdateSummaryEmailBuilder = mock<PortfolioUpdateSummaryEmailBuilder>()
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private val notificationScheduler =
-        NotificationScheduler(mockDataRequestSummaryEmailBuilder, mockPortfolioRepository, mockNotificationEventRepository)
+        NotificationScheduler(mockPortfolioUpdateSummaryEmailBuilder, mockPortfolioRepository, mockNotificationEventRepository)
 
     data class TestArgument(
         val function: KFunction<Unit>,
@@ -113,7 +112,7 @@ class NotificationSchedulerTest {
 
     @BeforeEach
     fun setUp() {
-        reset(mockDataRequestSummaryEmailBuilder)
+        reset(mockPortfolioUpdateSummaryEmailBuilder)
     }
 
     fun eMailSchedulerParameters(): Stream<TestArgument> =
@@ -121,29 +120,19 @@ class NotificationSchedulerTest {
             TestArgument(
                 NotificationScheduler::scheduledDailyEmailSending,
                 NotificationFrequency.Daily,
-                listOf(mockPortfolio1, mockPortfolio2, mockPortfolio3),
+                listOf(portfolioOnlySfdr, portfolioNoNotifications, portfolioAllNotifications),
             ),
             TestArgument(
                 NotificationScheduler::scheduledWeeklyEmailSending,
                 NotificationFrequency.Weekly,
-                listOf(mockPortfolio1, mockPortfolio2, mockPortfolio3),
+                listOf(portfolioOnlySfdr, portfolioNoNotifications, portfolioAllNotifications),
             ),
             TestArgument(
                 NotificationScheduler::scheduledMonthlyEmailSending,
                 NotificationFrequency.Monthly,
-                listOf(mockPortfolio1, mockPortfolio2, mockPortfolio3),
+                listOf(portfolioOnlySfdr, portfolioNoNotifications, portfolioAllNotifications),
             ),
         )
-
-    @Test
-    fun sadsa() {
-        val estTimeZone = java.util.TimeZone.getTimeZone("EST")
-        val berlinTimeZone = java.util.TimeZone.getTimeZone("Europe/Berlin")
-        val nonValidTimeZone = java.util.TimeZone.getTimeZone("somethingsomething")
-        assertEquals("EST", estTimeZone.id)
-        assertEquals("Europe/Berlin", berlinTimeZone.id)
-        assertEquals("somethingsomething", nonValidTimeZone.id)
-    }
 
     @ParameterizedTest
     @MethodSource("eMailSchedulerParameters")
@@ -164,14 +153,14 @@ class NotificationSchedulerTest {
         val notificationCaptor = argumentCaptor<List<NotificationEventEntity>>()
         val userIdCaptor = argumentCaptor<UUID>()
         val portfolioNamesCaptor = argumentCaptor<String>()
-        verify(mockDataRequestSummaryEmailBuilder, times(2)).buildDataRequestSummaryEmailAndSendCEMessage(
+        verify(mockPortfolioUpdateSummaryEmailBuilder, times(2)).buildDataRequestSummaryEmailAndSendCEMessage(
             notificationCaptor.capture(),
             userIdCaptor.capture(),
             eq(ta.notificationFrequency),
             portfolioNamesCaptor.capture(),
         )
-        assertEquals(listOf(PORTFOLIONAME1, PORTFOLIONAME3), portfolioNamesCaptor.allValues)
-        assertEquals(listOf(userId1, userId3), userIdCaptor.allValues)
+        assertEquals(listOf(PORTFOLIOONLYSFDR, PORTFOLIOALLNOTIFICATIONS), portfolioNamesCaptor.allValues)
+        assertEquals(listOf(userIdOnlySfdr, userAllNotifications), userIdCaptor.allValues)
         assertEquals(listOf(mockNotificationEventEntities[0], mockNotificationEventEntities[1]), notificationCaptor.firstValue)
         assertEquals(mockNotificationEventEntities, notificationCaptor.secondValue)
     }

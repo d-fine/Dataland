@@ -3,7 +3,6 @@ package org.dataland.datalanduserservice.entity
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.Index
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.converter.DataTypeEnumConverter
@@ -18,9 +17,6 @@ import java.util.UUID
 @Entity
 @Table(
     name = "notification_events",
-    indexes = [
-        Index(name = "idx_notification_events", columnList = "notificationEventType"),
-    ],
 )
 data class NotificationEventEntity(
     @Id
