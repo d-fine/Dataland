@@ -4,13 +4,12 @@ import {
   mockRequestsOnMounted,
   validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
+import { setupCompanyCockpitFixtures } from './testUtils';
 import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
   type DataTypeEnum,
-  type LksgData,
 } from '@clients/backend';
-import { type FixtureData } from '@sharedUtils/Fixtures';
 import { CompanyRole } from '@clients/communitymanager';
 import { KEYCLOAK_ROLES } from '@/utils/KeycloakRoles';
 
@@ -24,21 +23,10 @@ describe('Component test for the authorization of company cockpit components', (
   const dummyEmail = 'mock@Company.com';
 
   before(function () {
-    cy.clearLocalStorage();
-    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
-      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      const firstFixture = lksgFixtures[0];
-      if (!firstFixture) {
-        throw new Error('Expected at least one fixture');
-      }
-      companyInformationForTest = firstFixture.companyInformation;
-    });
-    cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
-        DataTypeEnum,
-        AggregatedFrameworkDataSummary
-      >;
-    });
+    setupCompanyCockpitFixtures(
+      (info) => { companyInformationForTest = info; },
+      (map) => { mockMapOfDataTypeToAggregatedFrameworkDataSummary = map; }
+    );
   });
 
   it('Check the Vsme summary panel behaviour if the user is company owner', () => {

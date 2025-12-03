@@ -7,10 +7,9 @@ import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
   type DataTypeEnum,
-  type LksgData,
 } from '@clients/backend';
-import { type FixtureData } from '@sharedUtils/Fixtures';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+import { setupCompanyCockpitFixtures } from './testUtils';
 
 /**
  * Intercepts the company rights API call and returns the provided body.
@@ -41,21 +40,10 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   before(function () {
-    cy.clearLocalStorage();
-    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
-      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      const firstFixture = lksgFixtures[0];
-      if (!firstFixture) {
-        throw new Error('Expected at least one fixture');
-      }
-      companyInformationForTest = firstFixture.companyInformation;
-    });
-    cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
-        DataTypeEnum,
-        AggregatedFrameworkDataSummary
-      >;
-    });
+    setupCompanyCockpitFixtures(
+      (info) => { companyInformationForTest = info; },
+      (map) => { mockMapOfDataTypeToAggregatedFrameworkDataSummary = map; }
+    );
   });
 
   it('Dataland Member badge is visible when Company is Dataland Member and user is Admin', () => {
