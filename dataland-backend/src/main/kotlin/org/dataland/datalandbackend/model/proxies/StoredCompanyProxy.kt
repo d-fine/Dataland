@@ -3,7 +3,18 @@ package org.dataland.datalandbackend.model.proxies
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
-// Single row of what got stored in company_proxy_relations
+/**
+ * --- Stored API model ---
+ * Class defining the stored proxying rules between two companies.
+ *
+ * @param proxyId The unique identifier of the stored company proxy.
+ * @param proxiedCompanyId The company whose data may be substituted.
+ * @param proxyCompanyId The company whose data may serve as a proxy.
+ * @param framework The framework for which proxying is allowed.
+ *        Empty or null means all frameworks may be proxied.
+ * @param reportingPeriod A reporting period for which proxying is allowed.
+ *        Empty or null means all reporting periods may be proxied.
+ */
 data class StoredCompanyProxy(
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXY_ID_DESCRIPTION,

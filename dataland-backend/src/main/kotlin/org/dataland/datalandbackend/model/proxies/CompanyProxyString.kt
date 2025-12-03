@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
+import org.dataland.datalandbackendutils.validator.ReportingPeriodIsValid
 
 /**
  * --- API model ---
@@ -42,5 +43,6 @@ data class CompanyProxyString(
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
         nullable = true,
     )
+    @field:ReportingPeriodIsValid
     override val reportingPeriod: String?,
 ) : CompanyProxyBase

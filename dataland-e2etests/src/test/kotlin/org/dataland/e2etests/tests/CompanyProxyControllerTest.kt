@@ -8,7 +8,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -17,10 +16,6 @@ import org.junit.jupiter.api.assertThrows
 class CompanyProxyControllerTest {
     private val apiAccessor = ApiAccessor()
     private val companyProxyApi = apiAccessor.companyProxyController
-
-    @BeforeEach
-    fun cleanSetup() {
-    }
 
     private fun uploadCompanyAsUploader(): String =
         GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {

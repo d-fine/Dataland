@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import java.util.UUID
 
+/**
+ * Validator to check that a company exists on Dataland
+ */
 class CompanyExistsUuidValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,

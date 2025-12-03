@@ -8,6 +8,9 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import java.util.UUID
 
+/**
+ * Entity representing a company proxy relation in the database.
+ */
 @Entity
 @Table(
     name = "company_proxy_relations",

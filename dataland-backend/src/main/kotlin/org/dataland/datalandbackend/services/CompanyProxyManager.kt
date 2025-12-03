@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
+import org.dataland.datalandbackend.model.proxies.CompanyProxyFilter
 import org.dataland.datalandbackend.model.proxies.CompanyProxyUUID
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
@@ -67,12 +68,14 @@ class CompanyProxyManager
 
             val page =
                 companyDataProxyRuleRepository.findByFilters(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
-                    frameworks = frameworksSet,
-                    frameworksEmpty = frameworksSet.isEmpty(),
-                    reportingPeriods = reportingPeriodsSet,
-                    reportingPeriodsEmpty = reportingPeriodsSet.isEmpty(),
+                    CompanyProxyFilter(
+                        proxiedCompanyId = proxiedCompanyId,
+                        proxyCompanyId = proxyCompanyId,
+                        frameworks = frameworksSet,
+                        frameworksEmpty = frameworksSet.isEmpty(),
+                        reportingPeriods = reportingPeriodsSet,
+                        reportingPeriodsEmpty = reportingPeriodsSet.isEmpty(),
+                    ),
                     pageable = PageRequest.of(chunkIndex, chunkSize),
                 )
 
@@ -201,6 +204,14 @@ class CompanyProxyManager
             return existing
         }
 
+        /**
+         * Edits an existing company proxy rule identified by proxyId
+         * with the data from updatedCompanyProxy.
+         *
+         * Checks for existing conflicting rules to avoid duplicates.
+         *
+         * @throws InvalidInputApiException if a conflicting rule already exists.
+         */
         @Transactional
         fun editCompanyProxy(
             proxyId: UUID,
