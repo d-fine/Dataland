@@ -9,8 +9,6 @@ import org.springframework.data.repository.query.Param
 import java.util.UUID
 
 interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
-    fun findByProxyId(proxyId: UUID): CompanyProxyEntity?
-
     fun findAllByProxiedCompanyId(proxiedCompanyId: UUID): List<CompanyProxyEntity>
 
     @Query(
@@ -38,9 +36,4 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
         @Param("reportingPeriodsEmpty") reportingPeriodsEmpty: Boolean,
         pageable: Pageable,
     ): Page<CompanyProxyEntity>
-
-    fun deleteAllByProxiedCompanyIdAndProxyCompanyId(
-        proxiedCompanyId: UUID,
-        proxyCompanyId: UUID,
-    )
 }
