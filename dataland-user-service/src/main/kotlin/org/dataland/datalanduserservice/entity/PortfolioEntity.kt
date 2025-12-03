@@ -45,7 +45,7 @@ data class PortfolioEntity(
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
     @Enumerated(EnumType.STRING)
-    val notificationFrequency: NotificationFrequency = NotificationFrequency.NoNotifications,
+    val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
 ) {
     /**
      * create PortfolioResponse from entity
