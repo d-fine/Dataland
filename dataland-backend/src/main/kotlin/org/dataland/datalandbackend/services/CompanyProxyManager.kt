@@ -135,62 +135,35 @@ class CompanyProxyManager
             relation: CompanyProxyUUID,
         ): List<CompanyProxyEntity> =
             when {
-                relation.framework.isNullOrEmpty() && relation.reportingPeriod.isNullOrEmpty() ->
+                relation.framework.isNullOrEmpty() && relation.reportingPeriod.isNullOrEmpty() -> {
                     existingProxies
+                }
 
-                relation.framework.isNullOrEmpty() ->
+                relation.framework.isNullOrEmpty() -> {
                     existingProxies.filter {
                         !it.framework.isNullOrEmpty() ||
                             it.reportingPeriod.isNullOrEmpty() ||
                             it.reportingPeriod == relation.reportingPeriod
                     }
+                }
 
-                relation.reportingPeriod.isNullOrEmpty() ->
+                relation.reportingPeriod.isNullOrEmpty() -> {
                     existingProxies.filter {
                         !it.reportingPeriod.isNullOrEmpty() ||
                             it.framework.isNullOrEmpty() ||
                             it.framework == relation.framework
                     }
+                }
 
-                else ->
+                else -> {
                     existingProxies.filter {
                         it.framework == relation.framework &&
                             it.reportingPeriod == relation.reportingPeriod ||
                             it.framework.isNullOrEmpty() ||
                             it.reportingPeriod.isNullOrEmpty()
                     }
+                }
             }
-
-        /**
-         * Returns all proxy rules for a given proxiedCompanyId as domain models.
-         *
-         * Semantics:
-         *  - Each row in company_proxy_relations becomes one CompanyProxy.
-         *  - framework = null → applies to all frameworks
-         *  - reportingPeriod = null → applies to all reporting periods
-         */
-        @Transactional(readOnly = true)
-        fun getProxyRelations(proxiedCompanyId: UUID): List<CompanyProxyUUID> {
-            val entities =
-                companyDataProxyRuleRepository
-                    .findAllByProxiedCompanyId(proxiedCompanyId)
-
-            if (entities.isEmpty()) {
-                throw InvalidInputApiException(
-                    "No proxy rules found for proxiedCompanyId=$proxiedCompanyId",
-                    message = "No proxy rules exist for the specified company.",
-                )
-            }
-
-            return entities.map { row ->
-                CompanyProxyUUID(
-                    proxiedCompanyId = row.proxiedCompanyId,
-                    proxyCompanyId = row.proxyCompanyId,
-                    framework = row.framework, // null => all frameworks
-                    reportingPeriod = row.reportingPeriod, // null => all periods
-                )
-            }
-        }
 
         /**
          * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.

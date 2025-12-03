@@ -214,7 +214,6 @@ interface CompanyProxyApi {
     /**
      * Replace the proxy for a given (unique) company proxy-ID.
      */
-
     @Operation(
         summary = "Replace proxy entry for a company pair.",
         description =
