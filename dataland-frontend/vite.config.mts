@@ -84,12 +84,10 @@ export default defineConfig({
     allowedHosts: true,
     warmup: {
       clientFiles: [
-        './src/*/*.ts',
-        './src/*/*/*.ts',
-        './src/*/*/*.vue',
-        './src/*/*/*/*.vue',
-        './src/*/*/*.scss',
-        './src/*/*/*/*.scss',
+        './src/components/*/*.vue',
+        './src/components/*/*/*.vue',
+        './src/assets/*/*.scss',
+        './src/assets/*/*/*.scss',
       ],
     },
     watch: {
