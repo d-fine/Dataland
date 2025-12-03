@@ -51,7 +51,46 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `create proxy then delete proxy`() {
+    fun `trying to create a proxy as a non-admin user results in a 403`() {
+        val companyIdProxyCompany = uploadCompanyAsUploader()
+        val companyIdProxiedCompany = uploadCompanyAsUploader()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        val ex =
+            assertThrows<Exception> {
+                companyProxyApi.postCompanyProxy(
+                    CompanyProxyString(
+                        proxiedCompanyId = companyIdProxiedCompany,
+                        proxyCompanyId = companyIdProxyCompany,
+                        framework = "sfdr",
+                        reportingPeriod = "2024",
+                    ),
+                )
+            }
+        assertTrue(ex.message?.contains("403") == true)
+    }
+
+    @Test
+    fun `creating a proxy with invalid inputs returns an error`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val ex =
+            assertThrows<Exception> {
+                companyProxyApi.postCompanyProxy(
+                    CompanyProxyString(
+                        proxiedCompanyId = "123",
+                        proxyCompanyId = "456",
+                        framework = "lksg",
+                        reportingPeriod = "2023",
+                    ),
+                )
+            }
+
+        assert(ex.message?.contains("400") == true)
+    }
+
+    @Test
+    fun `create proxy, then delete proxy and assert that it is no longer retrievable`() {
         val companyIdProxyCompany = uploadCompanyAsUploader()
         val companyIdProxiedCompany = uploadCompanyAsUploader()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -107,7 +146,7 @@ class CompanyProxyControllerTest {
             CompanyProxyString(
                 proxiedCompanyId = companyIdProxiedCompany,
                 proxyCompanyId = companyIdProxyCompany,
-                framework = "Lksg",
+                framework = "lksg",
                 reportingPeriod = "2023",
             ),
         )
@@ -116,7 +155,7 @@ class CompanyProxyControllerTest {
 
         assertEquals(retrievedProxy.proxiedCompanyId, companyIdProxiedCompany)
         assertEquals(retrievedProxy.proxyCompanyId, companyIdProxyCompany)
-        assertEquals(retrievedProxy.framework, "Lksg")
+        assertEquals(retrievedProxy.framework, "lksg")
         assertEquals(retrievedProxy.reportingPeriod, "2023")
     }
 }
