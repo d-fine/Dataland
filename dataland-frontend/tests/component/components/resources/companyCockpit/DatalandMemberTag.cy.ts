@@ -3,11 +3,7 @@ import {
   mountCompanyCockpitWithAuthentication,
   mockRequestsOnMounted,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
-import {
-  type AggregatedFrameworkDataSummary,
-  type CompanyInformation,
-  type DataTypeEnum,
-} from '@clients/backend';
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { setupCompanyCockpitFixtures } from './testUtils';
 
@@ -41,8 +37,12 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
 
   before(function () {
     setupCompanyCockpitFixtures(
-      (info) => { companyInformationForTest = info; },
-      (map) => { mockMapOfDataTypeToAggregatedFrameworkDataSummary = map; }
+      (info) => {
+        companyInformationForTest = info;
+      },
+      (map) => {
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary = map;
+      }
     );
   });
 

@@ -5,11 +5,7 @@ import {
   validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
 import { setupCompanyCockpitFixtures } from './testUtils';
-import {
-  type AggregatedFrameworkDataSummary,
-  type CompanyInformation,
-  type DataTypeEnum,
-} from '@clients/backend';
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import { KEYCLOAK_ROLES } from '@/utils/KeycloakRoles';
 
@@ -24,8 +20,12 @@ describe('Component test for the authorization of company cockpit components', (
 
   before(function () {
     setupCompanyCockpitFixtures(
-      (info) => { companyInformationForTest = info; },
-      (map) => { mockMapOfDataTypeToAggregatedFrameworkDataSummary = map; }
+      (info) => {
+        companyInformationForTest = info;
+      },
+      (map) => {
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary = map;
+      }
     );
   });
 
