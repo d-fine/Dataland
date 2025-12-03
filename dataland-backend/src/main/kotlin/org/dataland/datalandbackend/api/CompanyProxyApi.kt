@@ -201,7 +201,7 @@ interface CompanyProxyApi {
         value = ["/company-proxies/{proxyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteCompanyProxy(
         @Parameter(
             name = "proxyId",
