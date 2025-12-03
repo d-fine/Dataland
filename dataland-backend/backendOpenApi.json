@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/company-proxies/company-proxy/{proxyId}": {
+    "/company-proxies/{proxyId}": {
       "get": {
         "tags": [
           "company-proxy-controller"
@@ -141,6 +141,71 @@
           },
           "404": {
             "description": "No proxy found for the specified company pair.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Delete a proxy relation by technical ID.",
+        "description": "Deletes a single proxy relation identified by its technical ID and returns the deleted rule.",
+        "operationId": "deleteCompanyProxy",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The proxy ID of the proxy rule entry.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted proxy rule.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No proxy relation found for the specified technical ID.",
             "content": {
               "application/json": {}
             }
@@ -1459,6 +1524,135 @@
       }
     },
     "/company-proxies": {
+      "get": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Search company proxies.",
+        "description": "Searches for company proxies matching the given filters.",
+        "operationId": "searchCompanyProxies",
+        "parameters": [
+          {
+            "name": "proxiedCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "proxyCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "frameworks",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ]
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved proxies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompanyProxy"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "company-proxy-controller"
@@ -5786,137 +5980,6 @@
         ]
       }
     },
-    "/company-proxies/company-proxy": {
-      "get": {
-        "tags": [
-          "company-proxy-controller"
-        ],
-        "summary": "Search company proxies.",
-        "description": "Searches for company proxies matching the given filters.",
-        "operationId": "searchCompanyProxies",
-        "parameters": [
-          {
-            "name": "proxiedCompanyId",
-            "in": "query",
-            "description": "The Dataland company ID of the company whose data is being proxied.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "proxyCompanyId",
-            "in": "query",
-            "description": "The Dataland company ID of the company whose data is used as the proxy.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "frameworks",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "sfdr",
-              "eutaxonomy-financials"
-            ]
-          },
-          {
-            "name": "reportingPeriods",
-            "in": "query",
-            "description": "The relevant reporting periods (e.g. fiscal years).",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "chunkSize",
-            "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
-            "name": "chunkIndex",
-            "in": "query",
-            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved proxies.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredCompanyProxy"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies/{companyId}/subsidiaries": {
       "get": {
         "tags": [
@@ -6593,73 +6656,6 @@
         "responses": {
           "200": {
             "description": "Successfully deleted the dataset."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/company-proxies/company-proxies/{proxyId}": {
-      "delete": {
-        "tags": [
-          "company-proxy-controller"
-        ],
-        "summary": "Delete a proxy relation by technical ID.",
-        "description": "Deletes a single proxy relation identified by its technical ID and returns the deleted rule.",
-        "operationId": "deleteCompanyProxy",
-        "parameters": [
-          {
-            "name": "proxyId",
-            "in": "path",
-            "description": "The proxy ID of the proxy rule entry.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully deleted proxy rule.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredCompanyProxy"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No proxy relation found for the specified technical ID.",
-            "content": {
-              "application/json": {}
-            }
           },
           "default": {
             "description": "An error occurred",

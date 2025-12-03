@@ -76,8 +76,12 @@ interface CompanyProxyApi {
         companyProxy: CompanyProxyString,
     ): ResponseEntity<StoredCompanyProxy>
 
-    // TODO: No work has been put into any get feature. Should be similar to the /data-points endpoint in the QA-Controller.
-
+    /**
+     * Retrieves the company proxy for the specified proxy ID.
+     *
+     * @param proxyId the unique identifier of the company proxy to retrieve
+     * @return the company proxy corresponding to the specified ID wrapped in a ResponseEntity
+     */
     @Operation(
         summary = "Get the company proxy for a given id.",
         description = "Retrieve the company proxy for the given proxy id. ",
@@ -101,7 +105,7 @@ interface CompanyProxyApi {
         ],
     )
     @GetMapping(
-        value = ["/company-proxy/{proxyId}"],
+        value = ["/{proxyId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -127,7 +131,6 @@ interface CompanyProxyApi {
         ],
     )
     @GetMapping(
-        value = ["/company-proxy"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -198,7 +201,7 @@ interface CompanyProxyApi {
         ],
     )
     @DeleteMapping(
-        value = ["/company-proxies/{proxyId}"],
+        value = ["/{proxyId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -244,7 +247,7 @@ interface CompanyProxyApi {
         ],
     )
     @PutMapping(
-        value = ["/company-proxy/{proxyId}"],
+        value = ["/{proxyId}"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )

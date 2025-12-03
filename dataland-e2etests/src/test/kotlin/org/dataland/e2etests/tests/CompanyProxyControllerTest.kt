@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyProxyString
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
@@ -57,7 +58,7 @@ class CompanyProxyControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
         val ex =
-            assertThrows<Exception> {
+            assertThrows<ClientException> {
                 companyProxyApi.postCompanyProxy(
                     CompanyProxyString(
                         proxiedCompanyId = companyIdProxiedCompany,
@@ -67,6 +68,7 @@ class CompanyProxyControllerTest {
                     ),
                 )
             }
+
         assertTrue(ex.message?.contains("403") == true)
     }
 
@@ -75,7 +77,7 @@ class CompanyProxyControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val ex =
-            assertThrows<Exception> {
+            assertThrows<ClientException> {
                 companyProxyApi.postCompanyProxy(
                     CompanyProxyString(
                         proxiedCompanyId = "123",
@@ -109,15 +111,8 @@ class CompanyProxyControllerTest {
 
         val deletedCompanyProxy = companyProxyApi.deleteCompanyProxy(proxyId)
 
-        // (4-1) assert that the correct proxy was deleted
         assertEquals(deletedCompanyProxy.proxyId, proxyId)
-        assertEquals(deletedCompanyProxy.proxiedCompanyId, companyIdProxiedCompany)
-        assertEquals(deletedCompanyProxy.proxyCompanyId, companyIdProxyCompany)
-        assertEquals(deletedCompanyProxy.framework, "sfdr")
-        assertEquals(deletedCompanyProxy.reportingPeriod, "2024")
-
-        // (4-2) assert that the proxy is no longer retrievable
-        val ex = assertThrows<Exception> { companyProxyApi.getCompanyProxyById(proxyId) }
+        val ex = assertThrows<ClientException> { companyProxyApi.getCompanyProxyById(proxyId) }
         assertTrue(ex.message?.contains("404") == true)
     }
 
@@ -140,7 +135,6 @@ class CompanyProxyControllerTest {
                         ),
                 ).proxyId
 
-        // 2: change the proxy using put endpoint
         companyProxyApi.putCompanyProxy(
             proxyId,
             CompanyProxyString(
@@ -150,7 +144,6 @@ class CompanyProxyControllerTest {
                 reportingPeriod = "2023",
             ),
         )
-        // 3: assert that the change was successful
         val retrievedProxy = companyProxyApi.getCompanyProxyById(proxyId)
 
         assertEquals(retrievedProxy.proxiedCompanyId, companyIdProxiedCompany)

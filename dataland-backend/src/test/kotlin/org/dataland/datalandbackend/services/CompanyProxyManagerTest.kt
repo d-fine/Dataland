@@ -65,51 +65,63 @@ class CompanyProxyManagerTest
             assertEquals(proxyRelation.proxiedCompanyId, retrievedEntity.proxiedCompanyId)
             assertEquals(proxyRelation.proxyCompanyId, retrievedEntity.proxyCompanyId)
             assertEquals(proxyRelation.framework, retrievedEntity.framework)
-            assertEquals(retrievedEntity.reportingPeriod, retrievedEntity.reportingPeriod)
+            assertEquals(proxyRelation.reportingPeriod, retrievedEntity.reportingPeriod)
             assertEquals(savedEntity, retrievedEntity)
         }
 
         @Test
         fun `addProxyRelation throws on duplicate proxy relation`() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId = UUID.randomUUID()
-            val relation =
-                CompanyProxyUUID(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
-                    framework = "sfdr",
-                    reportingPeriod = "2023",
-                )
-            companyProxyManager.addProxyRelation(relation)
+            companyProxyManager.addProxyRelation(defaultCompanyProxy)
 
             val ex =
                 assertThrows(InvalidInputApiException::class.java) {
-                    companyProxyManager.addProxyRelation(relation)
+                    companyProxyManager.addProxyRelation(defaultCompanyProxy)
                 }
             assertTrue(ex.summary.contains("Conflicting proxy relation already exists"))
             assertTrue(ex.message.contains("Conflicting proxyIds:"))
         }
 
         @Test
-        fun `addProxyRelation does not match on different framework or reporting period`() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId = UUID.randomUUID()
-            val original =
+        fun `addProxyRelation throws on conflicting proxy relation`() {
+            companyProxyManager.addProxyRelation(defaultCompanyProxy)
+
+            val conflictingProxy =
                 CompanyProxyUUID(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
-                    framework = "sfdr",
-                    reportingPeriod = "2023",
+                    proxiedCompanyId = defaultProxiedCompanyId,
+                    proxyCompanyId = altProxyCompanyId,
+                    framework = defaultFramework,
+                    reportingPeriod = defaultReportingPeriod,
                 )
-            companyProxyManager.addProxyRelation(original)
+            val ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(conflictingProxy)
+                }
+            assertTrue(ex.summary.contains("Conflicting proxy relation already exists"))
+            assertTrue(ex.message.contains("Conflicting proxyIds:"))
 
-            val differentFramework = original.copy(framework = "eutaxonomy-financials")
+            val conflictingProxyWithNullValues =
+                CompanyProxyUUID(
+                    proxiedCompanyId = defaultProxiedCompanyId,
+                    proxyCompanyId = altProxyCompanyId,
+                    framework = null,
+                    reportingPeriod = null,
+                )
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.addProxyRelation(conflictingProxyWithNullValues)
+            }
+        }
+
+        @Test
+        fun `addProxyRelation does not match on different framework or reporting period`() {
+            companyProxyManager.addProxyRelation(defaultCompanyProxy)
+
+            val differentFramework = defaultCompanyProxy.copy(framework = "eutaxonomy-financials")
             val entity2 = companyProxyManager.addProxyRelation(differentFramework)
-            assertNotEquals(original.framework, entity2.framework)
+            assertNotEquals(defaultCompanyProxy.framework, entity2.framework)
 
-            val differentPeriod = original.copy(reportingPeriod = "2022")
+            val differentPeriod = defaultCompanyProxy.copy(reportingPeriod = "2022")
             val entity3 = companyProxyManager.addProxyRelation(differentPeriod)
-            assertNotEquals(original.reportingPeriod, entity3.reportingPeriod)
+            assertNotEquals(defaultCompanyProxy.reportingPeriod, entity3.reportingPeriod)
         }
 
         @Test
@@ -141,23 +153,14 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation with null framework and reportingPeriod rejects if any for proxiedId exists`() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId1 = UUID.randomUUID()
-            val proxyId2 = UUID.randomUUID()
+            val anotherProxyId = UUID.randomUUID()
 
-            val specific =
-                CompanyProxyUUID(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId1,
-                    framework = "sfdr",
-                    reportingPeriod = "2023",
-                )
-            companyProxyManager.addProxyRelation(specific)
+            companyProxyManager.addProxyRelation(defaultCompanyProxy)
 
             val general =
                 CompanyProxyUUID(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId2,
+                    proxiedCompanyId = defaultProxiedCompanyId,
+                    proxyCompanyId = anotherProxyId,
                     framework = null,
                     reportingPeriod = null,
                 )
@@ -227,7 +230,7 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation with only null values rejects if any relation exists for proxiedId`() {
+        fun `addProxyRelation rejects a ProxyRelation if there already as on for the company pair with only null values`() {
             val proxiedId = UUID.randomUUID()
 
             val generic =
@@ -316,15 +319,6 @@ class CompanyProxyManagerTest
                 ),
             )
 
-            assertTrue(
-                callFilterFunction(
-                    proxiedCompanyId = defaultProxiedCompanyId,
-                    proxyCompanyId = altProxyCompanyId,
-                    frameworks = setOf(altFramework),
-                    reportingPeriods = setOf("2023"),
-                ).isEmpty(),
-            )
-
             val page0 = callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, size = 1, idx = 0)
             val page1 = callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, size = 1, idx = 1)
             assertEquals(1, page0.size)
@@ -352,8 +346,7 @@ class CompanyProxyManagerTest
 
         @Test
         fun `getCompanyProxyById returns the correct StoredCompanyProxy when found`() {
-            val proxyRelation = defaultCompanyProxy
-            val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
+            val savedEntity = companyProxyManager.addProxyRelation(defaultCompanyProxy)
             val result = companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
             assertEquals(savedEntity.toStoredCompanyProxy(), result)
         }
@@ -397,23 +390,21 @@ class CompanyProxyManagerTest
 
         @Test
         fun `test that deleteProxyRelation deletes a proxy relation`() {
-            val proxiedCompanyId = UUID.randomUUID()
-            val proxyCompanyId = UUID.randomUUID()
-            val proxyRelation =
-                CompanyProxyUUID(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
-                    framework = "sfdr",
-                    reportingPeriod = "2025",
-                )
-
-            val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
+            val savedEntity = companyProxyManager.addProxyRelation(defaultCompanyProxy)
             val retrievedEntity = companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
             assertNotNull(retrievedEntity)
 
             companyProxyManager.deleteProxyRelation(savedEntity.proxyId)
             assertThrows(ResourceNotFoundApiException::class.java) {
                 companyProxyManager.getCompanyProxyById(savedEntity.proxyId)
+            }
+        }
+
+        @Test
+        fun `deleteProxyRelation throws ResourceNotFoundApiException when proxy does not exist`() {
+            val randomProxyId = UUID.randomUUID()
+            assertThrows(ResourceNotFoundApiException::class.java) {
+                companyProxyManager.deleteProxyRelation(randomProxyId)
             }
         }
     }
