@@ -182,9 +182,10 @@ async function checkIfCompanyIsDatalandMember(): Promise<void> {
     const companyRightResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
       props.companyId
     );
-    isDatalandMember.value = companyRightResponse.data.some((role) => role.includes('Member'));
+    isDatalandMember.value = companyRightResponse.data.some((right) => right.includes('Member'));
   } catch (error) {
     console.error(error);
+    isDatalandMember.value = false;
   }
 }
 /**
@@ -206,6 +207,7 @@ async function checkIfUserIsMemberOrAdmin(): Promise<void> {
     isMemberOfCompanyOrAdmin.value = userRoleResponse.data.length > 0 || isAdmin;
   } catch (error) {
     console.error('Error in retrieving company role:', error);
+    isMemberOfCompanyOrAdmin.value = isAdmin;
   }
 }
 
@@ -217,6 +219,8 @@ function fetchDataForThisPage(): void {
     void getCompanyInformation();
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
+    void checkIfUserIsMemberOrAdmin();
+    void checkIfCompanyIsDatalandMember();
     claimIsSubmitted.value = false;
   } catch (error) {
     console.error('Error fetching data for new company:', error);
