@@ -1,10 +1,15 @@
-import { CompanyInformation, DataTypeEnum, AggregatedFrameworkDataSummary, LksgData } from '@clients/backend';
-import { FixtureData } from '@sharedUtils/Fixtures';
+import type { CompanyInformation, DataTypeEnum, AggregatedFrameworkDataSummary, LksgData } from '@clients/backend';
+import type { FixtureData } from '@sharedUtils/Fixtures';
 
+/**
+ * Sets up fixtures for Company Cockpit tests.
+ * @param setCompanyInformation
+ * @param setFrameworkDataSummary
+ */
 export function setupCompanyCockpitFixtures(
   setCompanyInformation: (info: CompanyInformation) => void,
   setFrameworkDataSummary: (map: Map<DataTypeEnum, AggregatedFrameworkDataSummary>) => void
-) {
+): void {
   cy.clearLocalStorage();
   cy.fixture('CompanyInformationWithLksgData').then((jsonContent) => {
     const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
