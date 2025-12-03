@@ -56,14 +56,14 @@ interface CompanyProxyApi {
                 description = "Successfully stored proxy.",
             ),
             ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins may create company proxies.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "400",
                 description = "Invalid input.",
                 content = [Content(mediaType = "application/json")],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins may create company proxies.",
+                content = [Content(array = ArraySchema())],
             ),
         ],
     )
@@ -195,6 +195,11 @@ interface CompanyProxyApi {
                 description = "Successfully deleted proxy rule.",
             ),
             ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins may delete company proxies.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
                 responseCode = "404",
                 description = "No proxy relation found for the specified technical ID.",
                 content = [Content(mediaType = "application/json")],
@@ -231,14 +236,14 @@ interface CompanyProxyApi {
                 description = "Successfully replaced proxy.",
             ),
             ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins may modify company proxies.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
                 responseCode = "400",
                 description = "Invalid input.",
                 content = [Content(mediaType = "application/json")],
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins may modify company proxies.",
+                content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
                 responseCode = "404",
