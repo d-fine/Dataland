@@ -99,19 +99,8 @@ class CompanyProxyManager
             )
             logger.info("Checking for existing proxy relations to avoid duplicates...")
 
-            val existingProxies = companyDataProxyRuleRepository.findAllByProxiedCompanyId(proxiedCompanyId)
-            val conflictingProxies = findConflictingProxies(existingProxies, relation)
-
-            if (conflictingProxies.isNotEmpty()) {
-                throw InvalidInputApiException(
-                    summary = "Conflicting proxy relation already exists",
-                    message =
-                        "A conflicting proxy relation already exists. " +
-                            "Conflicting proxyIds: ${
-                                conflictingProxies.joinToString(", ") { it.proxyId.toString() }
-                            }.",
-                )
-            }
+            val existingProxies = companyDataProxyRuleRepository.findAllByProxiedCompanyId(relation.proxiedCompanyId)
+            assertConflictingProxies(existingProxies, relation)
 
             val entity =
                 CompanyProxyEntity(
@@ -128,6 +117,24 @@ class CompanyProxyManager
             )
 
             return saved
+        }
+
+        private fun assertConflictingProxies(
+            existingProxies: List<CompanyProxyEntity>,
+            relation: CompanyProxyUUID,
+        ) {
+            val conflictingProxies = findConflictingProxies(existingProxies, relation)
+
+            if (conflictingProxies.isNotEmpty()) {
+                throw InvalidInputApiException(
+                    summary = "Conflicting proxy relation exists",
+                    message =
+                        "A conflicting proxy relation exists. " +
+                            "Conflicting proxyIds: ${
+                                conflictingProxies.joinToString(", ") { it.proxyId.toString() }
+                            }.",
+                )
+            }
         }
 
         private fun findConflictingProxies(
@@ -168,7 +175,7 @@ class CompanyProxyManager
         /**
          * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
          *
-         * If no rules exist for this pair, an InvalidInputApiException is thrown.
+         * If no rules exist for this pair, an ResourceNotFoundApiException is thrown.
          */
         @Transactional
         fun deleteProxyRelation(proxyId: UUID): CompanyProxyEntity {
@@ -176,7 +183,7 @@ class CompanyProxyManager
                 companyDataProxyRuleRepository
                     .findById(proxyId)
                     .orElseThrow {
-                        InvalidInputApiException(
+                        ResourceNotFoundApiException(
                             "No proxy rule found for id=$proxyId",
                             message = "No proxy rule exists for the specified proxyId.",
                         )
@@ -199,8 +206,13 @@ class CompanyProxyManager
             proxyId: UUID,
             updatedCompanyProxy: CompanyProxyUUID,
         ): StoredCompanyProxy {
-            val existing = retrieveCompanyProxyEntityById(proxyId)
+            val existingProxiesForCompany =
+                companyDataProxyRuleRepository
+                    .findAllByProxiedCompanyId(updatedCompanyProxy.proxiedCompanyId)
+                    .filter { it.proxyId != proxyId }
+            assertConflictingProxies(existingProxiesForCompany, updatedCompanyProxy)
 
+            val existing = retrieveCompanyProxyEntityById(proxyId)
             existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
             existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId
             existing.framework = updatedCompanyProxy.framework

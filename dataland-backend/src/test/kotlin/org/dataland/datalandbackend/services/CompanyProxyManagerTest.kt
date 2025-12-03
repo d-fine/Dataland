@@ -77,7 +77,7 @@ class CompanyProxyManagerTest
                 assertThrows(InvalidInputApiException::class.java) {
                     companyProxyManager.addProxyRelation(defaultCompanyProxy)
                 }
-            assertTrue(ex.summary.contains("Conflicting proxy relation already exists"))
+            assertTrue(ex.summary.contains("Conflicting proxy relation exists"))
             assertTrue(ex.message.contains("Conflicting proxyIds:"))
         }
 
@@ -96,7 +96,7 @@ class CompanyProxyManagerTest
                 assertThrows(InvalidInputApiException::class.java) {
                     companyProxyManager.addProxyRelation(conflictingProxy)
                 }
-            assertTrue(ex.summary.contains("Conflicting proxy relation already exists"))
+            assertTrue(ex.summary.contains("Conflicting proxy relation exists"))
             assertTrue(ex.message.contains("Conflicting proxyIds:"))
 
             val conflictingProxyWithNullValues =
