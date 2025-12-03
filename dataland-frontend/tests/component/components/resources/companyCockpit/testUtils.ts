@@ -15,9 +15,6 @@ export function setupCompanyCockpitFixtures(
     setCompanyInformation(firstFixture.companyInformation);
   });
   cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then((jsonContent) => {
-    setFrameworkDataSummary(
-      jsonContent as Map<DataTypeEnum, AggregatedFrameworkDataSummary>
-    );
+    setFrameworkDataSummary(jsonContent as Map<DataTypeEnum, AggregatedFrameworkDataSummary>);
   });
 }
-
