@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * This migration script migrates the company roles from MemberAdmin to Admin and Member to Analyst.
  */
 @Suppress("ClassName")
-class V16__MigrateCompanyRoles : BaseJavaMigration() {
+class V17__MigrateCompanyRoles : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val ctx = context ?: return
 
