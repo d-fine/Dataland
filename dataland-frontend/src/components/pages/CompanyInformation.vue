@@ -193,7 +193,7 @@ async function checkIfCompanyIsDatalandMember(): Promise<void> {
  */
 async function checkIfUserIsMemberOrAdmin(): Promise<void> {
   if (!props.companyId) return;
-  const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloak = await getKeycloakPromise();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
