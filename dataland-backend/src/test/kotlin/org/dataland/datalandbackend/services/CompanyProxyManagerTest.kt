@@ -115,7 +115,7 @@ class CompanyProxyManagerTest
         fun `addProxyRelation does not match on different framework or reporting period`() {
             companyProxyManager.addProxyRelation(defaultCompanyProxy)
 
-            val differentFramework = defaultCompanyProxy.copy(framework = "eutaxonomy-financials")
+            val differentFramework = defaultCompanyProxy.copy(framework = altFramework)
             val entity2 = companyProxyManager.addProxyRelation(differentFramework)
             assertNotEquals(defaultCompanyProxy.framework, entity2.framework)
 
@@ -223,7 +223,7 @@ class CompanyProxyManagerTest
                 companyProxyManager.addProxyRelation(conflict)
             }
 
-            val otherFw = base.copy(framework = "eutaxonomy-financials")
+            val otherFw = base.copy(framework = altFramework)
             assertDoesNotThrow {
                 companyProxyManager.addProxyRelation(otherFw)
             }

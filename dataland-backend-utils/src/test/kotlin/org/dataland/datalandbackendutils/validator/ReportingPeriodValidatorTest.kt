@@ -40,7 +40,7 @@ class ReportingPeriodValidatorTest {
     }
 
     @Test
-    fun `should return false for non-numeric`() {
+    fun `should return false for non numeric`() {
         assertFalse(reportingPeriodValidator.isValid("abcd", null))
         assertFalse(reportingPeriodValidator.isValid("20XX", null))
     }
