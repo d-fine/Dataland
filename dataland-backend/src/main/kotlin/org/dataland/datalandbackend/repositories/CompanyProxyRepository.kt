@@ -22,16 +22,9 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
     fun findAllByProxiedCompanyId(proxiedCompanyId: UUID): List<CompanyProxyEntity>
 
     /**
-     * Finds CompanyProxyEntity objects matching the given filters.
+     * Finds all CompanyProxyEntity objects matching the given filters.
      *
-     * If a filter parameter is null or empty, it is ignored.
-     *
-     * @param proxiedCompanyId The ID of the proxied company to filter by.
-     * @param proxyCompanyId The ID of the proxy company to filter by.
-     * @param frameworks The set of frameworks to filter by.
-     * @param frameworksEmpty Whether the frameworks set is empty.
-     * @param reportingPeriods The set of reporting periods to filter by.
-     * @param reportingPeriodsEmpty Whether the reporting periods set is empty.
+     * @param companyProxyFilter The filter criteria.
      * @param pageable The pagination information.
      * @return A page of CompanyProxyEntity objects matching the filters.
      */
