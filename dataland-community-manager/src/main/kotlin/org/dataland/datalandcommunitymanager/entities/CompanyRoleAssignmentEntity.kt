@@ -1,9 +1,8 @@
 package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Table
@@ -21,9 +20,9 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssig
 @Table(name = "company_role_assignments")
 @IdClass(CompanyRoleAssignmentId::class)
 data class CompanyRoleAssignmentEntity(
-    @Id
+    @Convert(converter = CompanyRoleConverter::class)
     @Column(name = "company_role")
-    @Enumerated(EnumType.STRING)
+    @Id
     val companyRole: CompanyRole,
     @Id
     @Column(name = "company_id")
