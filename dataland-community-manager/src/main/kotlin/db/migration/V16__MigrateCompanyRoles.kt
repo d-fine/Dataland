@@ -9,14 +9,16 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V16__MigrateCompanyRoles : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        if (
-            context!!
-                .connection
+        val ctx = context ?: return
+
+        val hasTable =
+            ctx.connection
                 .metaData
                 .getTables(null, null, "company_role_assignments", null)
                 .next()
-        ) {
-            val statement = context.connection.createStatement()
+
+        if (hasTable) {
+            val statement = ctx.connection.createStatement()
 
             statement.execute(
                 """
