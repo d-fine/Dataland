@@ -42,6 +42,9 @@ import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import java.lang.Thread.sleep
 import java.time.LocalDate
+import java.time.MonthDay
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi as DataSourcingRequestControllerApi
 
 class ApiAccessor {
@@ -309,8 +312,9 @@ class ApiAccessor {
 
     fun uploadOneCompanyWithRandomIdentifierFYEAndReportingShift(): UploadInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val fiscalYearEnd = MonthDay.parse(LocalDate.now().minusMonths(2).toString(), DateTimeFormatter.ofPattern("dd-MMM", Locale.ENGLISH))
         val testCompanyInformation =
-            generalTestDataProvider.generateCompanyInformationWithFYEAndReportingShift(LocalDate.now().minusMonths(2), 0)
+            generalTestDataProvider.generateCompanyInformationWithFYEAndReportingShift(fiscalYearEnd.toString(), 0)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 

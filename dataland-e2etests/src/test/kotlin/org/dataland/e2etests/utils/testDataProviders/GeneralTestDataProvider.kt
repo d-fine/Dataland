@@ -2,7 +2,6 @@ package org.dataland.e2etests.utils.testDataProviders
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import java.time.LocalDate
 
 class GeneralTestDataProvider {
     private fun getRandomAlphaNumericString(): String {
@@ -29,7 +28,7 @@ class GeneralTestDataProvider {
         )
 
     fun generateCompanyInformationWithFYEAndReportingShift(
-        fiscalYearEnd: LocalDate,
+        fiscalYearEnd: String,
         reportingPeriodShift: Int,
     ): CompanyInformation =
         CompanyInformation(
