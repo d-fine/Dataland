@@ -18,13 +18,6 @@ object ValidationUtils {
     fun isReportingPeriod(testString: String) = testString.matches(Regex("20[1-3][0-9]"))
 
     /**
-     * Checks if the given string conforms to the expected company ID format.
-     * @param testString the string to check
-     * @return true if the string conforms to the company ID format, false otherwise
-     */
-    fun isCompanyId(testString: String) = isUuid(testString)
-
-    /**
      * Checks if the given string is a valid UUID.
      * @param testString the string to check
      * @return true if the string is a valid UUID, false otherwise
@@ -53,5 +46,5 @@ object ValidationUtils {
      * @return a boolean indicating if it is a valid base dimension or not
      */
     fun isBaseDimensions(baseDimensions: BaseDimensions) =
-        isCompanyId(baseDimensions.companyId) && isReportingPeriod(baseDimensions.reportingPeriod)
+        isUuid(baseDimensions.companyId) && isReportingPeriod(baseDimensions.reportingPeriod)
 }

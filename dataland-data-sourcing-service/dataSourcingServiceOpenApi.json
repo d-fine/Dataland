@@ -536,9 +536,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing objects."
-          },
           "404": {
             "description": "DataSourcing object not found."
           },
@@ -709,7 +706,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch states of data sourcing objects."
+            "description": "Only Dataland Admins have the right to patch states of data sourcing objects. Document Collectors and Data Extractors have the right to patch to specific states."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -805,7 +802,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch documents associated with data sourcing objects."
+            "description": "Only Dataland Admins and Document Collectors have the right to patch documents associated with data sourcing objects."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -884,7 +881,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Uploaders have the right to patch the dates of document sourcing attempts."
+            "description": "Only Dataland Admins and Document Collectors have the right to patch the dates of document sourcing attempts."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -1195,9 +1192,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only Dataland admins have the right to search for data sourcing objects."
-          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -1263,9 +1257,6 @@
               }
             }
           },
-          "403": {
-            "description": "Only admins are allowed to query data sourcing history."
-          },
           "404": {
             "description": "DataSourcing object not found."
           },
@@ -1328,17 +1319,14 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReducedDataSourcing"
+                    "$ref": "#/components/schemas/StoredDataSourcing"
                   }
                 }
               }
             }
           },
-          "403": {
-            "description": "Only uploaders are allowed to use this endpoint."
-          },
           "404": {
-            "description": "DataSourcing object not found."
+            "description": "Provider company not found."
           },
           "default": {
             "description": "An error occurred",
@@ -2090,6 +2078,16 @@
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date"
+          },
+          "documentCollector": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
+          },
+          "dataExtractor": {
+            "type": "string",
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           }
         }
       },
