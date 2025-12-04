@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.model.proxies
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackend.validator.DataTypeIsValid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.dataland.datalandbackendutils.validator.ReportingPeriodIsValid
@@ -37,6 +38,7 @@ data class CompanyProxyString(
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
         nullable = true,
     )
+    @DataTypeIsValid
     override val framework: String?,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,

@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import kotlin.reflect.KClass
 
 /**
- * Annotation to validate that a company exists on Dataland
+ * Annotation to validate that a reporting period is in the correct format
  */
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Constraint(
@@ -25,7 +25,7 @@ annotation class ReportingPeriodIsValid(
 )
 
 /**
- * Validator to check that a company exists on Dataland
+ * Validator to check that a reporting period is in the correct format
  */
 class ReportingPeriodValidator : ConstraintValidator<ReportingPeriodIsValid, String> {
     override fun isValid(
