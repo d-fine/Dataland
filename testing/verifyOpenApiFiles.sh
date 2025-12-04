@@ -4,7 +4,11 @@ set -euxo pipefail
 # This script is used to verify that there are no uncommitted changes in the OpenApi files.
 
 find . -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-before.json' shell {} \;
-./gradlew generateOpenApiDocs --no-daemon --stacktrace
+if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
+  ./gradlew generateOpenApiDocs --no-daemon --stacktrace --no-parallel
+else
+  ./gradlew generateOpenApiDocs --no-daemon --stacktrace
+fi
 find . -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-after.json' shell {} \;
 
 error=0
