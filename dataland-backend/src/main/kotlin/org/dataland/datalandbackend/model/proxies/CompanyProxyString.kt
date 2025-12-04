@@ -38,7 +38,7 @@ data class CompanyProxyString(
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
         nullable = true,
     )
-    @DataTypeIsValid
+    @field:DataTypeIsValid
     override val framework: String?,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,
