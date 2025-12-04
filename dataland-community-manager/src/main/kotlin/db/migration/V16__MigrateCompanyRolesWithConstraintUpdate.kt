@@ -21,7 +21,7 @@ class V16__MigrateCompanyRolesWithConstraintUpdate : BaseJavaMigration() {
         statement.execute(
             """
             ALTER TABLE company_role_assignments
-                DROP CONSTRAINT IF EXISTS company_role_assignments_role_check;
+                DROP CONSTRAINT IF EXISTS company_role_assignments_company_role_check;
             """.trimIndent(),
         )
 
