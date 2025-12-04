@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
-    // TODO: Add validation for the input. Check if companyIds are companyIds,
-    //  frameworks are frameworks and reportingPeriods are reportingPeriods.
-
     /**
      * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
      *
