@@ -85,7 +85,7 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `create proxy, then delete proxy and assert that it is no longer retrievable`() {
+    fun `create proxy then delete proxy and assert that it is no longer retrievable`() {
         val companyIdProxyCompany = uploadCompanyAsUploader()
         val companyIdProxiedCompany = uploadCompanyAsUploader()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -146,7 +146,7 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `trying to create a proxy as a non-admin user results in a 403`() {
+    fun `trying to create a proxy as a non admin user results in a 403`() {
         val ex =
             assertThrows<ClientException> {
                 postProxyRelationForRandomCompanies(TechnicalUser.Uploader)
@@ -156,7 +156,7 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `trying to delete a proxy as a non-admin user results in a 401`() {
+    fun `trying to delete a proxy as a non admin user results in a 401`() {
         val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
 
         assertThrows<ClientException> {
@@ -167,7 +167,7 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `trying to get a proxy relation by proxyId as a non-admin user results in a 401`() {
+    fun `trying to get a proxy relation by proxyId as a non admin user results in a 401`() {
         val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
 
         assertThrows<ClientException> {
