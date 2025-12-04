@@ -59,8 +59,8 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.visit('http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users');
       cy.get('h1').should('exist').should('contain', 'Sign in to your account');
       cy.url().should('contain', 'realms/master');
-      cy.get('#username').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN'), { force: true });
-      cy.get('#password').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN_PASSWORD'), { force: true });
+      cy.get('#username').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME'), { force: true });
+      cy.get('#password').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD'), { force: true });
       cy.get('#kc-login').should('exist').click();
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com').as('typedUsernameInSearch');
       cy.get('input.pf-v5-c-text-input-group__text-input').type(`${returnEmail}{enter}`, { force: true });

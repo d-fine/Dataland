@@ -18,7 +18,6 @@ COPY --from=ubi-micro-build /mnt/rootfs /
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
 ENV KC_DB_USERNAME=keycloak
-ENV KC_HTTP_ACCEPT_NON_NORMALIZED_PATHS=true
 ENV KC_HTTP_ENABLED=true
 ENV KC_PROXY_HEADERS=xforwarded
 ENV KC_HTTP_RELATIVE_PATH=keycloak
