@@ -130,14 +130,14 @@
               }
             }
           },
-          "403": {
-            "description": "Only Dataland admins may modify company proxies."
-          },
           "400": {
             "description": "Invalid input.",
             "content": {
               "application/json": {}
             }
+          },
+          "403": {
+            "description": "Only Dataland admins may modify company proxies."
           },
           "404": {
             "description": "No proxy found for the specified company pair.",
@@ -203,6 +203,9 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Only Dataland admins may delete company proxies."
           },
           "404": {
             "description": "No proxy relation found for the specified technical ID.",
@@ -1681,14 +1684,14 @@
               }
             }
           },
-          "403": {
-            "description": "Only Dataland admins may create company proxies."
-          },
           "400": {
             "description": "Invalid input.",
             "content": {
               "application/json": {}
             }
+          },
+          "403": {
+            "description": "Only Dataland admins may create company proxies."
           },
           "default": {
             "description": "An error occurred",
@@ -18039,15 +18042,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
