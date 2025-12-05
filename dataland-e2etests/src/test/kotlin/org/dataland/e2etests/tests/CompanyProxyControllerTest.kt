@@ -1,7 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyProxy
+import org.dataland.datalandbackend.openApiClient.model.CompanyProxyString
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -29,7 +29,7 @@ class CompanyProxyControllerTest {
             val proxyId =
                 companyProxyApi
                     .postCompanyProxy(
-                        CompanyProxy<String>(
+                        CompanyProxyString(
                             proxiedCompanyId = companyIdProxiedCompany,
                             proxyCompanyId = companyIdProxyCompany,
                             framework = "sfdr",
@@ -49,7 +49,7 @@ class CompanyProxyControllerTest {
         val proxyId =
             companyProxyApi
                 .postCompanyProxy(
-                    CompanyProxy<String>(
+                    CompanyProxyString(
                         proxiedCompanyId = companyIdProxiedCompany,
                         proxyCompanyId = companyIdProxyCompany,
                         framework = "sfdr",
@@ -72,7 +72,7 @@ class CompanyProxyControllerTest {
         val ex =
             assertThrows<ClientException> {
                 companyProxyApi.postCompanyProxy(
-                    CompanyProxy<String>(
+                    CompanyProxyString(
                         proxiedCompanyId = "123",
                         proxyCompanyId = "456",
                         framework = "lksg",
@@ -94,7 +94,7 @@ class CompanyProxyControllerTest {
             companyProxyApi
                 .postCompanyProxy(
                     companyProxyString =
-                        CompanyProxy<String>(
+                        CompanyProxyString(
                             proxiedCompanyId = companyIdProxiedCompany,
                             proxyCompanyId = companyIdProxyCompany,
                             framework = "sfdr",
@@ -120,7 +120,7 @@ class CompanyProxyControllerTest {
             companyProxyApi
                 .postCompanyProxy(
                     companyProxyString =
-                        CompanyProxy<String>(
+                        CompanyProxyString(
                             proxiedCompanyId = companyIdProxiedCompany,
                             proxyCompanyId = companyIdProxyCompany,
                             framework = "sfdr",
@@ -130,7 +130,7 @@ class CompanyProxyControllerTest {
 
         companyProxyApi.putCompanyProxy(
             proxyId,
-            CompanyProxy<String>(
+            CompanyProxyString(
                 proxiedCompanyId = companyIdProxiedCompany,
                 proxyCompanyId = companyIdProxyCompany,
                 framework = "lksg",
