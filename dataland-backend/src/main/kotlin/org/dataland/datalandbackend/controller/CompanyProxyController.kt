@@ -38,16 +38,7 @@ class CompanyProxyController
 
             val savedEntity = companyProxyManager.addProxyRelation(companyProxy.convertToCompanyProxyWithUUIDs())
 
-            val responseBody =
-                StoredCompanyProxy(
-                    proxyId = savedEntity.proxyId.toString(),
-                    proxiedCompanyId = savedEntity.proxiedCompanyId.toString(),
-                    proxyCompanyId = savedEntity.proxyCompanyId.toString(),
-                    framework = savedEntity.framework,
-                    reportingPeriod = savedEntity.reportingPeriod,
-                )
-
-            return ResponseEntity.ok(responseBody)
+            return ResponseEntity.ok(savedEntity.toStoredCompanyProxy())
         }
 
         /**

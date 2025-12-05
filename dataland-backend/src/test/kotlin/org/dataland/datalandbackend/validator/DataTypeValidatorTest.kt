@@ -3,10 +3,10 @@ package org.dataland.datalandbackend.validator
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
 
 class DataTypeValidatorTest {
-    private val dataTypeValidator =
-        DataTypeValidator()
+    private val dataTypeValidator = DataTypeValidator()
 
     @Test
     fun `should return true when dataType is null`() {
