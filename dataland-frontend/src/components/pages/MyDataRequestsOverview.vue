@@ -1,5 +1,15 @@
 <template>
   <TheContent class="min-h-screen relative">
+    <Message
+      v-if="showInfoMessage"
+      severity="info"
+      :closable="true"
+      @close="showInfoMessage = false"
+      style="margin: var(--spacing-xs); min-height: 3rem; width: 30rem"
+      data-test="info-message"
+    >
+      Requests for monitored portfolios are created overnight.
+    </Message>
     <div v-if="waitingForData || storedDataRequests.length > 0">
       <div class="container">
         <IconField class="company-search">
@@ -145,6 +155,7 @@ import PrimeButton from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Column from 'primevue/column';
+import Message from 'primevue/message';
 import DataTable, {
   type DataTablePageEvent,
   type DataTableRowClickEvent,
@@ -153,12 +164,14 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStorage } from '@vueuse/core';
 import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
+const showInfoMessage = useStorage<boolean>(`showInfoMessage-myDataRequests`, true);
 const currentPage = ref(0);
 const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
 const displayedData = ref<ExtendedStoredRequest[]>([]);
