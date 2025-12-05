@@ -19,7 +19,7 @@ if [[ "$mode" == initialize ]]; then
       echo "Error: Required variable $variable not set in environmental variables."
       exit 1
     fi
-    if echo ${!variable} | grep -q %; then
+    if echo "${!variable}" | grep -q %; then
       echo "Error: $variable contains delimiter for the sed command (%), which is not allowed."
       exit 1
     fi
@@ -27,7 +27,9 @@ if [[ "$mode" == initialize ]]; then
   done
   ./kc.sh import --file /keycloak_realms/master-realm.json
   ./kc.sh import --dir $dataland_realm_folder
-  ./kc.sh start
+  # Do not remove echo below without adjusting resetDevelopmentStack.sh accordingly.
+  echo "Initialization of Keycloak finished."
+  ./kc.sh start --http-access-log-enabled=true --log-level=DEBUG --verbose
 elif [[ "$mode" == export ]]; then
   echo "Exporting users"
   ./kc.sh export --dir /keycloak_users --users different_files --users-per-file 1 --realm datalandsecurity

@@ -42,6 +42,7 @@ describe('Portfolio Monitoring Modal', function () {
   });
 
   it('submits successfully if framework is selected', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('activateMonitoring');
     cy.get('[data-test="activateMonitoringToggle"]').click();
 
     cy.get('[data-test="frameworkSelection"]')
@@ -51,6 +52,7 @@ describe('Portfolio Monitoring Modal', function () {
       });
 
     cy.get('[data-test="saveChangesButton"]').click();
+    cy.get('@activateMonitoring.all').should('have.length', 1);
   });
 
   it('displays EU Taxonomy message when that framework is selected', function () {

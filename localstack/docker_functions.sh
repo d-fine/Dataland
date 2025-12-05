@@ -103,7 +103,7 @@ initialize_keycloak() {
   docker compose --profile init up --build -d
 
   while true; do
-    if docker compose --profile init logs --no-color | grep -q "Added user 'admin' to realm 'master'"; then
+    if docker compose --profile init logs --no-color | grep -q "Initialization of Keycloak finished."; then
       break
     fi
     echo "Waiting for Keycloak to finish initializing..."

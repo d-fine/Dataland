@@ -14,6 +14,7 @@ import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.CommunityManager
 import org.dataland.e2etests.utils.api.QaService
+import org.dataland.e2etests.utils.testDataProviders.awaitUntilAsserted
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -212,12 +213,13 @@ class SingleDataPointTest {
         }
 
         withTechnicalUser(TechnicalUser.Reader) {
+            awaitUntilAsserted {
+                val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
+                assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
+            }
             val dataPointInstance = Backend.dataPointControllerApi.getDataPoint(dataPointId)
-            val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
-
             val jsonDiff = JsonComparator.compareJsonStrings(dummyDatapoint, dataPointInstance.dataPoint)
             assertEquals(emptyList<JsonComparator.JsonDiff>(), jsonDiff)
-            assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
         }
     }
 

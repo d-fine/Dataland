@@ -26,6 +26,8 @@ class GeneralTestDataProvider {
             ),
             "DE",
             sector = sector,
+            fiscalYearEnd = LocalDate.now().minusMonths(2L),
+            reportingPeriodShift = 0,
         )
 
     fun generateCompanyInformationWithFYEAndReportingShift(

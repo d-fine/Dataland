@@ -50,7 +50,6 @@ function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: n
  * @param fieldName name of the field under which the report should be added
  */
 function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-  cy.pause();
   cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[type="checkbox"][value="Yes"]').check();
   new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
 }
