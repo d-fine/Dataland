@@ -23,7 +23,7 @@ class V16__MigrateCompanyRoles : BaseJavaMigration() {
                 UPDATE company_role_assignments
                 SET company_role = 'Admin'
                 WHERE company_role = 'MemberAdmin';
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             statement.execute(
@@ -31,7 +31,7 @@ class V16__MigrateCompanyRoles : BaseJavaMigration() {
                 UPDATE company_role_assignments
                 SET company_role = 'Analyst'
                 WHERE company_role = 'Member';
-                """.trimIndent()
+                """.trimIndent(),
             )
         }
     }
