@@ -49,6 +49,44 @@ function deletePortfolio(name: string): void {
   cy.get(`[data-test="${name}"]`).should('not.exist');
 }
 
+/**
+ * Activates active monitoring for a portfolio.
+ * @param portfolioToActivate - The name of the portfolio to delete.
+ */
+function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void {
+  cy.get(`[data-test="${portfolioToActivate}"]`).click();
+  cy.get(`[data-test="portfolio-${portfolioToActivate}"] [data-test="monitor-portfolio"]`).click({
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  });
+
+  cy.get('.p-dialog').find('.p-dialog-header').contains(`Monitoring of`);
+
+  cy.get('.p-dialog')
+    .find('.portfolio-monitoring-content')
+    .within(() => {
+      cy.get('[data-test="activateMonitoringToggle"]').click();
+    });
+
+  cy.get('.p-dialog')
+    .find('.portfolio-monitoring-content')
+    .within(() => {
+      cy.get('[data-test="frameworkSelection"]')
+        .contains('EU Taxonomy')
+        .parent()
+        .find('input[type="checkbox"]')
+        .click();
+      cy.get('[data-test="saveChangesButton"]').click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
+    });
+  cy.wait('@patchMonitoring')
+    .its('request.body')
+    .should((body) => {
+      expect(body.isMonitored).to.be.true;
+      expect(body.monitoredFrameworks).to.include('eutaxonomy');
+    });
+}
+
 describeIf(
   'As a user I want to be able to create, edit, and delete my portfolios',
   {
@@ -125,38 +163,7 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
-      //Activate active monitoring in second portfolio
-      cy.get(`[data-test="${editedSecondPortfolioName}"]`).click();
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] [data-test="monitor-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      });
-
-      cy.get('.p-dialog').find('.p-dialog-header').contains(`Monitoring of`);
-
-      cy.get('.p-dialog')
-        .find('.portfolio-monitoring-content')
-        .within(() => {
-          cy.get('[data-test="activateMonitoringToggle"]').click();
-        });
-
-      cy.get('.p-dialog')
-        .find('.portfolio-monitoring-content')
-        .within(() => {
-          cy.get('[data-test="frameworkSelection"]')
-            .contains('EU Taxonomy')
-            .parent()
-            .find('input[type="checkbox"]')
-            .click();
-          cy.get('[data-test="saveChangesButton"]').click({
-            timeout: Cypress.env('medium_timeout_in_ms') as number,
-          });
-        });
-      cy.wait('@patchMonitoring')
-        .its('request.body')
-        .should((body) => {
-          expect(body.isMonitored).to.be.true;
-          expect(body.monitoredFrameworks).to.include('eutaxonomy');
-        });
+      activateActiveMonitoringForPortfolio(editedSecondPortfolioName);
 
       // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');

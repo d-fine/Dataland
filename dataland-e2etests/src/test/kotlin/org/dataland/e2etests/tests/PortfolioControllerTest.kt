@@ -8,6 +8,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.UserService
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.awaitUntilAsserted
 import org.dataland.userService.openApiClient.infrastructure.ClientException
 import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -74,17 +75,17 @@ class PortfolioControllerTest {
                     setOf("eutaxonomy"),
                 )
             UserService.portfolioControllerApi.createPortfolio(testPortfolio)
-            Thread.sleep(3000)
+            awaitUntilAsserted {
+                val financialRequests = getOpenRequests(financialCompanyId)
 
-            val financialRequests = getOpenRequests(financialCompanyId)
+                val nonFinancialRequests = getOpenRequests(nonFinancialCompanyId)
 
-            val nonFinancialRequests = getOpenRequests(nonFinancialCompanyId)
+                val noSectorRequests = getOpenRequests(noSectorCompanyId)
 
-            val noSectorRequests = getOpenRequests(noSectorCompanyId)
-
-            assertEquals(2, financialRequests.size)
-            assertEquals(2, nonFinancialRequests.size)
-            assertEquals(3, noSectorRequests.size)
+                assertEquals(2, financialRequests.size)
+                assertEquals(2, nonFinancialRequests.size)
+                assertEquals(3, noSectorRequests.size)
+            }
         }
     }
 
