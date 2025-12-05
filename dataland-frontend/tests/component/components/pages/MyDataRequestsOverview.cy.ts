@@ -242,4 +242,14 @@ describe('Component tests for the data requests search page', function (): void 
     });
     cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
   });
+
+  it.only('Check info message about overnight creation of requests', function (): void {
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
+    cy.get('[data-test="info-message"]')
+      .should('exist')
+      .and('contain.text', 'Requests for monitored portfolios are created overnight.');
+    cy.get('[data-test="info-message"] .p-message-close-button').click();
+    cy.get('[data-test="info-message"]').should('not.exist');
+  });
 });
