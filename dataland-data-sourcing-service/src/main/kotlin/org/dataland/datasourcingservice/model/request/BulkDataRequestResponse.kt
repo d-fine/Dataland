@@ -15,6 +15,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
  * existing requests for the same data dimension
  * @param existingDataSets contains information about all requests that were not created because there are already
  * datasets on dataland for that data dimension
+ * @param nonSourceableDataRequests contains information about all requests that are not sourceable
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
@@ -53,4 +54,13 @@ data class BulkDataRequestResponse(
             ),
     )
     val existingDataSets: List<BasicDataDimensions>,
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                implementation = BasicDataDimensions::class,
+                description = DataSourcingOpenApiDescriptionsAndExamples.NON_SOURCEABLE_REQUESTS_DESCRIPTION,
+            ),
+    )
+    val nonSourceableDataRequests: List<BasicDataDimensions>,
 )
