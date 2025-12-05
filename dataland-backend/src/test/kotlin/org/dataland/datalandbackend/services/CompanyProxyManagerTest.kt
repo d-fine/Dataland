@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
-import org.dataland.datalandbackend.model.proxies.CompanyProxyUUID
+import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -41,14 +41,14 @@ class CompanyProxyManagerTest
         private val altFramework = "eutaxonomy-financials"
         private val altReportingPeriod = "2026"
         private val defaultCompanyProxy =
-            CompanyProxyUUID(
+            CompanyProxy<UUID>(
                 proxiedCompanyId = defaultProxiedCompanyId,
                 proxyCompanyId = defaultProxyCompanyId,
                 framework = defaultFramework,
                 reportingPeriod = defaultReportingPeriod,
             )
         private val altCompanyProxy =
-            CompanyProxyUUID(
+            CompanyProxy<UUID>(
                 proxiedCompanyId = altProxiedCompanyId,
                 proxyCompanyId = altProxyCompanyId,
                 framework = altFramework,
@@ -86,7 +86,7 @@ class CompanyProxyManagerTest
             companyProxyManager.addProxyRelation(defaultCompanyProxy)
 
             val conflictingProxy =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = defaultProxiedCompanyId,
                     proxyCompanyId = altProxyCompanyId,
                     framework = defaultFramework,
@@ -100,7 +100,7 @@ class CompanyProxyManagerTest
             assertTrue(ex.message.contains("Conflicting proxyIds:"))
 
             val conflictingProxyWithNullValues =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = defaultProxiedCompanyId,
                     proxyCompanyId = altProxyCompanyId,
                     framework = null,
@@ -129,7 +129,7 @@ class CompanyProxyManagerTest
             val proxiedId = UUID.randomUUID()
             val proxyId = UUID.randomUUID()
             val emptyFields =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = null,
@@ -140,7 +140,7 @@ class CompanyProxyManagerTest
             assertNull(entity1.reportingPeriod)
 
             val emptyFieldsDuplicate =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = "",
@@ -158,7 +158,7 @@ class CompanyProxyManagerTest
             companyProxyManager.addProxyRelation(defaultCompanyProxy)
 
             val general =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = defaultProxiedCompanyId,
                     proxyCompanyId = anotherProxyId,
                     framework = null,
@@ -174,7 +174,7 @@ class CompanyProxyManagerTest
             val proxiedId = UUID.randomUUID()
             val proxyId = UUID.randomUUID()
             val base =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = null,
@@ -183,7 +183,7 @@ class CompanyProxyManagerTest
             companyProxyManager.addProxyRelation(base)
 
             val conflict =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = null,
@@ -204,7 +204,7 @@ class CompanyProxyManagerTest
             val proxyId = UUID.randomUUID()
 
             val base =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = "sfdr",
@@ -213,7 +213,7 @@ class CompanyProxyManagerTest
             companyProxyManager.addProxyRelation(base)
 
             val conflict =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = proxyId,
                     framework = "sfdr",
@@ -234,7 +234,7 @@ class CompanyProxyManagerTest
             val proxiedId = UUID.randomUUID()
 
             val generic =
-                CompanyProxyUUID(
+                CompanyProxy<UUID>(
                     proxiedCompanyId = proxiedId,
                     proxyCompanyId = UUID.randomUUID(),
                     framework = null,

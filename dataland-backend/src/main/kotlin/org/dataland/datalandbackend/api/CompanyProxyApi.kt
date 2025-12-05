@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.proxies.CompanyProxyString
+import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
@@ -71,7 +71,7 @@ interface CompanyProxyApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postCompanyProxy(
         @Valid @RequestBody
-        companyProxy: CompanyProxyString,
+        companyProxy: CompanyProxy<String>,
     ): ResponseEntity<StoredCompanyProxy>
 
     /**
@@ -264,6 +264,6 @@ interface CompanyProxyApi {
         @PathVariable proxyId: String,
         @Valid
         @RequestBody
-        companyProxy: CompanyProxyString,
+        companyProxy: CompanyProxy<String>,
     ): ResponseEntity<StoredCompanyProxy>
 }
