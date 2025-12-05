@@ -32,7 +32,7 @@
           {
             "name": "proxyId",
             "in": "path",
-            "description": "The unique identifier of the proxy (a pair of a proxied company and a proxy company).",
+            "description": "The unique identifier of the company proxy relation.",
             "required": true,
             "schema": {
               "type": "string"
@@ -101,7 +101,7 @@
           {
             "name": "proxyId",
             "in": "path",
-            "description": "The unique identifier of the proxy (a pair of a proxied company and a proxy company).",
+            "description": "The unique identifier of the company proxy relation.",
             "required": true,
             "schema": {
               "type": "string"
@@ -6735,7 +6735,7 @@
         "properties": {
           "proxyId": {
             "type": "string",
-            "description": "The unique identifier of the proxy (a pair of a proxied company and a proxy company).",
+            "description": "The unique identifier of the company proxy relation.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "proxiedCompanyId": {
@@ -18042,15 +18042,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },
