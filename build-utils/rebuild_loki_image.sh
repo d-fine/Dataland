@@ -3,4 +3,4 @@ set -euxo pipefail
 
 dependencies="./dataland-loki/ ./environments/.env.uncritical ./versions.properties"
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_loki ./dataland-loki/Dockerfile $dependencies
+./build-utils/base_rebuild_single_docker_image.sh dataland_loki ./dataland-loki/Dockerfile "" $dependencies
