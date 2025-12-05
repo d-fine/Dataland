@@ -51,7 +51,10 @@ class CompanyExistsValidator(
         var isValidType = true
         var companyId: String? = null
         when (value) {
-            is UUID -> companyId = value.toString()
+            is UUID -> {
+                companyId = value.toString()
+            }
+
             is String -> {
                 if (ValidationUtils.isUuid(value)) {
                     companyId = value
@@ -59,8 +62,9 @@ class CompanyExistsValidator(
                     isValidType = false
                 }
             }
+
             else -> {
-                logger.warn("CompanyExists used on unsupported type: {value::class}")
+                logger.warn("CompanyExists used on unsupported type: ${value::class}")
                 isValidType = false
             }
         }

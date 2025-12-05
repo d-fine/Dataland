@@ -25,22 +25,22 @@ data class StoredCompanyProxy(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    var proxiedCompanyId: String,
+    val proxiedCompanyId: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    var proxyCompanyId: String,
+    val proxyCompanyId: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
         nullable = true,
     )
-    var framework: String?,
+    val framework: String?,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
         nullable = true,
     )
-    var reportingPeriod: String?,
+    val reportingPeriod: String?,
 )
