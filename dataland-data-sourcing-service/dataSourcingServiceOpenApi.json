@@ -1810,7 +1810,8 @@
           "acceptedDataRequests",
           "existingDataRequests",
           "existingDataSets",
-          "invalidDataRequests"
+          "invalidDataRequests",
+          "nonSourceableDataRequests"
         ],
         "type": "object",
         "properties": {
@@ -1838,6 +1839,13 @@
           "existingDataSets": {
             "type": "array",
             "description": "Contains information about all data requests with already existing datasets that were not created",
+            "items": {
+              "$ref": "#/components/schemas/BasicDataDimensions"
+            }
+          },
+          "nonSourceableDataRequests": {
+            "type": "array",
+            "description": "Contains information about all data requests that could not be sourced due to missing documents",
             "items": {
               "$ref": "#/components/schemas/BasicDataDimensions"
             }
