@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.validator
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 class DataTypeValidatorTest {
     private val dataTypeValidator = DataTypeValidator()
@@ -12,28 +14,34 @@ class DataTypeValidatorTest {
         assertTrue(dataTypeValidator.isValid(null, null))
     }
 
-    @Test
-    fun `should return true for valid data types`() {
-        assertTrue(dataTypeValidator.isValid("sfdr", null))
-        assertTrue(dataTypeValidator.isValid("eutaxonomy-financials", null))
-        assertTrue(dataTypeValidator.isValid("eutaxonomy-non-financials", null))
-        assertTrue(dataTypeValidator.isValid("nuclear-and-gas", null))
-        assertTrue(dataTypeValidator.isValid("pcaf", null))
-        assertTrue(dataTypeValidator.isValid("lksg", null))
-        assertTrue(dataTypeValidator.isValid("vsme", null))
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "sfdr",
+            "eutaxonomy-financials",
+            "eutaxonomy-non-financials",
+            "nuclear-and-gas",
+            "pcaf",
+            "lksg",
+            "vsme",
+        ],
+    )
+    fun `should return true for valid data types`(dataType: String) {
+        assertTrue(dataTypeValidator.isValid(dataType, null))
     }
 
-    @Test
-    fun `should return false for invalid data types`() {
-        assertFalse(dataTypeValidator.isValid("TYPE_X", null))
-        assertFalse(dataTypeValidator.isValid("UNKNOWN", null))
-        assertFalse(dataTypeValidator.isValid("", null))
-    }
-
-    @Test
-    fun `should return false for whitespace and gibberish`() {
-        assertFalse(dataTypeValidator.isValid(" ", null))
-        assertFalse(dataTypeValidator.isValid("123", null))
-        assertFalse(dataTypeValidator.isValid("!@#", null))
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "TYPE_X",
+            "UNKNOWN",
+            "",
+            " ",
+            "123",
+            "!@#",
+        ],
+    )
+    fun `should return false for invalid data types`(dataType: String) {
+        assertFalse(dataTypeValidator.isValid(dataType, null))
     }
 }

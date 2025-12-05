@@ -4,7 +4,7 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import org.dataland.datalandbackendutils.validator.CompanyExistsStringValidator
+import org.dataland.datalandbackendutils.validator.CompanyExistsValidator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
@@ -20,12 +20,12 @@ class CompanyExistsValidatorTest {
     private val mockOkHttpClient = mock<OkHttpClient>()
     private val mockCall = mock<Call>()
     private val mockResponse = mock<Response>()
-    private lateinit var validator: CompanyExistsStringValidator
+    private lateinit var validator: CompanyExistsValidator
     private val validUuid = "00000000-0000-0000-0000-000000000000"
 
     @BeforeEach
     fun setUp() {
-        validator = CompanyExistsStringValidator(backendBaseUrl, mockOkHttpClient)
+        validator = CompanyExistsValidator(backendBaseUrl, mockOkHttpClient)
     }
 
     @Test

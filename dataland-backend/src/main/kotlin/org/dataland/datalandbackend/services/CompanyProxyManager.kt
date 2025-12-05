@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
+import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyFilter
-import org.dataland.datalandbackend.model.proxies.CompanyProxyUUID
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -90,7 +90,7 @@ class CompanyProxyManager
          * @throws InvalidInputApiException if a conflicting rule already exists.
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxyUUID): CompanyProxyEntity {
+        fun addProxyRelation(relation: CompanyProxy<UUID>): CompanyProxyEntity {
             val proxiedCompanyId = relation.proxiedCompanyId
             val proxyCompanyId = relation.proxyCompanyId
 
@@ -124,7 +124,7 @@ class CompanyProxyManager
 
         private fun assertConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
-            relation: CompanyProxyUUID,
+            relation: CompanyProxy<UUID>,
         ) {
             val conflictingProxies = findConflictingProxies(existingProxies, relation)
 
@@ -142,7 +142,7 @@ class CompanyProxyManager
 
         private fun findConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
-            relation: CompanyProxyUUID,
+            relation: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> =
             when {
                 relation.framework.isNullOrEmpty() && relation.reportingPeriod.isNullOrEmpty() -> {
@@ -215,7 +215,7 @@ class CompanyProxyManager
         @Transactional
         fun editCompanyProxy(
             proxyId: UUID,
-            updatedCompanyProxy: CompanyProxyUUID,
+            updatedCompanyProxy: CompanyProxy<UUID>,
         ): StoredCompanyProxy {
             val existingProxiesForCompany =
                 companyDataProxyRuleRepository
