@@ -84,7 +84,8 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     );
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
-
+    cy.wait('@companyRights');
+    cy.wait('@extendedCompanyRoleAssignments');
     cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
   });
 
