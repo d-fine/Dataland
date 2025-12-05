@@ -9,9 +9,9 @@ time, you can run a reduced local stack by following the instructions below:
 2. Run the ``ReducedStack.kt`` script from the IDE or via gradle.
 3. The script will overwrite certain nginx configuration files and the ``localContainer.conf``. Do not commit these or 
    the changes made to the ``ReducedStack.kt`` file!
-4. Start the local stack by running ``startDevelopmentStack.sh`` or ``resetDevelopmentStack.sh``. The script will
+4. Start the local stack by running ``manageLocalStack.sh --start`` or ``manageLocalStack.sh --reset --start``. The script will
    automatically detect the reduced stack and start only the required services. In case you want to use the local 
-   frontend by running ``startDevelopmentStack.sh -l`` make sure to deactivate the frontend-dev service and run the
+   frontend by running ``manageLocalStack.sh --start --local-frontend`` make sure to deactivate the frontend-dev service and run the
    frontend manually. 
 5. Start the local frontend via npm depending on the chosen configuration.
 
