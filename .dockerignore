@@ -9,7 +9,6 @@
 
 /.idea/
 **/.gradle/
-**/build/
 **/node_modules/
 
 **/local/
@@ -21,3 +20,7 @@
 .envrc
 
 dataland-loki/data/
+
+# Allow build/libs directories for pre-built JARs
+**/build/
+!**/build/libs/
