@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.services.DataRequestSummaryNotificationService
 import org.dataland.datalandcommunitymanager.services.InvestorRelationsNotificationService
 import org.dataland.datalandcommunitymanager.utils.NotificationUtils
 import org.junit.jupiter.api.BeforeEach
@@ -25,7 +24,6 @@ class NotificationSchedulerTest {
     private val mockNotificationEventRepository = mock<NotificationEventRepository>()
     private lateinit var notificationUtils: NotificationUtils
     private val mockInvestorRelationsNotificationService = mock<InvestorRelationsNotificationService>()
-    private val mockDataRequestSummaryNotificationService = mock<DataRequestSummaryNotificationService>()
     private lateinit var notificationScheduler: NotificationScheduler
 
     private val userUUID = UUID.randomUUID()
@@ -36,7 +34,6 @@ class NotificationSchedulerTest {
         reset(
             mockNotificationEventRepository,
             mockInvestorRelationsNotificationService,
-            mockDataRequestSummaryNotificationService,
         )
 
         notificationUtils =
@@ -49,7 +46,6 @@ class NotificationSchedulerTest {
                 mockNotificationEventRepository,
                 notificationUtils,
                 mockInvestorRelationsNotificationService,
-                mockDataRequestSummaryNotificationService,
             )
     }
 
@@ -58,7 +54,6 @@ class NotificationSchedulerTest {
         notificationScheduler.scheduledWeeklyEmailSending()
 
         verifyNoMoreInteractions(mockInvestorRelationsNotificationService)
-        verifyNoMoreInteractions(mockDataRequestSummaryNotificationService)
     }
 
     @Test
@@ -84,9 +79,6 @@ class NotificationSchedulerTest {
         verify(
             mockInvestorRelationsNotificationService, times(1),
         ).processNotificationEvents(entityList)
-        verify(
-            mockDataRequestSummaryNotificationService, times(1),
-        ).processNotificationEvents(entityList)
-        verify(mockNotificationEventRepository, times(2)).saveAll<NotificationEventEntity>(any())
+        verify(mockNotificationEventRepository, times(1)).saveAll<NotificationEventEntity>(any())
     }
 }

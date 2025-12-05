@@ -44,5 +44,6 @@
         "nuclear-and-gas": "2023"
       }
     }
-  ]
+  ],
+  "notificationFrequency": "Daily"
 }

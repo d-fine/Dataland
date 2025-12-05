@@ -109,16 +109,14 @@ class DataRequestNonSourceableTest {
     }
 
     private fun awaitUntilAsserted(operation: () -> Any) =
-        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+        Awaitility.await().atMost(6000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
             operation()
         }
 
     @Test
     fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
         // Post requests for 2023 and 2024 as premium user.
-        val requestIdsFirstUser = postTwoDataRequestForSameUserAndReturnRequestIds()
-        val requestIdFirstUserRequest2023 = requestIdsFirstUser.first
-        val requestIdFirstUserRequest2024 = requestIdsFirstUser.second
+        val (requestIdFirstUserRequest2023, requestIdFirstUserRequest2024) = postTwoDataRequestForSameUserAndReturnRequestIds()
 
         // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()

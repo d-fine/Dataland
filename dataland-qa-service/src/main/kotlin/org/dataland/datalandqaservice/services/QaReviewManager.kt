@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -237,15 +238,18 @@ class QaReviewManager(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
     ) {
+        val pastActiveDataId =
+            getDataIdOfCurrentlyActiveDataset(
+                qaReviewEntity.companyId,
+                qaReviewEntity.framework,
+                qaReviewEntity.reportingPeriod,
+            )
+        val isUpdate = pastActiveDataId != null
         val currentlyActiveDataId =
             if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
                 qaReviewEntity.dataId
             } else {
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
-                )
+                pastActiveDataId
             }
 
         val qaStatusChangeMessage =
@@ -253,6 +257,13 @@ class QaReviewManager(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
+                basicDataDimensions =
+                    BasicDataDimensions(
+                        companyId = qaReviewEntity.companyId,
+                        dataType = qaReviewEntity.framework,
+                        reportingPeriod = qaReviewEntity.reportingPeriod,
+                    ),
+                isUpdate = isUpdate,
             )
 
         logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")

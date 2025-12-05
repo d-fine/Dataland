@@ -112,7 +112,7 @@ class ProcessDataUpdates
             }
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 * * * *")
         private fun processManualTrigger() {
             val manualTrigger = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
@@ -122,7 +122,7 @@ class ProcessDataUpdates
             }
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detekt does not recognise the scheduled execution of this function
         @Scheduled(cron = "0 0 3 ? * SUN")
         private fun processUpdates() {
             val flagFileGleif = allGleifCompaniesIngestManualUpdateFlagFilePath?.let { File(it) }
@@ -144,7 +144,7 @@ class ProcessDataUpdates
             }
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 5 1-7 1,4,7,10 SUN")
         private fun processNorthDataUpdates() {
             logger.info("Running scheduled update of NorthData data.")
@@ -152,7 +152,7 @@ class ProcessDataUpdates
             northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         }
 
-        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 5 * * *")
         private fun processRequestPriorityUpdates() {
             logger.info("Running scheduled update of request priorities.")

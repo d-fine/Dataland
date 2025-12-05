@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice
 
 import org.dataland.datalanduserservice.configurations.OpenAPIConfiguration
+import org.springframework.amqp.rabbit.annotation.EnableRabbit
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @SpringBootApplication
 @ComponentScan(basePackages = ["org.dataland"])
 @EnableScheduling
+@EnableRabbit
 class DatalandUserService : OpenAPIConfiguration
 
 /**

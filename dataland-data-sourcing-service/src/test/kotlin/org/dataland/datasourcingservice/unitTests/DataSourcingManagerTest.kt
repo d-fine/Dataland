@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -26,6 +27,7 @@ class DataSourcingManagerTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
+    private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
 
@@ -85,6 +87,7 @@ class DataSourcingManagerTest {
                 dataSourcingValidator = mockDataSourcingValidator,
                 dataRevisionRepository = mockDataRevisionRepository,
                 dataSourcingRepository = mockDataSourcingRepository,
+                cloudEventMessageHandler = mockCloudEventMessageHandler,
             )
     }
 
