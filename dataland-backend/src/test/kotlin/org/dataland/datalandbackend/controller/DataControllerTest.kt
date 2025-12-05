@@ -162,7 +162,7 @@ internal class DataControllerTest {
                 ExportRequestData(
                     reportingPeriods = listOf(testReportingPeriod),
                     companyIds = listOf(testCompanyId),
-                    exportFileType = exportFileType,
+                    fileFormat = exportFileType,
                 ),
             )
         }
@@ -182,7 +182,7 @@ internal class DataControllerTest {
                 ExportRequestData(
                     reportingPeriods = listOf(testReportingPeriod),
                     companyIds = listOf(testCompanyId),
-                    exportFileType = exportFileType,
+                    fileFormat = exportFileType,
                 ),
             )
         }

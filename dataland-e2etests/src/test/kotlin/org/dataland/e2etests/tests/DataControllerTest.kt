@@ -209,11 +209,7 @@ class DataControllerTest {
 
         apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-                ExportRequestData(
-                    companyIds = listOf(companyId),
-                    reportingPeriods = listOf(reportingPeriod),
-                    fileFormat = ExportFileType.CSV,
-                ),
+                ExportRequestData(listOf(reportingPeriod), listOf(companyId), ExportFileType.CSV),
                 keepValueFieldsOnly = false,
             ).let { assert(it.readBytes().isEmpty()) }
 
