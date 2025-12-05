@@ -3,21 +3,23 @@ set -euxo pipefail
 # This Script checks if a docker image for a given set of input files already exists in the registry.
 # If not, it will be rebuilt and pushed
 # usage:
-# base_rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
-# e.g.: base_rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
+# base_rebuild_single_docker_image.sh image_name dockerfile gradle_target [additional_relevant_files...]
+# e.g.: base_rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <gradle-target> <first file that is relevant> <second file that is relevant> ...
 docker_image_name=$1
 dockerfile=$2
+gradle_target=$3
+shift 3
 if [[ "$docker_image_name" == *"-"* ]];
 then
   echo "ERROR: Docker image name '$docker_image_name' contains a '-' which is forbidden"
   exit 1
 fi
 
-echo Rebuilding docker image. Parameters: "$0" "${@:1}"
+echo Rebuilding docker image. Parameters: "$0" "$docker_image_name" "$dockerfile" "$gradle_target" "$@"
 
-regex=$(echo "$0" "${@:1}" | sed 's/ /|/g' | sed 's/\./\\./g')
+regex=$(echo "$0" "$docker_image_name" "$dockerfile" "$@" | sed 's/ /|/g' | sed 's/\./\\./g')
 input_sha=$( \
-  git ls-tree -r HEAD --name-only | awk '{print "./" $1 }' | \
+  { git ls-tree -r HEAD --name-only | awk '{print "./" $1 }'; [[ -f ./gitinfo ]] && echo "./gitinfo" || true; } | \
   grep -E "$regex" | \
   sort -u | \
   xargs shasum | awk '{print $1}' | \
@@ -41,6 +43,12 @@ if [[ "$images_found" == "1" ]] ; then
   echo "docker image already present locally. No rebuild for $full_image_reference required"
   exit 0
 fi
+
+if [[ -n "$gradle_target" && "${LOCAL:-}" != "true" ]]; then
+  echo "Building gradle artifacts: $gradle_target"
+  ./gradlew $gradle_target --no-daemon --stacktrace
+fi
+
 DOCKER_SECRET=$(printf "githubUser=%s\ngithubToken=%s\n" "${GITHUB_USER:-}" "${GITHUB_TOKEN:-}")
 export DOCKER_SECRET
 docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
@@ -48,6 +56,7 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_PROXY_BASE_VERSION="${DATALAND_PROXY_BASE_VERSION:-}" \
                         --build-arg DATALAND_E2ETESTS_BASE_VERSION="${DATALAND_E2ETESTS_BASE_VERSION:-}" \
                         --build-arg DATALAND_BACKEND_BASE_VERSION="${DATALAND_BACKEND_BASE_VERSION:-}" \
+                        --build-arg DATALAND_ACCOUNTING_SERVICE_BASE_VERSION="${DATALAND_ACCOUNTING_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_API_KEY_MANAGER_BASE_VERSION="${DATALAND_API_KEY_MANAGER_BASE_VERSION:-}" \
                         --build-arg DATALAND_DATA_SOURCING_SERVICE_BASE_VERSION="${DATALAND_DATA_SOURCING_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_DOCUMENT_MANAGER_BASE_VERSION="${DATALAND_DOCUMENT_MANAGER_BASE_VERSION:-}" \

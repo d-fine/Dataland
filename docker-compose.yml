@@ -53,6 +53,7 @@ services:
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
+      DISABLE_HSTS: ${DISABLE_HSTS:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -67,6 +68,7 @@ services:
       - backend-db
       - keycloak-db
       - api-key-manager-db
+      - accounting-service-db
       - data-sourcing-service-db
       - internal-storage-db
       - document-manager-db
@@ -77,7 +79,7 @@ services:
       - grafana
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5442:5433-5442"
+      - "127.0.0.1:5433-5443:5433-5443"
       - "127.0.0.1:5672:5672"
     logging:
       <<: *loki-logging
@@ -112,6 +114,41 @@ services:
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
+    logging:
+      <<: *loki-logging
+  accounting-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - accounting-service-db
+    image: ${ACCOUNTING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_accounting_service_test:${DATALAND_ACCOUNTING_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
+    depends_on:
+      - accounting-service-db
+    <<: *uncritical-constants-env
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
+  accounting-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - accounting-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+    volumes:
+      - accounting_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: accounting_service
+      POSTGRES_USER: accounting_service
+      POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
+      PGUSER: accounting_service
     logging:
       <<: *loki-logging
   data-sourcing-service:
@@ -187,7 +224,7 @@ services:
       <<: *loki-logging
   backend:
     restart: always
-    profiles: [ "production", "testing" ]
+    profiles: [ "production", "testing", "developmentContainerBackend" ]
     networks:
       - internal
       - backend-db
@@ -383,6 +420,7 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
       DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
@@ -410,6 +448,7 @@ services:
       - keycloak-db
       - backend-db
       - api-key-manager-db
+      - accounting-service-db
       - data-sourcing-service-db
       - internal
       - internal-storage-db
@@ -776,6 +815,7 @@ networks:
   external:
   keycloak-db:
   backend-db:
+  accounting-service-db:
   api-key-manager-db:
   data-sourcing-service-db:
   internal-storage-db:
@@ -792,6 +832,8 @@ volumes:
   backend_data:
     driver: local
   api_key_manager_data:
+    driver: local
+  accounting_service_data:
     driver: local
   data_sourcing_service_data:
     driver: local

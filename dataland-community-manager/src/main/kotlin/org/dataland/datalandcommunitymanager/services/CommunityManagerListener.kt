@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * This service checks if freshly uploaded and validated data answers a data request
  */
-@Service("DataRequestUpdater")
+@Service("CommunityManagerListener")
 class CommunityManagerListener(
     @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val investorRelationsManager: InvestorRelationsManager,

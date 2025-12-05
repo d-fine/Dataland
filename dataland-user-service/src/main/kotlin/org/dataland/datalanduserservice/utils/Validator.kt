@@ -37,7 +37,7 @@ class Validator
                             " Please ensure that portfolio names are unique. CorrelationId: $correlationId",
                 )
             }
-            portfolioUpload.companyIds.forEach { isCompanyIdValid(it, correlationId) }
+            portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
         }
 
         /**
@@ -64,7 +64,7 @@ class Validator
                             " Please ensure that portfolio names are unique. CorrelationId: $correlationId",
                 )
             }
-            portfolioUpload.companyIds.forEach { isCompanyIdValid(it, correlationId) }
+            portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
         }
 
         /**

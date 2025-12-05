@@ -99,6 +99,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "11": {
+      "Name": "AccountingServiceDb",
+      "Group": "AccountingServiceDb",
+      "Port": 5432,
+      "Username": "accounting_service",
+      "Host": "accounting-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

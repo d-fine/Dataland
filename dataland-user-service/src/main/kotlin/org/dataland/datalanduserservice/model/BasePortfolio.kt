@@ -53,7 +53,7 @@ data class BasePortfolio(
                 example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_COMPANY_IDS_EXAMPLE,
             ),
     )
-    override val companyIds: Set<String>,
+    override val identifiers: Set<String>,
     @field:JsonProperty(required = false)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,
@@ -77,7 +77,7 @@ data class BasePortfolio(
         userId = DatalandAuthentication.fromContext().userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = portfolioUpload.companyIds,
+        identifiers = portfolioUpload.identifiers,
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
     )
@@ -88,7 +88,7 @@ data class BasePortfolio(
         userId = DatalandAuthentication.fromContext().userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = emptySet(),
+        identifiers = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
     )
@@ -109,7 +109,7 @@ data class BasePortfolio(
             userId = this.userId,
             creationTimestamp = creationTimestamp,
             lastUpdateTimestamp = lastUpdateTimestamp,
-            companyIds = this.companyIds.toMutableSet(),
+            companyIds = this.identifiers.toMutableSet(),
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
         )

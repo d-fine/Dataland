@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -20,6 +21,7 @@ class DataAvailabilityChecker
     constructor(
         @PersistenceContext private val entityManager: EntityManager,
         private val dataCompositionService: DataCompositionService,
+        private val dataPointMetaInformationRepository: DataPointMetaInformationRepository,
     ) {
         /**
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
@@ -86,5 +88,33 @@ class DataAvailabilityChecker
             } else {
                 emptyList()
             }
+        }
+
+        /**
+         * Returns most recent available data point IDs.
+         *
+         * Retrieves the latest available data points for a given company and set of data point types,
+         * ignoring data points that are part of the exclusion list. All meta information items in the
+         * returned list belong to the same latest reporting period.
+         *
+         * @param companyId the ID of the company
+         * @param dataPointTypes the set of data point types to consider
+         * @return a list of IDs representing the latest available data points
+         */
+        fun getLatestAvailableDataPointIds(
+            companyId: String,
+            dataPointTypes: Set<String>,
+        ): List<DataPointMetaInformationEntity> {
+            val allRelevantDataPoints =
+                dataPointMetaInformationRepository
+                    .findByCompanyIdAndDataPointTypeInAndCurrentlyActiveTrue(
+                        companyId,
+                        dataPointTypes,
+                    ).groupBy { it.reportingPeriod }
+                    .filter { dataPoints ->
+                        DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPoints.value.map { it.dataPointType })
+                    }
+            val latestReportingPeriod = allRelevantDataPoints.maxOfOrNull { it.key } ?: return emptyList()
+            return allRelevantDataPoints.getValue(latestReportingPeriod)
         }
     }

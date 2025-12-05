@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+if [[ "${LOCAL:-}" == "true" ]]; then
+  echo "Skipping frontend test image build in LOCAL mode"
+  exit 0
+fi
+
 gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
 frontend_dependencies=$(grep frontend_dependencies ./build-utils/common.conf | cut -d'=' -f2)
 dependencies="$frontend_dependencies $gradle_dependencies"
 
-./build-utils/base_rebuild_single_docker_image.sh dataland_frontend_test ./dataland-frontend/DockerfileTest $dependencies
+./build-utils/base_rebuild_single_docker_image.sh dataland_frontend_test ./dataland-frontend/DockerfileTest "" $dependencies

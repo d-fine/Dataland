@@ -20,4 +20,5 @@ object RoutingKeyNames {
     const val DATASET_STORED_TO_ASSEMBLED_MIGRATION = "dataset.storedDatasetMigratedToAssembledDataset"
     const val DATA_NONSOURCEABLE = "dataNonSourceable"
     const val PORTFOLIO_UPDATE = "portfolio.update"
+    const val REQUEST_PATCH = "request.patch"
 }

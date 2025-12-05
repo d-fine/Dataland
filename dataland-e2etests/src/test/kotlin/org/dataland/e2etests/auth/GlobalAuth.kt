@@ -1,5 +1,6 @@
 package org.dataland.e2etests.auth
 
+import org.dataland.accountingService.openApiClient.infrastructure.ApiClient as ApiClientAccountingService
 import org.dataland.communitymanager.openApiClient.infrastructure.ApiClient as ApiClientCommunityManager
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ApiClient as ApiClientDataSourcingService
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient as ApiClientApiKeyManager
@@ -12,20 +13,21 @@ object GlobalAuth {
     val jwtHelper = JwtAuthenticationHelper()
 
     fun setBearerToken(token: String?) {
-        ApiClientApiKeyManager.Companion.accessToken = token
-        ApiClientBackend.Companion.accessToken = token
-        ApiClientDocumentManager.Companion.accessToken = token
-        ApiClientQaService.Companion.accessToken = token
-        ApiClientCommunityManager.Companion.accessToken = token
-        ApiClientUserService.Companion.accessToken = token
-        ApiClientDataSourcingService.Companion.accessToken = token
+        ApiClientApiKeyManager.accessToken = token
+        ApiClientBackend.accessToken = token
+        ApiClientDocumentManager.accessToken = token
+        ApiClientQaService.accessToken = token
+        ApiClientCommunityManager.accessToken = token
+        ApiClientUserService.accessToken = token
+        ApiClientDataSourcingService.accessToken = token
+        ApiClientAccountingService.accessToken = token
     }
 
     inline fun <T> withToken(
         token: String?,
         block: () -> T,
     ): T {
-        val oldToken = ApiClientApiKeyManager.Companion.accessToken
+        val oldToken = ApiClientApiKeyManager.accessToken
         setBearerToken(token)
         try {
             return block()
