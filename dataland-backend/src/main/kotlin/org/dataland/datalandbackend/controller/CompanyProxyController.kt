@@ -88,16 +88,7 @@ class CompanyProxyController
 
             val deleted = companyProxyManager.deleteProxyRelation(uuid)
 
-            val response =
-                StoredCompanyProxy(
-                    proxyId = deleted.proxyId.toString(),
-                    proxiedCompanyId = deleted.proxiedCompanyId.toString(),
-                    proxyCompanyId = deleted.proxyCompanyId.toString(),
-                    framework = deleted.framework,
-                    reportingPeriod = deleted.reportingPeriod,
-                )
-
-            return ResponseEntity.ok(response)
+            return ResponseEntity.ok(deleted.toStoredCompanyProxy())
         }
 
         /**
