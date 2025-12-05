@@ -22,7 +22,6 @@ import kotlin.reflect.KClass
 @Constraint(
     validatedBy = [
         CompanyExistsValidator::class,
-        CompanyExistsValidatorForUUID::class,
     ],
 )
 annotation class CompanyExists(
@@ -39,21 +38,40 @@ annotation class CompanyExists(
 class CompanyExistsValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-) : ConstraintValidator<CompanyExists, String> {
+) : ConstraintValidator<CompanyExists, Any?> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun isValid(
-        companyId: String?,
+        value: Any?,
         context: ConstraintValidatorContext?,
     ): Boolean {
-        if (companyId == null || !ValidationUtils.isUuid(companyId)) return false
-
-        return callCompanyDataApiAndCheckCompanyId(
-            backendBaseUrl,
-            authenticatedOkHttpClient,
-            companyId,
-            logger,
-        )
+        if (value == null) {
+            return true
+        }
+        var isValidType = true
+        var companyId: String? = null
+        when (value) {
+            is UUID -> companyId = value.toString()
+            is String -> {
+                if (ValidationUtils.isUuid(value)) {
+                    companyId = value
+                } else {
+                    isValidType = false
+                }
+            }
+            else -> {
+                logger.warn("CompanyExists used on unsupported type: {value::class}")
+                isValidType = false
+            }
+        }
+        return isValidType &&
+            companyId != null &&
+            callCompanyDataApiAndCheckCompanyId(
+                backendBaseUrl,
+                authenticatedOkHttpClient,
+                companyId,
+                logger,
+            )
     }
 
     /**
@@ -90,22 +108,5 @@ class CompanyExistsValidator(
             logger.warn("Error validating company existence: ${exception.message}")
             false
         }
-    }
-}
-
-/**
- * Validator to check that a company exists on Dataland for UUID type
- */
-class CompanyExistsValidatorForUUID(
-    @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-) : ConstraintValidator<CompanyExists, UUID> {
-    override fun isValid(
-        companyId: UUID?,
-        context: ConstraintValidatorContext?,
-    ): Boolean {
-        if (companyId == null) return false
-        return CompanyExistsValidator(backendBaseUrl, authenticatedOkHttpClient)
-            .isValid(companyId.toString(), context)
     }
 }
