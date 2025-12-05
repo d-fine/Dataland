@@ -152,16 +152,6 @@ class CommunityManagerListenerUnitTest {
 
     @Test
     fun `valid nonsourceable message should be processed successfully`() {
-        val sourceabilityMessageValid =
-            SourceabilityMessage(
-                BasicDataDimensions(
-                    "exampleCompany",
-                    "sfdr",
-                    "2023",
-                ),
-                true,
-                "test",
-            )
         val sourceabilityInfoValid =
             SourceabilityInfo(
                 "exampleCompany",
@@ -171,7 +161,7 @@ class CommunityManagerListenerUnitTest {
                 "test",
             )
         communityManagerListener.processMessageForDataReportedAsNonSourceable(
-            jacksonObjectMapper.writeValueAsString(sourceabilityMessageValid), typeNonSourceable, correlationId,
+            jacksonObjectMapper.writeValueAsString(sourceabilityInfoValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfoValid,
