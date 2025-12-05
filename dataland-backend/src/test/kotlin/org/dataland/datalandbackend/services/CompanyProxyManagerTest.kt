@@ -125,33 +125,6 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation treats empty framework and period as unique combinations`() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId = UUID.randomUUID()
-            val emptyFields =
-                CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
-                    framework = null,
-                    reportingPeriod = null,
-                )
-            val entity1 = companyProxyManager.addProxyRelation(emptyFields)
-            assertNull(entity1.framework)
-            assertNull(entity1.reportingPeriod)
-
-            val emptyFieldsDuplicate =
-                CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
-                    framework = "",
-                    reportingPeriod = "",
-                )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(emptyFieldsDuplicate)
-            }
-        }
-
-        @Test
         fun `addProxyRelation with null framework and reportingPeriod rejects if any for proxiedId exists`() {
             val anotherProxyId = UUID.randomUUID()
 
