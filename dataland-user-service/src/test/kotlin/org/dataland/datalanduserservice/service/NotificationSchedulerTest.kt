@@ -147,7 +147,7 @@ class NotificationSchedulerTest {
         val notificationCaptor = argumentCaptor<List<NotificationEventEntity>>()
         val userIdCaptor = argumentCaptor<UUID>()
         val portfolioNamesCaptor = argumentCaptor<String>()
-        verify(mockPortfolioUpdateSummaryEmailBuilder, times(2)).buildDataRequestSummaryEmailAndSendCEMessage(
+        verify(mockPortfolioUpdateSummaryEmailBuilder, times(2)).buildPortfolioMonitoringUpdateSummaryEmailAndSendCEMessage(
             notificationCaptor.capture(),
             userIdCaptor.capture(),
             eq(ta.notificationFrequency),

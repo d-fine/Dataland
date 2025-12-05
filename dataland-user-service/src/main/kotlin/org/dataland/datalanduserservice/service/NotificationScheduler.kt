@@ -36,8 +36,8 @@ class NotificationScheduler
         }
 
         /**
-         * Processes data request summary events and sends emails to appropriate recipients.
-         * @param events List of unprocessed data request summary notification events.
+         * Processes portfolio update summary events and sends emails to appropriate recipients.
+         * @param events List of unprocessed portfolio update summary notification events.
          */
         private fun processNotificationEvents(
             events: List<NotificationEventEntity>,
@@ -47,10 +47,10 @@ class NotificationScheduler
         ) {
             if (events.isNotEmpty()) {
                 logger.info(
-                    "Requirements for Data Request Summary notification are met." +
+                    "Requirements for Portfolio Update Summary notification are met." +
                         " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
                 )
-                portfolioUpdateSummaryEmailBuilder.buildDataRequestSummaryEmailAndSendCEMessage(
+                portfolioUpdateSummaryEmailBuilder.buildPortfolioMonitoringUpdateSummaryEmailAndSendCEMessage(
                     unprocessedEvents = events,
                     userId = userId,
                     frequency = frequency,
@@ -58,7 +58,7 @@ class NotificationScheduler
                 )
             } else {
                 logger.info(
-                    "No new events found for Data Request Summary notification." +
+                    "No new events found for Portfolio Update Summary notification." +
                         " No $frequency email will be sent to user $userId for portfolio(s) $portfolioNamesString.",
                 )
             }
@@ -71,8 +71,8 @@ class NotificationScheduler
         @Scheduled(cron = "0 */5 * * * *")
         fun scheduledTestEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInteval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
-            sendEmailForTimeInterval(notificationFrequency, timeStampForInteval)
+            val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
+            sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
         /**

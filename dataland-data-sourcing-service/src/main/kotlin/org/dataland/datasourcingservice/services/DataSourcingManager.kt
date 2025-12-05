@@ -140,8 +140,7 @@ class DataSourcingManager
         }
 
         /**
-         * Checks if data sourcing entity is set to non-sourceable state, starting from any other state.
-         * If yes, logs message and sends non-sourceability message to RabbitMQ
+         * Builds, logs and sends non-sourceability message to RabbitMQ
          */
         private fun sendNonSourceableMessage(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,

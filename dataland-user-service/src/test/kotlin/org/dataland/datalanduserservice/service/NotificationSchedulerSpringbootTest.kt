@@ -53,7 +53,7 @@ class NotificationSchedulerSpringbootTest
             val companyIdOnlySfdr = UUID.randomUUID()
             val companyIdNoNotifications = UUID.randomUUID()
             const val PORTFOLIO_ALL_FRAMEWORKS = "Portfolioname 1"
-            const val PORTOFLIO_ONLY_EUTAXO = "Taxonomy only"
+            const val PORTFOLIO_ONLY_EUTAXO = "Taxonomy only"
             const val PORTFOLIO_ONLY_COMPANY3 = "NoNotificationExpected"
 
             private fun createNotificationFrequencyToPortfolioMap(
@@ -86,9 +86,8 @@ class NotificationSchedulerSpringbootTest
                                 .toString(),
                         ),
                     ),
-                    // Portfolio with only eu taxo
                     createNotificationFrequencyToPortfolioMap(
-                        PORTOFLIO_ONLY_EUTAXO,
+                        PORTFOLIO_ONLY_EUTAXO,
                         setOf(companyIdsfdrAndEuTaxo.toString(), companyIdOnlySfdr.toString()),
                         frameworks = setOf("eutaxonomy"),
                     ),
@@ -194,9 +193,9 @@ class NotificationSchedulerSpringbootTest
 
             val emailKeywords1 =
                 listOf(PORTFOLIO_ALL_FRAMEWORKS, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
-            val emailKeywordsBlacklist1 = listOf(PORTOFLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
+            val emailKeywordsBlacklist1 = listOf(PORTFOLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
             val emailKeywords2 =
-                listOf(PORTOFLIO_ONLY_EUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
+                listOf(PORTFOLIO_ONLY_EUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
             val emailKeywordsBlacklist2 = listOf(PORTFOLIO_ALL_FRAMEWORKS, PORTFOLIO_ONLY_COMPANY3, "SFDR", "2025", "company2", "company3")
 
             emailKeywords1.forEach { assertTrue(it in emailWithAllFrameworks, "Expected '$it' to be in '$emailWithAllFrameworks'") }

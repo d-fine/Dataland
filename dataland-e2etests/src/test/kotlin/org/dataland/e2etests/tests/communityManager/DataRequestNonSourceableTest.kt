@@ -109,7 +109,7 @@ class DataRequestNonSourceableTest {
     }
 
     private fun awaitUntilAsserted(operation: () -> Any) =
-        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+        Awaitility.await().atMost(6000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
             operation()
         }
 

@@ -190,7 +190,6 @@ class CommunityManagerListener(
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
-        //  val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
             "Received data-non-sourceable-message for data type: ${sourceabilityMessage.basicDataDimensions.dataType}, " +

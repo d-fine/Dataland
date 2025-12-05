@@ -23,9 +23,10 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * A service used to build scheduled data request summary emails, containing all data requests updates for one user
+ * A service used to build scheduled monitored portfolio updates summary emails,
+ * containing updates about data of monitored portfolios of one user
  */
-@Service("DataRequestSummaryEmailBuilder")
+@Service("PortfolioUpdateSummaryEmailBuilder")
 class PortfolioUpdateSummaryEmailBuilder
     @Autowired
     constructor(
@@ -37,12 +38,12 @@ class PortfolioUpdateSummaryEmailBuilder
         private fun buildExceptionMessageDueToCompanyNotFound(companyId: String) = "Dataland does not know the company ID $companyId"
 
         /**
-         * Builds the Data Requests Summary email and sends CE message.
+         * Builds the Portfolio Monitoring Update Summary email and sends CE message.
          * @param unprocessedEvents A list of notification event entities that are unprocessed
          * and contained in the summary email.
          * @param userId The ID of the user to whom the email should be sent.
          */
-        fun buildDataRequestSummaryEmailAndSendCEMessage(
+        fun buildPortfolioMonitoringUpdateSummaryEmailAndSendCEMessage(
             unprocessedEvents: List<NotificationEventEntity>,
             userId: UUID,
             frequency: NotificationFrequency,
@@ -61,9 +62,9 @@ class PortfolioUpdateSummaryEmailBuilder
         }
 
         /**
-         * Constructs the content of the Data Request Summary email from the provided events.
+         * Constructs the content of the Portfolio Monitoring Update Summary email from the provided events.
          * @param events A list of notification event entities to process.
-         * @return The email content that encapsulates the summary of data requests.
+         * @return The email content that encapsulates the summary of updates of monitored portfolios.
          */
         private fun portfolioMonitoringUpdateSummaryEmailContent(
             events: List<NotificationEventEntity>,

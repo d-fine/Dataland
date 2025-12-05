@@ -138,7 +138,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     val dataRequestSummaryKeywords =
         listOf(
-            "Data for your portfolio(s) has been updated on Dataland,",
+            "Data for your request(s) has been updated on Dataland",
             "New Data", "Framework", DATA_TYPE_LABEL_A,
             "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
             "Company", COMPANY_NAME,
