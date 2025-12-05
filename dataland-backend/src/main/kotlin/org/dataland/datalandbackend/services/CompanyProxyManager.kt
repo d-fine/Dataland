@@ -25,20 +25,20 @@ import java.util.UUID
 class CompanyProxyManager
     @Autowired
     constructor(
-        private val companyDataProxyRuleRepository: CompanyProxyRepository,
+        private val companyProxyRepository: CompanyProxyRepository,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Returns the CompanyProxyEntity for the given proxyId.
          *
-         * @throws InvalidInputApiException if no proxy rule exists for the given id.
+         * @throws ResourceNotFoundApiException if no proxy rule exists for the given id.
          */
         @Transactional(readOnly = true)
         fun getCompanyProxyById(proxyId: UUID): StoredCompanyProxy = retrieveCompanyProxyEntityById(proxyId).toStoredCompanyProxy()
 
         private fun retrieveCompanyProxyEntityById(proxyId: UUID): CompanyProxyEntity =
-            companyDataProxyRuleRepository
+            companyProxyRepository
                 .findById(proxyId)
                 .orElseThrow {
                     ResourceNotFoundApiException(
@@ -67,7 +67,7 @@ class CompanyProxyManager
             val reportingPeriodsSet = reportingPeriods ?: emptySet()
 
             val page =
-                companyDataProxyRuleRepository.findByFilters(
+                companyProxyRepository.findByFilters(
                     CompanyProxyFilter(
                         proxiedCompanyId = proxiedCompanyId,
                         proxyCompanyId = proxyCompanyId,
@@ -102,7 +102,7 @@ class CompanyProxyManager
             )
             logger.info("Checking for existing proxy relations to avoid duplicates...")
 
-            val existingProxies = companyDataProxyRuleRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
+            val existingProxies = companyProxyRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
             assertConflictingProxies(existingProxies, candidateProxy)
 
             val entity =
@@ -113,7 +113,7 @@ class CompanyProxyManager
                     reportingPeriod = candidateProxy.reportingPeriod,
                 )
 
-            val saved = companyDataProxyRuleRepository.save(entity)
+            val saved = companyProxyRepository.save(entity)
             logger.info(
                 "Saved proxy rule with id=${saved.proxyId} for proxiedCompanyId=$proxiedCompanyId, " +
                     "proxyCompanyId=$proxyCompanyId",
@@ -183,7 +183,7 @@ class CompanyProxyManager
         @Transactional
         fun deleteProxyRelation(proxyId: UUID): CompanyProxyEntity {
             val existing =
-                companyDataProxyRuleRepository
+                companyProxyRepository
                     .findById(proxyId)
                     .orElseThrow {
                         ResourceNotFoundApiException(
@@ -199,7 +199,7 @@ class CompanyProxyManager
                     "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",
             )
 
-            companyDataProxyRuleRepository.delete(existing)
+            companyProxyRepository.delete(existing)
 
             return existing
         }
@@ -218,7 +218,7 @@ class CompanyProxyManager
             updatedCompanyProxy: CompanyProxy<UUID>,
         ): StoredCompanyProxy {
             val existingProxiesForCompany =
-                companyDataProxyRuleRepository
+                companyProxyRepository
                     .findAllByProxiedCompanyId(updatedCompanyProxy.proxiedCompanyId)
                     .filter { it.proxyId != proxyId }
             assertConflictingProxies(existingProxiesForCompany, updatedCompanyProxy)
@@ -229,6 +229,6 @@ class CompanyProxyManager
             existing.framework = updatedCompanyProxy.framework
             existing.reportingPeriod = updatedCompanyProxy.reportingPeriod
 
-            return companyDataProxyRuleRepository.save(existing).toStoredCompanyProxy()
+            return companyProxyRepository.save(existing).toStoredCompanyProxy()
         }
     }

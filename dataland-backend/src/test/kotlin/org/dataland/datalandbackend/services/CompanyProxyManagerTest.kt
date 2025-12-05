@@ -29,7 +29,7 @@ import java.util.UUID
 class CompanyProxyManagerTest
     @Autowired
     constructor(
-        private val companyDataProxyRuleRepository: CompanyProxyRepository,
+        private val companyProxyRepository: CompanyProxyRepository,
         private val companyProxyManager: CompanyProxyManager,
     ) : BaseIntegrationTest() {
         private val defaultProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000001")
@@ -59,7 +59,7 @@ class CompanyProxyManagerTest
         fun `test that addProxyRelation creates and persists a new proxy relation`() {
             val proxyRelation = defaultCompanyProxy
             val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
-            val retrievedEntity = companyDataProxyRuleRepository.findAllByProxiedCompanyId(defaultProxiedCompanyId).first()
+            val retrievedEntity = companyProxyRepository.findAllByProxiedCompanyId(defaultProxiedCompanyId).first()
 
             assertNotNull(retrievedEntity)
             assertEquals(proxyRelation.proxiedCompanyId, retrievedEntity.proxiedCompanyId)
@@ -274,7 +274,7 @@ class CompanyProxyManagerTest
             proxyCompanyId: UUID = defaultProxyCompanyId,
             framework: String = defaultFramework,
             reportingPeriod: String = defaultReportingPeriod,
-        ) = companyDataProxyRuleRepository.save(
+        ) = companyProxyRepository.save(
             CompanyProxyEntity(
                 proxiedCompanyId = proxiedCompanyId,
                 proxyCompanyId = proxyCompanyId,
