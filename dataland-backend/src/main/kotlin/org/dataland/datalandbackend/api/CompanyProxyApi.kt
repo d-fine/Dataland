@@ -163,7 +163,7 @@ interface CompanyProxyApi {
             required = false,
         )
         reportingPeriods: Set<String>?,
-        @RequestParam(defaultValue = "10")
+        @RequestParam(defaultValue = "100")
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
             required = false,
