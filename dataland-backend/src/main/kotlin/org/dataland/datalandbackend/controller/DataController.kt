@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -165,25 +166,23 @@ open class DataController<T>(
     }
 
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
+        exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
-        if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
+        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
                 it.companyInformation == null
             }
         ) {
             throw ResourceNotFoundApiException(
-                summary = "CompanyIds $companyIds not found.",
+                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
                 message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
             )
         }
 
         val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
-        companyIds.forEach { companyId ->
-            reportingPeriods.forEach { reportingPeriod ->
+        exportRequestData.companyIds.forEach { companyId ->
+            exportRequestData.reportingPeriods.forEach { reportingPeriod ->
                 companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
             }
         }
@@ -198,7 +197,7 @@ open class DataController<T>(
                         companyIdAndReportingPeriodPairs,
                         dataType.toString(), correlationId,
                     ),
-                    exportFileType,
+                    exportRequestData.fileFormat,
                     dataType,
                     keepValueFieldsOnly,
                     includeAliases,
@@ -206,11 +205,11 @@ open class DataController<T>(
             } catch (_: DownloadDataNotFoundApiException) {
                 return ResponseEntity.noContent().build()
             }
-        logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
+        logger.info("Creation of ${exportRequestData.fileFormat.name} for export successful. Correlation ID: $correlationId")
 
         return ResponseEntity
             .ok()
-            .headers(buildHttpHeadersForExport(exportFileType))
+            .headers(buildHttpHeadersForExport(exportRequestData.fileFormat))
             .body(companyAssociatedDataForExport)
     }
 
