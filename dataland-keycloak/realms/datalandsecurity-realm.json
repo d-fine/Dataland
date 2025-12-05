@@ -325,6 +325,7 @@
       "dataland-public" : [ ],
       "dataland-qa-service" : [ ],
       "dataland-api-key-manager" : [ ],
+      "dataland-accounting-service" : [ ],
       "dataland-backend" : [ ],
       "admin-cli" : [ ],
       "dataland-email-service" : [ ],
@@ -656,6 +657,29 @@
     },
     "notBefore" : 0,
     "groups" : [ ]
+  }, {
+    "id": "f39a7482-978a-457b-97ae-ebf8ec2be5e4",
+    "username": "service-account-dataland-accounting-service",
+    "emailVerified": false,
+    "createdTimestamp": 1762248825,
+    "enabled": true,
+    "totp": false,
+    "serviceAccountClientId": "dataland-accounting-service",
+    "disableableCredentialTypes": [],
+    "requiredActions": [
+      "TERMS_AND_CONDITIONS"
+    ],
+    "realmRoles": [
+      "ROLE_ADMIN",
+      "default-roles-datalandsecurity"
+    ],
+    "clientRoles": {
+      "realm-management": [
+        "view-users"
+      ]
+    },
+    "notBefore": 0,
+    "groups": []
   }, {
     "id" : "80d3352b-1add-49df-90c3-b6163cd5edf0",
     "username" : "service-account-dataland-document-manager",
