@@ -15,8 +15,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 /**
  * Scheduler class for notifications sent out by the User Service.
@@ -71,7 +69,7 @@ class NotificationScheduler
         @Scheduled(cron = "0 */5 * * * *")
         fun scheduledTestEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInterval = Instant.now().minus(DAYS_IN_WEEK, ChronoUnit.DAYS).toEpochMilli()
+            val timeStampForInterval = Instant.now().minus(5, ChronoUnit.MINUTES).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
