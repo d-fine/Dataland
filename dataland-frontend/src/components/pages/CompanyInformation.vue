@@ -219,8 +219,6 @@ function fetchDataForThisPage(): void {
     void getCompanyInformation();
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
-    void checkIfUserIsMemberOrAdmin();
-    void checkIfCompanyIsDatalandMember();
     claimIsSubmitted.value = false;
   } catch (error) {
     console.error('Error fetching data for new company:', error);
