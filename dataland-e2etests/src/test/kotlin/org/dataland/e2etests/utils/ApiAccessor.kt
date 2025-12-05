@@ -7,6 +7,7 @@ import org.dataland.communitymanager.openApiClient.api.EmailAddressControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.CompanyProxyControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
@@ -50,6 +51,7 @@ class ApiAccessor {
     }
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val companyProxyController = CompanyProxyControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
