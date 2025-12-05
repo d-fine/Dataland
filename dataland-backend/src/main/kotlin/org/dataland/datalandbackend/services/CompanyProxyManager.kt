@@ -90,27 +90,27 @@ class CompanyProxyManager
          * @throws InvalidInputApiException if a conflicting rule already exists.
          */
         @Transactional
-        fun addProxyRelation(relation: CompanyProxy<UUID>): CompanyProxyEntity {
-            val proxiedCompanyId = relation.proxiedCompanyId
-            val proxyCompanyId = relation.proxyCompanyId
+        fun addProxyRelation(candidateProxy: CompanyProxy<UUID>): CompanyProxyEntity {
+            val proxiedCompanyId = candidateProxy.proxiedCompanyId
+            val proxyCompanyId = candidateProxy.proxyCompanyId
 
             logger.info(
                 "Adding proxy relation for proxiedCompanyId=$proxiedCompanyId, " +
                     "proxyCompanyId=$proxyCompanyId, " +
-                    "framework='${relation.framework}', " +
-                    "reportingPeriod='${relation.reportingPeriod}'",
+                    "framework='${candidateProxy.framework}', " +
+                    "reportingPeriod='${candidateProxy.reportingPeriod}'",
             )
             logger.info("Checking for existing proxy relations to avoid duplicates...")
 
-            val existingProxies = companyDataProxyRuleRepository.findAllByProxiedCompanyId(relation.proxiedCompanyId)
-            assertConflictingProxies(existingProxies, relation)
+            val existingProxies = companyDataProxyRuleRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
+            assertConflictingProxies(existingProxies, candidateProxy)
 
             val entity =
                 CompanyProxyEntity(
                     proxiedCompanyId = proxiedCompanyId,
                     proxyCompanyId = proxyCompanyId,
-                    framework = relation.framework,
-                    reportingPeriod = relation.reportingPeriod,
+                    framework = candidateProxy.framework,
+                    reportingPeriod = candidateProxy.reportingPeriod,
                 )
 
             val saved = companyDataProxyRuleRepository.save(entity)
@@ -124,9 +124,9 @@ class CompanyProxyManager
 
         private fun assertConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
-            relation: CompanyProxy<UUID>,
+            candidateProxy: CompanyProxy<UUID>,
         ) {
-            val conflictingProxies = findConflictingProxies(existingProxies, relation)
+            val conflictingProxies = findConflictingProxies(existingProxies, candidateProxy)
 
             if (conflictingProxies.isNotEmpty()) {
                 throw InvalidInputApiException(
@@ -142,33 +142,33 @@ class CompanyProxyManager
 
         private fun findConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
-            relation: CompanyProxy<UUID>,
+            candidateProxy: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> =
             when {
-                relation.framework.isNullOrEmpty() && relation.reportingPeriod.isNullOrEmpty() -> {
+                candidateProxy.framework.isNullOrEmpty() && candidateProxy.reportingPeriod.isNullOrEmpty() -> {
                     existingProxies
                 }
 
-                relation.framework.isNullOrEmpty() -> {
+                candidateProxy.framework.isNullOrEmpty() -> {
                     existingProxies.filter {
                         !it.framework.isNullOrEmpty() ||
                             it.reportingPeriod.isNullOrEmpty() ||
-                            it.reportingPeriod == relation.reportingPeriod
+                            it.reportingPeriod == candidateProxy.reportingPeriod
                     }
                 }
 
-                relation.reportingPeriod.isNullOrEmpty() -> {
+                candidateProxy.reportingPeriod.isNullOrEmpty() -> {
                     existingProxies.filter {
                         !it.reportingPeriod.isNullOrEmpty() ||
                             it.framework.isNullOrEmpty() ||
-                            it.framework == relation.framework
+                            it.framework == candidateProxy.framework
                     }
                 }
 
                 else -> {
                     existingProxies.filter {
-                        it.framework == relation.framework &&
-                            it.reportingPeriod == relation.reportingPeriod ||
+                        it.framework == candidateProxy.framework &&
+                            it.reportingPeriod == candidateProxy.reportingPeriod ||
                             it.framework.isNullOrEmpty() ||
                             it.reportingPeriod.isNullOrEmpty()
                     }
@@ -178,7 +178,7 @@ class CompanyProxyManager
         /**
          * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
          *
-         * If no rules exist for this pair, an ResourceNotFoundApiException is thrown.
+         * If no rules exist for this pair, a ResourceNotFoundApiException is thrown.
          */
         @Transactional
         fun deleteProxyRelation(proxyId: UUID): CompanyProxyEntity {
