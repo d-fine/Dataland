@@ -198,6 +198,10 @@ interface CompanyProxyApi {
                 description = "Successfully deleted proxy rule.",
             ),
             ApiResponse(
+                responseCode = "400",
+                description = "Invalid Inputs.",
+            ),
+            ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland admins may delete company proxies.",
                 content = [Content(array = ArraySchema())],

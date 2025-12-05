@@ -66,7 +66,7 @@ class CompanyProxyControllerTest {
     }
 
     @Test
-    fun `creating a proxy with invalid inputs returns an error`() {
+    fun `creating a proxy with invalid input returns a 400 error`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val ex =
@@ -111,7 +111,6 @@ class CompanyProxyControllerTest {
 
     @Test
     fun `change existing company proxy using put request`() {
-        // 1: create a proxy
         val companyIdProxyCompany = uploadCompanyAsUploader()
         val companyIdProxiedCompany = uploadCompanyAsUploader()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -147,33 +146,37 @@ class CompanyProxyControllerTest {
 
     @Test
     fun `trying to create a proxy as a non admin user results in a 403`() {
-        val ex =
+        val clientException =
             assertThrows<ClientException> {
                 postProxyRelationForRandomCompanies(TechnicalUser.Uploader)
             }
 
-        assertTrue(ex.message?.contains("403") == true)
+        assertTrue(clientException.message?.contains("403") == true)
     }
 
     @Test
-    fun `trying to delete a proxy as a non admin user results in a 401`() {
+    fun `trying to delete a proxy as a non admin user results in a 403`() {
         val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
 
-        assertThrows<ClientException> {
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                companyProxyApi.deleteCompanyProxy(proxyId)
+        val clientException =
+            assertThrows<ClientException> {
+                GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                    companyProxyApi.deleteCompanyProxy(proxyId)
+                }
             }
-        }
+        assertTrue(clientException.message?.contains("403") == true)
     }
 
     @Test
-    fun `trying to get a proxy relation by proxyId as a non admin user results in a 401`() {
+    fun `trying to get a proxy relation by proxyId as a non admin user results in a 403`() {
         val proxyId = postProxyRelationForRandomCompanies(TechnicalUser.Admin)
 
-        assertThrows<ClientException> {
-            GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
-                companyProxyApi.getCompanyProxyById(proxyId)
+        val clientException =
+            assertThrows<ClientException> {
+                GlobalAuth.withTechnicalUser(TechnicalUser.Uploader) {
+                    companyProxyApi.getCompanyProxyById(proxyId)
+                }
             }
-        }
+        assertTrue(clientException.message?.contains("403") == true)
     }
 }
