@@ -157,8 +157,8 @@ data class DataNonSourceableEmailContent(
 }
 
 /**
- * Content of an email sent to the user, when the user receives regular update summaries and
- * data for data requests is available, updated or not sourceable.
+ * Content of an email sent to the user, when the user enrolled for regular update summaries and
+ * data for data requests is available, updated, or not sourceable.
  */
 data class PortfolioMonitoringUpdateSummaryEmailContent(
     val newData: List<FrameworkData>,

@@ -52,9 +52,9 @@ class NotificationSchedulerSpringbootTest
             val companyIdsfdrAndEuTaxo = UUID.randomUUID()
             val companyIdOnlySfdr = UUID.randomUUID()
             val companyIdNoNotifications = UUID.randomUUID()
-            const val PORTFOLIOALLFRAMEWORKS = "Portfolioname 1"
-            const val PORTOFLIOONLYEUTAXO = "Taxonomy only"
-            const val PORTFOLIOONLYCOMPANY3 = "NoNotificationExpected"
+            const val PORTFOLIO_ALL_FRAMEWORKS = "Portfolioname 1"
+            const val PORTOFLIO_ONLY_EUTAXO = "Taxonomy only"
+            const val PORTFOLIO_ONLY_COMPANY3 = "NoNotificationExpected"
 
             private fun createNotificationFrequencyToPortfolioMap(
                 portfolioName: String,
@@ -76,25 +76,25 @@ class NotificationSchedulerSpringbootTest
                     )
                 }
 
-            val portfolioMapAllFrameworks =
-                createNotificationFrequencyToPortfolioMap(
-                    PORTFOLIOALLFRAMEWORKS,
-                    setOf(
-                        companyIdsfdrAndEuTaxo.toString(),
-                        companyIdOnlySfdr
-                            .toString(),
+            val mockPortfolios =
+                listOf(
+                    createNotificationFrequencyToPortfolioMap(
+                        PORTFOLIO_ALL_FRAMEWORKS,
+                        setOf(
+                            companyIdsfdrAndEuTaxo.toString(),
+                            companyIdOnlySfdr
+                                .toString(),
+                        ),
                     ),
+                    // Portfolio with only eu taxo
+                    createNotificationFrequencyToPortfolioMap(
+                        PORTOFLIO_ONLY_EUTAXO,
+                        setOf(companyIdsfdrAndEuTaxo.toString(), companyIdOnlySfdr.toString()),
+                        frameworks = setOf("eutaxonomy"),
+                    ),
+                    // This portfolio should not send an email
+                    createNotificationFrequencyToPortfolioMap(PORTFOLIO_ONLY_COMPANY3, setOf(companyIdNoNotifications.toString())),
                 )
-            val portfolioMapOnlyEuTaxo =
-                createNotificationFrequencyToPortfolioMap(
-                    PORTOFLIOONLYEUTAXO,
-                    setOf(companyIdsfdrAndEuTaxo.toString(), companyIdOnlySfdr.toString()),
-                    frameworks = setOf("eutaxonomy"),
-                )
-
-            // This portfolio should not send an email
-            val portfolioMapNoNotifications =
-                createNotificationFrequencyToPortfolioMap(PORTFOLIOONLYCOMPANY3, setOf(companyIdNoNotifications.toString()))
 
             val mockNotifications =
                 listOf(
@@ -131,9 +131,7 @@ class NotificationSchedulerSpringbootTest
         @BeforeAll
         fun setUp() {
             notificationEventRepository.saveAll(mockNotifications)
-            portfolioRepository.saveAll(portfolioMapAllFrameworks.values)
-            portfolioRepository.saveAll(portfolioMapOnlyEuTaxo.values)
-            portfolioRepository.saveAll(portfolioMapNoNotifications.values)
+            mockPortfolios.forEach { portfolioRepository.saveAll(it.values) }
         }
 
         @BeforeEach
@@ -146,29 +144,17 @@ class NotificationSchedulerSpringbootTest
                 TestArgument(
                     NotificationScheduler::scheduledDailyEmailSending,
                     NotificationFrequency.Daily,
-                    listOf(
-                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Daily),
-                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Daily),
-                        portfolioMapNoNotifications.getValue(NotificationFrequency.Daily),
-                    ),
+                    mockPortfolios.map { it.getValue(NotificationFrequency.Daily) },
                 ),
                 TestArgument(
                     NotificationScheduler::scheduledWeeklyEmailSending,
                     NotificationFrequency.Weekly,
-                    listOf(
-                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Weekly),
-                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Weekly),
-                        portfolioMapNoNotifications.getValue(NotificationFrequency.Weekly),
-                    ),
+                    mockPortfolios.map { it.getValue(NotificationFrequency.Weekly) },
                 ),
                 TestArgument(
                     NotificationScheduler::scheduledMonthlyEmailSending,
                     NotificationFrequency.Monthly,
-                    listOf(
-                        portfolioMapAllFrameworks.getValue(NotificationFrequency.Monthly),
-                        portfolioMapOnlyEuTaxo.getValue(NotificationFrequency.Monthly),
-                        portfolioMapNoNotifications.getValue(NotificationFrequency.Monthly),
-                    ),
+                    mockPortfolios.map { it.getValue(NotificationFrequency.Monthly) },
                 ),
             )
 
@@ -204,23 +190,22 @@ class NotificationSchedulerSpringbootTest
                 )
             }
 
-            val (email1, email2) =
-                if (capturedBodies[0].length > capturedBodies[1].length) {
-                    capturedBodies[0] to capturedBodies[1]
-                } else {
-                    capturedBodies[1] to capturedBodies[0]
-                }
+            val (emailWithOnlyEuTaxo, emailWithAllFrameworks) = capturedBodies.sortedBy { it.length }
 
             val emailKeywords1 =
-                listOf(PORTFOLIOALLFRAMEWORKS, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
-            val emailKeywordsBlacklist1 = listOf(PORTOFLIOONLYEUTAXO, PORTFOLIOONLYCOMPANY3, "company3", "\"nonSourceableData\":[]")
+                listOf(PORTFOLIO_ALL_FRAMEWORKS, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
+            val emailKeywordsBlacklist1 = listOf(PORTOFLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
             val emailKeywords2 =
-                listOf(PORTOFLIOONLYEUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
-            val emailKeywordsBlacklist2 = listOf(PORTFOLIOALLFRAMEWORKS, PORTFOLIOONLYCOMPANY3, "SFDR", "2025", "company2", "company3")
+                listOf(PORTOFLIO_ONLY_EUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
+            val emailKeywordsBlacklist2 = listOf(PORTFOLIO_ALL_FRAMEWORKS, PORTFOLIO_ONLY_COMPANY3, "SFDR", "2025", "company2", "company3")
 
-            emailKeywords1.forEach { assertTrue(it in email1, "Expected '$it' to be in '$email1'") }
-            emailKeywordsBlacklist1.forEach { assertTrue(it !in email1, "Expected '$it' to not be in '$email1'") }
-            emailKeywords2.forEach { assertTrue(it in email2, "Expected '$it' to be in '$email2'") }
-            emailKeywordsBlacklist2.forEach { assertTrue(it !in email2, "Expected '$it' to not be in '$email1'") }
+            emailKeywords1.forEach { assertTrue(it in emailWithAllFrameworks, "Expected '$it' to be in '$emailWithAllFrameworks'") }
+            emailKeywordsBlacklist1.forEach {
+                assertTrue(it !in emailWithAllFrameworks, "Expected '$it' to not be in '$emailWithAllFrameworks'")
+            }
+            emailKeywords2.forEach { assertTrue(it in emailWithOnlyEuTaxo, "Expected '$it' to be in '$emailWithOnlyEuTaxo'") }
+            emailKeywordsBlacklist2.forEach {
+                assertTrue(it !in emailWithOnlyEuTaxo, "Expected '$it' to not be in '$emailWithAllFrameworks'")
+            }
         }
     }

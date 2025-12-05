@@ -131,46 +131,43 @@ class DataSourcingManager
                     it.state = RequestState.Processed
                 }
             }
-
-            sendNonSourceableMessage(dataSourcingEntityWithFetchedRequests, state, correlationId)
-
+            if (state == DataSourcingState.NonSourceable &&
+                dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable
+            ) {
+                sendNonSourceableMessage(dataSourcingEntityWithFetchedRequests, correlationId)
+            }
             dataSourcingEntityWithFetchedRequests.state = state
         }
 
         /**
          * Checks if data sourcing entity is set to non-sourceable state, starting from any other state.
-         * If yes, logs message and send non-sourceability message to RabbitMQ
+         * If yes, logs message and sends non-sourceability message to RabbitMQ
          */
         private fun sendNonSourceableMessage(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
-            state: DataSourcingState?,
             correlationId: String,
         ) {
-            if (state == DataSourcingState.NonSourceable &&
-                dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable
-            ) {
-                val messageBody =
-                    SourceabilityMessage(
-                        BasicDataDimensions(
-                            dataSourcingEntityWithFetchedRequests.companyId.toString(),
-                            dataSourcingEntityWithFetchedRequests.dataType,
-                            dataSourcingEntityWithFetchedRequests.reportingPeriod,
-                        ),
-                        true,
-                        "",
-                    )
-                logger.info(
-                    "Sending non-sourceable message to message queue for data sourcing entity with id: " +
-                        "${dataSourcingEntityWithFetchedRequests.dataSourcingId}. CorrelationId: $correlationId.",
+            val messageBody =
+                SourceabilityMessage(
+                    BasicDataDimensions(
+                        dataSourcingEntityWithFetchedRequests.companyId.toString(),
+                        dataSourcingEntityWithFetchedRequests.dataType,
+                        dataSourcingEntityWithFetchedRequests.reportingPeriod,
+                    ),
+                    true,
+                    "",
                 )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    JsonUtils.defaultObjectMapper.writeValueAsString(messageBody),
-                    MessageType.DATASOURCING_NONSOURCEABLE,
-                    correlationId,
-                    ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
-                    RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
-                )
-            }
+            logger.info(
+                "Sending non-sourceable message to message queue for data sourcing entity with id: " +
+                    "${dataSourcingEntityWithFetchedRequests.dataSourcingId}. CorrelationId: $correlationId.",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                JsonUtils.defaultObjectMapper.writeValueAsString(messageBody),
+                MessageType.DATASOURCING_NONSOURCEABLE,
+                correlationId,
+                ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
+                RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
+            )
         }
 
         /**

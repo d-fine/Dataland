@@ -127,16 +127,16 @@ class NotificationEventListener(
     }
 
     private fun validateMessageAndStoreNotificationEvent(
-        basicDataDimensions: DataDimensions,
+        dataDimensions: DataDimensions,
         notificationEventType: NotificationEventType,
     ) {
-        checkThatReceivedDataIsComplete(basicDataDimensions)
+        checkThatReceivedDataIsComplete(dataDimensions)
 
         val notificationEventEntity =
             NotificationEventEntity(
-                companyId = ValidationUtils.convertToUUID(basicDataDimensions.companyId),
-                framework = decodeDataType(basicDataDimensions),
-                reportingPeriod = basicDataDimensions.reportingPeriod,
+                companyId = ValidationUtils.convertToUUID(dataDimensions.companyId),
+                framework = decodeDataType(dataDimensions.dataType),
+                reportingPeriod = dataDimensions.reportingPeriod,
                 notificationEventType = notificationEventType,
             )
         notificationEventRepository.save(notificationEventEntity)
@@ -169,7 +169,7 @@ class NotificationEventListener(
      * Decode the dataType string field in the message to a DataTypeEnum object to return.
      * @throws MessageQueueRejectException when dataType cannot be decoded
      */
-    private fun decodeDataType(dataDimensions: DataDimensions): DataTypeEnum =
-        DataTypeEnum.decode(dataDimensions.dataType)
+    private fun decodeDataType(dataTypeCandidate: String): DataTypeEnum =
+        DataTypeEnum.decode(dataTypeCandidate)
             ?: throw MessageQueueRejectException("Framework name could not be understood.")
 }

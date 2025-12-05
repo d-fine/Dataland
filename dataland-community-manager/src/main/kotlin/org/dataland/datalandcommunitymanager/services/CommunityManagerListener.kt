@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -151,14 +151,6 @@ class CommunityManagerListener(
     }
 
     /**
-     * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
-     * If the decoding fails, an appropriate exception is thrown.
-     */
-    private fun decodeDataTypeIfPossible(sourceabilityMessage: SourceabilityMessage): DataTypeEnum =
-        DataTypeEnum.decode(sourceabilityMessage.basicDataDimensions.dataType)
-            ?: throw MessageQueueRejectException("Framework name could not be understood.")
-
-    /**
      * Listens for message that specifies a dataset as non-sourceable
      * and patches all requests corresponding to this dataset to the request status non-sourceable.
      * @param payload the message describing the result of the data non-sourceable event
@@ -188,11 +180,17 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
+        val sourceabilityInfo = MessageQueueUtils.readMessagePayload<SourceabilityInfo>(payload)
+        val sourceabilityMessage =
+            SourceabilityMessage(
+                BasicDataDimensions(sourceabilityInfo.companyId, sourceabilityInfo.dataType.value, sourceabilityInfo.reportingPeriod),
+                sourceabilityInfo.isNonSourceable,
+                sourceabilityInfo.reason,
+            )
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
-        val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
+        //  val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
             "Received data-non-sourceable-message for data type: ${sourceabilityMessage.basicDataDimensions.dataType}, " +
@@ -200,15 +198,6 @@ class CommunityManagerListener(
                 "${sourceabilityMessage.basicDataDimensions.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
-
-        val sourceabilityInfo =
-            SourceabilityInfo(
-                companyId = sourceabilityMessage.basicDataDimensions.companyId,
-                dataType = dataTypeDecoded,
-                reportingPeriod = sourceabilityMessage.basicDataDimensions.reportingPeriod,
-                isNonSourceable = sourceabilityMessage.isNonSourceable,
-                reason = sourceabilityMessage.reason,
-            )
 
         MessageQueueUtils.rejectMessageOnException {
             dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)

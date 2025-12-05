@@ -28,19 +28,13 @@ import kotlin.reflect.KFunction
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationSchedulerTest {
     companion object {
-        const val PORTFOLIOONLYSFDR = "OnlySFDR"
-        const val PORTFOLIONONOTIFICATIONS = "NoNotificationExpected"
-        const val PORTFOLIOALLNOTIFICATIONS = "AllNotificationsExpected"
         val companyIdOnlySfdr: UUID = UUID.randomUUID()
         val companyIdSfdrAndEuTaxo: UUID = UUID.randomUUID()
-        val userIdOnlySfdr: UUID = UUID.randomUUID()
-        val userIdNoNotifications: UUID = UUID.randomUUID()
-        val userAllNotifications: UUID = UUID.randomUUID()
         val portfolioOnlySfdr =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIOONLYSFDR,
-                userIdOnlySfdr.toString(),
+                "OnlySFDR",
+                UUID.randomUUID().toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
                 mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
@@ -51,8 +45,8 @@ class NotificationSchedulerTest {
         val portfolioNoNotifications =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIONONOTIFICATIONS,
-                userIdNoNotifications.toString(),
+                "NoNotificationExpected",
+                UUID.randomUUID().toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
                 mutableSetOf(companyIdOnlySfdr.toString()),
@@ -63,8 +57,8 @@ class NotificationSchedulerTest {
         val portfolioAllNotifications =
             PortfolioEntity(
                 UUID.randomUUID(),
-                PORTFOLIOALLNOTIFICATIONS,
-                userAllNotifications.toString(),
+                "AllNotificationsExpected",
+                UUID.randomUUID().toString(),
                 Instant.now().toEpochMilli(),
                 Instant.now().toEpochMilli(),
                 mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
@@ -136,7 +130,7 @@ class NotificationSchedulerTest {
 
     @ParameterizedTest
     @MethodSource("eMailSchedulerParameters")
-    fun `test scheduledWeeklyEmailSending does create the expected messages`(ta: TestArgument) {
+    fun `test scheduled email sending does create the expected messages`(ta: TestArgument) {
         whenever(mockPortfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(eq(ta.notificationFrequency)))
             .thenReturn(ta.mockPortfolioList)
         whenever(mockNotificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(any(), any(), any()))
@@ -159,8 +153,8 @@ class NotificationSchedulerTest {
             eq(ta.notificationFrequency),
             portfolioNamesCaptor.capture(),
         )
-        assertEquals(listOf(PORTFOLIOONLYSFDR, PORTFOLIOALLNOTIFICATIONS), portfolioNamesCaptor.allValues)
-        assertEquals(listOf(userIdOnlySfdr, userAllNotifications), userIdCaptor.allValues)
+        assertEquals(listOf(portfolioOnlySfdr.portfolioName, portfolioAllNotifications.portfolioName), portfolioNamesCaptor.allValues)
+        assertEquals(listOf(portfolioOnlySfdr.userId, portfolioAllNotifications.userId), userIdCaptor.allValues.map { it.toString() })
         assertEquals(listOf(mockNotificationEventEntities[0], mockNotificationEventEntities[1]), notificationCaptor.firstValue)
         assertEquals(mockNotificationEventEntities, notificationCaptor.secondValue)
     }

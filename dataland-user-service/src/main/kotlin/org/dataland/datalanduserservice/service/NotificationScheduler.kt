@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.collections.component1
@@ -105,7 +107,13 @@ class NotificationScheduler
         @Scheduled(cron = "0 0 7 1 * *", zone = "Europe/Berlin")
         internal fun scheduledMonthlyEmailSending() {
             val notificationFrequency = NotificationFrequency.Monthly
-            val timeStampForInterval = Instant.now().minus(1L, ChronoUnit.MONTHS).toEpochMilli()
+            // Necessary since ChronoUnit.MONTHS is not supported for instant.now().minus()
+            val timeStampForInterval =
+                ZonedDateTime
+                    .now(ZoneId.systemDefault())
+                    .minusMonths(1)
+                    .toInstant()
+                    .toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
@@ -127,7 +135,7 @@ class NotificationScheduler
                                 .flatMap { it.companyIds }
                                 .toSet()
 
-                        mapPortfolioFrameworksToDataTypes(framework).flatMap { dataType ->
+                        mapPortfolioFrameworkToDataTypes(framework).flatMap { dataType ->
                             notificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
                                 dataType,
                                 monitoredCompanies.map { UUID.fromString(it) },
@@ -144,11 +152,11 @@ class NotificationScheduler
             }
         }
 
-        private fun mapPortfolioFrameworksToDataTypes(framework: String): List<DataTypeEnum> {
+        private fun mapPortfolioFrameworkToDataTypes(framework: String): List<DataTypeEnum> {
             if (framework == "eutaxonomy") {
                 return listOf(
                     DataTypeEnum.eutaxonomyMinusFinancials,
-                    DataTypeEnum.eutaxonomyMinusFinancials,
+                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
                     DataTypeEnum.nuclearMinusAndMinusGas,
                 )
             }
