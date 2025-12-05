@@ -426,4 +426,27 @@ class CompanyProxyControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden)
     }
+
+    @Test
+    fun `creating a proxy with an invalid framework returns 400`() {
+        val companyIdProxyCompany = createCompany()
+        val companyIdProxiedCompany = createCompany()
+        setMockSecurityContext(adminAuthentication)
+
+        val invalidFrameworkRequest =
+            CompanyProxy(
+                proxiedCompanyId = companyIdProxiedCompany,
+                proxyCompanyId = companyIdProxyCompany,
+                framework = "NOT_A_REAL_FRAMEWORK",
+                reportingPeriod = "2024",
+            )
+
+        mockMvc
+            .perform(
+                post("/company-proxies")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(invalidFrameworkRequest))
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isBadRequest)
+    }
 }
