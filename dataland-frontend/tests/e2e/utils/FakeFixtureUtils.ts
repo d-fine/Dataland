@@ -251,3 +251,14 @@ export class Generator {
     };
   }
 }
+
+/**
+ * Generates a random fiscal year end date in DD-MMM format (e.g., '31-Mar')
+ */
+export function randomFiscalYearEnd(): string {
+  const day = faker.number.int({ min: 1, max: 31 });
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = pickOneElement(months);
+  const dayStr = day.toString().padStart(2, '0');
+  return `${dayStr}-${month}`;
+}

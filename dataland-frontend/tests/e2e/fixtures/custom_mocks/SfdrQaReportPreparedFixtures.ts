@@ -10,6 +10,7 @@ import {
 import type { SfdrData } from '@clients/backend';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
 import { SfdrGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
+import { randomFiscalYearEnd } from '@e2e/utils/FakeFixtureUtils';
 
 /**
  * Generates sfdr qa report prepared fixtures by generating random sfdr-qa-reports and
@@ -71,7 +72,7 @@ export function generateSfdrLinkedQaReports(): {
       general: {
         dataDate: dataGenerator.guaranteedFutureDate(),
         fiscalYearDeviation: { value: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)) },
-        fiscalYearEnd: { value: dataGenerator.guaranteedFutureDate() },
+        fiscalYearEnd: { value: randomFiscalYearEnd() },
         referencedReports: dataGenerator.reports,
       },
     },
