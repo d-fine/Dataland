@@ -277,7 +277,7 @@ const groups: CompanyRoleDetails[] = [
     role: CompanyRole.CompanyOwner,
     title: 'Company Owners',
     icon: 'pi pi-crown',
-    info: "Company owners can create and edit datasets of their company and promote other users to Uploader or Company Owner.",
+    info: 'Company owners can create and edit datasets of their company and promote other users to Uploader or Company Owner.',
     description: 'Admin regarding datasets of their company.',
   },
   {
