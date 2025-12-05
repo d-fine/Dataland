@@ -49,9 +49,7 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedPcafDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options
