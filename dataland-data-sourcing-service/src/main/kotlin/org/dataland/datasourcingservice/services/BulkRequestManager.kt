@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -22,6 +23,7 @@ class BulkRequestManager
     @Autowired
     constructor(
         private val dataSourcingValidator: DataSourcingValidator,
+        private val dataSourcingQueryManager: DataSourcingQueryManager,
         private val requestCreationService: RequestCreationService,
         private val metaDataController: MetaDataControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
@@ -43,27 +45,36 @@ class BulkRequestManager
                     bulkDataRequest,
                 )
             val (invalidRequests, validatedRequests) = getValidatedAndInvalidRequests(validationResult, bulkDataRequest)
+
             val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
+
             val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
 
-            val acceptedDataRequests = validatedRequests - existingRequests - existingDatasets
+            val nonSourceableRequests =
+                getExistingNonSourceableDataRequests(
+                    validatedRequests - existingRequests - existingDatasets,
+                )
+
+            val acceptedDataRequests =
+                validatedRequests - existingRequests - existingDatasets - nonSourceableRequests
 
             acceptedDataRequests.forEach { dataDimension ->
                 requestCreationService.storeRequest(userIdToUse, dataDimension)
             }
 
             return BulkDataRequestResponse(
-                acceptedDataRequests = acceptedDataRequests,
-                invalidDataRequests = invalidRequests,
-                existingDataRequests = existingRequests,
-                existingDataSets = existingDatasets,
+                acceptedDataRequests = acceptedDataRequests.toList(),
+                invalidDataRequests = invalidRequests.toList(),
+                existingDataRequests = existingRequests.toList(),
+                existingDataSets = existingDatasets.toList(),
+                nonSourceableDataRequests = nonSourceableRequests.toList(),
             )
         }
 
         private fun getValidatedAndInvalidRequests(
             validationResult: DataSourcingValidator.DataRequestValidationResult,
             bulkDataRequest: BulkDataRequest,
-        ): Pair<List<BasicDataDimensions>, List<BasicDataDimensions>> {
+        ): Pair<Set<BasicDataDimensions>, Set<BasicDataDimensions>> {
             val validCompanyIds =
                 validationResult.companyIdValidation.filter { it.value != null }.map { it.key }
             val validDataTypes =
@@ -87,7 +98,7 @@ class BulkRequestManager
             return Pair(invalidDataDimensionTuples, validatedDataDimensionTuples)
         }
 
-        private fun getExistingDatasets(requests: List<BasicDataDimensions>): List<BasicDataDimensions> =
+        private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
             metaDataController
                 .retrieveMetaDataOfActiveDatasets(
                     basicDataDimensions =
@@ -104,19 +115,19 @@ class BulkRequestManager
                         dataType = it.dataType.toString(),
                         reportingPeriod = it.reportingPeriod,
                     )
-                }
+                }.toSet()
 
         /**
          * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
          * For performance reasons tuple matching is used and requires a native query via entity manager.
          * JPA does not support tuple matching.
-         * @param dataDimensions List of data dimensions to filter the requests.
+         * @param dataDimensions Set of data dimensions to filter the requests.
          * @param userId The ID of the user for whom to retrieve the active requests.
          */
         private fun getExistingRequests(
-            dataDimensions: List<BasicDataDimensions>,
+            dataDimensions: Set<BasicDataDimensions>,
             userId: UUID,
-        ): List<BasicDataDimensions> {
+        ): Set<BasicDataDimensions> {
             val formattedTuples =
                 dataDimensions.joinToString(", ") {
                     "('${it.companyId}', '${it.dataType}', '${it.reportingPeriod}')"
@@ -137,10 +148,31 @@ class BulkRequestManager
                             reportingPeriod = it.reportingPeriod,
                             dataType = it.dataType,
                         )
-                    }
+                    }.toSet()
             } else {
-                emptyList()
+                emptySet()
             }
+        }
+
+        private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
+            val nonSourceableDimensions =
+                dataSourcingQueryManager
+                    .searchDataSourcings(
+                        companyId = null,
+                        dataType = null,
+                        reportingPeriod = null,
+                        state = DataSourcingState.NonSourceable,
+                        chunkSize = Int.MAX_VALUE,
+                        chunkIndex = 0,
+                    ).map {
+                        BasicDataDimensions(
+                            companyId = it.companyId,
+                            dataType = it.dataType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }.toSet()
+
+            return dataDimensions.intersect(nonSourceableDimensions)
         }
 
         private fun assertNoEmptySetsInBulkRequest(bulkDataRequest: BulkDataRequest) {
@@ -160,7 +192,7 @@ class BulkRequestManager
             companyIdentifiers: Set<String>,
             dataTypes: Set<String>,
             reportingPeriods: Set<String>,
-        ): List<BasicDataDimensions> =
+        ): Set<BasicDataDimensions> =
             companyIdentifiers
                 .flatMap { companyId ->
                     dataTypes.flatMap { dataType ->
@@ -172,5 +204,5 @@ class BulkRequestManager
                             )
                         }
                     }
-                }
+                }.toSet()
     }
