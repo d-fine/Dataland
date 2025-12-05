@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import java.io.IOException
+import java.util.UUID
 import kotlin.reflect.KClass
 
 /**
@@ -21,6 +22,7 @@ import kotlin.reflect.KClass
 @Constraint(
     validatedBy = [
         CompanyExistsValidator::class,
+        CompanyExistsValidatorForUUID::class,
     ],
 )
 annotation class CompanyExists(
@@ -88,5 +90,22 @@ class CompanyExistsValidator(
             logger.warn("Error validating company existence: ${exception.message}")
             false
         }
+    }
+}
+
+/**
+ * Validator to check that a company exists on Dataland for UUID type
+ */
+class CompanyExistsValidatorForUUID(
+    @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
+    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+) : ConstraintValidator<CompanyExists, UUID> {
+    override fun isValid(
+        companyId: UUID?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
+        if (companyId == null) return false
+        return CompanyExistsValidator(backendBaseUrl, authenticatedOkHttpClient)
+            .isValid(companyId.toString(), context)
     }
 }
