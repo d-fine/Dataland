@@ -243,7 +243,7 @@ describe('Component tests for the data requests search page', function (): void 
     cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
   });
 
-  it.only('Check info message about overnight creation of requests', function (): void {
+  it('Check info message about overnight creation of requests', function (): void {
     interceptUserRequests();
     mountMyDataRequestsOverview();
     cy.get('[data-test="info-message"]')
