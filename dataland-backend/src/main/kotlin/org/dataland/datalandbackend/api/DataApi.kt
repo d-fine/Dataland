@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
@@ -148,32 +148,14 @@ interface DataApi<T> {
             ),
         ],
     )
-    @GetMapping(
+    @PostMapping(
         value = ["/export"],
         produces = ["application/octet-stream"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataByDimensions(
-        @Parameter(
-            name = "reportingPeriods",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_EXAMPLE,
-            required = true,
-        )
-        @RequestParam("reportingPeriods") reportingPeriods: List<String>,
-        @Parameter(
-            name = "companyIds",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_EXAMPLE,
-            required = true,
-        )
-        @RequestParam("companyIds") companyIds: List<String>,
-        @Parameter(
-            name = "fileFormat",
-            description = BackendOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
-            required = true,
-        )
-        @RequestParam("fileFormat") exportFileType: ExportFileType,
+        @Valid @RequestBody
+        exportRequestData: ExportRequestData,
         @Parameter(
             name = "keepValueFieldsOnly",
             description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,

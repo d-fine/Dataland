@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
@@ -128,9 +129,11 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     ): File =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
             .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
+                ExportRequestData(
+                    reportingPeriods = reportingPeriods,
+                    companyIds = companyIds,
+                    fileFormat = ExportFileType.CSV,
+                ),
                 keepValueFieldsOnly = keepValueFieldsOnly,
                 includeAliases = includeAliases,
             )
@@ -141,9 +144,11 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     ): File =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
             .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.EXCEL,
+                ExportRequestData(
+                    reportingPeriods = reportingPeriods,
+                    companyIds = companyIds,
+                    fileFormat = ExportFileType.EXCEL,
+                ),
                 includeAliases = false,
             )
 

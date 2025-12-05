@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
@@ -61,14 +61,12 @@ class EutaxonomyNonFinancialsDataController
 
         @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
         override fun exportCompanyAssociatedDataByDimensions(
-            reportingPeriods: List<String>,
-            companyIds: List<String>,
-            exportFileType: ExportFileType,
+            exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
         ): ResponseEntity<InputStreamResource> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
+                .exportCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
         override fun getFrameworkDatasetsForCompany(

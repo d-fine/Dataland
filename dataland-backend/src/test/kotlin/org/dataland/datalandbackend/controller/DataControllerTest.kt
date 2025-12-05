@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
@@ -158,9 +159,11 @@ internal class DataControllerTest {
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
             dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriods = listOf(testReportingPeriod),
-                companyIds = listOf(testCompanyId),
-                exportFileType = exportFileType,
+                ExportRequestData(
+                    reportingPeriods = listOf(testReportingPeriod),
+                    companyIds = listOf(testCompanyId),
+                    exportFileType = exportFileType,
+                ),
             )
         }
     }
@@ -176,9 +179,11 @@ internal class DataControllerTest {
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertThrows<ResourceNotFoundApiException> {
             dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriods = listOf(testReportingPeriod),
-                companyIds = listOf(testCompanyId),
-                exportFileType = exportFileType,
+                ExportRequestData(
+                    reportingPeriods = listOf(testReportingPeriod),
+                    companyIds = listOf(testCompanyId),
+                    exportFileType = exportFileType,
+                ),
             )
         }
     }

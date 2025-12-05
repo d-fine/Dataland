@@ -1,7 +1,9 @@
 package org.dataland.e2etests.tests
 
+import okhttp3.OkHttpClient
 import org.awaitility.core.ConditionTimeoutException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
@@ -10,9 +12,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.LksgSocial
 import org.dataland.datalandbackend.openApiClient.model.LksgSocialChildLabor
 import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -33,6 +37,7 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.springframework.http.HttpStatus
 import java.math.BigDecimal
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataControllerTest {
@@ -204,9 +209,11 @@ class DataControllerTest {
 
         apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-                companyIds = listOf(companyId),
-                reportingPeriods = listOf(reportingPeriod),
-                fileFormat = ExportFileType.CSV,
+                ExportRequestData(
+                    companyIds = listOf(companyId),
+                    reportingPeriods = listOf(reportingPeriod),
+                    fileFormat = ExportFileType.CSV,
+                ),
                 keepValueFieldsOnly = false,
             ).let { assert(it.readBytes().isEmpty()) }
 
@@ -283,6 +290,33 @@ class DataControllerTest {
                         ?.toPlainString(),
                 )
             }
+        }
+    }
+
+    @Test
+    fun `verify that export supports a huge number of companies`() {
+        val increasedTimeoutDataControllerApiForEuTaxonomyNonFinancials =
+            EutaxonomyNonFinancialsDataControllerApi(
+                BASE_PATH_TO_DATALAND_BACKEND,
+                OkHttpClient
+                    .Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .build(),
+            )
+        val dummyCompanyIds = List(3000) { UUID.randomUUID().toString() }
+        assertThrows<ClientException> {
+            increasedTimeoutDataControllerApiForEuTaxonomyNonFinancials
+                .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                    ExportRequestData(
+                        companyIds = dummyCompanyIds,
+                        reportingPeriods = listOf("2022"),
+                        fileFormat = ExportFileType.CSV,
+                    ),
+                )
+        }.also {
+            assertEquals(404, it.statusCode)
         }
     }
 
