@@ -100,6 +100,11 @@ interface CompanyProxyApi {
                 description = "No proxy found for the specified proxy id.",
                 content = [Content(mediaType = "application/json")],
             ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Invalid input.",
+                content = [Content(mediaType = "application/json")],
+            ),
         ],
     )
     @GetMapping(
@@ -126,6 +131,7 @@ interface CompanyProxyApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved proxies."),
+            ApiResponse(responseCode = "400", description = "Invalid Input."),
         ],
     )
     @GetMapping(
@@ -223,8 +229,8 @@ interface CompanyProxyApi {
     @Operation(
         summary = "Replace proxy entry for a company pair.",
         description =
-            "Replaces all proxy rules defined for the given proxied company and proxy company." +
-                " If the lists or reportingPeriods are empty or null, the proxy applies to all of them.",
+            "Replaces proxy rule defined for the given proxied company and proxy company." +
+                " If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
     )
     @ApiResponses(
         value = [

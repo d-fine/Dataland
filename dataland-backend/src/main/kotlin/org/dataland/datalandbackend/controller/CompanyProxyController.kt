@@ -100,7 +100,7 @@ class CompanyProxyController
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to update proxy rule for " +
-                    "proxiedCompanyId = '$companyProxy.proxiedCompanyId', proxyCompanyId = '$companyProxy.proxyCompanyId'",
+                    "proxiedCompanyId = '${companyProxy.proxiedCompanyId}', proxyCompanyId = '${companyProxy.proxyCompanyId}'",
             )
             return ResponseEntity.ok(
                 companyProxyManager.editCompanyProxy(
