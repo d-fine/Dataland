@@ -55,7 +55,7 @@ interface CompanyRightsApi {
         value = ["/{companyId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)")
     fun getCompanyRights(
         @PathVariable("companyId")
         companyId: String,

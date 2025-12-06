@@ -280,13 +280,13 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that company member admin without keycloak admin role can only modify member and member admin roles`() {
+    fun `assure that company admins without keycloak admin role can only modify analyst and admin roles`() {
         val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
-        val rolesThatCanBeModified = listOf(CompanyRole.MemberAdmin, CompanyRole.Member)
+        val rolesThatCanBeModified = listOf(CompanyRole.Admin, CompanyRole.Analyst)
         val rolesThatCannotBeModified =
             listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        companyRolesTestUtils.assignCompanyRole(CompanyRole.MemberAdmin, companyId, dataReaderUserId)
+        companyRolesTestUtils.assignCompanyRole(CompanyRole.Admin, companyId, dataReaderUserId)
         rolesThatCanBeModified.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             companyRolesTestUtils.assignCompanyRole(it, companyId, dataUploaderUserId)
@@ -321,7 +321,7 @@ class CompanyRolesControllerTest {
         companyRolesTestUtils.tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId)
 
         val companyRolesWithoutModificationRights =
-            listOf(CompanyRole.DataUploader, CompanyRole.Member)
+            listOf(CompanyRole.DataUploader, CompanyRole.Analyst)
 
         companyRolesWithoutModificationRights.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -343,7 +343,7 @@ class CompanyRolesControllerTest {
 
             assertDoesNotThrow {
                 companyRolesTestUtils.getCompanyRoleAssignments(
-                    CompanyRole.Member,
+                    CompanyRole.Analyst,
                     companyId = companyIdAlpha,
                 )
             }
@@ -363,7 +363,7 @@ class CompanyRolesControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val exceptionWhenTryingToGetCompanyRoles =
             assertThrows<ClientException> {
-                companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.Member, companyId = companyIdAlpha)
+                companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.Analyst, companyId = companyIdAlpha)
             }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToGetCompanyRoles, 403)
         val exceptionWhenTryingToCheckCompanyRoles =
@@ -396,14 +396,14 @@ class CompanyRolesControllerTest {
             currentAssignments.first(),
         )
 
-        companyRolesTestUtils.assignCompanyRole(CompanyRole.Member, companyId, dataUploaderUserId)
+        companyRolesTestUtils.assignCompanyRole(CompanyRole.Analyst, companyId, dataUploaderUserId)
 
         currentAssignments =
             companyRolesTestUtils.getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
             CompanyRoleAssignmentExtended(
-                companyRole = CompanyRole.Member,
+                companyRole = CompanyRole.Analyst,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
                 email = "data.uploader@example.com",
