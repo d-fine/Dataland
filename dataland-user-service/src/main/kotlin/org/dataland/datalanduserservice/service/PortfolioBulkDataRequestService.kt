@@ -27,26 +27,6 @@ class PortfolioBulkDataRequestService
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * Creates Bulk Data Requests for a specific portfolio.
-         *
-         * This function is called when a portfolio is created or its monitoring status changes,
-         * or when a company is added to the portfolio.
-         * It updates the company reporting year and sector information for the companies in the portfolio,
-         * and then publishes appropriate Bulk Data Requests if the portfolio is monitored.
-         *
-         * @param basePortfolio The BasePortfolio for which to create bulk data requests.
-         */
-        fun createBulkDataRequestsForPortfolioIfMonitored(basePortfolio: BasePortfolio) {
-            if (!basePortfolio.isMonitored) return
-            logger.info(
-                "Updating company reporting info for ${basePortfolio.identifiers.size} unique company identifiers for" +
-                    " portfolio with id ${basePortfolio.portfolioId} of user ${basePortfolio.userId}.",
-            )
-            companyReportingInfoService.updateCompanies(basePortfolio.identifiers)
-            postBulkDataRequest(basePortfolio)
-        }
-
-        /**
          * Schedules and executes the creation of Bulk Data Requests for all monitored portfolios in the system.
          *
          * This function runs automatically at 2:00 a.m. daily (server time).
@@ -55,9 +35,9 @@ class PortfolioBulkDataRequestService
          *
          * @see postBulkDataRequest
          */
-        @Suppress("UnusedPrivateMember") // Detect does not recognize the scheduled execution of this function
+        @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
         @Scheduled(cron = "0 0 2 * * *")
-        private fun createBulkDataRequestsForAllMonitoredPortfolios() {
+        fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()

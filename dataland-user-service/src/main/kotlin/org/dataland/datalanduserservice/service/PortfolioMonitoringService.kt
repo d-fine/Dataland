@@ -16,7 +16,6 @@ import java.util.UUID
 class PortfolioMonitoringService
     @Autowired
     constructor(
-        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
         private val portfolioRepository: PortfolioRepository,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
@@ -50,13 +49,8 @@ class PortfolioMonitoringService
                     portfolio.monitoredFrameworks,
                 )
 
-            val updatedPortfolio =
-                portfolioRepository
-                    .save(updatedPortfolioEntity)
-                    .toBasePortfolio()
-
-            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(updatedPortfolio)
-
-            return updatedPortfolio
+            return portfolioRepository
+                .save(updatedPortfolioEntity)
+                .toBasePortfolio()
         }
     }

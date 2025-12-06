@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
-import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -19,13 +18,11 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.check
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -54,9 +51,6 @@ class DatalandUserServiceSpringbootTest
     ) {
         @MockitoBean
         private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
-
-        @MockitoBean
-        private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
 
         @MockitoBean
         private val mockCompanyDataController = mock<CompanyDataControllerApi>()
@@ -170,32 +164,6 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
                 assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
-            }
-
-            @Test
-            fun `test that patching monitoring triggers community manager bulk data request`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_ADMIN)
-                val originalPortfolioResponse =
-                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
-
-                val portfolioMonitoringPatch =
-                    PortfolioMonitoringPatch(
-                        isMonitored = true,
-                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                    )
-
-                assertDoesNotThrow {
-                    portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch)
-                }
-
-                verify(mockPortfolioBulkDataRequestService)
-                    .createBulkDataRequestsForPortfolioIfMonitored(
-                        check {
-                            assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
-                            assertTrue(it.isMonitored)
-                            assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
-                        },
-                    )
             }
 
             @Test
