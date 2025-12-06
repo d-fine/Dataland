@@ -33,7 +33,7 @@ open class DataSourcingTest {
             ),
         )
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            role = CompanyRole.Member,
+            role = CompanyRole.Analyst,
             companyId = UUID.fromString(companyId),
             userId = UUID.fromString(TechnicalUser.PremiumUser.technicalUserId),
         )

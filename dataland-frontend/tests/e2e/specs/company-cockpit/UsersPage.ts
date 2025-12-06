@@ -43,7 +43,7 @@ describeIf(
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => assignCompanyRole(token, CompanyRole.Member, alphaCompanyIdAndName.companyId, reader_userId))
+        .then((token) => assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId))
         .then(() => cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`));
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
@@ -53,18 +53,18 @@ describeIf(
       cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
     });
 
-    it('As a basic company member you should not be able to add members, change the role of other members or remove them', () => {
-      setupUserPage(CompanyRole.Member);
+    it('As a basic company analyst you should not be able to add members, change the role of other members or remove them', () => {
+      setupUserPage(CompanyRole.Analyst);
       cy.get('[data-test="usersTab"]').should('be.visible').click();
-      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
         cy.get('[data-test="add-user-button"]').should('not.exist');
       });
     });
 
     it('As a company admin you should be able to add members', () => {
-      setupUserPage(CompanyRole.MemberAdmin);
+      setupUserPage(CompanyRole.Admin);
       cy.get('[data-test="usersTab"]').should('be.visible').click();
-      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
       cy.get('[data-test="email-input-field"]').should('be.visible').type('data.premium-user@example.com');
@@ -75,15 +75,15 @@ describeIf(
         cy.contains('Success');
         cy.contains('button', 'OK').click();
       });
-      cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+      cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
         cy.get('td').contains('PremiumUser').should('exist');
       });
     });
 
     it('As a company admin you should be able to change the role of other members', () => {
-      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.Member);
+      setupUserPage(CompanyRole.Admin, CompanyRole.Analyst);
       cy.get('[data-test="usersTab"]').should('be.visible').click();
-      cy.contains('[data-test="company-roles-card"]', 'Members')
+      cy.contains('[data-test="company-roles-card"]', 'Analysts')
         .should('be.visible')
         .within(() => {
           cy.get('td')
@@ -109,7 +109,7 @@ describeIf(
     });
 
     it('As a company admin you should be able to remove other members', () => {
-      setupUserPage(CompanyRole.MemberAdmin, CompanyRole.MemberAdmin);
+      setupUserPage(CompanyRole.Admin, CompanyRole.Admin);
       cy.get('[data-test="usersTab"]').should('be.visible').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('td')

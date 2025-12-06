@@ -108,11 +108,11 @@ describeIf(
     }
 
     /**
-     * Makes the Data Reader a Member of the memberStoredCompany.
+     * Makes the Data Reader a Analyst of the memberStoredCompany.
      */
-    function makeReaderMemberOfCompany(): void {
+    function makeReaderAnalystOfCompany(): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return assignCompanyRole(token, 'Member', memberStoredCompany.companyId, reader_userId);
+        return assignCompanyRole(token, 'Analyst', memberStoredCompany.companyId, reader_userId);
       });
     }
 
@@ -121,7 +121,7 @@ describeIf(
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         uploadCompanyWithoutData();
         makeCompanyMember();
-        makeReaderMemberOfCompany();
+        makeReaderAnalystOfCompany();
         uploadCompanyWithData('2020');
       });
     });

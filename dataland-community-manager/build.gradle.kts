@@ -57,6 +57,9 @@ dependencies {
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
 }
 
 openApi {

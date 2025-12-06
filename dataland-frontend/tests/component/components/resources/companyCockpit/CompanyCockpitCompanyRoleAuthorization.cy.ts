@@ -4,13 +4,8 @@ import {
   mockRequestsOnMounted,
   validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
-import {
-  type AggregatedFrameworkDataSummary,
-  type CompanyInformation,
-  type DataTypeEnum,
-  type LksgData,
-} from '@clients/backend';
-import { type FixtureData } from '@sharedUtils/Fixtures';
+import { setupCompanyCockpitFixtures } from './testUtils';
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import { KEYCLOAK_ROLES } from '@/utils/KeycloakRoles';
 
@@ -24,17 +19,14 @@ describe('Component test for the authorization of company cockpit components', (
   const dummyEmail = 'mock@Company.com';
 
   before(function () {
-    cy.clearLocalStorage();
-    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
-      const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      companyInformationForTest = lksgFixtures[0]!.companyInformation;
-    });
-    cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
-        DataTypeEnum,
-        AggregatedFrameworkDataSummary
-      >;
-    });
+    setupCompanyCockpitFixtures(
+      (info) => {
+        companyInformationForTest = info;
+      },
+      (map) => {
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary = map;
+      }
+    );
   });
 
   it('Check the Vsme summary panel behaviour if the user is company owner', () => {
@@ -52,8 +44,8 @@ describe('Component test for the authorization of company cockpit components', (
     }
   });
 
-  it('Users Page is visible for a Company Member', () => {
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+  it('Users Page is visible for a Company Analyst', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
     cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
@@ -74,15 +66,15 @@ describe('Component test for the authorization of company cockpit components', (
   });
 
   it('Users are being displayed correctly in the Users Page', () => {
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Member, dummyCompanyId)];
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
     cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
       const q = req.query as Record<string, string | undefined>;
-      if (q.role === CompanyRole.Member) {
+      if (q.role === CompanyRole.Analyst) {
         req.reply({
           statusCode: 200,
           body: [
             {
-              companyRole: 'Member',
+              companyRole: 'Analyst',
               companyId: dummyCompanyId,
               userId: dummyUserId,
               email: dummyEmail,
@@ -101,7 +93,7 @@ describe('Component test for the authorization of company cockpit components', (
     cy.get('[data-test="usersTab"]').click();
     cy.wait('@roleFetch');
     cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
-    cy.contains('[data-test="company-roles-card"]', 'Members').within(() => {
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
       cy.get('td', { timeout: 10000 }).should('exist');
       cy.get('td').contains(dummyFirstName).should('exist');
       cy.get('td').contains(dummyLastName).should('exist');

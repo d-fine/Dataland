@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.ValidReportingPeriodShift
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -74,7 +73,7 @@ data class CompanyInformation(
         description = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_EXAMPLE,
     )
-    val fiscalYearEnd: LocalDate? = null,
+    val fiscalYearEnd: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_EXAMPLE,

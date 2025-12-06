@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.MonthDay
+import java.time.format.DateTimeFormatter
 
 typealias CompanyId = String
 
@@ -113,18 +115,23 @@ class CompanyReportingInfoService
         }
 
         private fun resolveReportingYear(
-            fiscalYearEnd: LocalDate,
+            fiscalYearEnd: String,
             reportingPeriodShift: Int,
         ): Int? {
             val today = LocalDate.now()
             val lowerBoundary = today.minusMonths(STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS)
             val upperBoundary = today.minusMonths(END_OF_SOURCING_WINDOW_THRESHOLD_2_IN_MONTHS)
 
-            val candidateFiscalYearEnd =
+            val fiscalMonthDay = MonthDay.parse(fiscalYearEnd, DateTimeFormatter.ofPattern("dd-MMM"))
+
+            val candidateDates =
                 listOf(
-                    fiscalYearEnd.withYear(lowerBoundary.year),
-                    fiscalYearEnd.withYear(upperBoundary.year),
-                ).firstOrNull {
+                    fiscalMonthDay.atYear(lowerBoundary.year),
+                    fiscalMonthDay.atYear(upperBoundary.year),
+                )
+
+            val candidateFiscalYearEnd =
+                candidateDates.firstOrNull {
                     it.isAfter(lowerBoundary) && it.isBefore(upperBoundary)
                 } ?: return null
 
