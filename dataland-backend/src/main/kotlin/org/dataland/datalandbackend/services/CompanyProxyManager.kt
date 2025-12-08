@@ -1,12 +1,14 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyFilter
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -145,10 +147,12 @@ class CompanyProxyManager
             candidateProxy: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> =
             when {
+                // if (framework = null && reportingPeriod = null) { ...
                 candidateProxy.framework.isNullOrEmpty() && candidateProxy.reportingPeriod.isNullOrEmpty() -> {
                     existingProxies
                 }
 
+                // if(candidateProxy.framework.isNullorEmpty() && !candidateProxy.reportingPeriod.isNullOrEmpty()) { ...
                 candidateProxy.framework.isNullOrEmpty() -> {
                     existingProxies.filter {
                         !it.framework.isNullOrEmpty() ||
@@ -174,6 +178,53 @@ class CompanyProxyManager
                     }
                 }
             }
+
+        private fun newFindConflictingProxies(
+            existingProxies: List<CompanyProxyEntity>,
+            candidateProxy: CompanyProxy<UUID>,
+        ): List<CompanyProxyEntity> {
+            val candidateSet = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy)
+            return candidateSet
+        }
+
+        private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
+            candidateProxy: CompanyProxy<UUID>,
+        ): List<CompanyProxyEntity> {
+            var resultCombinations = mutableListOf<CompanyProxyEntity>()
+            val proxyFrameWorkWithNullReplacedByAllPossibleCombinations = mutableListOf<CompanyProxyEntity>()
+            val reportingPeriodRange = ValidationUtils.reportingPeriodMininum..ValidationUtils.reportingPeriodMaximum
+
+            if (candidateProxy.framework == null) {
+                DataType.values.forEach {
+                    proxyFrameWorkWithNullReplacedByAllPossibleCombinations.add(
+                        CompanyProxyEntity(
+                            proxiedCompanyId = candidateProxy.proxiedCompanyId,
+                            proxyCompanyId = candidateProxy.proxyCompanyId,
+                            framework = it.toString(),
+                            reportingPeriod = candidateProxy.reportingPeriod,
+                        ),
+                    )
+                }
+            }
+
+            if (candidateProxy.reportingPeriod == null) {
+                proxyFrameWorkWithNullReplacedByAllPossibleCombinations.forEach { it ->
+                    reportingPeriodRange.forEach { rp ->
+                        resultCombinations.add(
+                            CompanyProxyEntity(
+                                proxiedCompanyId = it.proxiedCompanyId,
+                                proxyCompanyId = it.proxyCompanyId,
+                                framework = it.framework,
+                                reportingPeriod = rp.toString(),
+                            ),
+                        )
+                    }
+                }
+            } else {
+                resultCombinations = proxyFrameWorkWithNullReplacedByAllPossibleCombinations
+            }
+            return resultCombinations
+        }
 
         /**
          * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
