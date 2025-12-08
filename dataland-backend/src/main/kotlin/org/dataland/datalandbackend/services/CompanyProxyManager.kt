@@ -105,7 +105,7 @@ class CompanyProxyManager
             logger.info("Checking for existing proxy relations to avoid duplicates...")
 
             val existingProxies = companyProxyRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
-            assertConflictingProxies(existingProxies, candidateProxy)
+            assertNoConflictingProxiesExist(existingProxies, candidateProxy)
 
             val entity =
                 CompanyProxyEntity(
@@ -124,7 +124,7 @@ class CompanyProxyManager
             return saved
         }
 
-        private fun assertConflictingProxies(
+        private fun assertNoConflictingProxiesExist(
             existingProxies: List<CompanyProxyEntity>,
             candidateProxy: CompanyProxy<UUID>,
         ) {
@@ -177,49 +177,17 @@ class CompanyProxyManager
         private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
             companyProxy: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> {
-            val reportingPeriodRange = ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM
+            val allReportingPeriods = (ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM).toList()
+            val reportingPeriods = if (companyProxy.reportingPeriod == null) allReportingPeriods else listOf(companyProxy.reportingPeriod)
+            val frameworks = if (companyProxy.framework == null) DataType.values else listOf(companyProxy.framework)
 
-            return when {
-                companyProxy.framework == null && companyProxy.reportingPeriod == null -> {
-                    reportingPeriodRange.flatMap { rp ->
-                        DataType.values.map { fw ->
-                            CompanyProxyEntity(
-                                proxiedCompanyId = companyProxy.proxiedCompanyId,
-                                proxyCompanyId = companyProxy.proxyCompanyId,
-                                framework = fw.toString(),
-                                reportingPeriod = rp.toString(),
-                            )
-                        }
-                    }
-                }
-                companyProxy.framework != null && companyProxy.reportingPeriod == null -> {
-                    reportingPeriodRange.map { rp ->
-                        CompanyProxyEntity(
-                            proxiedCompanyId = companyProxy.proxiedCompanyId,
-                            proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = companyProxy.framework,
-                            reportingPeriod = rp.toString(),
-                        )
-                    }
-                }
-                companyProxy.framework == null && companyProxy.reportingPeriod != null -> {
-                    DataType.values.map { fw ->
-                        CompanyProxyEntity(
-                            proxiedCompanyId = companyProxy.proxiedCompanyId,
-                            proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = fw.toString(),
-                            reportingPeriod = companyProxy.reportingPeriod,
-                        )
-                    }
-                }
-                else -> {
-                    listOf(
-                        CompanyProxyEntity(
-                            proxiedCompanyId = companyProxy.proxiedCompanyId,
-                            proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = companyProxy.framework,
-                            reportingPeriod = companyProxy.reportingPeriod,
-                        ),
+            return reportingPeriods.flatMap { reportingPeriod ->
+                frameworks.map { framework ->
+                    CompanyProxyEntity(
+                        proxiedCompanyId = companyProxy.proxiedCompanyId,
+                        proxyCompanyId = companyProxy.proxyCompanyId,
+                        framework = framework.toString(),
+                        reportingPeriod = reportingPeriod.toString(),
                     )
                 }
             }
@@ -271,7 +239,7 @@ class CompanyProxyManager
                 companyProxyRepository
                     .findAllByProxiedCompanyId(updatedCompanyProxy.proxiedCompanyId)
                     .filter { it.proxyId != proxyId }
-            assertConflictingProxies(existingProxiesForCompany, updatedCompanyProxy)
+            assertNoConflictingProxiesExist(existingProxiesForCompany, updatedCompanyProxy)
 
             val existing = retrieveCompanyProxyEntityById(proxyId)
             existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
