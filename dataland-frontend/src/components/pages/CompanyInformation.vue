@@ -159,21 +159,21 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  loadDataAndCheckForBadge();
+onMounted(async () => {
+  await loadDataAndCheckForBadge();
 });
 
 watch(
   () => props.companyId,
-  () => {
-    loadDataAndCheckForBadge();
+  async () => {
+    await loadDataAndCheckForBadge();
   }
 );
 
 /**
  * Loads all relevant data for the company page
  */
-async function loadDataAndCheckForBadge() {
+async function loadDataAndCheckForBadge(): Promise<void> {
   fetchDataForThisPage();
   await checkIfUserIsMemberOrAdmin();
   if (isMemberOfCompanyOrAdmin.value) {
