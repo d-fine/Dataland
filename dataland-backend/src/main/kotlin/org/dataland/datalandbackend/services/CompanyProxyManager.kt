@@ -166,7 +166,8 @@ class CompanyProxyManager
             }
 
             return expandedExistingCombinations.filter { (_, expandedCombination) ->
-                expandedCombination in candidateSet
+                expandedCombination.framework in candidateSet.map { it.framework } &&
+                    expandedCombination.reportingPeriod in candidateSet.map { it.reportingPeriod }
             }
         }
 
