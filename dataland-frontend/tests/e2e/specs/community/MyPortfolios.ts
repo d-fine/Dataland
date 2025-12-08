@@ -49,6 +49,47 @@ function deletePortfolio(name: string): void {
   cy.get(`[data-test="${name}"]`).should('not.exist');
 }
 
+/**
+ * Activates active monitoring for a portfolio.
+ * @param portfolioToActivate - The name of the portfolio to delete.
+ */
+function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void {
+  cy.get(`[data-test="${portfolioToActivate}"]`).click();
+  cy.get(`[data-test="portfolio-${portfolioToActivate}"] [data-test="monitor-portfolio"]`).click({
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  });
+
+  cy.get('.p-dialog').find('.p-dialog-header').contains(`Monitoring of`);
+
+  cy.get('.p-dialog')
+    .find('.portfolio-monitoring-content')
+    .within(() => {
+      cy.get('[data-test="activateMonitoringToggle"]').click();
+    });
+
+  cy.get('.p-dialog')
+    .find('.portfolio-monitoring-content')
+    .within(() => {
+      cy.get('[data-test="frameworkSelection"]')
+        .contains('EU Taxonomy')
+        .parent()
+        .find('input[type="checkbox"]')
+        .click();
+      cy.get('[data-test="saveChangesButton"]').click({
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      });
+    });
+  cy.wait('@patchMonitoring')
+    .its('request.body')
+    .should((body) => {
+      expect(body.isMonitored).to.be.true;
+      expect(body.monitoredFrameworks).to.include('eutaxonomy');
+    });
+
+  cy.get('[data-test="success-modal"]').should('exist');
+  cy.get('[data-test="close-success-modal-button"]').should('exist').click();
+}
+
 describeIf(
   'As a user I want to be able to create, edit, and delete my portfolios',
   {
@@ -85,6 +126,7 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
+      cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
       cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
@@ -124,7 +166,10 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
+      activateActiveMonitoringForPortfolio(editedSecondPortfolioName);
+
       // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
+      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="view-company-button"]:visible`).first().find('.p-button-label').click();
       cy.url().should('include', '/companies/');
       cy.visit('/portfolios');
