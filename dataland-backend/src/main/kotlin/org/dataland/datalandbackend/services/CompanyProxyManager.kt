@@ -173,7 +173,7 @@ class CompanyProxyManager
          */
         private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
             companyProxy: CompanyProxy<UUID>,
-        ): Set<CompanyProxyEntity> {
+        ): Set<Pair<String, String>> {
             val allReportingPeriods = (ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM).toList()
             val reportingPeriods = if (companyProxy.reportingPeriod == null) allReportingPeriods else listOf(companyProxy.reportingPeriod)
             val frameworks = if (companyProxy.framework == null) DataType.values else listOf(companyProxy.framework)
@@ -181,12 +181,7 @@ class CompanyProxyManager
             return reportingPeriods
                 .flatMap { reportingPeriod ->
                     frameworks.map { framework ->
-                        CompanyProxyEntity(
-                            proxiedCompanyId = companyProxy.proxiedCompanyId,
-                            proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = framework.toString(),
-                            reportingPeriod = reportingPeriod.toString(),
-                        )
+                        Pair(framework.toString(), reportingPeriod.toString())
                     }
                 }.toSet()
         }
