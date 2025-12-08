@@ -554,7 +554,6 @@ function openDownloadModal(): void {
     },
     onClose() {
       loadPortfolio();
-      isSuccessDialogVisible.value = true;
       emit('update:portfolio-overview');
     },
   });
@@ -587,6 +586,11 @@ function openMonitoringModal(): void {
     onClose() {
       loadPortfolio();
       emit('update:portfolio-overview');
+    },
+    emits: {
+      'monitoring-saved': () => {
+        isSuccessDialogVisible.value = true;
+      },
     },
   });
 }
