@@ -17,7 +17,7 @@ interface InterceptRequest {
   headers: Record<string, string>;
   url: string;
   query: Record<string, string>;
-  continue: (callback: (response: InterceptResponse) => void) => void;
+  on: (event: string, callback: (response: InterceptResponse) => void) => void;
 }
 
 interface InterceptResponse {
@@ -74,7 +74,7 @@ export function interceptAllAndCheckFor500Errors(): void {
   const handler = (incomingRequest: InterceptRequest): void => {
     const is500ResponseAllowed = incomingRequest.headers['DATALAND-ALLOW-5XX'] === 'true';
     delete incomingRequest.headers['DATALAND-ALLOW-5XX'];
-    incomingRequest.continue((response: InterceptResponse) => {
+    incomingRequest.on('response', (response: InterceptResponse) => {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
         assert(
           false,
