@@ -286,7 +286,7 @@ const props = defineProps<{
 
 const successDialogMessage = computed(() =>
   isMonitored.value
-    ? 'Portfolio monitoring updated successfully.\nRequests are created overnight.'
+    ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
     : 'Portfolio monitoring updated successfully.'
 );
 const isSuccessDialogVisible = ref(false);
@@ -584,10 +584,10 @@ function openMonitoringModal(): void {
       portfolio: enrichedPortfolio.value,
     },
     onClose(options) {
-      loadPortfolio();
-      emit('update:portfolio-overview');
       if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
+        loadPortfolio();
+        emit('update:portfolio-overview');
       }
     },
   });
