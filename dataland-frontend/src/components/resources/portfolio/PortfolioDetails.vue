@@ -286,7 +286,7 @@ const props = defineProps<{
 
 const successDialogMessage = computed(() =>
   isMonitored.value
-    ? 'Portfolio monitoring updated successfully. Requests are created overnight.'
+    ? 'Portfolio monitoring updated successfully.\nRequests are created overnight.'
     : 'Portfolio monitoring updated successfully.'
 );
 const isSuccessDialogVisible = ref(false);
