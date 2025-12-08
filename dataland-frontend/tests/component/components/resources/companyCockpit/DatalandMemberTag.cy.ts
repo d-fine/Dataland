@@ -70,7 +70,7 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
       .should('exist');
   });
 
-  it('Dataland Member badge is NOT visible for non-admin users', () => {
+  it('Dataland Member badge is NOT visible for non-admin users and without company role', () => {
     const companyRoleAssignmentsOfUser: CompanyRoleAssignmentExtended[] = [];
     const hasCompanyAtLeastOneOwner = true;
 
@@ -84,7 +84,7 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     );
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
-
+    cy.wait('@extendedCompanyRoleAssignments');
     cy.get('[data-test="datalandMemberBadge"]').should('not.exist');
   });
 

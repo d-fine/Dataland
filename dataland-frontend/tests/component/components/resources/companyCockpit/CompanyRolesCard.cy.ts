@@ -209,7 +209,8 @@ describe('Company Roles Card Tests', () => {
       role: CompanyRole.CompanyOwner,
       expectedTitle: 'Company Owners',
       expectedIcon: 'pi pi-crown',
-      expectedInfo: 'Company owners have the highest level of access and can add other users as company owners',
+      expectedInfo:
+        'Company owners can create and edit datasets of their company and promote other users to Uploader or Company Owner.',
     },
     {
       role: CompanyRole.Admin,
@@ -221,13 +222,13 @@ describe('Company Roles Card Tests', () => {
       role: CompanyRole.Analyst,
       expectedTitle: 'Analysts',
       expectedIcon: 'pi pi-users',
-      expectedInfo: 'Analysts have the ability to request unlimited data',
+      expectedInfo: 'Analysts can create requests and use active portfolio monitoring.',
     },
     {
       role: CompanyRole.DataUploader,
       expectedTitle: 'Uploaders',
       expectedIcon: 'pi pi-cloud-upload',
-      expectedInfo: 'Uploaders have the responsibility of ensuring all relevant data is uploaded',
+      expectedInfo: 'Uploaders can create and edit datasets of their company.',
     },
   ];
 

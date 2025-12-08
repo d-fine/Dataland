@@ -160,19 +160,26 @@ const props = defineProps({
 });
 
 onMounted(async () => {
+  await loadDataAndCheckForBadge();
+});
+
+watch(
+  () => props.companyId,
+  async () => {
+    await loadDataAndCheckForBadge();
+  }
+);
+
+/**
+ * Loads all relevant data for the company page
+ */
+async function loadDataAndCheckForBadge(): Promise<void> {
   fetchDataForThisPage();
   await checkIfUserIsMemberOrAdmin();
   if (isMemberOfCompanyOrAdmin.value) {
     await checkIfCompanyIsDatalandMember();
   }
-});
-
-watch(
-  () => props.companyId,
-  () => {
-    fetchDataForThisPage();
-  }
-);
+}
 
 /**
  * Checks if the company is a Dataland Member.
@@ -193,7 +200,7 @@ async function checkIfCompanyIsDatalandMember(): Promise<void> {
  */
 async function checkIfUserIsMemberOrAdmin(): Promise<void> {
   if (!props.companyId) return;
-  const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloak = await getKeycloakPromise();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
   const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
@@ -219,8 +226,6 @@ function fetchDataForThisPage(): void {
     void getCompanyInformation();
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
-    void checkIfUserIsMemberOrAdmin();
-    void checkIfCompanyIsDatalandMember();
     claimIsSubmitted.value = false;
   } catch (error) {
     console.error('Error fetching data for new company:', error);
