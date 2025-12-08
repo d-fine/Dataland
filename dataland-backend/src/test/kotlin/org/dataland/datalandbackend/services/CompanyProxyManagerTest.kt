@@ -152,7 +152,7 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation allows to add non-conflicting relation for framework = null`() {
+        fun `addProxyRelation allows to add non conflicting relation for framework = null`() {
             companyProxyManager.addProxyRelation(nullFrameworkCompanyProxy)
 
             val differentReportingPeriod = nullFrameworkCompanyProxy.copy(reportingPeriod = "2024")
@@ -172,7 +172,7 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation allows to add non-conflicting relation for reportingPeriod = null`() {
+        fun `addProxyRelation allows to add non conflicting relation for reportingPeriod = null`() {
             companyProxyManager.addProxyRelation(nullReportingPeriodCompanyProxy)
 
             val differentFramework = nullReportingPeriodCompanyProxy.copy(framework = "sfdr")
