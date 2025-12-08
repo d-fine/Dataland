@@ -159,20 +159,27 @@ const props = defineProps({
   },
 });
 
-onMounted(async () => {
-  fetchDataForThisPage();
-  await checkIfUserIsMemberOrAdmin();
-  if (isMemberOfCompanyOrAdmin.value) {
-    await checkIfCompanyIsDatalandMember();
-  }
+onMounted(() => {
+  loadDataAndCheckForBadge();
 });
 
 watch(
   () => props.companyId,
   () => {
-    fetchDataForThisPage();
+    loadDataAndCheckForBadge();
   }
 );
+
+/**
+ * Loads all relevant data for the company page
+ */
+async function loadDataAndCheckForBadge() {
+  fetchDataForThisPage();
+  await checkIfUserIsMemberOrAdmin();
+  if (isMemberOfCompanyOrAdmin.value) {
+    await checkIfCompanyIsDatalandMember();
+  }
+}
 
 /**
  * Checks if the company is a Dataland Member.
