@@ -76,6 +76,7 @@ const showFrameworksError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
+
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
 });

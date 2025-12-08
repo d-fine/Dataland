@@ -65,6 +65,7 @@ function testPatchMonitoring(portfolioName: string, permId: string, frameworkVal
       expect(body.monitoredFrameworks).to.include(frameworkValue);
     });
 
+  // Success modal
   cy.get('[data-test="success-modal"]').should('exist');
   cy.get('[data-test="success-modal-close-button"]').should('exist').click();
 

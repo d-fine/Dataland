@@ -1,178 +1,180 @@
 <template>
-  <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
-    <h1>Loading portfolio data...</h1>
-    <DatalandProgressSpinner />
-  </div>
-  <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
-    <h1>Error loading portfolio data</h1>
-    An unexpected error occurred. Please try again later or with [Ctrl] + [F5] or contact the support team if the issue
-    persists.
-  </div>
-  <div v-else>
-    <div class="button_bar">
-      <Button @click="openEditModal()" data-test="edit-portfolio" label="EDIT PORTFOLIO" icon="pi pi-pencil" />
-      <Button
-        @click="openDownloadModal()"
-        data-test="download-portfolio"
-        label="DOWNLOAD PORTFOLIO"
-        icon="pi pi-download"
-      />
-      <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can activate monitoring' : ''">
+  <div v-bind="$attrs">
+    <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
+      <h1>Loading portfolio data...</h1>
+      <DatalandProgressSpinner />
+    </div>
+    <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
+      <h1>Error loading portfolio data</h1>
+      An unexpected error occurred. Please try again later or with [Ctrl] + [F5] or contact the support team if the
+      issue persists.
+    </div>
+    <div v-else>
+      <div class="button_bar">
+        <Button @click="openEditModal()" data-test="edit-portfolio" label="EDIT PORTFOLIO" icon="pi pi-pencil" />
         <Button
-          @click="openMonitoringModal()"
-          data-test="monitor-portfolio"
-          :disabled="!isUserDatalandMemberOrAdmin"
-          icon="pi pi-bell"
-          label="ACTIVE MONITORING"
+          @click="openDownloadModal()"
+          data-test="download-portfolio"
+          label="DOWNLOAD PORTFOLIO"
+          icon="pi pi-download"
+        />
+        <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can activate monitoring' : ''">
+          <Button
+            @click="openMonitoringModal()"
+            data-test="monitor-portfolio"
+            :disabled="!isUserDatalandMemberOrAdmin"
+            icon="pi pi-bell"
+            label="ACTIVE MONITORING"
+          />
+        </div>
+
+        <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+        <Button
+          class="reset-button-align-right"
+          data-test="reset-filter"
+          @click="resetFilters()"
+          variant="text"
+          label="RESET"
         />
       </div>
 
-      <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-      <Button
-        class="reset-button-align-right"
-        data-test="reset-filter"
-        @click="resetFilters()"
-        variant="text"
-        label="RESET"
-      />
+      <DataTable
+        stripedRows
+        removableSort
+        v-model:filters="filters"
+        filterDisplay="menu"
+        :value="portfolioEntriesToDisplay"
+        tableStyle="min-width: 50rem"
+        sortField="companyName"
+        :sortOrder="1"
+        :paginator="portfolioEntriesToDisplay.length > MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+        :rows="MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+      >
+        <template #empty>
+          Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to
+          add companies or remove filter criteria.
+        </template>
+        <Column
+          :sortable="true"
+          field="companyName"
+          header="Company Name"
+          :showFilterMatchModes="false"
+          style="width: 15%"
+        >
+          <template #body="portfolioEntry">
+            <Button
+              :label="portfolioEntry.data.companyName"
+              variant="link"
+              data-test="view-company-button"
+              @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
+              :pt="{
+                label: {
+                  style: 'font-weight: normal; text-align: left;',
+                },
+                root: {
+                  style: 'padding-left: 0;',
+                },
+              }"
+            />
+          </template>
+          <template #filter="{ filterModel, filterCallback }">
+            <InputText
+              v-model="filterModel.value"
+              type="text"
+              @input="filterCallback()"
+              placeholder="Filter by company name"
+              :data-test="'companyNameFilterValue'"
+            />
+          </template>
+        </Column>
+        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
+          <template #filter="{ filterModel, filterCallback }">
+            <div data-test="countryFilterOverlay">
+              <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
+                <Checkbox
+                  v-model="filterModel.value"
+                  :inputId="country"
+                  name="country"
+                  :value="country"
+                  data-test="countryFilterValue"
+                  @change="filterCallback"
+                />
+                <label :for="country">{{ country }}</label>
+              </div>
+            </div>
+          </template>
+        </Column>
+        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
+          <template #filter="{ filterModel, filterCallback }">
+            <div data-test="sectorFilterOverlay">
+              <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
+                <Checkbox
+                  v-model="filterModel.value"
+                  :inputId="sector"
+                  name="sector"
+                  :value="sector"
+                  data-test="sectorFilterValue"
+                  @change="filterCallback"
+                />
+                <label :for="sector">{{ sector }}</label>
+              </div>
+            </div>
+          </template>
+        </Column>
+        <Column
+          v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
+          :key="framework"
+          :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
+          :sortable="true"
+          :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
+          :header="humanizeStringOrNumber(framework)"
+          :showFilterMatchModes="false"
+        >
+          <template #body="portfolioEntry">
+            <Button
+              v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+              :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
+              variant="link"
+              @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
+              :pt="{
+                label: {
+                  style: 'font-weight: normal; text-align: left;',
+                },
+                root: {
+                  style: 'padding-left: 0;',
+                },
+              }"
+            />
+            <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
+          </template>
+          <template #filter="{ filterModel, filterCallback }">
+            <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
+              <div
+                v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
+                :key="availableReportingPeriods"
+                class="filter-checkbox"
+              >
+                <Checkbox
+                  v-model="filterModel.value"
+                  :inputId="availableReportingPeriods"
+                  name="availableReportingPeriods"
+                  :value="availableReportingPeriods"
+                  :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+                  @change="filterCallback"
+                />
+                <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
+              </div>
+            </div>
+          </template>
+        </Column>
+      </DataTable>
     </div>
-
-    <DataTable
-      stripedRows
-      removableSort
-      v-model:filters="filters"
-      filterDisplay="menu"
-      :value="portfolioEntriesToDisplay"
-      tableStyle="min-width: 50rem"
-      sortField="companyName"
-      :sortOrder="1"
-      :paginator="portfolioEntriesToDisplay.length > MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
-      :rows="MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
-    >
-      <template #empty>
-        Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to add
-        companies or remove filter criteria.
-      </template>
-      <Column
-        :sortable="true"
-        field="companyName"
-        header="Company Name"
-        :showFilterMatchModes="false"
-        style="width: 15%"
-      >
-        <template #body="portfolioEntry">
-          <Button
-            :label="portfolioEntry.data.companyName"
-            variant="link"
-            data-test="view-company-button"
-            @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
-            :pt="{
-              label: {
-                style: 'font-weight: normal; text-align: left;',
-              },
-              root: {
-                style: 'padding-left: 0;',
-              },
-            }"
-          />
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Filter by company name"
-            :data-test="'companyNameFilterValue'"
-          />
-        </template>
-      </Column>
-      <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
-        <template #filter="{ filterModel, filterCallback }">
-          <div data-test="countryFilterOverlay">
-            <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="country"
-                name="country"
-                :value="country"
-                data-test="countryFilterValue"
-                @change="filterCallback"
-              />
-              <label :for="country">{{ country }}</label>
-            </div>
-          </div>
-        </template>
-      </Column>
-      <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
-        <template #filter="{ filterModel, filterCallback }">
-          <div data-test="sectorFilterOverlay">
-            <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="sector"
-                name="sector"
-                :value="sector"
-                data-test="sectorFilterValue"
-                @change="filterCallback"
-              />
-              <label :for="sector">{{ sector }}</label>
-            </div>
-          </div>
-        </template>
-      </Column>
-      <Column
-        v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
-        :key="framework"
-        :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
-        :sortable="true"
-        :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
-        :header="humanizeStringOrNumber(framework)"
-        :showFilterMatchModes="false"
-      >
-        <template #body="portfolioEntry">
-          <Button
-            v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-            :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-            variant="link"
-            @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
-            :pt="{
-              label: {
-                style: 'font-weight: normal; text-align: left;',
-              },
-              root: {
-                style: 'padding-left: 0;',
-              },
-            }"
-          />
-          <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
-            <div
-              v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
-              :key="availableReportingPeriods"
-              class="filter-checkbox"
-            >
-              <Checkbox
-                v-model="filterModel.value"
-                :inputId="availableReportingPeriods"
-                name="availableReportingPeriods"
-                :value="availableReportingPeriods"
-                :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-                @change="filterCallback"
-              />
-              <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
-            </div>
-          </div>
-        </template>
-      </Column>
-    </DataTable>
+    <SuccessDialog
+      :visible="isSuccessDialogVisible"
+      :message="successDialogMessage"
+      @close="isSuccessDialogVisible = false"
+    />
   </div>
-  <SuccessDialog
-    :visible="isSuccessDialogVisible"
-    :message="successDialogMessage"
-    @close="isSuccessDialogVisible = false"
-  />
 </template>
 
 <script setup lang="ts">
@@ -201,6 +203,7 @@ import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch, computed } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
@@ -211,7 +214,6 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
