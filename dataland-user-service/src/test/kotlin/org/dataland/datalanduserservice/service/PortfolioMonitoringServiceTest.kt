@@ -23,7 +23,6 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioMonitoringServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
-    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private lateinit var portfolioMonitoringService: PortfolioMonitoringService
 
@@ -48,7 +47,7 @@ class PortfolioMonitoringServiceTest {
         resetSecurityContext()
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any())
         portfolioMonitoringService =
-            PortfolioMonitoringService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
+            PortfolioMonitoringService(mockPortfolioRepository)
     }
 
     private fun resetSecurityContext() {

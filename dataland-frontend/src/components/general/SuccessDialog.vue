@@ -10,7 +10,7 @@
   >
     <div style="text-align: center; padding: 8px 0">
       <i class="pi pi-check-circle" style="font-size: 2rem; color: var(--p-green-500)"></i>
-      <div style="margin-top: 8px">{{ props.message }}</div>
+      <div style="margin-top: 8px; white-space: pre-line">{{ props.message }}</div>
     </div>
     <template #footer>
       <PrimeButton label="OK" @click="emit('close')" data-test="close-success-modal-button" />
