@@ -49,6 +49,18 @@ class CompanyProxyControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
+    companion object {
+        private const val COMPANY_PROXIES_ENDPOINT = "/company-proxies"
+        private const val COMPANY_PROXIES_BY_ID_ENDPOINT = "/company-proxies/{proxyId}"
+        private const val COMPANIES_ENDPOINT = "/companies"
+        private const val APPLICATION_JSON = "application/json"
+        private const val COMPANY_ID_JSON_FIELD = "companyId"
+        private const val JSON_PATH_PROXIED_COMPANY_ID = "\$.proxiedCompanyId"
+        private const val JSON_PATH_PROXY_COMPANY_ID = "\$.proxyCompanyId"
+        private const val JSON_PATH_FRAMEWORK = "\$.framework"
+        private const val JSON_PATH_REPORTING_PERIOD = "\$.reportingPeriod"
+    }
+
     @MockitoBean
     @Qualifier("AuthenticatedOkHttpClient")
     private lateinit var authenticatedOkHttpClient: OkHttpClient
@@ -147,8 +159,8 @@ class CompanyProxyControllerTest(
         val result =
             mockMvc
                 .perform(
-                    post("/companies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(companyRequestJson)
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
@@ -156,7 +168,7 @@ class CompanyProxyControllerTest(
 
         return objectMapper
             .readTree(result.response.contentAsString)
-            .get("companyId")
+            .get(COMPANY_ID_JSON_FIELD)
             .asText()
     }
 
@@ -178,31 +190,30 @@ class CompanyProxyControllerTest(
         val postResult =
             mockMvc
                 .perform(
-                    post("/company-proxies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANY_PROXIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestBody))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
-                .andExpect(jsonPath("$.proxiedCompanyId").value(companyIdProxiedCompany))
-                .andExpect(jsonPath("$.proxyCompanyId").value(companyIdProxyCompany))
-                .andExpect(jsonPath("$.framework").value("sfdr"))
-                .andExpect(jsonPath("$.reportingPeriod").value("2024"))
+                .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
+                .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+                .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
+                .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
                 .andReturn()
 
-        val proxyId =
-            objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
+        val proxyId = objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
 
         mockMvc
             .perform(
-                get("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
             .andExpect(jsonPath("$.proxyId").value(proxyId))
-            .andExpect(jsonPath("$.proxiedCompanyId").value(companyIdProxiedCompany))
-            .andExpect(jsonPath("$.proxyCompanyId").value(companyIdProxyCompany))
-            .andExpect(jsonPath("$.framework").value("sfdr"))
-            .andExpect(jsonPath("$.reportingPeriod").value("2024"))
+            .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
+            .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+            .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
+            .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
     }
 
     @Test
@@ -219,8 +230,8 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                post("/company-proxies")
-                    .contentType(MediaType.APPLICATION_JSON)
+                post(COMPANY_PROXIES_ENDPOINT)
+                    .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(invalidRequest))
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isBadRequest)
@@ -243,8 +254,8 @@ class CompanyProxyControllerTest(
         val postResult =
             mockMvc
                 .perform(
-                    post("/company-proxies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANY_PROXIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestBody))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
@@ -255,16 +266,16 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                delete("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                delete(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
             .andExpect(jsonPath("$.proxyId").value(proxyId))
 
         mockMvc
             .perform(
-                get("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
     }
@@ -286,8 +297,8 @@ class CompanyProxyControllerTest(
         val postResult =
             mockMvc
                 .perform(
-                    post("/company-proxies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANY_PROXIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRequest))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
@@ -306,22 +317,22 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                put("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                put(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(updateRequest))
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
 
         mockMvc
             .perform(
-                get("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
-            .andExpect(jsonPath("$.proxiedCompanyId").value(companyIdProxiedCompany))
-            .andExpect(jsonPath("$.proxyCompanyId").value(companyIdProxyCompany))
-            .andExpect(jsonPath("$.framework").value("lksg"))
-            .andExpect(jsonPath("$.reportingPeriod").value("2023"))
+            .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
+            .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+            .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("lksg"))
+            .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2023"))
     }
 
     @Test
@@ -341,8 +352,8 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                post("/company-proxies")
-                    .contentType(MediaType.APPLICATION_JSON)
+                post(COMPANY_PROXIES_ENDPOINT)
+                    .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(requestBody))
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden)
@@ -366,8 +377,8 @@ class CompanyProxyControllerTest(
         val postResult =
             mockMvc
                 .perform(
-                    post("/company-proxies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANY_PROXIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestBody))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
@@ -380,8 +391,8 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                delete("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                delete(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden)
     }
@@ -404,8 +415,8 @@ class CompanyProxyControllerTest(
         val postResult =
             mockMvc
                 .perform(
-                    post("/company-proxies")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    post(COMPANY_PROXIES_ENDPOINT)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestBody))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
@@ -418,8 +429,8 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                get("/company-proxies/{proxyId}", proxyId)
-                    .contentType(MediaType.APPLICATION_JSON)
+                get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
+                    .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden)
     }
@@ -440,8 +451,8 @@ class CompanyProxyControllerTest(
 
         mockMvc
             .perform(
-                post("/company-proxies")
-                    .contentType(MediaType.APPLICATION_JSON)
+                post(COMPANY_PROXIES_ENDPOINT)
+                    .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(invalidFrameworkRequest))
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isBadRequest)
