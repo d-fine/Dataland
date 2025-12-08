@@ -30,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -83,10 +84,21 @@ class CompanyProxyControllerTest(
             roles = setOf(DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_USER),
         )
 
+    enum class User { ADMIN, UPLOADER }
+
     @BeforeEach
     fun setup() {
         reset(mockSecurityContext, authenticatedOkHttpClient)
         setupCompanyExistsValidatorMocks()
+    }
+
+    private fun setMockUser(user: User) {
+        setMockSecurityContext(
+            when (user) {
+                User.ADMIN -> adminAuthentication
+                User.UPLOADER -> uploaderAuthentication
+            },
+        )
     }
 
     private fun setMockSecurityContext(authentication: DatalandJwtAuthentication) {
@@ -100,7 +112,6 @@ class CompanyProxyControllerTest(
      */
     private fun setupCompanyExistsValidatorMocks() {
         val mockCall = mock<okhttp3.Call>()
-
         val dummyBody =
             object : ResponseBody() {
                 override fun contentType(): okhttp3.MediaType? = null
@@ -109,7 +120,6 @@ class CompanyProxyControllerTest(
 
                 override fun source(): BufferedSource = Buffer()
             }
-
         val response =
             Response
                 .Builder()
@@ -123,7 +133,6 @@ class CompanyProxyControllerTest(
                 .message("OK")
                 .body(dummyBody)
                 .build()
-
         whenever(authenticatedOkHttpClient.newCall(any())).thenReturn(mockCall)
         whenever(mockCall.execute()).thenReturn(response)
     }
@@ -133,15 +142,13 @@ class CompanyProxyControllerTest(
      * Uses a unique LEI every time to avoid DuplicateIdentifierApiException.
      */
     private fun createCompany(): String {
-        setMockSecurityContext(adminAuthentication)
-
+        setMockUser(User.ADMIN)
         val randomLei =
             UUID
                 .randomUUID()
                 .toString()
                 .replace("-", "")
                 .take(20)
-
         val companyRequest =
             mapOf(
                 "companyName" to "ABC Corporation $randomLei",
@@ -152,9 +159,7 @@ class CompanyProxyControllerTest(
                     ),
                 "countryCode" to "DE",
             )
-
         val companyRequestJson = objectMapper.writeValueAsString(companyRequest)
-
         val result =
             mockMvc
                 .perform(
@@ -164,44 +169,53 @@ class CompanyProxyControllerTest(
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
                 .andReturn()
-
         return objectMapper
             .readTree(result.response.contentAsString)
             .get(COMPANY_ID_JSON_FIELD)
             .asText()
     }
 
+    private fun performProxyRequest(
+        method: String,
+        endpoint: String,
+        pathVar: String? = null,
+        requestBody: CompanyProxy<String>,
+        user: User = User.ADMIN,
+    ): ResultActions {
+        setMockUser(user)
+        val req = objectMapper.writeValueAsString(requestBody)
+        val builder =
+            when (method) {
+                "POST" -> post(endpoint)
+                "PUT" -> if (pathVar != null) put(endpoint, pathVar) else put(endpoint)
+                else -> throw IllegalArgumentException("Unsupported method $method")
+            }
+        return mockMvc.perform(
+            builder
+                .contentType(APPLICATION_JSON)
+                .content(req)
+                .with(securityContext(mockSecurityContext)),
+        )
+    }
+
+    private fun getProxyIdFromResult(result: ResultActions): String =
+        objectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
+
     @Test
     fun `create proxy then get by id returns correct data`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-
-        setMockSecurityContext(adminAuthentication)
-
-        val requestBody =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
+        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
 
         val postResult =
-            mockMvc
-                .perform(
-                    post(COMPANY_PROXIES_ENDPOINT)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody))
-                        .with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
+                .andExpect(status().isOk)
                 .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
                 .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
                 .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
                 .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
-                .andReturn()
 
-        val proxyId = objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
-
+        val proxyId = getProxyIdFromResult(postResult)
         mockMvc
             .perform(
                 get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -217,52 +231,21 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `creating a proxy with invalid id returns an error`() {
-        setMockSecurityContext(adminAuthentication)
-
-        val invalidRequest =
-            CompanyProxy(
-                proxiedCompanyId = "123",
-                proxyCompanyId = "456",
-                framework = "lksg",
-                reportingPeriod = "2023",
-            )
-
-        mockMvc
-            .perform(
-                post(COMPANY_PROXIES_ENDPOINT)
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidRequest))
-                    .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isBadRequest)
+        val invalidRequest = CompanyProxy("123", "456", "lksg", "2023")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, invalidRequest)
+            .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `create proxy then delete proxy and assert that it is no longer retrievable`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-        setMockSecurityContext(adminAuthentication)
-
-        val requestBody =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
-
+        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
         val postResult =
-            mockMvc
-                .perform(
-                    post(COMPANY_PROXIES_ENDPOINT)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody))
-                        .with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
-                .andReturn()
-
-        val proxyId =
-            objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
-
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
+                .andExpect(status().isOk)
+        val proxyId = getProxyIdFromResult(postResult)
+        setMockUser(User.ADMIN)
         mockMvc
             .perform(
                 delete(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -270,7 +253,6 @@ class CompanyProxyControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
             .andExpect(jsonPath("$.proxyId").value(proxyId))
-
         mockMvc
             .perform(
                 get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -283,45 +265,14 @@ class CompanyProxyControllerTest(
     fun `change existing company proxy using put request`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-        setMockSecurityContext(adminAuthentication)
-
-        val createRequest =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
-
+        val createRequest = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
         val postResult =
-            mockMvc
-                .perform(
-                    post(COMPANY_PROXIES_ENDPOINT)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createRequest))
-                        .with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
-                .andReturn()
-
-        val proxyId =
-            objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
-
-        val updateRequest =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "lksg",
-                reportingPeriod = "2023",
-            )
-
-        mockMvc
-            .perform(
-                put(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(updateRequest))
-                    .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isOk)
-
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, createRequest)
+                .andExpect(status().isOk)
+        val proxyId = getProxyIdFromResult(postResult)
+        val updateRequest = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "lksg", "2023")
+        performProxyRequest("PUT", COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId, updateRequest)
+            .andExpect(status().isOk)
         mockMvc
             .perform(
                 get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -338,56 +289,21 @@ class CompanyProxyControllerTest(
     fun `trying to create a proxy as a non admin user results in a 403`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-
-        setMockSecurityContext(uploaderAuthentication)
-
-        val requestBody =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
-
-        mockMvc
-            .perform(
-                post(COMPANY_PROXIES_ENDPOINT)
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(requestBody))
-                    .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isForbidden)
+        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody, user = User.UPLOADER)
+            .andExpect(status().isForbidden)
     }
 
     @Test
     fun `trying to delete a proxy as a non admin user results in a 403`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-
-        setMockSecurityContext(adminAuthentication)
-
-        val requestBody =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
-
+        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
         val postResult =
-            mockMvc
-                .perform(
-                    post(COMPANY_PROXIES_ENDPOINT)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody))
-                        .with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
-                .andReturn()
-
-        val proxyId =
-            objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
-
-        setMockSecurityContext(uploaderAuthentication)
-
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
+                .andExpect(status().isOk)
+        val proxyId = getProxyIdFromResult(postResult)
+        setMockUser(User.UPLOADER)
         mockMvc
             .perform(
                 delete(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -400,32 +316,12 @@ class CompanyProxyControllerTest(
     fun `trying to get a proxy relation by proxyId as a non admin user results in a 403`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-
-        setMockSecurityContext(adminAuthentication)
-
-        val requestBody =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "sfdr",
-                reportingPeriod = "2024",
-            )
-
+        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
         val postResult =
-            mockMvc
-                .perform(
-                    post(COMPANY_PROXIES_ENDPOINT)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestBody))
-                        .with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
-                .andReturn()
-
-        val proxyId =
-            objectMapper.readTree(postResult.response.contentAsString)["proxyId"].asText()
-
-        setMockSecurityContext(uploaderAuthentication)
-
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
+                .andExpect(status().isOk)
+        val proxyId = getProxyIdFromResult(postResult)
+        setMockUser(User.UPLOADER)
         mockMvc
             .perform(
                 get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
@@ -438,22 +334,9 @@ class CompanyProxyControllerTest(
     fun `creating a proxy with an invalid framework returns 400`() {
         val companyIdProxyCompany = createCompany()
         val companyIdProxiedCompany = createCompany()
-        setMockSecurityContext(adminAuthentication)
-
         val invalidFrameworkRequest =
-            CompanyProxy(
-                proxiedCompanyId = companyIdProxiedCompany,
-                proxyCompanyId = companyIdProxyCompany,
-                framework = "NOT_A_REAL_FRAMEWORK",
-                reportingPeriod = "2024",
-            )
-
-        mockMvc
-            .perform(
-                post(COMPANY_PROXIES_ENDPOINT)
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidFrameworkRequest))
-                    .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isBadRequest)
+            CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "NOT_A_REAL_FRAMEWORK", "2024")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, invalidFrameworkRequest)
+            .andExpect(status().isBadRequest)
     }
 }
