@@ -126,7 +126,7 @@ class CompanyRolesTestUtils {
     fun tryToUseCompanyRoleGetAndHeadEndpointAndAsserThatItsForbidden(companyId: UUID) {
         val exceptionWhenGettingCompanyRolesForAnotherCompany =
             assertThrows<ClientException> {
-                getCompanyRoleAssignments(CompanyRole.Member, companyId = companyId)
+                getCompanyRoleAssignments(CompanyRole.Analyst, companyId = companyId)
             }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenGettingCompanyRolesForAnotherCompany, 403)
         val exceptionWhenCheckingCompanyRolesForAnotherCompany =

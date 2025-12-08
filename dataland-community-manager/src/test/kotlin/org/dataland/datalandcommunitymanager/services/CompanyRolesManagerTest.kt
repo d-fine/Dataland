@@ -263,7 +263,7 @@ class CompanyRolesManagerTest {
                 companyRole = null,
             )
 
-        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)) {
+        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)) {
             assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
         } else {
             assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())

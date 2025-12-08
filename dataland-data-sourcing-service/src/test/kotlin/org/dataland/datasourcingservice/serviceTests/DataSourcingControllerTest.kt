@@ -96,7 +96,7 @@ class DataSourcingControllerTest(
 
     private val generalMemberAssignment =
         CompanyRoleAssignmentExtended(
-            companyRole = CompanyRole.Member,
+            companyRole = CompanyRole.Analyst,
             userId = regularUserId.toString(),
             companyId = providerCompanyId.toString(),
             email = "test@example.com",
