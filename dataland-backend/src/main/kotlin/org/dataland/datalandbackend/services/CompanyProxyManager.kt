@@ -147,8 +147,7 @@ class CompanyProxyManager
             existingProxies: List<CompanyProxyEntity>,
             candidateProxy: CompanyProxy<UUID>,
         ): List<Pair<CompanyProxyEntity, CompanyProxyEntity>> {
-            val candidateCombinations = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy)
-            val candidateSet = candidateCombinations.toSet()
+            val candidateCombinations = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy).toSet()
 
             val expandedExistingCombinations = mutableListOf<Pair<CompanyProxyEntity, CompanyProxyEntity>>()
 
@@ -166,8 +165,8 @@ class CompanyProxyManager
             }
 
             return expandedExistingCombinations.filter { (_, expandedCombination) ->
-                expandedCombination.framework in candidateSet.map { it.framework } &&
-                    expandedCombination.reportingPeriod in candidateSet.map { it.reportingPeriod }
+                expandedCombination.framework in candidateCombinations.map { it.framework } &&
+                    expandedCombination.reportingPeriod in candidateCombinations.map { it.reportingPeriod }
             }
         }
 
