@@ -92,4 +92,6 @@ object DataSourcingOpenApiDescriptionsAndExamples {
         "Contains information about all already existing data requests that were not created again"
     const val EXISTING_DATA_SETS_DESCRIPTION =
         "Contains information about all data requests with already existing datasets that were not created"
+    const val NON_SOURCEABLE_REQUESTS_DESCRIPTION =
+        "Contains information about all data requests that could not be sourced due to missing documents"
 }

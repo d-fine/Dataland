@@ -2258,8 +2258,8 @@
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "MemberAdmin",
-          "Member",
+          "Admin",
+          "Analyst",
           "CompanyOwner",
           "DataUploader"
         ]
