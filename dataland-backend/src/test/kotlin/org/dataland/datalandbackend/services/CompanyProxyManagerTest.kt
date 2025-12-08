@@ -107,7 +107,7 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation throws on conflicting proxy relation`() {
-            companyProxyManager.addProxyRelation(defaultCompanyProxy)
+            val proxyId = companyProxyManager.addProxyRelation(defaultCompanyProxy).proxyId
 
             val conflictingProxy =
                 CompanyProxy<UUID>(
@@ -116,12 +116,13 @@ class CompanyProxyManagerTest
                     framework = defaultFramework,
                     reportingPeriod = defaultReportingPeriod,
                 )
-            val ex =
+            var ex =
                 assertThrows(InvalidInputApiException::class.java) {
                     companyProxyManager.addProxyRelation(conflictingProxy)
                 }
             assertTrue(ex.summary.contains("Conflicting proxy relation exists"))
             assertTrue(ex.message.contains("Conflicting proxyIds:"))
+            assertTrue(ex.message.contains(proxyId.toString()))
 
             val conflictingProxyWithNullValues =
                 CompanyProxy<UUID>(
@@ -130,9 +131,11 @@ class CompanyProxyManagerTest
                     framework = null,
                     reportingPeriod = null,
                 )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(conflictingProxyWithNullValues)
-            }
+            ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(conflictingProxyWithNullValues)
+                }
+            assertTrue(ex.message.contains(proxyId.toString()))
         }
 
         @Test
@@ -192,7 +195,7 @@ class CompanyProxyManagerTest
         fun `addProxyRelation with null framework and reportingPeriod rejects if any for proxiedId exists`() {
             val anotherProxyId = UUID.randomUUID()
 
-            companyProxyManager.addProxyRelation(defaultCompanyProxy)
+            val proxyId = companyProxyManager.addProxyRelation(defaultCompanyProxy).proxyId
 
             val general =
                 CompanyProxy<UUID>(
@@ -201,34 +204,38 @@ class CompanyProxyManagerTest
                     framework = null,
                     reportingPeriod = null,
                 )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(general)
-            }
+            val ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(general)
+                }
+            assertTrue(ex.message.contains(proxyId.toString()))
         }
 
         @Test
         fun `addProxyRelation with null framework allows adding relations with different reporting periods`() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId = UUID.randomUUID()
+            val proxiedCompanyId = UUID.randomUUID()
+            val proxyCompanyId = UUID.randomUUID()
             val base =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
                     framework = null,
                     reportingPeriod = "2023",
                 )
-            companyProxyManager.addProxyRelation(base)
+            val proxyId = companyProxyManager.addProxyRelation(base).proxyId
 
             val conflict =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
                     framework = null,
                     reportingPeriod = "2023",
                 )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(conflict)
-            }
+            val ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(conflict)
+                }
+            assertTrue(ex.message.contains(proxyId.toString()))
             val diffPeriod = base.copy(reportingPeriod = "2024")
             assertDoesNotThrow {
                 companyProxyManager.addProxyRelation(diffPeriod)
@@ -237,28 +244,30 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation with null reportingPeriod allows adding relation with different framework `() {
-            val proxiedId = UUID.randomUUID()
-            val proxyId = UUID.randomUUID()
+            val proxiedCompanyId = UUID.randomUUID()
+            val proxyCompanyId = UUID.randomUUID()
 
             val base =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
                     framework = "sfdr",
                     reportingPeriod = null,
                 )
-            companyProxyManager.addProxyRelation(base)
+            val proxyId = companyProxyManager.addProxyRelation(base).proxyId
 
             val conflict =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = proxyId,
+                    proxiedCompanyId = proxiedCompanyId,
+                    proxyCompanyId = proxyCompanyId,
                     framework = "sfdr",
                     reportingPeriod = null,
                 )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(conflict)
-            }
+            val ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(conflict)
+                }
+            assertTrue(ex.message.contains(proxyId.toString()))
 
             val otherFw = base.copy(framework = altFramework)
             assertDoesNotThrow {
@@ -277,7 +286,7 @@ class CompanyProxyManagerTest
                     framework = null,
                     reportingPeriod = null,
                 )
-            companyProxyManager.addProxyRelation(generic)
+            val proxyId = companyProxyManager.addProxyRelation(generic).proxyId
 
             val specific =
                 generic.copy(
@@ -285,9 +294,11 @@ class CompanyProxyManagerTest
                     framework = "sfdr",
                     reportingPeriod = "2023",
                 )
-            assertThrows(InvalidInputApiException::class.java) {
-                companyProxyManager.addProxyRelation(specific)
-            }
+            val ex =
+                assertThrows(InvalidInputApiException::class.java) {
+                    companyProxyManager.addProxyRelation(specific)
+                }
+            assertTrue(ex.message.contains(proxyId.toString()))
         }
 
         private fun callFilterFunction(
