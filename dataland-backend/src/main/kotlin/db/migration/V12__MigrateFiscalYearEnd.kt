@@ -51,11 +51,12 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
             val oldDate = resultSet.getString("fiscal_year_end")
 
             if (companyId != null && oldDate != null) {
-                val formatted = try {
-                    LocalDate.parse(oldDate, inputFormat).format(outputFormat)
-                } catch (_: Exception) {
-                    null
-                }
+                val formatted =
+                    try {
+                        LocalDate.parse(oldDate, inputFormat).format(outputFormat)
+                    } catch (_: Exception) {
+                        null
+                    }
 
                 if (formatted != null) {
                     updateStatement.setString(1, formatted)
