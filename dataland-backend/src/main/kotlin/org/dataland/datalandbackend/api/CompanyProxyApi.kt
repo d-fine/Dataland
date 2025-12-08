@@ -231,9 +231,9 @@ interface CompanyProxyApi {
      * Replace the proxy for a given (unique) company proxy-ID.
      */
     @Operation(
-        summary = "Replace proxy entry for a company pair.",
+        summary = "Replace proxy entry for a proxy id.",
         description =
-            "Replaces proxy rule defined for the given proxied company and proxy company." +
+            "Replaces proxy rule defined for the given proxy id." +
                 " If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
     )
     @ApiResponses(

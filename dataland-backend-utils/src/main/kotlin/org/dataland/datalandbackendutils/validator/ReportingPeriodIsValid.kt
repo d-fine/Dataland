@@ -19,7 +19,8 @@ import kotlin.reflect.KClass
 annotation class ReportingPeriodIsValid(
     val message: String =
         "Input validation failed: Not a valid reporting period format. " +
-            "The reporting period must be in the format YYYY.",
+            "The reporting period must be in the format YYYY and between ${ValidationUtils.REPORTING_PERIOD_MINIMUM} " +
+            "and ${ValidationUtils.REPORTING_PERIOD_MAXIMUM}.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
