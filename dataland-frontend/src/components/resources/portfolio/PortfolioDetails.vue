@@ -168,6 +168,11 @@
       </Column>
     </DataTable>
   </div>
+  <SuccessDialog
+    :visible="isSuccessDialogVisible"
+    :message="successDialogMessage"
+    @close="isSuccessDialogVisible = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -206,6 +211,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -278,6 +284,12 @@ const props = defineProps<{
   portfolioId: string;
 }>();
 
+const successDialogMessage = computed(() =>
+  isMonitored.value
+    ? 'Portfolio monitoring updated successfully. Requests are created overnight.'
+    : 'Portfolio monitoring updated successfully.'
+);
+const isSuccessDialogVisible = ref(false);
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
@@ -542,6 +554,7 @@ function openDownloadModal(): void {
     },
     onClose() {
       loadPortfolio();
+      isSuccessDialogVisible.value = true;
       emit('update:portfolio-overview');
     },
   });
