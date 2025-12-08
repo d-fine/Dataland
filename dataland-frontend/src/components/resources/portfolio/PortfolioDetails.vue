@@ -587,7 +587,7 @@ function openMonitoringModal(): void {
       loadPortfolio();
       emit('update:portfolio-overview');
     },
-    emits: {
+    on: {
       'monitoring-saved': () => {
         isSuccessDialogVisible.value = true;
       },
