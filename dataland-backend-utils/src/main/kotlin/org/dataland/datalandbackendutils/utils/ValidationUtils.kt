@@ -10,16 +10,16 @@ object ValidationUtils {
             "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\$",
         )
 
-    val reportingPeriodMininum = 2010
-    val reportingPeriodMaximum = 2039
-    private val reportingPeriodRegex = Regex((reportingPeriodMininum..reportingPeriodMaximum).joinToString("|"))
+    const val REPORTING_PERIOD_MINIMUM = 2010
+    const val REPORTING_PERIOD_MAXIMUM = 2039
+    private val reportingPeriodRegex = Regex((REPORTING_PERIOD_MINIMUM..REPORTING_PERIOD_MAXIMUM).joinToString("|"))
 
     /**
      * Checks if the given string corresponds to a reporting period.
      * @param testString the string to check
      * @return true if the string matches the reporting period format (e.g., "2020", "2021", etc.) false otherwise
      */
-    fun isReportingPeriod(testString: String) = testString.matches(Regex(reportingPeriodRegex))
+    fun isReportingPeriod(testString: String) = testString.matches(reportingPeriodRegex)
 
     /**
      * Checks if the given string is a valid UUID.

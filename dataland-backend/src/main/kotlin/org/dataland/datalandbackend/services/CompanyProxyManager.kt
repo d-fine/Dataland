@@ -192,7 +192,7 @@ class CompanyProxyManager
         ): List<CompanyProxyEntity> {
             var resultCombinations = mutableListOf<CompanyProxyEntity>()
             val proxyFrameWorkWithNullReplacedByAllPossibleCombinations = mutableListOf<CompanyProxyEntity>()
-            val reportingPeriodRange = ValidationUtils.reportingPeriodMininum..ValidationUtils.reportingPeriodMaximum
+            val reportingPeriodRange = ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM
 
             if (candidateProxy.framework == null) {
                 DataType.values.forEach {
