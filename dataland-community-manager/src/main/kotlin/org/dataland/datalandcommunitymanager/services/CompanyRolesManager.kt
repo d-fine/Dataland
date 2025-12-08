@@ -241,7 +241,7 @@ class CompanyRolesManager(
     }
 
     /**
-     * Verifies if the user with the specified userId has the role CompanyOwner or MemberAdmin for
+     * Verifies if the user with the specified userId has the role CompanyOwner or Admin for
      * at least one company on Dataland.
      */
     @Transactional(readOnly = true)
@@ -252,7 +252,7 @@ class CompanyRolesManager(
             .getCompanyRoleAssignmentsByProvidedParameters(
                 companyId = null, userId = userId, companyRole = null,
             ).any {
-                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
             }
     }
 
