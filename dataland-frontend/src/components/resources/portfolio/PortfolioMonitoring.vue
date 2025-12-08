@@ -52,7 +52,7 @@ import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/users
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { computed, defineEmits, inject, onMounted, type Ref, ref } from 'vue';
+import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 
@@ -76,9 +76,6 @@ const showFrameworksError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
-
-const emit = defineEmits(['monitoring-saved']);
-
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
 });
@@ -145,9 +142,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
-    console.log('Emitting monitoring-saved event');
-    emit('monitoring-saved');
-    dialogRef?.value.close();
+    dialogRef?.value.close({ monitoringSaved: true });
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
   }

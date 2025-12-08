@@ -583,15 +583,12 @@ function openMonitoringModal(): void {
     data: {
       portfolio: enrichedPortfolio.value,
     },
-    onClose() {
+    onClose(options) {
       loadPortfolio();
       emit('update:portfolio-overview');
-    },
-    on: {
-      'monitoring-saved': () => {
-        console.log('Received monitoring-saved event in PortfolioDetails');
+      if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
-      },
+      }
     },
   });
 }
