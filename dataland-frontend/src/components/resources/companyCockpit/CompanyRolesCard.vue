@@ -260,31 +260,31 @@ const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, tru
 
 const groups: CompanyRoleDetails[] = [
   {
-    role: CompanyRole.MemberAdmin,
+    role: CompanyRole.Admin,
     title: 'Admins',
     icon: 'pi pi-shield',
     info: 'The User Admin has the rights to add or remove other user admins and members. Admins manage other users and can control who has access to what data or features within Dataland.',
     description: 'Manage users and roles.',
   },
   {
-    role: CompanyRole.Member,
-    title: 'Members',
+    role: CompanyRole.Analyst,
+    title: 'Analysts',
     icon: 'pi pi-users',
-    info: 'Members have the ability to request unlimited data. They are key users on Dataland, utilising the data available to make informed decisions or produce reports.',
-    description: 'Unlimited access to data requests.',
+    info: 'Analysts can create requests and use active portfolio monitoring.',
+    description: 'Creation of data requests.',
   },
   {
     role: CompanyRole.CompanyOwner,
     title: 'Company Owners',
     icon: 'pi pi-crown',
-    info: "Company owners have the highest level of access and can add other users as company owners. They are responsible for the governance of the company's profile on Dataland.",
-    description: 'Highest authority with complete platform control.',
+    info: 'Company owners can create and edit datasets of their company and promote other users to Uploader or Company Owner.',
+    description: 'Admin regarding datasets of their company.',
   },
   {
     role: CompanyRole.DataUploader,
     title: 'Uploaders',
     icon: 'pi pi-cloud-upload',
-    info: 'Uploaders have the responsibility of ensuring all relevant data is uploaded to the platform for analysis and interpretation.',
+    info: 'Uploaders can create and edit datasets of their company.',
     description: "Responsible for providing company's datasets.",
   },
 ];
@@ -338,8 +338,8 @@ const rowMenuItems = computed<MenuItem[]>(() =>
 const roleModificationPermissionsMap: Record<CompanyRole, CompanyRole[]> = {
   [CompanyRole.CompanyOwner]: Object.values(CompanyRole),
   [CompanyRole.DataUploader]: [],
-  [CompanyRole.MemberAdmin]: [CompanyRole.MemberAdmin, CompanyRole.Member],
-  [CompanyRole.Member]: [],
+  [CompanyRole.Admin]: [CompanyRole.Admin, CompanyRole.Analyst],
+  [CompanyRole.Analyst]: [],
 };
 
 const roleHasUsers = computed(() => rowsForRole.value.length > 0);
