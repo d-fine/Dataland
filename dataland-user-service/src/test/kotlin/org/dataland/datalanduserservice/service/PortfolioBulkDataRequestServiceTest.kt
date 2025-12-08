@@ -168,20 +168,43 @@ class PortfolioBulkDataRequestServiceTest {
     }
 
     @Test
-    fun `posts only eutaxonomy when framework does not include sfdr`() {
-        stubCompanyApi(COMPANY_ID, 0, "nonfinancials")
+    fun `posts right eutaxonomy requests depending on company sector`() {
+        val nonFinancialCompanyId = UUID.randomUUID().toString()
+        val financialCompanyId = UUID.randomUUID().toString()
+        val noSectorCompanyId = UUID.randomUUID().toString()
+        stubCompanyApi(nonFinancialCompanyId, 0, "nonfinancials")
+        stubCompanyApi(financialCompanyId, 0, "financials")
+        stubCompanyApi(noSectorCompanyId, 0, null)
         val portfolioEntity =
             buildMonitoredPortfolioEntity(
-                companyIds = setOf(COMPANY_ID),
+                companyIds = setOf(nonFinancialCompanyId, financialCompanyId, noSectorCompanyId),
                 frameworks = setOf(EUTAXONOMY),
                 portfolioName = "My monitored eutaxonomy test portfolio",
             )
         stubPortfolioRepo(listOf(portfolioEntity))
+
         service.createBulkDataRequestsForAllMonitoredPortfolios()
+
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(COMPANY_ID) &&
+                companyIdentifiers == setOf(nonFinancialCompanyId) &&
                     dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(financialCompanyId) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(noSectorCompanyId) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
                     reportingPeriods == setOf("2024")
             },
             eq(USER_ID),
