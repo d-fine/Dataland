@@ -137,7 +137,7 @@ class CompanyProxyManager
                     message =
                         "A conflicting proxy relation exists. " +
                             "Conflicting proxyIds: ${
-                                existingProxyEntriesThatConflict.joinToString(", ") { it.proxyId.toString() }
+                                existingProxyEntriesThatConflict.toSet().joinToString(", ") { it.proxyId.toString() }
                             }.",
                 )
             }
