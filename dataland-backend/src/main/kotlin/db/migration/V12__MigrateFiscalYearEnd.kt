@@ -2,7 +2,6 @@ package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import java.sql.PreparedStatement
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -18,56 +17,56 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
 
     override fun migrate(context: Context) {
         val connection = context.connection
+        val meta = connection.metaData
 
-        connection
-            .prepareStatement(
-                """
-                ALTER TABLE stored_companies
-                ALTER COLUMN fiscal_year_end TYPE VARCHAR(10);
-                """.trimIndent(),
-            ).execute()
+        // check table exists
+        val table = meta.getTables(null, null, "stored_companies", null)
+        if (!table.next()) return
 
-        val selectStatement =
-            connection.prepareStatement(
-                """
-                SELECT company_id, fiscal_year_end
-                FROM stored_companies
-                """.trimIndent(),
-            )
+        // check column exists
+        val column = meta.getColumns(null, null, "stored_companies", "fiscal_year_end")
+        val columnExists = column.next()
+        column.close()
 
-        val resultSet = selectStatement.executeQuery()
+        if (!columnExists) {
+            return
+        }
 
-        val updateStatement: PreparedStatement =
-            connection.prepareStatement(
-                """
-                UPDATE stored_companies
-                SET fiscal_year_end = ?
-                WHERE company_id = ?
-                """.trimIndent(),
-            )
+        connection.prepareStatement(
+            """
+        ALTER TABLE stored_companies
+        ALTER COLUMN fiscal_year_end TYPE VARCHAR(10);
+        """.trimIndent()
+        ).execute()
 
-        while (resultSet.next()) {
-            val companyId = resultSet.getString("company_id")
-            val oldDate = resultSet.getString("fiscal_year_end")
+        val select = connection.prepareStatement(
+            "SELECT company_id, fiscal_year_end FROM stored_companies"
+        )
 
-            if (companyId != null && oldDate != null) {
-                val formatted =
-                    try {
-                        LocalDate.parse(oldDate, inputFormat).format(outputFormat)
-                    } catch (_: Exception) {
-                        null
-                    }
+        val update = connection.prepareStatement(
+            "UPDATE stored_companies SET fiscal_year_end = ? WHERE company_id = ?"
+        )
 
-                if (formatted != null) {
-                    updateStatement.setString(1, formatted)
-                    updateStatement.setString(2, companyId)
-                    updateStatement.executeUpdate()
-                }
+        val rs = select.executeQuery()
+        while (rs.next()) {
+            val id = rs.getString("company_id")
+            val old = rs.getString("fiscal_year_end")
+
+            val formatted = try {
+                LocalDate.parse(old, inputFormat).format(outputFormat)
+            } catch (_: Exception) {
+                null
+            }
+
+            if (formatted != null) {
+                update.setString(1, formatted)
+                update.setString(2, id)
+                update.executeUpdate()
             }
         }
 
-        resultSet.close()
-        selectStatement.close()
-        updateStatement.close()
+        rs.close()
+        select.close()
+        update.close()
     }
 }
