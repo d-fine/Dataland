@@ -7,6 +7,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * This migration script updates the fiscal_year_end column in the stored_companies table
+ * from the format 'yyyy-MM-dd' to 'dd-MMM'.
+ */
 @Suppress("ClassName")
 class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
     private val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -43,19 +47,22 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
             )
 
         while (resultSet.next()) {
-            val companyId = resultSet.getString("company_id") ?: continue
-            val oldDate = resultSet.getString("fiscal_year_end") ?: continue
+            val companyId = resultSet.getString("company_id")
+            val oldDate = resultSet.getString("fiscal_year_end")
 
-            val formatted =
-                try {
+            if (companyId != null && oldDate != null) {
+                val formatted = try {
                     LocalDate.parse(oldDate, inputFormat).format(outputFormat)
                 } catch (_: Exception) {
-                    continue
+                    null
                 }
 
-            updateStatement.setString(1, formatted)
-            updateStatement.setString(2, companyId)
-            updateStatement.executeUpdate()
+                if (formatted != null) {
+                    updateStatement.setString(1, formatted)
+                    updateStatement.setString(2, companyId)
+                    updateStatement.executeUpdate()
+                }
+            }
         }
 
         resultSet.close()
