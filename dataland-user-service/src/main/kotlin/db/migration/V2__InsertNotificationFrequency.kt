@@ -12,7 +12,7 @@ class V2__InsertNotificationFrequency : BaseJavaMigration() {
         context!!.connection.createStatement().execute(
             "ALTER TABLE portfolios " +
                 "ADD COLUMN IF NOT EXISTS notificationFrequency VARCHAR(255) " +
-                "NOT NULL DEFAULT 'weekly';",
+                "NOT NULL DEFAULT 'Weekly'",
         )
     }
 }
