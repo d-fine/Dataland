@@ -128,8 +128,7 @@ class CompanyProxyManager
             existingProxies: List<CompanyProxyEntity>,
             candidateProxy: CompanyProxy<UUID>,
         ) {
-            val conflicts = findConflictingProxies(existingProxies, candidateProxy)
-            val (existingProxyEntriesThatConflict, _) = conflicts.unzip()
+            val existingProxyEntriesThatConflict = findConflictingProxies(existingProxies, candidateProxy)
 
             if (existingProxyEntriesThatConflict.isNotEmpty()) {
                 throw InvalidInputApiException(
@@ -146,28 +145,26 @@ class CompanyProxyManager
         private fun findConflictingProxies(
             existingProxies: List<CompanyProxyEntity>,
             candidateProxy: CompanyProxy<UUID>,
-        ): List<Pair<CompanyProxyEntity, CompanyProxyEntity>> {
-            val candidateCombinations = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy).toSet()
-
-            val expandedExistingCombinations = mutableListOf<Pair<CompanyProxyEntity, CompanyProxyEntity>>()
+        ): List<CompanyProxyEntity> {
+            val candidateCombinations = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy)
+            val conflictingExistingProxies = mutableListOf<CompanyProxyEntity>()
 
             existingProxies.forEach { existingProxy ->
-                getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
-                    CompanyProxy(
-                        proxiedCompanyId = existingProxy.proxiedCompanyId,
-                        proxyCompanyId = existingProxy.proxyCompanyId,
-                        framework = existingProxy.framework,
-                        reportingPeriod = existingProxy.reportingPeriod,
-                    ),
-                ).forEach { expanded ->
-                    expandedExistingCombinations.add(existingProxy to expanded)
+                val expandedExistingCombinations =
+                    getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
+                        CompanyProxy(
+                            proxiedCompanyId = existingProxy.proxiedCompanyId,
+                            proxyCompanyId = existingProxy.proxyCompanyId,
+                            framework = existingProxy.framework,
+                            reportingPeriod = existingProxy.reportingPeriod,
+                        ),
+                    )
+                if (candidateCombinations.intersect(expandedExistingCombinations).isNotEmpty()) {
+                    conflictingExistingProxies.add(existingProxy)
                 }
             }
 
-            return expandedExistingCombinations.filter { (_, expandedCombination) ->
-                expandedCombination.framework in candidateCombinations.map { it.framework } &&
-                    expandedCombination.reportingPeriod in candidateCombinations.map { it.reportingPeriod }
-            }
+            return conflictingExistingProxies
         }
 
         /**
@@ -176,21 +173,22 @@ class CompanyProxyManager
          */
         private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
             companyProxy: CompanyProxy<UUID>,
-        ): List<CompanyProxyEntity> {
+        ): Set<CompanyProxyEntity> {
             val allReportingPeriods = (ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM).toList()
             val reportingPeriods = if (companyProxy.reportingPeriod == null) allReportingPeriods else listOf(companyProxy.reportingPeriod)
             val frameworks = if (companyProxy.framework == null) DataType.values else listOf(companyProxy.framework)
 
-            return reportingPeriods.flatMap { reportingPeriod ->
-                frameworks.map { framework ->
-                    CompanyProxyEntity(
-                        proxiedCompanyId = companyProxy.proxiedCompanyId,
-                        proxyCompanyId = companyProxy.proxyCompanyId,
-                        framework = framework.toString(),
-                        reportingPeriod = reportingPeriod.toString(),
-                    )
-                }
-            }
+            return reportingPeriods
+                .flatMap { reportingPeriod ->
+                    frameworks.map { framework ->
+                        CompanyProxyEntity(
+                            proxiedCompanyId = companyProxy.proxiedCompanyId,
+                            proxyCompanyId = companyProxy.proxyCompanyId,
+                            framework = framework.toString(),
+                            reportingPeriod = reportingPeriod.toString(),
+                        )
+                    }
+                }.toSet()
         }
 
         /**
