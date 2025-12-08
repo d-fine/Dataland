@@ -145,6 +145,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
+    console.log('Emitting monitoring-saved event');
     emit('monitoring-saved');
     dialogRef?.value.close();
   } catch (error) {

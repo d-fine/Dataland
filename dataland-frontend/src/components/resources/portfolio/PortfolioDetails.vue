@@ -589,6 +589,7 @@ function openMonitoringModal(): void {
     },
     on: {
       'monitoring-saved': () => {
+        console.log('Received monitoring-saved event in PortfolioDetails');
         isSuccessDialogVisible.value = true;
       },
     },

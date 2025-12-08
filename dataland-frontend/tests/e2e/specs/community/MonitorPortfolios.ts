@@ -65,6 +65,9 @@ function testPatchMonitoring(portfolioName: string, permId: string, frameworkVal
       expect(body.monitoredFrameworks).to.include(frameworkValue);
     });
 
+  cy.get('[data-test="success-modal"]').should('exist');
+  cy.get('[data-test="success-modal-close-button"]').should('exist').click();
+
   // Cleanup: delete portfolio
   cy.visitAndCheckAppMount('/portfolios');
   cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
