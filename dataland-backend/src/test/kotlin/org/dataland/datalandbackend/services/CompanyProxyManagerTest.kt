@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
-import org.junit.jupiter.api.assertNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
@@ -40,6 +39,15 @@ class CompanyProxyManagerTest
         private val altProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000004")
         private val altFramework = "eutaxonomy-financials"
         private val altReportingPeriod = "2026"
+
+        private val nullFrameworkProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000005")
+        private val nullFrameworkProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000006")
+        private val nullFrameworkReportingPeriod = "2023"
+
+        private val nullReportingPeriodProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000007")
+        private val nullReportingPeriodProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000008")
+        private val nullReportingPeriodFramework = "nuclear-and-gas"
+
         private val defaultCompanyProxy =
             CompanyProxy<UUID>(
                 proxiedCompanyId = defaultProxiedCompanyId,
@@ -53,6 +61,22 @@ class CompanyProxyManagerTest
                 proxyCompanyId = altProxyCompanyId,
                 framework = altFramework,
                 reportingPeriod = altReportingPeriod,
+            )
+
+        private val nullFrameworkCompanyProxy =
+            CompanyProxy<UUID>(
+                proxiedCompanyId = nullFrameworkProxiedCompanyId,
+                proxyCompanyId = nullFrameworkProxyCompanyId,
+                framework = null,
+                reportingPeriod = nullFrameworkReportingPeriod,
+            )
+
+        private val nullReportingPeriodCompanyProxy =
+            CompanyProxy<UUID>(
+                proxiedCompanyId = nullReportingPeriodProxiedCompanyId,
+                proxyCompanyId = nullReportingPeriodProxyCompanyId,
+                framework = nullReportingPeriodFramework,
+                reportingPeriod = null,
             )
 
         @Test
@@ -122,6 +146,46 @@ class CompanyProxyManagerTest
             val differentPeriod = defaultCompanyProxy.copy(reportingPeriod = "2022")
             val entity3 = companyProxyManager.addProxyRelation(differentPeriod)
             assertNotEquals(defaultCompanyProxy.reportingPeriod, entity3.reportingPeriod)
+        }
+
+        @Test
+        fun `addProxyRelation allows to add non-conflicting relation for framework = null`() {
+            companyProxyManager.addProxyRelation(nullFrameworkCompanyProxy)
+
+            val differentReportingPeriod = nullFrameworkCompanyProxy.copy(reportingPeriod = "2024")
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(differentReportingPeriod)
+            }
+
+            val differentFrameworkAndReportingPeriod =
+                nullFrameworkCompanyProxy.copy(
+                    reportingPeriod = "2025",
+                    framework = "sfdr",
+                )
+
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(differentFrameworkAndReportingPeriod)
+            }
+        }
+
+        @Test
+        fun `addProxyRelation allows to add non-conflicting relation for reportingPeriod = null`() {
+            companyProxyManager.addProxyRelation(nullReportingPeriodCompanyProxy)
+
+            val differentFramework = nullReportingPeriodCompanyProxy.copy(framework = "sfdr")
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(differentFramework)
+            }
+
+            val differentFrameworkAndReportingPeriod =
+                nullFrameworkCompanyProxy.copy(
+                    reportingPeriod = "2025",
+                    framework = "eu-taxonomy-financials",
+                )
+
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(differentFrameworkAndReportingPeriod)
+            }
         }
 
         @Test
