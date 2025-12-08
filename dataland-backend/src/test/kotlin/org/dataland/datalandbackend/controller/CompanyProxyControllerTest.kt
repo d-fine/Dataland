@@ -10,7 +10,7 @@ import okio.Buffer
 import okio.BufferedSource
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
-import org.dataland.datalandbackend.services.SpecificationService
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -44,14 +44,11 @@ import java.util.UUID
     properties = ["spring.profiles.active=nodb"],
 )
 @AutoConfigureMockMvc
+@DefaultMocks
 class CompanyProxyControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    @Suppress("UnusedPrivateMember") // Prevents real SpecificationService startup logic
-    @MockitoBean
-    private lateinit var specificationService: SpecificationService
-
     @MockitoBean
     @Qualifier("AuthenticatedOkHttpClient")
     private lateinit var authenticatedOkHttpClient: OkHttpClient
@@ -209,7 +206,7 @@ class CompanyProxyControllerTest(
     }
 
     @Test
-    fun `creating a proxy with invalid inputs returns an error`() {
+    fun `creating a proxy with invalid id returns an error`() {
         setMockSecurityContext(adminAuthentication)
 
         val invalidRequest =

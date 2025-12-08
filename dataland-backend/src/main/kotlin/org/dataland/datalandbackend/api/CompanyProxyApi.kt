@@ -91,6 +91,11 @@ interface CompanyProxyApi {
                 description = "Successfully retrieved proxy.",
             ),
             ApiResponse(
+                responseCode = "400",
+                description = "Invalid input.",
+                content = [Content(mediaType = "application/json")],
+            ),
+            ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland admins may query company proxies.",
                 content = [Content(array = ArraySchema())],
@@ -98,11 +103,6 @@ interface CompanyProxyApi {
             ApiResponse(
                 responseCode = "404",
                 description = "No proxy found for the specified proxy id.",
-                content = [Content(mediaType = "application/json")],
-            ),
-            ApiResponse(
-                responseCode = "400",
-                description = "Invalid input.",
                 content = [Content(mediaType = "application/json")],
             ),
         ],
