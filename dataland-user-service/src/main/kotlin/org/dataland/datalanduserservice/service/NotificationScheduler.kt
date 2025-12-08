@@ -31,6 +31,7 @@ class NotificationScheduler
 
         companion object {
             private const val DAYS_IN_WEEK = 7L
+            private const val MINUTES_FOR_TEST = 5L
         }
 
         /**
@@ -69,7 +70,7 @@ class NotificationScheduler
         @Scheduled(cron = "0 */5 * * * *")
         fun scheduledTestEmailSending() {
             val notificationFrequency = NotificationFrequency.Weekly
-            val timeStampForInterval = Instant.now().minus(5, ChronoUnit.MINUTES).toEpochMilli()
+            val timeStampForInterval = Instant.now().minus(MINUTES_FOR_TEST, ChronoUnit.MINUTES).toEpochMilli()
             sendEmailForTimeInterval(notificationFrequency, timeStampForInterval)
         }
 
