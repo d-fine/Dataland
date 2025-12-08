@@ -170,65 +170,59 @@ class CompanyProxyManager
             }
         }
 
+        /**
+         * Get all possible combinations of framework and reporting period for a proxy entry.
+         * If either is null ("all"), all valid combinations are returned accordingly.
+         */
         private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
             companyProxy: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> {
-            val proxyFrameWorkWithNullReplacedByAllPossibleCombinations = mutableListOf<CompanyProxyEntity>()
             val reportingPeriodRange = ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM
 
-            if (companyProxy.framework == null && companyProxy.reportingPeriod == null) {
-                reportingPeriodRange.forEach { rp ->
-                    DataType.values.forEach { fw ->
-                        proxyFrameWorkWithNullReplacedByAllPossibleCombinations.add(
+            return when {
+                companyProxy.framework == null && companyProxy.reportingPeriod == null -> {
+                    reportingPeriodRange.flatMap { rp ->
+                        DataType.values.map { fw ->
                             CompanyProxyEntity(
                                 proxiedCompanyId = companyProxy.proxiedCompanyId,
                                 proxyCompanyId = companyProxy.proxyCompanyId,
                                 framework = fw.toString(),
                                 reportingPeriod = rp.toString(),
-                            ),
-                        )
+                            )
+                        }
                     }
                 }
-            }
-
-            if (companyProxy.framework != null && companyProxy.reportingPeriod != null) {
-                return listOf(
-                    CompanyProxyEntity(
-                        proxiedCompanyId = companyProxy.proxiedCompanyId,
-                        proxyCompanyId = companyProxy.proxyCompanyId,
-                        framework = companyProxy.framework,
-                        reportingPeriod = companyProxy.reportingPeriod,
-                    ),
-                )
-            }
-
-            if (companyProxy.framework == null && companyProxy.reportingPeriod != null) {
-                DataType.values.forEach {
-                    proxyFrameWorkWithNullReplacedByAllPossibleCombinations.add(
+                companyProxy.framework != null && companyProxy.reportingPeriod == null -> {
+                    reportingPeriodRange.map { rp ->
                         CompanyProxyEntity(
                             proxiedCompanyId = companyProxy.proxiedCompanyId,
                             proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = it.toString(),
+                            framework = companyProxy.framework,
+                            reportingPeriod = rp.toString(),
+                        )
+                    }
+                }
+                companyProxy.framework == null && companyProxy.reportingPeriod != null -> {
+                    DataType.values.map { fw ->
+                        CompanyProxyEntity(
+                            proxiedCompanyId = companyProxy.proxiedCompanyId,
+                            proxyCompanyId = companyProxy.proxyCompanyId,
+                            framework = fw.toString(),
+                            reportingPeriod = companyProxy.reportingPeriod,
+                        )
+                    }
+                }
+                else -> {
+                    listOf(
+                        CompanyProxyEntity(
+                            proxiedCompanyId = companyProxy.proxiedCompanyId,
+                            proxyCompanyId = companyProxy.proxyCompanyId,
+                            framework = companyProxy.framework,
                             reportingPeriod = companyProxy.reportingPeriod,
                         ),
                     )
                 }
             }
-
-            if (companyProxy.framework != null && companyProxy.reportingPeriod == null) {
-                reportingPeriodRange.forEach {
-                    proxyFrameWorkWithNullReplacedByAllPossibleCombinations.add(
-                        CompanyProxyEntity(
-                            proxiedCompanyId = companyProxy.proxiedCompanyId,
-                            proxyCompanyId = companyProxy.proxyCompanyId,
-                            framework = companyProxy.framework,
-                            reportingPeriod = it.toString(),
-                        ),
-                    )
-                }
-            }
-
-            return proxyFrameWorkWithNullReplacedByAllPossibleCombinations
         }
 
         /**
