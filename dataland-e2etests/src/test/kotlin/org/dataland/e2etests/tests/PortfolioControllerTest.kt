@@ -1,7 +1,9 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
@@ -60,7 +62,7 @@ class PortfolioControllerTest {
         val nonFinancialCompanyInformation =
             generalTestDataProvider.generateCompanyInformation("NonFinancialCompany", "Industrials")
         val noSectorCompanyInformation =
-            generalTestDataProvider.generateCompanyInformation("FinancialCompany", null)
+            generalTestDataProvider.generateCompanyInformation("NoSectorCompany", null)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val financialCompanyId = apiAccessor.companyDataControllerApi.postCompany(financialCompanyInformation).companyId
@@ -75,17 +77,40 @@ class PortfolioControllerTest {
                     setOf("eutaxonomy"),
                 )
             UserService.portfolioControllerApi.createPortfolio(testPortfolio)
+            lateinit var financialRequests: List<ExtendedStoredRequest>
+            lateinit var nonFinancialRequests: List<ExtendedStoredRequest>
+            lateinit var noSectorRequests: List<ExtendedStoredRequest>
             awaitUntilAsserted {
-                val financialRequests = getOpenRequests(financialCompanyId)
-
-                val nonFinancialRequests = getOpenRequests(nonFinancialCompanyId)
-
-                val noSectorRequests = getOpenRequests(noSectorCompanyId)
+                financialRequests = getOpenRequests(financialCompanyId)
+                nonFinancialRequests = getOpenRequests(nonFinancialCompanyId)
+                noSectorRequests = getOpenRequests(noSectorCompanyId)
 
                 assertEquals(2, financialRequests.size)
                 assertEquals(2, nonFinancialRequests.size)
                 assertEquals(3, noSectorRequests.size)
             }
+            assertEquals(
+                setOf(
+                    DataTypeEnum.eutaxonomyMinusFinancials.toString(),
+                    DataTypeEnum.nuclearMinusAndMinusGas.toString(),
+                ),
+                financialRequests.map { it.dataType }.toSet(),
+            )
+            assertEquals(
+                setOf(
+                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString(),
+                    DataTypeEnum.nuclearMinusAndMinusGas.toString(),
+                ),
+                nonFinancialRequests.map { it.dataType }.toSet(),
+            )
+            assertEquals(
+                setOf(
+                    DataTypeEnum.eutaxonomyMinusFinancials.toString(),
+                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString(),
+                    DataTypeEnum.nuclearMinusAndMinusGas.toString(),
+                ),
+                noSectorRequests.map { it.dataType }.toSet(),
+            )
         }
     }
 

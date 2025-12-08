@@ -85,6 +85,9 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
       expect(body.isMonitored).to.be.true;
       expect(body.monitoredFrameworks).to.include('eutaxonomy');
     });
+
+  cy.get('[data-test="success-modal"]').should('exist');
+  cy.get('[data-test="close-success-modal-button"]').should('exist').click();
 }
 
 describeIf(
