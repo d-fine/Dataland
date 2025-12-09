@@ -30,6 +30,7 @@ object TestUtils {
             entries = listOf(entryFinancials, entryNonFinancials, entryUndefined),
             isMonitored = null,
             monitoredFrameworks = null,
+            sharedUserIds = null,
         )
     }
 }

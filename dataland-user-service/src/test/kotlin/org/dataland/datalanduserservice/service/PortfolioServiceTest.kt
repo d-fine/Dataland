@@ -273,5 +273,6 @@ class PortfolioServiceTest {
         identifiers = setOf(dummyCompanyId),
         isMonitored = false,
         monitoredFrameworks = emptySet(),
+        sharedUserIds = emptySet(),
     )
 }
