@@ -961,7 +961,8 @@
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
-          "portfolioName"
+          "portfolioName",
+          "timeWindowThreshold"
         ],
         "type": "object",
         "properties": {
@@ -996,6 +997,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The initial time window threshold for portfolio monitoring.",
+            "example": "Sixteen months",
+            "enum": [
+              "SIX_MONTHS",
+              "SIXTEEN_MONTHS"
+            ]
           }
         }
       },
@@ -1008,6 +1018,7 @@
           "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
+          "timeWindowThreshold",
           "userId"
         ],
         "type": "object",
@@ -1064,6 +1075,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The initial time window threshold for portfolio monitoring.",
+            "example": "Sixteen months",
+            "enum": [
+              "SIX_MONTHS",
+              "SIXTEEN_MONTHS"
+            ]
           }
         }
       },
@@ -1089,7 +1109,8 @@
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks"
+          "monitoredFrameworks",
+          "timeWindowThreshold"
         ],
         "type": "object",
         "properties": {
@@ -1107,6 +1128,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The initial time window threshold for portfolio monitoring.",
+            "example": "Sixteen months",
+            "enum": [
+              "SIX_MONTHS",
+              "SIXTEEN_MONTHS"
+            ]
           }
         }
       },
@@ -1115,6 +1145,7 @@
           "entries",
           "portfolioId",
           "portfolioName",
+          "timeWindowThreshold",
           "userId"
         ],
         "type": "object",
@@ -1154,6 +1185,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The initial time window threshold for portfolio monitoring.",
+            "example": "Sixteen months",
+            "enum": [
+              "SIX_MONTHS",
+              "SIXTEEN_MONTHS"
+            ]
           }
         }
       },

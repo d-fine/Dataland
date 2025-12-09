@@ -32,5 +32,5 @@ data class PortfolioMonitoringPatch(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE,
     )
-    override val initialTimeWindowThreshold: InitialTimeWindowThreshold,
+    override val timeWindowThreshold: TimeWindowThreshold,
 ) : PortfolioMonitoring
