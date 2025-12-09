@@ -10,8 +10,8 @@ import org.flywaydb.core.api.migration.Context
 class V2__InsertNotificationFrequency : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "ALTER TABLE portfolios " +
-                "ADD COLUMN notification_frequency VARCHAR(255) " +
+            "ALTER TABLE IF EXISTS portfolios " +
+                "ADD COLUMN IF NOT EXISTS notification_frequency VARCHAR(255) " +
                 "NOT NULL DEFAULT 'Weekly'",
         )
     }
