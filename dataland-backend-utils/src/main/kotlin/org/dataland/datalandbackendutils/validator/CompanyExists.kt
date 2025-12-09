@@ -12,12 +12,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import java.io.IOException
+import java.util.UUID
 import kotlin.reflect.KClass
 
 /**
  * Annotation to validate that a company exists on Dataland
  */
-@Target(AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Constraint(
     validatedBy = [
         CompanyExistsValidator::class,
@@ -37,21 +38,44 @@ annotation class CompanyExists(
 class CompanyExistsValidator(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-) : ConstraintValidator<CompanyExists, String> {
+) : ConstraintValidator<CompanyExists, Any?> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun isValid(
-        companyId: String?,
+        value: Any?,
         context: ConstraintValidatorContext?,
     ): Boolean {
-        if (companyId == null || !ValidationUtils.isUuid(companyId)) return false
+        if (value == null) {
+            return true
+        }
+        var isValidType = true
+        var companyId: String? = null
+        when (value) {
+            is UUID -> {
+                companyId = value.toString()
+            }
 
-        return callCompanyDataApiAndCheckCompanyId(
-            backendBaseUrl,
-            authenticatedOkHttpClient,
-            companyId,
-            logger,
-        )
+            is String -> {
+                if (ValidationUtils.isUuid(value)) {
+                    companyId = value
+                } else {
+                    isValidType = false
+                }
+            }
+
+            else -> {
+                logger.warn("CompanyExists used on unsupported type: ${value::class}")
+                isValidType = false
+            }
+        }
+        return isValidType &&
+            companyId != null &&
+            callCompanyDataApiAndCheckCompanyId(
+                backendBaseUrl,
+                authenticatedOkHttpClient,
+                companyId,
+                logger,
+            )
     }
 
     /**
