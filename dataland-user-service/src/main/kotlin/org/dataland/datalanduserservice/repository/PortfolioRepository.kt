@@ -63,4 +63,9 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
         userId: String,
         portfolioName: String,
     ): Boolean
+
+    /**
+     * Retrieve all portfolios where the given userId is in sharedUserIds
+     */
+    fun findAllBySharedUserIdsContaining(userId: String): List<PortfolioEntity>
 }
