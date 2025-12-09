@@ -41,8 +41,25 @@ class PortfolioRightsUtilsComponent(
      * @param portfolioId the ID of the portfolio in question
      * @return true if the user is the owner of the portfolio, false otherwise
      */
-    fun isUserPortfolioOwner(userId: String, portfolioId: String): Boolean {
+    fun isUserPortfolioOwner(
+        userId: String,
+        portfolioId: String,
+    ): Boolean {
         val portfolio = portfolioService.getPortfolio(portfolioId)
         return portfolio.userId == userId
+    }
+
+    /**
+     * Check whether the specified portfolio is shared with the specified user.
+     * @param userId the Dataland ID of the user in question
+     * @param portfolioId the ID of the portfolio in question
+     * @return true if the portfolio is shared with the user, false otherwise
+     */
+    fun isPortfolioSharedWithUser(
+        userId: String,
+        portfolioId: String,
+    ): Boolean {
+        val portfolio = portfolioService.getPortfolio(portfolioId)
+        return portfolio.sharedUserIds.contains(userId)
     }
 }
