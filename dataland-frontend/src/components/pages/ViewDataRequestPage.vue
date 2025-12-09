@@ -147,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted, defineProps } from 'vue';
+import { ref, reactive, inject, onMounted } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';

@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 
 import Button from 'primevue/button';
