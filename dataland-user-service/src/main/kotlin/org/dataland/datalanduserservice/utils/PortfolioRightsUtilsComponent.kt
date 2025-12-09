@@ -2,22 +2,24 @@ package org.dataland.datalanduserservice.utils
 
 import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalanduserservice.service.PortfolioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Utility bean for functionality concerning derived rights.
+ * Utility bean for functionality concerning portfolio rights.
  */
-@Component("DerivedRightsUtilsComponent")
-class DerivedRightsUtilsComponent(
+@Component("PortfolioRightsUtilsComponent")
+class PortfolioRightsUtilsComponent(
     @Autowired private val inheritedRolesControllerApi: InheritedRolesControllerApi,
+    @Autowired private val portfolioService: PortfolioService,
 ) {
     /**
      * Check whether the specified user is a Dataland member based on their inherited roles.
      * @param userId the Dataland ID of the user in question
      * @return true if the user is a Dataland member, false otherwise
      */
-    fun isUserDatalandMember(userId: String): Boolean =
+    private fun isUserDatalandMember(userId: String): Boolean =
         DerivedRightsUtils.isUserDatalandMember(
             inheritedRolesControllerApi.getInheritedRoles(userId),
         )
@@ -32,4 +34,15 @@ class DerivedRightsUtilsComponent(
         userId: String,
         isMonitored: Boolean,
     ): Boolean = !isMonitored || isUserDatalandMember(userId)
+
+    /**
+     * Check whether the specified user is the owner of the specified portfolio.
+     * @param userId the Dataland ID of the user in question
+     * @param portfolioId the ID of the portfolio in question
+     * @return true if the user is the owner of the portfolio, false otherwise
+     */
+    fun isUserPortfolioOwner(userId: String, portfolioId: String): Boolean {
+        val portfolio = portfolioService.getPortfolio(portfolioId)
+        return portfolio.userId == userId
+    }
 }
