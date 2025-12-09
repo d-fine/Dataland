@@ -1,6 +1,8 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -75,7 +77,7 @@ class ExistingRequestsManager
                 requestEntity.adminComment = adminComment
             }
 
-            if (newRequestState == RequestState.Processing) {
+            if (requestValidForAccounting(requestEntity, newRequestState)) {
                 val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
                 dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
@@ -132,4 +134,10 @@ class ExistingRequestsManager
                 .ifEmpty {
                     throw RequestNotFoundApiException(requestId)
                 }
+
+        private fun requestValidForAccounting(
+            originalRequest: RequestEntity,
+            newRequestState: RequestState,
+        ): Boolean =
+            newRequestState == RequestState.Processing && (originalRequest.dataType != DataTypeEnum.nuclearMinusAndMinusGas.toString())
     }
