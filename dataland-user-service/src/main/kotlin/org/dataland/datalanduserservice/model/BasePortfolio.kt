@@ -69,8 +69,19 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String>,
 ) : Portfolio,
-    PortfolioMonitoring {
+    PortfolioMonitoring,
+    PortfolioSharing {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
         portfolioName = portfolioUpload.portfolioName,
@@ -80,6 +91,7 @@ data class BasePortfolio(
         identifiers = portfolioUpload.identifiers,
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+        sharedUserIds = emptySet(),
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -91,6 +103,19 @@ data class BasePortfolio(
         identifiers = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+        sharedUserIds = emptySet(),
+    )
+
+    constructor(portfolioSharingPatch: PortfolioSharingPatch) : this(
+        portfolioId = UUID.randomUUID().toString(),
+        portfolioName = "",
+        userId = DatalandAuthentication.fromContext().userId,
+        creationTimestamp = Instant.now().toEpochMilli(),
+        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+        identifiers = emptySet(),
+        isMonitored = false,
+        monitoredFrameworks = emptySet(),
+        sharedUserIds = portfolioSharingPatch.sharedUserIds,
     )
 
     /**
@@ -102,6 +127,7 @@ data class BasePortfolio(
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
+        sharedUserIds: Set<String> = this.sharedUserIds,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -112,5 +138,6 @@ data class BasePortfolio(
             companyIds = this.identifiers.toMutableSet(),
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
+            sharedUserIds = sharedUserIds,
         )
 }

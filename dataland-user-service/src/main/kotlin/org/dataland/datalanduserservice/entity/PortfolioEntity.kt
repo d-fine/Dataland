@@ -41,9 +41,13 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "portfolio_shared_users", joinColumns = [JoinColumn(name = "portfolio_id")])
+    @Column(name = "shared_user_ids")
+    val sharedUserIds: Set<String>?,
 ) {
     /**
-     * create PortfolioResponse from entity
+     * Converts this PortfolioEntity to a BasePortfolio API model.
      */
     fun toBasePortfolio(): BasePortfolio =
         BasePortfolio(
@@ -55,5 +59,6 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
+            sharedUserIds ?: emptySet(),
         )
 }

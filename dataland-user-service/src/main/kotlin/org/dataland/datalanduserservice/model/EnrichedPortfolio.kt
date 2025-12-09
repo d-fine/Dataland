@@ -45,4 +45,14 @@ data class EnrichedPortfolio(
             ),
     )
     val monitoredFrameworks: Set<String>?,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    val sharedUserIds: Set<String>?,
 )
