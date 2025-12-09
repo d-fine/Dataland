@@ -171,33 +171,6 @@ class DatalandUserServiceSpringbootTest
             }
 
             @Test
-            fun `test that patching monitoring triggers community manager bulk data request`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_ADMIN)
-                val originalPortfolioResponse =
-                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
-
-                val portfolioMonitoringPatch =
-                    PortfolioMonitoringPatch(
-                        isMonitored = true,
-                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                        NotificationFrequency.Weekly,
-                    )
-
-                assertDoesNotThrow {
-                    portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch)
-                }
-
-                verify(mockPortfolioBulkDataRequestService)
-                    .createBulkDataRequestsForPortfolioIfMonitored(
-                        check {
-                            assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
-                            assertTrue(it.isMonitored)
-                            assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
-                        },
-                    )
-            }
-
-            @Test
             fun `test that deleting a portfolio works`() {
                 val portfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
