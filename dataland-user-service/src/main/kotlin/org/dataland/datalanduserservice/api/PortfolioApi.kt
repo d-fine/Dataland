@@ -157,7 +157,7 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -183,7 +183,7 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun replacePortfolio(
         @Parameter(
@@ -291,7 +291,7 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(" +
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(" +
             "authentication.userId, #portfolioMonitoringPatch.isMonitored" +
             "))",
     )

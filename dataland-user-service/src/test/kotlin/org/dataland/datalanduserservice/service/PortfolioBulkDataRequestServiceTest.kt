@@ -124,6 +124,7 @@ class PortfolioBulkDataRequestServiceTest {
         companyIds = companyIds.toMutableSet(),
         isMonitored = true,
         monitoredFrameworks = frameworks,
+        sharedUserIds = emptySet(),
     )
 
     @Test

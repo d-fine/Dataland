@@ -40,6 +40,7 @@ class PortfolioMonitoringServiceTest {
             identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            sharedUserIds = emptySet(),
         )
 
     @BeforeEach

@@ -961,7 +961,8 @@
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
-          "portfolioName"
+          "portfolioName",
+          "sharedUserIds"
         ],
         "type": "object",
         "properties": {
@@ -996,6 +997,17 @@
             "items": {
               "type": "string"
             }
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1008,6 +1020,7 @@
           "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
+          "sharedUserIds",
           "userId"
         ],
         "type": "object",
@@ -1060,6 +1073,17 @@
             "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
             "example": [
               "sfdr"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
             ],
             "items": {
               "type": "string"
@@ -1150,6 +1174,17 @@
             "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
             "example": [
               "sfdr"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
             ],
             "items": {
               "type": "string"

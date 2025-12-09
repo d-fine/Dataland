@@ -45,5 +45,16 @@ data class PortfolioUpload(
             ),
     )
     override val monitoredFrameworks: Set<String> = emptySet(),
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String> = emptySet(),
 ) : Portfolio,
-    PortfolioMonitoring
+    PortfolioMonitoring,
+    PortfolioSharing
