@@ -32,31 +32,35 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
             return
         }
 
-        connection.prepareStatement(
-            """
-        ALTER TABLE stored_companies
-        ALTER COLUMN fiscal_year_end TYPE VARCHAR(10);
-        """.trimIndent()
-        ).execute()
+        connection
+            .prepareStatement(
+                """
+                ALTER TABLE stored_companies
+                ALTER COLUMN fiscal_year_end TYPE VARCHAR(10);
+                """.trimIndent(),
+            ).execute()
 
-        val select = connection.prepareStatement(
-            "SELECT company_id, fiscal_year_end FROM stored_companies"
-        )
+        val select =
+            connection.prepareStatement(
+                "SELECT company_id, fiscal_year_end FROM stored_companies",
+            )
 
-        val update = connection.prepareStatement(
-            "UPDATE stored_companies SET fiscal_year_end = ? WHERE company_id = ?"
-        )
+        val update =
+            connection.prepareStatement(
+                "UPDATE stored_companies SET fiscal_year_end = ? WHERE company_id = ?",
+            )
 
         val rs = select.executeQuery()
         while (rs.next()) {
             val id = rs.getString("company_id")
             val old = rs.getString("fiscal_year_end")
 
-            val formatted = try {
-                LocalDate.parse(old, inputFormat).format(outputFormat)
-            } catch (_: Exception) {
-                null
-            }
+            val formatted =
+                try {
+                    LocalDate.parse(old, inputFormat).format(outputFormat)
+                } catch (_: Exception) {
+                    null
+                }
 
             if (formatted != null) {
                 update.setString(1, formatted)
