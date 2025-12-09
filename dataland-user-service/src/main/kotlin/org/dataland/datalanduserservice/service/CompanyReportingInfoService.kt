@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalanduserservice.model.InitialTimeWindowThreshold
 import org.dataland.datalanduserservice.model.ReportingPeriodAndSector
 import org.dataland.datalanduserservice.model.SectorType
 import org.slf4j.LoggerFactory
@@ -26,6 +27,7 @@ class CompanyReportingInfoService
     ) {
         companion object {
             private const val STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS = 6L
+            private const val STARTING_OF_EXTENDED_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS = 16L
             private const val END_OF_SOURCING_WINDOW_THRESHOLD_2_IN_MONTHS = 1L
         }
 
@@ -47,10 +49,13 @@ class CompanyReportingInfoService
          *
          * @param companyIds A collection of company IDs to update or add.
          */
-        fun updateCompanies(companyIds: Collection<CompanyId>) {
+        fun updateCompanies(
+            companyIds: Collection<CompanyId>,
+            initialTimeWindowThreshold: InitialTimeWindowThreshold,
+        ) {
             companyIds.distinct().forEach { companyId ->
                 val storedCompany = companyDataControllerApi.getCompanyById(companyId)
-                getCompanyReportingYearInfoForCompany(storedCompany)?.let {
+                getCompanyReportingYearInfoForCompany(storedCompany, initialTimeWindowThreshold)?.let {
                     reportingYearsAndSectors[companyId] = it
                 }
                 if ((storedCompany.companyInformation.fiscalYearEnd == null) ||
@@ -91,14 +96,17 @@ class CompanyReportingInfoService
          * @param storedCompany The StoredCompany object containing company information.
          * @return ReportingPeriodAndSector for the company, or null if insufficient data.
          */
-        private fun getCompanyReportingYearInfoForCompany(storedCompany: StoredCompany): ReportingPeriodAndSector? {
+        private fun getCompanyReportingYearInfoForCompany(
+            storedCompany: StoredCompany,
+            initialTimeWindowThreshold: InitialTimeWindowThreshold,
+        ): ReportingPeriodAndSector? {
             val storedFiscalYearEnd = storedCompany.companyInformation.fiscalYearEnd
             val reportingPeriodShift = storedCompany.companyInformation.reportingPeriodShift
 
             // First (early) return: required fields missing.
             if (storedFiscalYearEnd == null || reportingPeriodShift == null) return null
 
-            val reportingYear = resolveReportingYear(storedFiscalYearEnd, reportingPeriodShift)
+            val reportingYear = resolveReportingYear(storedFiscalYearEnd, reportingPeriodShift, initialTimeWindowThreshold)
             val sector = resolveSectorType(storedCompany.companyInformation.sector)
 
             // Only one return now for both valid and invalid reportingYear
@@ -115,9 +123,17 @@ class CompanyReportingInfoService
         private fun resolveReportingYear(
             fiscalYearEnd: LocalDate,
             reportingPeriodShift: Int,
+            initialTimeWindowThreshold: InitialTimeWindowThreshold,
         ): Int? {
             val today = LocalDate.now()
-            val lowerBoundary = today.minusMonths(STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS)
+            val lowerBoundary =
+                today.minusMonths(
+                    if (initialTimeWindowThreshold == InitialTimeWindowThreshold.SIXTEEN_MONTHS) {
+                        STARTING_OF_EXTENDED_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS
+                    } else {
+                        STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS
+                    },
+                )
             val upperBoundary = today.minusMonths(END_OF_SOURCING_WINDOW_THRESHOLD_2_IN_MONTHS)
 
             val candidateFiscalYearEnd =

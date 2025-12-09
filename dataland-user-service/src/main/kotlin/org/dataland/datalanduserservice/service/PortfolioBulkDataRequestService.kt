@@ -36,7 +36,8 @@ class PortfolioBulkDataRequestService
          * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 0 2 * * *")
+        // TODO adjust cron expression as needed
+        @Scheduled(cron = "0 */5 * * * *")
         fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
@@ -44,15 +45,24 @@ class PortfolioBulkDataRequestService
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
 
             companyReportingInfoService.resetData()
-            val allCompanyIds = allMonitoredPortfolios.flatMap { it.companyIds }.toSet()
-            logger.info("Updating company reporting info for ${allCompanyIds.size} unique company IDs across portfolios.")
-            companyReportingInfoService.updateCompanies(allCompanyIds)
-            logger.info("Company reporting info update completed.")
-            allMonitoredPortfolios.forEach {
-                postBulkDataRequest(it.toBasePortfolio())
-            }
 
-            logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
+            val portfoliosByTimeWindow = allMonitoredPortfolios.groupBy { it.initialTimeWindowThreshold }
+            portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
+                val companyIds = portfolios.flatMap { it.companyIds }.toSet()
+                logger
+                    .info(
+                        "Updating company reporting info for ${companyIds.size} unique company IDs" +
+                            " across all portfolios with time window threshold $timeWindowThreshold.",
+                    )
+                companyReportingInfoService.updateCompanies(companyIds, timeWindowThreshold)
+
+                logger.info("Company reporting info update completed.")
+                portfolios.forEach {
+                    postBulkDataRequest(it.toBasePortfolio())
+                }
+
+                logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
+            }
         }
 
         /**

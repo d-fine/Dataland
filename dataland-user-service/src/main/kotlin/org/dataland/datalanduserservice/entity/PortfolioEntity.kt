@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.InitialTimeWindowThreshold
 import java.util.UUID
 
 /**
@@ -41,6 +42,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
+    val initialTimeWindowThreshold: InitialTimeWindowThreshold = InitialTimeWindowThreshold.SIXTEEN_MONTHS,
 ) {
     /**
      * create PortfolioResponse from entity
@@ -55,5 +57,6 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
+            initialTimeWindowThreshold,
         )
 }

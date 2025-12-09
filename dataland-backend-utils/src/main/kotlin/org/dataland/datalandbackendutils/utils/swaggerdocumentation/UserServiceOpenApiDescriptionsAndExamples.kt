@@ -21,13 +21,13 @@ object UserServiceOpenApiDescriptionsAndExamples {
 
     const val PORTFOLIO_IS_MONITORED_DESCRIPTION = "Boolean flag that indicates whether the portfolio is monitored."
 
-    const val PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION =
-        "The reporting period from which the companies in the portfolio are actively monitored for data updates."
-    const val PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE
-
     const val PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION =
         "A list of frameworks for which the companies in the portfolio are actively monitored."
     const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"]"
+
+    const val PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION =
+        "The initial time window threshold for portfolio monitoring."
+    const val PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE = "Sixteen months"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =

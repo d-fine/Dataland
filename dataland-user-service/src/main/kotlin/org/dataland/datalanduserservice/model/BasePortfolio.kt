@@ -69,6 +69,12 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val initialTimeWindowThreshold: InitialTimeWindowThreshold = InitialTimeWindowThreshold.SIXTEEN_MONTHS,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
@@ -80,6 +86,7 @@ data class BasePortfolio(
         identifiers = portfolioUpload.identifiers,
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+        initialTimeWindowThreshold = portfolioUpload.initialTimeWindowThreshold,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -91,6 +98,7 @@ data class BasePortfolio(
         identifiers = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+        initialTimeWindowThreshold = portfolioMonitoringPatch.initialTimeWindowThreshold,
     )
 
     /**
@@ -102,6 +110,7 @@ data class BasePortfolio(
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
+        initialTimeWindowThreshold: InitialTimeWindowThreshold = this.initialTimeWindowThreshold,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -112,5 +121,6 @@ data class BasePortfolio(
             companyIds = this.identifiers.toMutableSet(),
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
+            initialTimeWindowThreshold = initialTimeWindowThreshold,
         )
 }

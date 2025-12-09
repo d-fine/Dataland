@@ -27,4 +27,10 @@ data class PortfolioMonitoringPatch(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val initialTimeWindowThreshold: InitialTimeWindowThreshold,
 ) : PortfolioMonitoring
