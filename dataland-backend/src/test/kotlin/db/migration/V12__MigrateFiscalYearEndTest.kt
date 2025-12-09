@@ -1,83 +1,57 @@
 package db.migration
 
-import org.flywaydb.core.api.migration.Context
-import org.junit.jupiter.api.BeforeEach
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.services.CompanyAlterationManager
+import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
+import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argThat
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
-import java.sql.Connection
-import java.sql.PreparedStatement
-import java.sql.ResultSet
+import org.junit.jupiter.api.TestInstance
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import java.util.UUID
 
+@SpringBootTest(classes = [org.dataland.datalandbackend.DatalandBackend::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
-class V12__MigrateFiscalYearEndTest {
-    private val migration = V12__MigrateFiscalYearEnd()
-    private val mockContext = mock<Context>()
-    private val mockConnection = mock<Connection>()
-    private val mockMetaData = mock<java.sql.DatabaseMetaData>()
-    private val mockTableResultSet = mock<ResultSet>()
-    private val mockColumnResultSet = mock<ResultSet>()
-    private val mockSelectStatement = mock<PreparedStatement>()
-    private val mockUpdateStatement = mock<PreparedStatement>()
-    private val mockSelectResultSet = mock<ResultSet>()
+@DefaultMocks
+class V12__MigrateFiscalYearEndTest : BaseFlywayMigrationTest {
+    @Autowired
+    lateinit var companyAlterationManager: CompanyAlterationManager
 
-    @BeforeEach
-    fun setup() {
-        reset(
-            mockContext, mockConnection, mockMetaData, mockTableResultSet,
-            mockColumnResultSet, mockSelectStatement, mockUpdateStatement, mockSelectResultSet
+    @Autowired
+    lateinit var companyRepository: StoredCompanyRepository
+
+    private fun createDummyCompany(
+        originalFiscalYearEnd: String,
+        expectedNewFiscalYearEnd: String,
+    ) = companyAlterationManager
+        .addCompany(
+            CompanyInformation(
+                companyName = expectedNewFiscalYearEnd,
+                headquarters = "Nowhere",
+                countryCode = "US",
+                identifiers = mapOf(IdentifierType.Lei to listOf(UUID.randomUUID().toString())),
+                fiscalYearEnd = originalFiscalYearEnd,
+            ),
         )
-        whenever(mockContext.connection).thenReturn(mockConnection)
-        whenever(mockConnection.metaData).thenReturn(mockMetaData)
-        whenever(mockMetaData.getTables(null, null, "stored_companies", null)).thenReturn(mockTableResultSet)
-        whenever(mockMetaData.getColumns(null, null, "stored_companies", "fiscal_year_end")).thenReturn(mockColumnResultSet)
+
+    override fun getFlywayBaselineVersion(): String = "11"
+
+    override fun getFlywayTargetVersion(): String = "12"
+
+    override fun setupBeforeMigration() {
+        createDummyCompany("2023-12-31", "31-Dec")
+        createDummyCompany("2024-03-07", "07-Mar")
+        createDummyCompany("2024-08-01", "01-Aug")
+        createDummyCompany("1998-06-22", "22-Jun")
     }
 
     @Test
-    fun `does nothing if table does not exist`() {
-        whenever(mockTableResultSet.next()).thenReturn(false)
-        migration.migrate(mockContext)
-        verify(mockConnection, never()).prepareStatement(any<String>())
-    }
-
-    @Test
-    fun `does nothing if column does not exist`() {
-        whenever(mockTableResultSet.next()).thenReturn(true)
-        whenever(mockColumnResultSet.next()).thenReturn(false)
-        migration.migrate(mockContext)
-        verify(mockConnection, never()).prepareStatement(any<String>())
-    }
-
-    @Test
-    fun `migrates fiscal_year_end values if table and column exist`() {
-        whenever(mockTableResultSet.next()).thenReturn(true)
-        whenever(mockColumnResultSet.next()).thenReturn(true)
-        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockSelectStatement, mockUpdateStatement)
-        whenever(mockSelectStatement.executeQuery()).thenReturn(mockSelectResultSet)
-        whenever(mockSelectResultSet.next()).thenReturn(true, true, false)
-        whenever(mockSelectResultSet.getString("company_id")).thenReturn("id1", "id2")
-        whenever(mockSelectResultSet.getString("fiscal_year_end")).thenReturn("2023-12-31", "2024-03-31")
-
-        migration.migrate(mockContext)
-
-        verify(mockConnection).prepareStatement(
-            "ALTER TABLE stored_companies\nALTER COLUMN fiscal_year_end TYPE VARCHAR(10);"
-        )
-        verify(mockConnection).prepareStatement("SELECT company_id, fiscal_year_end FROM stored_companies")
-        verify(mockConnection).prepareStatement("UPDATE stored_companies SET fiscal_year_end = ? WHERE company_id = ?")
-        verify(mockUpdateStatement).setString(1, argThat { value -> value == "31-Dec" })
-        verify(mockUpdateStatement).setString(2, "id1")
-        verify(mockUpdateStatement).setString(1, argThat { value -> value == "31-Mar" })
-        verify(mockUpdateStatement).setString(2, "id2")
-        verify(mockUpdateStatement, times(2)).executeUpdate()
-        verify(mockSelectResultSet).close()
-        verify(mockSelectStatement).close()
-        verify(mockUpdateStatement).close()
-    }
+    fun `fiscal year end values are migrated correctly`() =
+        companyRepository.findAll().forEach {
+            assertEquals(it.companyName, it.fiscalYearEnd)
+        }
 }
