@@ -9,7 +9,6 @@ import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
-import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -20,13 +19,11 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.check
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -55,9 +52,6 @@ class DatalandUserServiceSpringbootTest
     ) {
         @MockitoBean
         private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
-
-        @MockitoBean
-        private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
 
         @MockitoBean
         private val mockCompanyDataController = mock<CompanyDataControllerApi>()

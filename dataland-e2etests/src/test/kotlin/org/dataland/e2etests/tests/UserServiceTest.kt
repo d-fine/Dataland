@@ -130,7 +130,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `portfolio yields expected bulk requests after activating monitoring`() {
+    fun `portfolio yields no requests after activating monitoring`() {
         val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifierFYEAndReportingShift().actualStoredCompany.companyId
         val portfolioUpload =
             PortfolioUpload(
@@ -180,7 +180,7 @@ class UserServiceTest {
                 }
             }
 
-        assertEquals(3, requests.size)
+        assertEquals(0, requests.size)
         assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
     }
 }

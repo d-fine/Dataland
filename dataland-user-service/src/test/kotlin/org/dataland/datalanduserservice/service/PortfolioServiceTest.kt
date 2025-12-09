@@ -39,7 +39,6 @@ class PortfolioServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockPortfolioEntityPage = mock<Page<PortfolioEntity>>()
-    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private lateinit var portfolioService: PortfolioService
     private lateinit var mockAuthentication: DatalandAuthentication
 
@@ -63,7 +62,7 @@ class PortfolioServiceTest {
         doReturn(mockPortfolioEntityPage).whenever(mockPortfolioRepository).findAll(pageable = any())
         doReturn(listOf<PortfolioEntity>()).whenever(mockPortfolioEntityPage).content
 
-        portfolioService = PortfolioService(mockPortfolioRepository, mockPortfolioBulkDataRequestService)
+        portfolioService = PortfolioService(mockPortfolioRepository)
     }
 
     /**
