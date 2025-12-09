@@ -17,7 +17,7 @@
         <div class="framework-toggle-label">
           <ToggleSwitch
             v-model="frameworkMonitoringOption.isActive"
-            data-test="valuesOnlySwitch"
+            data-test="frameworkToggle"
             @change="resetErrors"
             :disabled="!isMonitoringActive"
           />
@@ -28,6 +28,21 @@
       </div>
       <div class="dataland-info-text small">
         EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
+      </div>
+    </div>
+
+    <p class="header-styling">Data Coverage</p>
+    <div>
+      <div class="framework-toggle-label">
+        <ToggleSwitch
+          v-model="timeWindowThreshold"
+          data-test="timeWindowThresholdToggle"
+          :disabled="!isMonitoringActive"
+        />
+        <span> Request latest available data </span>
+      </div>
+      <div class="dataland-info-text small">
+        Ensures data is initially obtained even when the latest reporting period ended more than half a year ago.
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
@@ -75,6 +90,7 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
 const showFrameworksError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
+const timeWindowThreshold = ref(true);
 const previousFrameworks = ref<Set<string>>(new Set());
 
 const selectedFrameworkOptions = computed(() => {
@@ -156,6 +172,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
+  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == 'SIXTEEN_MONTHS';
 
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
