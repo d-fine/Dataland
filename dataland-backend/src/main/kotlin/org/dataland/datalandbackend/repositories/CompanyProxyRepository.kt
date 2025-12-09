@@ -35,11 +35,11 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
         (:#{#searchFilter.proxiedCompanyId} IS NULL OR c.proxiedCompanyId = :#{#searchFilter.proxiedCompanyId})
         AND (:#{#searchFilter.proxyCompanyId} IS NULL OR c.proxyCompanyId = :#{#searchFilter.proxyCompanyId})
         AND (
-            (:#{#searchFilter.frameworksEmpty} = TRUE)
+            (:#{#searchFilter.frameworks.isEmpty()} = TRUE)
             OR (c.framework IN :#{#searchFilter.frameworks})
         )
         AND (
-            (:#{#searchFilter.reportingPeriodsEmpty} = TRUE)
+            (:#{#searchFilter.reportingPeriods.isEmpty()} = TRUE)
             OR (c.reportingPeriod IN :#{#searchFilter.reportingPeriods})
         )
     """,

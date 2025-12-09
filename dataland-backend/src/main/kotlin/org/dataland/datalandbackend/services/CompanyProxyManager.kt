@@ -74,9 +74,7 @@ class CompanyProxyManager
                         proxiedCompanyId = proxiedCompanyId,
                         proxyCompanyId = proxyCompanyId,
                         frameworks = frameworksSet,
-                        frameworksEmpty = frameworksSet.isEmpty(),
                         reportingPeriods = reportingPeriodsSet,
-                        reportingPeriodsEmpty = reportingPeriodsSet.isEmpty(),
                     ),
                     pageable = PageRequest.of(chunkIndex, chunkSize),
                 )
