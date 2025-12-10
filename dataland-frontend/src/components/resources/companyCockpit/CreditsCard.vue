@@ -8,7 +8,7 @@
       <Divider />
       Current Amount of Credits:
       <div class="dataland-info-text small">{{ props.companyId }}</div>
-      {{ creditsBalance.value }}
+      {{ creditsBalance }}
     </template>
   </Card>
 </template>
@@ -26,7 +26,6 @@ const props = defineProps<{
   companyId: string;
 }>();
 
-
 onMounted(async () => {
   await getCreditsBalanceForCompany();
   console.log(creditsBalance.value);
@@ -41,7 +40,9 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 async function getCreditsBalanceForCompany(): Promise<void> {
   if (!props.companyId) return;
   try {
-  creditsBalance.value = apiClientProvider.apiClients.creditsController.getBalance(props.companyId);
+  const response =  await apiClientProvider.apiClients.creditsController.getBalance(props.companyId);
+  creditsBalance.value = response;
+  console.log("CREDIT AMOUNT:",creditsBalance.value);
   } catch (error) {
     console.error("Failed to get credit balance:", error);
   }
