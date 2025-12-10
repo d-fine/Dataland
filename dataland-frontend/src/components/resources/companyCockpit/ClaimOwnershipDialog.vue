@@ -91,7 +91,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['claimSubmitted', 'closeDialog'],
+  emits: ['claim-submitted', 'close-dialog'],
   methods: {
     /**
      * Makes the API request in order to post the request for company ownership
@@ -105,7 +105,7 @@ export default defineComponent({
           this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined
         );
         if (axiosResponse.status == 200) {
-          this.$emit('claimSubmitted');
+          this.$emit('claim-submitted');
         }
       } catch (error) {
         console.error(error);
@@ -116,7 +116,7 @@ export default defineComponent({
      */
     closeDialog(): void {
       this.dialogIsVisible = false;
-      this.$emit('closeDialog');
+      this.$emit('close-dialog');
     },
   },
   watch: {
