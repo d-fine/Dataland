@@ -6,11 +6,7 @@ describe('Component tests for the UploadDocumentsForm', () => {
     const uploadDocuments = new UploadDocuments();
     //@ts-ignore
     cy.mountWithPlugins(UploadDocumentsForm, {
-      data() {
-        return {
-          name: 'UploadReports',
-        };
-      },
+      props: { name: 'UploadReports' },
     }).then(() => {
       const maximumAcceptedFileSize = 100 * 1024 * 1024;
       uploadDocuments.errorMessage().should('not.exist');
