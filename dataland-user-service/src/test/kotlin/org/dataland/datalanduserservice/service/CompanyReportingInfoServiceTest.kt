@@ -59,6 +59,8 @@ class CompanyReportingInfoServiceTest {
                 Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), TimeWindowThreshold.STANDARD, null),
                 Arguments
                     .of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 2, 16), TimeWindowThreshold.EXTENDED, setOf(2023, 2024)),
+                Arguments
+                    .of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), TimeWindowThreshold.EXTENDED, setOf(2024)),
             )
     }
 
