@@ -33,7 +33,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 1,
       isMonitored: true,
       monitoredFrameworks: new Set('sfdr'),
-      timeWindowThreshold: 'SIXTEEN_MONTHS',
+      timeWindowThreshold: 'EXTENDED',
     },
     {
       portfolioId: 'p2',
@@ -44,7 +44,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 456,
       isMonitored: false,
       monitoredFrameworks: new Set(),
-      timeWindowThreshold: 'SIXTEEN_MONTHS',
+      timeWindowThreshold: 'EXTENDED',
     },
     {
       portfolioId: 'p3',
@@ -55,7 +55,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 9999,
       isMonitored: true,
       monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
-      timeWindowThreshold: 'SIXTEEN_MONTHS',
+      timeWindowThreshold: 'EXTENDED',
     },
   ];
 

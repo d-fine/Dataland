@@ -130,7 +130,7 @@ class PortfolioBulkDataRequestServiceTest {
     )
 
     @Test
-    fun `posts bulk requests for sixteen months time window`() {
+    fun `posts bulk requests for extended time window`() {
         val companyIdWithRecentFye = UUID.randomUUID().toString()
         val companyIdWithDistantFye = UUID.randomUUID().toString()
 
@@ -142,12 +142,12 @@ class PortfolioBulkDataRequestServiceTest {
             stubCompany(companyIdWithDistantFye, DISTANT_FYE, 0, SectorType.FINANCIALS.name),
         )
 
-        val portfolioWithSixteenMonthsTimeWindowThreshold =
+        val portfolioWithExtendedMonthsTimeWindowThreshold =
             buildMonitoredPortfolioEntity(
                 companyIds = setOf(companyIdWithRecentFye, companyIdWithDistantFye),
                 frameworks = setOf(SFDR),
             ).copy(timeWindowThreshold = TimeWindowThreshold.EXTENDED)
-        stubPortfolioRepo(listOf(portfolioWithSixteenMonthsTimeWindowThreshold))
+        stubPortfolioRepo(listOf(portfolioWithExtendedMonthsTimeWindowThreshold))
 
         service.createBulkDataRequestsForAllMonitoredPortfolios()
 

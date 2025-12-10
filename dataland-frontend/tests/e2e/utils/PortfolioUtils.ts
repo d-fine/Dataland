@@ -18,7 +18,7 @@ export function createPortfolio(): void {
       identifiers: [companyId] as unknown as Set<string>,
       isMonitored: false,
       monitoredFrameworks: [] as unknown as Set<string>,
-      timeWindowThreshold: 'SIXTEEN_MONTHS' as const,
+      timeWindowThreshold: 'EXTENDED' as const,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
   });

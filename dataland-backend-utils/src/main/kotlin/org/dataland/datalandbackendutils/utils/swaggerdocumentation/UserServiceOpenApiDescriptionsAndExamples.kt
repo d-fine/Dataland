@@ -25,9 +25,9 @@ object UserServiceOpenApiDescriptionsAndExamples {
         "A list of frameworks for which the companies in the portfolio are actively monitored."
     const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"]"
 
-    const val PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION =
-        "The initial time window threshold for portfolio monitoring."
-    const val PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE = "Sixteen months"
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION =
+        "The time window threshold for portfolio monitoring."
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "STANDARD"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =

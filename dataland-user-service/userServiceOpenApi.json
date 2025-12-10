@@ -1000,8 +1000,8 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The initial time window threshold for portfolio monitoring.",
-            "example": "Sixteen months",
+            "description": "The time window threshold for portfolio monitoring.",
+            "example": "STANDARD",
             "enum": [
               "STANDARD",
               "EXTENDED"
@@ -1078,8 +1078,8 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The initial time window threshold for portfolio monitoring.",
-            "example": "Sixteen months",
+            "description": "The time window threshold for portfolio monitoring.",
+            "example": "STANDARD",
             "enum": [
               "STANDARD",
               "EXTENDED"
@@ -1131,8 +1131,8 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The initial time window threshold for portfolio monitoring.",
-            "example": "Sixteen months",
+            "description": "The time window threshold for portfolio monitoring.",
+            "example": "STANDARD",
             "enum": [
               "STANDARD",
               "EXTENDED"
@@ -1188,8 +1188,8 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The initial time window threshold for portfolio monitoring.",
-            "example": "Sixteen months",
+            "description": "The time window threshold for portfolio monitoring.",
+            "example": "STANDARD",
             "enum": [
               "STANDARD",
               "EXTENDED"
