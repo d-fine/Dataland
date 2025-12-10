@@ -27,7 +27,7 @@ class GeneralTestDataProvider {
             ),
             "DE",
             sector = sector,
-            fiscalYearEnd = LocalDate.now().minusMonths(2L),
+            fiscalYearEnd = LocalDate.now().minusMonths(2L).format(DateTimeFormatter.ofPattern("dd-MMM")),
             reportingPeriodShift = 0,
         )
 
