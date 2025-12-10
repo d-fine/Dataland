@@ -57,9 +57,7 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options

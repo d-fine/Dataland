@@ -57,9 +57,7 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options

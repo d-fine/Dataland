@@ -2,6 +2,7 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
@@ -95,9 +96,11 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
+                ExportRequestData(
+                    reportingPeriods = reportingPeriods,
+                    companyIds = companyIds,
+                    fileFormat = ExportFileType.CSV,
+                ),
                 keepValueFieldsOnly = keepValueFieldsOnly,
                 includeAliases = false,
             )
@@ -108,9 +111,11 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     ): File =
         apiAccessor.dataControllerApiForSfdrData
             .exportCompanyAssociatedSfdrDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.EXCEL,
+                ExportRequestData(
+                    reportingPeriods = reportingPeriods,
+                    companyIds = companyIds,
+                    fileFormat = ExportFileType.EXCEL,
+                ),
                 includeAliases = false,
             )
 

@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.controller.DataController
 <#list frameworkDataType.imports as import>import ${import}
 </#list>
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
@@ -66,13 +67,11 @@ class ${frameworkDataType.shortenedQualifier}Controller
 
     @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
     override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
+        exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ): ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
+        return super.exportCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")
