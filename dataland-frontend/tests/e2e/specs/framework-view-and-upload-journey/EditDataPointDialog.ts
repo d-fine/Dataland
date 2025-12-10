@@ -163,7 +163,10 @@ describeIf(
       cy.get('[data-test="currency-value-input"] input').blur();
 
       cy.get('[data-test="currency"]').click();
-      cy.get('[aria-label="East Caribbean Dollar (XCD)"]').click();
+      cy.get('.p-select-overlay:visible')
+        .find('.p-select-option [aria-label="East Caribbean Dollar (XCD)"]')
+        .first()
+        .click();
 
       saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
