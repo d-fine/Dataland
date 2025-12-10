@@ -57,5 +57,6 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
+            timeWindowThreshold,
         )
 }
