@@ -31,7 +31,7 @@ object TestUtils {
             entries = listOf(entryFinancials, entryNonFinancials, entryUndefined),
             isMonitored = null,
             monitoredFrameworks = null,
-            timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
+            timeWindowThreshold = TimeWindowThreshold.EXTENDED,
         )
     }
 }
