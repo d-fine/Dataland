@@ -43,10 +43,10 @@ class PortfolioBulkDataRequestService
 
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
+            companyReportingInfoService.resetData()
 
             val portfoliosByTimeWindow = allMonitoredPortfolios.groupBy { it.timeWindowThreshold }
             portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
-                companyReportingInfoService.resetData()
                 val companyIds = portfolios.flatMap { it.companyIds }.toSet()
                 logger
                     .info(
@@ -97,10 +97,10 @@ class PortfolioBulkDataRequestService
         private fun groupCompanyIdsBySectorAndReportingPeriod(companyIds: Set<String>): Map<ReportingPeriodAndSector, List<String>> =
             companyReportingInfoService
                 .getCachedReportingYearAndSectorInformation()
-                .filter {
-                    it.key in companyIds
-                }.entries
-                .groupBy({ it.value }, { it.key })
+                .filterKeys { it in companyIds }
+                .entries
+                .flatMap { (companyId, reportingInfos) -> reportingInfos.map { info -> info to companyId } }
+                .groupBy({ (info, _) -> info }, { (_, companyId) -> companyId })
 
         /**
          * Post a Bulk Data Request for the given portfolio, sector, and reporting period,
