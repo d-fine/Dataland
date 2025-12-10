@@ -13,10 +13,10 @@ import { setupCommonInterceptions, fetchTestCompanies } from '@e2e/utils/Company
  * @param companyId - The ID of the company whose roles are being removed.
  * @param userId - The ID of the user whose roles are being removed.
  */
-function removeCompanyRoles(companyId: string, userId: string): void {
-  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-    return removeAllCompanyRoles(token, companyId, userId);
-  });
+function removeCompanyRoles(companyId: string, userId: string): Cypress.Chainable<void> {
+  return getKeycloakToken(admin_name, admin_pw).then((token: string) =>
+    removeAllCompanyRoles(token, companyId, userId)
+  );
 }
 
 describeIf(
@@ -29,7 +29,7 @@ describeIf(
     let betaCompanyIdAndName: CompanyIdAndName;
 
     before(() => {
-      fetchTestCompanies().then(([alpha, beta]) => {
+      return fetchTestCompanies().then(([alpha, beta]) => {
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
       });
@@ -40,7 +40,7 @@ describeIf(
     });
 
     it('When directing by url to the users page as a basic data reader who is only a company member of another company that user should be redirected to the company cockpit page', () => {
-      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
+      cy.then(() => removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId));
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw))
         .then((token) => assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId))
@@ -149,19 +149,23 @@ describeIf(
      * Sets up the test environment for user page testing.
      */
     function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
-      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
+      cy.then(() => removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId));
       cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => {
-          void assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId);
-          if (premiumUserRole) {
-            void assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId);
-          }
-        })
-        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
+      cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) => {
+        const promises = [assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId)];
+        if (premiumUserRole) {
+          promises.push(
+            assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId)
+          );
+        }
+        return Promise.all(promises);
+      });
+
       cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForAlpha'
       );
+
+      cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`);
       cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
     }
   }
