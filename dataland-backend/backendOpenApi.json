@@ -9963,10 +9963,8 @@
           },
           "companyIds": {
             "type": "array",
-            "description": "The email addresses of the company.",
-            "example": [
-              "test@example.com"
-            ],
+            "description": "A list of Dataland company ids for which the data export is requested.",
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]",
             "items": {
               "type": "string"
             }
