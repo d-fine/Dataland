@@ -22,8 +22,8 @@ data class ExportRequestData(
         arraySchema =
             Schema(
                 type = "string",
-                description = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_DESCRIPTION,
-                example = BackendOpenApiDescriptionsAndExamples.COMPANY_CONTACT_DETAILS_EXAMPLE,
+                description = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_EXAMPLE,
             ),
     )
     val companyIds: List<String>,

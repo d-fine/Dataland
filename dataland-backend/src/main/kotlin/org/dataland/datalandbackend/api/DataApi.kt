@@ -120,17 +120,15 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its [reportingPeriods], [companyIds] as a [exportFileType] file.
-     * @param reportingPeriods specifies the reporting periods
-     * @param companyIds specifies the companies
-     * @param exportFileType specifies the file type to export to
+     * A method to export the CompanyAssociatedData by its reporting periods and company IDs.
+     * @param exportRequestData specifies the requested data (reporting periods, company IDs and file format)
      * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
      * @return JSON of companyAssociatedData in the form of InputStreamResource
      */
     @Operation(
         summary = "Export data for the reportingPeriods and companyIds provided.",
         description =
-            "Export data for the each combination of reportingPeriod and companyId provided into a file of the " +
+            "Export data for each combination of reportingPeriod and companyId provided into a file of the " +
                 "specified format (CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(

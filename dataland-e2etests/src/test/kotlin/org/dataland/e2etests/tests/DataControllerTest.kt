@@ -290,7 +290,7 @@ class DataControllerTest {
     }
 
     @Test
-    fun `verify that export supports a huge number of companies`() {
+    fun `verify that export fails with unknown company message and not because payload was too large`() {
         val increasedTimeoutDataControllerApiForEuTaxonomyNonFinancials =
             EutaxonomyNonFinancialsDataControllerApi(
                 BASE_PATH_TO_DATALAND_BACKEND,
