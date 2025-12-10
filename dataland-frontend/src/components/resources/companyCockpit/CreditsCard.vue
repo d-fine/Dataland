@@ -7,11 +7,34 @@
       <div style="display: flex; align-items: center">
         <i
           class="pi pi-credit-card"
-          style="margin-right: 0.5rem; font-size: var(--font-size-lg); position: relative; top: 2px"
+          style="margin-right: 0.5rem; font-size: var(--font-size-lg); position: relative; top: 1px"
         ></i>
         <span>Credits</span>
+
+      <Button
+          icon="pi pi-info-circle"
+          variant="text"
+          data-test="info-icon"
+          rounded
+          @click="showInfoBox"
+          title="Show Info"
+          :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
+      />
       </div>
     </template>
+    <template #subtitle>
+      <Message
+          v-if="showInfoMessage"
+          severity="warn"
+          :closable="true"
+          @close="hideInfoBox"
+          style="margin-top: var(--spacing-xs); min-height: 3rem"
+          data-test="info-message"
+      >
+        {{ 'Credits may be deducted automatically when using actively monitored portfolios.' }}
+      </Message>
+    </template>
+
     <template #content>
       <Divider />
       <div style="display: flex; justify-content: space-between; align-items: center">
@@ -31,6 +54,9 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Chip from 'primevue/chip';
+import Button from "primevue/button";
+import {useStorage} from "@vueuse/core";
+import Message from "primevue/message";
 
 const creditsBalance = ref<number | any>(0);
 const props = defineProps<{
@@ -43,6 +69,7 @@ onMounted(async () => {
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
 
 /**
  * Gets the current balance of credits for the company.
@@ -56,6 +83,21 @@ async function getCreditsBalanceForCompany(): Promise<void> {
     console.error('Failed to get credit balance:', error);
   }
 }
+
+/**
+ * Hides the info box
+ */
+function hideInfoBox(): void {
+  showInfoMessage.value = false;
+}
+
+/**
+ * Shows the info box
+ */
+function showInfoBox(): void {
+  showInfoMessage.value = true;
+}
+
 </script>
 
 <style scoped></style>
