@@ -44,23 +44,24 @@ class NotificationScheduler
             portfolioNamesString: String,
             userId: UUID,
         ) {
-            if (events.isNotEmpty()) {
-                logger.info(
-                    "Requirements for Portfolio Update Summary notification are met." +
-                        " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
-                )
-                portfolioUpdateSummaryEmailBuilder.buildPortfolioMonitoringUpdateSummaryEmailAndSendCEMessage(
-                    unprocessedEvents = events,
-                    userId = userId,
-                    frequency = frequency,
-                    portfolioNamesString = portfolioNamesString,
-                )
-            } else {
+            if (events.isEmpty()) {
                 logger.info(
                     "No new events found for Portfolio Update Summary notification." +
                         " No $frequency email will be sent to user $userId for portfolio(s) $portfolioNamesString.",
                 )
+                return
             }
+
+            logger.info(
+                "Requirements for Portfolio Update Summary notification are met." +
+                    " Sending $frequency notification email to user $userId for portfolio(s) $portfolioNamesString.",
+            )
+            portfolioUpdateSummaryEmailBuilder.buildPortfolioMonitoringUpdateSummaryEmailAndSendCEMessage(
+                unprocessedEvents = events,
+                userId = userId,
+                frequency = frequency,
+                portfolioNamesString = portfolioNamesString,
+            )
         }
 
         /**
@@ -126,39 +127,40 @@ class NotificationScheduler
             val portfoliosGroupedByUser = portfoliosWithRegularUpdates.groupBy { it.userId }
 
             portfoliosGroupedByUser.forEach { (userId, userPortfolios) ->
-                val eventEntitiesToProcess =
-                    userPortfolios.flatMap { it.monitoredFrameworks.orEmpty() }.toSet().flatMap { framework ->
-                        val monitoredCompanies =
-                            userPortfolios
-                                .filter { it.monitoredFrameworks.orEmpty().contains(framework) }
-                                .flatMap { it.companyIds }
-                                .toSet()
+                val portfolioNamesWithNotifications = mutableListOf<String>()
+                val eventEntitiesToProcess = mutableSetOf<NotificationEventEntity>()
+                userPortfolios.forEach { portfolio ->
+                    val notificationsPerPortfolio =
+                        notificationEventRepository.findAllByFrameworkInAndCompanyIdInAndCreationTimestampGreaterThan(
+                            mapPortfolioFrameworksToDataTypes(portfolio.monitoredFrameworks.orEmpty()),
+                            portfolio.companyIds.map { UUID.fromString(it) },
+                            timeStampForInterval,
+                        )
 
-                        mapPortfolioFrameworkToDataTypes(framework).flatMap { dataType ->
-                            notificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(
-                                dataType,
-                                monitoredCompanies.map { UUID.fromString(it) },
-                                timeStampForInterval,
-                            )
-                        }
+                    if (notificationsPerPortfolio.isNotEmpty()) {
+                        portfolioNamesWithNotifications.add(portfolio.portfolioName)
+                        eventEntitiesToProcess += notificationsPerPortfolio
                     }
+                }
                 processNotificationEvents(
-                    events = eventEntitiesToProcess,
+                    events = eventEntitiesToProcess.toList(),
                     frequency = notificationFrequency,
-                    portfolioNamesString = userPortfolios.joinToString(", ") { it.portfolioName },
+                    portfolioNamesString = portfolioNamesWithNotifications.joinToString(", "),
                     userId = ValidationUtils.convertToUUID(userId),
                 )
             }
         }
 
-        private fun mapPortfolioFrameworkToDataTypes(framework: String): List<DataTypeEnum> {
-            if (framework == "eutaxonomy") {
-                return listOf(
-                    DataTypeEnum.eutaxonomyMinusFinancials,
-                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                    DataTypeEnum.nuclearMinusAndMinusGas,
-                )
+        private fun mapPortfolioFrameworksToDataTypes(frameworks: Set<String>): List<DataTypeEnum> {
+            if ("eutaxonomy" in frameworks) {
+                val frameworksWithoutEuTaxo = (frameworks - "eutaxonomy").map { DataTypeEnum.valueOf(it) }
+                return frameworksWithoutEuTaxo +
+                    listOf(
+                        DataTypeEnum.eutaxonomyMinusFinancials,
+                        DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+                        DataTypeEnum.nuclearMinusAndMinusGas,
+                    )
             }
-            return listOf(DataTypeEnum.valueOf(framework))
+            return frameworks.map { DataTypeEnum.valueOf(it) }
         }
     }

@@ -133,12 +133,12 @@ class NotificationSchedulerTest {
     fun `test scheduled email sending does create the expected messages`(ta: TestArgument) {
         whenever(mockPortfolioRepository.findAllByNotificationFrequencyAndIsMonitoredIsTrue(eq(ta.notificationFrequency)))
             .thenReturn(ta.mockPortfolioList)
-        whenever(mockNotificationEventRepository.findAllByFrameworkAndCompanyIdInAndCreationTimestampGreaterThan(any(), any(), any()))
+        whenever(mockNotificationEventRepository.findAllByFrameworkInAndCompanyIdInAndCreationTimestampGreaterThan(any(), any(), any()))
             .thenAnswer { invocation: org.mockito.invocation.InvocationOnMock ->
-                val framework = invocation.getArgument<DataTypeEnum>(0)
+                val frameworks = invocation.getArgument<List<DataTypeEnum>>(0)
                 val companyIds = invocation.getArgument<List<UUID>>(1)
                 mockNotificationEventEntities.filter {
-                    it.framework == framework && it.companyId in companyIds
+                    it.framework in frameworks && it.companyId in companyIds
                 }
             }
 
