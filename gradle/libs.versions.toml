@@ -124,7 +124,7 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-modul
 # Commons
 commons-io = { group = "commons-io", name = "commons-io", version = "2.21.0" }
 commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.20.0" }
-commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.14.0" }
+commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.15.0" }
 
 # PDFBox
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
