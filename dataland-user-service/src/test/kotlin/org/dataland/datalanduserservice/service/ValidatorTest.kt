@@ -47,7 +47,7 @@ class ValidatorTest {
     private val invalidCompanyId = "invalid-company-id"
     private val isMonitored = true
     private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
-    private val defaultTimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS
+    private val defaultTimeWindowThreshold = TimeWindowThreshold.STANDARD
 
     private val validPortfolioUpload =
         PortfolioUpload(

@@ -42,7 +42,7 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
-    val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
+    val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.STANDARD,
 ) {
     /**
      * create PortfolioResponse from entity
@@ -57,6 +57,5 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
-            timeWindowThreshold,
         )
 }

@@ -29,7 +29,7 @@ class UserServiceTest {
             identifiers = companyIds,
             isMonitored = false,
             monitoredFrameworks = emptySet(),
-            timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.SIXTEEN_MONTHS,
+            timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.STANDARD,
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -137,7 +137,7 @@ class UserServiceTest {
                 identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
-                timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.SIXTEEN_MONTHS,
+                timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.STANDARD,
             )
 
         val portfolio =
@@ -159,7 +159,7 @@ class UserServiceTest {
                         PortfolioMonitoringPatch(
                             isMonitored = true,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.SIXTEEN_MONTHS,
+                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.EXTENDED,
                         ),
                     )
                 }

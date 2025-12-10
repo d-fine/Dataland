@@ -50,15 +50,15 @@ class CompanyReportingInfoServiceTest {
         @JvmStatic
         fun paramStream(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 3, 16), TimeWindowThreshold.SIX_MONTHS, setOf(2025)),
-                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 3, 16), TimeWindowThreshold.SIX_MONTHS, setOf(2024)),
-                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 3, 16), TimeWindowThreshold.SIX_MONTHS, setOf(2025)),
-                Arguments.of(LocalDate.of(2030, 1, 31), 0, LocalDate.of(2025, 3, 31), TimeWindowThreshold.SIX_MONTHS, setOf(2025)),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 2, 16), TimeWindowThreshold.SIX_MONTHS, null),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), TimeWindowThreshold.SIX_MONTHS, setOf(2025)),
-                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), TimeWindowThreshold.SIX_MONTHS, null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 3, 16), TimeWindowThreshold.STANDARD, setOf(2025)),
+                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 3, 16), TimeWindowThreshold.STANDARD, setOf(2024)),
+                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 3, 16), TimeWindowThreshold.STANDARD, setOf(2025)),
+                Arguments.of(LocalDate.of(2030, 1, 31), 0, LocalDate.of(2025, 3, 31), TimeWindowThreshold.STANDARD, setOf(2025)),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 2, 16), TimeWindowThreshold.STANDARD, null),
+                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), TimeWindowThreshold.STANDARD, setOf(2025)),
+                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), TimeWindowThreshold.STANDARD, null),
                 Arguments
-                    .of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 2, 16), TimeWindowThreshold.SIXTEEN_MONTHS, setOf(2023, 2024)),
+                    .of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 2, 16), TimeWindowThreshold.EXTENDED, setOf(2023, 2024)),
             )
     }
 
@@ -116,7 +116,7 @@ class CompanyReportingInfoServiceTest {
             StoredCompany(companyId, info, emptyList()),
         )
 
-        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.STANDARD)
 
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isNotEmpty())
         companyReportingInfoService.resetData()
@@ -134,7 +134,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.STANDARD)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]?.first()
         assertEquals(SectorType.FINANCIALS, entry?.sector)
         mockedStatic.close()
@@ -148,7 +148,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.STANDARD)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]?.first()
         assertEquals(SectorType.NONFINANCIALS, entry?.sector)
         mockedStatic.close()
@@ -162,7 +162,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.STANDARD)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]?.first()
         assertEquals(SectorType.UNKNOWN, entry?.sector)
         mockedStatic.close()
@@ -176,7 +176,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId, companyId, companyId), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(listOf(companyId, companyId, companyId), TimeWindowThreshold.STANDARD)
         val map = companyReportingInfoService.getCachedReportingYearAndSectorInformation()
         assertEquals(1, map.size)
         mockedStatic.close()
@@ -184,7 +184,7 @@ class CompanyReportingInfoServiceTest {
 
     @Test
     fun `updateCompanies does nothing on empty input`() {
-        companyReportingInfoService.updateCompanies(emptyList(), TimeWindowThreshold.SIX_MONTHS)
+        companyReportingInfoService.updateCompanies(emptyList(), TimeWindowThreshold.STANDARD)
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isEmpty())
         assertTrue(companyReportingInfoService.getCachedCompanyIdsWithoutReportingYearInfo().isEmpty())
     }

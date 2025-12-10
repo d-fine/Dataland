@@ -1003,8 +1003,8 @@
             "description": "The initial time window threshold for portfolio monitoring.",
             "example": "Sixteen months",
             "enum": [
-              "SIX_MONTHS",
-              "SIXTEEN_MONTHS"
+              "STANDARD",
+              "EXTENDED"
             ]
           }
         }
@@ -1081,8 +1081,8 @@
             "description": "The initial time window threshold for portfolio monitoring.",
             "example": "Sixteen months",
             "enum": [
-              "SIX_MONTHS",
-              "SIXTEEN_MONTHS"
+              "STANDARD",
+              "EXTENDED"
             ]
           }
         }
@@ -1134,8 +1134,8 @@
             "description": "The initial time window threshold for portfolio monitoring.",
             "example": "Sixteen months",
             "enum": [
-              "SIX_MONTHS",
-              "SIXTEEN_MONTHS"
+              "STANDARD",
+              "EXTENDED"
             ]
           }
         }
@@ -1191,8 +1191,8 @@
             "description": "The initial time window threshold for portfolio monitoring.",
             "example": "Sixteen months",
             "enum": [
-              "SIX_MONTHS",
-              "SIXTEEN_MONTHS"
+              "STANDARD",
+              "EXTENDED"
             ]
           }
         }

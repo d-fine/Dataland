@@ -90,7 +90,7 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
 const showFrameworksError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
-const timeWindowThreshold = ref(true);
+const timeWindowThreshold = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
 
 const selectedFrameworkOptions = computed(() => {
@@ -145,7 +145,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
-    timeWindowThreshold: timeWindowThreshold.value ? 'SIXTEEN_MONTHS' : 'SIX_MONTHS',
+    timeWindowThreshold: timeWindowThreshold.value ? 'EXTENDED' : 'STANDARD',
   };
 
   if (isMonitoringActive.value) {
@@ -173,7 +173,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
-  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == 'SIXTEEN_MONTHS';
+  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == 'EXTENDED';
 
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({

@@ -125,7 +125,6 @@ class PortfolioBulkDataRequestServiceTest {
         companyIds = companyIds.toMutableSet(),
         isMonitored = true,
         monitoredFrameworks = frameworks,
-        timeWindowThreshold = TimeWindowThreshold.SIX_MONTHS,
     )
 
     @Test
@@ -141,7 +140,7 @@ class PortfolioBulkDataRequestServiceTest {
             buildMonitoredPortfolioEntity(
                 companyIds = setOf(companyIdWithRecentFye),
                 frameworks = setOf(SFDR),
-            ).copy(timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS)
+            ).copy(timeWindowThreshold = TimeWindowThreshold.EXTENDED)
         stubPortfolioRepo(listOf(portfolioWithSixteenMonthsTimeWindowThreshold))
         service.createBulkDataRequestsForAllMonitoredPortfolios()
         println("PortfolioWith16month: $portfolioWithSixteenMonthsTimeWindowThreshold")

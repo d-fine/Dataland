@@ -4,7 +4,6 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
-import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +27,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
-                timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
             )
 
         val violations = validator.validate(monitoring)
@@ -41,7 +39,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
-                timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
             )
 
         val violations = validator.validate(monitoring)
@@ -54,7 +51,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
-                timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
             )
 
         val violations = validator.validate(monitoring)
@@ -67,7 +63,6 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
-                timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
             )
 
         val violations = validator.validate(monitoring)

@@ -130,7 +130,7 @@ class CompanyReportingInfoService
             val today = LocalDate.now()
             val lowerBoundary =
                 today.minusMonths(
-                    if (timeWindowThreshold == TimeWindowThreshold.SIXTEEN_MONTHS) {
+                    if (timeWindowThreshold == TimeWindowThreshold.EXTENDED) {
                         STARTING_OF_EXTENDED_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS
                     } else {
                         STARTING_OF_SOURCING_WINDOW_THRESHOLD_1_IN_MONTHS

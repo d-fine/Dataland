@@ -74,7 +74,7 @@ data class BasePortfolio(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_INITIAL_TIME_WINDOW_THRESHOLD_EXAMPLE,
     )
-    override val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
+    override val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.STANDARD,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
