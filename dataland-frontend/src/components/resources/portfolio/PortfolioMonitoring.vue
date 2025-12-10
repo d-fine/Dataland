@@ -64,6 +64,10 @@
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import {
+  PortfolioMonitoringPatchTimeWindowThresholdEnum,
+  EnrichedPortfolioTimeWindowThresholdEnum,
+} from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -145,7 +149,9 @@ async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
-    timeWindowThreshold: timeWindowThreshold.value ? 'EXTENDED' : 'STANDARD',
+    timeWindowThreshold: timeWindowThreshold.value
+      ? PortfolioMonitoringPatchTimeWindowThresholdEnum.Extended
+      : PortfolioMonitoringPatchTimeWindowThresholdEnum.Standard,
   };
 
   if (isMonitoringActive.value) {
@@ -173,7 +179,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
-  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == 'EXTENDED';
+  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == EnrichedPortfolioTimeWindowThresholdEnum.Extended;
 
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
