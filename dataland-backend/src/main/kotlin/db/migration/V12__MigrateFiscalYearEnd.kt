@@ -19,11 +19,9 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
         val connection = context.connection
         val meta = connection.metaData
 
-        // check table exists
         val table = meta.getTables(null, null, "stored_companies", null)
         if (!table.next()) return
 
-        // check column exists
         val column = meta.getColumns(null, null, "stored_companies", "fiscal_year_end")
         val columnExists = column.next()
         column.close()
