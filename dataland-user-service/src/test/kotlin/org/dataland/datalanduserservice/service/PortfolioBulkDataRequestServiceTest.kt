@@ -5,7 +5,7 @@ import org.dataland.dataSourcingService.openApiClient.model.BulkDataRequest
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.model.SectorType
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.AfterAll
@@ -28,13 +28,14 @@ import java.time.LocalDateTime
 import java.time.MonthDay
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 class PortfolioBulkDataRequestServiceTest {
     companion object {
         private val TODAY: LocalDate = LocalDate.of(2025, 2, 15)
         private val FYE = MonthDay.of(12, 31)
         private const val USER_ID = "user id"
-        private const val PORTFOLIO_ID = "Portfolio id"
+        private const val PORTFOLIO_ID = "00000000-0000-0000-0000-000000000001"
         private const val COMPANY_ID_1 = "Company id 1"
         private const val COMPANY_ID_2 = "Company id 2"
         private const val COMPANY_ID = "Company id"
@@ -107,20 +108,23 @@ class PortfolioBulkDataRequestServiceTest {
         doReturn(stubCompany(id, FYE, reportingPeriodShift, sector)).whenever(mockCompanyDataApi).getCompanyById(id)
     }
 
-    private fun buildPortfolio(
+    private fun stubPortfolioRepo(portfolios: List<PortfolioEntity>) {
+        whenever(mockPortfolioRepo.findAllByIsMonitoredTrue()).thenReturn(portfolios)
+    }
+
+    private fun buildMonitoredPortfolioEntity(
         companyIds: Set<String>,
         frameworks: Set<String>,
-        isMonitored: Boolean,
         portfolioName: String = "Test portfolio",
-    ) = BasePortfolio(
-        portfolioId = PORTFOLIO_ID,
-        userId = USER_ID,
-        identifiers = companyIds,
-        monitoredFrameworks = frameworks,
-        isMonitored = isMonitored,
+    ) = PortfolioEntity(
+        portfolioId = UUID.fromString(PORTFOLIO_ID),
         portfolioName = portfolioName,
+        userId = USER_ID,
         creationTimestamp = TIMESTAMP,
         lastUpdateTimestamp = TIMESTAMP,
+        companyIds = companyIds.toMutableSet(),
+        isMonitored = true,
+        monitoredFrameworks = frameworks,
     )
 
     @Test
@@ -128,14 +132,8 @@ class PortfolioBulkDataRequestServiceTest {
         stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
         stubCompanyApi(COMPANY_ID_2, 0, SectorType.FINANCIALS.name)
 
-        val basePortfolio =
-            buildPortfolio(
-                companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
-                frameworks = setOf(EUTAXONOMY, SFDR),
-                isMonitored = false,
-                portfolioName = "My not monitored test portfolio",
-            )
-        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        stubPortfolioRepo(emptyList())
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
         verifyNoInteractions(mockRequestApi)
     }
 
@@ -143,14 +141,14 @@ class PortfolioBulkDataRequestServiceTest {
     fun `posts bulk requests for all framework and sector types inside grouping`() {
         stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
         stubCompanyApi(COMPANY_ID_2, -1, "consumer")
-        val basePortfolio =
-            buildPortfolio(
+        val portfolioEntity =
+            buildMonitoredPortfolioEntity(
                 companyIds = setOf(COMPANY_ID_1, COMPANY_ID_2),
                 frameworks = setOf(EUTAXONOMY, SFDR),
-                isMonitored = true,
                 portfolioName = "My monitored test portfolio",
             )
-        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        stubPortfolioRepo(listOf(portfolioEntity))
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
 
         val expected =
             listOf(
@@ -171,20 +169,43 @@ class PortfolioBulkDataRequestServiceTest {
     }
 
     @Test
-    fun `posts only eutaxonomy when framework does not include sfdr`() {
-        stubCompanyApi(COMPANY_ID, 0, "nonfinancials")
-        val basePortfolio =
-            buildPortfolio(
-                companyIds = setOf(COMPANY_ID),
+    fun `posts right eutaxonomy requests depending on company sector`() {
+        val nonFinancialCompanyId = UUID.randomUUID().toString()
+        val financialCompanyId = UUID.randomUUID().toString()
+        val noSectorCompanyId = UUID.randomUUID().toString()
+        stubCompanyApi(nonFinancialCompanyId, 0, "nonfinancials")
+        stubCompanyApi(financialCompanyId, 0, "financials")
+        stubCompanyApi(noSectorCompanyId, 0, null)
+        val portfolioEntity =
+            buildMonitoredPortfolioEntity(
+                companyIds = setOf(nonFinancialCompanyId, financialCompanyId, noSectorCompanyId),
                 frameworks = setOf(EUTAXONOMY),
-                isMonitored = true,
                 portfolioName = "My monitored eutaxonomy test portfolio",
             )
-        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        stubPortfolioRepo(listOf(portfolioEntity))
+
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
+
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(COMPANY_ID) &&
+                companyIdentifiers == setOf(nonFinancialCompanyId) &&
                     dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(financialCompanyId) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(noSectorCompanyId) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
                     reportingPeriods == setOf("2024")
             },
             eq(USER_ID),
@@ -195,14 +216,14 @@ class PortfolioBulkDataRequestServiceTest {
     @Test
     fun `posts only sfdr when framework does not include eutaxonomy`() {
         stubCompanyApi(COMPANY_ID, 0, "random")
-        val basePortfolio =
-            buildPortfolio(
+        val portfolioEntity =
+            buildMonitoredPortfolioEntity(
                 companyIds = setOf(COMPANY_ID),
                 frameworks = setOf(SFDR),
-                isMonitored = true,
                 portfolioName = "My monitored sfdr test portfolio",
             )
-        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        stubPortfolioRepo(listOf(portfolioEntity))
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
                 companyIdentifiers == setOf(COMPANY_ID) &&
@@ -220,14 +241,14 @@ class PortfolioBulkDataRequestServiceTest {
             stubCompany(COMPANY_ID, null, 1, "financials"),
         )
 
-        val basePortfolio =
-            buildPortfolio(
+        val portfolioEntity =
+            buildMonitoredPortfolioEntity(
                 companyIds = setOf(COMPANY_ID),
                 frameworks = setOf(EUTAXONOMY, SFDR),
-                isMonitored = true,
                 portfolioName = "My monitored test portfolio",
             )
-        service.createBulkDataRequestsForPortfolioIfMonitored(basePortfolio)
+        stubPortfolioRepo(listOf(portfolioEntity))
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
         verifyNoInteractions(mockRequestApi)
     }
 }
