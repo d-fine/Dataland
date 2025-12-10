@@ -5,6 +5,7 @@ package org.dataland.datalanduserservice.controller
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
@@ -49,6 +50,7 @@ class PortfolioControllerTest {
     private val validCompanyId = "valid-company-id"
     private val isMonitored = true
     private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
+    private val defaultTimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS
 
     private val validPortfolioUpload =
         PortfolioUpload(
@@ -56,6 +58,7 @@ class PortfolioControllerTest {
             setOf(validCompanyId),
             isMonitored,
             dummyMonitoredFrameworks,
+            defaultTimeWindowThreshold,
         )
 
     @BeforeEach

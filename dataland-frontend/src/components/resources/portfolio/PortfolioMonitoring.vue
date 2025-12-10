@@ -145,6 +145,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
+    timeWindowThreshold: timeWindowThreshold.value ? 'SIXTEEN_MONTHS' : 'SIX_MONTHS',
   };
 
   if (isMonitoringActive.value) {

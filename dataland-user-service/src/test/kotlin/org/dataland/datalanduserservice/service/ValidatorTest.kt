@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -46,6 +47,7 @@ class ValidatorTest {
     private val invalidCompanyId = "invalid-company-id"
     private val isMonitored = true
     private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
+    private val defaultTimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS
 
     private val validPortfolioUpload =
         PortfolioUpload(
@@ -53,6 +55,7 @@ class ValidatorTest {
             setOf(validCompanyId),
             isMonitored,
             dummyMonitoredFrameworks,
+            defaultTimeWindowThreshold,
         )
 
     @BeforeEach

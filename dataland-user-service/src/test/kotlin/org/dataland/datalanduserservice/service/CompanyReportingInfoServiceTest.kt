@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.model.SectorType
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -90,7 +91,7 @@ class CompanyReportingInfoServiceTest {
             )
         whenever(mockCompanyDataControllerApi.getCompanyById(testStoredCompany.companyId))
             .thenReturn(testStoredCompany)
-        companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId))
+        companyReportingInfoService.updateCompanies(listOf(testStoredCompany.companyId), TimeWindowThreshold.SIX_MONTHS)
         val companyReportingYearAndSectorInfo =
             companyReportingInfoService.getCachedReportingYearAndSectorInformation()
         assertEquals(
@@ -114,7 +115,7 @@ class CompanyReportingInfoServiceTest {
             StoredCompany(companyId, info, emptyList()),
         )
 
-        companyReportingInfoService.updateCompanies(listOf(companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
 
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isNotEmpty())
         companyReportingInfoService.resetData()
@@ -132,7 +133,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.FINANCIALS, entry?.sector)
         mockedStatic.close()
@@ -146,7 +147,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.NONFINANCIALS, entry?.sector)
         mockedStatic.close()
@@ -160,7 +161,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId), TimeWindowThreshold.SIX_MONTHS)
         val entry = companyReportingInfoService.getCachedReportingYearAndSectorInformation()[companyId]
         assertEquals(SectorType.UNKNOWN, entry?.sector)
         mockedStatic.close()
@@ -174,7 +175,7 @@ class CompanyReportingInfoServiceTest {
         whenever(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(
             StoredCompany(companyId, info, emptyList()),
         )
-        companyReportingInfoService.updateCompanies(listOf(companyId, companyId, companyId))
+        companyReportingInfoService.updateCompanies(listOf(companyId, companyId, companyId), TimeWindowThreshold.SIX_MONTHS)
         val map = companyReportingInfoService.getCachedReportingYearAndSectorInformation()
         assertEquals(1, map.size)
         mockedStatic.close()
@@ -182,7 +183,7 @@ class CompanyReportingInfoServiceTest {
 
     @Test
     fun `updateCompanies does nothing on empty input`() {
-        companyReportingInfoService.updateCompanies(emptyList())
+        companyReportingInfoService.updateCompanies(emptyList(), TimeWindowThreshold.SIX_MONTHS)
         assertTrue(companyReportingInfoService.getCachedReportingYearAndSectorInformation().isEmpty())
         assertTrue(companyReportingInfoService.getCachedCompanyIdsWithoutReportingYearInfo().isEmpty())
     }

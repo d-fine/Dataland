@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -65,6 +66,7 @@ class DatalandUserServiceSpringbootTest
         private val invalidCompanyId = "invalid-company-id"
         private val isMonitored = false
         private val dummyMonitoredFrameworks = setOf("sfdr", "eutaxonomy")
+        private val defaultTimeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(
@@ -72,6 +74,7 @@ class DatalandUserServiceSpringbootTest
                 identifiers = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
                 dummyMonitoredFrameworks,
+                defaultTimeWindowThreshold,
             )
 
         private val dummyPortfolioUpload2 =
@@ -150,6 +153,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
                     )
                 val patchedPortfolio =
                     assertDoesNotThrow {
@@ -206,6 +210,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        timeWindowThreshold = TimeWindowThreshold.SIXTEEN_MONTHS,
                     )
 
                 assertThrows<AuthorizationDeniedException> {
