@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class CompanyRole {
-    MemberAdmin,
-    Member,
+    Admin,
+    Analyst,
     CompanyOwner,
     DataUploader,
 }

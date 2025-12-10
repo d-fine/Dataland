@@ -7,6 +7,7 @@ import okhttp3.Response
 import org.dataland.datalandbackendutils.validator.CompanyExistsValidator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -30,7 +31,7 @@ class CompanyExistsValidatorTest {
 
     @Test
     fun `isValid returns true if companyId is null`() {
-        assertFalse(validator.isValid(null, null))
+        assertTrue(validator.isValid(null, null))
     }
 
     @Test
