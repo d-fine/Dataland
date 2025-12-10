@@ -89,6 +89,7 @@ import type {
   EnrichedPortfolioEntry,
   PortfolioUpload,
 } from '@clients/userservice';
+import { PortfolioUploadTimeWindowThresholdEnum } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -226,7 +227,8 @@ async function savePortfolio(): Promise<void> {
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
       // as unknown as Set<string> cast required to ensure proper json is created
       monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
-      timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? 'STANDARD',
+      timeWindowThreshold:
+        enrichedPortfolio.value?.timeWindowThreshold ?? PortfolioUploadTimeWindowThresholdEnum.Standard,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)

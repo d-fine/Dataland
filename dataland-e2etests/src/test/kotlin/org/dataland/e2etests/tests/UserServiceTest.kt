@@ -159,7 +159,7 @@ class UserServiceTest {
                         PortfolioMonitoringPatch(
                             isMonitored = true,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.EXTENDED,
+                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.STANDARD,
                         ),
                     )
                 }
