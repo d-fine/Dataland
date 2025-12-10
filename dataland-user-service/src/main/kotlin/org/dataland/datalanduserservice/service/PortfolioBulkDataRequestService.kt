@@ -44,10 +44,9 @@ class PortfolioBulkDataRequestService
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
 
-            companyReportingInfoService.resetData()
-
             val portfoliosByTimeWindow = allMonitoredPortfolios.groupBy { it.timeWindowThreshold }
             portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
+                companyReportingInfoService.resetData()
                 val companyIds = portfolios.flatMap { it.companyIds }.toSet()
                 logger
                     .info(
@@ -60,9 +59,8 @@ class PortfolioBulkDataRequestService
                 portfolios.forEach {
                     postBulkDataRequest(it.toBasePortfolio())
                 }
-
-                logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
             }
+            logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
         }
 
         /**
@@ -120,24 +118,27 @@ class PortfolioBulkDataRequestService
         ) {
             val monitoredFrameworks =
                 when (groupKey.sector) {
-                    SectorType.FINANCIALS ->
+                    SectorType.FINANCIALS -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+                    }
 
-                    SectorType.NONFINANCIALS ->
+                    SectorType.NONFINANCIALS -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+                    }
 
-                    else ->
+                    else -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
                         )
+                    }
                 }
             postBulkDataRequest(
                 userId = basePortfolio.userId,
