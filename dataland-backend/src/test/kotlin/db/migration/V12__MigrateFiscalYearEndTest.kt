@@ -17,7 +17,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
 @DefaultMocks
-class V12__MigrateFiscalYearEndTest : BaseFlywayMigrationTest {
+class V12__MigrateFiscalYearEndTest : BaseFlywayMigrationTest() {
     @Autowired
     lateinit var companyAlterationManager: CompanyAlterationManager
 
