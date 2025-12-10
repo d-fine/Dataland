@@ -157,6 +157,15 @@ const routes = [
     },
   },
   {
+    path: `/companies/:companyId/credits`,
+    props: true,
+    name: 'CompanyCockpitPage',
+    component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: '/requestoverview',
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,

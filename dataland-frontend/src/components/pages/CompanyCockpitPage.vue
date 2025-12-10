@@ -12,6 +12,7 @@
       >
         <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
         <Tab value="users" data-test="usersTab">Users</Tab>
+        <Tab value="credits" data-test="creditsTab">Credits</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
@@ -30,6 +31,13 @@
             :userRole="userRole"
             @users-changed="handleUsersChanged"
           />
+        </TabPanel>
+        <TabPanel
+          v-if="isCompanyMemberOrAdmin"
+          value="credits"
+          style="background-color: var(--p-surface-50); padding: var(--spacing-xs)"
+        >
+          <CreditsCard :companyId="companyId" />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -52,6 +60,7 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 
 import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -74,7 +83,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const router = useRouter();
 
-const activeTab = ref<'datasets' | 'users'>('datasets');
+const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
 const isCompanyMemberOrAdmin = ref(false);
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
@@ -137,17 +146,28 @@ watch(
 
 watch(activeTab, (val) => {
   const base = `/companies/${props.companyId}`;
-  void router.replace({ path: val === 'users' ? `${base}/users` : base });
+  if (val === 'users') {
+    void router.replace({ path: `${base}/users` });
+  } else if (val === 'credits') {
+    void router.replace({ path: `${base}/credits` });
+  } else {
+    void router.replace({ path: base });
+  }
 });
 
 onMounted(async () => {
   await setUserRights(false);
   const path = router.currentRoute.value.path;
+
   if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
+  } else if (path.endsWith('/credits')) {
+    activeTab.value = 'credits';
+  } else if (path.endsWith('/users')) {
+    activeTab.value = 'users';
   } else {
-    activeTab.value = path.endsWith('/users') ? 'users' : 'datasets';
+    activeTab.value = 'datasets';
   }
 });
 </script>
