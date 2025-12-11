@@ -58,8 +58,8 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
-import { type CompanyInformation, IdentifierType } from '@clients/backend';
-import { getCompanyInformation } from '@/utils/CompanyInformation.ts';
+import { type CompanyInformation } from '@clients/backend';
+import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation.ts';
 
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
@@ -84,9 +84,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
 const companyInformation = ref<CompanyInformation | null>(null);
-const displayLei = computed(() => {
-  return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
-});
+const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 /**
  * Gets the current balance of credits for the company.
@@ -107,9 +105,8 @@ async function getCreditsBalanceForCompany(): Promise<void> {
  * Loads the company information from the backend.
  */
 async function loadCompanyInformation(): Promise<void> {
-  const { companyInformation: ci } = await getCompanyInformation(props.companyId, apiClientProvider);
-
-  companyInformation.value = ci.value;
+  const result = await getCompanyInformation(props.companyId, apiClientProvider, assertDefined(getKeycloakPromise));
+  companyInformation.value = result.companyInformation;
 }
 
 /**

@@ -173,10 +173,26 @@ watch(
  * Loads all relevant data for the company page
  */
 async function loadDataAndCheckForBadge(): Promise<void> {
-  fetchDataForThisPage();
-  await checkIfUserIsMemberOrAdmin();
-  if (isMemberOfCompanyOrAdmin.value) {
-    await checkIfCompanyIsDatalandMember();
+  await fetchDataForThisPage();
+  waitingForData.value = true;
+
+  try {
+    const result = await getCompanyInformation(props.companyId, apiClientProvider, getKeycloakPromise);
+
+    companyInformation.value = result.companyInformation;
+    parentCompany.value = result.parentCompany;
+    hasParentCompany.value = result.hasParentCompany;
+
+    claimIsSubmitted.value = false;
+    await checkIfUserIsMemberOrAdmin();
+    if (isMemberOfCompanyOrAdmin.value) {
+      await checkIfCompanyIsDatalandMember();
+    }
+  } catch (error) {
+    console.error('Error loading company information:', error);
+    companyInformation.value = null;
+  } finally {
+    waitingForData.value = false;
   }
 }
 
@@ -218,16 +234,26 @@ async function checkIfUserIsMemberOrAdmin(): Promise<void> {
 }
 
 /**
- * A complete fetch of all data that is relevant for UI elements of this page
+ * Lädt alle relevanten Daten für die Company-Seite
  */
-function fetchDataForThisPage(): void {
+async function fetchDataForThisPage(): Promise<void> {
   try {
-    void getCompanyInformationAndEmit();
+    const result = await getCompanyInformation(props.companyId, apiClientProvider, getKeycloakPromise);
+    companyInformation.value = result.companyInformation;
+    parentCompany.value = result.parentCompany;
+    hasParentCompany.value = result.hasParentCompany;
+
+    emits('fetchedCompanyInformation', companyInformation.value);
+
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
+
     claimIsSubmitted.value = false;
   } catch (error) {
     console.error('Error fetching data for new company:', error);
+    companyInformation.value = null;
+  } finally {
+    waitingForData.value = false;
   }
 }
 
@@ -307,27 +333,6 @@ async function updateHasCompanyOwner(): Promise<void> {
  */
 function onCloseDialog(): void {
   dialogIsOpen.value = false;
-}
-
-/**
- * Fetches the company information and emits it via the emits function.
- */
-async function getCompanyInformationAndEmit(): Promise<void> {
-  const {
-    companyInformation: ci,
-    hasParentCompany: hpc,
-    parentCompany: pc,
-    companyIdDoesNotExist: cidne,
-    waitingForData: wfd,
-  } = await getCompanyInformation(props.companyId, apiClientProvider);
-
-  companyInformation.value = ci.value;
-  hasParentCompany.value = hpc.value;
-  parentCompany.value = pc.value;
-  companyIdDoesNotExist.value = cidne.value;
-  waitingForData.value = wfd.value;
-
-  emits('fetchedCompanyInformation', companyInformation.value);
 }
 
 /**

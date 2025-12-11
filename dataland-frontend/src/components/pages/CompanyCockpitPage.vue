@@ -149,14 +149,13 @@ watch(activeTab, async (val) => {
   try {
     if (val === 'users') {
       await router.replace({ path: `${base}/users` });
-    } else if (val === "credits") {
+    } else if (val === 'credits') {
       await router.replace({ path: `${base}/credits` });
     } else {
       await router.replace({ path: base });
     }
-  }
-  catch (err) {
-    console.error("Navigation failed", err);
+  } catch (err) {
+    console.error('Navigation failed', err);
   }
 });
 

@@ -1,12 +1,13 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 import options from 'axios';
+import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 
 /**
  * Mounts the CreditsCard component with the provided dummyCompanyId.
  */
 function mountComponent(dummyCompanyId: string): void {
-  cy.mountWithPlugins(CreditsCard as any, {
+  //@ts-ignore
+  cy.mountWithPlugins(CreditsCard, {
     props: {
       companyId: dummyCompanyId,
     },
