@@ -113,7 +113,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-import {getCompanyInformation} from "@/utils/CompanyInformation.ts";
+import { getCompanyInformation } from '@/utils/CompanyInformation.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -310,7 +310,6 @@ async function updateHasCompanyOwner(): Promise<void> {
 function onCloseDialog(): void {
   dialogIsOpen.value = false;
 }
-
 
 /**
  * Uses the dataland API to retrieve information about the company identified by the local

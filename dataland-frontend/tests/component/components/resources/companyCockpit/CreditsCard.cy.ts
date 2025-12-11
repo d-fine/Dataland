@@ -44,23 +44,34 @@ describe('As a user I want to see available credits on Dataland of the company I
   });
 
   it('Credit Balance is correctly displayed if user has zero credits', () => {
-      interceptCreditBalance(dummyCompanyId, 0);
-      mountComponent(dummyCompanyId);
-      cy.wait('@creditBalance');
-      cy.get('[data-test="credits-balance-chip"]').should('be.visible');
-      cy.get('[data-test="credits-balance-chip"]').should('contain', '0');
-
+    interceptCreditBalance(dummyCompanyId, 0);
+    mountComponent(dummyCompanyId);
+    cy.wait('@creditBalance');
+    cy.get('[data-test="credits-balance-chip"]').should('be.visible');
+    cy.get('[data-test="credits-balance-chip"]').should('contain', '0');
   });
 
   it('Credit Balance is correctly displayed if user has a negative credit balance', () => {
-      interceptCreditBalance(dummyCompanyId, -345);
-      mountComponent(dummyCompanyId);
-      cy.wait('@creditBalance');
-      cy.get('[data-test="credits-balance-chip"]').should('be.visible');
-      cy.get('[data-test="credits-balance-chip"]').should('contain', '-345');
+    interceptCreditBalance(dummyCompanyId, -345);
+    mountComponent(dummyCompanyId);
+    cy.wait('@creditBalance');
+    cy.get('[data-test="credits-balance-chip"]').should('be.visible');
+    cy.get('[data-test="credits-balance-chip"]').should('contain', '-345');
   });
 
+  it('Info Message is correctly displayed and hidden if user clicks on button', () => {
+    const expectedInfoText = 'Any questions regarding your credits? Contact info@dataland.com';
+    interceptCreditBalance(dummyCompanyId, 100);
+    mountComponent(dummyCompanyId);
 
+    cy.wait('@creditBalance');
+
+    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+    cy.get('[data-test="info-message"]').first().find('button').click();
+    cy.get('[data-test="info-message"]').should('not.exist');
+    cy.get('[data-test="info-icon"]').should('be.visible');
+
+    cy.get('[data-test="info-icon"]').click();
+    cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+  });
 });
-
-

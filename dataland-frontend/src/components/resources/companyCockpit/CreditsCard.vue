@@ -58,8 +58,8 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
-import {getErrorMessage} from "@/utils/ErrorMessageUtils.ts";
-import {CompanyInformation} from "@clients/backend";
+import { getErrorMessage } from '@/utils/ErrorMessageUtils.ts';
+import { CompanyInformation } from '@clients/backend';
 
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
@@ -123,8 +123,6 @@ async function getCompanyInformation(): Promise<void> {
     waitingForData.value = false;
   }
 }
-
-
 
 /**
  * Hides the info box
