@@ -30,8 +30,14 @@ function openEditDialog(dataPointType: string): void {
  */
 function saveDataPoint(): void {
   cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+  cy.intercept('GET', '**/api/data/sfdr/companies/**').as('reloadSfdr');
+
   cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+
   cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+  cy.wait('@reloadSfdr');
+
+  cy.get('div.p-dialog-content').should('not.exist');
 }
 
 /**
