@@ -119,13 +119,13 @@ class ExistingRequestsManagerTest {
     @ParameterizedTest
     @EnumSource(DataTypeEnum::class)
     fun `verify that a message to accounting is sent only for a request not for nuclear and gas`(dataType: DataTypeEnum) {
-        val dataRequestStateProcessing = UUID.randomUUID()
+        val requestIdStateProcessing = UUID.randomUUID()
         val requestEntityVaryingDataType =
             RequestEntity(
-                id = dataRequestStateProcessing,
+                id = requestIdStateProcessing,
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
-                dataType = dataType.toString(),
+                dataType = dataType.name,
                 userId = userId,
                 creationTimestamp = 1000000000,
                 memberComment = null,
@@ -137,24 +137,24 @@ class ExistingRequestsManagerTest {
             )
         doReturn(requestEntityVaryingDataType)
             .whenever(mockRequestRepository)
-            .findByIdAndFetchDataSourcingEntity(dataRequestStateProcessing)
+            .findByIdAndFetchDataSourcingEntity(requestIdStateProcessing)
         doReturn(dataSourcingEntity)
             .whenever(mockDataSourcingManager)
             .useExistingOrCreateDataSourcingAndAddRequest(requestEntityVaryingDataType)
 
-        existingRequestsManager.patchRequestState(dataRequestIdForSfdr, RequestState.Processing, null)
+        existingRequestsManager.patchRequestState(requestIdStateProcessing, RequestState.Processing, null)
 
         if (dataType == DataTypeEnum.nuclearMinusAndMinusGas) {
             verify(mockDataSourcingServiceMessageSender, never())
                 .sendMessageToAccountingServiceOnRequestProcessing(
-                    dataSourcingEntity = dataSourcingEntity,
-                    requestEntity = requestEntityVaryingDataType,
+                    dataSourcingEntity = anyOrNull(),
+                    requestEntity = anyOrNull(),
                 )
         } else {
             verify(mockDataSourcingServiceMessageSender, times(1))
                 .sendMessageToAccountingServiceOnRequestProcessing(
-                    dataSourcingEntity = anyOrNull(),
-                    requestEntity = anyOrNull(),
+                    dataSourcingEntity = dataSourcingEntity,
+                    requestEntity = requestEntityVaryingDataType,
                 )
         }
     }

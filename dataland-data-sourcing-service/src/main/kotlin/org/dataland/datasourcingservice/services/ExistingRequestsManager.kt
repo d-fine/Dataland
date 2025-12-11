@@ -77,7 +77,7 @@ class ExistingRequestsManager
                 requestEntity.adminComment = adminComment
             }
 
-            if (requestValidForAccounting(requestEntity, newRequestState)) {
+            if (requestValidForAccounting(requestEntity)) {
                 val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
                 dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
@@ -135,9 +135,6 @@ class ExistingRequestsManager
                     throw RequestNotFoundApiException(requestId)
                 }
 
-        private fun requestValidForAccounting(
-            originalRequest: RequestEntity,
-            newRequestState: RequestState,
-        ): Boolean =
-            newRequestState == RequestState.Processing && (originalRequest.dataType != DataTypeEnum.nuclearMinusAndMinusGas.toString())
+        private fun requestValidForAccounting(requestEntity: RequestEntity): Boolean =
+            requestEntity.state == RequestState.Processing && (requestEntity.dataType != DataTypeEnum.nuclearMinusAndMinusGas.name)
     }
