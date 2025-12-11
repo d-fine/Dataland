@@ -41,7 +41,7 @@
         <span>Current Amount of Credits:</span>
         <Chip :label="creditsBalance" data-test="credits-balance-chip" />
       </div>
-      <div class="dataland-info-text small">{{ props.companyId }}</div>
+      <div class="dataland-info-text small">{{ displayLei }}</div>
     </template>
   </Card>
 </template>
@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-import { defineProps, inject, onMounted, ref, watch } from 'vue';
+import {computed, defineProps, inject, onMounted, ref, watch} from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -58,7 +58,7 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
-import {CompanyInformation} from "@clients/backend";
+import {CompanyInformation, IdentifierType} from "@clients/backend";
 import {getCompanyInformation} from "@/utils/CompanyInformation.ts";
 
 const creditsBalance = ref<number>(0);
@@ -78,6 +78,7 @@ watch(
 );
 
 onMounted(async () => {
+  await loadCompanyInformation();
   await getCreditsBalanceForCompany();
   console.log('CURRENT BALANCE: ', creditsBalance.value);
 });
@@ -85,7 +86,11 @@ onMounted(async () => {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
-const companyLei = ref<string | null>(null);
+const companyInformation = ref<CompanyInformation | null>(null);
+const displayLei = computed(() => {
+  return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
+});
+
 /**
  * Gets the current balance of credits for the company.
  */
@@ -101,16 +106,11 @@ async function getCreditsBalanceForCompany(): Promise<void> {
   }
 }
 
-async function getCompanyLei () : Promise<void>{
-  const companyId = props.companyId
-  const {
-    companyInformation: cI,
-      hasParentCompany: hasPC,
-      waitingForData: wFD,
-      companyIdDoesNotExist: cIDNE,
-  } = await getCompanyInformation(companyId, apiClientProvider)
+async function loadCompanyInformation(): Promise<void> {
+    const {companyInformation: ci} = await
+        getCompanyInformation(props.companyId, apiClientProvider)
 
-  return cI.value?.parentCompanyLei
+    companyInformation.value = ci.value;
 }
 
 
