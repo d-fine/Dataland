@@ -79,10 +79,10 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 
     cy.get('[data-test="timeWindowThresholdToggle"]').click();
-    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.attr', 'aria-checked', 'true');
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.class', 'p-toggleswitch-checked');
 
     cy.get('[data-test="timeWindowThresholdToggle"]').click();
-    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.attr', 'aria-checked', 'false');
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('not.have.class', 'p-toggleswitch-checked');
   });
 
   it('sends correct time window threshold value in PATCH request', function () {
@@ -94,6 +94,6 @@ describe('Portfolio Monitoring Modal', function () {
 
     cy.get('[data-test="saveChangesButton"]').click();
 
-    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'EXTENDED');
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'Extended');
   });
 });

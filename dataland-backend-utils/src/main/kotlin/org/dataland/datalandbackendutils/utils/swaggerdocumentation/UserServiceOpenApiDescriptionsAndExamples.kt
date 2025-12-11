@@ -27,7 +27,7 @@ object UserServiceOpenApiDescriptionsAndExamples {
 
     const val PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION =
         "The time window threshold for portfolio monitoring."
-    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "STANDARD"
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "Standard (6 months)"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =

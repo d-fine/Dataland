@@ -146,7 +146,7 @@ class PortfolioBulkDataRequestServiceTest {
             buildMonitoredPortfolioEntity(
                 companyIds = setOf(companyIdWithRecentFye, companyIdWithDistantFye),
                 frameworks = setOf(SFDR),
-            ).copy(timeWindowThreshold = TimeWindowThreshold.EXTENDED)
+            ).copy(timeWindowThreshold = TimeWindowThreshold.Extended)
         stubPortfolioRepo(listOf(portfolioWithExtendedMonthsTimeWindowThreshold))
 
         service.createBulkDataRequestsForAllMonitoredPortfolios()
