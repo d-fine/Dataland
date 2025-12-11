@@ -143,7 +143,7 @@ describeIf(
       verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
     });
 
-    it.only('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
       const newValue = '1234.56';
 
       navigateToEditMode();
