@@ -58,8 +58,8 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils.ts';
-import { CompanyInformation } from '@clients/backend';
+import {CompanyInformation} from "@clients/backend";
+import {getCompanyInformation} from "@/utils/CompanyInformation.ts";
 
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
@@ -85,8 +85,7 @@ onMounted(async () => {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
-const companyInformation = ref<CompanyInformation | null>(null);
-const hasParentCompany = ref(true);
+const companyLei = ref<string | null>(null);
 /**
  * Gets the current balance of credits for the company.
  */
@@ -102,27 +101,18 @@ async function getCreditsBalanceForCompany(): Promise<void> {
   }
 }
 
-async function getCompanyInformation(): Promise<void> {
-  if (props.companyId === undefined) return;
-  try {
-    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
-    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
-    if (companyInformation.value.parentCompanyLei == null) {
-      hasParentCompany.value = false;
-    } else {
-      await getParentCompany(companyInformation.value.parentCompanyLei);
-    }
-    emits('fetchedCompanyInformation', companyInformation.value);
-  } catch (error) {
-    console.error(error);
-    if (getErrorMessage(error).includes('404')) {
-      companyIdDoesNotExist.value = true;
-    }
-    companyInformation.value = null;
-  } finally {
-    waitingForData.value = false;
-  }
+async function getCompanyLei () : Promise<void>{
+  const companyId = props.companyId
+  const {
+    companyInformation: cI,
+      hasParentCompany: hasPC,
+      waitingForData: wFD,
+      companyIdDoesNotExist: cIDNE,
+  } = await getCompanyInformation(companyId, apiClientProvider)
+
+  return cI.value?.parentCompanyLei
 }
+
 
 /**
  * Hides the info box

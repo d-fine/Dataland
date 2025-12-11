@@ -317,7 +317,18 @@ function onCloseDialog(): void {
  */
 
 async function getCompanyInformationAndEmit(): Promise<void> {
-  const result = getCompanyInformation(props.companyId, apiClientProvider);
+  const {
+      companyInformation: ci,
+      hasParentCompany: hpc,
+      companyIdDoesNotExist: cidne,
+      waitingForData: wfd,
+  } = await getCompanyInformation(props.companyId, apiClientProvider);
+
+  companyInformation.value = ci.value;
+  hasParentCompany.value = hpc.value;
+  companyIdDoesNotExist.value = cidne.value;
+  waitingForData.value = wfd.value;
+
   emits('fetchedCompanyInformation', companyInformation.value);
 }
 
