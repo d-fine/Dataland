@@ -141,8 +141,10 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
+      cy.intercept('POST', '**/community/emails/validation**').as('validateEmail');
       cy.get('[data-test="email-input-field"]').should('be.visible').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
+      cy.wait('@validateEmail');
       cy.get('[data-test="save-changes-button"]').should('not.be.disabled').click();
       cy.get('[data-test="confirm-self-role-change-button"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
