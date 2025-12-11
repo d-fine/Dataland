@@ -15,6 +15,12 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
     private val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val outputFormat = DateTimeFormatter.ofPattern("dd-MMM", Locale.ENGLISH)
 
+    companion object {
+        const val MONTH_FEBRUARY = 2
+        const val DAY_TWENTY_NINE = 29
+        const val DAY_TWENTY_EIGHT = 28
+    }
+
     override fun migrate(context: Context) {
         val connection = context.connection
         val meta = connection.metaData
@@ -55,7 +61,13 @@ class V12__MigrateFiscalYearEnd : BaseJavaMigration() {
 
             val formatted =
                 try {
-                    LocalDate.parse(old, inputFormat).format(outputFormat)
+                    var date = LocalDate.parse(old, inputFormat)
+
+                    if (date.monthValue == MONTH_FEBRUARY && date.dayOfMonth == DAY_TWENTY_NINE) {
+                        date = date.withDayOfMonth(DAY_TWENTY_EIGHT)
+                    }
+
+                    date.format(outputFormat)
                 } catch (_: Exception) {
                     null
                 }

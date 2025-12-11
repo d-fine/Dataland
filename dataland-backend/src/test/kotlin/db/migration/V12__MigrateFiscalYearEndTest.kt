@@ -47,6 +47,7 @@ class V12__MigrateFiscalYearEndTest : BaseFlywayMigrationTest() {
         createDummyCompany("2024-03-07", "07-Mar")
         createDummyCompany("2024-08-01", "01-Aug")
         createDummyCompany("1998-06-22", "22-Jun")
+        createDummyCompany("2020-02-29", "28-Feb")
     }
 
     @Test
