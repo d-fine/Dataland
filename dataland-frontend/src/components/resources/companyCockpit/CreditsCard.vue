@@ -25,13 +25,13 @@
     <template #subtitle>
       <Message
         v-if="showInfoMessage"
-        severity="warn"
+        severity="info"
         :closable="true"
         @close="hideInfoBox"
         style="margin-top: var(--spacing-xs); min-height: 3rem"
         data-test="info-message"
       >
-        {{ 'Credits may be deducted automatically when using actively monitored portfolios.' }}
+        {{ 'Any questions regarding your credits? Contact info@dataland.com' }}
       </Message>
     </template>
 
@@ -58,6 +58,8 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
+import {getErrorMessage} from "@/utils/ErrorMessageUtils.ts";
+import {CompanyInformation} from "@clients/backend";
 
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
@@ -83,7 +85,8 @@ onMounted(async () => {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
-
+const companyInformation = ref<CompanyInformation | null>(null);
+const hasParentCompany = ref(true);
 /**
  * Gets the current balance of credits for the company.
  */
@@ -98,6 +101,30 @@ async function getCreditsBalanceForCompany(): Promise<void> {
     console.error('Failed to get credit balance:', error);
   }
 }
+
+async function getCompanyInformation(): Promise<void> {
+  if (props.companyId === undefined) return;
+  try {
+    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
+    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
+    if (companyInformation.value.parentCompanyLei == null) {
+      hasParentCompany.value = false;
+    } else {
+      await getParentCompany(companyInformation.value.parentCompanyLei);
+    }
+    emits('fetchedCompanyInformation', companyInformation.value);
+  } catch (error) {
+    console.error(error);
+    if (getErrorMessage(error).includes('404')) {
+      companyIdDoesNotExist.value = true;
+    }
+    companyInformation.value = null;
+  } finally {
+    waitingForData.value = false;
+  }
+}
+
+
 
 /**
  * Hides the info box

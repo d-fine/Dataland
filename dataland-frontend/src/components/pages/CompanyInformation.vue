@@ -113,6 +113,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import {getCompanyInformation} from "@/utils/CompanyInformation.ts";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -223,7 +224,7 @@ async function checkIfUserIsMemberOrAdmin(): Promise<void> {
  */
 function fetchDataForThisPage(): void {
   try {
-    void getCompanyInformation();
+    void getCompanyInformationAndEmit();
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
     claimIsSubmitted.value = false;
@@ -310,53 +311,15 @@ function onCloseDialog(): void {
   dialogIsOpen.value = false;
 }
 
-/**
- * Gets the parent company based on the lei
- * @param parentCompanyLei lei of the parent company
- */
-async function getParentCompany(parentCompanyLei: string): Promise<void> {
-  try {
-    const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-      parentCompanyLei,
-      assertDefined(getKeycloakPromise)(),
-      1
-    );
-    if (companyIdAndNames.length > 0) {
-      parentCompany.value = companyIdAndNames[0]!;
-      hasParentCompany.value = true;
-    } else {
-      hasParentCompany.value = false;
-    }
-  } catch {
-    console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
-  }
-}
 
 /**
  * Uses the dataland API to retrieve information about the company identified by the local
  * companyId object.
  */
-async function getCompanyInformation(): Promise<void> {
-  waitingForData.value = true;
-  if (props.companyId === undefined) return;
-  try {
-    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
-    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
-    if (companyInformation.value.parentCompanyLei == null) {
-      hasParentCompany.value = false;
-    } else {
-      await getParentCompany(companyInformation.value.parentCompanyLei);
-    }
-    emits('fetchedCompanyInformation', companyInformation.value);
-  } catch (error) {
-    console.error(error);
-    if (getErrorMessage(error).includes('404')) {
-      companyIdDoesNotExist.value = true;
-    }
-    companyInformation.value = null;
-  } finally {
-    waitingForData.value = false;
-  }
+
+async function getCompanyInformationAndEmit(): Promise<void> {
+  const result = getCompanyInformation(props.companyId, apiClientProvider);
+  emits('fetchedCompanyInformation', companyInformation.value);
 }
 
 /**

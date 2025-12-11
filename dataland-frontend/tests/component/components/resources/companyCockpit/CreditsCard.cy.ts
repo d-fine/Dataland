@@ -42,4 +42,25 @@ describe('As a user I want to see available credits on Dataland of the company I
     cy.get('[data-test="credits-balance-chip"]').should('be.visible');
     cy.get('[data-test="credits-balance-chip"]').should('contain', '100');
   });
+
+  it('Credit Balance is correctly displayed if user has zero credits', () => {
+      interceptCreditBalance(dummyCompanyId, 0);
+      mountComponent(dummyCompanyId);
+      cy.wait('@creditBalance');
+      cy.get('[data-test="credits-balance-chip"]').should('be.visible');
+      cy.get('[data-test="credits-balance-chip"]').should('contain', '0');
+
+  });
+
+  it('Credit Balance is correctly displayed if user has a negative credit balance', () => {
+      interceptCreditBalance(dummyCompanyId, -345);
+      mountComponent(dummyCompanyId);
+      cy.wait('@creditBalance');
+      cy.get('[data-test="credits-balance-chip"]').should('be.visible');
+      cy.get('[data-test="credits-balance-chip"]').should('contain', '-345');
+  });
+
+
 });
+
+
