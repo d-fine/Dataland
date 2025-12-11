@@ -84,7 +84,8 @@ class EmailMessageListener
 
             val message = MessageQueueUtils.readMessagePayload<EmailMessage>(jsonString)
             logger.info(
-                "Received email message of type ${message.typedEmailContent::class} with correlationId $correlationId.",
+                "Received email message of type ${message.typedEmailContent::class} with correlationId $correlationId." +
+                    "Email: $jsonString",
             )
 
             MessageQueueUtils.rejectMessageOnException {
