@@ -144,14 +144,19 @@ watch(
   }
 );
 
-watch(activeTab, (val) => {
+watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
-  if (val === 'users') {
-    void router.replace({ path: `${base}/users` });
-  } else if (val === 'credits') {
-    void router.replace({ path: `${base}/credits` });
-  } else {
-    void router.replace({ path: base });
+  try {
+    if (val === 'users') {
+      await router.replace({ path: `${base}/users` });
+    } else if (val === "credits") {
+      await router.replace({ path: `${base}/credits` });
+    } else {
+      await router.replace({ path: base });
+    }
+  }
+  catch (err) {
+    console.error("Navigation failed", err);
   }
 });
 
