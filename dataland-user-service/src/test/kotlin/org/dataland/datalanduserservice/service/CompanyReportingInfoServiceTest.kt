@@ -18,6 +18,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
+import java.time.MonthDay
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import java.util.stream.Stream
 
@@ -49,20 +51,20 @@ class CompanyReportingInfoServiceTest {
         @JvmStatic
         fun paramStream(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
-                Arguments.of(LocalDate.of(2024, 1, 31), -1, LocalDate.of(2025, 3, 16), 2024),
-                Arguments.of(LocalDate.of(2018, 1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
-                Arguments.of(LocalDate.of(2030, 1, 31), 0, LocalDate.of(2025, 3, 31), 2025),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 2, 16), null),
-                Arguments.of(LocalDate.of(2024, 1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
-                Arguments.of(LocalDate.of(2024, 12, 31), 0, LocalDate.of(2025, 7, 16), null),
+                Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
+                Arguments.of(MonthDay.of(1, 31), -1, LocalDate.of(2025, 3, 16), 2024),
+                Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
+                Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 3, 31), 2025),
+                Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 2, 16), null),
+                Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
+                Arguments.of(MonthDay.of(12, 31), 0, LocalDate.of(2025, 7, 16), null),
             )
     }
 
     @ParameterizedTest
     @MethodSource("paramStream")
     fun `unittest getCompanyReportingYearInfoForCompany`(
-        fiscalYearEnd: LocalDate,
+        fiscalYearEnd: MonthDay,
         reportingPeriodShift: Int,
         today: LocalDate,
         expectedReportingPeriod: Int?,
@@ -77,7 +79,7 @@ class CompanyReportingInfoServiceTest {
                 headquarters = "testHeadquarters",
                 identifiers = emptyMap(),
                 countryCode = "DE",
-                fiscalYearEnd = fiscalYearEnd,
+                fiscalYearEnd = fiscalYearEnd.atYear(0).format(DateTimeFormatter.ofPattern("dd-MMM")),
                 reportingPeriodShift = reportingPeriodShift,
                 sector = "testSector",
             )
@@ -200,7 +202,7 @@ class CompanyReportingInfoServiceTest {
             headquarters = "HQ",
             identifiers = emptyMap(),
             countryCode = "DE",
-            fiscalYearEnd = LocalDate.of(2023, 12, 31),
+            fiscalYearEnd = LocalDate.of(2023, 12, 31).format(DateTimeFormatter.ofPattern("dd-MMM")),
             reportingPeriodShift = 0,
             sector = "financials",
         )
