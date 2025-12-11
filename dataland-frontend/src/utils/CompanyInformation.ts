@@ -1,10 +1,10 @@
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { inject, ref, type Ref, unref } from 'vue';
-import { type CompanyIdAndName, CompanyInformation } from '@clients/backend';
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester.ts';
+import type { ApiClientProvider } from '@/services/ApiClients.ts';
+import { inject, ref, type Ref } from 'vue';
+import type { CompanyIdAndName, CompanyInformation } from '@clients/backend';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import type Keycloak from 'keycloak-js';
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester.ts';
 
 /**
  * Gets the company information based on the company id
@@ -17,6 +17,7 @@ export async function getCompanyInformation(
 ): Promise<{
   companyInformation: Ref<CompanyInformation | null>;
   hasParentCompany: Ref<boolean>;
+  parentCompany: Ref<CompanyIdAndName | null>; // ← Diese Zeile hinzufügen!
   waitingForData: Ref<boolean>;
   companyIdDoesNotExist: Ref<boolean>;
 }> {
@@ -24,8 +25,17 @@ export async function getCompanyInformation(
   const hasParentCompany = ref(true);
   const companyIdDoesNotExist = ref(false);
   const waitingForData = ref(true);
+  const parentCompany = ref<CompanyIdAndName | null>(null);
+  const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-  if (!companyId) return { companyInformation, hasParentCompany, waitingForData, companyIdDoesNotExist };
+  if (!companyId)
+    return {
+      companyInformation,
+      hasParentCompany,
+      parentCompany,
+      waitingForData,
+      companyIdDoesNotExist,
+    };
 
   try {
     const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
@@ -33,7 +43,12 @@ export async function getCompanyInformation(
     if (companyInformation.value.parentCompanyLei == null) {
       hasParentCompany.value = false;
     } else {
-      await getParentCompany(companyInformation.value.parentCompanyLei, unref(hasParentCompany));
+      await getParentCompany(
+        companyInformation.value.parentCompanyLei,
+        hasParentCompany,
+        parentCompany,
+        assertDefined(getKeycloakPromise)
+      );
     }
   } catch (error) {
     console.error(error);
@@ -44,38 +59,51 @@ export async function getCompanyInformation(
   } finally {
     waitingForData.value = false;
   }
-  return { companyInformation, hasParentCompany, waitingForData, companyIdDoesNotExist };
+  return {
+    companyInformation,
+    hasParentCompany,
+    parentCompany,
+    waitingForData,
+    companyIdDoesNotExist,
+  };
 }
 
 /**
  * Gets the parent company based on the lei
  * @param parentCompanyLei lei of the parent company
  * @param hasParentCompany boolean to indicate if the parent company exists
- *
+ * @param parentCompany company information of the parent company
+ * @param getKeycloakPromise function to get the keycloak promise
  */
-
 async function getParentCompany(
   parentCompanyLei: string,
-  hasParentCompany: boolean
-): Promise<{ hasParentCompany: boolean; parentCompany: CompanyIdAndName | null }> {
-  const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-  let parentCompany: CompanyIdAndName | null = null;
+  hasParentCompany: Ref<boolean>,
+  parentCompany: Ref<CompanyIdAndName | null>,
+  getKeycloakPromise: () => Promise<Keycloak>
+): Promise<void> {
+  console.log('getKeycloakPromise =', getKeycloakPromise);
 
   try {
+    console.log(`Getting parent company with LEI: ${parentCompanyLei}`);
+
     const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
       parentCompanyLei,
-      assertDefined(getKeycloakPromise)(),
+      getKeycloakPromise(),
       1
     );
+
     if (companyIdAndNames.length > 0) {
-      parentCompany = companyIdAndNames[0]!;
-      hasParentCompany = true;
+      parentCompany.value = companyIdAndNames[0]!;
+      hasParentCompany.value = true;
     } else {
-      hasParentCompany = false;
+      parentCompany.value = null;
+      hasParentCompany.value = false;
     }
+
+    console.log(companyIdAndNames, ': parent company:');
   } catch {
     console.error(`Unable to find company with LEI: ${parentCompanyLei}`);
+    parentCompany.value = null;
+    hasParentCompany.value = false;
   }
-
-  return { hasParentCompany, parentCompany };
 }

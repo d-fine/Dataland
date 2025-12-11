@@ -69,7 +69,9 @@ export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
   keycloakPromise: Promise<Keycloak>,
   chunkSize?: number
 ): Promise<Array<CompanyIdAndName>> {
+  console.log('SEARCHING FOR BEFORE THE TRY BLOCK', searchString);
   try {
+    console.log('SEARCHING FOR', searchString);
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
     return (await companyDataControllerApi.getCompaniesBySearchString(searchString, chunkSize)).data;
   } catch (error) {

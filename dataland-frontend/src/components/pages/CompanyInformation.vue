@@ -99,8 +99,6 @@ import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwn
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils';
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
@@ -312,20 +310,20 @@ function onCloseDialog(): void {
 }
 
 /**
- * Uses the dataland API to retrieve information about the company identified by the local
- * companyId object.
+ * Fetches the company information and emits it via the emits function.
  */
-
 async function getCompanyInformationAndEmit(): Promise<void> {
   const {
-      companyInformation: ci,
-      hasParentCompany: hpc,
-      companyIdDoesNotExist: cidne,
-      waitingForData: wfd,
+    companyInformation: ci,
+    hasParentCompany: hpc,
+    parentCompany: pc,
+    companyIdDoesNotExist: cidne,
+    waitingForData: wfd,
   } = await getCompanyInformation(props.companyId, apiClientProvider);
 
   companyInformation.value = ci.value;
   hasParentCompany.value = hpc.value;
+  parentCompany.value = pc.value;
   companyIdDoesNotExist.value = cidne.value;
   waitingForData.value = wfd.value;
 

@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-import {computed, defineProps, inject, onMounted, ref, watch} from 'vue';
+import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -58,15 +58,13 @@ import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import { type AxiosResponse } from 'axios';
-import {CompanyInformation, IdentifierType} from "@clients/backend";
-import {getCompanyInformation} from "@/utils/CompanyInformation.ts";
+import { type CompanyInformation, IdentifierType } from '@clients/backend';
+import { getCompanyInformation } from '@/utils/CompanyInformation.ts';
 
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
   companyId: string;
 }>();
-
-console.log('CURRENT BALANCE: ', creditsBalance.value);
 
 watch(
   () => props.companyId,
@@ -80,7 +78,6 @@ watch(
 onMounted(async () => {
   await loadCompanyInformation();
   await getCreditsBalanceForCompany();
-  console.log('CURRENT BALANCE: ', creditsBalance.value);
 });
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -106,13 +103,14 @@ async function getCreditsBalanceForCompany(): Promise<void> {
   }
 }
 
+/**
+ * Loads the company information from the backend.
+ */
 async function loadCompanyInformation(): Promise<void> {
-    const {companyInformation: ci} = await
-        getCompanyInformation(props.companyId, apiClientProvider)
+  const { companyInformation: ci } = await getCompanyInformation(props.companyId, apiClientProvider);
 
-    companyInformation.value = ci.value;
+  companyInformation.value = ci.value;
 }
-
 
 /**
  * Hides the info box
