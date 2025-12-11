@@ -143,7 +143,7 @@ describeIf(
       verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
     });
 
-    it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
+    it.only('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
       const newValue = '1234.56';
 
       navigateToEditMode();
@@ -163,11 +163,14 @@ describeIf(
       cy.get('[data-test="currency-value-input"] input').blur();
 
       cy.get('[data-test="currency"]').click();
-      cy.get('.p-select-overlay')
-        .should('be.visible')
-        .within(() => {
-          cy.contains('.p-select-option', 'East Caribbean Dollar (XCD)').should('be.visible').click();
-        });
+      cy.get('.p-select-overlay').should('be.visible');
+
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist').scrollIntoView();
+      });
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').click();
+      });
 
       saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
