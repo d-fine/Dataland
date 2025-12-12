@@ -16,7 +16,7 @@
           variant="text"
           data-test="info-icon"
           rounded
-          @click="showInfoBox"
+          @click="toggleInfoBox"
           title="Show Info"
           :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
         />
@@ -27,7 +27,7 @@
         v-if="showInfoMessage"
         severity="info"
         :closable="true"
-        @close="hideInfoBox"
+        @click="toggleInfoBox"
         style="margin-top: var(--spacing-xs); min-height: 3rem"
         data-test="info-message"
       >
@@ -110,16 +110,10 @@ async function loadCompanyInformation(): Promise<void> {
 }
 
 /**
- * Hides the info box
+ * Toggles the visibility of the information box. If the information box is currently displayed,
+ * it will be hidden, and if it is hidden, it will be displayed.
  */
-function hideInfoBox(): void {
-  showInfoMessage.value = false;
-}
-
-/**
- * Shows the info box
- */
-function showInfoBox(): void {
-  showInfoMessage.value = true;
+function toggleInfoBox(): void {
+  showInfoMessage.value = !showInfoMessage.value;
 }
 </script>
