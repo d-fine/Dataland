@@ -54,6 +54,8 @@ export default defineConfig({
             'vue',
             'vue-markdown-render',
             'vue-router',
+            '@tanstack/vue-query',
+            '@tanstack/vue-query-devtools',
         ],
     },
     plugins: [
