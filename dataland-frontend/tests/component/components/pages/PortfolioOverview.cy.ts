@@ -20,19 +20,17 @@ describe('Check the portfolio overview view', () => {
     });
   });
 
-  beforeEach(() => {
+  it('Should display portfolio information correctly', () => {
     cy.intercept('GET', '**/users/portfolios/names', basePortfolioNames).as('basePortfolios');
     cy.intercept('GET', '**/users/portfolios/*/enriched-portfolio', enrichedPortfolioResponse).as('enrichedPortfolio');
     cy.intercept('GET', '**/community/inherited-roles/**', inheritedRolesResponse).as('inheritedRoles');
-  });
 
-  it('Should display portfolio information correctly', () => {
     // @ts-ignore
     cy.mountWithPlugins(PortfolioOverview, {
       keycloak: minimalKeycloakMock({}),
     });
 
-    cy.wait('@basePortfolios');
+    cy.wait(['@basePortfolios', '@enrichedPortfolio', '@inheritedRoles']);
 
     expect(basePortfolioNames).to.have.length.greaterThan(0);
     cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
@@ -58,11 +56,6 @@ describe('Check the portfolio overview view', () => {
       statusCode: 500,
       body: { message: 'Internal server error' },
     }).as('basePortfolios');
-
-    cy.intercept('GET', '**/users/portfolios/*/enriched-portfolio', { statusCode: 500, body: {} }).as(
-      'enrichedPortfolio'
-    );
-    cy.intercept('GET', '**/community/inherited-roles/**', { statusCode: 500, body: {} }).as('inheritedRoles');
 
     // @ts-ignore
     cy.mountWithPlugins(PortfolioOverview, {
