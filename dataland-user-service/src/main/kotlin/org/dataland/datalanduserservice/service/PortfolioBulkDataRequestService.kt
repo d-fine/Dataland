@@ -45,7 +45,10 @@ class PortfolioBulkDataRequestService
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
             companyReportingInfoService.resetData()
 
-            val portfoliosByTimeWindow = allMonitoredPortfolios.groupBy { it.timeWindowThreshold }
+            val portfoliosByTimeWindow =
+                allMonitoredPortfolios
+                    .groupBy { it.timeWindowThreshold }
+                    .filter { it.key != null }
             portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
                 val companyIds = portfolios.flatMap { it.companyIds }.toSet()
                 logger
