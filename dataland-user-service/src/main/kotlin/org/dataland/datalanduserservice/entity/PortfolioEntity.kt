@@ -16,7 +16,7 @@ import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import java.util.UUID
 
 /**
- *
+ * The entity storing portfolio information
  */
 @Entity
 @Table(
