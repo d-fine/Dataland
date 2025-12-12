@@ -5,9 +5,7 @@ import { type AxiosInstance } from 'axios';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { EutaxonomyNonFinancialsApiClient } from '@/frameworks/eutaxonomy-non-financials/ApiClient';
 
-export class BaseEutaxonomyNonFinancialsFrameworkDefinition
-  implements BasePublicFrameworkDefinition<EutaxonomyNonFinancialsData>
-{
+export class BaseEutaxonomyNonFinancialsFrameworkDefinition implements BasePublicFrameworkDefinition<EutaxonomyNonFinancialsData> {
   readonly identifier = 'eutaxonomy-non-financials';
   readonly explanation = 'The EU-Taxonomy framework for non-financial companies';
   readonly label = 'EU Taxonomy Non-Financials';

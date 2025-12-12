@@ -80,6 +80,9 @@ describeIf(
       submitButton.exists();
     });
     it('From the company cockpit page claim company ownership via the panel', () => {
+      cy.intercept('POST', '**/community/company-ownership/**', {
+        statusCode: 200,
+      }).as('postCompanyOwnershipRequest');
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
@@ -95,7 +98,10 @@ describeIf(
       cy.get("[data-test='claimOwnershipDialogMessage']").should('contain.text', alphaCompanyIdAndName.companyName);
       cy.get("[data-test='messageInputField']").should('exist').type(message);
       cy.get("[data-test='submitButton']").should('exist').click();
-      cy.get("[data-test='claimOwnershipDialogSubmittedMessage']").should('exist');
+      cy.wait('@postCompanyOwnershipRequest');
+      cy.get("[data-test='claimOwnershipDialogSubmittedMessage']", {
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      }).should('exist');
       cy.get("[data-test='claimOwnershipDialogMessage']").should('not.exist');
       cy.get("[data-test='closeButton']").should('exist').click();
       cy.get("[id='claimOwnerShipDialog']").should('not.exist');

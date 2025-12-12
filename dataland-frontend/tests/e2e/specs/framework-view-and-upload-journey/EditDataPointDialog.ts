@@ -30,8 +30,14 @@ function openEditDialog(dataPointType: string): void {
  */
 function saveDataPoint(): void {
   cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+  cy.intercept('GET', '**/api/data/sfdr/companies/**').as('reloadSfdr');
+
   cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+
   cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+  cy.wait('@reloadSfdr');
+
+  cy.get('div.p-dialog-content').should('not.exist');
 }
 
 /**
@@ -163,7 +169,14 @@ describeIf(
       cy.get('[data-test="currency-value-input"] input').blur();
 
       cy.get('[data-test="currency"]').click();
-      cy.get('[aria-label="East Caribbean Dollar (XCD)"]').click();
+      cy.get('.p-select-overlay').should('be.visible');
+
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist').scrollIntoView();
+      });
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').click();
+      });
 
       saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');

@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import Select from 'primevue/select';
 import { QualityOptions } from '@clients/backend';
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';

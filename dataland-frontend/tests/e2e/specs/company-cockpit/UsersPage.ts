@@ -13,10 +13,10 @@ import { setupCommonInterceptions, fetchTestCompanies } from '@e2e/utils/Company
  * @param companyId - The ID of the company whose roles are being removed.
  * @param userId - The ID of the user whose roles are being removed.
  */
-function removeCompanyRoles(companyId: string, userId: string): void {
-  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-    return removeAllCompanyRoles(token, companyId, userId);
-  });
+function removeCompanyRoles(companyId: string, userId: string): Cypress.Chainable<void> {
+  return getKeycloakToken(admin_name, admin_pw).then((token: string) =>
+    removeAllCompanyRoles(token, companyId, userId)
+  );
 }
 
 describeIf(
@@ -42,12 +42,13 @@ describeIf(
     it('When directing by url to the users page as a basic data reader who is only a company member of another company that user should be redirected to the company cockpit page', () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId))
-        .then(() => cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`));
+      cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) =>
+        assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId)
+      );
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
+      cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.get('[data-test="usersTab"]').should('not.exist');
       cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
@@ -67,9 +68,13 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
+      cy.intercept('POST', '**/community/emails/validation**').as('validateEmail');
       cy.get('[data-test="email-input-field"]').should('be.visible').type('data.premium-user@example.com');
-      cy.get('[data-test="email-input-field"]').should('have.value', 'data.premium-user@example.com');
       cy.get('[data-test="select-user-button"]').click();
+      cy.wait('@validateEmail');
+      cy.get('[data-test="selected-users-listbox"]')
+        .should('be.visible')
+        .and('contain.text', 'data.premium-user@example.com');
       cy.get('[data-test="save-changes-button"]').click();
       cy.get('.p-dialog').within(() => {
         cy.contains('Success');
@@ -136,8 +141,10 @@ describeIf(
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
         cy.get('[data-test="add-user-button"]').should('be.visible').click();
       });
+      cy.intercept('POST', '**/community/emails/validation**').as('validateEmail');
       cy.get('[data-test="email-input-field"]').should('be.visible').type('data.reader@example.com');
       cy.get('[data-test="select-user-button"]').click();
+      cy.wait('@validateEmail');
       cy.get('[data-test="save-changes-button"]').should('not.be.disabled').click();
       cy.get('[data-test="confirm-self-role-change-button"]').click();
       cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
@@ -151,17 +158,21 @@ describeIf(
     function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw))
-        .then((token) => {
-          void assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId);
-          if (premiumUserRole) {
-            void assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId);
-          }
-        })
-        .then(() => cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`));
+      cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) => {
+        const promises = [assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId)];
+        if (premiumUserRole) {
+          promises.push(
+            assignCompanyRole(token, premiumUserRole, alphaCompanyIdAndName.companyId, premium_user_userId)
+          );
+        }
+        return Promise.all(promises);
+      });
+
       cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForAlpha'
       );
+
+      cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`);
       cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
     }
   }

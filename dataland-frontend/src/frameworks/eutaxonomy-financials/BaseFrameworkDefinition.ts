@@ -5,9 +5,7 @@ import { type AxiosInstance } from 'axios';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { EutaxonomyFinancialsApiClient } from '@/frameworks/eutaxonomy-financials/ApiClient';
 
-export class BaseEutaxonomyFinancialsFrameworkDefinition
-  implements BasePublicFrameworkDefinition<EutaxonomyFinancialsData>
-{
+export class BaseEutaxonomyFinancialsFrameworkDefinition implements BasePublicFrameworkDefinition<EutaxonomyFinancialsData> {
   readonly identifier = 'eutaxonomy-financials';
   readonly explanation = 'Additional Taxonomy for Financials';
   readonly label = 'EU Taxonomy Financials';

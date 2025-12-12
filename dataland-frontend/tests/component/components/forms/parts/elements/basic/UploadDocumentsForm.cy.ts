@@ -6,11 +6,7 @@ describe('Component tests for the UploadDocumentsForm', () => {
     const uploadDocuments = new UploadDocuments();
     //@ts-ignore
     cy.mountWithPlugins(UploadDocumentsForm, {
-      data() {
-        return {
-          name: 'UploadReports',
-        };
-      },
+      props: { name: 'UploadReports' },
     }).then(() => {
       const maximumAcceptedFileSize = 100 * 1024 * 1024;
       uploadDocuments.errorMessage().should('not.exist');
@@ -22,7 +18,7 @@ describe('Component tests for the UploadDocumentsForm', () => {
         .should('not.have.css', 'display', 'none')
         .should('contain.text', 'tooLarge.pdf: Invalid file size, file size should be smaller than 100 MB.');
       uploadDocuments.dismissErrorMessage();
-      uploadDocuments.errorMessage().should('have.css', 'display', 'none');
+      uploadDocuments.errorMessage().should('not.exist');
     });
   });
 });
