@@ -21,13 +21,13 @@ describe('Component test for ClaimOwnershipDialog', () => {
       cy.get('#claimOwnerShipDialog').should('exist').and('be.visible');
 
       cy.get("[data-test='claimOwnershipDialogMessage']").should(
-          'contain.text',
-          'Are you responsible for the datasets of TestClaimOwnershipDialogMessage? Claim company ownership in order to ensure high'
+        'contain.text',
+        'Are you responsible for the datasets of TestClaimOwnershipDialogMessage? Claim company ownership in order to ensure high'
       );
 
       cy.get("textarea[name='claimOwnershipMessage']")
-          .type('THIS IS A TEST MESSAGE')
-          .should('have.value', 'THIS IS A TEST MESSAGE');
+        .type('THIS IS A TEST MESSAGE')
+        .should('have.value', 'THIS IS A TEST MESSAGE');
 
       cy.get('.p-dialog-footer .p-button-label').should('contain.text', 'SUBMIT');
 
@@ -47,16 +47,16 @@ describe('Component test for ClaimOwnershipDialog', () => {
       keycloak: minimalKeycloakMock({}),
     }).then(({ wrapper }) => {
       cy.get("[data-test='claimOwnershipDialogSubmittedMessage']").should(
-          'contain.text',
-          'We will reach out to you soon via email.'
+        'contain.text',
+        'We will reach out to you soon via email.'
       );
       cy.get('.p-dialog-footer .p-button-label').should('contain.text', 'CLOSE');
 
       cy.get('.p-dialog-footer button')
-          .click()
-          .then(() => {
-            expect(wrapper.emitted('close-dialog')).to.exist;
-          });
+        .click()
+        .then(() => {
+          expect(wrapper.emitted('close-dialog')).to.exist;
+        });
     });
   });
 
