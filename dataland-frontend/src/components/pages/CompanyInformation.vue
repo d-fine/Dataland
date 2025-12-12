@@ -109,7 +109,9 @@ import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { useCompanyInformationQuery } from "@/queries/composables/useCompanyInformationQuery.ts";
+import {useHasCompanyOwnerQuery} from "@/queries/composables/useHasCompanyOwnerQuery.ts";
 import axios from 'axios';
+import {useUserAdminQuery} from "@/queries/composables/useUserAdminQuery.ts";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -134,26 +136,15 @@ const {
   isPending: isCompanyInformationPending,
   isError: isCompanyInformationError,
   error: companyError,
-} = useCompanyInformationQuery(companyIdRef, apiClientProvider);
+} = useCompanyInformationQuery(companyIdRef);
 
 /**
  * Queries: Company Ownership, Dataland Member, and User Company Role
  */
 
-const hasCompanyOwnerQueryKey = computed(() => ['hasCompanyOwner', companyIdRef.value] as const);
-const { data: hasCompanyOwner } = useQuery<boolean>({
-  queryKey: hasCompanyOwnerQueryKey,
-  enabled: computed(() => !!companyIdRef.value),
-  queryFn: () => hasCompanyAtLeastOneCompanyOwner(companyIdRef.value, getKeycloakPromise),
-  initialData: false,
-});
+const {hasCompanyOwner} = useHasCompanyOwnerQuery(companyIdRef);
+const {isAdmin}   = useUserAdminQuery()
 
-const { data: isAdmin } = useQuery({
-  queryKey: ['userIsAdmin'],
-  queryFn: () => checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise),
-  initialData: false,
-  staleTime: Infinity
-});
 
 const userCompanyRolesKey = computed(() => ['userCompanyRoles', companyIdRef.value] as const);
 const { data: userCompanyRoles } = useQuery({

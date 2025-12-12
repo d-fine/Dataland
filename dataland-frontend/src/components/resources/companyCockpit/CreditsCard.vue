@@ -66,20 +66,18 @@ const props = defineProps<{
   companyId: string;
 }>();
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>('showInfoMessageCredits', true);
 const companyInformation = computed<CompanyInformation | null>(() => companyInformationData.value ?? null);
 const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 const {
   data: creditsBalance,
-  isPending: isCreditsPending} = useCompanyCreditsQuery(props.companyId, apiClientProvider);
+  isPending: isCreditsPending} = useCompanyCreditsQuery(props.companyId);
 
 const {
   data: companyInformationData,
   isPending: isCompanyInformationPending,
-} = useCompanyInformationQuery(props.companyId, apiClientProvider);
+} = useCompanyInformationQuery(props.companyId);
 
 
 function hideInfoBox(): void {
