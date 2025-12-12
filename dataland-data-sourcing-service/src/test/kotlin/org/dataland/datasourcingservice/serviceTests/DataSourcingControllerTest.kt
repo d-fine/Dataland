@@ -10,6 +10,7 @@ import okio.BufferedSource
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
@@ -25,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -56,6 +58,9 @@ class DataSourcingControllerTest(
 
     @MockitoBean
     private lateinit var mockDataSourcingValidator: DataSourcingValidator
+
+    @MockitoBean
+    private lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
 
     @MockitoBean
     @Qualifier("AuthenticatedOkHttpClient")
@@ -111,6 +116,7 @@ class DataSourcingControllerTest(
             mockSecurityContext,
             mockCompanyRolesControllerApi,
             mockDataSourcingValidator,
+            mockCloudEventMessageHandler,
             authenticatedOkHttpClient,
         )
 
@@ -283,6 +289,16 @@ class DataSourcingControllerTest(
     fun `document collectors can set allowed states`(stateName: String) {
         val state = DataSourcingState.valueOf(stateName)
         setMockSecurityContext(dummyUserAuthentication)
+        doNothing()
+            .whenever(
+                mockCloudEventMessageHandler,
+            ).buildCEMessageAndSendToQueue(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+            )
         stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performPatchStateAndExpect(state, status().isOk())
     }

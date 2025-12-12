@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -72,6 +73,7 @@ class DatalandUserServiceSpringbootTest
                 identifiers = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
             )
 
         private val dummyPortfolioUpload2 =
@@ -80,6 +82,7 @@ class DatalandUserServiceSpringbootTest
                 identifiers = setOf(validCompanyId1),
                 isMonitored,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
             )
 
         @BeforeEach
@@ -150,6 +153,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
                     )
                 val patchedPortfolio =
                     assertDoesNotThrow {
@@ -206,6 +210,7 @@ class DatalandUserServiceSpringbootTest
                     PortfolioMonitoringPatch(
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
                     )
 
                 assertThrows<AuthorizationDeniedException> {

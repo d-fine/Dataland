@@ -1,34 +1,31 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.TimeZone
+import kotlin.jvm.javaClass
 
 /**
  * A class that provided utility for generating emails messages for immediate data request responses
  */
 @Service("DataRequestResponseEmailBuilder")
 class DataRequestResponseEmailBuilder(
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val companyInfoService: CompanyInfoService,
-    @Autowired private val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: String,
 ) {
+    internal var logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Method to convert unit time in ms to human-readable date
      * @param creationTimestamp unix time in ms
@@ -62,13 +59,8 @@ class DataRequestResponseEmailBuilder(
             EmailMessage(
                 dataAvailableEmailContent, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SEND_EMAIL,
-            correlationId,
-            ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.EMAIL,
-        )
+
+        logDeprecatedEmail(correlationId, message)
     }
 
     /**
@@ -94,13 +86,7 @@ class DataRequestResponseEmailBuilder(
             EmailMessage(
                 dataNonSourceableEmailContentMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SEND_EMAIL,
-            correlationId,
-            ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.EMAIL,
-        )
+        logDeprecatedEmail(correlationId, message)
     }
 
     /**
@@ -113,13 +99,7 @@ class DataRequestResponseEmailBuilder(
         correlationId: String,
     ) {
         val message = buildDataUpdatedEmailMessage(dataRequestEntity)
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(message),
-            type = MessageType.SEND_EMAIL,
-            correlationId = correlationId,
-            exchange = ExchangeName.SEND_EMAIL,
-            routingKey = RoutingKeyNames.EMAIL,
-        )
+        logDeprecatedEmail(correlationId, message)
     }
 
     /**
@@ -140,6 +120,22 @@ class DataRequestResponseEmailBuilder(
             receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
             cc = emptyList(),
             bcc = emptyList(),
+        )
+    }
+
+    private fun logDeprecatedEmail(
+        correlationId: String,
+        message: EmailMessage,
+    ) {
+        logger.info(
+            """
+            [EMAIL DEPRECATED] Email sending from community service is disabled. The following message has NOT been sent.
+            CorrelationId: $correlationId
+            To: ${message.receiver}
+            CC: ${message.cc}
+            BCC: ${message.bcc}
+            Content: ${message.typedEmailContent}
+            """,
         )
     }
 }

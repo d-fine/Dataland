@@ -6,11 +6,11 @@ import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipCla
 import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent.FrameworkData
 import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
+import org.dataland.datalandmessagequeueutils.messages.email.PortfolioMonitoringUpdateSummaryEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
@@ -129,14 +129,33 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     val dataRequestSummaryEmailContent =
         DataRequestSummaryEmailContent(
-            listOf(FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
+            listOf(DataRequestSummaryEmailContent.FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
             listOf(),
             listOf(),
+            "Weekly",
+            "SFDR portfolio",
         )
 
     val dataRequestSummaryKeywords =
         listOf(
-            "Data for your request(s) has been updated on Dataland this week,",
+            "Data for your request(s) has been updated on Dataland",
+            "New Data", "Framework", DATA_TYPE_LABEL_A,
+            "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
+            "Company", COMPANY_NAME,
+        )
+
+    val portfolioChangesSummaryEmailContent =
+        PortfolioMonitoringUpdateSummaryEmailContent(
+            listOf(PortfolioMonitoringUpdateSummaryEmailContent.FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
+            listOf(),
+            listOf(),
+            "Weekly",
+            "SFDR portfolio",
+        )
+
+    val portfolioChangesSummaryKeywords =
+        listOf(
+            "summary for your portfolio(s):",
             "New Data", "Framework", DATA_TYPE_LABEL_A,
             "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
             "Company", COMPANY_NAME,

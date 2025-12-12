@@ -1,6 +1,13 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
@@ -20,6 +27,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.util.UUID
+import java.util.UUID.randomUUID
 
 /**
  * Service class that manages all operations related to data sourcing entities.
@@ -31,6 +39,7 @@ class DataSourcingManager
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingValidator: DataSourcingValidator,
+        private val cloudEventMessageHandler: CloudEventMessageHandler,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -61,9 +70,10 @@ class DataSourcingManager
             dataSourcingEntityId: UUID,
             dataSourcingPatch: DataSourcingPatch,
         ): StoredDataSourcing {
+            val correlationId = randomUUID().toString()
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
-            logger.info("Patch data sourcing entity with id: $dataSourcingEntityId.")
-            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch).toStoredDataSourcing()
+            logger.info("Patch data sourcing entity with id: $dataSourcingEntityId. CorrelationId: $correlationId")
+            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch, correlationId).toStoredDataSourcing()
         }
 
         /**
@@ -77,8 +87,9 @@ class DataSourcingManager
         private fun handlePatchOfDataSourcingEntity(
             fullyFetchedDataSourcingEntity: DataSourcingEntity,
             dataSourcingPatch: DataSourcingPatch,
+            correlationId: String,
         ): DataSourcingEntity {
-            performStatePatch(fullyFetchedDataSourcingEntity, dataSourcingPatch.state)
+            performStatePatch(fullyFetchedDataSourcingEntity, dataSourcingPatch.state, correlationId)
             updateIfNotNull(dataSourcingPatch.documentIds) { fullyFetchedDataSourcingEntity.documentIds = it }
             updateIfNotNull(dataSourcingPatch.expectedPublicationDatesOfDocuments) {
                 fullyFetchedDataSourcingEntity.expectedPublicationDatesOfDocuments = it
@@ -106,19 +117,56 @@ class DataSourcingManager
 
         /**
          * Performs the state patch on the given data sourcing entity, of which the associated Requests
-         * field must already have been fetched.
+         * field must already have been fetched. If state is changed to NonSourceable also send Message to RabbitMQ.
          */
         private fun performStatePatch(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
             state: DataSourcingState?,
+            correlationId: String,
         ) {
             if (state == null) return
-            dataSourcingEntityWithFetchedRequests.state = state
+
             if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
                 }
             }
+            if (state == DataSourcingState.NonSourceable &&
+                dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable
+            ) {
+                sendNonSourceableMessage(dataSourcingEntityWithFetchedRequests, correlationId)
+            }
+            dataSourcingEntityWithFetchedRequests.state = state
+        }
+
+        /**
+         * Builds, logs and sends non-sourceability message to RabbitMQ
+         */
+        private fun sendNonSourceableMessage(
+            dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
+            correlationId: String,
+        ) {
+            val messageBody =
+                SourceabilityMessage(
+                    BasicDataDimensions(
+                        dataSourcingEntityWithFetchedRequests.companyId.toString(),
+                        dataSourcingEntityWithFetchedRequests.dataType,
+                        dataSourcingEntityWithFetchedRequests.reportingPeriod,
+                    ),
+                    true,
+                    "",
+                )
+            logger.info(
+                "Sending non-sourceable message to message queue for data sourcing entity with id: " +
+                    "${dataSourcingEntityWithFetchedRequests.dataSourcingId}. CorrelationId: $correlationId.",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                JsonUtils.defaultObjectMapper.writeValueAsString(messageBody),
+                MessageType.DATASOURCING_NONSOURCEABLE,
+                correlationId,
+                ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
+                RoutingKeyNames.DATASOURCING_NONSOURCEABLE,
+            )
         }
 
         /**
@@ -133,14 +181,16 @@ class DataSourcingManager
             state: DataSourcingState,
         ): ReducedDataSourcing {
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            val correlationId = randomUUID().toString()
             logger
                 .info(
                     "Patch state of data sourcing entity with id: $dataSourcingEntityId " +
-                        "from state ${dataSourcingEntity.state} to state $state.",
+                        "from state ${dataSourcingEntity.state} to state $state. CorrelationId: $correlationId.",
                 )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(state = state),
+                correlationId,
             ).toReducedDataSourcing()
         }
 
@@ -158,6 +208,7 @@ class DataSourcingManager
             documentIds: Set<String>,
             appendDocuments: Boolean,
         ): ReducedDataSourcing {
+            val correlationId = randomUUID().toString()
             documentIds.forEach {
                 dataSourcingValidator.validateDocumentId(it)
             }
@@ -165,11 +216,12 @@ class DataSourcingManager
             val newDocumentsIds = if (!appendDocuments) documentIds else dataSourcingEntity.documentIds + documentIds
             logger.info(
                 "Patch documents with ids $documentIds of data sourcing entity with id: $dataSourcingEntityId with " +
-                    "appendDocuments = $appendDocuments.",
+                    "appendDocuments = $appendDocuments. CorrelationId: $correlationId.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(documentIds = newDocumentsIds),
+                correlationId,
             ).toReducedDataSourcing()
         }
 
@@ -184,14 +236,16 @@ class DataSourcingManager
             dataSourcingEntityId: UUID,
             date: LocalDate,
         ): ReducedDataSourcing {
+            val correlationId = randomUUID().toString()
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
                 "Patch dateOfNextDocumentSourcingAttempt of data sourcing entity with id: $dataSourcingEntityId with" +
-                    " dateOfNextDocumentSourcingAttempt: $date.",
+                    " dateOfNextDocumentSourcingAttempt: $date. CorrelationId: $correlationId.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date),
+                correlationId,
             ).toReducedDataSourcing()
         }
 
@@ -241,10 +295,12 @@ class DataSourcingManager
             dataExtractor: UUID?,
             adminComment: String?,
         ): StoredDataSourcing {
+            val correlationId = randomUUID().toString()
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
                 "Patch documentCollector: $documentCollector, data extractor: $dataExtractor " +
-                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}.",
+                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}." +
+                    "CorrelationId: $correlationId.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
@@ -253,6 +309,7 @@ class DataSourcingManager
                     dataExtractor = dataExtractor,
                     adminComment = adminComment,
                 ),
+                correlationId,
             ).toStoredDataSourcing(isUserAdmin())
         }
 

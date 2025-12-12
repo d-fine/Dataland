@@ -4,12 +4,15 @@ import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import java.util.UUID
 
 /**
@@ -41,6 +44,8 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
+    @Enumerated(EnumType.STRING)
+    val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
 ) {
     /**
      * create PortfolioResponse from entity
@@ -55,5 +60,6 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
+            notificationFrequency,
         )
 }

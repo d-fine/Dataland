@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
@@ -91,7 +92,6 @@ class CompanyRolesManagerTest {
             File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 
-    private val companyNotFound = "Company not found"
     private val companyIdNotKnown = "Dataland does not know the company ID $nonExistingCompanyId"
     private val unknownUserId = "Unknown user ID"
     private val companyRoleNotAssigned = "Company role is not assigned to user"
@@ -126,7 +126,7 @@ class CompanyRolesManagerTest {
         doNothing().whenever(mockCompanyInfoService).assertCompanyIdIsValid(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                companyNotFound,
+                COMPANY_NOT_FOUND,
                 companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).assertCompanyIdIsValid(nonExistingCompanyId)
@@ -134,7 +134,7 @@ class CompanyRolesManagerTest {
         doReturn(testCompanyName).whenever(mockCompanyInfoService).getValidCompanyName(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                companyNotFound,
+                COMPANY_NOT_FOUND,
                 companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
@@ -181,7 +181,7 @@ class CompanyRolesManagerTest {
                     "non-existing-company-id",
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -212,7 +212,7 @@ class CompanyRolesManagerTest {
                 )
             }
         verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -343,7 +343,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -386,7 +386,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test

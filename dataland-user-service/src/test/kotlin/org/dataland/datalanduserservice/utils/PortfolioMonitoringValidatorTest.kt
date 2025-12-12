@@ -4,6 +4,7 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -27,6 +28,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
+                NotificationFrequency.Weekly,
             )
 
         val violations = validator.validate(monitoring)
@@ -39,6 +41,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
+                NotificationFrequency.Weekly,
             )
 
         val violations = validator.validate(monitoring)
@@ -51,6 +54,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
+                NotificationFrequency.Weekly,
             )
 
         val violations = validator.validate(monitoring)
@@ -63,6 +67,7 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
+                NotificationFrequency.Weekly,
             )
 
         val violations = validator.validate(monitoring)

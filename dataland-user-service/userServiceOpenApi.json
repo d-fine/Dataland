@@ -956,11 +956,23 @@
   },
   "components": {
     "schemas": {
+      "NotificationFrequency": {
+        "type": "string",
+        "description": "Possible frequencies in which notifications can be received.",
+        "example": "Weekly",
+        "enum": [
+          "NoNotifications",
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ]
+      },
       "PortfolioUpload": {
         "required": [
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioName"
         ],
         "type": "object",
@@ -996,6 +1008,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
@@ -1006,6 +1021,7 @@
           "isMonitored",
           "lastUpdateTimestamp",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1064,6 +1080,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
@@ -1089,7 +1108,8 @@
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks"
+          "monitoredFrameworks",
+          "notificationFrequency"
         ],
         "type": "object",
         "properties": {
@@ -1107,12 +1127,16 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
       "EnrichedPortfolio": {
         "required": [
           "entries",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1154,6 +1178,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           }
         }
       },
