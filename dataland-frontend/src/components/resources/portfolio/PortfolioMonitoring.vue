@@ -42,7 +42,7 @@
         <span> Request latest available data </span>
       </div>
       <div class="dataland-info-text small">
-        Ensures data is initially obtained even when the latest reporting period ended more than half a year ago.
+        Ensures data is initially obtained even when the latest reporting period ended more than six months ago.
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
@@ -146,12 +146,20 @@ function resetErrors(): void {
  * Patch a portfolio with monitoring information
  */
 async function patchPortfolioMonitoring(): Promise<void> {
+  let thresholdValue: PortfolioMonitoringPatchTimeWindowThresholdEnum | undefined;
+
+  if (isMonitoringActive.value) {
+    thresholdValue = timeWindowThreshold.value
+      ? PortfolioMonitoringPatchTimeWindowThresholdEnum.Extended
+      : PortfolioMonitoringPatchTimeWindowThresholdEnum.Standard;
+  } else {
+    thresholdValue = undefined;
+  }
+
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
-    timeWindowThreshold: timeWindowThreshold.value
-      ? PortfolioMonitoringPatchTimeWindowThresholdEnum.Extended
-      : PortfolioMonitoringPatchTimeWindowThresholdEnum.Standard,
+    timeWindowThreshold: thresholdValue,
   };
 
   if (isMonitoringActive.value) {

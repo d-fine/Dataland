@@ -50,5 +50,5 @@ data class EnrichedPortfolio(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
     )
-    val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.Standard,
+    val timeWindowThreshold: TimeWindowThreshold? = null,
 )

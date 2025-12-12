@@ -45,7 +45,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 456,
       isMonitored: false,
       monitoredFrameworks: new Set(),
-      timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      timeWindowThreshold: undefined,
     },
     {
       portfolioId: 'p3',

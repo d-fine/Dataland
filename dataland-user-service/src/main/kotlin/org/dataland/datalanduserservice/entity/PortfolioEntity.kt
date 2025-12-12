@@ -45,7 +45,7 @@ data class PortfolioEntity(
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
     @Enumerated(EnumType.STRING)
-    val timeWindowThreshold: TimeWindowThreshold = TimeWindowThreshold.Standard,
+    val timeWindowThreshold: TimeWindowThreshold? = null,
 ) {
     /**
      * create PortfolioResponse from entity

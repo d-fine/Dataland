@@ -42,6 +42,17 @@ class PortfolioMonitoringValidator : ConstraintValidator<MonitoringIsValid, Port
                     value.monitoredFrameworks != emptySet<String>()
                 )
         )
-        return !(frameworksNotSetIfMonitored || frameworksSetIfNotMonitored)
+        val thresholdNotSetIfMonitored = (
+            value?.isMonitored == true && value.timeWindowThreshold == null
+        )
+        val thresholdSetIfNotMonitored = (
+            value?.isMonitored == false && value.timeWindowThreshold != null
+        )
+        return !(
+            frameworksNotSetIfMonitored ||
+                frameworksSetIfNotMonitored ||
+                thresholdNotSetIfMonitored ||
+                thresholdSetIfNotMonitored
+        )
     }
 }

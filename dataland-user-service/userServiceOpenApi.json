@@ -961,8 +961,7 @@
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
-          "portfolioName",
-          "timeWindowThreshold"
+          "portfolioName"
         ],
         "type": "object",
         "properties": {
@@ -1001,7 +1000,7 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring.",
-            "example": "Standard (6 months)",
+            "example": "Standard",
             "enum": [
               "Standard",
               "Extended"
@@ -1018,7 +1017,6 @@
           "monitoredFrameworks",
           "portfolioId",
           "portfolioName",
-          "timeWindowThreshold",
           "userId"
         ],
         "type": "object",
@@ -1079,7 +1077,7 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring.",
-            "example": "Standard (6 months)",
+            "example": "Standard",
             "enum": [
               "Standard",
               "Extended"
@@ -1109,8 +1107,7 @@
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks",
-          "timeWindowThreshold"
+          "monitoredFrameworks"
         ],
         "type": "object",
         "properties": {
@@ -1132,7 +1129,7 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring.",
-            "example": "Standard (6 months)",
+            "example": "Standard",
             "enum": [
               "Standard",
               "Extended"
@@ -1145,7 +1142,6 @@
           "entries",
           "portfolioId",
           "portfolioName",
-          "timeWindowThreshold",
           "userId"
         ],
         "type": "object",
@@ -1189,7 +1185,7 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring.",
-            "example": "Standard (6 months)",
+            "example": "Standard",
             "enum": [
               "Standard",
               "Extended"

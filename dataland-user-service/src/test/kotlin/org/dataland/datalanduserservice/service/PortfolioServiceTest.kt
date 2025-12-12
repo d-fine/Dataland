@@ -4,7 +4,6 @@ import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
-import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -274,6 +273,6 @@ class PortfolioServiceTest {
         identifiers = setOf(dummyCompanyId),
         isMonitored = false,
         monitoredFrameworks = emptySet(),
-        timeWindowThreshold = TimeWindowThreshold.Standard,
+        timeWindowThreshold = null,
     )
 }

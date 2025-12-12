@@ -53,7 +53,7 @@ class PortfolioBulkDataRequestService
                         "Updating company reporting info for ${companyIds.size} unique company IDs" +
                             " across all portfolios with time window threshold $timeWindowThreshold.",
                     )
-                companyReportingInfoService.updateCompanies(companyIds, timeWindowThreshold)
+                companyReportingInfoService.updateCompanies(companyIds, timeWindowThreshold!!)
 
                 logger.info("Company reporting info update completed.")
                 portfolios.forEach {

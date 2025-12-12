@@ -41,7 +41,7 @@ class PortfolioMonitoringServiceTest {
             identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-            timeWindowThreshold = TimeWindowThreshold.Standard,
+            timeWindowThreshold = null,
         )
 
     @BeforeEach
@@ -69,6 +69,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(null)
@@ -92,6 +93,7 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())

@@ -42,7 +42,8 @@ class CompanyReportingInfoServiceTest {
      * - fiscalYearEnd: The fiscal year-end date of the company.
      * - reportingPeriodShift: The reporting period shift value.
      * - today: The current date to simulate.
-     * - expectedReportingPeriod: The expected reporting period
+     * - expectedReportingPeriods: The expected reporting periods.
+     * - timeWindowThreshold: The time window threshold of a portfolio.
      *
      * @return A stream of arguments for the parameterized test.
      */
