@@ -195,7 +195,7 @@ class ExistingRequestsManagerTest {
                 reportingPeriod = "2025",
                 dataType = "sfdr",
                 state = DataSourcingState.Initialized,
-                associatedRequests = mutableSetOf(requestEntity),
+                associatedRequests = mutableSetOf(requestEntitySfdr),
             )
 
         whenever(mockDataSourcingRepository.findByIdAndFetchAllStoredFields(any())).thenReturn(
@@ -222,9 +222,9 @@ class ExistingRequestsManagerTest {
         }
         Assertions.assertEquals(state, reducedDataSourcing.state)
         if (state == DataSourcingState.Done || state == DataSourcingState.NonSourceable) {
-            Assertions.assertEquals(RequestState.Processed, requestEntity.state)
+            Assertions.assertEquals(RequestState.Processed, requestEntitySfdr.state)
         } else {
-            Assertions.assertNotEquals(RequestState.Processed, requestEntity.state)
+            Assertions.assertNotEquals(RequestState.Processed, requestEntitySfdr.state)
         }
     }
 }
