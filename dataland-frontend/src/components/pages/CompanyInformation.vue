@@ -100,7 +100,7 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import type { BasePortfolio } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
@@ -111,7 +111,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-import { getCompanyInformation } from '@/utils/CompanyInformation.ts';
+import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation.ts';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
@@ -144,9 +144,7 @@ const displaySector = computed(() => {
   }
 });
 
-const displayLei = computed(() => {
-  return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
-});
+const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 const props = defineProps({
   companyId: {
