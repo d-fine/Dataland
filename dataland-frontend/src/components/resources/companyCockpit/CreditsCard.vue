@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, defineProps, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -57,69 +57,62 @@ import Chip from 'primevue/chip';
 import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
-import { type AxiosResponse } from 'axios';
-import { type CompanyInformation } from '@clients/backend';
-import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation.ts';
+import type { CompanyInformation } from '@clients/backend';
+import { getDisplayLei } from '@/utils/CompanyInformation.ts';
+import { useQuery } from '@tanstack/vue-query';
 
-const creditsBalance = ref<number>(0);
 const props = defineProps<{
   companyId: string;
 }>();
 
-watch(
-  () => props.companyId,
-  async (newId) => {
-    if (newId) {
-      await getCreditsBalanceForCompany();
-    }
-  }
-);
-
-onMounted(async () => {
-  await loadCompanyInformation();
-  await getCreditsBalanceForCompany();
-});
-
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-const showInfoMessage = useStorage<boolean>(`showInfoMessageCredits`, true);
-const companyInformation = ref<CompanyInformation | null>(null);
+const showInfoMessage = useStorage<boolean>('showInfoMessageCredits', true);
+
+
+const {
+  data: creditsBalanceData,
+  isPending: isCreditsPending,
+  isError: isCreditsError,
+  error: creditsError,
+} = useQuery({
+  queryKey: ['creditsBalance', props.companyId],
+  enabled: computed(() => !!props.companyId),
+  queryFn: async () => {
+    const response = await apiClientProvider.apiClients.creditsController.getBalance(props.companyId);
+    return response.data as number;
+  },
+});
+
+const creditsBalance = computed(() => creditsBalanceData.value ?? 0);
+
+const {
+  data: companyInformationData,
+  isPending: isCompanyPending,
+  isError: isCompanyError,
+  error: companyError,
+} = useQuery({
+  queryKey: ['companyInformation', props.companyId],
+  enabled: computed(() => !!props.companyId),
+  queryFn: async () => {
+    const res = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(props.companyId);
+    return res.data as CompanyInformation;
+
+  },
+});
+
+const companyInformation = computed<CompanyInformation | null>(() => companyInformationData.value ?? null);
 const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
-/**
- * Gets the current balance of credits for the company.
- */
-async function getCreditsBalanceForCompany(): Promise<void> {
-  if (!props.companyId) return;
-  try {
-    const response = (await apiClientProvider.apiClients.creditsController.getBalance(
-      props.companyId
-    )) as AxiosResponse<number>;
-    creditsBalance.value = response.data;
-  } catch (error) {
-    console.error('Failed to get credit balance:', error);
-  }
-}
 
-/**
- * Loads the company information from the backend.
- */
-async function loadCompanyInformation(): Promise<void> {
-  const result = await getCompanyInformation(props.companyId, apiClientProvider, assertDefined(getKeycloakPromise));
-  companyInformation.value = result.companyInformation;
-}
 
-/**
- * Hides the info box
- */
+
 function hideInfoBox(): void {
   showInfoMessage.value = false;
 }
 
-/**
- * Shows the info box
- */
 function showInfoBox(): void {
   showInfoMessage.value = true;
 }
 </script>
+
