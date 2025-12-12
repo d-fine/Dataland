@@ -1,7 +1,7 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import options from 'axios';
 import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
-import { CompanyInformation, IdentifierType } from '@clients/backend';
+import { type CompanyInformation, IdentifierType } from '@clients/backend';
 
 /**
  * Mounts the CreditsCard component with the provided dummyCompanyId.
