@@ -59,8 +59,6 @@ import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import type { CompanyInformation } from '@clients/backend';
 import { getDisplayLei } from '@/utils/CompanyInformation.ts';
-import { useQuery } from '@tanstack/vue-query';
-import {queryKeys} from "@/queries/queryKeys.ts";
 import {useCompanyCreditsQuery} from "@/queries/composables/useCompanyCreditsQuery.ts";
 import {useCompanyInformationQuery} from "@/queries/composables/useCompanyInformationQuery.ts";
 
