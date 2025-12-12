@@ -112,6 +112,7 @@ import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { getCompanyInformation } from '@/utils/CompanyInformation.ts';
+import { getErrorMessage } from '@/utils/ErrorMessageUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -191,6 +192,10 @@ async function loadDataAndCheckForBadge(): Promise<void> {
   } catch (error) {
     console.error('Error loading company information:', error);
     companyInformation.value = null;
+    if (getErrorMessage(error).includes('404')) {
+      companyIdDoesNotExist.value = true;
+    }
+    companyInformation.value = null;
   } finally {
     waitingForData.value = false;
   }
@@ -252,6 +257,9 @@ async function fetchDataForThisPage(): Promise<void> {
   } catch (error) {
     console.error('Error fetching data for new company:', error);
     companyInformation.value = null;
+    if (getErrorMessage(error).includes('404')) {
+      companyIdDoesNotExist.value = true;
+    }
   } finally {
     waitingForData.value = false;
   }

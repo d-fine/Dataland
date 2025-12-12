@@ -42,6 +42,7 @@ export async function getCompanyInformation(
     }
   } catch (error) {
     console.error(`Failed to fetch company information for ${companyId}`, error);
+    throw error;
   }
 
   return { companyInformation, parentCompany, hasParentCompany };
