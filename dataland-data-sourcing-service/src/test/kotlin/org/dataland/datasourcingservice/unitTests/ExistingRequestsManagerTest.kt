@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -50,7 +51,7 @@ class ExistingRequestsManagerTest {
     private var reportingPeriod = "2025"
     private var dataType = "sfdr"
     private lateinit var userId: UUID
-    private lateinit var requestEntity: RequestEntity
+    private lateinit var requestEntitySfdr: RequestEntity
     private lateinit var dataSourcingEntity: DataSourcingEntity
 
     private val existingRequestsManager =
@@ -64,6 +65,7 @@ class ExistingRequestsManagerTest {
 
     private val testDataSourcingManager =
         DataSourcingManager(mockDataSourcingRepository, mockDataRevisionRepository, mockDataSourcingValidator, mockCloudEventMessageHandler)
+    private val dataRequestIdForSfdr = UUID.randomUUID()
 
     @BeforeEach
     fun setup() {
@@ -71,9 +73,9 @@ class ExistingRequestsManagerTest {
         companyId = UUID.randomUUID()
         userId = UUID.randomUUID()
 
-        requestEntity =
+        requestEntitySfdr =
             RequestEntity(
-                id = dataRequestId,
+                id = dataRequestIdForSfdr,
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
                 dataType = dataType,
@@ -107,11 +109,11 @@ class ExistingRequestsManagerTest {
             (invocation.arguments[0] as RequestEntity).toExtendedStoredRequest("Company Name", null)
         }.whenever(mockRequestQueryManager).transformRequestEntityToExtendedStoredRequest(any<RequestEntity>())
 
-        doReturn(requestEntity).whenever(mockRequestRepository).findByIdAndFetchDataSourcingEntity(any())
+        doReturn(requestEntitySfdr).whenever(mockRequestRepository).findByIdAndFetchDataSourcingEntity(dataRequestIdForSfdr)
 
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockRequestRepository).save(any())
 
-        doReturn(dataSourcingEntity).whenever(mockDataSourcingManager).useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
+        doReturn(dataSourcingEntity).whenever(mockDataSourcingManager).useExistingOrCreateDataSourcingAndAddRequest(requestEntitySfdr)
     }
 
     @ParameterizedTest
@@ -119,13 +121,14 @@ class ExistingRequestsManagerTest {
     fun `verify that a request is appended to its sourcing object and a message is sent only when request set to Processing`(
         requestState: RequestState,
     ) {
-        existingRequestsManager.patchRequestState(dataRequestId, requestState, null)
+        existingRequestsManager.patchRequestState(dataRequestIdForSfdr, requestState, null)
+
         if (requestState == RequestState.Processing) {
             verify(mockDataSourcingManager, times(1)).useExistingOrCreateDataSourcingAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, times(1))
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
-                    requestEntity = requestEntity,
+                    requestEntity = requestEntitySfdr,
                 )
         } else {
             verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
@@ -133,6 +136,49 @@ class ExistingRequestsManagerTest {
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = anyOrNull(),
                     requestEntity = anyOrNull(),
+                )
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataTypeEnum::class)
+    fun `verify that a message to accounting is sent only for a request not for nuclear and gas`(dataType: DataTypeEnum) {
+        val requestIdStateProcessing = UUID.randomUUID()
+        val requestEntityVaryingDataType =
+            RequestEntity(
+                id = requestIdStateProcessing,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType.name,
+                userId = userId,
+                creationTimestamp = 1000000000,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = 1000000000,
+                requestPriority = RequestPriority.High,
+                state = RequestState.Open,
+                dataSourcingEntity = null,
+            )
+        doReturn(requestEntityVaryingDataType)
+            .whenever(mockRequestRepository)
+            .findByIdAndFetchDataSourcingEntity(requestIdStateProcessing)
+        doReturn(dataSourcingEntity)
+            .whenever(mockDataSourcingManager)
+            .useExistingOrCreateDataSourcingAndAddRequest(requestEntityVaryingDataType)
+
+        existingRequestsManager.patchRequestState(requestIdStateProcessing, RequestState.Processing, null)
+
+        if (dataType == DataTypeEnum.nuclearMinusAndMinusGas) {
+            verify(mockDataSourcingServiceMessageSender, never())
+                .sendMessageToAccountingServiceOnRequestProcessing(
+                    dataSourcingEntity = anyOrNull(),
+                    requestEntity = anyOrNull(),
+                )
+        } else {
+            verify(mockDataSourcingServiceMessageSender, times(1))
+                .sendMessageToAccountingServiceOnRequestProcessing(
+                    dataSourcingEntity = dataSourcingEntity,
+                    requestEntity = requestEntityVaryingDataType,
                 )
         }
     }
