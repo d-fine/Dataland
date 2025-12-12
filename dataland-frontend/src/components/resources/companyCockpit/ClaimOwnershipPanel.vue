@@ -101,7 +101,6 @@ export default defineComponent({
      */
     onCloseDialog() {
       this.dialogIsOpen = false;
-      this.claimIsSubmitted = false;
     },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local

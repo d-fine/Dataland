@@ -29,7 +29,7 @@ describeIf(
     let betaCompanyIdAndName: CompanyIdAndName;
 
     before(() => {
-      return fetchTestCompanies().then(([alpha, beta]) => {
+      fetchTestCompanies().then(([alpha, beta]) => {
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
       });
@@ -40,7 +40,7 @@ describeIf(
     });
 
     it('When directing by url to the users page as a basic data reader who is only a company member of another company that user should be redirected to the company cockpit page', () => {
-      cy.then(() => removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId));
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) =>
         assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId)
@@ -156,7 +156,7 @@ describeIf(
      * Sets up the test environment for user page testing.
      */
     function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
-      cy.then(() => removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId));
+      removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) => {
         const promises = [assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId)];
