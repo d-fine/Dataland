@@ -60,6 +60,9 @@ import Message from 'primevue/message';
 import type { CompanyInformation } from '@clients/backend';
 import { getDisplayLei } from '@/utils/CompanyInformation.ts';
 import { useQuery } from '@tanstack/vue-query';
+import {queryKeys} from "@/queries/queryKeys.ts";
+import {useCompanyCreditsQuery} from "@/queries/composables/useCompanyCreditsQuery.ts";
+import {useCompanyInformationQuery} from "@/queries/composables/useCompanyInformationQuery.ts";
 
 const props = defineProps<{
   companyId: string;
@@ -68,43 +71,17 @@ const props = defineProps<{
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const showInfoMessage = useStorage<boolean>('showInfoMessageCredits', true);
-
-
-const {
-  data: creditsBalanceData,
-  isPending: isCreditsPending,
-  isError: isCreditsError,
-  error: creditsError,
-} = useQuery({
-  queryKey: ['creditsBalance', props.companyId],
-  enabled: computed(() => !!props.companyId),
-  queryFn: async () => {
-    const response = await apiClientProvider.apiClients.creditsController.getBalance(props.companyId);
-    return response.data as number;
-  },
-});
-
-const creditsBalance = computed(() => creditsBalanceData.value ?? 0);
-
-const {
-  data: companyInformationData,
-  isPending: isCompanyPending,
-  isError: isCompanyError,
-  error: companyError,
-} = useQuery({
-  queryKey: ['companyInformation', props.companyId],
-  enabled: computed(() => !!props.companyId),
-  queryFn: async () => {
-    const res = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(props.companyId);
-    return res.data as CompanyInformation;
-
-  },
-});
-
 const companyInformation = computed<CompanyInformation | null>(() => companyInformationData.value ?? null);
 const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
+const {
+  data: creditsBalance,
+  isPending: isCreditsPending} = useCompanyCreditsQuery(props.companyId, apiClientProvider);
 
+const {
+  data: companyInformationData,
+  isPending: isCompanyInformationPending,
+} = useCompanyInformationQuery(props.companyId, apiClientProvider);
 
 
 function hideInfoBox(): void {
