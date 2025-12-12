@@ -9,8 +9,16 @@ import org.flywaydb.core.api.migration.Context
  */
 @Suppress("ClassName")
 class V2__SetDefaultTimeWindowThreshold : BaseJavaMigration() {
-    override fun migrate(context: Context?) {
-        context!!.connection.createStatement().use { statement ->
+    override fun migrate(context: Context) {
+        val hasTable =
+            context.connection
+                .metaData
+                .getTables(null, null, "portfolios", null)
+                .next()
+
+        if (!hasTable) return
+
+        context.connection.createStatement().use { statement ->
             val addColumnSql =
                 """
                 ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS
