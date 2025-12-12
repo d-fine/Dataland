@@ -74,4 +74,26 @@ describe('Portfolio Monitoring Modal', function () {
       });
     });
   });
+
+  it('toggles time window threshold on and off', function () {
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.class', 'p-toggleswitch-checked');
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('not.have.class', 'p-toggleswitch-checked');
+  });
+
+  it('sends correct time window threshold value in PATCH request', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="frameworkSelection"]').first().find('input[type="checkbox"]').check();
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'Extended');
+  });
 });

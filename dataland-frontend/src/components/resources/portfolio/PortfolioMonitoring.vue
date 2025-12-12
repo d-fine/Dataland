@@ -17,7 +17,7 @@
         <div class="framework-toggle-label">
           <ToggleSwitch
             v-model="frameworkMonitoringOption.isActive"
-            data-test="valuesOnlySwitch"
+            data-test="frameworkToggle"
             @change="resetErrors"
             :disabled="!isMonitoringActive"
           />
@@ -28,6 +28,21 @@
       </div>
       <div class="dataland-info-text small">
         EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
+      </div>
+    </div>
+
+    <p class="header-styling">Data Coverage</p>
+    <div>
+      <div class="framework-toggle-label">
+        <ToggleSwitch
+          v-model="timeWindowThreshold"
+          data-test="timeWindowThresholdToggle"
+          :disabled="!isMonitoringActive"
+        />
+        <span> Request latest available data </span>
+      </div>
+      <div class="dataland-info-text small">
+        Ensures data is initially obtained even when the latest reporting period ended more than six months ago.
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
@@ -49,6 +64,10 @@
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, PortfolioMonitoringPatch } from '@clients/userservice';
+import {
+  PortfolioMonitoringPatchTimeWindowThresholdEnum,
+  EnrichedPortfolioTimeWindowThresholdEnum,
+} from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -75,6 +94,7 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
 const showFrameworksError = ref(false);
 const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
+const timeWindowThreshold = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
 
 const selectedFrameworkOptions = computed(() => {
@@ -126,9 +146,20 @@ function resetErrors(): void {
  * Patch a portfolio with monitoring information
  */
 async function patchPortfolioMonitoring(): Promise<void> {
+  let thresholdValue: PortfolioMonitoringPatchTimeWindowThresholdEnum | undefined;
+
+  if (isMonitoringActive.value) {
+    thresholdValue = timeWindowThreshold.value
+      ? PortfolioMonitoringPatchTimeWindowThresholdEnum.Extended
+      : PortfolioMonitoringPatchTimeWindowThresholdEnum.Standard;
+  } else {
+    thresholdValue = undefined;
+  }
+
   const portfolioMonitoringPatch: PortfolioMonitoringPatch = {
     isMonitored: isMonitoringActive.value,
     monitoredFrameworks: selectedFrameworkOptions.value as unknown as Set<string>,
+    timeWindowThreshold: thresholdValue,
   };
 
   if (isMonitoringActive.value) {
@@ -156,6 +187,7 @@ function prefillModal(): void {
   if (!portfolio.value) return;
 
   isMonitoringActive.value = portfolio.value.isMonitored ?? false;
+  timeWindowThreshold.value = portfolio.value.timeWindowThreshold == EnrichedPortfolioTimeWindowThresholdEnum.Extended;
 
   if (!isMonitoringActive.value) {
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({

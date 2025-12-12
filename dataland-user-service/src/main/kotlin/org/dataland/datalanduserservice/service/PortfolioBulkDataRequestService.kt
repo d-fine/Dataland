@@ -36,22 +36,33 @@ class PortfolioBulkDataRequestService
          * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 0 2 * * *")
+        // TODO adjust cron expression as needed
+        @Scheduled(cron = "0 */5 * * * *")
         fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
             val allMonitoredPortfolios = portfolioRepository.findAllByIsMonitoredTrue()
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
-
             companyReportingInfoService.resetData()
-            val allCompanyIds = allMonitoredPortfolios.flatMap { it.companyIds }.toSet()
-            logger.info("Updating company reporting info for ${allCompanyIds.size} unique company IDs across portfolios.")
-            companyReportingInfoService.updateCompanies(allCompanyIds)
-            logger.info("Company reporting info update completed.")
-            allMonitoredPortfolios.forEach {
-                postBulkDataRequest(it.toBasePortfolio())
-            }
 
+            val portfoliosByTimeWindow =
+                allMonitoredPortfolios
+                    .groupBy { it.timeWindowThreshold }
+                    .filter { it.key != null }
+            portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
+                val companyIds = portfolios.flatMap { it.companyIds }.toSet()
+                logger
+                    .info(
+                        "Updating company reporting info for ${companyIds.size} unique company IDs" +
+                            " across all portfolios with time window threshold $timeWindowThreshold.",
+                    )
+                companyReportingInfoService.updateCompanies(companyIds, timeWindowThreshold!!)
+
+                logger.info("Company reporting info update completed.")
+                portfolios.forEach {
+                    postBulkDataRequest(it.toBasePortfolio())
+                }
+            }
             logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
         }
 
@@ -89,10 +100,10 @@ class PortfolioBulkDataRequestService
         private fun groupCompanyIdsBySectorAndReportingPeriod(companyIds: Set<String>): Map<ReportingPeriodAndSector, List<String>> =
             companyReportingInfoService
                 .getCachedReportingYearAndSectorInformation()
-                .filter {
-                    it.key in companyIds
-                }.entries
-                .groupBy({ it.value }, { it.key })
+                .filterKeys { it in companyIds }
+                .entries
+                .flatMap { (companyId, reportingInfos) -> reportingInfos.map { info -> info to companyId } }
+                .groupBy({ (info, _) -> info }, { (_, companyId) -> companyId })
 
         /**
          * Post a Bulk Data Request for the given portfolio, sector, and reporting period,
@@ -110,24 +121,27 @@ class PortfolioBulkDataRequestService
         ) {
             val monitoredFrameworks =
                 when (groupKey.sector) {
-                    SectorType.FINANCIALS ->
+                    SectorType.FINANCIALS -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+                    }
 
-                    SectorType.NONFINANCIALS ->
+                    SectorType.NONFINANCIALS -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                         )
+                    }
 
-                    else ->
+                    else -> {
                         setOf(
                             DataTypeEnum.eutaxonomyMinusFinancials.value,
                             DataTypeEnum.nuclearMinusAndMinusGas.value,
                             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
                         )
+                    }
                 }
             postBulkDataRequest(
                 userId = basePortfolio.userId,

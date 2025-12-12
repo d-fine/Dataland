@@ -1,7 +1,6 @@
 import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
-import { PortfolioControllerApi } from '@clients/userservice';
-import { Configuration } from '@clients/backend';
+import { PortfolioControllerApi, Configuration } from '@clients/userservice';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 
 /**
@@ -18,6 +17,7 @@ export function createPortfolio(): void {
       identifiers: [companyId] as unknown as Set<string>,
       isMonitored: false,
       monitoredFrameworks: [] as unknown as Set<string>,
+      timeWindowThreshold: undefined,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
   });
