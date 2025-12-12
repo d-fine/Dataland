@@ -175,29 +175,9 @@ watch(
  */
 async function loadDataAndCheckForBadge(): Promise<void> {
   await fetchDataForThisPage();
-  waitingForData.value = true;
-
-  try {
-    const result = await getCompanyInformation(props.companyId, apiClientProvider, getKeycloakPromise);
-
-    companyInformation.value = result.companyInformation;
-    parentCompany.value = result.parentCompany;
-    hasParentCompany.value = result.hasParentCompany;
-
-    claimIsSubmitted.value = false;
-    await checkIfUserIsMemberOrAdmin();
-    if (isMemberOfCompanyOrAdmin.value) {
-      await checkIfCompanyIsDatalandMember();
-    }
-  } catch (error) {
-    console.error('Error loading company information:', error);
-    companyInformation.value = null;
-    if (getErrorMessage(error).includes('404')) {
-      companyIdDoesNotExist.value = true;
-    }
-    companyInformation.value = null;
-  } finally {
-    waitingForData.value = false;
+  await checkIfUserIsMemberOrAdmin();
+  if (isMemberOfCompanyOrAdmin.value) {
+    await checkIfCompanyIsDatalandMember();
   }
 }
 
@@ -239,7 +219,7 @@ async function checkIfUserIsMemberOrAdmin(): Promise<void> {
 }
 
 /**
- * Lädt alle relevanten Daten für die Company-Seite
+ * A complete fetch of all data that is relevant for UI elements of this page
  */
 async function fetchDataForThisPage(): Promise<void> {
   try {

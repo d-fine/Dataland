@@ -27,7 +27,6 @@ export async function getCompanyInformation(
   try {
     const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
     companyInformation = (await companyDataControllerApi.getCompanyInfo(companyId)).data;
-
     if (companyInformation.parentCompanyLei) {
       const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
         companyInformation.parentCompanyLei,
