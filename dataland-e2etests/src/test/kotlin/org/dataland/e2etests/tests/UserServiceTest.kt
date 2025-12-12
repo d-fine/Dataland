@@ -29,7 +29,7 @@ class UserServiceTest {
             identifiers = companyIds,
             isMonitored = false,
             monitoredFrameworks = emptySet(),
-            timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.Standard,
+            timeWindowThreshold = null,
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -137,7 +137,7 @@ class UserServiceTest {
                 identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
-                timeWindowThreshold = PortfolioUpload.TimeWindowThreshold.Standard,
+                timeWindowThreshold = null,
             )
 
         val portfolio =
