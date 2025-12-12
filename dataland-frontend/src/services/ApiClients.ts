@@ -18,6 +18,7 @@ import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import { DataPointControllerApi } from '@clients/backend/api';
+import { CreditsControllerApi } from '@clients/accountingservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -39,6 +40,7 @@ interface ApiClients {
   emailAddressController: EmailAddressControllerApi;
   dataPointController: DataPointControllerApi;
   companyRightsController: CompanyRightsControllerApi;
+  creditsController: CreditsControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -103,6 +105,7 @@ export class ApiClientProvider {
       emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
       dataPointController: this.getClientFactory('/api')(DataPointControllerApi),
       companyRightsController: this.getClientFactory('/community')(CompanyRightsControllerApi),
+      creditsController: this.getClientFactory('/accounting')(CreditsControllerApi),
     };
   }
 

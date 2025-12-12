@@ -11,6 +11,7 @@ COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-commun
 COPY ./dataland-email-service/emailServiceOpenApi.json ./dataland-email-service/emailServiceOpenApi.json
 COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/userServiceOpenApi.json
 COPY ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json
+COPY ./dataland-accounting-service/accountingServiceOpenApi.json ./dataland-accounting-service/accountingServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 

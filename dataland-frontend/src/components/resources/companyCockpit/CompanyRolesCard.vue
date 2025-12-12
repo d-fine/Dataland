@@ -256,7 +256,7 @@ const selectedRole = ref<CompanyRole | null>(null);
 let currentUserId: string | undefined = undefined;
 
 const isGlobalAdmin = ref(false);
-const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
+const showInfoMessage = useStorage<boolean>(`showInfoMessageCompanyRoles-${props.role}`, true);
 
 const groups: CompanyRoleDetails[] = [
   {
