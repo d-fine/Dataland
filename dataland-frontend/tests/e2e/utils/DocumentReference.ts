@@ -17,7 +17,7 @@ let cachedIds: string[] | null = null;
 export function getAllFakeFixtureDocumentIds(): string[] {
   if (cachedIds) return cachedIds;
 
-  if (typeof window !== 'undefined') {
+  if (typeof globalThis.window !== 'undefined') {
     const ids = (Cypress.env('fakeFixtureDocumentIds') as string[]) ?? [];
     if (!ids.length) {
       throw new Error(

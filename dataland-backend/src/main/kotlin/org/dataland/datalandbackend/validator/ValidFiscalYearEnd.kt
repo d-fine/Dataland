@@ -32,14 +32,14 @@ annotation class ValidFiscalYearEnd(
  * Ensures the date is valid according to month-specific day limits.
  */
 class FiscalYearEndValidator : ConstraintValidator<ValidFiscalYearEnd, String?> {
-    private val regex =
-        Regex(
-            pattern =
-                "^(" +
-                    "((0[1-9]|[12][0-9]|3[01])-(Jan|Mar|May|Jul|Aug|Oct|Dec))|" +
-                    "((0[1-9]|[12][0-9]|30)-(Apr|Jun|Sep|Nov))|" +
-                    "((0[1-9]|1[0-9]|2[0-8])-Feb)" +
-                    ")$",
+    // Low-complexity: only validates basic shape and allowed month token
+    private val regex = Regex("""^(0[1-9]|[12]\d|3[01])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$""")
+
+    private val maxDayByMonth =
+        mapOf(
+            "Jan" to 31, "Feb" to 28, "Mar" to 31, "Apr" to 30,
+            "May" to 31, "Jun" to 30, "Jul" to 31, "Aug" to 31,
+            "Sep" to 30, "Oct" to 31, "Nov" to 30, "Dec" to 31,
         )
 
     override fun isValid(
@@ -47,6 +47,12 @@ class FiscalYearEndValidator : ConstraintValidator<ValidFiscalYearEnd, String?> 
         context: ConstraintValidatorContext,
     ): Boolean {
         if (value == null) return true
-        return regex.matches(value)
+
+        val match = regex.matchEntire(value) ?: return false
+        val day = match.groupValues[1].toInt()
+        val month = match.groupValues[2]
+
+        val maxDay = maxDayByMonth[month] ?: return false
+        return day in 1..maxDay
     }
 }
