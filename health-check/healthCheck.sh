@@ -13,6 +13,10 @@ while true; do
   # Check health status of each container
   for container in $(docker ps --format '{{.Names}}'); do
 
+    if [[ "$container" == "loki" ]]; then
+        echo "$(date) level=info container=$container Skipping Loki health check" >> "$custom_log_file"
+        continue
+
       # Define your custom log file name
       custom_log_file="${LOKI_VOLUME}/health-check-log/health-check.log"
 
