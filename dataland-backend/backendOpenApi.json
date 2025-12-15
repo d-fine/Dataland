@@ -20,6 +20,246 @@
     }
   ],
   "paths": {
+    "/company-proxies/{proxyId}": {
+      "get": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Get the company proxy for a given id.",
+        "description": "Retrieve the company proxy for the given proxy id. ",
+        "operationId": "getCompanyProxyById",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The unique identifier of the company proxy relation.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query company proxies."
+          },
+          "404": {
+            "description": "No proxy found for the specified proxy id.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Replace proxy entry for a proxy id.",
+        "description": "Replaces proxy rule defined for the given proxy id. If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
+        "operationId": "putCompanyProxy",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The unique identifier of the company proxy relation.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProxyString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully replaced proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may modify company proxies."
+          },
+          "404": {
+            "description": "No proxy found for the specified company pair.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Delete a proxy relation by technical ID.",
+        "description": "Deletes a single proxy relation identified by its technical ID and returns the deleted rule.",
+        "operationId": "deleteCompanyProxy",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The proxy ID of the proxy rule entry.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted proxy rule.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may delete company proxies."
+          },
+          "404": {
+            "description": "No proxy relation found for the specified technical ID.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}": {
       "get": {
         "tags": [
@@ -1270,6 +1510,217 @@
         "responses": {
           "204": {
             "description": "Successfully verified specification conformity."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/company-proxies": {
+      "get": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Search company proxies.",
+        "description": "Searches for company proxies matching the given filters.",
+        "operationId": "searchCompanyProxies",
+        "parameters": [
+          {
+            "name": "proxiedCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "proxyCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "frameworks",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ]
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved proxies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompanyProxy"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Input.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompanyProxy"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Create a proxy.",
+        "description": "Creates a proxy describing which data of one company may be substituted by data of another company. If framework or reportingPeriod are null, the proxy applies to all frameworks or all reporting periods respectively.",
+        "operationId": "postCompanyProxy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProxyString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully stored proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may create company proxies."
           },
           "default": {
             "description": "An error occurred",
@@ -6272,6 +6723,74 @@
   },
   "components": {
     "schemas": {
+      "CompanyProxyString": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId"
+        ],
+        "type": "object",
+        "properties": {
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework for which proxying is permitted. Null means all frameworks.",
+            "nullable": true,
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "nullable": true,
+            "example": "2023"
+          }
+        }
+      },
+      "StoredCompanyProxy": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId",
+          "proxyId"
+        ],
+        "type": "object",
+        "properties": {
+          "proxyId": {
+            "type": "string",
+            "description": "The unique identifier of the company proxy relation.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework for which proxying is permitted. Null means all frameworks.",
+            "nullable": true,
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "nullable": true,
+            "example": "2023"
+          }
+        }
+      },
       "CompanyInformation": {
         "required": [
           "companyName",
@@ -17550,15 +18069,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
