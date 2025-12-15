@@ -100,7 +100,9 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo do
 
 echo "Waiting for Loki to be ready..."
 ssh ubuntu@"$target_server_url" "
-  until curl -sf http://localhost:3100/ready > /dev/null; do
+  CONTAINER_NAME=dataland-loki-1
+  echo 'Checking Loki logs for readiness...'
+  until docker logs \$CONTAINER_NAME 2>&1 | grep -q 'uploading tables'; do
     echo 'Loki not ready yet, retrying in 5s...'
     sleep 5
   done
