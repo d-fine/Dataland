@@ -1,27 +1,54 @@
-import { readFileSync, readdirSync } from 'fs';
 import { createHash } from 'crypto';
+import path from 'path';
 import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
 
 const possibleDocuments = ['Certification', 'Policy'];
 
+let cachedIds: string[] | null = null;
+
 /**
- * Returns all document IDs of the fake fixtures
- * @returns all document IDs of the fake fixtures
+ * Returns the SHA-256 IDs of all fake PDF document fixtures used in E2E tests.
+ *
+ * In the Cypress browser context, the IDs are read from
+ * `Cypress.env("fakeFixtureDocumentIds")` (set in `cypress.config.ts`).
+ * In Node.js, the IDs are computed from the PDF files on disk.
+ *
+ * Results are cached after the first call.
  */
 export function getAllFakeFixtureDocumentIds(): string[] {
-  const baseDir = '../testing/data/documents/fake-fixtures';
-  const files = readdirSync(baseDir);
-  const pdfFiles = files.filter((file) => file.endsWith('.pdf'));
-  return pdfFiles.map((file) =>
-    createHash('sha256')
-      .update(readFileSync(`${baseDir}/${file}`))
-      .digest('hex')
+  if (cachedIds) return cachedIds;
+
+  // Browser (Cypress runner): take from env
+  if (typeof window !== "undefined") {
+    const ids = (Cypress.env("fakeFixtureDocumentIds") as string[]) ?? [];
+    if (!ids.length) {
+      throw new Error(
+        "fakeFixtureDocumentIds missing. Ensure cypress.config.ts sets config.env.fakeFixtureDocumentIds in setupNodeEvents()."
+      );
+    }
+    cachedIds = ids;
+    return ids;
+  }
+
+  const { readdirSync, readFileSync } = require("fs");
+
+  const baseDir = path.resolve(__dirname, "..", "..", "..", "testing", "data", "documents", "fake-fixtures");
+  const files: string[] = readdirSync(baseDir);
+  const pdfFiles = files.filter((file) => file.endsWith(".pdf"));
+
+  cachedIds = pdfFiles.map((file) =>
+    createHash("sha256")
+      .update(readFileSync(path.join(baseDir, file)))
+      .digest("hex")
   );
+  return cachedIds;
 }
 
 /**
- * Generates a random non-empty set of reports that can be referenced
- * @returns a random non-empty set of reports
+ * Generates a set of referenced documents for test data.
+ *
+ * Each document is assigned a random file reference taken from the
+ * available fake fixture document IDs.
  */
 export function generateReferencedDocuments(): ReferencedDocuments {
   const referencedDocuments: ReferencedDocuments = {};

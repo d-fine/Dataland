@@ -3,6 +3,7 @@ import { promises, rmdir } from 'fs';
 import { createHash } from 'crypto';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
+import { computeFakeFixtureDocumentIds } from './tests/e2e/support/node/fixtureDocuments';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -191,7 +192,7 @@ export default defineConfig({
           return filename;
         },
       });
-
+      config.env.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',

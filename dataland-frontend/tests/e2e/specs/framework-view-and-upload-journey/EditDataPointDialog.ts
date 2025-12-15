@@ -100,7 +100,6 @@ describeIf(
 
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
-      cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);

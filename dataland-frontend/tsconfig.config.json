@@ -1,6 +1,10 @@
 {
   "extends": ["@tsconfig/node24/tsconfig.json"],
-  "include": ["vite.config.*", "cypress.config.*"],
+  "include": [
+    "vite.config.*",
+    "cypress.config.*",
+    "tests/e2e/support/node/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
