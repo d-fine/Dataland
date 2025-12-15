@@ -17,19 +17,18 @@ let cachedIds: string[] | null = null;
 export function getAllFakeFixtureDocumentIds(): string[] {
   if (cachedIds) return cachedIds;
 
-  // Browser (Cypress runner): take from env
-  if (typeof window !== "undefined") {
-    const ids = (Cypress.env("fakeFixtureDocumentIds") as string[]) ?? [];
+  if (typeof window !== 'undefined') {
+    const ids = (Cypress.env('fakeFixtureDocumentIds') as string[]) ?? [];
     if (!ids.length) {
       throw new Error(
-        "fakeFixtureDocumentIds missing. Ensure cypress.config.ts sets config.env.fakeFixtureDocumentIds in setupNodeEvents()."
+        'fakeFixtureDocumentIds missing. Ensure cypress.config.ts sets config.env.fakeFixtureDocumentIds in setupNodeEvents().'
       );
     }
     cachedIds = ids;
     return ids;
   }
 
-  cachedIds = computeFakeFixtureDocumentIds(process.cwd())
+  cachedIds = computeFakeFixtureDocumentIds(process.cwd());
   return cachedIds;
 }
 
