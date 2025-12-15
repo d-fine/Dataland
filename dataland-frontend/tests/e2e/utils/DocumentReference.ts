@@ -1,6 +1,5 @@
-import { createHash } from 'crypto';
-import path from 'path';
 import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
+import { computeFakeFixtureDocumentIds } from '@e2e/support/node/fixtureDocuments.ts';
 
 const possibleDocuments = ['Certification', 'Policy'];
 
@@ -30,17 +29,7 @@ export function getAllFakeFixtureDocumentIds(): string[] {
     return ids;
   }
 
-  const { readdirSync, readFileSync } = require("fs");
-
-  const baseDir = path.resolve(__dirname, "..", "..", "..", "testing", "data", "documents", "fake-fixtures");
-  const files: string[] = readdirSync(baseDir);
-  const pdfFiles = files.filter((file) => file.endsWith(".pdf"));
-
-  cachedIds = pdfFiles.map((file) =>
-    createHash("sha256")
-      .update(readFileSync(path.join(baseDir, file)))
-      .digest("hex")
-  );
+  cachedIds = computeFakeFixtureDocumentIds(process.cwd())
   return cachedIds;
 }
 
