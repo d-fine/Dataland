@@ -169,7 +169,7 @@ data class PortfolioMonitoringUpdateSummaryEmailContent(
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Your regular portfolio update!"
-    override val templateName = "Nonexistenttemplate.ftl"
+    override val templateName = "portfolio_changes_summary.ftl"
 
     /**
      * A class that stores the information about the multiple frameworks that have been changed.
