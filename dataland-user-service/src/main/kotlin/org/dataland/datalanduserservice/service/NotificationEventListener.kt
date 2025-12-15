@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.interfaces.DataDimensions
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -108,6 +109,10 @@ class NotificationEventListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
+
+        if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
+            return
+        }
 
         logger.info(
             "Received a qa status change message for data type: ${qaStatusChangeMessage.basicDataDimensions.dataType}, " +
