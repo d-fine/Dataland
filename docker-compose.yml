@@ -785,6 +785,11 @@ services:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    healthcheck:
+      test: [ "CMD", "/loki", "-verify-config" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:

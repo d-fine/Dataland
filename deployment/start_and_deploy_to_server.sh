@@ -98,17 +98,6 @@ ssh ubuntu@"$target_server_url" "$location/dataland-eurodat-client/write_secret_
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
-echo "Waiting for Loki to be ready..."
-ssh ubuntu@"$target_server_url" "
-  CONTAINER_NAME=dataland-loki-1
-  echo 'Checking Loki logs for readiness...'
-  until docker logs \$CONTAINER_NAME 2>&1 | grep -q 'uploading tables'; do
-    echo 'Loki not ready yet, retrying in 5s...'
-    sleep 5
-  done
-  echo 'Loki is ready!'
-"
-
 # Wait for all docker containers to become healthy
 wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 
