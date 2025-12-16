@@ -25,7 +25,7 @@ ARG MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
 ENV MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER=${MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER}
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
-FROM nginx:1.29.3@sha256:1beed3ca46acebe9d3fb62e9067f03d05d5bfa97a00f30938a0a3580563272ad as production-stage
+FROM nginx:1.29.3@sha256:2f4e10193b0c4f61472245e9d26cea78e7df7af266c7e7cf5e67353ee2731b51 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf
