@@ -90,16 +90,13 @@
 
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import { useQuery } from '@tanstack/vue-query'; // Import useQuery directly
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type DataTypeEnum, IdentifierType } from '@clients/backend';
-import { CompanyRole } from '@clients/communitymanager';
 import type { BasePortfolio } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -110,6 +107,8 @@ import { useCompanyInformationQuery } from '@/queries/composables/useCompanyInfo
 import { useHasCompanyOwnerQuery } from '@/queries/composables/useHasCompanyOwnerQuery.ts';
 import axios from 'axios';
 import { useUserAdminQuery } from '@/queries/composables/useUserAdminQuery.ts';
+import { useUserCompanyRolesQuery } from '@/queries/composables/useUserCompanyRolesQuery.ts';
+import { useIsDatalandMemberQuery } from '@/queries/composables/useIsDatalandMemberQuery.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
@@ -147,43 +146,17 @@ const {
 
 const { data: isAdmin, isPending: isAdminPending, isError: isAdminError } = useUserAdminQuery();
 
-const userCompanyRolesKey = computed(() => ['userCompanyRoles', companyIdRef.value] as const);
-const { data: userCompanyRoles } = useQuery({
-  queryKey: userCompanyRolesKey,
-  enabled: computed(() => !!companyIdRef.value && !!authenticated),
-  queryFn: async () => {
-    const keycloak = await getKeycloakPromise();
-    const userId = keycloak.idTokenParsed?.sub;
-    if (!userId) return [];
+const {
+  data: userCompanyRoles,
+  isPending: isUserCompanyRolesPending,
+  isError: isUserCompanyRolesError,
+} = useUserCompanyRolesQuery(companyIdRef);
 
-    const response = await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
-      undefined,
-      companyIdRef.value,
-      userId
-    );
-    return response.data;
-  },
-  initialData: [],
-});
-
-const companyRightsKey = computed(() => ['companyRights', companyIdRef.value] as const);
-const { data: isDatalandMember } = useQuery<boolean>({
-  queryKey: companyRightsKey,
-  enabled: computed(() => !!companyIdRef.value),
-  queryFn: async () => {
-    const response = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(companyIdRef.value);
-    return response.data.some((right) => right.includes('Member'));
-  },
-  initialData: false,
-});
-
-const isUserCompanyOwnerKey = computed(() => ['isUserCompanyOwner', companyIdRef.value] as const);
-const { data: isUserCompanyOwner } = useQuery<boolean>({
-  queryKey: isUserCompanyOwnerKey,
-  enabled: computed(() => !!companyIdRef.value && !!authenticated),
-  queryFn: () => hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, companyIdRef.value, getKeycloakPromise),
-  initialData: false,
-});
+const {
+  data: isDatalandMember,
+  isPending: isDatalandMemberPending,
+  isError: isDatalandMemberError,
+} = useIsDatalandMemberQuery(companyIdRef);
 
 const isMemberOfCompanyOrAdmin = computed(() => {
   return isAdmin.value || (userCompanyRoles.value && userCompanyRoles.value.length > 0);
