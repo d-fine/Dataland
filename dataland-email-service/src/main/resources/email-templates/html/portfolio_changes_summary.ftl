@@ -3,8 +3,8 @@
 <#---------------------------------->
 <!-- MACRO USED ONLY IN THIS FILE -->
 <#---------------------------------->
-<#macro renderDataRequestSummaryTable(data)>
-    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
+<#macro renderPortfolioMonitoringSummaryTable(data)>
+    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 100%">
         <tbody>
         <tr>
             <td style="padding: 10px;"> </td>
@@ -67,9 +67,10 @@
         <!-- EMAIL TEXT -->
         <tr>
             <td colspan="3">${frequency} summary for your portfolio(s): ${portfolioNamesString}
-                <br><br>Data for your portfolio(s) has been updated on Dataland,
-                listed in the sections below. Please note that you may have already reviewed these updates.
-                <br><br>Check details for all your portfolios using the following link:</td>
+                <br><br>Data for your portfolio(s) has been updated on Dataland.
+                You'll find a summary of these updates in the overview below.
+
+                Check your portfolios using the link below:</td>
         </tr>
         <@spacerRow/>
         <@buttonLink url="${baseUrl}/portfolios" linkText="VIEW MY PORTFOLIOS" />
@@ -78,7 +79,7 @@
         <#if newData?? && (newData?size > 0)>
             <@boldTitle title="New Data" />
             <@spacerRow/>
-            <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=newData /> </td> </tr>
+            <tr> <td colspan="3"> <@renderPortfolioMonitoringSummaryTable data=newData /> </td> </tr>
             <@spacerRow/>
             <@spacerRow/>
         </#if>
@@ -86,7 +87,7 @@
         <#if updatedData?? && (updatedData?size > 0)>
             <@boldTitle title="Updated Data" />
             <@spacerRow/>
-            <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=updatedData /> </td> </tr>
+            <tr> <td colspan="3"> <@renderPortfolioMonitoringSummaryTable data=updatedData /> </td> </tr>
             <@spacerRow/>
             <@spacerRow/>
         </#if>
@@ -94,7 +95,7 @@
         <#if nonSourceableData?? && (nonSourceableData?size > 0)>
             <@boldTitle title="Non sourceable Data" />
             <@spacerRow/>
-            <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=nonSourceableData /> </td> </tr>
+            <tr> <td colspan="3"> <@renderPortfolioMonitoringSummaryTable data=nonSourceableData /> </td> </tr>
             <@spacerRow/>
             <@spacerRow/>
         </#if>

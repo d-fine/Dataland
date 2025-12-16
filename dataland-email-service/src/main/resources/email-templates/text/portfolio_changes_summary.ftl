@@ -23,10 +23,10 @@
 </#macro>
 ${frequency} summary for your portfolio(s): ${portfolioNamesString}
 
-Data for your portfolio(s) has been updated on Dataland, listed in the sections below.
-Please note that you may have already reviewed these updates.
+Data for your portfolio(s) has been updated on Dataland.
+You'll find a summary of these updates in the overview below.
 
-Check details for all your portfolios using the link below.
+Check your portfolios using the link below:
 VIEW MY PORTFOLIOS: [${baseUrl}/portfolios]
 
 <#if newData?? && newData?has_content>

@@ -66,7 +66,7 @@
                 </tr>
                 <@spacerRow/>
                 <tr>
-                    <td colspan="3" style="padding: 0; height: 20px; font-size: 16px; color: #ffffff; text-decoration: none;">Copyright &copy; 2024 Dataland</td>
+                    <td colspan="3" style="padding: 0; height: 20px; font-size: 16px; color: #ffffff; text-decoration: none;">Copyright &copy; 2026 Dataland</td>
                 </tr>
                 </tbody>
                 <@spacerRow/>
