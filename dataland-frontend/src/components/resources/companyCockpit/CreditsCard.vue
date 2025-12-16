@@ -57,8 +57,8 @@ import { useStorage } from '@vueuse/core';
 import Message from 'primevue/message';
 import type { CompanyInformation } from '@clients/backend';
 import { getDisplayLei } from '@/utils/CompanyInformation.ts';
-import {useCompanyCreditsQuery} from "@/queries/composables/useCompanyCreditsQuery.ts";
-import {useCompanyInformationQuery} from "@/queries/composables/useCompanyInformationQuery.ts";
+import { useCompanyCreditsQuery } from '@/queries/composables/useCompanyCreditsQuery.ts';
+import { useCompanyInformationQuery } from '@/queries/composables/useCompanyInformationQuery.ts';
 
 const props = defineProps<{
   companyId: string;
@@ -70,15 +70,15 @@ const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 const {
   data: creditsBalance,
-  isLoading: isCreditsLoading,
-  isError: isCreditsError} = useCompanyCreditsQuery(props.companyId);
+  isPending: isCreditsPending,
+  isError: isCreditsError,
+} = useCompanyCreditsQuery(props.companyId);
 
 const {
   data: companyInformationData,
-  isLoading: isCompanyInformationLoading,
+  isPending: isCompanyInformationPending,
   isError: isCompanyInformationError,
 } = useCompanyInformationQuery(props.companyId);
-
 
 function hideInfoBox(): void {
   showInfoMessage.value = false;
@@ -88,4 +88,3 @@ function showInfoBox(): void {
   showInfoMessage.value = true;
 }
 </script>
-
