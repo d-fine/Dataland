@@ -4,6 +4,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.time.Month
 import kotlin.reflect.KClass
 
 /**
@@ -32,27 +33,40 @@ annotation class ValidFiscalYearEnd(
  * Ensures the date is valid according to month-specific day limits.
  */
 class FiscalYearEndValidator : ConstraintValidator<ValidFiscalYearEnd, String?> {
-    // Low-complexity: only validates basic shape and allowed month token
-    private val regex = Regex("""^(0[1-9]|[12]\d|3[01])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$""")
+    private companion object {
+        private const val MIN_DAY = 1
+    }
 
-    private val maxDayByMonth =
+    // Validates shape + month token
+    private val regex =
+        Regex("""^(0[1-9]|[12]\d|3[01])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$""")
+
+    private val monthByToken: Map<String, Month> =
         mapOf(
-            "Jan" to 31, "Feb" to 28, "Mar" to 31, "Apr" to 30,
-            "May" to 31, "Jun" to 30, "Jul" to 31, "Aug" to 31,
-            "Sep" to 30, "Oct" to 31, "Nov" to 30, "Dec" to 31,
+            "Jan" to Month.JANUARY,
+            "Feb" to Month.FEBRUARY,
+            "Mar" to Month.MARCH,
+            "Apr" to Month.APRIL,
+            "May" to Month.MAY,
+            "Jun" to Month.JUNE,
+            "Jul" to Month.JULY,
+            "Aug" to Month.AUGUST,
+            "Sep" to Month.SEPTEMBER,
+            "Oct" to Month.OCTOBER,
+            "Nov" to Month.NOVEMBER,
+            "Dec" to Month.DECEMBER,
         )
 
     override fun isValid(
         value: String?,
         context: ConstraintValidatorContext,
-    ): Boolean {
-        if (value == null) return true
+    ): Boolean =
+        value?.let { v ->
+            regex.matchEntire(v)?.let { match ->
+                val day = match.groupValues[1].toInt()
+                val month = monthByToken[match.groupValues[2]]
 
-        val match = regex.matchEntire(value) ?: return false
-        val day = match.groupValues[1].toInt()
-        val month = match.groupValues[2]
-
-        val maxDay = maxDayByMonth[month] ?: return false
-        return day in 1..maxDay
-    }
+                month != null && day >= MIN_DAY && day <= month.length(false) // false => non-leap => 29-Feb invalid
+            } ?: false
+        } ?: true
 }
