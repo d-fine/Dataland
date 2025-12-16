@@ -96,4 +96,14 @@ describe('Portfolio Monitoring Modal', function () {
 
     cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'Extended');
   });
+
+  it('sends undefined threshold when deactivating monitoring', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('be.undefined');
+  });
 });

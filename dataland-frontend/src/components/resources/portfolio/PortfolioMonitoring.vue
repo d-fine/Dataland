@@ -18,7 +18,7 @@
           <ToggleSwitch
             v-model="frameworkMonitoringOption.isActive"
             data-test="frameworkToggle"
-            @change="resetErrors"
+            @update:modelValue="resetErrors"
             :disabled="!isMonitoringActive"
           />
           <span>
@@ -96,6 +96,7 @@ const portfolio = ref<EnrichedPortfolio>();
 const isMonitoringActive = ref(false);
 const timeWindowThreshold = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
+const previousThreshold = ref(false);
 
 const selectedFrameworkOptions = computed(() => {
   return availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value);
@@ -123,20 +124,23 @@ function onMonitoringToggled(newValue: boolean): void {
       ...option,
       isActive: previousFrameworks.value.has(option.value),
     }));
+    timeWindowThreshold.value = previousThreshold.value;
   } else {
     previousFrameworks.value = new Set(
       availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
     );
+    previousThreshold.value = timeWindowThreshold.value;
     availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
       ...option,
       isActive: false,
     }));
+    timeWindowThreshold.value = false;
     resetErrors();
   }
 }
 
 /**
- * Reset errors when either framework, reporting period or file type changes
+ * Resets validation errors when framework selection changes
  */
 function resetErrors(): void {
   showFrameworksError.value = false;

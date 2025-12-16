@@ -45,9 +45,11 @@ class CompanyReportingInfoService
         }
 
         /**
-         * Update the cache by fetching, processing, and storing reporting year and sector information for the given company IDs.
+         * Update the cache by fetching, processing, and storing reporting year and
+         * sector information for the given company IDs based on the specified time window threshold.
          *
          * @param companyIds A collection of company IDs to update or add.
+         * @param timeWindowThreshold The time window threshold for portfolio monitoring.
          */
         fun updateCompanies(
             companyIds: Collection<CompanyId>,
@@ -75,7 +77,7 @@ class CompanyReportingInfoService
         }
 
         /**
-         * Returns the cached map of company IDs to their corresponding reporting year and sector information.
+         * Returns the cached map of company IDs to their corresponding list of reporting periods and sector information.
          *
          * This map is populated by calling the `updateCompanies` method with a list of company IDs.
          * If a company's reporting year or sector information is unavailable, it will not be included in the map.
@@ -93,11 +95,12 @@ class CompanyReportingInfoService
         /**
          * Retrieves the reporting year and sector information for a specific company.
          *
-         * Calculates the relevant reporting year based on the company's fiscal year-end and reporting period shift.
+         * Calculates the relevant reporting year based on the company's fiscal year-end, reporting period shift and time window threshold.
          * Sectors are normalized to "financials", "nonfinancials", or "unknown".
          * If required information is unavailable, this function returns null.
          *
          * @param storedCompany The StoredCompany object containing company information.
+         * @param timeWindowThreshold The time window threshold for portfolio monitoring.
          * @return ReportingPeriodAndSector for the company, or null if insufficient data.
          */
         private fun getCompanyReportingYearInfosForCompany(
@@ -107,13 +110,11 @@ class CompanyReportingInfoService
             val storedFiscalYearEnd = storedCompany.companyInformation.fiscalYearEnd
             val reportingPeriodShift = storedCompany.companyInformation.reportingPeriodShift
 
-            // First (early) return: required fields missing.
             if (storedFiscalYearEnd == null || reportingPeriodShift == null) return emptyList()
 
-            val reportingYears = resolveReportingYear(storedFiscalYearEnd, reportingPeriodShift, timeWindowThreshold)
+            val reportingYears = resolveReportingYears(storedFiscalYearEnd, reportingPeriodShift, timeWindowThreshold)
             val sector = resolveSectorType(storedCompany.companyInformation.sector)
 
-            // Only one return now for both valid and invalid reportingYear
             return reportingYears.map { year ->
                 ReportingPeriodAndSector(
                     reportingPeriod = year.toString(),
@@ -122,7 +123,7 @@ class CompanyReportingInfoService
             }
         }
 
-        private fun resolveReportingYear(
+        private fun resolveReportingYears(
             fiscalYearEnd: LocalDate,
             reportingPeriodShift: Int,
             timeWindowThreshold: TimeWindowThreshold,

@@ -26,7 +26,8 @@ object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"]"
 
     const val PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION =
-        "The time window threshold for portfolio monitoring."
+        "The time window threshold for portfolio monitoring. " +
+            "Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months)."
     const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "Standard"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."

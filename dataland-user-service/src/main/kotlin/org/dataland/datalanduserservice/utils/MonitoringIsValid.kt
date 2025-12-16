@@ -29,30 +29,16 @@ class PortfolioMonitoringValidator : ConstraintValidator<MonitoringIsValid, Port
     override fun isValid(
         value: PortfolioMonitoring?,
         context: ConstraintValidatorContext,
-    ): Boolean {
-        val frameworksNotSetIfMonitored = (
-            value?.isMonitored == true &&
-                (
-                    value.monitoredFrameworks == emptySet<String>()
-                )
-        )
-        val frameworksSetIfNotMonitored = (
-            value?.isMonitored == false &&
-                (
-                    value.monitoredFrameworks != emptySet<String>()
-                )
-        )
-        val thresholdNotSetIfMonitored = (
-            value?.isMonitored == true && value.timeWindowThreshold == null
-        )
-        val thresholdSetIfNotMonitored = (
-            value?.isMonitored == false && value.timeWindowThreshold != null
-        )
-        return !(
-            frameworksNotSetIfMonitored ||
-                frameworksSetIfNotMonitored ||
-                thresholdNotSetIfMonitored ||
-                thresholdSetIfNotMonitored
-        )
-    }
+    ): Boolean =
+        when (value?.isMonitored) {
+            true ->
+                value.monitoredFrameworks.isNotEmpty() &&
+                    value.timeWindowThreshold != null
+
+            false ->
+                value.monitoredFrameworks.isEmpty() &&
+                    value.timeWindowThreshold == null
+
+            null -> false
+        }
 }

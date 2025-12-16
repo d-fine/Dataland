@@ -999,7 +999,7 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The time window threshold for portfolio monitoring.",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1076,7 +1076,7 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The time window threshold for portfolio monitoring.",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1128,7 +1128,7 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The time window threshold for portfolio monitoring.",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1184,7 +1184,7 @@
           },
           "timeWindowThreshold": {
             "type": "string",
-            "description": "The time window threshold for portfolio monitoring.",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
             "example": "Standard",
             "enum": [
               "Standard",

@@ -30,8 +30,9 @@ class PortfolioBulkDataRequestService
          * Schedules and executes the creation of Bulk Data Requests for all monitored portfolios in the system.
          *
          * This function runs automatically at 2:00 a.m. daily (server time).
-         * It retrieves all monitored portfolios, updates company reporting year and sector information,
-         * and then publishes appropriate Bulk Data Requests for each portfolio.
+         *  It retrieves all monitored portfolios, groups them by time window threshold,
+         *  updates company reporting periods and sector information based on each threshold,
+         *  and then publishes appropriate Bulk Data Requests for each portfolio.
          *
          * @see postBulkDataRequest
          */
@@ -48,19 +49,21 @@ class PortfolioBulkDataRequestService
             val portfoliosByTimeWindow =
                 allMonitoredPortfolios
                     .groupBy { it.timeWindowThreshold }
-                    .filter { it.key != null }
+                    .filterKeys { it != null }
             portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
-                val companyIds = portfolios.flatMap { it.companyIds }.toSet()
-                logger
-                    .info(
-                        "Updating company reporting info for ${companyIds.size} unique company IDs" +
-                            " across all portfolios with time window threshold $timeWindowThreshold.",
-                    )
-                companyReportingInfoService.updateCompanies(companyIds, timeWindowThreshold!!)
+                timeWindowThreshold?.let { threshold ->
+                    val companyIds = portfolios.flatMap { it.companyIds }.toSet()
+                    logger
+                        .info(
+                            "Updating company reporting info for ${companyIds.size} unique company IDs" +
+                                " across all portfolios with time window threshold $threshold.",
+                        )
+                    companyReportingInfoService.updateCompanies(companyIds, threshold)
 
-                logger.info("Company reporting info update completed.")
-                portfolios.forEach {
-                    postBulkDataRequest(it.toBasePortfolio())
+                    logger.info("Company reporting info update completed.")
+                    portfolios.forEach {
+                        postBulkDataRequest(it.toBasePortfolio())
+                    }
                 }
             }
             logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
@@ -175,7 +178,7 @@ class PortfolioBulkDataRequestService
          * Post a Bulk Data Request to the Data Sourcing Service.
          * @param userId: the id of the user to whom the portfolio belongs
          * @param companyIds: the company ids to be included in the request
-         * @param reportingPeriods: the monitoring periods
+         * @param reportingPeriods: the reporting periods
          * @param frameworks: the chosen frameworks
          */
         private fun postBulkDataRequest(
