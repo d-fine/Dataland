@@ -224,7 +224,7 @@ async function fetchDataForThisPage(): Promise<void> {
     const result = await getCompanyInformation(props.companyId, apiClientProvider, getKeycloakPromise);
     companyInformation.value = result.companyInformation;
     parentCompany.value = result.parentCompany;
-    hasParentCompany.value = result.hasParentCompany;
+    hasParentCompany.value = parentCompany.value !== null;
 
     emits('fetchedCompanyInformation', companyInformation.value);
 

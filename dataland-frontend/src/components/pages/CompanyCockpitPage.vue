@@ -18,27 +18,24 @@
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-        <TabPanel
-          v-if="isCompanyMemberOrAdmin"
-          value="users"
-          style="background-color: var(--p-surface-50); padding: var(--spacing-xs)"
-        >
-          <CompanyRolesCard
-            v-for="role in roles"
-            :key="`${String(role)}-${refreshAllCards}`"
-            :companyId="companyId"
-            :role="role"
-            :userRole="userRole"
-            @users-changed="handleUsersChanged"
-          />
-        </TabPanel>
-        <TabPanel
-          v-if="isCompanyMemberOrAdmin"
-          value="credits"
-          style="background-color: var(--p-surface-50); padding: var(--spacing-xs)"
-        >
-          <CreditsCard :companyId="companyId" />
-        </TabPanel>
+        <div class="tab-layout">
+          <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+            <CompanyRolesCard
+              v-for="role in roles"
+              :key="`${String(role)}-${refreshAllCards}`"
+              :companyId="companyId"
+              :role="role"
+              :userRole="userRole"
+              @users-changed="handleUsersChanged"
+            />
+          </TabPanel>
+        </div>
+
+        <div class="tab-layout">
+          <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
+            <CreditsCard :companyId="companyId" />
+          </TabPanel>
+        </div>
       </TabPanels>
     </Tabs>
     <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
@@ -177,6 +174,11 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.tab-layout {
+  background-color: var(--p-surface-50);
+  padding: var(--spacing-xs);
+}
+
 .card-container {
   display: flex;
   gap: var(--spacing-xxxl);

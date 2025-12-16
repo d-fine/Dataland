@@ -4,7 +4,7 @@
       <div style="display: flex; align-items: center">
         <i
           class="pi pi-credit-card"
-          style="margin-right: 0.5rem; font-size: var(--font-size-lg); position: relative; top: 1px"
+          style="margin-right: var(--spacing-xs); font-size: var(--font-size-lg); position: relative; top: 1px"
         ></i>
         <span>Credits</span>
 
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';

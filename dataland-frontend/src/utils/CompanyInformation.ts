@@ -6,7 +6,6 @@ import type Keycloak from 'keycloak-js';
 export interface CompanyInformationResult {
   companyInformation: CompanyInformation | null;
   parentCompany: CompanyIdAndName | null;
-  hasParentCompany: boolean;
 }
 
 /**
@@ -22,21 +21,19 @@ export async function getCompanyInformation(
 ): Promise<CompanyInformationResult> {
   let companyInformation: CompanyInformation | null = null;
   let parentCompany: CompanyIdAndName | null = null;
-  let hasParentCompany = false;
 
   try {
     const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
     companyInformation = (await companyDataControllerApi.getCompanyInfo(companyId)).data;
     if (companyInformation.parentCompanyLei) {
-      const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+      const parentCompanyIdAndName = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
         companyInformation.parentCompanyLei,
         getKeycloakPromise(),
         1
       );
 
-      if (companyIdAndNames.length > 0) {
-        parentCompany = companyIdAndNames[0]!;
-        hasParentCompany = true;
+      if (parentCompanyIdAndName.length > 0) {
+        parentCompany = parentCompanyIdAndName[0]!;
       }
     }
   } catch (error) {
@@ -44,7 +41,7 @@ export async function getCompanyInformation(
     throw error;
   }
 
-  return { companyInformation, parentCompany, hasParentCompany };
+  return { companyInformation, parentCompany };
 }
 
 /**
