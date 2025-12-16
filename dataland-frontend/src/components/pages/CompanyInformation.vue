@@ -96,7 +96,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type DataTypeEnum, IdentifierType } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
@@ -105,9 +105,7 @@ import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { type NavigationFailure} from 'vue-router';
 import { useCompanyInformationQuery } from "@/queries/composables/useCompanyInformationQuery.ts";
 import {useHasCompanyOwnerQuery} from "@/queries/composables/useHasCompanyOwnerQuery.ts";
 import axios from 'axios';
@@ -142,8 +140,13 @@ const {
  * Queries: Company Ownership, Dataland Member, and User Company Role
  */
 
-const {hasCompanyOwner} = useHasCompanyOwnerQuery(companyIdRef);
-const {isAdmin}   = useUserAdminQuery()
+const {data: hasCompanyOwner,
+isLoading: isHasCompanyOwnerLoading,
+isError: isHasCompanyOwnerError} = useHasCompanyOwnerQuery(companyIdRef);
+
+const {data: isAdmin,
+isLoading : isAdminLoading,
+isError: isAdminError}   = useUserAdminQuery()
 
 
 const userCompanyRolesKey = computed(() => ['userCompanyRoles', companyIdRef.value] as const);

@@ -14,7 +14,8 @@ import '@/assets/fonts/ibm-plex-sans.scss';
 import '@/assets/theme/main.css';
 import '@formkit/themes/genesis';
 import router from './router';
-import {VueQueryPlugin, QueryClient} from "@tanstack/vue-query";
+import {VueQueryPlugin} from "@tanstack/vue-query";
+import {queryClient} from "@/queries/queryClient.ts";
 
 
 /**
@@ -22,14 +23,7 @@ import {VueQueryPlugin, QueryClient} from "@tanstack/vue-query";
  */
 function instantiateVueApp(): void {
   const app = createApp(App);
-
-  const queryClient = new QueryClient({
-      defaultOptions: { queries: {
-          staleTime: 1 * 60 * 1000,
-          refetchOnWindowFocus: false,}
-      }
-  });
-
+  
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({

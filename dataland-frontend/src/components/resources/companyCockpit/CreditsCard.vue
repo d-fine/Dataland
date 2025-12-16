@@ -49,10 +49,8 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-import { computed, defineProps, inject } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { computed, defineProps } from 'vue';
+
 import Chip from 'primevue/chip';
 import Button from 'primevue/button';
 import { useStorage } from '@vueuse/core';
@@ -72,11 +70,13 @@ const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 const {
   data: creditsBalance,
-  isPending: isCreditsPending} = useCompanyCreditsQuery(props.companyId);
+  isLoading: isCreditsLoading,
+  isError: isCreditsError} = useCompanyCreditsQuery(props.companyId);
 
 const {
   data: companyInformationData,
-  isPending: isCompanyInformationPending,
+  isLoading: isCompanyInformationLoading,
+  isError: isCompanyInformationError,
 } = useCompanyInformationQuery(props.companyId);
 
 

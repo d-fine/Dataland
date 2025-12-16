@@ -1,10 +1,10 @@
 // useCompanyInformationQuery.ts
 import { useQuery } from '@tanstack/vue-query';
 import { queryKeys } from '@/queries/queryKeys';
-import {computed, inject, type Ref} from 'vue';
+import {computed, type Ref} from 'vue';
 import type { CompanyInformation } from '@clients/backend';
-import Keycloak from 'keycloak-js';
 import {ApiClientProvider} from "@/services/ApiClients.ts";
+import {useApiClient} from "@/utils/api/useApiClient.ts";
 
 export function useCompanyInformationQuery(
     companyId: Ref<string> | string
@@ -13,14 +13,10 @@ export function useCompanyInformationQuery(
         typeof companyId === 'string' ? companyId : companyId.value
     );
 
-    const keyCloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-    if (!keyCloakPromise) throw new Error("Keycloak not provided!");
-    const apiClientProvider = new ApiClientProvider(keyCloakPromise());
+    const apiClientProvider : ApiClientProvider = useApiClient();
 
-    const key = computed(() => queryKeys.companyInformation(id.value));
-
-    const query = useQuery<CompanyInformation>({
-        queryKey: key,
+    return useQuery<CompanyInformation>({
+        queryKey: computed(() => queryKeys.companyInformation(id.value)),
         enabled: computed(() => !!id.value),
         queryFn: async () => {
             const response =
@@ -31,12 +27,5 @@ export function useCompanyInformationQuery(
         },
     });
 
-    const companyInformation = computed<CompanyInformation | null>(
-        () => query.data.value ?? null
-    );
 
-    return {
-        ...query,
-        companyInformation,
-    };
 }
