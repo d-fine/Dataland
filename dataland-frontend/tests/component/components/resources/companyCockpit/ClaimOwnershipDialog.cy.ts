@@ -1,24 +1,25 @@
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
-describe('Component test for ClaimOwnershipPanel', () => {
+describe('Component test for ClaimOwnershipDialog', () => {
   beforeEach(() => {
-    const mockApiResponse = { status: 200 };
-    cy.intercept('**/company-ownership/*', mockApiResponse);
+    const mockApiResponse = { statusCode: 200, body: {} };
+    cy.intercept('POST', '**/company-ownership/*', mockApiResponse);
   });
-  it('ClaimOwnershipPanel component first page works correctly', () => {
-    //@ts-ignore
+
+  it('ClaimOwnershipDialog first page works correctly', () => {
+    // @ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
-      data() {
-        return {
-          dialogIsVisible: true,
-          companyName: 'TestClaimOwnershipDialogMessage',
-          companyId: 'a8e513b8-c711-4dc0-915b-678c7758523d',
-        };
+      props: {
+        dialogIsOpen: true,
+        companyName: 'TestClaimOwnershipDialogMessage',
+        companyId: 'a8e513b8-c711-4dc0-915b-678c7758523d',
+        claimIsSubmitted: false,
       },
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      cy.get('#claimOwnerShipDialog').should('exist').should('be.visible');
+      cy.get('#claimOwnerShipDialog').should('exist').and('be.visible');
+
       cy.get("[data-test='claimOwnershipDialogMessage']").should(
         'contain.text',
         'Are you responsible for the datasets of TestClaimOwnershipDialogMessage? Claim company ownership in order to ensure high'
@@ -33,16 +34,15 @@ describe('Component test for ClaimOwnershipPanel', () => {
       cy.get('.p-dialog-footer button').click();
     });
   });
-  it('ClaimOwnershipPanel component second page works correctly', () => {
-    //@ts-ignore
+
+  it('ClaimOwnershipDialog second page works correctly', () => {
+    // @ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
-      data() {
-        return {
-          dialogIsVisible: true,
-          companyName: 'TestClaimOwnershipDialogMessage',
-          companyId: 'a8e513b8-c711-4dc0-915b-678c7758523d',
-          claimIsSubmitted: true,
-        };
+      props: {
+        dialogIsOpen: true,
+        companyName: 'TestClaimOwnershipDialogMessage',
+        companyId: 'a8e513b8-c711-4dc0-915b-678c7758523d',
+        claimIsSubmitted: true,
       },
       keycloak: minimalKeycloakMock({}),
     }).then(({ wrapper }) => {
@@ -55,17 +55,19 @@ describe('Component test for ClaimOwnershipPanel', () => {
       cy.get('.p-dialog-footer button')
         .click()
         .then(() => {
-          expect(wrapper.emitted('closeDialog'));
+          expect(wrapper.emitted('close-dialog')).to.exist;
         });
     });
   });
-  it('ClaimOwnershipPanel component page works correctly when closed', () => {
-    //@ts-ignore
+
+  it('ClaimOwnershipDialog is not rendered when closed', () => {
+    // @ts-ignore
     cy.mountWithPlugins(ClaimOwnershipDialog, {
-      data() {
-        return {
-          dialogIsVisible: false,
-        };
+      props: {
+        dialogIsOpen: false,
+        companyName: 'TestClaimOwnershipDialogMessage',
+        companyId: 'a8e513b8-c711-4dc0-915b-678c7758523d',
+        claimIsSubmitted: false,
       },
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
