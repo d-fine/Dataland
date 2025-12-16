@@ -4,7 +4,7 @@
 <!-- MACRO USED ONLY IN THIS FILE -->
 <#---------------------------------->
 <#macro renderPortfolioMonitoringSummaryTable(data)>
-    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 100%">
+    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 90%">
         <tbody>
         <tr>
             <td style="padding: 10px;"> </td>
@@ -57,7 +57,7 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
     <#include "../general/header.ftl">
-    <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; text-align: left; border-collapse: collapse; padding: 0 10px; margin: 0">
+    <table style="background-color: #ffffff; width: 100%; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; text-align: left; border-collapse: collapse; padding: 0 10px; margin: 0">
         <tbody>
         <tr>
             <td rowspan="20" style="width: 40px">&nbsp;</td>
@@ -70,7 +70,7 @@
                 <br><br>Data for your portfolio(s) has been updated on Dataland.
                 You'll find a summary of these updates in the overview below.
 
-                Check your portfolios using the link below:</td>
+                <br><br>Check your portfolios using the link below:</td>
         </tr>
         <@spacerRow/>
         <@buttonLink url="${baseUrl}/portfolios" linkText="VIEW MY PORTFOLIOS" />
