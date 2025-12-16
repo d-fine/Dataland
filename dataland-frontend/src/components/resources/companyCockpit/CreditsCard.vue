@@ -1,8 +1,5 @@
 <template>
-  <Card
-    style="width: 70%; margin: 0 auto; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl)"
-    data-test="creditsBalance"
-  >
+  <Card style="width: 70%; margin: var(--spacing-xl) auto" data-test="creditsBalance">
     <template #title>
       <div style="display: flex; align-items: center">
         <i
