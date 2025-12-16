@@ -104,11 +104,10 @@ const routes = [
   {
     path: `/companies/:companyId`,
     props: true,
-    name: 'CompanyCockpitPage',
+    name: 'Company Cockpit',
     component: CompanyCockpitPage,
-    alias: ['/companies/:companyId/users', '/companies/:companyId/credits'],
     meta: {
-      requiresAuthentication: true, // adjust as needed
+      requiresAuthentication: true,
       useLandingPageHeader: false,
     },
   },
@@ -144,6 +143,24 @@ const routes = [
     props: true,
     name: 'Document Overview',
     component: DocumentOverview,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/companies/:companyId/users`,
+    props: true,
+    name: 'CompanyCockpitPageUsers',
+    component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/companies/:companyId/credits`,
+    props: true,
+    name: 'CompanyCockpitPageCredits',
+    component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: true,
     },

@@ -18,8 +18,9 @@
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-        <div class="tab-layout">
-          <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+          <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
               :key="`${String(role)}-${refreshAllCards}`"
@@ -28,14 +29,13 @@
               :userRole="userRole"
               @users-changed="handleUsersChanged"
             />
-          </TabPanel>
-        </div>
-
-        <div class="tab-layout">
-          <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
+          </div>
+        </TabPanel>
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
+          <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
-          </TabPanel>
-        </div>
+          </div>
+        </TabPanel>
       </TabPanels>
     </Tabs>
     <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
