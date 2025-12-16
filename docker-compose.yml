@@ -786,7 +786,7 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     healthcheck:
-      test: [ "CMD", "/loki", "-verify-config" ]
+      test: ["CMD", "/usr/bin/loki", "-config.file=/etc/loki/loki-config.yaml", "-verify-config"]
       interval: 30s
       timeout: 5s
       retries: 3
