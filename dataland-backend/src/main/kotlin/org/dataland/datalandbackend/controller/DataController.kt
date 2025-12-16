@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
@@ -212,6 +214,16 @@ open class DataController<T>(
             .headers(buildHttpHeadersForExport(exportRequestData.fileFormat))
             .body(companyAssociatedDataForExport)
     }
+
+    override fun postExportJobCompanyAssociatedDataByDimensions(
+        exportRequestData: ExportRequestData,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ): ResponseEntity<ExportJob> = TODO()
+
+    override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> = TODO()
+
+    override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> = TODO()
 
     /**
      * Builds HTTP headers for exporting data, setting the appropriate content type and
