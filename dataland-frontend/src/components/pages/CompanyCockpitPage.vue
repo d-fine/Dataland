@@ -3,16 +3,11 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList
-        v-if="isCompanyMemberOrAdmin"
-        :pt="{
-          tabList: {
-            style: 'display: flex; justify-content: center;',
-          },
-        }"
+          :pt="{ tabList: { style: 'display: flex; justify-content: center;' } }"
       >
-        <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
-        <Tab value="users" data-test="usersTab">Users</Tab>
-        <Tab value="credits" data-test="creditsTab">Credits</Tab>
+        <Tab value="datasets">Datasets</Tab>
+        <Tab v-if="isCompanyMemberOrAdmin" value="users">Users</Tab>
+        <Tab v-if="isCompanyMemberOrAdmin" value="credits">Credits</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
