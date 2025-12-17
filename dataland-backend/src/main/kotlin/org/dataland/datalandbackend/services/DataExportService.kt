@@ -5,32 +5,44 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.dataland.datalandbackend.entities.ExportJobEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataExportUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.InputStreamResource
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import java.time.Instant
+import java.util.UUID
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
  */
 @Service
-class DataExportService
+class DataExportService<T>
     @Autowired
     constructor(
         private val dataPointUtils: DataPointUtils,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val specificationApi: SpecificationControllerApi,
+        private val companyQueryManager: CompanyQueryManager,
+        @Qualifier("AssembledDataManager") private val datasetStorageService: DatasetStorageService,
     ) {
         companion object {
             private const val HEADER_ROW_INDEX = 0
@@ -39,7 +51,8 @@ class DataExportService
             private const val REPORTING_PERIOD_POSITION = -1
         }
 
-        private val objectMapper = JsonUtils.defaultObjectMapper
+        private val objectMapper = defaultObjectMapper
+        private val exportJobStorage = mutableMapOf<String, MutableList<ExportJobEntity>>()
 
         /**
          * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
@@ -63,24 +76,99 @@ class DataExportService
             }
 
             return when (exportFileType) {
-                ExportFileType.CSV ->
+                ExportFileType.CSV -> {
                     buildCsvStreamFromPortfolioAsJsonData(
                         jsonData,
                         dataType,
                         keepValueFieldsOnly,
                         includeAliases,
                     )
+                }
 
-                ExportFileType.EXCEL ->
+                ExportFileType.EXCEL -> {
                     buildExcelStreamFromPortfolioAsJsonData(
                         jsonData,
                         dataType,
                         keepValueFieldsOnly,
                         includeAliases,
                     )
+                }
 
-                ExportFileType.JSON -> buildJsonStreamFromPortfolioAsJsonData(jsonData)
+                ExportFileType.JSON -> {
+                    buildJsonStreamFromPortfolioAsJsonData(jsonData)
+                }
             }
+        }
+
+        /**
+         * Instantiates and saves ExportJob in memory.
+         */
+        fun createAndSaveExportJob(correlationId: UUID): ExportJobEntity {
+            val newExportJobEntity =
+                ExportJobEntity(
+                    correlationId,
+                    null,
+                    creationTime = Instant.now().toEpochMilli(),
+                )
+            exportJobStorage
+                .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf(newExportJobEntity) }
+                .add(newExportJobEntity)
+            return newExportJobEntity
+        }
+
+        /**
+         * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
+         * @param listDataDimensions the passed list of SingleCompanyExportData to be exported
+         * @param exportFileType the file type to be exported
+         * @param newExportJobEntity correlationId for unique identification
+         * @param keepValueFieldsOnly if true, non value fields are stripped
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
+         */
+        @Async
+        fun startExportJob(
+            listDataDimensions: ListDataDimensions,
+            exportFileType: ExportFileType,
+            newExportJobEntity: ExportJobEntity,
+            clazz: Class<T>,
+            keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
+        ) {
+            val portfolioData =
+                buildCompanyExportData(listDataDimensions, clazz, newExportJobEntity.id.toString())
+
+            val jsonData = portfolioData.map { convertDataToJson(it) }
+            if (jsonData.isEmpty()) {
+                throw DownloadDataNotFoundApiException()
+            }
+            val dataType = DataType.valueOf(listDataDimensions.dataTypes.first())
+
+            val exportFile =
+                when (exportFileType) {
+                    ExportFileType.CSV -> {
+                        buildCsvStreamFromPortfolioAsJsonData(
+                            jsonData,
+                            dataType,
+                            keepValueFieldsOnly,
+                            includeAliases,
+                        )
+                    }
+
+                    ExportFileType.EXCEL -> {
+                        buildExcelStreamFromPortfolioAsJsonData(
+                            jsonData,
+                            dataType,
+                            keepValueFieldsOnly,
+                            includeAliases,
+                        )
+                    }
+
+                    ExportFileType.JSON -> {
+                        buildJsonStreamFromPortfolioAsJsonData(jsonData)
+                    }
+                }
+            newExportJobEntity.fileToExport = exportFile
+            newExportJobEntity.progressState = ExportJobProgressState.Success
         }
 
         /**
@@ -118,6 +206,39 @@ class DataExportService
             }
             workbook.write(outputStream)
             workbook.close()
+        }
+
+        private fun buildCompanyExportData(
+            listDataDimensions: ListDataDimensions,
+            clazz: Class<T>,
+            correlationId: String,
+        ): List<SingleCompanyExportData<T>> {
+            val dataDimensionsWithDataStrings =
+                datasetStorageService.getDatasetData(
+                    listDataDimensions.companyIds
+                        .flatMap { companyId ->
+                            listDataDimensions.reportingPeriods.flatMap { reportingPeriod ->
+                                listDataDimensions.dataTypes.map { dataType ->
+                                    BasicDatasetDimensions(companyId, dataType, reportingPeriod)
+                                }
+                            }
+                        }.toSet(),
+                    correlationId,
+                )
+
+            val basicCompanyInformation =
+                companyQueryManager.getBasicCompanyInformationByIds(
+                    dataDimensionsWithDataStrings.map { it.key.companyId },
+                )
+
+            return dataDimensionsWithDataStrings.map {
+                SingleCompanyExportData(
+                    companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
+                    companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
+                    reportingPeriod = it.key.reportingPeriod,
+                    data = defaultObjectMapper.readValue(it.value, clazz),
+                )
+            }
         }
 
         /**

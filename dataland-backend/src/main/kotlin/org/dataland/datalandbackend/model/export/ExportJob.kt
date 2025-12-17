@@ -7,6 +7,6 @@ import java.util.UUID
  * Export job posted for async data export
  */
 class ExportJob(
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID,
     val userId: UUID,
 )
