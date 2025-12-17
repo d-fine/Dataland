@@ -110,6 +110,11 @@ const routes = [
       requiresAuthentication: false,
       useLandingPageHeader: false,
     },
+    children: [
+      { path: 'datasets', component: CompanyCockpitPage, name: 'CompanyDatasets' },
+      { path: 'users', component: CompanyCockpitPage, name: 'CompanyUsers' },
+      { path: 'credits', component: CompanyCockpitPage, name: 'CompanyCredits' },
+    ],
   },
   {
     path: `/companies/:companyId/frameworks/:dataType`,
@@ -143,24 +148,6 @@ const routes = [
     props: true,
     name: 'Document Overview',
     component: DocumentOverview,
-    meta: {
-      requiresAuthentication: true,
-    },
-  },
-  {
-    path: `/companies/:companyId/users`,
-    props: true,
-    name: 'CompanyCockpitPageUsers',
-    component: CompanyCockpitPage,
-    meta: {
-      requiresAuthentication: true,
-    },
-  },
-  {
-    path: `/companies/:companyId/credits`,
-    props: true,
-    name: 'CompanyCockpitPageCredits',
-    component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: true,
     },

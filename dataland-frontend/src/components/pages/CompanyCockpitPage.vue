@@ -150,6 +150,8 @@ watch(activeTab, async (val) => {
     targetPath = `${base}/users`;
   } else if (val === 'credits') {
     targetPath = `${base}/credits`;
+  } else if (val === 'datasets') {
+    targetPath = `${base}/'datasets'`;
   }
 
   if (currentPath !== targetPath) {
@@ -165,7 +167,7 @@ onMounted(async () => {
   await setUserRights(false);
   const path = router.currentRoute.value.path;
 
-  if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
+  if (path.endsWith('/users') || (path.endsWith('/credits') && !isCompanyMemberOrAdmin.value)) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
   } else if (path.endsWith('/credits')) {
