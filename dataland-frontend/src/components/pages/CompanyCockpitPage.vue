@@ -3,7 +3,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList
-        v-show="isCompanyMemberOrAdmin"
+        v-if="isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -19,7 +19,7 @@
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
 
-        <TabPanel v-show="isCompanyMemberOrAdmin" value="users">
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
@@ -31,7 +31,7 @@
             />
           </div>
         </TabPanel>
-        <TabPanel v-show="isCompanyMemberOrAdmin" value="credits">
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
           <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject } from 'vue';
+import {ref, reactive, watch, onMounted, inject, nextTick} from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -158,15 +158,18 @@ watch(activeTab, async (val) => {
 
 onMounted(async () => {
   await setUserRights(false);
+  await nextTick();
   const path = router.currentRoute.value.path;
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
-    return;
+  } else if (path.endsWith('/credits')) {
+    activeTab.value = 'credits';
+  } else if (path.endsWith('/users')) {
+    activeTab.value = 'users';
+  } else {
+    activeTab.value = 'datasets';
   }
-  if (path.endsWith('/credits')) activeTab.value = 'credits';
-  else if (path.endsWith('/users')) activeTab.value = 'users';
-  else activeTab.value = 'datasets';
 });
 </script>
 
