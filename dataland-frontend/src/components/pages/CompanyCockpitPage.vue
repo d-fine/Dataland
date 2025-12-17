@@ -145,6 +145,8 @@ watch(
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
+  console.log("ISADMINORMEMBER from watch", isCompanyMemberOrAdmin.value)
+  console.log("rightsLoaded from watch", rightsLoaded.value)
   try {
     if (val === 'users') {
       await router.replace({ path: `${base}/users` });
@@ -162,6 +164,8 @@ onMounted(async () => {
   await setUserRights(false);
   await nextTick();
   await nextTick();
+  console.log("ISADMINORMEMBER from onMounted", isCompanyMemberOrAdmin.value)
+  console.log("rightsLoaded from onMounted", rightsLoaded.value)
   const path = router.currentRoute.value.path;
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
