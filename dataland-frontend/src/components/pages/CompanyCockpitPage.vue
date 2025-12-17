@@ -3,7 +3,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList
-        v-if="isCompanyMemberOrAdmin && rolesLoaded"
+        v-if="isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -88,7 +88,6 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
-const rolesLoaded = ref(false);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
@@ -132,7 +131,6 @@ async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isUserCompanyMember.value = userRole.value !== null;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
-  rolesLoaded.value = true;
 }
 
 watch(
@@ -145,28 +143,21 @@ watch(
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
-  const currentPath = router.currentRoute.value.path;
-
-  let targetPath = base;
-  if (val === 'users') {
-    targetPath = `${base}/users`;
-  } else if (val === 'credits') {
-    targetPath = `${base}/credits`;
-  } else if (val === 'datasets') {
-    targetPath = `${base}/datasets`;
-  }
-
-  if (currentPath !== targetPath) {
-    try {
-      await router.replace({ path: targetPath });
-    } catch (err) {
-      console.error('Navigation failed', err);
+  try {
+    if (val === 'users') {
+      await router.replace({ path: `${base}/users` });
+    } else if (val === 'credits') {
+      await router.replace({ path: `${base}/credits` });
+    } else {
+      await router.replace({ path: base });
     }
+  } catch (err) {
+    console.error('Navigation failed', err);
   }
 });
 
 onMounted(async () => {
-  await setUserRights(true);
+  await setUserRights(false);
   const path = router.currentRoute.value.path;
 
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
