@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import { promises, rmdir } from 'fs';
+import { promises } from 'fs';
 import { createHash } from 'crypto';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
@@ -96,16 +96,13 @@ export default defineConfig({
         },
       });
       on('task', {
-        deleteFolder(folderName) {
-          return new Promise((resolve, reject) => {
-            rmdir(folderName, { recursive: true }, (err) => {
-              if (err) {
-                console.error(err);
-                return reject(err);
-              }
-              resolve(null);
-            });
-          });
+        async deleteFolder(folderName: string) {
+          try {
+            await promises.rm(folderName, { recursive: true, force: true });
+          } catch (err) {
+            console.error(`deleteFolder error for ${folderName}:`, err);
+          }
+          return null;
         },
       });
 
@@ -154,6 +151,16 @@ export default defineConfig({
             throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
           }
           return join(folder, match);
+        },
+      });
+      on('task', {
+        async fileExists(path: string) {
+          try {
+            await promises.access(path);
+            return true;
+          } catch {
+            return false;
+          }
         },
       });
       on('task', {

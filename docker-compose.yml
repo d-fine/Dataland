@@ -301,7 +301,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.11.1@sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544
+    image: node:24.12.0@sha256:20988bcdc6dc76690023eb2505dd273bdeefddcd0bde4bfd1efe4ebf8707f747
     networks:
       internal:
         aliases:
@@ -724,7 +724,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:db3b1082629f4b3a15390436f64ed4de1676b2e593d8282a50f40e92e20e6a9d
+    image: postgres:alpine@sha256:eca6fb2d91fda290eb8cfb8ba53dd0dcbf3508a08011e30adb039ea7c8e1e9f2
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -785,6 +785,11 @@ services:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    healthcheck:
+      test: ["CMD", "/usr/bin/loki", "-config.file=/etc/loki/loki-config.yaml", "-verify-config"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:
