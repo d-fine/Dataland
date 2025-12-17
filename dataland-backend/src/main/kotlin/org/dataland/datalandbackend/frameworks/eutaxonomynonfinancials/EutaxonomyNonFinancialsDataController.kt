@@ -32,7 +32,7 @@ class EutaxonomyNonFinancialsDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<EutaxonomyNonFinancialsData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<EutaxonomyNonFinancialsData>(
             datasetStorageService,

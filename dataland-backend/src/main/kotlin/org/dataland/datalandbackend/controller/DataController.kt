@@ -261,7 +261,10 @@ open class DataController<T>(
             .ok(ExportJob(id = correlationId, userId = UUID.randomUUID()))
     }
 
-    override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> = TODO()
+    override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> {
+        val exportJobProgressState = dataExportService.getExportJobState(UUID.fromString(exportJobId))
+        return ResponseEntity.ok(exportJobProgressState)
+    }
 
     override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> = TODO()
 

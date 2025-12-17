@@ -32,7 +32,7 @@ class PcafDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<PcafData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<PcafData>(
             datasetStorageService,
