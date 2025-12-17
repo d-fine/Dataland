@@ -1,9 +1,9 @@
 <template>
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <Tabs v-if="rightsLoaded" v-model:value="activeTab">
+    <Tabs v-if="rightsLoaded && isCompanyMemberOrAdmin !== null" v-model:value="activeTab">
       <TabList
-        v-if="isCompanyMemberOrAdmin"
+          v-if="rightsLoaded && isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -11,16 +11,16 @@
         }"
       >
         <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
-        <Tab v-if="isCompanyMemberOrAdmin" value="users" data-test="usersTab">Users</Tab>
-        <Tab v-if="isCompanyMemberOrAdmin" value="credits" data-test="creditsTab">Credits</Tab>
+        <Tab value="users" data-test="usersTab">Users</Tab>
+        <Tab value="credits" data-test="creditsTab">Credits</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
 
-        <TabPanel value="users">
-          <div v-if="isCompanyMemberOrAdmin" class="tab-layout">
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="users">
+          <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
               :key="`${String(role)}-${refreshAllCards}`"
@@ -31,8 +31,8 @@
             />
           </div>
         </TabPanel>
-        <TabPanel value="credits">
-          <div v-if="isCompanyMemberOrAdmin" class="tab-layout">
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="credits">
+          <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
         </TabPanel>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject } from 'vue';
+import { ref, reactive, watch, onMounted, inject, nextTick } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -81,7 +81,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const router = useRouter();
 
 const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
-const isCompanyMemberOrAdmin = ref(false);
+const isCompanyMemberOrAdmin = ref<boolean | null>(null);
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
@@ -143,22 +143,35 @@ watch(
   }
 );
 
-watch(
-    () => router.currentRoute.value.path,
-    (path) => {
-      if (path.endsWith('/users')) activeTab.value = 'users';
-      else if (path.endsWith('/credits')) activeTab.value = 'credits';
-      else activeTab.value = 'datasets';
-    },
-    { immediate: true }
-);
+watch(activeTab, async (val) => {
+  const base = `/companies/${props.companyId}`;
+  try {
+    if (val === 'users') {
+      await router.replace({ path: `${base}/users` });
+    } else if (val === 'credits') {
+      await router.replace({ path: `${base}/credits` });
+    } else {
+      await router.replace({ path: base });
+    }
+  } catch (err) {
+    console.error('Navigation failed', err);
+  }
+});
 
 onMounted(async () => {
   await setUserRights(false);
-
+  await nextTick();
+  await nextTick();
   const path = router.currentRoute.value.path;
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
+    activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
+  } else if (path.endsWith('/credits')) {
+    activeTab.value = 'credits';
+  } else if (path.endsWith('/users')) {
+    activeTab.value = 'users';
+  } else {
+    activeTab.value = 'datasets';
   }
 });
 </script>
