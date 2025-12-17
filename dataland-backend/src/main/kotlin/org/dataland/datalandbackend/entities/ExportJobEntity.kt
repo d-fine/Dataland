@@ -8,9 +8,8 @@ import java.util.UUID
  * Only to be stored in memory.
  */
 class ExportJobEntity(
-    val id: UUID = UUID.randomUUID(),
-    val userId: UUID,
-    val fileToExport: InputStreamResource?,
-    val progressState: ExportJobProgressState,
+    val id: UUID,
+    var fileToExport: InputStreamResource?,
+    var progressState: ExportJobProgressState = ExportJobProgressState.Pending,
     var creationTime: Long,
 )
