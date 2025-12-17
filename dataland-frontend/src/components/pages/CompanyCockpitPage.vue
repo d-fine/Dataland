@@ -3,7 +3,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-if="rightsLoaded && isCompanyMemberOrAdmin !== null" v-model:value="activeTab">
       <TabList
-          v-if="rightsLoaded && isCompanyMemberOrAdmin"
+        v-if="rightsLoaded && isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
