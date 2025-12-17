@@ -32,11 +32,21 @@
     <tr>
         <@linkWithIcon url="${baseUrl}/documents/swagger-ui/index.html" linkText="DOCUMENTS"/>
         <td></td>
+    </tr>
+    <@spacerRowSmall/>
+    <tr>
+        <@linkWithIcon url="${baseUrl}/community/swagger-ui/index.html" linkText="COMMUNITY"/>
         <td></td>
     </tr>
     <@spacerRowSmall/>
     <tr>
-        <@linkWithIcon url="${baseUrl}/community/swagger-ui/index.html" linkText="REQUESTS"/>
+        <@linkWithIcon url="${baseUrl}/qa/swagger-ui/index.html" linkText="QUALITY ASSURANCE"/>
+        <td></td>
+        <td></td>
+    </tr>
+    <@spacerRowSmall/>
+    <tr>
+        <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
         <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
         <td></td>
     </tr>

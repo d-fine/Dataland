@@ -93,7 +93,7 @@
         </#if>
         <!-- NON SOURCEABLE DATA -->
         <#if nonSourceableData?? && (nonSourceableData?size > 0)>
-            <@boldTitle title="Non sourceable Data" />
+            <@boldTitle title="Non-sourceable Data" />
             <@spacerRow/>
             <tr> <td colspan="3"> <@renderPortfolioMonitoringSummaryTable data=nonSourceableData /> </td> </tr>
             <@spacerRow/>
