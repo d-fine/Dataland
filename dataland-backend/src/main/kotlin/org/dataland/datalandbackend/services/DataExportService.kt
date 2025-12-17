@@ -242,6 +242,15 @@ class DataExportService<T>
         }
 
         /**
+         * Filters exportJob associated to user by id and returns state
+         */
+        fun getExportJobState(exportJobId: UUID): ExportJobProgressState =
+            exportJobStorage[DatalandAuthentication.fromContext().userId]
+                ?.firstOrNull { it.id == exportJobId }
+                ?.progressState
+                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
+
+        /**
          * Create a ByteStream to be used for CSV export from a list of JSON objects.
          * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework

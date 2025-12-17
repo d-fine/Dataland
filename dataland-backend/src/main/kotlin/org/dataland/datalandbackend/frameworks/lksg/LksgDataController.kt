@@ -32,7 +32,7 @@ class LksgDataController
     constructor(
         datasetStorageService: DataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<LksgData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<LksgData>(
             datasetStorageService,

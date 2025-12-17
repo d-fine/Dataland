@@ -32,7 +32,7 @@ class NuclearAndGasDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<NuclearAndGasData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<NuclearAndGasData>(
             datasetStorageService,

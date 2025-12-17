@@ -32,7 +32,7 @@ class SfdrDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<SfdrData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<SfdrData>(
             datasetStorageService,

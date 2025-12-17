@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap
 class DataControllerProviderService
     @Autowired
     constructor(
-        private val dataExportService: DataExportService,
+        private val dataExportService: DataExportService<Any>,
         private val storedDataManager: DataManager,
         private val assembledDataManager: AssembledDataManager,
         private val metaDataManager: DataMetaInformationManager,
