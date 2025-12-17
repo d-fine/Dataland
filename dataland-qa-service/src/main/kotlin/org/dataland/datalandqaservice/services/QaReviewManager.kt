@@ -64,17 +64,12 @@ class QaReviewManager(
         val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
         val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
-        val qaReviewEntity =
-            saveQaReviewEntity(
-                dataId = dataId,
-                qaStatus = qaStatus,
-                triggeringUserId = triggeringUserId,
-                comment = comment,
-                correlationId = correlationId,
-            )
-
-        this.sendQaStatusUpdateMessage(
-            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
+        handleQaChange(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            triggeringUserId = triggeringUserId,
+            comment = comment,
+            correlationId = correlationId,
         )
     }
 
@@ -176,20 +171,20 @@ class QaReviewManager(
     }
 
     /**
-     * Saves QaReviewEntity to database
+     * Handles Qa changes by creating and saving QaReviewEntity, and sending messages.
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId the ID for the process triggering the change
      */
     @Transactional
-    fun saveQaReviewEntity(
+    fun handleQaChange(
         dataId: String,
         qaStatus: QaStatus,
         triggeringUserId: String,
         comment: String?,
         correlationId: String,
-    ): QaReviewEntity {
+    ) {
         val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
@@ -207,7 +202,9 @@ class QaReviewManager(
                 triggeringUserId = triggeringUserId,
                 comment = comment,
             )
-        return qaReviewRepository.save(qaReviewEntity)
+        this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
+
+        qaReviewRepository.save(qaReviewEntity)
     }
 
     /**

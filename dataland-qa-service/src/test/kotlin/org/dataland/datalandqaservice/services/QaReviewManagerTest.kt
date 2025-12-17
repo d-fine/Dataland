@@ -96,7 +96,7 @@ class QaReviewManagerTest {
         spyQaReviewManager = spy(qaReviewManager)
         doReturn(mockQaReviewEntity)
             .whenever(spyQaReviewManager)
-            .saveQaReviewEntity(any(), any(), any(), anyOrNull(), any())
+            .handleQaChange(any(), any(), any(), anyOrNull(), any())
         doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
     }
 
@@ -111,7 +111,7 @@ class QaReviewManagerTest {
                 correlationId = correlationId,
             )
         }
-        verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
+        verify(spyQaReviewManager, times(1)).handleQaChange(
             dataId = dataId,
             qaStatus = QaStatus.Accepted,
             triggeringUserId = uploaderId,
@@ -131,7 +131,7 @@ class QaReviewManagerTest {
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(dataId, bypassQa = false, correlationId = correlationId)
         }
-        verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
+        verify(spyQaReviewManager, times(1)).handleQaChange(
             dataId = dataId,
             qaStatus = QaStatus.Pending,
             triggeringUserId = uploaderId,
@@ -147,7 +147,7 @@ class QaReviewManagerTest {
     @Test
     fun `check that saving QaReviewEntity works as expected`() {
         assertDoesNotThrow {
-            qaReviewManager.saveQaReviewEntity(
+            qaReviewManager.handleQaChange(
                 dataId = dataId,
                 qaStatus = QaStatus.Pending,
                 triggeringUserId = uploaderId,
