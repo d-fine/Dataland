@@ -1,13 +1,16 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import PortfolioOverview from '@/components/pages/PortfolioOverview.vue';
-import { type BasePortfolio, type BasePortfolioName } from '@clients/userservice';
+import { type BasePortfolio, type BasePortfolioName, type EnrichedPortfolio } from '@clients/userservice';
 
-describe('Check the portfolio overview view', function (): void {
+describe('Check the portfolio overview view', () => {
   let basePortfolioNames: BasePortfolioName[];
+  let enrichedPortfolioResponse: EnrichedPortfolio;
+  const inheritedRolesResponse = {};
 
-  before(function () {
-    cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
+  before(() => {
+    cy.fixture('enrichedPortfolio.json').then((jsonContent) => {
       const portfolioFixture = jsonContent as BasePortfolio;
+      enrichedPortfolioResponse = jsonContent as EnrichedPortfolio;
       basePortfolioNames = [
         {
           portfolioId: portfolioFixture.portfolioId,
@@ -17,40 +20,39 @@ describe('Check the portfolio overview view', function (): void {
     });
   });
 
-  it('Should display portfolio information correctly', function (): void {
-    cy.intercept('**/users/portfolios/names', basePortfolioNames).as('basePortfolios');
+  it('Should display portfolio information correctly', () => {
+    cy.intercept('GET', '**/users/portfolios/names', basePortfolioNames).as('basePortfolios');
+    cy.intercept('GET', '**/users/portfolios/*/enriched-portfolio', enrichedPortfolioResponse).as('enrichedPortfolio');
+    cy.intercept('GET', '**/community/inherited-roles/**', inheritedRolesResponse).as('inheritedRoles');
 
     // @ts-ignore
     cy.mountWithPlugins(PortfolioOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then(() => {
-      cy.wait('@basePortfolios').then(() => {
-        expect(basePortfolioNames).to.have.length.greaterThan(0);
-        cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
-        cy.get('[data-test="portfolios"] [data-p-active="true"]').should(
-          'contain',
-          basePortfolioNames[0]!.portfolioName
-        );
-      });
     });
+
+    cy.wait(['@basePortfolios', '@enrichedPortfolio', '@inheritedRoles']);
+
+    expect(basePortfolioNames).to.have.length.greaterThan(0);
+    cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
+    cy.get('[data-test="portfolios"] [data-p-active="true"]').should('contain', basePortfolioNames[0]!.portfolioName);
   });
 
-  it('Should handle empty portfolio list', function (): void {
-    cy.intercept('**/users/portfolios/names', []).as('basePortfolios');
+  it('Should handle empty portfolio list', () => {
+    cy.intercept('GET', '**/users/portfolios/names', []).as('basePortfolios');
 
     // @ts-ignore
     cy.mountWithPlugins(PortfolioOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then(() => {
-      cy.wait('@basePortfolios').then(() => {
-        cy.get('[data-pc-name="tablist-tab-list"]').should('have.length', 0);
-        cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
-      });
     });
+
+    cy.wait('@basePortfolios');
+
+    cy.get('[data-pc-name="tablist-tab-list"]').should('have.length', 0);
+    cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
   });
 
-  it('Should handle API error gracefully', function (): void {
-    cy.intercept('**/users/portfolios/names', {
+  it('Should handle API error gracefully', () => {
+    cy.intercept('GET', '**/users/portfolios/names', {
       statusCode: 500,
       body: { message: 'Internal server error' },
     }).as('basePortfolios');
@@ -58,10 +60,10 @@ describe('Check the portfolio overview view', function (): void {
     // @ts-ignore
     cy.mountWithPlugins(PortfolioOverview, {
       keycloak: minimalKeycloakMock({}),
-    }).then(() => {
-      cy.wait('@basePortfolios').then(() => {
-        cy.get('[data-test="portfolios"] ul').should('have.length', 0);
-      });
     });
+
+    cy.wait('@basePortfolios');
+
+    cy.get('[data-test="portfolios"] ul').should('have.length', 0);
   });
 });

@@ -7,7 +7,7 @@
     :closable="!claimIsSubmitted"
     footer="Footer"
     class="col-6"
-    v-model:visible="dialogIsVisible"
+    v-model:visible="internalVisible"
   >
     <template #header>
       <h2 v-if="!claimIsSubmitted" class="m-0">Claim ownership for your company.</h2>
@@ -68,7 +68,7 @@ export default defineComponent({
   data() {
     return {
       claimOwnershipMessage: '',
-      dialogIsVisible: false,
+      internalVisible: false,
     };
   },
   props: {
@@ -91,7 +91,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['claimSubmitted', 'closeDialog'],
+  emits: ['claim-submitted', 'close-dialog'],
   methods: {
     /**
      * Makes the API request in order to post the request for company ownership
@@ -99,29 +99,37 @@ export default defineComponent({
     async submitInput(): Promise<void> {
       const companyRolesControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
         .companyRolesController;
+
       try {
         const axiosResponse = await companyRolesControllerApi.postCompanyOwnershipRequest(
           this.companyId,
           this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined
         );
         if (axiosResponse.status == 200) {
-          this.$emit('claimSubmitted');
+          this.$emit('claim-submitted');
         }
       } catch (error) {
-        console.error(error);
+        console.error('Error posting ownership request', error);
       }
     },
     /**
      * closes the dialog window and emits this event
      */
     closeDialog(): void {
-      this.dialogIsVisible = false;
-      this.$emit('closeDialog');
+      this.internalVisible = false;
     },
   },
   watch: {
-    dialogIsOpen(newValue: boolean): void {
-      this.dialogIsVisible = newValue;
+    dialogIsOpen: {
+      immediate: true,
+      handler(newValue: boolean): void {
+        this.internalVisible = newValue;
+      },
+    },
+    internalVisible(newValue: boolean): void {
+      if (!newValue && this.dialogIsOpen) {
+        this.$emit('close-dialog');
+      }
     },
   },
 });
