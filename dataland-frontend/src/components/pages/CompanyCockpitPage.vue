@@ -1,10 +1,7 @@
 <template>
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <Tabs
-        v-if="rightsLoaded"
-        v-model:value="activeTab"
-    >
+    <Tabs v-if="rightsLoaded" v-model:value="activeTab">
       <TabList
         v-if="isCompanyMemberOrAdmin"
         :pt="{
@@ -46,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, watch, onMounted, inject, nextTick} from 'vue';
+import { ref, reactive, watch, onMounted, inject, nextTick } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
