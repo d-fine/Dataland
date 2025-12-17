@@ -107,7 +107,7 @@ const routes = [
     name: 'Company Cockpit',
     component: CompanyCockpitPage,
     meta: {
-      requiresAuthentication: true,
+      requiresAuthentication: false,
       useLandingPageHeader: false,
     },
   },
