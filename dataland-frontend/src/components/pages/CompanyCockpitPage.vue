@@ -1,9 +1,9 @@
 <template>
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <Tabs v-if="rightsLoaded && isCompanyMemberOrAdmin !== null" v-model:value="activeTab">
+    <Tabs v-if="rightsLoaded" v-model:value="activeTab">
       <TabList
-        v-if="rightsLoaded && isCompanyMemberOrAdmin"
+        v-if="isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -19,7 +19,7 @@
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
 
-        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="users">
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
@@ -31,19 +31,19 @@
             />
           </div>
         </TabPanel>
-        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="credits">
+        <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
           <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
         </TabPanel>
       </TabPanels>
     </Tabs>
+
     <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
   </TheContent>
 </template>
-
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject, nextTick } from 'vue';
+import { ref, reactive, watch, onMounted, inject } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -117,20 +117,22 @@ async function handleUsersChanged(): Promise<void> {
  */
 async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
-  if (refreshUserRole) {
+  let assignment: CompanyRoleAssignmentExtended | undefined;
+  if (refreshUserRole || !companyRoleAssignmentsRef.value || companyRoleAssignmentsRef.value.length === 0) {
     const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
-    const assignment = assignments.find((a) => a.companyId === props.companyId);
-    userRole.value = assignment ? assignment.companyRole : null;
+    assignment = assignments.find((a) => a.companyId === props.companyId);
   } else {
-    userRole.value =
-      companyRoleAssignmentsRef.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ||
-      null;
+    assignment = companyRoleAssignmentsRef.value.find((a) => a.companyId === props.companyId);
   }
+
+  userRole.value = assignment?.companyRole ?? null;
+  isUserCompanyMember.value = userRole.value !== null;
   isUserCompanyOwnerOrUploader.value =
     userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
+
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserCompanyMember.value = userRole.value !== null;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
   rightsLoaded.value = true;
 }
@@ -145,8 +147,8 @@ watch(
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
-  console.log("ISADMINORMEMBER from watch", isCompanyMemberOrAdmin.value)
-  console.log("rightsLoaded from watch", rightsLoaded.value)
+  console.log('ISADMINORMEMBER from watch', isCompanyMemberOrAdmin.value);
+  console.log('rightsLoaded from watch', rightsLoaded.value);
   try {
     if (val === 'users') {
       await router.replace({ path: `${base}/users` });
@@ -162,10 +164,8 @@ watch(activeTab, async (val) => {
 
 onMounted(async () => {
   await setUserRights(false);
-  await nextTick();
-  await nextTick();
-  console.log("ISADMINORMEMBER from onMounted", isCompanyMemberOrAdmin.value)
-  console.log("rightsLoaded from onMounted", rightsLoaded.value)
+  console.log('ISADMINORMEMBER from onMounted', isCompanyMemberOrAdmin.value);
+  console.log('rightsLoaded from onMounted', rightsLoaded.value);
   const path = router.currentRoute.value.path;
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
