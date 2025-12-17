@@ -3,7 +3,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList
-        v-if="isCompanyMemberOrAdmin"
+        v-if="isCompanyMemberOrAdmin && rolesLoaded"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -88,6 +88,7 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
+const rolesLoaded = ref(false);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
@@ -131,6 +132,7 @@ async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isUserCompanyMember.value = userRole.value !== null;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
+  rolesLoaded.value = true;
 }
 
 watch(
