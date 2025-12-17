@@ -3,7 +3,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList
-        v-if="isUserRightsLoaded && isCompanyMemberOrAdmin"
+        v-show="isCompanyMemberOrAdmin"
         :pt="{
           tabList: {
             style: 'display: flex; justify-content: center;',
@@ -19,7 +19,7 @@
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
 
-        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+        <TabPanel v-show="isCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
@@ -31,7 +31,7 @@
             />
           </div>
         </TabPanel>
-        <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
+        <TabPanel v-show="isCompanyMemberOrAdmin" value="credits">
           <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
@@ -88,7 +88,6 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
-const isUserRightsLoaded = ref(false);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
@@ -132,7 +131,6 @@ async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isUserCompanyMember.value = userRole.value !== null;
   isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
-  isUserRightsLoaded.value = true;
 }
 
 watch(
@@ -161,17 +159,14 @@ watch(activeTab, async (val) => {
 onMounted(async () => {
   await setUserRights(false);
   const path = router.currentRoute.value.path;
-
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
-  } else if (path.endsWith('/credits')) {
-    activeTab.value = 'credits';
-  } else if (path.endsWith('/users')) {
-    activeTab.value = 'users';
-  } else {
-    activeTab.value = 'datasets';
+    return;
   }
+  if (path.endsWith('/credits')) activeTab.value = 'credits';
+  else if (path.endsWith('/users')) activeTab.value = 'users';
+  else activeTab.value = 'datasets';
 });
 </script>
 
