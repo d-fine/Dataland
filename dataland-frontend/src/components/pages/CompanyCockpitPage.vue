@@ -166,7 +166,7 @@ watch(activeTab, async (val) => {
 });
 
 onMounted(async () => {
-  await setUserRights(false);
+  await setUserRights(true);
   const path = router.currentRoute.value.path;
 
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
