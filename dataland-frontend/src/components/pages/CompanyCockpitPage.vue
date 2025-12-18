@@ -32,7 +32,7 @@
         </TabPanel>
         <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="credits">
           <div class="tab-layout">
-            <CreditsCard :companyId="companyId" />
+            <CreditsCard :companyId="companyId" :isUserDatalandAdmin="isUserDatalandAdmin" />
           </div>
         </TabPanel>
       </TabPanels>
