@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.api.PortfolioSharingApi
 import org.dataland.datalanduserservice.model.BasePortfolio
@@ -131,7 +132,14 @@ class PortfolioController
             portfolioId: String,
             portfolioSharingPatch: PortfolioSharingPatch,
         ): ResponseEntity<BasePortfolio> {
-            TODO("Not yet implemented")
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(
+                portfolioSharingService.patchSharing(
+                    ValidationUtils.convertToUUID(portfolioId),
+                    BasePortfolio(portfolioSharingPatch),
+                    correlationId,
+                ),
+            )
         }
 
         override fun deleteCurrentUserFromSharing(portfolioId: String) {

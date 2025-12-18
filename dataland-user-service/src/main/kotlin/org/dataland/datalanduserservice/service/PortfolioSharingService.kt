@@ -1,5 +1,6 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 /**
  * Service to manage Sharing-related business logic
@@ -42,4 +44,40 @@ class PortfolioSharingService
                 .map {
                     BasePortfolioName(it.portfolioId, it.portfolioName)
                 }
+
+        /**
+         * Patch sharing settings for a portfolio.
+         * @param portfolioId the ID of the portfolio to update
+         * @param portfolio the BasePortfolio object containing the updated sharing settings
+         * @param correlationId a unique identifier for tracking the request
+         * @return the updated BasePortfolio object
+         * @throws PortfolioNotFoundApiException if the portfolio with the given ID does not exist
+         */
+        @Transactional
+        fun patchSharing(
+            portfolioId: UUID,
+            portfolio: BasePortfolio,
+            correlationId: String,
+        ): BasePortfolio {
+            logger.info(
+                "Patching sharing settings for portfolio with portfolioId: $portfolioId by user with userId: $portfolio.userId." +
+                    " CorrelationId: $correlationId.",
+            )
+
+            val originalPortfolio =
+                portfolioRepository
+                    .getPortfolioByPortfolioId(portfolioId)
+                    ?.toBasePortfolio()
+                    ?: throw PortfolioNotFoundApiException(portfolioId.toString())
+
+            val updatedPortfolioEntity =
+                originalPortfolio.toPortfolioEntity(
+                    portfolioId = portfolioId.toString(),
+                    creationTimestamp = originalPortfolio.creationTimestamp,
+                    lastUpdateTimestamp = portfolio.lastUpdateTimestamp,
+                    sharedUserIds = portfolio.sharedUserIds,
+                )
+
+            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
+        }
     }

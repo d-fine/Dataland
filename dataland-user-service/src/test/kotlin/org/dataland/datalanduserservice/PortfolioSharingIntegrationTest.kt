@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice
 
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.datalanduserservice.service.PortfolioSharingService
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -141,5 +143,62 @@ class PortfolioSharingIntegrationTest
             val names = result.map { it.portfolioName }
             assertTrue(entity1.portfolioName in names)
             assertTrue(entity2.portfolioName in names)
+        }
+
+        @Test
+        fun `patchSharing updates sharedUserIds correctly`() {
+            setAuthenticationContext(dummyOwnerUserId)
+            val entity = createPortfolioEntity(setOf(dummySharedUserId))
+            val saved = portfolioRepository.save(entity)
+            val updatedSharedUserIds = setOf(dummySharedUserId, dummySharedOtherUserId)
+            val newTimestamp = Instant.now().toEpochMilli()
+            val updatedPortfolio =
+                saved.toBasePortfolio().copy(
+                    sharedUserIds = updatedSharedUserIds,
+                    lastUpdateTimestamp = newTimestamp,
+                )
+            val result =
+                portfolioSharingService.patchSharing(
+                    saved.portfolioId,
+                    updatedPortfolio,
+                    correlationId = "corr-1",
+                )
+            assertEquals(updatedSharedUserIds, result.sharedUserIds)
+            assertEquals(saved.portfolioId.toString(), result.portfolioId)
+            assertEquals(saved.creationTimestamp, result.creationTimestamp)
+            assertEquals(newTimestamp, result.lastUpdateTimestamp)
+            val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
+            assertEquals(updatedSharedUserIds, reloaded?.sharedUserIds)
+        }
+
+        @Test
+        fun `patchSharing clears sharedUserIds when given empty set`() {
+            setAuthenticationContext(dummyOwnerUserId)
+            val entity = createPortfolioEntity(setOf(dummySharedUserId))
+            val saved = portfolioRepository.save(entity)
+            val updatedPortfolio =
+                saved.toBasePortfolio().copy(
+                    sharedUserIds = emptySet(),
+                    lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                )
+            val result =
+                portfolioSharingService.patchSharing(
+                    saved.portfolioId,
+                    updatedPortfolio,
+                    correlationId = "corr-2",
+                )
+            assertTrue(result.sharedUserIds.isEmpty())
+        }
+
+        @Test
+        fun `patchSharing throws PortfolioNotFoundApiException for non-existent portfolio`() {
+            setAuthenticationContext(dummyOwnerUserId)
+            val nonExistentId = UUID.randomUUID()
+            val dummyPortfolio = createPortfolioEntity(emptySet())
+            val exception =
+                assertThrows<PortfolioNotFoundApiException> {
+                    portfolioSharingService.patchSharing(nonExistentId, dummyPortfolio.toBasePortfolio(), correlationId = "corr-3")
+                }
+            assertTrue(exception.message.contains(nonExistentId.toString()))
         }
     }
