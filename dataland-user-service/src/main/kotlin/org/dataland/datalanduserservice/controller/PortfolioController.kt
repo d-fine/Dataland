@@ -138,7 +138,6 @@ class PortfolioController
             TODO("Not yet implemented")
         }
 
-        override fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> {
-            TODO("Not yet implemented")
-        }
+        override fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
+            ResponseEntity.ok(portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser())
     }
