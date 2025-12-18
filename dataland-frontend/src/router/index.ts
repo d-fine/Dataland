@@ -150,16 +150,7 @@ const routes = [
   {
     path: `/companies/:companyId/users`,
     props: true,
-    name: 'CompanyCockpitPageUsers',
-    component: CompanyCockpitPage,
-    meta: {
-      requiresAuthentication: true,
-    },
-  },
-  {
-    path: `/companies/:companyId/credits`,
-    props: true,
-    name: 'CompanyCockpitPageCredits',
+    name: 'CompanyCockpitPage',
     component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: true,
