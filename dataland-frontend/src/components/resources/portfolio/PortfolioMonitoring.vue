@@ -6,6 +6,19 @@
       data-test="activateMonitoringToggle"
       @update:modelValue="onMonitoringToggled"
     />
+    <div class="dataland-info-text small">Get reports from the last 6 months and all future reports.</div>
+
+    <p class="header-styling">Extend Monitoring</p>
+    <div>
+      <div class="framework-toggle-label">
+        <ToggleSwitch
+          v-model="timeWindowThreshold"
+          data-test="timeWindowThresholdToggle"
+          :disabled="!isMonitoringActive"
+        />
+      </div>
+      <div class="dataland-info-text small">Get reports from up to the last 16 months and all future reports.</div>
+    </div>
 
     <p class="header-styling">Frameworks</p>
     <div>
@@ -27,22 +40,7 @@
         </div>
       </div>
       <div class="dataland-info-text small">
-        EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas.
-      </div>
-    </div>
-
-    <p class="header-styling">Data Coverage</p>
-    <div>
-      <div class="framework-toggle-label">
-        <ToggleSwitch
-          v-model="timeWindowThreshold"
-          data-test="timeWindowThresholdToggle"
-          :disabled="!isMonitoringActive"
-        />
-        <span> Request latest available data </span>
-      </div>
-      <div class="dataland-info-text small">
-        Ensures data is initially obtained even when the latest reporting period ended more than six months ago.
+        Select frameworks: SFDR and EU Taxonomy (Financials, Non-Financials, Nuclear & Gas).
       </div>
     </div>
     <Message v-if="showFrameworksError" severity="error" variant="simple" size="small" data-test="frameworkError">
