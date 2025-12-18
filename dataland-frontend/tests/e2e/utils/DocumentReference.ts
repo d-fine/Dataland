@@ -3,7 +3,7 @@ import { computeFakeFixtureDocumentIds } from '@e2e/support/node/fixtureDocument
 
 const possibleDocuments = ['Certification', 'Policy'];
 
-let cachedIds: string[] | null = null;
+let documentIds: string[] | null = null;
 
 /**
  * Returns the SHA-256 IDs of all fake PDF document fixtures used in E2E tests.
@@ -15,7 +15,7 @@ let cachedIds: string[] | null = null;
  * Results are cached after the first call.
  */
 export function getAllFakeFixtureDocumentIds(): string[] {
-  if (cachedIds) return cachedIds;
+  if (documentIds) return documentIds;
 
   if (globalThis.window !== undefined) {
     const ids = (Cypress.env('fakeFixtureDocumentIds') as string[]) ?? [];
@@ -24,12 +24,12 @@ export function getAllFakeFixtureDocumentIds(): string[] {
         'fakeFixtureDocumentIds missing. Ensure cypress.config.ts sets config.env.fakeFixtureDocumentIds in setupNodeEvents().'
       );
     }
-    cachedIds = ids;
+    documentIds = ids;
     return ids;
   }
 
-  cachedIds = computeFakeFixtureDocumentIds(process.cwd());
-  return cachedIds;
+  documentIds = computeFakeFixtureDocumentIds(process.cwd());
+  return documentIds;
 }
 
 /**
