@@ -4,6 +4,8 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 private data class FiscalYearEndTestBean(
     @field:ValidFiscalYearEnd
@@ -13,31 +15,29 @@ private data class FiscalYearEndTestBean(
 class FiscalYearEndValidatorTest {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
-    @Test
-    fun `valid fiscal year end values should pass validation`() {
-        val validValues =
-            listOf(
-                "01-Jan",
-                "31-Jan",
-                "28-Feb",
-                "01-Mar",
-                "31-Mar",
-                "30-Apr",
-                "30-Jun",
-                "30-Sep",
-                "31-Oct",
-                "31-Dec",
-                "10-Aug",
-            )
-
-        validValues.forEach { value ->
-            val violations = validator.validate(FiscalYearEndTestBean(value))
-            assertEquals(
-                0,
-                violations.size,
-                "Expected no violations for valid value: $value",
-            )
-        }
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "01-Jan",
+            "31-Jan",
+            "28-Feb",
+            "01-Mar",
+            "31-Mar",
+            "30-Apr",
+            "30-Jun",
+            "30-Sep",
+            "31-Oct",
+            "31-Dec",
+            "10-Aug",
+        ],
+    )
+    fun `valid fiscal year end values should pass validation`(validValue: String) {
+        val violations = validator.validate(FiscalYearEndTestBean(validValue))
+        assertEquals(
+            0,
+            violations.size,
+            "Expected no violations for valid value: $validValue",
+        )
     }
 
     @Test

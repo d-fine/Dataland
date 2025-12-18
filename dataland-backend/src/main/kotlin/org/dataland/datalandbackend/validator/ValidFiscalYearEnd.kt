@@ -15,8 +15,6 @@ import kotlin.reflect.KClass
     AnnotationTarget.VALUE_PARAMETER,
     AnnotationTarget.PROPERTY_GETTER,
 )
-@Retention(AnnotationRetention.RUNTIME)
-@MustBeDocumented
 @Constraint(validatedBy = [FiscalYearEndValidator::class])
 annotation class ValidFiscalYearEnd(
     val message: String = "must be in format dd-MMM (e.g. \"31-Mar\") and represent a valid calendar date; 29-Feb is not allowed",
