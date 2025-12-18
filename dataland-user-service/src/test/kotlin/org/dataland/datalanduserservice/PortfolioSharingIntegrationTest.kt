@@ -201,4 +201,48 @@ class PortfolioSharingIntegrationTest
                 }
             assertTrue(exception.message.contains(nonExistentId.toString()))
         }
+
+        @Test
+        fun `deleteCurrentUserFromSharing removes user from sharedUserIds`() {
+            setAuthenticationContext(dummySharedUserId)
+            val entity = createPortfolioEntity(setOf(dummySharedUserId, dummySharedOtherUserId))
+            val saved = portfolioRepository.save(entity)
+            portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-1")
+            val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
+            assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
+            assertEquals(saved.portfolioId, reloaded?.portfolioId)
+            assertEquals(saved.creationTimestamp, reloaded?.creationTimestamp)
+            assertEquals(saved.lastUpdateTimestamp, reloaded?.lastUpdateTimestamp)
+        }
+
+        @Test
+        fun `deleteCurrentUserFromSharing does nothing if user not in sharedUserIds`() {
+            setAuthenticationContext(dummySharedUserId)
+            val entity = createPortfolioEntity(setOf(dummySharedOtherUserId))
+            val saved = portfolioRepository.save(entity)
+            portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-2")
+            val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
+            assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
+        }
+
+        @Test
+        fun `deleteCurrentUserFromSharing throws PortfolioNotFoundApiException for non-existent portfolio`() {
+            setAuthenticationContext(dummySharedUserId)
+            val nonExistentId = UUID.randomUUID()
+            val exception =
+                assertThrows<PortfolioNotFoundApiException> {
+                    portfolioSharingService.deleteCurrentUserFromSharing(nonExistentId, correlationId = "corr-del-3")
+                }
+            assertTrue(exception.message.contains(nonExistentId.toString()))
+        }
+
+        @Test
+        fun `deleteCurrentUserFromSharing makes sharedUserIds empty if user was only one`() {
+            setAuthenticationContext(dummySharedUserId)
+            val entity = createPortfolioEntity(setOf(dummySharedUserId))
+            val saved = portfolioRepository.save(entity)
+            portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-4")
+            val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
+            assertTrue(reloaded?.sharedUserIds?.isEmpty() == true)
+        }
     }

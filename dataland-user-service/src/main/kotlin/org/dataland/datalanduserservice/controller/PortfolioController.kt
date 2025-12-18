@@ -27,7 +27,7 @@ import java.util.UUID
 /**
  * RestController for the Portfolio API
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @RestController
 class PortfolioController
     @Autowired
@@ -142,8 +142,15 @@ class PortfolioController
             )
         }
 
-        override fun deleteCurrentUserFromSharing(portfolioId: String) {
-            TODO("Not yet implemented")
+        override fun deleteCurrentUserFromSharing(portfolioId: String): ResponseEntity<Unit> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity(
+                portfolioSharingService.deleteCurrentUserFromSharing(
+                    ValidationUtils.convertToUUID(portfolioId),
+                    correlationId,
+                ),
+                HttpStatus.NO_CONTENT,
+            )
         }
 
         override fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =

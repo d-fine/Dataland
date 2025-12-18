@@ -105,7 +105,7 @@ interface PortfolioSharingApi {
             required = true,
         )
         @PathVariable("portfolioId") portfolioId: String,
-    )
+    ): ResponseEntity<Unit>
 
     /**
      * Get all shared portfolio names for currently logged-in user.

@@ -80,4 +80,43 @@ class PortfolioSharingService
 
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
+
+        /**
+         * Delete the current user from the sharing list of a portfolio.
+         * @param portfolioId the ID of the portfolio to update
+         * @param correlationId a unique identifier for tracking the request
+         * @throws PortfolioNotFoundApiException if the portfolio with the given ID does not exist
+         */
+        @Transactional
+        fun deleteCurrentUserFromSharing(
+            portfolioId: UUID,
+            correlationId: String,
+        ) {
+            val userId = DatalandAuthentication.fromContext().userId
+            logger.info(
+                "Removing user with userId: $userId from sharing of portfolio with portfolioId: $portfolioId." +
+                    " CorrelationId: $correlationId.",
+            )
+
+            val originalPortfolio =
+                portfolioRepository
+                    .getPortfolioByPortfolioId(portfolioId)
+                    ?.toBasePortfolio()
+                    ?: throw PortfolioNotFoundApiException(portfolioId.toString())
+
+            val updatedSharedUserIds =
+                originalPortfolio.sharedUserIds.toMutableSet().apply {
+                    remove(userId)
+                }
+
+            val updatedPortfolioEntity =
+                originalPortfolio.toPortfolioEntity(
+                    portfolioId = portfolioId.toString(),
+                    creationTimestamp = originalPortfolio.creationTimestamp,
+                    lastUpdateTimestamp = originalPortfolio.lastUpdateTimestamp, // should timestamp be updated or not?
+                    sharedUserIds = updatedSharedUserIds,
+                )
+
+            portfolioRepository.save(updatedPortfolioEntity)
+        }
     }
