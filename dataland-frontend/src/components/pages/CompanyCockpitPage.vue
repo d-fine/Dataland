@@ -37,7 +37,6 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
-
     <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
   </TheContent>
 </template>
@@ -166,8 +165,6 @@ watch(
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
-  console.log('ISADMINORMEMBER from watch', isCompanyMemberOrAdmin.value);
-  console.log('rightsLoaded from watch', rightsLoaded.value);
   try {
     if (val === 'users') {
       await router.replace({ path: `${base}/users` });
@@ -183,8 +180,6 @@ watch(activeTab, async (val) => {
 
 onMounted(async () => {
   await setUserRights(false);
-  console.log('ISADMINORMEMBER from onMounted', isCompanyMemberOrAdmin.value);
-  console.log('rightsLoaded from onMounted', rightsLoaded.value);
   const path = router.currentRoute.value.path;
   if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
