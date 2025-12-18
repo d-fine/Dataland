@@ -117,23 +117,43 @@ async function handleUsersChanged(): Promise<void> {
  */
 async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+
   let assignment: CompanyRoleAssignmentExtended | undefined;
-  if (refreshUserRole || !companyRoleAssignmentsRef.value || companyRoleAssignmentsRef.value.length === 0) {
-    const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
-    assignment = assignments.find((a) => a.companyId === props.companyId);
+
+  const keycloak = await getKeycloakPromise();
+  const isAuthenticated = !!keycloak?.token;
+
+  if (
+    isAuthenticated &&
+    (refreshUserRole || !companyRoleAssignmentsRef.value || companyRoleAssignmentsRef.value.length === 0)
+  ) {
+    try {
+      const assignments = await getCompanyRoleAssignmentsForCurrentUser(keycloak, apiClientProvider);
+      assignment = assignments.find((a) => a.companyId === props.companyId);
+    } catch (error) {
+      assignment = undefined;
+      console.error('Failed to retrieve company role assignments for current user', error);
+    }
   } else {
-    assignment = companyRoleAssignmentsRef.value.find((a) => a.companyId === props.companyId);
+    assignment = companyRoleAssignmentsRef.value?.find((a) => a.companyId === props.companyId);
   }
 
   userRole.value = assignment?.companyRole ?? null;
   isUserCompanyMember.value = userRole.value !== null;
+
   isUserCompanyOwnerOrUploader.value =
     userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
 
-  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+  isUserKeycloakUploader.value = isAuthenticated
+    ? await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    : false;
+
+  isUserDatalandAdmin.value = isAuthenticated
+    ? await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
+    : false;
 
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
+
   rightsLoaded.value = true;
 }
 
