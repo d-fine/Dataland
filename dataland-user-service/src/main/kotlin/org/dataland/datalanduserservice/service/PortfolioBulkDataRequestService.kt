@@ -37,8 +37,7 @@ class PortfolioBulkDataRequestService
          * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
-        // TODO adjust cron expression as needed
-        @Scheduled(cron = "0 */5 * * * *")
+        @Scheduled(cron = "0 0 2 * * *")
         fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
