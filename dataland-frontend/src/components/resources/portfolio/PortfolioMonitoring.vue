@@ -39,7 +39,7 @@
           </span>
         </div>
       </div>
-      <div class="dataland-info-text small">
+      <div class="dataland-info-text small" data-test="frameworkSelectionText">
         Select frameworks: SFDR and EU Taxonomy (Financials, Non-Financials, Nuclear & Gas).
       </div>
     </div>

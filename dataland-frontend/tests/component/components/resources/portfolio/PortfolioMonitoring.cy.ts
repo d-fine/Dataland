@@ -59,9 +59,9 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy').find('input[type="checkbox"]').click();
 
-    cy.get('.dataland-info-text').should(
+    cy.get('[data-test="frameworkSelectionText"]').should(
       'contain.text',
-      'EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas'
+      'Select frameworks: SFDR and EU Taxonomy (Financials, Non-Financials, Nuclear & Gas).'
     );
   });
 
