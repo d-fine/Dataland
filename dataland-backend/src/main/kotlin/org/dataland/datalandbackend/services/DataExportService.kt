@@ -103,11 +103,15 @@ class DataExportService<T>
         /**
          * Instantiates and saves ExportJob in memory.
          */
-        fun createAndSaveExportJob(correlationId: UUID): ExportJobEntity {
+        fun createAndSaveExportJob(
+            correlationId: UUID,
+            fileType: ExportFileType,
+        ): ExportJobEntity {
             val newExportJobEntity =
                 ExportJobEntity(
                     correlationId,
                     null,
+                    fileType,
                     creationTime = Instant.now().toEpochMilli(),
                 )
             exportJobStorage
@@ -143,7 +147,7 @@ class DataExportService<T>
             }
             val dataType = DataType.valueOf(listDataDimensions.dataTypes.first())
 
-            val exportFile =
+            newExportJobEntity.fileToExport =
                 when (exportFileType) {
                     ExportFileType.CSV -> {
                         buildCsvStreamFromPortfolioAsJsonData(
@@ -167,7 +171,6 @@ class DataExportService<T>
                         buildJsonStreamFromPortfolioAsJsonData(jsonData)
                     }
                 }
-            newExportJobEntity.fileToExport = exportFile
             newExportJobEntity.progressState = ExportJobProgressState.Success
         }
 
@@ -242,12 +245,30 @@ class DataExportService<T>
         }
 
         /**
-         * Filters exportJob associated to user by id and returns state
+         * Filters exportJob associated to user by id and returns progressState
          */
         fun getExportJobState(exportJobId: UUID): ExportJobProgressState =
             exportJobStorage[DatalandAuthentication.fromContext().userId]
                 ?.firstOrNull { it.id == exportJobId }
                 ?.progressState
+                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
+
+        /**
+         * Filters exportJob associated to user by id and returns fileType
+         */
+        fun getExportJobFileFormat(exportJobId: UUID): ExportFileType =
+            exportJobStorage[DatalandAuthentication.fromContext().userId]
+                ?.firstOrNull { it.id == exportJobId }
+                ?.fileType
+                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
+
+        /**
+         * Filters exportJob associated to user by id and returns fileToExport
+         */
+        fun exportCompanyAssociatedDataById(exportJobId: UUID): InputStreamResource =
+            exportJobStorage[DatalandAuthentication.fromContext().userId]
+                ?.firstOrNull { it.id == exportJobId }
+                ?.fileToExport
                 ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
 
         /**

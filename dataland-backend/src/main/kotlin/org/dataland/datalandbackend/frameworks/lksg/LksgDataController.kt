@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -13,7 +14,6 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -58,13 +58,13 @@ class LksgDataController
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
         @Operation(operationId = "exportCompanyAssociatedLksgDataByDimensions")
-        override fun exportCompanyAssociatedDataByDimensions(
+        override fun postExportJobCompanyAssociatedDataByDimensions(
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
-        ): ResponseEntity<InputStreamResource> =
+        ): ResponseEntity<ExportJob> =
             super
-                .exportCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
+                .postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanyLksgData")
         override fun getFrameworkDatasetsForCompany(

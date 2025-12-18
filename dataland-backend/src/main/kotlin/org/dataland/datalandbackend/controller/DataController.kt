@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportRequestData
-import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -169,54 +168,6 @@ open class DataController<T>(
         )
     }
 
-    override fun exportCompanyAssociatedDataByDimensions(
-        exportRequestData: ExportRequestData,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
-    ): ResponseEntity<InputStreamResource> {
-        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
-                it.companyInformation == null
-            }
-        ) {
-            throw ResourceNotFoundApiException(
-                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
-                message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
-            )
-        }
-
-        val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
-        exportRequestData.companyIds.forEach { companyId ->
-            exportRequestData.reportingPeriods.forEach { reportingPeriod ->
-                companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
-            }
-        }
-
-        val correlationId = IdUtils.generateUUID()
-        logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
-
-        val companyAssociatedDataForExport =
-            try {
-                dataExportService.buildStreamFromPortfolioExportData(
-                    this.buildCompanyExportData(
-                        companyIdAndReportingPeriodPairs,
-                        dataType.toString(), correlationId,
-                    ),
-                    exportRequestData.fileFormat,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
-                )
-            } catch (_: DownloadDataNotFoundApiException) {
-                return ResponseEntity.noContent().build()
-            }
-        logger.info("Creation of ${exportRequestData.fileFormat.name} for export successful. Correlation ID: $correlationId")
-
-        return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(exportRequestData.fileFormat))
-            .body(companyAssociatedDataForExport)
-    }
-
     override fun postExportJobCompanyAssociatedDataByDimensions(
         exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
@@ -241,9 +192,10 @@ open class DataController<T>(
         val correlationId = UUID.randomUUID()
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
-        val newExportJobEntity = dataExportService.createAndSaveExportJob(correlationId)
+        val newExportJobEntity = dataExportService.createAndSaveExportJob(correlationId, exportRequestData.fileFormat)
 
         try {
+            // Async function
             dataExportService.startExportJob(
                 listDataDimensions,
                 exportRequestData.fileFormat,
@@ -253,12 +205,13 @@ open class DataController<T>(
                 includeAliases,
             )
         } catch (_: DownloadDataNotFoundApiException) {
+            newExportJobEntity.progressState = ExportJobProgressState.Failure
             return ResponseEntity.noContent().build()
         }
         logger.info("Creation of ${exportRequestData.fileFormat.name} for export successful. Correlation ID: $correlationId")
 
         return ResponseEntity
-            .ok(ExportJob(id = correlationId, userId = UUID.randomUUID()))
+            .ok(ExportJob(id = correlationId))
     }
 
     override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> {
@@ -266,7 +219,15 @@ open class DataController<T>(
         return ResponseEntity.ok(exportJobProgressState)
     }
 
-    override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> = TODO()
+    override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> {
+        val exportFile = dataExportService.exportCompanyAssociatedDataById(UUID.fromString(exportJobId))
+        val fileFormat = dataExportService.getExportJobFileFormat(UUID.fromString(exportJobId))
+
+        return ResponseEntity
+            .ok()
+            .headers(buildHttpHeadersForExport(fileFormat))
+            .body(exportFile)
+    }
 
     /**
      * Builds HTTP headers for exporting data, setting the appropriate content type and
@@ -333,29 +294,6 @@ open class DataController<T>(
             },
             correlationId,
         )
-
-    private fun buildCompanyExportData(
-        companyAndReportingPeriodPairs: Set<Pair<String, String>>,
-        framework: String,
-        correlationId: String,
-    ): List<SingleCompanyExportData<T>> {
-        val dataDimensionsWithDataStrings =
-            getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
-
-        val basicCompanyInformation =
-            companyQueryManager.getBasicCompanyInformationByIds(
-                dataDimensionsWithDataStrings.map { it.key.companyId },
-            )
-
-        return dataDimensionsWithDataStrings.map {
-            SingleCompanyExportData(
-                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
-                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
-                reportingPeriod = it.key.reportingPeriod,
-                data = defaultObjectMapper.readValue(it.value, clazz),
-            )
-        }
-    }
 
     @Throws(AccessDeniedException::class)
     private fun verifyAccess(metaInfo: DataMetaInformationEntity) {

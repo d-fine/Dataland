@@ -8,5 +8,4 @@ import java.util.UUID
  */
 class ExportJob(
     val id: UUID,
-    val userId: UUID,
 )

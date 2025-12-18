@@ -122,56 +122,6 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its reporting periods and company IDs.
-     * @param exportRequestData specifies the requested data (reporting periods, company IDs and file format)
-     * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
-     * @return JSON of companyAssociatedData in the form of InputStreamResource
-     */
-    @Operation(
-        summary = "Export data for the reportingPeriods and companyIds provided.",
-        description =
-            "Export data for each combination of reportingPeriod and companyId provided into a file of the " +
-                "specified format (CSV, Excel-compatible CSV, JSON).",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
-            ApiResponse(
-                responseCode = "204",
-                description = "No data for download available.",
-                content = [Content(mediaType = "")],
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Company Id could not be found.",
-                content = [Content(mediaType = "")],
-            ),
-        ],
-    )
-    @PostMapping(
-        value = ["/export"],
-        produces = ["application/octet-stream"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun exportCompanyAssociatedDataByDimensions(
-        @Valid @RequestBody
-        exportRequestData: ExportRequestData,
-        @Parameter(
-            name = "keepValueFieldsOnly",
-            description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
-            required = false,
-        )
-        @RequestParam(
-            value = "keepValueFieldsOnly",
-            defaultValue = "true",
-        ) keepValueFieldsOnly: Boolean = true,
-        @RequestParam(
-            value = "includeAliases",
-            defaultValue = "true",
-        ) includeAliases: Boolean = true,
-    ): ResponseEntity<InputStreamResource>
-
-    /**
      * A method to post an export job of the CompanyAssociatedData by its reporting periods and company IDs.
      */
     @Operation(
