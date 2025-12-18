@@ -4,7 +4,7 @@
 <!-- MACRO USED ONLY IN THIS FILE -->
 <#---------------------------------->
 <#macro renderPortfolioMonitoringSummaryTable(data)>
-    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 520%">
+    <table style="background-color: #f6f6f6; border-radius: 15px; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
         <tbody>
         <tr>
             <td style="padding: 10px;"> </td>
@@ -70,7 +70,7 @@
                 <br><br>Data for your portfolio(s) has been updated on Dataland.
                 You'll find a summary of these updates in the overview below.
 
-                <br><br>Check your portfolios using the link below:</td>
+                <br><br>Check your portfolios using this link:</td>
         </tr>
         <@spacerRow/>
         <@buttonLink url="${baseUrl}/portfolios" linkText="VIEW MY PORTFOLIOS" />

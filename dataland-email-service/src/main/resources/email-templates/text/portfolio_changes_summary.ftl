@@ -26,7 +26,7 @@ ${frequency} summary for your portfolio(s): ${portfolioNamesString}
 Data for your portfolio(s) has been updated on Dataland.
 You'll find a summary of these updates in the overview below.
 
-Check your portfolios using the link below:
+Check your portfolios using this link:
 VIEW MY PORTFOLIOS: [${baseUrl}/portfolios]
 
 <#if newData?? && newData?has_content>
