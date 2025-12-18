@@ -21,12 +21,12 @@
         <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
-                v-for="role in roles"
-                :key="`${String(role)}-${refreshAllCards}`"
-                :companyId="companyId"
-                :role="role"
-                :userRole="userRole"
-                @users-changed="handleUsersChanged"
+              v-for="role in roles"
+              :key="`${String(role)}-${refreshAllCards}`"
+              :companyId="companyId"
+              :role="role"
+              :userRole="userRole"
+              @users-changed="handleUsersChanged"
             />
           </div>
         </TabPanel>
