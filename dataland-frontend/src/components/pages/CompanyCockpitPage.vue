@@ -1,7 +1,7 @@
 <template>
   <TheContent class="flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <Tabs v-if="rightsLoaded" v-model:value="activeTab">
+    <Tabs v-model:value="activeTab">
       <TabList
         v-if="isCompanyMemberOrAdmin"
         :pt="{
@@ -18,20 +18,19 @@
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-
-        <TabPanel v-if="isCompanyMemberOrAdmin" value="users">
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
-              v-for="role in roles"
-              :key="`${String(role)}-${refreshAllCards}`"
-              :companyId="companyId"
-              :role="role"
-              :userRole="userRole"
-              @users-changed="handleUsersChanged"
+                v-for="role in roles"
+                :key="`${String(role)}-${refreshAllCards}`"
+                :companyId="companyId"
+                :role="role"
+                :userRole="userRole"
+                @users-changed="handleUsersChanged"
             />
           </div>
         </TabPanel>
-        <TabPanel v-if="isCompanyMemberOrAdmin" value="credits">
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="credits">
           <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
