@@ -1,12 +1,16 @@
 <template>
   <div class="portfolio-monitoring-content">
     <p class="header-styling">Activate Monitoring</p>
-    <ToggleSwitch
-      v-model="isMonitoringActive"
-      data-test="activateMonitoringToggle"
-      @update:modelValue="onMonitoringToggled"
-    />
-    <div class="dataland-info-text small">Get reports from the last 6 months and all future reports.</div>
+    <div class="framework-toggle-label">
+      <ToggleSwitch
+        v-model="isMonitoringActive"
+        data-test="activateMonitoringToggle"
+        @update:modelValue="onMonitoringToggled"
+      />
+    </div>
+    <div class="dataland-info-text small">
+      Get datasets from the last <strong>6 months</strong> and all future datasets.
+    </div>
 
     <p class="header-styling">Extend Monitoring</p>
     <div>
@@ -17,7 +21,9 @@
           :disabled="!isMonitoringActive"
         />
       </div>
-      <div class="dataland-info-text small">Get reports from up to the last 16 months and all future reports.</div>
+      <div class="dataland-info-text small">
+        Get datasets from the last <strong>16 months</strong> and all future datasets.
+      </div>
     </div>
 
     <p class="header-styling">Frameworks</p>
