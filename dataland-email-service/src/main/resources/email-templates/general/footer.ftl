@@ -4,9 +4,9 @@
 <table id="footer" style="background-color: #1b1b1b; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 18px; text-align: left; border-collapse: collapse; padding: 0; margin: 0; ">
     <tbody>
     <tr>
-        <td rowspan="15" style="width: 20px;">&nbsp;</td>
+        <td rowspan="20" style="width: 20px;">&nbsp;</td>
         <td colspan="3" style="width: 560px;">&nbsp;</td>
-        <td rowspan="15" style="width: 20px;">&nbsp;</td>
+        <td rowspan="20" style="width: 20px;">&nbsp;</td>
     </tr>
     <@spacerRow/>
     <tr>
