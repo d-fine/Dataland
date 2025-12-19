@@ -4,6 +4,7 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -29,6 +30,7 @@ class PortfolioMonitoringValidatorTest {
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
                 NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         val violations = validator.validate(monitoring)
@@ -36,12 +38,13 @@ class PortfolioMonitoringValidatorTest {
     }
 
     @Test
-    fun `invalid when monitored but missing frameworks`() {
+    fun `invalid when monitored but missing frameworks and timeWindowThreshold`() {
         val monitoring =
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
                 NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
             )
 
         val violations = validator.validate(monitoring)
@@ -55,6 +58,7 @@ class PortfolioMonitoringValidatorTest {
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
                 NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         val violations = validator.validate(monitoring)
@@ -68,6 +72,7 @@ class PortfolioMonitoringValidatorTest {
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
             )
 
         val violations = validator.validate(monitoring)

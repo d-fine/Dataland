@@ -76,6 +76,12 @@ data class BasePortfolio(
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
     )
     override val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val timeWindowThreshold: TimeWindowThreshold?,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
@@ -88,6 +94,7 @@ data class BasePortfolio(
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
         notificationFrequency = portfolioUpload.notificationFrequency,
+        timeWindowThreshold = portfolioUpload.timeWindowThreshold,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -100,11 +107,13 @@ data class BasePortfolio(
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
         notificationFrequency = portfolioMonitoringPatch.notificationFrequency,
+        timeWindowThreshold = portfolioMonitoringPatch.timeWindowThreshold,
     )
 
     /**
      * Creates portfolio entity object from BasePortfolio. If parameters are null, the given values remain.
      */
+    @Suppress("LongParameterList")
     fun toPortfolioEntity(
         portfolioId: String? = null,
         creationTimestamp: Long = this.creationTimestamp,
@@ -112,6 +121,7 @@ data class BasePortfolio(
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
         notificationFrequency: NotificationFrequency = this.notificationFrequency,
+        timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -123,5 +133,6 @@ data class BasePortfolio(
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
             notificationFrequency = notificationFrequency,
+            timeWindowThreshold = timeWindowThreshold,
         )
 }

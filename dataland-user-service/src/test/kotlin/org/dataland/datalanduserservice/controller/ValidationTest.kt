@@ -22,6 +22,6 @@ class ValidationTest {
                 NotificationFrequency.Weekly,
             )
         val violations = validator.validate(portfolio)
-        assertEquals(1, violations.size)
+        assertEquals(2, violations.size)
     }
 }

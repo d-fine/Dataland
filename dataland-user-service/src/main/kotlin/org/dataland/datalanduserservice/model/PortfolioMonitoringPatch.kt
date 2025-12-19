@@ -34,4 +34,10 @@ data class PortfolioMonitoringPatch(
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
     )
     override val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val timeWindowThreshold: TimeWindowThreshold?,
 ) : PortfolioMonitoring

@@ -28,6 +28,11 @@ object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION = "Possible frequencies in which notifications can be received."
     const val PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE = "Weekly"
 
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION =
+        "The time window threshold for portfolio monitoring. " +
+            "Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months)."
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "Standard"
+
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
         "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":\"2024, 2023, 2022\"}"

@@ -9,4 +9,5 @@ interface PortfolioMonitoring {
     val isMonitored: Boolean
     val monitoredFrameworks: Set<String>
     val notificationFrequency: NotificationFrequency
+    val timeWindowThreshold: TimeWindowThreshold?
 }

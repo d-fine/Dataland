@@ -31,6 +31,7 @@ class UserServiceTest {
             isMonitored = false,
             monitoredFrameworks = emptySet(),
             notificationFrequency = NotificationFrequency.NoNotifications,
+            timeWindowThreshold = null,
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -139,6 +140,7 @@ class UserServiceTest {
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 notificationFrequency = NotificationFrequency.NoNotifications,
+                timeWindowThreshold = null,
             )
 
         val portfolio =
@@ -161,6 +163,7 @@ class UserServiceTest {
                             isMonitored = true,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                             notificationFrequency = NotificationFrequency.NoNotifications,
+                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.Standard,
                         ),
                     )
                 }

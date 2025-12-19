@@ -1,7 +1,6 @@
 import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
-import { NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
-import { Configuration } from '@clients/backend';
+import { NotificationFrequency, PortfolioControllerApi, Configuration } from '@clients/userservice';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 
 /**
@@ -19,6 +18,7 @@ export function createPortfolio(): void {
       isMonitored: false,
       monitoredFrameworks: [] as unknown as Set<string>,
       notificationFrequency: NotificationFrequency.Weekly,
+      timeWindowThreshold: undefined,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
   });

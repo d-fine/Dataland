@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -154,6 +155,7 @@ class DatalandUserServiceSpringbootTest
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                         NotificationFrequency.Weekly,
+                        timeWindowThreshold = TimeWindowThreshold.Standard,
                     )
                 val patchedPortfolio =
                     assertDoesNotThrow {
@@ -166,6 +168,7 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
                 assertTrue(patchedPortfolio.isMonitored)
                 assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
+                assertEquals(portfolioMonitoringPatch.timeWindowThreshold, patchedPortfolio.timeWindowThreshold)
                 assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
             }
@@ -211,6 +214,7 @@ class DatalandUserServiceSpringbootTest
                         isMonitored = true,
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
                         NotificationFrequency.Weekly,
+                        timeWindowThreshold = TimeWindowThreshold.Standard,
                     )
 
                 assertThrows<AuthorizationDeniedException> {

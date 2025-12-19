@@ -275,5 +275,6 @@ class PortfolioServiceTest {
         isMonitored = false,
         monitoredFrameworks = emptySet(),
         NotificationFrequency.Weekly,
+        timeWindowThreshold = null,
     )
 }

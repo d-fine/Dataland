@@ -1012,6 +1012,15 @@
           },
           "notificationFrequency": {
             "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1084,6 +1093,15 @@
           },
           "notificationFrequency": {
             "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1131,6 +1149,15 @@
           },
           "notificationFrequency": {
             "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1182,6 +1209,15 @@
           },
           "notificationFrequency": {
             "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },

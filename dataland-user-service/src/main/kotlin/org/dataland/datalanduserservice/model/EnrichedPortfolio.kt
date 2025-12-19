@@ -48,4 +48,10 @@ data class EnrichedPortfolio(
     val monitoredFrameworks: Set<String>?,
     @field:JsonProperty(required = true)
     val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    val timeWindowThreshold: TimeWindowThreshold? = null,
 )

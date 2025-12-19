@@ -22,7 +22,7 @@ describe('Portfolio Monitoring Modal', function () {
               data: {
                 portfolio: portfolioFixture,
               },
-              close: cy.stub(),
+              close: cy.stub().as('dialogRefClose'),
             },
           },
           getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
@@ -59,9 +59,9 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy').find('input[type="checkbox"]').click();
 
-    cy.get('.dataland-info-text').should(
+    cy.get('[data-test="frameworkSelectionText"]').should(
       'contain.text',
-      'EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas'
+      'Select frameworks: SFDR and EU Taxonomy (Financials, Non-Financials, Nuclear & Gas).'
     );
   });
 
@@ -93,5 +93,37 @@ describe('Portfolio Monitoring Modal', function () {
     cy.get('[data-test="frameworkSelection"] [data-test="valuesOnlySwitch"] input').each(($el) => {
       cy.wrap($el).should('be.disabled');
     });
+  });
+
+  it('toggles time window threshold on and off', function () {
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.class', 'p-toggleswitch-checked');
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('not.have.class', 'p-toggleswitch-checked');
+  });
+
+  it('sends correct time window threshold value in PATCH request', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="frameworkSelection"]').first().find('input[type="checkbox"]').check();
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'Extended');
+  });
+
+  it('sends undefined threshold when deactivating monitoring', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('be.undefined');
   });
 });

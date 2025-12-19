@@ -12,11 +12,12 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import java.util.UUID
 
 /**
- *
+ * The entity storing portfolio information
  */
 @Entity
 @Table(
@@ -46,6 +47,8 @@ data class PortfolioEntity(
     val monitoredFrameworks: Set<String>?,
     @Enumerated(EnumType.STRING)
     val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
+    @Enumerated(EnumType.STRING)
+    val timeWindowThreshold: TimeWindowThreshold? = null,
 ) {
     /**
      * create PortfolioResponse from entity
@@ -61,5 +64,6 @@ data class PortfolioEntity(
             isMonitored,
             monitoredFrameworks ?: emptySet(),
             notificationFrequency,
+            timeWindowThreshold,
         )
 }

@@ -93,6 +93,7 @@ async function handleCompanyAddition(): Promise<void> {
           isMonitored: selectedPortfolio.isMonitored,
           monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
           notificationFrequency: selectedPortfolio.notificationFrequency,
+          timeWindowThreshold: selectedPortfolio.timeWindowThreshold,
         });
       })
     );
