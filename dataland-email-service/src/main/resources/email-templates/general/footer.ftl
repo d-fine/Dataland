@@ -50,12 +50,6 @@
     <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
-        <td></td>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <td></td>
         <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
         <td></td>
     </tr>
