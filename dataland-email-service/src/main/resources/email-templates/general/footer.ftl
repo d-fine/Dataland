@@ -42,7 +42,6 @@
     <tr>
         <@linkWithIcon url="${baseUrl}/qa/swagger-ui/index.html" linkText="QUALITY ASSURANCE"/>
         <td></td>
-        <td></td>
     </tr>
     <@spacerRowSmall/>
     <tr>
