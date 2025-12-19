@@ -13,7 +13,8 @@
         <td colspan="3" style="text-align: left; background-color: #1b1b1b;">
             <a href="${baseUrl}" target="_blank" style="border: 0 none; text-decoration: none; color: #FF6813;">
                 <img src="${darkLogo}" width="195" height="33" alt="DATALAND" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
-            </a></td>
+            </a>
+        </td>
     </tr>
     <@spacerRow/>
     <@spacerRow/>
@@ -49,6 +50,12 @@
     <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
+        <td></td>
+        <td></td>
+    </tr>
+    <@spacerRowSmall/>
+    <tr>
+        <td></td>
         <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
         <td></td>
     </tr>
@@ -57,7 +64,8 @@
         <td></td>
         <td style="line-height: 22px">
             <img src="${linkedInImage}" width="22" height="23" alt="in" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; vertical-align: middle;">&nbsp;
-            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">LINKEDIN</a></td>
+            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">LINKEDIN</a>
+        </td>
         <td></td>
     </tr>
     <@spacerRowHorizontalLine color="#c0c0c0" width="560px"/>
