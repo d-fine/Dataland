@@ -6,11 +6,12 @@ import { type CompanyInformation, IdentifierType } from '@clients/backend';
 /**
  * Mounts the CreditsCard component with the provided dummyCompanyId.
  */
-function mountComponent(dummyCompanyId: string): void {
+function mountComponent(dummyCompanyId: string, isDatalandAdmin: boolean): void {
   //@ts-ignore
   cy.mountWithPlugins(CreditsCard, {
     props: {
       companyId: dummyCompanyId,
+      isUserDatalandAdmin: isDatalandAdmin,
     },
     global: {
       provide: {
@@ -65,7 +66,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is visible and correctly displayed if a Member has credits', () => {
     interceptCreditBalance(dummyCompanyId, 100);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId);
+    mountComponent(dummyCompanyId, true);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
 
@@ -76,7 +77,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is correctly displayed if user has zero credits', () => {
     interceptCreditBalance(dummyCompanyId, 0);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId);
+    mountComponent(dummyCompanyId, true);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
     cy.get('[data-test="credits-balance-chip"]').should('be.visible');
@@ -86,7 +87,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is correctly displayed if user has a negative credit balance', () => {
     interceptCreditBalance(dummyCompanyId, -345);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId);
+    mountComponent(dummyCompanyId, true);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
     cy.get('[data-test="credits-balance-chip"]').should('be.visible');
@@ -97,7 +98,7 @@ describe('As a user I want to see available credits on Dataland of the company I
     const expectedInfoText = 'Any questions regarding your credits? Contact info@dataland.com';
     interceptCreditBalance(dummyCompanyId, 100);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId);
+    mountComponent(dummyCompanyId, true);
 
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
@@ -109,5 +110,15 @@ describe('As a user I want to see available credits on Dataland of the company I
 
     cy.get('[data-test="info-icon"]').click();
     cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
+  });
+
+  it('Credit Balance is not shown if user is not a Dataland Admin', () => {
+    interceptCreditBalance(dummyCompanyId, 100);
+    interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
+    mountComponent(dummyCompanyId, false);
+    cy.wait('@creditBalance');
+    cy.wait('@companyInformation');
+    cy.get('[data-test="credits-balance-chip"]').should('be.visible');
+    cy.get('[data-test="credits-balance-chip"]').should('contain', 'Coming soon');
   });
 });
