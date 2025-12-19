@@ -90,7 +90,7 @@ describe('Portfolio Monitoring Modal', function () {
   it('disables notification Select and framework toggles when monitoring is off', function () {
     cy.get('[data-test="activateMonitoringToggle"] input').should('not.be.checked');
     cy.get('[data-test="notification-options"]').should('have.class', 'p-disabled');
-    cy.get('[data-test="frameworkSelection"] [data-test="valuesOnlySwitch"] input').each(($el) => {
+    cy.get('[data-test="frameworkSelection"] [data-test="frameworkToggle"] input').each(($el) => {
       cy.wrap($el).should('be.disabled');
     });
   });

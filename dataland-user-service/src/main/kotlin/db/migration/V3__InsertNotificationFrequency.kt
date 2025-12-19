@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * Insert and fill new column NotificationFrequency
  */
 @Suppress("ClassName")
-class V2__InsertNotificationFrequency : BaseJavaMigration() {
+class V3__InsertNotificationFrequency : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "ALTER TABLE IF EXISTS portfolios " +
