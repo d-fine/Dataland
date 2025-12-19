@@ -53,7 +53,7 @@ class CompanyReportingInfoServiceTest {
             Stream.of(
                 Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 3, 16), 2025),
                 Arguments.of(MonthDay.of(1, 31), -1, LocalDate.of(2025, 3, 16), 2024),
-                Arguments.of(MonthDay.of(3, 30), 0, LocalDate.of(2025, 4, 30), 2025),
+                Arguments.of(MonthDay.of(2, 28), 0, LocalDate.of(2025, 3, 29), null),
                 Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 2, 16), null),
                 Arguments.of(MonthDay.of(1, 31), 0, LocalDate.of(2025, 5, 31), 2025),
                 Arguments.of(MonthDay.of(12, 31), 0, LocalDate.of(2025, 7, 16), null),
