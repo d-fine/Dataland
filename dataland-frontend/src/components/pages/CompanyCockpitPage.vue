@@ -12,7 +12,7 @@
       >
         <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
         <Tab value="users" data-test="usersTab">Users</Tab>
-        <Tab v-if="isUserDatalandAdmin" value="credits" data-test="creditsTab"> Credits </Tab>
+        <Tab value="credits" data-test="creditsTab">Credits</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">

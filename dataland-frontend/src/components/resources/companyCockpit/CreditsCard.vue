@@ -36,7 +36,7 @@
       <Divider />
       <div style="display: flex; justify-content: space-between; align-items: center">
         <span>Current Amount of Credits:</span>
-        <Chip :label="creditsBalance" data-test="credits-balance-chip" />
+        <Chip :label="isUserDatalandAdmin ? creditsBalance : 'Coming soon'" data-test="credits-balance-chip" />
       </div>
       <div class="dataland-info-text small">{{ displayLei }}</div>
     </template>
