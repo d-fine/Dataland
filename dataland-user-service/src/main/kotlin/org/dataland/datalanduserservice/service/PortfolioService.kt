@@ -1,11 +1,11 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -39,7 +39,7 @@ class PortfolioService
                 "Check if portfolio with portfolioId: $portfolioId exists for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
-            return portfolioRepository.existsByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+            return portfolioRepository.existsByUserIdAndPortfolioId(userId, ValidationUtils.convertToUUID(portfolioId))
         }
 
         /**
@@ -76,22 +76,15 @@ class PortfolioService
          */
         @Transactional(readOnly = true)
         fun getPortfolio(portfolioId: String): BasePortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
-            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             val correlationId = UUID.randomUUID().toString()
             logger.info(
-                "Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId." +
+                "Retrieve portfolio with portfolioId: $portfolioId." +
                     " CorrelationId: $correlationId.",
             )
-            return if (userIsAdmin) {
-                portfolioRepository
-                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
-                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
-            } else {
-                portfolioRepository
-                    .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
-            }
+            return portfolioRepository
+                .getPortfolioByPortfolioId(ValidationUtils.convertToUUID(portfolioId))
+                ?.toBasePortfolio()
+                ?: throw PortfolioNotFoundApiException(portfolioId)
         }
 
         /**

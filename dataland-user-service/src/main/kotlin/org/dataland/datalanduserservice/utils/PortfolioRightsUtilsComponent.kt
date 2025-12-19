@@ -30,24 +30,17 @@ class PortfolioRightsUtilsComponent(
      * @param isMonitored whether the portfolio shall be actively monitored after the operation
      * @return true if the non-admin user may carry out this portfolio operation, false otherwise
      */
-    fun mayNonAdminUserManipulatePortfolio(
+    fun mayNonAdminUserManipulatePortfolioMonitoring(
         userId: String,
         isMonitored: Boolean,
     ): Boolean = !isMonitored || isUserDatalandMember(userId)
 
     /**
-     * Check whether the specified user is the owner of the specified portfolio.
-     * @param userId the Dataland ID of the user in question
+     * Check whether the logged-in user is the owner of the specified portfolio.
      * @param portfolioId the ID of the portfolio in question
      * @return true if the user is the owner of the portfolio, false otherwise
      */
-    fun isUserPortfolioOwner(
-        userId: String,
-        portfolioId: String,
-    ): Boolean {
-        val portfolio = portfolioService.getPortfolio(portfolioId)
-        return portfolio.userId == userId
-    }
+    fun isUserPortfolioOwner(portfolioId: String): Boolean = portfolioService.existsPortfolioForUser(portfolioId, "Authentication")
 
     /**
      * Check whether the specified portfolio is shared with the specified user.

@@ -19,6 +19,7 @@ class PortfolioSharingService
     @Autowired
     constructor(
         private val portfolioRepository: PortfolioRepository,
+        private val portfolioService: PortfolioService,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
 
@@ -64,11 +65,7 @@ class PortfolioSharingService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio =
-                portfolioRepository
-                    .getPortfolioByPortfolioId(portfolioId)
-                    ?.toBasePortfolio()
-                    ?: throw PortfolioNotFoundApiException(portfolioId.toString())
+            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString())
 
             val updatedPortfolioEntity =
                 originalPortfolio.toPortfolioEntity(

@@ -69,7 +69,9 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) or " +
+            "@PortfolioRightsUtilsComponent.isPortfolioSharedWithUser(authentication.userId, #portfolioId)))",
     )
     fun getPortfolio(
         @Parameter(
@@ -157,7 +159,8 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
+            "authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -183,7 +186,9 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) and " +
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
+            "authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun replacePortfolio(
         @Parameter(
@@ -291,7 +296,8 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) and " +
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
             "authentication.userId, #portfolioMonitoringPatch.isMonitored" +
             "))",
     )

@@ -66,7 +66,7 @@ interface PortfolioSharingApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') " +
-            "and @PortfolioRightsUtilsComponent.isUserPortfolioOwner(authentication.userId, #portfolioId))",
+            "and @PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId))",
     )
     fun patchSharing(
         @Parameter(
