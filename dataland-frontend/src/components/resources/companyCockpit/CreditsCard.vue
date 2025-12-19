@@ -61,6 +61,7 @@ import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation
 const creditsBalance = ref<number>(0);
 const props = defineProps<{
   companyId: string;
+  isUserDatalandAdmin: boolean;
 }>();
 
 watch(
