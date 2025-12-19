@@ -32,15 +32,18 @@
     <tr>
         <@linkWithIcon url="${baseUrl}/documents/swagger-ui/index.html" linkText="DOCUMENTS"/>
         <td></td>
+        <td></td>
     </tr>
     <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/community/swagger-ui/index.html" linkText="COMMUNITY"/>
         <td></td>
+        <td></td>
     </tr>
     <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/qa/swagger-ui/index.html" linkText="QUALITY ASSURANCE"/>
+        <td></td>
         <td></td>
     </tr>
     <@spacerRowSmall/>
