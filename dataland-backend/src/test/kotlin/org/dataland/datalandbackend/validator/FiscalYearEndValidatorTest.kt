@@ -69,11 +69,11 @@ class FiscalYearEndValidatorTest {
         ],
     )
     fun `invalid format should fail validation`(invalidValue: String) {
-            val violations = validator.validate(FiscalYearEndTestBean(invalidValue))
-            assertEquals(
-                1,
-                violations.size,
-                "Expected one violation for invalid value: $invalidValue",
-            )
+        val violations = validator.validate(FiscalYearEndTestBean(invalidValue))
+        assertEquals(
+            1,
+            violations.size,
+            "Expected one violation for invalid value: $invalidValue",
+        )
     }
 }
