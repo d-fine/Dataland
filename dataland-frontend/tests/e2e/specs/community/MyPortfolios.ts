@@ -75,6 +75,7 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
         .parent()
         .find('input[type="checkbox"]')
         .click();
+      cy.get('[data-test="timeWindowThresholdToggle"]').click();
       cy.get('[data-test="saveChangesButton"]').click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       });
@@ -84,6 +85,7 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
     .should((body) => {
       expect(body.isMonitored).to.be.true;
       expect(body.monitoredFrameworks).to.include('eutaxonomy');
+      expect(body.timeWindowThreshold).to.equal('Extended');
     });
 
   cy.get('[data-test="success-modal"]').should('exist');
