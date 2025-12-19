@@ -46,52 +46,34 @@ class FiscalYearEndValidatorTest {
         assertEquals(0, nullViolations.size, "Expected no violations for null value")
     }
 
-    @Test
-    fun `invalid format should fail validation`() {
-        val invalidValues =
-            listOf(
-                "1-Jan",
-                "01-jan",
-                "01-JAN",
-                "32-Jan",
-                "00-Jan",
-                "15-ABC",
-                "15-September",
-                "15/Jan",
-                "15Jan",
-                "",
-            )
-
-        invalidValues.forEach { value ->
-            val violations = validator.validate(FiscalYearEndTestBean(value))
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "1-Jan",
+            "01-jan",
+            "01-JAN",
+            "32-Jan",
+            "00-Jan",
+            "15-ABC",
+            "15-September",
+            "15/Jan",
+            "15Jan",
+            "",
+            "31-Apr",
+            "31-Jun",
+            "31-Sep",
+            "31-Nov",
+            "29-Feb",
+            "30-Feb",
+            "31-Feb",
+        ],
+    )
+    fun `invalid format should fail validation`(invalidValue: String) {
+            val violations = validator.validate(FiscalYearEndTestBean(invalidValue))
             assertEquals(
                 1,
                 violations.size,
-                "Expected one violation for invalid value: $value",
+                "Expected one violation for invalid value: $invalidValue",
             )
-        }
-    }
-
-    @Test
-    fun `invalid day for specific months should fail validation`() {
-        val invalidPerMonth =
-            listOf(
-                "31-Apr",
-                "31-Jun",
-                "31-Sep",
-                "31-Nov",
-                "29-Feb",
-                "30-Feb",
-                "31-Feb",
-            )
-
-        invalidPerMonth.forEach { value ->
-            val violations = validator.validate(FiscalYearEndTestBean(value))
-            assertEquals(
-                1,
-                violations.size,
-                "Expected one violation for invalid date: $value",
-            )
-        }
     }
 }
