@@ -487,6 +487,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
+                  "description": "The unique identifiers under which a company can be found on Dataland.",
                   "items": {
                     "type": "string"
                   }
@@ -996,6 +997,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1064,6 +1074,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1107,6 +1126,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1154,6 +1182,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },

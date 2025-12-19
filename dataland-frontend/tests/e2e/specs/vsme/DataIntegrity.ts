@@ -147,7 +147,7 @@ function verifyDocumentDownloadAndDataIsViewable(): void {
       MLDT.getSectionHead('Energy and greenhous gas emissions').should('have.attr', 'data-section-expanded', 'true');
       MLDT.getCellValueContainer('Electricity Total').find('a.link').should('include.text', 'MWh').click();
       const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}-private.pdf`;
-      cy.readFile(expectedPathToDownloadedReport).should('not.exist');
+      cy.task('fileExists', expectedPathToDownloadedReport).should('eq', false);
       cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
       cy.get('[data-test="download-link-some-document-private"]').click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -217,6 +217,7 @@ describeIf(
     });
 
     it('Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one', () => {
+      cy.task('deleteFolder', Cypress.config('downloadsFolder'));
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept('**/api/companies/' + storedTestCompany.companyId + '/info').as('getCompanyInformation');
       cy.visitAndCheckAppMount(

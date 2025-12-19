@@ -12,31 +12,34 @@
       >
         <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
         <Tab value="users" data-test="usersTab">Users</Tab>
+        <Tab v-if="isUserDatalandAdmin" value="credits" data-test="creditsTab"> Credits </Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-        <TabPanel
-          v-if="isCompanyMemberOrAdmin"
-          value="users"
-          style="background-color: var(--p-surface-50); padding: var(--spacing-xs)"
-        >
-          <CompanyRolesCard
-            v-for="role in roles"
-            :key="`${String(role)}-${refreshAllCards}`"
-            :companyId="companyId"
-            :role="role"
-            :userRole="userRole"
-            @users-changed="handleUsersChanged"
-          />
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="users">
+          <div class="tab-layout">
+            <CompanyRolesCard
+              v-for="role in roles"
+              :key="`${String(role)}-${refreshAllCards}`"
+              :companyId="companyId"
+              :role="role"
+              :userRole="userRole"
+              @users-changed="handleUsersChanged"
+            />
+          </div>
+        </TabPanel>
+        <TabPanel v-if="rightsLoaded && isCompanyMemberOrAdmin" value="credits">
+          <div class="tab-layout">
+            <CreditsCard :companyId="companyId" />
+          </div>
         </TabPanel>
       </TabPanels>
     </Tabs>
     <SuccessDialog :visible="showSuccess" message="Changes successfully saved." @close="showSuccess = false" />
   </TheContent>
 </template>
-
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted, inject } from 'vue';
 import type { Ref } from 'vue';
@@ -52,6 +55,7 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 
 import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
@@ -74,14 +78,15 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const router = useRouter();
 
-const activeTab = ref<'datasets' | 'users'>('datasets');
-const isCompanyMemberOrAdmin = ref(false);
+const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
+const isCompanyMemberOrAdmin = ref<boolean | null>(null);
 const isUserCompanyOwnerOrUploader = ref(false);
 const isUserKeycloakUploader = ref(false);
 const isAnyCompanyOwnerExisting = ref(false);
 const isUserCompanyMember = ref(false);
 const isUserDatalandAdmin = ref(false);
 const userRole = ref<CompanyRole | null>(null);
+const rightsLoaded = ref(false);
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
@@ -110,21 +115,44 @@ async function handleUsersChanged(): Promise<void> {
  */
 async function setUserRights(refreshUserRole: boolean): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
-  if (refreshUserRole) {
-    const assignments = await getCompanyRoleAssignmentsForCurrentUser(await getKeycloakPromise(), apiClientProvider);
-    const assignment = assignments.find((a) => a.companyId === props.companyId);
-    userRole.value = assignment ? assignment.companyRole : null;
+
+  let assignment: CompanyRoleAssignmentExtended | undefined;
+
+  const keycloak = await getKeycloakPromise();
+  const isAuthenticated = !!keycloak?.token;
+
+  if (
+    isAuthenticated &&
+    (refreshUserRole || !companyRoleAssignmentsRef.value || companyRoleAssignmentsRef.value.length === 0)
+  ) {
+    try {
+      const assignments = await getCompanyRoleAssignmentsForCurrentUser(keycloak, apiClientProvider);
+      assignment = assignments.find((a) => a.companyId === props.companyId);
+    } catch (error) {
+      assignment = undefined;
+      console.error('Failed to retrieve company role assignments for current user', error);
+    }
   } else {
-    userRole.value =
-      companyRoleAssignmentsRef.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ||
-      null;
+    assignment = companyRoleAssignmentsRef.value?.find((a) => a.companyId === props.companyId);
   }
+
+  userRole.value = assignment?.companyRole ?? null;
+  isUserCompanyMember.value = userRole.value !== null;
+
   isUserCompanyOwnerOrUploader.value =
     userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
-  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-  isUserCompanyMember.value = userRole.value !== null;
-  isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+
+  isUserKeycloakUploader.value = isAuthenticated
+    ? await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    : false;
+
+  isUserDatalandAdmin.value = isAuthenticated
+    ? await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
+    : false;
+
   isCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
+
+  rightsLoaded.value = true;
 }
 
 watch(
@@ -135,24 +163,43 @@ watch(
   }
 );
 
-watch(activeTab, (val) => {
+watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
-  void router.replace({ path: val === 'users' ? `${base}/users` : base });
+  try {
+    if (val === 'users') {
+      await router.replace({ path: `${base}/users` });
+    } else if (val === 'credits') {
+      await router.replace({ path: `${base}/credits` });
+    } else {
+      await router.replace({ path: base });
+    }
+  } catch (err) {
+    console.error('Navigation failed', err);
+  }
 });
 
 onMounted(async () => {
   await setUserRights(false);
   const path = router.currentRoute.value.path;
-  if (path.endsWith('/users') && !isCompanyMemberOrAdmin.value) {
+  if (!isCompanyMemberOrAdmin.value && (path.endsWith('/users') || path.endsWith('/credits'))) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
+  } else if (path.endsWith('/credits')) {
+    activeTab.value = 'credits';
+  } else if (path.endsWith('/users')) {
+    activeTab.value = 'users';
   } else {
-    activeTab.value = path.endsWith('/users') ? 'users' : 'datasets';
+    activeTab.value = 'datasets';
   }
 });
 </script>
 
 <style lang="scss" scoped>
+.tab-layout {
+  background-color: var(--p-surface-50);
+  padding: var(--spacing-xs);
+}
+
 .card-container {
   display: flex;
   gap: var(--spacing-xxxl);

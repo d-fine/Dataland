@@ -69,6 +69,12 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val timeWindowThreshold: TimeWindowThreshold?,
 ) : Portfolio,
     PortfolioMonitoring {
     constructor(portfolioUpload: PortfolioUpload) : this(
@@ -80,6 +86,7 @@ data class BasePortfolio(
         identifiers = portfolioUpload.identifiers,
         isMonitored = portfolioUpload.isMonitored,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+        timeWindowThreshold = portfolioUpload.timeWindowThreshold,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -91,6 +98,7 @@ data class BasePortfolio(
         identifiers = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+        timeWindowThreshold = portfolioMonitoringPatch.timeWindowThreshold,
     )
 
     /**
@@ -102,6 +110,7 @@ data class BasePortfolio(
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
+        timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -112,5 +121,6 @@ data class BasePortfolio(
             companyIds = this.identifiers.toMutableSet(),
             isMonitored = isMonitored,
             monitoredFrameworks = monitoredFrameworks,
+            timeWindowThreshold = timeWindowThreshold,
         )
 }
