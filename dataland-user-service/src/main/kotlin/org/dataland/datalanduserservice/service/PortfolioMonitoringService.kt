@@ -47,6 +47,7 @@ class PortfolioMonitoringService
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
                     portfolio.monitoredFrameworks,
+                    portfolio.notificationFrequency,
                     portfolio.timeWindowThreshold,
                 )
 

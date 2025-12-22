@@ -75,6 +75,26 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
+  it('renders notification frequency Select and updates value on change', function () {
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="notification-options"]').should('exist');
+    cy.get('[data-test="notification-options"]').should('contain', 'Daily');
+
+    cy.get('[data-test="notification-options"]').click();
+    cy.get('.p-select-option-selected').should('contain', 'Daily');
+    cy.get('.p-select-option').contains('No Notifications').click();
+
+    cy.get('[data-test="notification-options"]').should('contain', 'No Notifications');
+  });
+
+  it('disables notification Select and framework toggles when monitoring is off', function () {
+    cy.get('[data-test="activateMonitoringToggle"] input').should('not.be.checked');
+    cy.get('[data-test="notification-options"]').should('have.class', 'p-disabled');
+    cy.get('[data-test="frameworkSelection"] [data-test="frameworkToggle"] input').each(($el) => {
+      cy.wrap($el).should('be.disabled');
+    });
+  });
+
   it('toggles time window threshold on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
 

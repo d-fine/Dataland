@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.model.SectorType
 import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -128,6 +129,7 @@ class PortfolioBulkDataRequestServiceTest {
         userId = USER_ID,
         creationTimestamp = TIMESTAMP,
         lastUpdateTimestamp = TIMESTAMP,
+        notificationFrequency = NotificationFrequency.Weekly,
         companyIds = companyIds.toMutableSet(),
         isMonitored = true,
         monitoredFrameworks = frameworks,

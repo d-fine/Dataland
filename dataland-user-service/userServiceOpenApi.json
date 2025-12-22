@@ -957,11 +957,23 @@
   },
   "components": {
     "schemas": {
+      "NotificationFrequency": {
+        "type": "string",
+        "description": "Possible frequencies in which notifications can be received.",
+        "example": "Weekly",
+        "enum": [
+          "NoNotifications",
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ]
+      },
       "PortfolioUpload": {
         "required": [
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioName"
         ],
         "type": "object",
@@ -998,6 +1010,9 @@
               "type": "string"
             }
           },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
@@ -1016,6 +1031,7 @@
           "isMonitored",
           "lastUpdateTimestamp",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1075,6 +1091,9 @@
               "type": "string"
             }
           },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
@@ -1108,7 +1127,8 @@
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks"
+          "monitoredFrameworks",
+          "notificationFrequency"
         ],
         "type": "object",
         "properties": {
@@ -1127,6 +1147,9 @@
               "type": "string"
             }
           },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
@@ -1141,6 +1164,7 @@
       "EnrichedPortfolio": {
         "required": [
           "entries",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1182,6 +1206,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
           },
           "timeWindowThreshold": {
             "type": "string",

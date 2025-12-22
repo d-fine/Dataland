@@ -13,6 +13,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import java.util.UUID
 
 /**
@@ -45,6 +46,8 @@ data class PortfolioEntity(
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
     @Enumerated(EnumType.STRING)
+    val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
+    @Enumerated(EnumType.STRING)
     val timeWindowThreshold: TimeWindowThreshold? = null,
 ) {
     /**
@@ -60,6 +63,7 @@ data class PortfolioEntity(
             companyIds,
             isMonitored,
             monitoredFrameworks ?: emptySet(),
+            notificationFrequency,
             timeWindowThreshold,
         )
 }

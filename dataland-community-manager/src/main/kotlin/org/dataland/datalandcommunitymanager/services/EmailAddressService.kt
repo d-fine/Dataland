@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -57,7 +58,7 @@ class EmailAddressService
                 } catch (ex: ClientException) {
                     logger.warn("Company not found or error fetching company for $companyId", ex)
                     throw ResourceNotFoundApiException(
-                        "Company not found",
+                        COMPANY_NOT_FOUND,
                         "Dataland does not know the company ID $companyId",
                     )
                 }

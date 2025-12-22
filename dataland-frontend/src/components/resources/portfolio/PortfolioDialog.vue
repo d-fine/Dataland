@@ -83,11 +83,12 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type {
-  BasePortfolioName,
-  EnrichedPortfolio,
-  EnrichedPortfolioEntry,
-  PortfolioUpload,
+import {
+  type BasePortfolioName,
+  type EnrichedPortfolio,
+  type EnrichedPortfolioEntry,
+  NotificationFrequency,
+  type PortfolioUpload,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -226,6 +227,7 @@ async function savePortfolio(): Promise<void> {
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
       // as unknown as Set<string> cast required to ensure proper json is created
       monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
+      notificationFrequency: enrichedPortfolio.value?.notificationFrequency ?? NotificationFrequency.Weekly,
       timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? undefined,
     };
     const response = await (portfolioId.value
