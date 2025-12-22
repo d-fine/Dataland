@@ -132,6 +132,8 @@ data class BasePortfolio(
         identifiers = emptySet(),
         isMonitored = false,
         monitoredFrameworks = emptySet(),
+        notificationFrequency = NotificationFrequency.Weekly,
+        timeWindowThreshold = null,
         sharedUserIds = portfolioSharingPatch.sharedUserIds,
     )
 

@@ -40,6 +40,7 @@ class NotificationSchedulerTest {
                 mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
                 true,
                 setOf("sfdr"),
+                sharedUserIds = emptySet(),
             )
 
         val portfolioNoNotifications =
@@ -52,6 +53,7 @@ class NotificationSchedulerTest {
                 mutableSetOf(companyIdOnlySfdr.toString()),
                 true,
                 setOf("eutaxonomy"),
+                sharedUserIds = emptySet(),
             )
 
         val portfolioAllNotifications =
@@ -64,6 +66,7 @@ class NotificationSchedulerTest {
                 mutableSetOf(companyIdOnlySfdr.toString(), companyIdSfdrAndEuTaxo.toString()),
                 true,
                 setOf("sfdr", "eutaxonomy"),
+                sharedUserIds = emptySet(),
             )
 
         val mockNotificationEventEntities =

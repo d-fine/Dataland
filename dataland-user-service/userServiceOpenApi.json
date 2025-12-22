@@ -390,6 +390,88 @@
         ]
       }
     },
+    "/portfolios/{portfolioId}/sharing": {
+      "patch": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Patch the portfolio sharing of a portfolio.",
+        "description": "Updates the the list of user IDs with whom an existing portfolio is shared.",
+        "operationId": "patchSharing",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioSharingPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated sharing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins and portfolio owners can modify portfolio sharing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/{portfolioId}/monitoring": {
       "patch": {
         "tags": [
@@ -618,6 +700,112 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BasePortfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/shared": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all shared portfolios for the currently logged-in user.",
+        "description": "All shared portfolios for the currently logged-in user are retrieved.",
+        "operationId": "getAllSharedPortfoliosForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all shared portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/shared/names": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all shared portfolio names for the currently logged-in user.",
+        "description": "All shared portfolio names for the currently logged-in user are retrieved.",
+        "operationId": "getAllSharedPortfolioNamesForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all shared portfolio names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolioName"
                   }
                 }
               }
@@ -953,6 +1141,66 @@
           }
         }
       }
+    },
+    "/portfolios/shared/{portfolioId}": {
+      "delete": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Delete the sharing of a portfolio for the currently logged-in user.",
+        "description": "The currently logged-in user is removed from the list of users with whom the portfolio is shared.",
+        "operationId": "deleteCurrentUserFromSharing",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted sharing for the current user.",
+            "content": {}
+          },
+          "403": {
+            "description": "You can only remove yourself from portfolios that are shared with you.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -974,7 +1222,8 @@
           "isMonitored",
           "monitoredFrameworks",
           "notificationFrequency",
-          "portfolioName"
+          "portfolioName",
+          "sharedUserIds"
         ],
         "type": "object",
         "properties": {
@@ -1021,6 +1270,17 @@
               "Standard",
               "Extended"
             ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1034,6 +1294,7 @@
           "notificationFrequency",
           "portfolioId",
           "portfolioName",
+          "sharedUserIds",
           "userId"
         ],
         "type": "object",
@@ -1102,6 +1363,17 @@
               "Standard",
               "Extended"
             ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1121,6 +1393,25 @@
             "type": "string",
             "description": "The help request message to dataland.",
             "example": "I need help finding identifiers for company x, y, z to be able to add them to my portfolio."
+          }
+        }
+      },
+      "PortfolioSharingPatch": {
+        "required": [
+          "sharedUserIds"
+        ],
+        "type": "object",
+        "properties": {
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1218,6 +1509,17 @@
               "Standard",
               "Extended"
             ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

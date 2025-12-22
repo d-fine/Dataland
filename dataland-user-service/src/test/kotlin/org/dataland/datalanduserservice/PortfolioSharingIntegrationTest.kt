@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.datalanduserservice.service.PortfolioSharingService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -55,6 +56,8 @@ class PortfolioSharingIntegrationTest
                 identifiers = setOf("companyId"),
                 isMonitored = false,
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                notificationFrequency = NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
                 sharedUserIds = sharedUserIds,
             ).toPortfolioEntity()
         }
