@@ -2,18 +2,23 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-06-25",
+				"dataDate": "2024-09-20",
 				"fiscalYearDeviation": {
 					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-07-26"
+					"value": "2025-01-20"
 				},
 				"referencedReports": {
-					"ESEFReport": {
+					"IntegratedReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "ESEFReport",
-						"publicationDate": "2023-05-25"
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-09-15"
+					},
+					"AnnualReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-05-31"
 					}
 				}
 			}
@@ -21,16 +26,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 3312,
+					"value": 804,
 					"dataSource": {
-						"page": "526-1202",
-						"fileName": "ESEFReport",
+						"page": "731-974",
+						"fileName": "IntegratedReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "schemas",
+						"tagName": "relationships",
 						"publicationDate": null
 					},
-					"comment": "connect multi-byte array",
-					"quality": "NoDataFound"
+					"comment": "bypass bluetooth feed",
+					"quality": "Incomplete"
 				}
 			}
 		},
@@ -39,26 +44,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "1075",
-						"fileName": "ESEFReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "experiences",
+						"page": "1085-1141",
+						"fileName": "AnnualReport",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "applications",
 						"publicationDate": null
 					},
-					"comment": "navigate virtual bus",
-					"quality": "Incomplete"
+					"comment": "input solid state sensor",
+					"quality": "Audited"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "996-1087",
-						"fileName": "ESEFReport",
+						"page": "856-1295",
+						"fileName": "IntegratedReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "experiences",
+						"tagName": "large language models",
 						"publicationDate": null
 					},
-					"comment": "connect bluetooth array",
-					"quality": "Reported"
+					"comment": "compress auxiliary driver",
+					"quality": "Audited"
 				}
 			}
 		}
