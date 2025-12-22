@@ -17,6 +17,7 @@ import org.mockito.Answers
 import org.mockito.Mockito.mockStatic
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.clearInvocations
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -25,15 +26,17 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.MonthDay
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class PortfolioBulkDataRequestServiceTest {
     companion object {
         private val TODAY: LocalDate = LocalDate.of(2025, 2, 15)
-        private val FYE: LocalDate = LocalDate.of(2024, 12, 31)
-        private val RECENT_FYE = LocalDate.of(2024, 12, 31)
-        private val DISTANT_FYE = LocalDate.of(2024, 6, 1)
+        private val FYE = MonthDay.of(12, 31)
+        private val RECENT_FYE = MonthDay.of(12, 31)
+        private val DISTANT_FYE = MonthDay.of(6, 1)
         private const val USER_ID = "user id"
         private const val PORTFOLIO_ID = "00000000-0000-0000-0000-000000000001"
         private const val COMPANY_ID_1 = "Company id 1"
@@ -82,7 +85,7 @@ class PortfolioBulkDataRequestServiceTest {
 
     private fun stubCompany(
         id: String,
-        fiscalYearEnd: LocalDate?,
+        fiscalYearEnd: MonthDay?,
         reportingPeriodShift: Int?,
         sector: String?,
     ): StoredCompany =
@@ -93,7 +96,10 @@ class PortfolioBulkDataRequestServiceTest {
                 headquarters = "HQ",
                 identifiers = emptyMap(),
                 countryCode = "DE",
-                fiscalYearEnd = fiscalYearEnd,
+                fiscalYearEnd =
+                    fiscalYearEnd
+                        ?.atYear(2024)
+                        ?.format(DateTimeFormatter.ofPattern("dd-MMM")),
                 reportingPeriodShift = reportingPeriodShift,
                 sector = sector,
             ),
@@ -105,9 +111,7 @@ class PortfolioBulkDataRequestServiceTest {
         reportingPeriodShift: Int?,
         sector: String?,
     ) {
-        whenever(mockCompanyDataApi.getCompanyById(id)).thenReturn(
-            stubCompany(id, FYE, reportingPeriodShift, sector),
-        )
+        doReturn(stubCompany(id, FYE, reportingPeriodShift, sector)).whenever(mockCompanyDataApi).getCompanyById(id)
     }
 
     private fun stubPortfolioRepo(portfolios: List<PortfolioEntity>) {
@@ -243,13 +247,13 @@ class PortfolioBulkDataRequestServiceTest {
         val companyIdWithRecentFye = UUID.randomUUID().toString()
         val companyIdWithDistantFye = UUID.randomUUID().toString()
 
-        whenever(mockCompanyDataApi.getCompanyById(companyIdWithRecentFye)).thenReturn(
+        doReturn(
             stubCompany(companyIdWithRecentFye, RECENT_FYE, 0, SectorType.FINANCIALS.name),
-        )
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithRecentFye)
 
-        whenever(mockCompanyDataApi.getCompanyById(companyIdWithDistantFye)).thenReturn(
+        doReturn(
             stubCompany(companyIdWithDistantFye, DISTANT_FYE, 0, SectorType.FINANCIALS.name),
-        )
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithDistantFye)
 
         val portfolioWithExtendedMonthsTimeWindowThreshold =
             buildMonitoredPortfolioEntity(
@@ -284,13 +288,13 @@ class PortfolioBulkDataRequestServiceTest {
         val companyIdWithRecentFye = UUID.randomUUID().toString()
         val companyIdWithDistantFye = UUID.randomUUID().toString()
 
-        whenever(mockCompanyDataApi.getCompanyById(companyIdWithRecentFye)).thenReturn(
+        doReturn(
             stubCompany(companyIdWithRecentFye, RECENT_FYE, 0, SectorType.FINANCIALS.name),
-        )
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithRecentFye)
 
-        whenever(mockCompanyDataApi.getCompanyById(companyIdWithDistantFye)).thenReturn(
+        doReturn(
             stubCompany(companyIdWithDistantFye, DISTANT_FYE, 0, SectorType.FINANCIALS.name),
-        )
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithDistantFye)
 
         val portfolioWithSixMonthsTimeWindowThreshold =
             buildMonitoredPortfolioEntity(

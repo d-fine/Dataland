@@ -48,6 +48,7 @@ export function generateCompanyInformation(): CompanyInformation {
     }).sort((a, b) => a.localeCompare(b)),
     companyLegalForm: valueOrNull(pickOneElement(legalForms)),
     website: valueOrNull(faker.internet.url()),
+    fiscalYearEnd: new (require('@e2e/utils/FakeFixtureUtils').Generator)().generateFiscalYearEnd(),
     isTeaserCompany: false,
   };
 }
