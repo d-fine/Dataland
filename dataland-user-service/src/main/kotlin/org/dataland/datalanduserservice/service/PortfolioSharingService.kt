@@ -95,11 +95,7 @@ class PortfolioSharingService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio =
-                portfolioRepository
-                    .getPortfolioByPortfolioId(portfolioId)
-                    ?.toBasePortfolio()
-                    ?: throw PortfolioNotFoundApiException(portfolioId.toString())
+            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString())
 
             val updatedSharedUserIds =
                 originalPortfolio.sharedUserIds.toMutableSet().apply {
