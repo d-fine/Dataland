@@ -276,5 +276,6 @@ class PortfolioServiceTest {
         monitoredFrameworks = emptySet(),
         NotificationFrequency.Weekly,
         timeWindowThreshold = null,
+        sharedUserIds = emptySet(),
     )
 }

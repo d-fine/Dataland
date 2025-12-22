@@ -73,6 +73,7 @@ class NotificationSchedulerSpringbootTest
                         true,
                         frameworks,
                         notificationFrequency = it,
+                        sharedUserIds = emptySet(),
                     )
                 }
 

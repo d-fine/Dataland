@@ -44,6 +44,7 @@ class PortfolioMonitoringServiceTest {
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
             NotificationFrequency.Weekly,
             timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
         )
 
     @BeforeEach

@@ -69,4 +69,9 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
      * Find all portfolios with specific notification frequency that are monitored
      */
     fun findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency: NotificationFrequency): List<PortfolioEntity>
+
+    /**
+     * Retrieve all portfolios where the given userId is in sharedUserIds
+     */
+    fun findAllBySharedUserIdsContaining(userId: String): List<PortfolioEntity>
 }
