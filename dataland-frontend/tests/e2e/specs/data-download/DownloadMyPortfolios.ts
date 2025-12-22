@@ -106,7 +106,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+    cy.wait(Cypress.env('long_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -115,7 +115,7 @@ function testDownloadPortfolio({
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 
-      cy.readFile(filePathStr, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
+      cy.readFile(filePathStr, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
 
       cy.task('getFileSize', filePathStr).then((size) => {
         expect(size).to.be.greaterThan(5000);

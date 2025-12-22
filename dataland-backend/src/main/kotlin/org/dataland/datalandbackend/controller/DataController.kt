@@ -6,7 +6,9 @@ import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -22,6 +24,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -34,6 +37,7 @@ import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
@@ -45,7 +49,7 @@ import java.time.format.DateTimeFormatter
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
-    private val dataExportService: DataExportService,
+    private val dataExportService: DataExportService<T>,
     private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -164,54 +168,65 @@ open class DataController<T>(
         )
     }
 
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
+    override fun postExportJobCompanyAssociatedDataByDimensions(
+        exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): ResponseEntity<InputStreamResource> {
-        if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
+    ): ResponseEntity<ExportJob> {
+        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
                 it.companyInformation == null
             }
         ) {
             throw ResourceNotFoundApiException(
-                summary = "CompanyIds $companyIds not found.",
+                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
                 message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
             )
         }
 
-        val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
-        companyIds.forEach { companyId ->
-            reportingPeriods.forEach { reportingPeriod ->
-                companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
-            }
-        }
-
-        val correlationId = IdUtils.generateUUID()
+        val listDataDimensions =
+            ListDataDimensions(
+                exportRequestData.companyIds,
+                exportRequestData.reportingPeriods,
+                listOf(dataType.toString()),
+            )
+        val correlationId = UUID.randomUUID()
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
-        val companyAssociatedDataForExport =
-            try {
-                dataExportService.buildStreamFromPortfolioExportData(
-                    this.buildCompanyExportData(
-                        companyIdAndReportingPeriodPairs,
-                        dataType.toString(), correlationId,
-                    ),
-                    exportFileType,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
-                )
-            } catch (_: DownloadDataNotFoundApiException) {
-                return ResponseEntity.noContent().build()
-            }
-        logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
+        val newExportJobEntity = dataExportService.createAndSaveExportJob(correlationId, exportRequestData.fileFormat)
+
+        try {
+            // Async function
+            dataExportService.startExportJob(
+                listDataDimensions,
+                exportRequestData.fileFormat,
+                newExportJobEntity,
+                clazz,
+                keepValueFieldsOnly,
+                includeAliases,
+            )
+        } catch (_: DownloadDataNotFoundApiException) {
+            newExportJobEntity.progressState = ExportJobProgressState.Failure
+            return ResponseEntity.noContent().build()
+        }
+        logger.info("Creation of ${exportRequestData.fileFormat.name} for export successful. Correlation ID: $correlationId")
+
+        return ResponseEntity
+            .ok(ExportJob(id = correlationId))
+    }
+
+    override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> {
+        val exportJobProgressState = dataExportService.getExportJobState(UUID.fromString(exportJobId))
+        return ResponseEntity.ok(exportJobProgressState)
+    }
+
+    override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> {
+        val exportFile = dataExportService.exportCompanyAssociatedDataById(UUID.fromString(exportJobId))
+        val fileFormat = dataExportService.getExportJobFileFormat(UUID.fromString(exportJobId))
 
         return ResponseEntity
             .ok()
-            .headers(buildHttpHeadersForExport(exportFileType))
-            .body(companyAssociatedDataForExport)
+            .headers(buildHttpHeadersForExport(fileFormat))
+            .body(exportFile)
     }
 
     /**
@@ -279,29 +294,6 @@ open class DataController<T>(
             },
             correlationId,
         )
-
-    private fun buildCompanyExportData(
-        companyAndReportingPeriodPairs: Set<Pair<String, String>>,
-        framework: String,
-        correlationId: String,
-    ): List<SingleCompanyExportData<T>> {
-        val dataDimensionsWithDataStrings =
-            getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
-
-        val basicCompanyInformation =
-            companyQueryManager.getBasicCompanyInformationByIds(
-                dataDimensionsWithDataStrings.map { it.key.companyId },
-            )
-
-        return dataDimensionsWithDataStrings.map {
-            SingleCompanyExportData(
-                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
-                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
-                reportingPeriod = it.key.reportingPeriod,
-                data = defaultObjectMapper.readValue(it.value, clazz),
-            )
-        }
-    }
 
     @Throws(AccessDeniedException::class)
     private fun verifyAccess(metaInfo: DataMetaInformationEntity) {

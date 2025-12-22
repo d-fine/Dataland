@@ -190,7 +190,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType, ExportJobProgressState } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -214,6 +214,9 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+
+const EXPORT_POLL_INTERVAL_MS = 500;
+const EXPORT_MAX_POLL_ATTEMPTS = 180;
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -448,6 +451,55 @@ function getCompanyIds(): string[] {
 }
 
 /**
+ * Polls the export job status until completion or timeout
+ * @param frameworkDataApi the API client to use for polling
+ * @param exportJobId the ID of the export job to poll
+ * @throws Error if job fails or times out
+ */
+async function pollExportJobStatus(
+  frameworkDataApi: PublicFrameworkDataApi<FrameworkData>,
+  exportJobId: string
+): Promise<void> {
+  let state: ExportJobProgressState = ExportJobProgressState.Pending;
+
+  for (let attempt = 0; attempt < EXPORT_MAX_POLL_ATTEMPTS; attempt++) {
+    const stateResponse = await frameworkDataApi.getExportJobState(exportJobId);
+    state = stateResponse.data;
+
+    if (state === ExportJobProgressState.Success) return;
+    if (state === ExportJobProgressState.Failure) {
+      throw new Error('Export job failed on server');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, EXPORT_POLL_INTERVAL_MS));
+  }
+
+  if (state !== ExportJobProgressState.Success) {
+    throw new Error('Export timeout - please try again with fewer companies or reporting periods');
+  }
+}
+
+/**
+ * Prepares the downloaded file by building filename and formatting content
+ * @param exportFileType the file type for export
+ * @param selectedFramework the framework being exported
+ * @param responseData the raw response data from the API
+ * @returns object containing filename and formatted content
+ */
+function prepareDownloadFile(
+  exportFileType: ExportFileType,
+  selectedFramework: DataTypeEnum,
+  responseData: string | ArrayBuffer | object
+): { filename: string; content: string | ArrayBuffer } {
+  const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+  const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
+  const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+  const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : (responseData as string | ArrayBuffer);
+
+  return { filename, content };
+}
+
+/**
  * Download the dataset from the selected reporting period as a file in the selected format
  * @param selectedYears selected reporting year
  * @param selectedFileType selected export file type
@@ -465,7 +517,6 @@ async function handleDatasetDownload(
   isDownloading.value = true;
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider
@@ -474,23 +525,23 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
-    const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-    const options: AxiosRequestConfig | undefined =
-      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
-
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
-    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
-
-    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+    const jobResponse = await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
       selectedYears,
       getCompanyIds(),
       exportFileType,
       keepValuesOnly,
-      includeAlias,
-      options
+      includeAlias
     );
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
+    await pollExportJobStatus(frameworkDataApi, assertDefined(jobResponse.data.id));
+
+    const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+
+    const response = await frameworkDataApi.exportCompanyAssociatedDataById(jobResponse.data.id, options);
+    const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);
+
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);

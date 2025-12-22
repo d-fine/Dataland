@@ -49,9 +49,7 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedLksgDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options

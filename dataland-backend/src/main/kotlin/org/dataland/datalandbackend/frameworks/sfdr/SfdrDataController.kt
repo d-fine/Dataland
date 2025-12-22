@@ -5,15 +5,15 @@ import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -32,7 +32,7 @@ class SfdrDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService,
+        dataExportService: DataExportService<SfdrData>,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<SfdrData>(
             datasetStorageService,
@@ -58,15 +58,13 @@ class SfdrDataController
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
         @Operation(operationId = "exportCompanyAssociatedSfdrDataByDimensions")
-        override fun exportCompanyAssociatedDataByDimensions(
-            reportingPeriods: List<String>,
-            companyIds: List<String>,
-            exportFileType: ExportFileType,
+        override fun postExportJobCompanyAssociatedDataByDimensions(
+            exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
-        ): ResponseEntity<InputStreamResource> =
+        ): ResponseEntity<ExportJob> =
             super
-                .exportCompanyAssociatedDataByDimensions(reportingPeriods, companyIds, exportFileType, keepValueFieldsOnly, includeAliases)
+                .postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanySfdrData")
         override fun getFrameworkDatasetsForCompany(

@@ -1,0 +1,175 @@
+package org.dataland.datalandbackend.controller
+
+import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.services.ExportJobService
+import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.whenever
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.UUID
+
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.profiles.active=nodb"],
+)
+@AutoConfigureMockMvc
+@DefaultMocks
+class DataExportControllerTest(
+    @Autowired private val mockMvc: MockMvc,
+) {
+    @MockitoBean
+    private lateinit var exportJobService: ExportJobService
+
+    private val mockSecurityContext = mock<SecurityContext>()
+    private val testUserId = UUID.randomUUID().toString()
+    private val otherUserId = UUID.randomUUID().toString()
+
+    private val userAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            username = "testuser",
+            userId = testUserId,
+            roles = setOf(DatalandRealmRole.ROLE_USER),
+        )
+
+    private val otherUserAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            username = "otheruser",
+            userId = otherUserId,
+            roles = setOf(DatalandRealmRole.ROLE_USER),
+        )
+
+    @BeforeEach
+    fun setup() {
+        reset(mockSecurityContext, exportJobService)
+        setMockUser(userAuthentication)
+    }
+
+    private fun setMockUser(authentication: DatalandJwtAuthentication) {
+        doReturn(authentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    @Test
+    fun `post export job returns job ID and state is initially Pending`() {
+        val testJobId = UUID.randomUUID().toString()
+        val exportJob = ExportJob(id = UUID.fromString(testJobId), userId = UUID.fromString(testUserId))
+
+        doReturn(exportJob)
+            .whenever(exportJobService)
+            .createExportJob(any(), any(), any(), any(), any(), eq(testUserId))
+
+        whenever(exportJobService.getJobState(testJobId, testUserId))
+            .thenReturn(ExportJobProgressState.Pending)
+
+        mockMvc
+            .perform(
+                post("/api/data/eutaxonomy-non-financials/export")
+                    .contentType("application/json")
+                    .content(
+                        """
+                        {
+                            "companyIds": ["comp-1", "comp-2"],
+                            "reportingPeriods": ["2024"],
+                            "fileFormat": "CSV"
+                        }
+                        """.trimIndent(),
+                    ).with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk)
+            .andExpect(jsonPath("$.id").value(testJobId))
+
+        mockMvc
+            .perform(
+                get("/api/data/eutaxonomy-non-financials/export/state")
+                    .param("exportJobId", testJobId)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk)
+            .andExpect(content().string("Pending"))
+    }
+
+    @Test
+    fun `get export job state returns 404 for non-existent job`() {
+        val nonExistentJobId = UUID.randomUUID().toString()
+
+        doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
+            .whenever(exportJobService)
+            .getJobState(nonExistentJobId, testUserId)
+
+        mockMvc
+            .perform(
+                get("/api/data/eutaxonomy-non-financials/export/state")
+                    .param("exportJobId", nonExistentJobId)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `user cannot access other user's export job`() {
+        val jobId = UUID.randomUUID().toString()
+
+        doReturn(ExportJob(id = UUID.fromString(jobId), userId = UUID.fromString(testUserId)))
+            .whenever(exportJobService)
+            .createExportJob(any(), any(), any(), any(), any(), eq(testUserId))
+
+        mockMvc
+            .perform(
+                post("/api/data/eutaxonomy-non-financials/export")
+                    .contentType("application/json")
+                    .content("""{"companyIds": ["comp-1"], "reportingPeriods": ["2024"], "fileFormat": "CSV"}""")
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk)
+
+        setMockUser(otherUserAuthentication)
+        doThrow(AccessDeniedException("Access denied"))
+            .whenever(exportJobService)
+            .getJobState(jobId, otherUserId)
+
+        mockMvc
+            .perform(
+                get("/api/data/eutaxonomy-non-financials/export/state")
+                    .param("exportJobId", jobId)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isForbidden)
+    }
+
+    @Test
+    fun `export download returns 404 for non-existent job`() {
+        val nonExistentJobId = UUID.randomUUID().toString()
+
+        doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
+            .whenever(exportJobService)
+            .downloadExport(nonExistentJobId, testUserId)
+
+        mockMvc
+            .perform(
+                post("/api/data/eutaxonomy-non-financials/export/download")
+                    .param("exportJobId", nonExistentJobId)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isNotFound)
+    }
+}
