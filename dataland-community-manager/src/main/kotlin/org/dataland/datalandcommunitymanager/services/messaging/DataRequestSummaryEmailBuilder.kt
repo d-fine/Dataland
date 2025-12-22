@@ -59,7 +59,7 @@ class DataRequestSummaryEmailBuilder
             val newData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.AvailableEvent)
             val updatedData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.UpdatedEvent)
             val nonSourceableData = aggregateFrameworkDataForOneEventType(events, NotificationEventType.NonSourceableEvent)
-            return DataRequestSummaryEmailContent(newData, updatedData, nonSourceableData)
+            return DataRequestSummaryEmailContent(newData, updatedData, nonSourceableData, "", "")
         }
 
         /**

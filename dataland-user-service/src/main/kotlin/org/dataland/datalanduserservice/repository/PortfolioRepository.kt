@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.repository
 
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -63,6 +64,11 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
         userId: String,
         portfolioName: String,
     ): Boolean
+
+    /**
+     * Find all portfolios with specific notification frequency that are monitored
+     */
+    fun findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency: NotificationFrequency): List<PortfolioEntity>
 
     /**
      * Retrieve all portfolios where the given userId is in sharedUserIds

@@ -110,9 +110,7 @@ class DataRequestNonSourceableTest {
     @Test
     fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
         // Post requests for 2023 and 2024 as premium user.
-        val requestIdsFirstUser = postTwoDataRequestForSameUserAndReturnRequestIds()
-        val requestIdFirstUserRequest2023 = requestIdsFirstUser.first
-        val requestIdFirstUserRequest2024 = requestIdsFirstUser.second
+        val (requestIdFirstUserRequest2023, requestIdFirstUserRequest2024) = postTwoDataRequestForSameUserAndReturnRequestIds()
 
         // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()

@@ -957,13 +957,24 @@
   },
   "components": {
     "schemas": {
+      "NotificationFrequency": {
+        "type": "string",
+        "description": "Possible frequencies in which notifications can be received.",
+        "example": "Weekly",
+        "enum": [
+          "NoNotifications",
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ]
+      },
       "PortfolioUpload": {
         "required": [
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
-          "portfolioName",
-          "sharedUserIds"
+          "notificationFrequency",
+          "portfolioName"
         ],
         "type": "object",
         "properties": {
@@ -999,16 +1010,17 @@
               "type": "string"
             }
           },
-          "sharedUserIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "A list of user IDs with whom the portfolio is shared.",
-            "example": [
-              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-            ],
-            "items": {
-              "type": "string"
-            }
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1019,9 +1031,9 @@
           "isMonitored",
           "lastUpdateTimestamp",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
-          "sharedUserIds",
           "userId"
         ],
         "type": "object",
@@ -1079,16 +1091,17 @@
               "type": "string"
             }
           },
-          "sharedUserIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "A list of user IDs with whom the portfolio is shared.",
-            "example": [
-              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-            ],
-            "items": {
-              "type": "string"
-            }
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
@@ -1114,7 +1127,8 @@
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks"
+          "monitoredFrameworks",
+          "notificationFrequency"
         ],
         "type": "object",
         "properties": {
@@ -1132,12 +1146,25 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
       "EnrichedPortfolio": {
         "required": [
           "entries",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1180,16 +1207,17 @@
               "type": "string"
             }
           },
-          "sharedUserIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "A list of user IDs with whom the portfolio is shared.",
-            "example": [
-              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-            ],
-            "items": {
-              "type": "string"
-            }
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },

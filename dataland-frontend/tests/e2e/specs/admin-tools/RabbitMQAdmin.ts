@@ -21,6 +21,9 @@ const queues = [
   'qa-service.qaDataPoints',
   'qa-service.migrateDatasets',
   'community-manager.queue.nonSourceableData',
+  'data-sourcing-service.datasetQaStatusUpdate',
+  'user-service.processMessageForDataReportedAsNonSourceable',
+  'user-service.processMessageForAvailableDataAndUpdates',
 ];
 
 /**

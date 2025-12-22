@@ -19,6 +19,7 @@ object RoutingKeyNames {
     const val DATASET_DELETION = "dataset.deletion"
     const val DATASET_STORED_TO_ASSEMBLED_MIGRATION = "dataset.storedDatasetMigratedToAssembledDataset"
     const val DATA_NONSOURCEABLE = "dataNonSourceable"
+    const val DATASOURCING_NONSOURCEABLE = "dataSourcingNonSourceable"
     const val PORTFOLIO_UPDATE = "portfolio.update"
     const val REQUEST_PATCH = "request.patch"
 }
