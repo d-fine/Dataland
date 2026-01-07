@@ -152,12 +152,10 @@ class PortfolioService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio =
-                portfolioRepository.getPortfolioByPortfolioId(UUID.fromString(portfolioId))
-                    ?: throw PortfolioNotFoundApiException(portfolioId)
+            val originalPortfolio = getPortfolio(portfolioId)
 
             val updatedPortfolioEntity =
-                portfolio.toPortfolioEntity(
+                originalPortfolio.toPortfolioEntity(
                     portfolioId,
                     originalPortfolio.creationTimestamp,
                     portfolio.lastUpdateTimestamp,

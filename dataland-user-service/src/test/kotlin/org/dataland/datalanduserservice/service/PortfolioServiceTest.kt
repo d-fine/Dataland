@@ -190,6 +190,30 @@ class PortfolioServiceTest {
     }
 
     @Test
+    fun `test that replacing a portfolio as admin for a different user returns the correct response`() {
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
+
+        val portfolioEntityCaptor = argumentCaptor<PortfolioEntity>()
+
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+
+        val newPortfolio = buildPortfolio(portfolioName = "Portfolio New", userId = adminUserId)
+
+        assertDoesNotThrow {
+            portfolioService.replacePortfolio(dummyPortfolio.portfolioId, newPortfolio, dummyCorrelationId)
+        }
+
+        verify(mockPortfolioRepository).save(portfolioEntityCaptor.capture())
+
+        assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
+        assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
+        assertEquals(dummyPortfolio.userId, portfolioEntityCaptor.firstValue.userId)
+    }
+
+    @Test
     fun `test that attempting to replace a non existing portfolio throws a PortfolioNotFoundApiException`() {
         doReturn(null)
             .whenever(mockPortfolioRepository)
