@@ -78,6 +78,16 @@ class PortfolioControllerTest(
         }
         """.trimIndent()
 
+        private val monitoredPortfolioPatchRequestBody =  """
+            {
+              "isMonitored": true, 
+              "monitoredFrameworks": ["sfdr"], 
+              "notificationFrequency": "Weekly", 
+              "timeWindowThreshold": "Standard"
+            }
+            """.trimIndent()
+
+
     private val dummyAdminAuthentication: DatalandJwtAuthentication =
         AuthenticationMock.mockJwtAuthentication(
             username = "PORTFOLIO_ADMIN",
@@ -177,9 +187,6 @@ class PortfolioControllerTest(
 
     @Test
     fun `admins can get any portfolio`() {
-        // For admins, the PortfolioRightsUtilsComponent is not consulted in the SpEL,
-        // so no stubbing is necessary.
-
         setMockSecurityContext(dummyAdminAuthentication)
         performGetPortfolioAndExpect(status().isOk)
     }
@@ -204,7 +211,7 @@ class PortfolioControllerTest(
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
-        // shared flag becomes irrelevant once owner is true
+
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
                 any(),
@@ -279,8 +286,6 @@ class PortfolioControllerTest(
     fun `regular users can always create unmonitored portfolios`() {
         setMockSecurityContext(dummyUserAuthentication)
 
-        // For isMonitored = false, your implementation might still call the component;
-        // here we allow it by default.
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
@@ -300,16 +305,8 @@ class PortfolioControllerTest(
     @Test
     fun `admins can replace any portfolio`() {
         setMockSecurityContext(dummyAdminAuthentication)
-
-        val requestBody =
-            """
-            {
-              "name": "Replaced Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performReplacePortfolioAndExpect(requestBody, status().isOk)
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+        performReplacePortfolioAndExpect(monitoredRequestBody, status().isOk)
     }
 
     @Test
@@ -323,16 +320,9 @@ class PortfolioControllerTest(
                 org.mockito.kotlin.eq(true),
             ),
         ).thenReturn(true)
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        val requestBody =
-            """
-            {
-              "name": "Some Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performReplacePortfolioAndExpect(requestBody, status().isForbidden)
+        performReplacePortfolioAndExpect(monitoredRequestBody, status().isForbidden)
     }
 
     @Test
@@ -347,15 +337,9 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val requestBody =
-            """
-            {
-              "name": "Updated Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        performReplacePortfolioAndExpect(requestBody, status().isOk)
+        performReplacePortfolioAndExpect(monitoredRequestBody, status().isOk)
     }
 
     @Test
@@ -370,15 +354,8 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
-        val requestBody =
-            """
-            {
-              "name": "Updated Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performReplacePortfolioAndExpect(requestBody, status().isForbidden)
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+        performReplacePortfolioAndExpect(monitoredRequestBody, status().isForbidden)
     }
 
     // -----------------------
@@ -389,14 +366,7 @@ class PortfolioControllerTest(
     fun `admins can patch monitoring of any portfolio`() {
         setMockSecurityContext(dummyAdminAuthentication)
 
-        val requestBody =
-            """
-            {
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performPatchMonitoringAndExpect(requestBody, status().isOk)
+        performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isOk)
     }
 
     @Test
@@ -411,14 +381,7 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val requestBody =
-            """
-            {
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performPatchMonitoringAndExpect(requestBody, status().isForbidden)
+        performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isForbidden)
     }
 
     @Test
@@ -433,14 +396,7 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val requestBody =
-            """
-            {
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performPatchMonitoringAndExpect(requestBody, status().isOk)
+        performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isOk)
     }
 
     @Test
@@ -455,13 +411,6 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
-        val requestBody =
-            """
-            {
-              "isMonitored": true
-            }
-            """.trimIndent()
-
-        performPatchMonitoringAndExpect(requestBody, status().isForbidden)
+        performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isForbidden)
     }
 }
