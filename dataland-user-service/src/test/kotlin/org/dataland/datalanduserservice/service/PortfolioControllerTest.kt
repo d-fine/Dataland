@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -52,6 +53,7 @@ class PortfolioControllerTest(
 
     private val adminUserId = UUID.randomUUID()
     private val regularUserId = UUID.randomUUID()
+    private val sharedUserId = UUID.randomUUID()
 
     private val monitoredRequestBody =
         """
@@ -65,6 +67,7 @@ class PortfolioControllerTest(
           "sharedUserIds": []
         }
         """.trimIndent()
+
     private val notMonitoredRequestBody =
         """
         {
@@ -75,6 +78,13 @@ class PortfolioControllerTest(
           "notificationFrequency": "Weekly",
           "timeWindowThreshold": null,
           "sharedUserIds": []
+        }
+        """.trimIndent()
+
+    private val sharingPatchRequestBody =
+        """
+        {
+          "sharedUserIds": ["$sharedUserId"]
         }
         """.trimIndent()
 
@@ -111,6 +121,8 @@ class PortfolioControllerTest(
             portfolioRightsUtilsComponent,
             companyDataController,
         )
+        portfolioRepository.deleteAll()
+
         val entity =
             PortfolioEntity(
                 portfolioId = UUID.fromString(portfolioId),
@@ -177,6 +189,45 @@ class PortfolioControllerTest(
                 patch("/portfolios/$portfolioId/monitoring")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestBody)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
+    private fun performGetSharedPortfoliosAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+        mockMvc
+            .perform(
+                get("/portfolios/shared")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
+    private fun performGetSharedPortfolioNamesAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+        mockMvc
+            .perform(
+                get("/portfolios/shared/names")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
+    private fun performPatchSharingAndExpect(
+        requestBody: String,
+        statusMatcher: org.springframework.test.web.servlet.ResultMatcher,
+    ) {
+        mockMvc
+            .perform(
+                patch("/portfolios/$portfolioId/sharing")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(requestBody)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
+    private fun performDeleteCurrentUserFromSharingAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+        mockMvc
+            .perform(
+                delete("/portfolios/shared/$portfolioId")
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(statusMatcher)
     }
@@ -412,5 +463,105 @@ class PortfolioControllerTest(
         ).thenReturn(false)
 
         performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isForbidden)
+    }
+
+    // -----------------------
+    // PortfolioSharingApi security
+    // -----------------------
+
+    // --- getAllSharedPortfoliosForCurrentUser ---
+
+    @Test
+    fun `admins can get all shared portfolios for current user`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performGetSharedPortfoliosAndExpect(status().isOk)
+    }
+
+    @Test
+    fun `regular users can get all shared portfolios for current user`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        performGetSharedPortfoliosAndExpect(status().isOk)
+    }
+
+    // --- getAllSharedPortfolioNamesForCurrentUser ---
+
+    @Test
+    fun `admins can get all shared portfolio names for current user`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performGetSharedPortfolioNamesAndExpect(status().isOk)
+    }
+
+    @Test
+    fun `regular users can get all shared portfolio names for current user`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        performGetSharedPortfolioNamesAndExpect(status().isOk)
+    }
+
+    // --- patchSharing ---
+
+    @Test
+    fun `admins can patch sharing of any portfolio`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performPatchSharingAndExpect(sharingPatchRequestBody, status().isOk)
+    }
+
+    @Test
+    fun `regular users can patch sharing when they are owner`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
+
+        performPatchSharingAndExpect(sharingPatchRequestBody, status().isOk)
+    }
+
+    @Test
+    fun `regular users cannot patch sharing when they are not owner`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
+
+        performPatchSharingAndExpect(sharingPatchRequestBody, status().isForbidden)
+    }
+
+    // --- deleteCurrentUserFromSharing ---
+
+    @Test
+    fun `admins can delete current user from sharing for any portfolio`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performDeleteCurrentUserFromSharingAndExpect(status().isNoContent)
+    }
+
+    @Test
+    fun `regular users can delete themselves from sharing if portfolio is shared with them`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(
+            portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
+                any(), // authentication.userId
+                org.mockito.kotlin.eq(portfolioId),
+            ),
+        ).thenReturn(true)
+
+        performDeleteCurrentUserFromSharingAndExpect(status().isNoContent)
+    }
+
+    @Test
+    fun `regular users cannot delete themselves from sharing if portfolio is not shared with them`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(
+            portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
+                any(),
+                org.mockito.kotlin.eq(portfolioId),
+            ),
+        ).thenReturn(false)
+
+        performDeleteCurrentUserFromSharingAndExpect(status().isForbidden)
     }
 }
