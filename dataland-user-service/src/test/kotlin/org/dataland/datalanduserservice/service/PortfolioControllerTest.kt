@@ -2,6 +2,8 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.DatalandUserService
+import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -39,6 +41,7 @@ import java.util.UUID
 class PortfolioControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val portfolioService: PortfolioService,
+    @Autowired private val portfolioRepository: PortfolioRepository,
 ) {
     @MockitoBean(name = "PortfolioRightsUtilsComponent")
     private lateinit var portfolioRightsUtilsComponent: PortfolioRightsUtilsComponent
@@ -135,10 +138,28 @@ class PortfolioControllerTest(
 
     @Test
     fun `admins can get any portfolio`() {
-        setMockSecurityContext(dummyAdminAuthentication)
+
 
         // For admins, the PortfolioRightsUtilsComponent is not consulted in the SpEL,
         // so no stubbing is necessary.
+
+        val entity = PortfolioEntity(
+            portfolioId = UUID.fromString(portfolioId),
+            userId = regularUserId.toString(),
+            portfolioName = "Test Portfolio",
+            creationTimestamp = System.currentTimeMillis(),
+            lastUpdateTimestamp = System.currentTimeMillis(),
+            companyIds = mutableSetOf("company-1"),
+            isMonitored = false,
+            monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
+
+        )
+        portfolioRepository.save(entity)
+
+        setMockSecurityContext(dummyAdminAuthentication)
         performGetPortfolioAndExpect(status().isOk)
     }
 
@@ -153,6 +174,22 @@ class PortfolioControllerTest(
                 org.mockito.kotlin.eq(portfolioId),
             ),
         ).thenReturn(false)
+
+        val entity = PortfolioEntity(
+            portfolioId = UUID.fromString(portfolioId),
+            userId = regularUserId.toString(),
+            portfolioName = "Test Portfolio",
+            creationTimestamp = System.currentTimeMillis(),
+            lastUpdateTimestamp = System.currentTimeMillis(),
+            companyIds = mutableSetOf("company-1"),
+            isMonitored = false,
+            monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
+
+            )
+        portfolioRepository.save(entity)
 
         performGetPortfolioAndExpect(status().isForbidden)
     }
@@ -170,6 +207,22 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
+        val entity = PortfolioEntity(
+            portfolioId = UUID.fromString(portfolioId),
+            userId = regularUserId.toString(),
+            portfolioName = "Test Portfolio",
+            creationTimestamp = System.currentTimeMillis(),
+            lastUpdateTimestamp = System.currentTimeMillis(),
+            companyIds = mutableSetOf("company-1"),
+            isMonitored = false,
+            monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
+
+            )
+        portfolioRepository.save(entity)
+
         performGetPortfolioAndExpect(status().isOk)
     }
 
@@ -184,6 +237,22 @@ class PortfolioControllerTest(
                 org.mockito.kotlin.eq(portfolioId),
             ),
         ).thenReturn(true)
+
+        val entity = PortfolioEntity(
+            portfolioId = UUID.fromString(portfolioId),
+            userId = regularUserId.toString(),
+            portfolioName = "Test Portfolio",
+            creationTimestamp = System.currentTimeMillis(),
+            lastUpdateTimestamp = System.currentTimeMillis(),
+            companyIds = mutableSetOf("company-1"),
+            isMonitored = false,
+            monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
+
+            )
+        portfolioRepository.save(entity)
 
         performGetPortfolioAndExpect(status().isOk)
     }
