@@ -92,6 +92,8 @@ async function handleCompanyAddition(): Promise<void> {
           identifiers: updatedCompanyIdentifiers as unknown as Set<string>,
           isMonitored: selectedPortfolio.isMonitored,
           monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
+          notificationFrequency: selectedPortfolio.notificationFrequency,
+          timeWindowThreshold: selectedPortfolio.timeWindowThreshold,
         });
       })
     );

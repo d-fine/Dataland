@@ -96,7 +96,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '17,992.73');
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '78,448.67');
         });
 
       cy.get('[data-test="quality-select"]')
@@ -106,7 +106,6 @@ describeIf(
 
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
-      cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
@@ -158,7 +157,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '1,838,828,082.29');
+          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '2,079,638,442.05');
 
           cy.get('[data-test="currency"]').should('exist');
         });

@@ -5,6 +5,7 @@ package org.dataland.datalanduserservice.controller
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
@@ -56,6 +57,7 @@ class PortfolioControllerTest {
             setOf(validCompanyId),
             isMonitored,
             dummyMonitoredFrameworks,
+            NotificationFrequency.Weekly,
         )
 
     @BeforeEach

@@ -7,6 +7,8 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.model.SectorType
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -16,6 +18,7 @@ import org.mockito.Answers
 import org.mockito.Mockito.mockStatic
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.clearInvocations
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -24,13 +27,17 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.MonthDay
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class PortfolioBulkDataRequestServiceTest {
     companion object {
         private val TODAY: LocalDate = LocalDate.of(2025, 2, 15)
-        private val FYE: LocalDate = LocalDate.of(2024, 12, 31)
+        private val FYE = MonthDay.of(12, 31)
+        private val RECENT_FYE = MonthDay.of(12, 31)
+        private val DISTANT_FYE = MonthDay.of(6, 1)
         private const val USER_ID = "user id"
         private const val PORTFOLIO_ID = "00000000-0000-0000-0000-000000000001"
         private const val COMPANY_ID_1 = "Company id 1"
@@ -79,7 +86,7 @@ class PortfolioBulkDataRequestServiceTest {
 
     private fun stubCompany(
         id: String,
-        fiscalYearEnd: LocalDate?,
+        fiscalYearEnd: MonthDay?,
         reportingPeriodShift: Int?,
         sector: String?,
     ): StoredCompany =
@@ -90,7 +97,10 @@ class PortfolioBulkDataRequestServiceTest {
                 headquarters = "HQ",
                 identifiers = emptyMap(),
                 countryCode = "DE",
-                fiscalYearEnd = fiscalYearEnd,
+                fiscalYearEnd =
+                    fiscalYearEnd
+                        ?.atYear(2024)
+                        ?.format(DateTimeFormatter.ofPattern("dd-MMM")),
                 reportingPeriodShift = reportingPeriodShift,
                 sector = sector,
             ),
@@ -102,9 +112,7 @@ class PortfolioBulkDataRequestServiceTest {
         reportingPeriodShift: Int?,
         sector: String?,
     ) {
-        whenever(mockCompanyDataApi.getCompanyById(id)).thenReturn(
-            stubCompany(id, FYE, reportingPeriodShift, sector),
-        )
+        doReturn(stubCompany(id, FYE, reportingPeriodShift, sector)).whenever(mockCompanyDataApi).getCompanyById(id)
     }
 
     private fun stubPortfolioRepo(portfolios: List<PortfolioEntity>) {
@@ -121,9 +129,11 @@ class PortfolioBulkDataRequestServiceTest {
         userId = USER_ID,
         creationTimestamp = TIMESTAMP,
         lastUpdateTimestamp = TIMESTAMP,
+        notificationFrequency = NotificationFrequency.Weekly,
         companyIds = companyIds.toMutableSet(),
         isMonitored = true,
         monitoredFrameworks = frameworks,
+        timeWindowThreshold = TimeWindowThreshold.Standard,
     )
 
     @Test
@@ -226,6 +236,80 @@ class PortfolioBulkDataRequestServiceTest {
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
                 companyIdentifiers == setOf(COMPANY_ID) &&
+                    dataTypes == setOf(SFDR) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `posts bulk requests for extended time window`() {
+        val companyIdWithRecentFye = UUID.randomUUID().toString()
+        val companyIdWithDistantFye = UUID.randomUUID().toString()
+
+        doReturn(
+            stubCompany(companyIdWithRecentFye, RECENT_FYE, 0, SectorType.FINANCIALS.name),
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithRecentFye)
+
+        doReturn(
+            stubCompany(companyIdWithDistantFye, DISTANT_FYE, 0, SectorType.FINANCIALS.name),
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithDistantFye)
+
+        val portfolioWithExtendedMonthsTimeWindowThreshold =
+            buildMonitoredPortfolioEntity(
+                companyIds = setOf(companyIdWithRecentFye, companyIdWithDistantFye),
+                frameworks = setOf(SFDR),
+            ).copy(timeWindowThreshold = TimeWindowThreshold.Extended)
+        stubPortfolioRepo(listOf(portfolioWithExtendedMonthsTimeWindowThreshold))
+
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
+
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(companyIdWithRecentFye, companyIdWithDistantFye) &&
+                    dataTypes == setOf(SFDR) &&
+                    reportingPeriods == setOf("2024")
+            },
+            eq(USER_ID),
+        )
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(companyIdWithRecentFye) &&
+                    dataTypes == setOf(SFDR) &&
+                    reportingPeriods == setOf("2023")
+            },
+            eq(USER_ID),
+        )
+        verifyNoMoreInteractions(mockRequestApi)
+    }
+
+    @Test
+    fun `posts bulk requests for six months time window`() {
+        val companyIdWithRecentFye = UUID.randomUUID().toString()
+        val companyIdWithDistantFye = UUID.randomUUID().toString()
+
+        doReturn(
+            stubCompany(companyIdWithRecentFye, RECENT_FYE, 0, SectorType.FINANCIALS.name),
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithRecentFye)
+
+        doReturn(
+            stubCompany(companyIdWithDistantFye, DISTANT_FYE, 0, SectorType.FINANCIALS.name),
+        ).whenever(mockCompanyDataApi).getCompanyById(companyIdWithDistantFye)
+
+        val portfolioWithSixMonthsTimeWindowThreshold =
+            buildMonitoredPortfolioEntity(
+                companyIds = setOf(companyIdWithRecentFye, companyIdWithDistantFye),
+                frameworks = setOf(SFDR),
+            )
+        stubPortfolioRepo(listOf(portfolioWithSixMonthsTimeWindowThreshold))
+
+        service.createBulkDataRequestsForAllMonitoredPortfolios()
+
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == setOf(companyIdWithRecentFye) &&
                     dataTypes == setOf(SFDR) &&
                     reportingPeriods == setOf("2024")
             },

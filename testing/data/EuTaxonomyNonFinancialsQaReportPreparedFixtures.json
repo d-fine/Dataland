@@ -2,30 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Fort Nicoton",
-			"headquartersPostalCode": null,
-			"sector": "mindshare",
+			"headquarters": "East Jeremieville",
+			"headquartersPostalCode": "61377-3961",
+			"sector": "smart contracts",
 			"identifiers": {
-				"Lei": [
-					"3D7fYT2k4KpYCrC5S46I"
-				],
+				"Lei": [],
 				"Isin": [
-					"0cVwTI0AdFLS"
+					"qkzg0a1dwvYn"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"cAG1ApDGT8"
+				],
+				"Ticker": [
+					"7qW1G5Q"
+				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"HHOUeQVxKMeudtb"
+				]
 			},
-			"countryCode": "HT",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Beier and Sons",
-				"Prosacco, Robel and Herzog"
+			"countryCode": "VU",
+			"companyContactDetails": [
+				"Rosie64@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://poor-reservation.com/",
+			"companyAlternativeNames": [
+				"Armstrong, Sipes and Luettgen",
+				"Grady LLC",
+				"Sipes, Conroy and Hansen"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://heavy-seal.biz/",
+			"fiscalYearEnd": "21-Jan",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -93,6 +101,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]

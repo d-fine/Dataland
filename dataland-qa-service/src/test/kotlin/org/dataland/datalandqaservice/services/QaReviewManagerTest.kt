@@ -19,10 +19,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.any
-import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
@@ -89,65 +92,47 @@ class QaReviewManagerTest {
             .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
     }
 
-    /**
-     * Set up the spy object to react in a specific way. Note: We don't need the spy for each test.
-     */
-    private fun setupSpy() {
+    @ParameterizedTest
+    @CsvSource(
+        "true, Accepted",
+        "false, Pending",
+    )
+    fun `check that adding a new qa review entry works on valid input`(
+        bypassQa: Boolean,
+        expectedStatus: QaStatus,
+    ) {
         spyQaReviewManager = spy(qaReviewManager)
-        doReturn(mockQaReviewEntity)
-            .whenever(spyQaReviewManager)
-            .saveQaReviewEntity(any(), any(), any(), anyOrNull(), any())
         doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
-    }
-
-    @Test
-    fun `check that adding a new qa review entry works on valid input with bypassQa true`() {
-        setupSpy()
 
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(
                 dataId,
-                bypassQa = true,
+                bypassQa = bypassQa,
                 correlationId = correlationId,
             )
         }
-        verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
+
+        verify(spyQaReviewManager, times(1)).handleQaChange(
             dataId = dataId,
-            qaStatus = QaStatus.Accepted,
+            qaStatus = expectedStatus,
             triggeringUserId = uploaderId,
-            comment = bypassQaComment,
+            comment = if (bypassQa) bypassQaComment else null,
             correlationId = correlationId,
         )
+        val argCaptor = argumentCaptor<QaReviewEntity>()
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
-            mockQaReviewEntity,
-            correlationId,
+            argCaptor.capture(),
+            eq(correlationId),
         )
-    }
-
-    @Test
-    fun `check that adding a new qa review entry works on valid input with bypassQa false`() {
-        setupSpy()
-
-        assertDoesNotThrow {
-            spyQaReviewManager.addDatasetToQaReviewRepository(dataId, bypassQa = false, correlationId = correlationId)
-        }
-        verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
-            dataId = dataId,
-            qaStatus = QaStatus.Pending,
-            triggeringUserId = uploaderId,
-            comment = null,
-            correlationId = correlationId,
-        )
-        verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
-            mockQaReviewEntity,
-            correlationId,
-        )
+        Assertions.assertEquals(dataId, argCaptor.firstValue.dataId)
+        Assertions.assertEquals(companyId, argCaptor.firstValue.companyId)
+        Assertions.assertEquals(mockDataMetaInformation.dataType.value, argCaptor.firstValue.framework)
     }
 
     @Test
     fun `check that saving QaReviewEntity works as expected`() {
         assertDoesNotThrow {
-            qaReviewManager.saveQaReviewEntity(
+            qaReviewManager.handleQaChange(
                 dataId = dataId,
                 qaStatus = QaStatus.Pending,
                 triggeringUserId = uploaderId,

@@ -3,6 +3,8 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -40,6 +42,8 @@ class PortfolioMonitoringServiceTest {
             identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
         )
 
     @BeforeEach
@@ -67,6 +71,8 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(null)
@@ -90,6 +96,8 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())
@@ -108,5 +116,6 @@ class PortfolioMonitoringServiceTest {
         assertEquals(originalPortfolio.identifiers, updatedPortfolio.identifiers)
         assertEquals(portfolioMonitoringPatch.isMonitored, updatedPortfolio.isMonitored)
         assertEquals(portfolioMonitoringPatch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
+        assertEquals(portfolioMonitoringPatch.timeWindowThreshold, updatedPortfolio.timeWindowThreshold)
     }
 }

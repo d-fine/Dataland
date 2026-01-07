@@ -170,6 +170,8 @@ class PortfolioService
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
                     portfolio.monitoredFrameworks,
+                    portfolio.notificationFrequency,
+                    portfolio.timeWindowThreshold,
                 )
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
