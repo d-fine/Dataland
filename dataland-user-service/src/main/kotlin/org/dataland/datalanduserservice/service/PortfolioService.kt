@@ -153,7 +153,7 @@ class PortfolioService
             )
 
             val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
+                portfolioRepository.getPortfolioByPortfolioId(UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
             val updatedPortfolioEntity =

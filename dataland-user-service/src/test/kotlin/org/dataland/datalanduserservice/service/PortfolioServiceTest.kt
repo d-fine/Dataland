@@ -176,7 +176,7 @@ class PortfolioServiceTest {
 
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
 
         assertDoesNotThrow {
             portfolioService.replacePortfolio(dummyPortfolio.portfolioId, dummyPortfolio2, dummyCorrelationId)
@@ -193,7 +193,7 @@ class PortfolioServiceTest {
     fun `test that attempting to replace a non existing portfolio throws a PortfolioNotFoundApiException`() {
         doReturn(null)
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+            .getPortfolioByPortfolioId(dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.replacePortfolio(

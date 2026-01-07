@@ -7,6 +7,8 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioService
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -50,7 +52,8 @@ class Validator
             portfolioUpload: PortfolioUpload,
             correlationId: String,
         ) {
-            if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId)) {
+            val isAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId) && !isAdmin) {
                 throw PortfolioNotFoundApiException(portfolioId)
             }
             val portfolioToBeReplaced = portfolioService.getPortfolio(portfolioId)
