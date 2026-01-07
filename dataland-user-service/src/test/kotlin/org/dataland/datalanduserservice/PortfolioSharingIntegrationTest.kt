@@ -194,7 +194,7 @@ class PortfolioSharingIntegrationTest
         }
 
         @Test
-        fun `patchSharing throws PortfolioNotFoundApiException for non-existent portfolio`() {
+        fun `patchSharing throws PortfolioNotFoundApiException for nonexistent portfolio`() {
             setAuthenticationContext(dummyOwnerUserId)
             val nonExistentId = UUID.randomUUID()
             val dummyPortfolio = createPortfolioEntity(emptySet())
@@ -229,7 +229,7 @@ class PortfolioSharingIntegrationTest
         }
 
         @Test
-        fun `deleteCurrentUserFromSharing throws PortfolioNotFoundApiException for non-existent portfolio`() {
+        fun `deleteCurrentUserFromSharing throws PortfolioNotFoundApiException for nonexistent portfolio`() {
             setAuthenticationContext(dummySharedUserId)
             val nonExistentId = UUID.randomUUID()
             val exception =

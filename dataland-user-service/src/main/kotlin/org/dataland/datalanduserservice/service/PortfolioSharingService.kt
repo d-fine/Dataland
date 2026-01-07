@@ -97,17 +97,12 @@ class PortfolioSharingService
 
             val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString())
 
-            val updatedSharedUserIds =
-                originalPortfolio.sharedUserIds.toMutableSet().apply {
-                    remove(userId)
-                }
-
             val updatedPortfolioEntity =
                 originalPortfolio.toPortfolioEntity(
                     portfolioId = portfolioId.toString(),
                     creationTimestamp = originalPortfolio.creationTimestamp,
                     lastUpdateTimestamp = originalPortfolio.lastUpdateTimestamp, // should timestamp be updated or not?
-                    sharedUserIds = updatedSharedUserIds,
+                    sharedUserIds = originalPortfolio.sharedUserIds - userId,
                 )
 
             portfolioRepository.save(updatedPortfolioEntity)
