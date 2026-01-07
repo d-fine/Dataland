@@ -173,8 +173,8 @@ class AccountingServiceListenerTest {
                 dataSourcingId = dataSourcingId,
                 userIdsAssociatedRequestsForSameTriple = emptyList(),
                 requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = "2025",
-                requestedFramework = "sfdr",
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = requestedFramework,
             )
         val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
@@ -200,8 +200,8 @@ class AccountingServiceListenerTest {
                 dataSourcingId = dataSourcingId,
                 userIdsAssociatedRequestsForSameTriple = listOf(UUID.randomUUID().toString()),
                 requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = "2025",
-                requestedFramework = "sfdr",
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = requestedFramework,
             )
         val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
@@ -232,8 +232,8 @@ class AccountingServiceListenerTest {
                 dataSourcingId = dataSourcingId,
                 userIdsAssociatedRequestsForSameTriple = listOf(associatedUserIdForSameCompany),
                 requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = "2025",
-                requestedFramework = "sfdr",
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = requestedFramework,
             )
         val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
@@ -304,8 +304,8 @@ class AccountingServiceListenerTest {
                 dataSourcingId = dataSourcingId,
                 userIdsAssociatedRequestsForSameTriple = listOf(otherAssociatedUserId),
                 requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = "2025",
-                requestedFramework = "sfdr",
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = requestedFramework,
             )
         val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
