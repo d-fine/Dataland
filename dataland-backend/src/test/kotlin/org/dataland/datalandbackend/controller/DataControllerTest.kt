@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
+import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
@@ -15,6 +16,7 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
@@ -59,8 +61,15 @@ internal class DataControllerTest {
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
+    private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
-        DataExportService(mockDataPointUtils, mockReferencedReportsUtils, mockSpecificationApi)
+        DataExportService<LksgData>(
+            mockDataPointUtils,
+            mockReferencedReportsUtils,
+            mockSpecificationApi,
+            mockCompanyQueryManager,
+            mockDatasetStorageService,
+        )
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -158,7 +167,7 @@ internal class DataControllerTest {
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
-            dataController.exportCompanyAssociatedDataByDimensions(
+            dataController.postExportJobCompanyAssociatedDataByDimensions(
                 ExportRequestData(
                     reportingPeriods = listOf(testReportingPeriod),
                     companyIds = listOf(testCompanyId),
@@ -178,7 +187,7 @@ internal class DataControllerTest {
             .validateCompanyIdentifiers(any())
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertThrows<ResourceNotFoundApiException> {
-            dataController.exportCompanyAssociatedDataByDimensions(
+            dataController.postExportJobCompanyAssociatedDataByDimensions(
                 ExportRequestData(
                     reportingPeriods = listOf(testReportingPeriod),
                     companyIds = listOf(testCompanyId),

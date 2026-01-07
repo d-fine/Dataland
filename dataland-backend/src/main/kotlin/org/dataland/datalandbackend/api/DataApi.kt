@@ -146,6 +146,7 @@ interface DataApi<T> {
         ],
     )
     @PostMapping(
+        value = ["/export-jobs"],
         produces = ["application/json"],
         consumes = ["application/json"],
     )

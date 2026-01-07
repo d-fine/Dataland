@@ -1,11 +1,14 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.ExportJobEntity
+import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
-import org.dataland.datalandbackend.services.ExportJobService
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -14,7 +17,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
@@ -32,6 +34,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.time.Instant
 import java.util.UUID
 
 @SpringBootTest(
@@ -44,16 +47,16 @@ class DataExportControllerTest(
     @Autowired private val mockMvc: MockMvc,
 ) {
     @MockitoBean
-    private lateinit var exportJobService: ExportJobService
+    private lateinit var dataExportService: DataExportService<SfdrData>
 
     private val mockSecurityContext = mock<SecurityContext>()
-    private val testUserId = UUID.randomUUID().toString()
+    private val testUserId = UUID.randomUUID()
     private val otherUserId = UUID.randomUUID().toString()
 
     private val userAuthentication =
         AuthenticationMock.mockJwtAuthentication(
             username = "testuser",
-            userId = testUserId,
+            userId = testUserId.toString(),
             roles = setOf(DatalandRealmRole.ROLE_USER),
         )
 
@@ -66,7 +69,7 @@ class DataExportControllerTest(
 
     @BeforeEach
     fun setup() {
-        reset(mockSecurityContext, exportJobService)
+        reset(mockSecurityContext, dataExportService)
         setMockUser(userAuthentication)
     }
 
@@ -77,14 +80,20 @@ class DataExportControllerTest(
 
     @Test
     fun `post export job returns job ID and state is initially Pending`() {
-        val testJobId = UUID.randomUUID().toString()
-        val exportJob = ExportJob(id = UUID.fromString(testJobId), userId = UUID.fromString(testUserId))
+        val testJobId = UUID.randomUUID()
+        val exportJobEntity =
+            ExportJobEntity(
+                id = testJobId,
+                fileToExport = null,
+                fileType = ExportFileType.CSV,
+                creationTime = Instant.now().toEpochMilli(),
+            )
 
-        doReturn(exportJob)
-            .whenever(exportJobService)
-            .createExportJob(any(), any(), any(), any(), any(), eq(testUserId))
+        doReturn(exportJobEntity)
+            .whenever(dataExportService)
+            .createAndSaveExportJob(any(), any())
 
-        whenever(exportJobService.getJobState(testJobId, testUserId))
+        whenever(dataExportService.getExportJobState(testJobId))
             .thenReturn(ExportJobProgressState.Pending)
 
         mockMvc
@@ -106,7 +115,7 @@ class DataExportControllerTest(
         mockMvc
             .perform(
                 get("/api/data/eutaxonomy-non-financials/export/state")
-                    .param("exportJobId", testJobId)
+                    .param("exportJobId", testJobId.toString())
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
             .andExpect(content().string("Pending"))
@@ -114,27 +123,27 @@ class DataExportControllerTest(
 
     @Test
     fun `get export job state returns 404 for non-existent job`() {
-        val nonExistentJobId = UUID.randomUUID().toString()
+        val nonExistentJobId = UUID.randomUUID()
 
         doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
-            .whenever(exportJobService)
-            .getJobState(nonExistentJobId, testUserId)
+            .whenever(dataExportService)
+            .getExportJobState(nonExistentJobId)
 
         mockMvc
             .perform(
                 get("/api/data/eutaxonomy-non-financials/export/state")
-                    .param("exportJobId", nonExistentJobId)
+                    .param("exportJobId", nonExistentJobId.toString())
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
     }
 
     @Test
     fun `user cannot access other user's export job`() {
-        val jobId = UUID.randomUUID().toString()
+        val jobId = UUID.randomUUID()
 
-        doReturn(ExportJob(id = UUID.fromString(jobId), userId = UUID.fromString(testUserId)))
-            .whenever(exportJobService)
-            .createExportJob(any(), any(), any(), any(), any(), eq(testUserId))
+        doReturn(ExportJob(id = jobId))
+            .whenever(dataExportService)
+            .createAndSaveExportJob(any(), any())
 
         mockMvc
             .perform(
@@ -146,29 +155,29 @@ class DataExportControllerTest(
 
         setMockUser(otherUserAuthentication)
         doThrow(AccessDeniedException("Access denied"))
-            .whenever(exportJobService)
-            .getJobState(jobId, otherUserId)
+            .whenever(dataExportService)
+            .getExportJobState(jobId)
 
         mockMvc
             .perform(
                 get("/api/data/eutaxonomy-non-financials/export/state")
-                    .param("exportJobId", jobId)
+                    .param("exportJobId", jobId.toString())
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden)
     }
 
     @Test
     fun `export download returns 404 for non-existent job`() {
-        val nonExistentJobId = UUID.randomUUID().toString()
+        val nonExistentJobId = UUID.randomUUID()
 
         doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
-            .whenever(exportJobService)
-            .downloadExport(nonExistentJobId, testUserId)
+            .whenever(dataExportService)
+            .exportCompanyAssociatedDataById(nonExistentJobId)
 
         mockMvc
             .perform(
                 post("/api/data/eutaxonomy-non-financials/export/download")
-                    .param("exportJobId", nonExistentJobId)
+                    .param("exportJobId", nonExistentJobId.toString())
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
     }
