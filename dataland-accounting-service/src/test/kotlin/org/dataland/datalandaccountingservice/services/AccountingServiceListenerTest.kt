@@ -1,8 +1,8 @@
 package org.dataland.datalandaccountingservice.services
-
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
@@ -92,6 +94,32 @@ class AccountingServiceListenerTest {
                 type = "some.wrong.message.type",
                 correlationId = correlationId,
             )
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataTypeEnum::class)
+    fun `check that the datatype is handled correctly`(datatype: DataTypeEnum) {
+        val requestSetToProcessingMessage =
+            RequestSetToProcessingMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                requestedCompanyId = requestedCompanyId,
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = datatype.name,
+            )
+
+        val requestProcessingMessagePayload = defaultObjectMapper.writeValueAsString(requestSetToProcessingMessage)
+        accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
+            payload = requestProcessingMessagePayload,
+            type = MessageType.REQUEST_SET_TO_PROCESSING,
+            correlationId = correlationId,
+        )
+
+        if (datatype == DataTypeEnum.nuclearMinusAndMinusGas) {
+            verifyNoInteractions(mockBilledRequestRepository)
+        } else {
+            verify(mockBilledRequestRepository, times(1)).save(any())
         }
     }
 
