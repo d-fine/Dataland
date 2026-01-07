@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
+import org.dataland.datalandmessagequeueutils.messages.RequestSetToWithdrawnMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -162,5 +163,165 @@ class AccountingServiceListenerTest {
                 idsMatch && tripleMatches
             },
         )
+    }
+
+    @Test
+    fun `check that the wrong message type for withdrawn leads to an appropriate exception`() {
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = emptyList(),
+                requestedCompanyId = UUID.randomUUID().toString(),
+                requestedReportingPeriod = "2025",
+                requestedFramework = "sfdr",
+            )
+        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        assertThrows<MessageQueueRejectException> {
+            accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+                payload = payload,
+                type = "some.wrong.message.type",
+                correlationId = correlationId,
+            )
+        }
+    }
+
+    @Test
+    fun `check that no billed request is deleted when withdrawing and triggering user is not a Dataland member`() {
+        // Triggering user has no DatalandMember role
+        doReturn(
+            mapOf(billedCompanyId to emptyList<String>()),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = listOf(UUID.randomUUID().toString()),
+                requestedCompanyId = UUID.randomUUID().toString(),
+                requestedReportingPeriod = "2025",
+                requestedFramework = "sfdr",
+            )
+        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
+            correlationId = correlationId,
+        )
+
+        verifyNoInteractions(mockBilledRequestRepository)
+    }
+
+    @Test
+    fun `check that billed request is not deleted when another billable request for the same company exists`() {
+        val associatedUserIdForSameCompany = UUID.randomUUID().toString()
+
+        doReturn(
+            mapOf(billedCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+
+        doReturn(
+            mapOf(billedCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(associatedUserIdForSameCompany)
+
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = listOf(associatedUserIdForSameCompany),
+                requestedCompanyId = UUID.randomUUID().toString(),
+                requestedReportingPeriod = "2025",
+                requestedFramework = "sfdr",
+            )
+        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
+            correlationId = correlationId,
+        )
+
+        verifyNoInteractions(mockBilledRequestRepository)
+    }
+
+    @Test
+    fun `check that billed request is deleted when no other billable request for the same company exists`() {
+        val otherAssociatedUserId = UUID.randomUUID().toString()
+        val otherBilledCompanyId = UUID.randomUUID().toString()
+
+        doReturn(
+            mapOf(billedCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+        doReturn(
+            mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(otherAssociatedUserId)
+
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = listOf(otherAssociatedUserId),
+                requestedCompanyId = UUID.randomUUID().toString(),
+                requestedReportingPeriod = "2025",
+                requestedFramework = "sfdr",
+            )
+        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        doReturn(Optional.of(billedRequestEntity)).whenever(mockBilledRequestRepository).findById(
+            BilledRequestEntityId(
+                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
+            ),
+        )
+
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
+            correlationId = correlationId,
+        )
+
+        verify(mockBilledRequestRepository, times(1)).delete(billedRequestEntity)
+    }
+
+    @Test
+    fun `check that no delete is executed when billed request does not exist`() {
+        val otherAssociatedUserId = UUID.randomUUID().toString()
+        val otherBilledCompanyId = UUID.randomUUID().toString()
+
+        doReturn(
+            mapOf(billedCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+        // Associated user → different company with DatalandMember
+        doReturn(
+            mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(otherAssociatedUserId)
+
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = listOf(otherAssociatedUserId),
+                requestedCompanyId = UUID.randomUUID().toString(),
+                requestedReportingPeriod = "2025",
+                requestedFramework = "sfdr",
+            )
+        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        doReturn(Optional.empty<BilledRequestEntity>()).whenever(mockBilledRequestRepository).findById(
+            BilledRequestEntityId(
+                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
+            ),
+        )
+
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
+            correlationId = correlationId,
+        )
+
+        verify(mockBilledRequestRepository, times(0)).delete(any())
     }
 }
