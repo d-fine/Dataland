@@ -64,6 +64,7 @@ class AccountingServiceTest {
     private val billableCompanyIdReaderB = uploadCompanyAsUploader()
     private val billableCompanyIdReaderC = uploadCompanyAsUploader()
     private val billableCompanyIdUploader = uploadCompanyAsUploader()
+    private val billableCompanyIdWithdraw = uploadCompanyAsUploader()
 
     private val dataReaderUserId = TechnicalUser.Reader.technicalUserId
     private val dataUploaderUserId = TechnicalUser.Uploader.technicalUserId
@@ -98,6 +99,14 @@ class AccountingServiceTest {
             requestState = state,
         )
     }
+
+    private fun patchRequestStateToWithdrawn(requestId: String) =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(
+                dataRequestId = requestId,
+                requestState = RequestState.Withdrawn,
+            )
+        }
 
     private fun getBalance(companyId: String): BigDecimal = apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
 
@@ -167,6 +176,42 @@ class AccountingServiceTest {
             removeCompanyMemberRights(billableCompanyIdReaderC)
             removeCompanyOwnerRole(billableCompanyIdUploader, UUID.fromString(dataUploaderUserId))
             removeCompanyMemberRights(billableCompanyIdUploader)
+        }
+    }
+
+    @Test
+    fun `post a transaction then add a request set it to processing then withdraw and check the balance is restored`() {
+        assignCompanyOwnerRole(billableCompanyIdWithdraw, UUID.fromString(dataReaderUserId))
+        makeCompanyMember(billableCompanyIdWithdraw)
+        try {
+            // 1) Top up credits for the billable company
+            postTransaction(billableCompanyIdWithdraw)
+
+            // 2) Create a data request and set it to Processing (this should bill the company)
+            val requestedCompanyId = uploadCompanyAsUploader()
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            val requestId = createDummyRequestForCompany(requestedCompanyId)
+            patchRequestStateToProcessing(requestId)
+
+            // 3) Wait until the charge has been applied
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            await().atMost(Duration.ofSeconds(10)).untilAsserted {
+                assertEquals(initialCredit - BigDecimal("1.0"), getBalance(billableCompanyIdWithdraw))
+            }
+
+            // 4) Withdraw the same request – this should trigger deletion of the billed request
+            //    and refund the credits
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            patchRequestStateToWithdrawn(requestId)
+
+            // 5) Wait until the refund has been applied and balance is restored
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            await().atMost(Duration.ofSeconds(10)).untilAsserted {
+                assertEquals(initialCredit, getBalance(billableCompanyIdWithdraw))
+            }
+        } finally {
+            removeCompanyOwnerRole(billableCompanyIdWithdraw, UUID.fromString(dataReaderUserId))
+            removeCompanyMemberRights(billableCompanyIdWithdraw)
         }
     }
 }
