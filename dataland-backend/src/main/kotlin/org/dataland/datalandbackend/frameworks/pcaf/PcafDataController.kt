@@ -57,7 +57,7 @@ class PcafDataController
             bypassQa: Boolean,
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-        @Operation(operationId = "exportCompanyAssociatedPcafDataByDimensions")
+        @Operation(operationId = "postExportJobCompanyAssociatedPcafDataByDimensions")
         override fun postExportJobCompanyAssociatedDataByDimensions(
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,

@@ -59,7 +59,7 @@ class EutaxonomyNonFinancialsDataController
             bypassQa: Boolean,
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-        @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+        @Operation(operationId = "postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions")
         override fun postExportJobCompanyAssociatedDataByDimensions(
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,

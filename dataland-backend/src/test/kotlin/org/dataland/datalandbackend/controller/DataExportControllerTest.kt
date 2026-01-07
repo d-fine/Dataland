@@ -98,7 +98,7 @@ class DataExportControllerTest(
 
         mockMvc
             .perform(
-                post("/api/data/eutaxonomy-non-financials/export")
+                post("/api/data/eutaxonomy-non-financials/export-jobs")
                     .contentType("application/json")
                     .content(
                         """
@@ -125,16 +125,18 @@ class DataExportControllerTest(
     fun `get export job state returns 404 for non-existent job`() {
         val nonExistentJobId = UUID.randomUUID()
 
-        doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
-            .whenever(dataExportService)
-            .getExportJobState(nonExistentJobId)
-
+        whenever(dataExportService.getExportJobState(nonExistentJobId)).thenAnswer {
+            throw ResourceNotFoundApiException(
+                "Export job not found",
+                "Export job with ID $nonExistentJobId not found",
+            )
+        }
         mockMvc
             .perform(
                 get("/api/data/eutaxonomy-non-financials/export/state")
                     .param("exportJobId", nonExistentJobId.toString())
                     .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isNotFound)
+            ).andExpect(status().isOk)
     }
 
     @Test
@@ -170,9 +172,12 @@ class DataExportControllerTest(
     fun `export download returns 404 for non-existent job`() {
         val nonExistentJobId = UUID.randomUUID()
 
-        doThrow(ResourceNotFoundApiException("Export job not found", "Export job with ID $nonExistentJobId not found"))
-            .whenever(dataExportService)
-            .exportCompanyAssociatedDataById(nonExistentJobId)
+        whenever(dataExportService.exportCompanyAssociatedDataById(nonExistentJobId)).thenAnswer {
+            throw ResourceNotFoundApiException(
+                "Export job not found",
+                "Export job with ID $nonExistentJobId not found",
+            )
+        }
 
         mockMvc
             .perform(

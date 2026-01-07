@@ -1067,7 +1067,7 @@
         ]
       }
     },
-    "/data/sfdr/export": {
+    "/data/sfdr/export/{exportJobId}": {
       "post": {
         "tags": [
           "sfdr-data-controller"
@@ -1078,7 +1078,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -1139,7 +1139,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedSfdrDataByDimensions",
+        "operationId": "postExportJobCompanyAssociatedSfdrDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -1173,7 +1173,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1182,11 +1182,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1289,7 +1286,7 @@
         ]
       }
     },
-    "/data/pcaf/export": {
+    "/data/pcaf/export/{exportJobId}": {
       "post": {
         "tags": [
           "pcaf-data-controller"
@@ -1300,7 +1297,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -1361,7 +1358,7 @@
         "tags": [
           "pcaf-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedPcafDataByDimensions",
+        "operationId": "postExportJobCompanyAssociatedPcafDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -1395,7 +1392,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1404,11 +1401,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1511,7 +1505,7 @@
         ]
       }
     },
-    "/data/nuclear-and-gas/export": {
+    "/data/nuclear-and-gas/export/{exportJobId}": {
       "post": {
         "tags": [
           "nuclear-and-gas-data-controller"
@@ -1522,7 +1516,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -1583,7 +1577,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataByDimensions",
+        "operationId": "postExportJobCompanyAssociatedNuclearAndGasDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -1617,7 +1611,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1626,11 +1620,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1733,7 +1724,7 @@
         ]
       }
     },
-    "/data/lksg/export": {
+    "/data/lksg/export/{exportJobId}": {
       "post": {
         "tags": [
           "lksg-data-controller"
@@ -1744,7 +1735,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -1805,7 +1796,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedLksgDataByDimensions",
+        "operationId": "postExportJobCompanyAssociatedLksgDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -1839,7 +1830,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1848,11 +1839,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1955,7 +1943,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/export": {
+    "/data/eutaxonomy-non-financials/export/{exportJobId}": {
       "post": {
         "tags": [
           "eutaxonomy-non-financials-data-controller"
@@ -1966,7 +1954,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -2027,7 +2015,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
+        "operationId": "postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -2061,7 +2049,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2070,11 +2058,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -2177,7 +2162,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/export": {
+    "/data/eutaxonomy-financials/export/{exportJobId}": {
       "post": {
         "tags": [
           "eutaxonomy-financials-data-controller"
@@ -2188,7 +2173,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -2249,7 +2234,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
+        "operationId": "postExportJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
         "parameters": [
           {
             "name": "keepValueFieldsOnly",
@@ -2283,7 +2268,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully started export job.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2292,11 +2277,8 @@
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
-          },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -4448,7 +4430,7 @@
         ]
       }
     },
-    "/data/sfdr/export/{exportJobId}": {
+    "/data/sfdr/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "sfdr-data-controller"
@@ -4459,7 +4441,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -4822,7 +4804,7 @@
         ]
       }
     },
-    "/data/pcaf/export/{exportJobId}": {
+    "/data/pcaf/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "pcaf-data-controller"
@@ -4833,7 +4815,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -5196,7 +5178,7 @@
         ]
       }
     },
-    "/data/nuclear-and-gas/export/{exportJobId}": {
+    "/data/nuclear-and-gas/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "nuclear-and-gas-data-controller"
@@ -5207,7 +5189,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -5570,7 +5552,7 @@
         ]
       }
     },
-    "/data/lksg/export/{exportJobId}": {
+    "/data/lksg/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "lksg-data-controller"
@@ -5581,7 +5563,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -5944,7 +5926,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/export/{exportJobId}": {
+    "/data/eutaxonomy-non-financials/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "eutaxonomy-non-financials-data-controller"
@@ -5955,7 +5937,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -6318,7 +6300,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/export/{exportJobId}": {
+    "/data/eutaxonomy-financials/export/state/{exportJobId}": {
       "get": {
         "tags": [
           "eutaxonomy-financials-data-controller"
@@ -6329,7 +6311,7 @@
         "parameters": [
           {
             "name": "exportJobId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -18768,15 +18750,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },

@@ -57,7 +57,7 @@ class SfdrDataController
             bypassQa: Boolean,
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-        @Operation(operationId = "exportCompanyAssociatedSfdrDataByDimensions")
+        @Operation(operationId = "postExportJobCompanyAssociatedSfdrDataByDimensions")
         override fun postExportJobCompanyAssociatedDataByDimensions(
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,

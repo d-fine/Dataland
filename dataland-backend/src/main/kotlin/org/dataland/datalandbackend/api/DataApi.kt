@@ -132,15 +132,10 @@ interface DataApi<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
-            ApiResponse(
-                responseCode = "204",
-                description = "No data for download available.",
-                content = [Content(mediaType = "")],
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully started export job."),
             ApiResponse(
                 responseCode = "404",
-                description = "Company Id could not be found.",
+                description = "Input parameter could not be found.",
                 content = [Content(mediaType = "")],
             ),
         ],
@@ -193,12 +188,12 @@ interface DataApi<T> {
         ],
     )
     @GetMapping(
-        value = ["/export/{exportJobId}"],
+        value = ["/export/state/{exportJobId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getExportJobState(
-        @RequestParam(
+        @PathVariable(
             value = "exportJobId",
         ) exportJobId: String,
     ): ResponseEntity<ExportJobProgressState>
@@ -228,12 +223,12 @@ interface DataApi<T> {
         ],
     )
     @PostMapping(
-        value = ["/export"],
+        value = ["/export/download/{exportJobId}"],
         produces = ["application/octet-stream"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataById(
-        @RequestParam(
+        @PathVariable(
             value = "exportJobId",
         ) exportJobId: String,
     ): ResponseEntity<InputStreamResource>

@@ -57,7 +57,7 @@ class NuclearAndGasDataController
             bypassQa: Boolean,
         ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
-        @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataByDimensions")
+        @Operation(operationId = "postExportJobCompanyAssociatedNuclearAndGasDataByDimensions")
         override fun postExportJobCompanyAssociatedDataByDimensions(
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,
