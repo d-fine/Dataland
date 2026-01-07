@@ -64,11 +64,13 @@ class ExistingRequestsManager
             adminComment: String?,
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
+
             val requestEntity =
                 requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)
                     ?: throw RequestNotFoundApiException(
                         dataRequestId,
                     )
+            val oldRequestState = requestEntity.state
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
             requestEntity.state = newRequestState
 
@@ -84,10 +86,28 @@ class ExistingRequestsManager
                     requestEntity = requestEntity,
                 )
             } else {
+                val dataSourcingEntity = requestEntity.dataSourcingEntity
+                if (isWithdrawalOfProcessedOrProcessingRequest(requestEntity, oldRequestState) && dataSourcingEntity != null) {
+                    dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestWithdrawn(
+                        dataSourcingEntity = dataSourcingEntity,
+                        requestEntity = requestEntity,
+                    )
+                }
                 requestRepository.save(requestEntity)
             }
             return requestEntity.toStoredDataRequest()
         }
+
+        private fun isWithdrawalOfProcessedOrProcessingRequest(
+            requestEntity: RequestEntity,
+            oldRequestState: RequestState,
+        ): Boolean =
+            requestEntity.state == RequestState.Withdrawn &&
+                oldRequestState in
+                listOf(
+                    RequestState.Processing,
+                    RequestState.Processed,
+                )
 
         /**
          * Updates the priority of a data request identified by its ID.

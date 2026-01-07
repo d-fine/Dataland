@@ -19,4 +19,5 @@ object QueueNames {
     const val USER_SERVICE_NON_SOURCABLE_EVENT = "user-service.processMessageForDataReportedAsNonSourceable"
     const val USER_SERVICE_QA_STATUS_UPDATE_EVENT = "user-service.processMessageForAvailableDataAndUpdates"
     const val ACCOUNTING_SERVICE_REQUEST_PROCESSING = "accounting-service.requestProcessing"
+    const val ACCOUNTING_SERVICE_REQUEST_WITHDRAWN = "accounting-service.requestWithdrawn"
 }
