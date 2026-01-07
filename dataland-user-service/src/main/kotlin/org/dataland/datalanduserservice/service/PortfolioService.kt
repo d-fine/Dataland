@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
@@ -155,15 +156,20 @@ class PortfolioService
             val originalPortfolio = getPortfolio(portfolioId)
 
             val updatedPortfolioEntity =
-                originalPortfolio.toPortfolioEntity(
-                    portfolioId,
-                    originalPortfolio.creationTimestamp,
-                    portfolio.lastUpdateTimestamp,
-                    portfolio.isMonitored,
-                    portfolio.monitoredFrameworks,
-                    portfolio.notificationFrequency,
-                    portfolio.timeWindowThreshold,
+                PortfolioEntity(
+                    portfolioId = UUID.fromString(portfolioId),
+                    portfolioName = portfolio.portfolioName,
+                    userId = originalPortfolio.userId,
+                    creationTimestamp = originalPortfolio.creationTimestamp,
+                    lastUpdateTimestamp = portfolio.lastUpdateTimestamp,
+                    companyIds = originalPortfolio.identifiers.toMutableSet(),
+                    isMonitored = portfolio.isMonitored,
+                    monitoredFrameworks = portfolio.monitoredFrameworks,
+                    notificationFrequency = portfolio.notificationFrequency,
+                    timeWindowThreshold = portfolio.timeWindowThreshold,
+                    sharedUserIds = portfolio.sharedUserIds,
                 )
+
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
 
