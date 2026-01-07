@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.EnumSource.Mode
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -226,5 +227,153 @@ class ExistingRequestsManagerTest {
         } else {
             Assertions.assertNotEquals(RequestState.Processed, requestEntitySfdr.state)
         }
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = RequestState::class,
+        names = ["Processing", "Processed"],
+        mode = Mode.INCLUDE,
+    )
+    fun `verify that withdrawal of processed or processing request sends accounting withdrawal message`(initialState: RequestState) {
+        val requestId = UUID.randomUUID()
+        val requestEntityWithSourcing =
+            RequestEntity(
+                id = requestId,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                userId = userId,
+                creationTimestamp = 1000000000,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = 1000000000,
+                requestPriority = RequestPriority.High,
+                state = initialState,
+                dataSourcingEntity = dataSourcingEntity,
+            )
+
+        whenever(mockRequestRepository.findByIdAndFetchDataSourcingEntity(requestId))
+            .thenReturn(requestEntityWithSourcing)
+        whenever(mockRequestRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        existingRequestsManager.patchRequestState(requestId, RequestState.Withdrawn, null)
+
+        Assertions.assertEquals(RequestState.Withdrawn, requestEntityWithSourcing.state)
+
+        verify(mockDataSourcingServiceMessageSender, times(1))
+            .sendMessageToAccountingServiceOnRequestWithdrawn(
+                dataSourcingEntity = dataSourcingEntity,
+                requestEntity = requestEntityWithSourcing,
+            )
+
+        verify(mockDataSourcingServiceMessageSender, never())
+            .sendMessageToAccountingServiceOnRequestProcessing(
+                dataSourcingEntity = anyOrNull(),
+                requestEntity = anyOrNull(),
+            )
+        verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
+
+        verify(mockRequestRepository, times(1)).save(requestEntityWithSourcing)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = RequestState::class,
+        names = ["Processing", "Processed"],
+        mode = Mode.EXCLUDE,
+    )
+    fun `verify that withdrawal of non processed or processing request does not send accounting withdrawal message`(
+        initialState: RequestState,
+    ) {
+        val requestId = UUID.randomUUID()
+        val requestEntityWithSourcing =
+            RequestEntity(
+                id = requestId,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                userId = userId,
+                creationTimestamp = 1000000000,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = 1000000000,
+                requestPriority = RequestPriority.High,
+                state = initialState,
+                dataSourcingEntity = dataSourcingEntity,
+            )
+
+        whenever(mockRequestRepository.findByIdAndFetchDataSourcingEntity(requestId))
+            .thenReturn(requestEntityWithSourcing)
+        whenever(mockRequestRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        existingRequestsManager.patchRequestState(requestId, RequestState.Withdrawn, null)
+
+        Assertions.assertEquals(RequestState.Withdrawn, requestEntityWithSourcing.state)
+
+        verify(mockDataSourcingServiceMessageSender, never())
+            .sendMessageToAccountingServiceOnRequestWithdrawn(
+                dataSourcingEntity = anyOrNull(),
+                requestEntity = anyOrNull(),
+            )
+
+        verify(mockDataSourcingServiceMessageSender, never())
+            .sendMessageToAccountingServiceOnRequestProcessing(
+                dataSourcingEntity = anyOrNull(),
+                requestEntity = anyOrNull(),
+            )
+        verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
+
+        verify(mockRequestRepository, times(1)).save(requestEntityWithSourcing)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = RequestState::class,
+        names = ["Processing", "Processed"],
+        mode = Mode.INCLUDE,
+    )
+    fun `verify that withdrawal of processed or processing request without data sourcing does not send accounting withdrawal message`(
+        initialState: RequestState,
+    ) {
+        val requestId = UUID.randomUUID()
+        val requestEntityWithoutSourcing =
+            RequestEntity(
+                id = requestId,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                userId = userId,
+                creationTimestamp = 1000000000,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = 1000000000,
+                requestPriority = RequestPriority.High,
+                state = initialState,
+                dataSourcingEntity = null,
+            )
+
+        whenever(mockRequestRepository.findByIdAndFetchDataSourcingEntity(requestId))
+            .thenReturn(requestEntityWithoutSourcing)
+        whenever(mockRequestRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        existingRequestsManager.patchRequestState(requestId, RequestState.Withdrawn, null)
+
+        Assertions.assertEquals(RequestState.Withdrawn, requestEntityWithoutSourcing.state)
+
+        verify(mockDataSourcingServiceMessageSender, never())
+            .sendMessageToAccountingServiceOnRequestWithdrawn(
+                dataSourcingEntity = anyOrNull(),
+                requestEntity = anyOrNull(),
+            )
+
+        verify(mockDataSourcingServiceMessageSender, never())
+            .sendMessageToAccountingServiceOnRequestProcessing(
+                dataSourcingEntity = anyOrNull(),
+                requestEntity = anyOrNull(),
+            )
+        verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
+
+        verify(mockRequestRepository, times(1)).save(requestEntityWithoutSourcing)
     }
 }
