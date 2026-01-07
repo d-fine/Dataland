@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
@@ -26,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
@@ -81,22 +83,22 @@ class PortfolioControllerTest(
         }
         """.trimIndent()
 
+    private val monitoredPortfolioPatchRequestBody =
+        """
+        {
+          "isMonitored": true, 
+          "monitoredFrameworks": ["sfdr"], 
+          "notificationFrequency": "Weekly", 
+          "timeWindowThreshold": "Standard"
+        }
+        """.trimIndent()
+
     private val sharingPatchRequestBody =
         """
         {
           "sharedUserIds": ["$sharedUserId"]
         }
         """.trimIndent()
-
-        private val monitoredPortfolioPatchRequestBody =  """
-            {
-              "isMonitored": true, 
-              "monitoredFrameworks": ["sfdr"], 
-              "notificationFrequency": "Weekly", 
-              "timeWindowThreshold": "Standard"
-            }
-            """.trimIndent()
-
 
     private val dummyAdminAuthentication: DatalandJwtAuthentication =
         AuthenticationMock.mockJwtAuthentication(
@@ -145,7 +147,7 @@ class PortfolioControllerTest(
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    private fun performGetPortfolioAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+    private fun performGetPortfolioAndExpect(statusMatcher: ResultMatcher) {
         mockMvc
             .perform(
                 get("/portfolios/$portfolioId/")
@@ -156,7 +158,7 @@ class PortfolioControllerTest(
 
     private fun performCreatePortfolioAndExpect(
         requestBody: String,
-        statusMatcher: org.springframework.test.web.servlet.ResultMatcher,
+        statusMatcher: ResultMatcher,
     ) {
         mockMvc
             .perform(
@@ -169,7 +171,7 @@ class PortfolioControllerTest(
 
     private fun performReplacePortfolioAndExpect(
         requestBody: String,
-        statusMatcher: org.springframework.test.web.servlet.ResultMatcher,
+        statusMatcher: ResultMatcher,
     ) {
         mockMvc
             .perform(
@@ -182,7 +184,7 @@ class PortfolioControllerTest(
 
     private fun performPatchMonitoringAndExpect(
         requestBody: String,
-        statusMatcher: org.springframework.test.web.servlet.ResultMatcher,
+        statusMatcher: ResultMatcher,
     ) {
         mockMvc
             .perform(
@@ -193,7 +195,7 @@ class PortfolioControllerTest(
             ).andExpect(statusMatcher)
     }
 
-    private fun performGetSharedPortfoliosAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+    private fun performGetSharedPortfoliosAndExpect(statusMatcher: ResultMatcher) {
         mockMvc
             .perform(
                 get("/portfolios/shared")
@@ -202,7 +204,7 @@ class PortfolioControllerTest(
             ).andExpect(statusMatcher)
     }
 
-    private fun performGetSharedPortfolioNamesAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+    private fun performGetSharedPortfolioNamesAndExpect(statusMatcher: ResultMatcher) {
         mockMvc
             .perform(
                 get("/portfolios/shared/names")
@@ -213,7 +215,7 @@ class PortfolioControllerTest(
 
     private fun performPatchSharingAndExpect(
         requestBody: String,
-        statusMatcher: org.springframework.test.web.servlet.ResultMatcher,
+        statusMatcher: ResultMatcher,
     ) {
         mockMvc
             .perform(
@@ -224,17 +226,13 @@ class PortfolioControllerTest(
             ).andExpect(statusMatcher)
     }
 
-    private fun performDeleteCurrentUserFromSharingAndExpect(statusMatcher: org.springframework.test.web.servlet.ResultMatcher) {
+    private fun performDeleteCurrentUserFromSharingAndExpect(statusMatcher: ResultMatcher) {
         mockMvc
             .perform(
                 delete("/portfolios/shared/$portfolioId")
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(statusMatcher)
     }
-
-    // -----------------------
-    // getPortfolio security
-    // -----------------------
 
     @Test
     fun `admins can get any portfolio`() {
@@ -249,8 +247,8 @@ class PortfolioControllerTest(
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
-                any(), // userId from authentication.userId
-                org.mockito.kotlin.eq(portfolioId),
+                any(),
+                eq(portfolioId),
             ),
         ).thenReturn(false)
 
@@ -262,11 +260,10 @@ class PortfolioControllerTest(
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
-
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
                 any(),
-                org.mockito.kotlin.eq(portfolioId),
+                eq(portfolioId),
             ),
         ).thenReturn(false)
 
@@ -281,16 +278,12 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
                 any(),
-                org.mockito.kotlin.eq(portfolioId),
+                eq(portfolioId),
             ),
         ).thenReturn(true)
 
         performGetPortfolioAndExpect(status().isOk)
     }
-
-    // -----------------------
-    // createPortfolio security
-    // -----------------------
 
     @Test
     fun `admins can create monitored portfolios`() {
@@ -307,8 +300,8 @@ class PortfolioControllerTest(
 
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
-                any(), // authentication.userId
-                org.mockito.kotlin.eq(true),
+                any(),
+                eq(true),
             ),
         ).thenReturn(false)
 
@@ -324,7 +317,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(true)
 
@@ -340,7 +333,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(false),
+                eq(false),
             ),
         ).thenReturn(true)
 
@@ -348,10 +341,6 @@ class PortfolioControllerTest(
 
         performCreatePortfolioAndExpect(notMonitoredRequestBody, status().isCreated)
     }
-
-    // -----------------------
-    // replacePortfolio security
-    // -----------------------
 
     @Test
     fun `admins can replace any portfolio`() {
@@ -368,7 +357,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(true)
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
@@ -384,7 +373,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(true)
 
@@ -401,17 +390,13 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(false)
 
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
         performReplacePortfolioAndExpect(monitoredRequestBody, status().isForbidden)
     }
-
-    // -----------------------
-    // patchMonitoring security
-    // -----------------------
 
     @Test
     fun `admins can patch monitoring of any portfolio`() {
@@ -428,7 +413,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(true)
 
@@ -443,7 +428,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(true)
 
@@ -458,18 +443,12 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(
                 any(),
-                org.mockito.kotlin.eq(true),
+                eq(true),
             ),
         ).thenReturn(false)
 
         performPatchMonitoringAndExpect(monitoredPortfolioPatchRequestBody, status().isForbidden)
     }
-
-    // -----------------------
-    // PortfolioSharingApi security
-    // -----------------------
-
-    // --- getAllSharedPortfoliosForCurrentUser ---
 
     @Test
     fun `admins can get all shared portfolios for current user`() {
@@ -485,8 +464,6 @@ class PortfolioControllerTest(
         performGetSharedPortfoliosAndExpect(status().isOk)
     }
 
-    // --- getAllSharedPortfolioNamesForCurrentUser ---
-
     @Test
     fun `admins can get all shared portfolio names for current user`() {
         setMockSecurityContext(dummyAdminAuthentication)
@@ -500,8 +477,6 @@ class PortfolioControllerTest(
 
         performGetSharedPortfolioNamesAndExpect(status().isOk)
     }
-
-    // --- patchSharing ---
 
     @Test
     fun `admins can patch sharing of any portfolio`() {
@@ -528,8 +503,6 @@ class PortfolioControllerTest(
         performPatchSharingAndExpect(sharingPatchRequestBody, status().isForbidden)
     }
 
-    // --- deleteCurrentUserFromSharing ---
-
     @Test
     fun `admins can delete current user from sharing for any portfolio`() {
         setMockSecurityContext(dummyAdminAuthentication)
@@ -543,8 +516,8 @@ class PortfolioControllerTest(
 
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
-                any(), // authentication.userId
-                org.mockito.kotlin.eq(portfolioId),
+                any(),
+                eq(portfolioId),
             ),
         ).thenReturn(true)
 
@@ -558,7 +531,7 @@ class PortfolioControllerTest(
         whenever(
             portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
                 any(),
-                org.mockito.kotlin.eq(portfolioId),
+                eq(portfolioId),
             ),
         ).thenReturn(false)
 
