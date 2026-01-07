@@ -162,7 +162,7 @@ class PortfolioService
                     userId = originalPortfolio.userId,
                     creationTimestamp = originalPortfolio.creationTimestamp,
                     lastUpdateTimestamp = portfolio.lastUpdateTimestamp,
-                    companyIds = originalPortfolio.identifiers.toMutableSet(),
+                    companyIds = portfolio.identifiers.toMutableSet(),
                     isMonitored = portfolio.isMonitored,
                     monitoredFrameworks = portfolio.monitoredFrameworks,
                     notificationFrequency = portfolio.notificationFrequency,
