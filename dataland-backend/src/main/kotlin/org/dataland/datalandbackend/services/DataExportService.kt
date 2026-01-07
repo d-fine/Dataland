@@ -24,10 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import java.time.Duration
 import java.time.Instant
 import java.util.UUID
 
@@ -49,6 +51,7 @@ class DataExportService<T>
             private const val COMPANY_NAME_POSITION = -3
             private const val COMPANY_LEI_POSITION = -2
             private const val REPORTING_PERIOD_POSITION = -1
+            private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 5L
         }
 
         private val objectMapper = defaultObjectMapper
@@ -462,4 +465,20 @@ class DataExportService<T>
                     }.then(naturalOrder()),
                 ),
             )
+
+        @Suppress("UnusedPrivateMember")
+        @Scheduled(cron = "0 /10 * * * *")
+        private fun regularExportJobCleanup() {
+            val cutoff = Instant.now().minus(Duration.ofMinutes(MAX_AGE_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
+
+            exportJobStorage.values.forEach { jobs ->
+                jobs.removeAll { job ->
+                    job.creationTime < cutoff
+                }
+            }
+
+            exportJobStorage.entries.removeIf { (_, jobs) ->
+                jobs.isEmpty()
+            }
+        }
     }
