@@ -1,13 +1,16 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -35,9 +38,13 @@ import java.util.UUID
 @AutoConfigureMockMvc
 class PortfolioControllerTest(
     @Autowired private val mockMvc: MockMvc,
+    @Autowired private val portfolioService: PortfolioService,
 ) {
     @MockitoBean(name = "PortfolioRightsUtilsComponent")
     private lateinit var portfolioRightsUtilsComponent: PortfolioRightsUtilsComponent
+    @MockitoBean
+    lateinit var companyDataController: CompanyDataControllerApi
+
 
     private val mockSecurityContext = mock<SecurityContext>()
 
@@ -65,6 +72,7 @@ class PortfolioControllerTest(
         reset(
             mockSecurityContext,
             portfolioRightsUtilsComponent,
+            companyDataController,
         )
     }
 
@@ -188,14 +196,19 @@ class PortfolioControllerTest(
     fun `admins can create monitored portfolios`() {
         setMockSecurityContext(dummyAdminAuthentication)
 
-        // JSON must match PortfolioUpload; adjust fields as necessary in your codebase
-        val requestBody =
-            """
-            {
-              "name": "Admin Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+
+        val requestBody = """
+        {
+          "portfolioName": "Monitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": true,
+          "monitoredFrameworks": ["sfdr"],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": "Standard",
+          "sharedUserIds": []
+        }
+        """.trimIndent()
 
         performCreatePortfolioAndExpect(requestBody, status().isCreated)
     }
@@ -211,13 +224,19 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
-        val requestBody =
-            """
-            {
-              "name": "User Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+
+        val requestBody = """
+        {
+          "portfolioName": "Monitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": true,
+          "monitoredFrameworks": ["sfdr"],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": "Standard",
+          "sharedUserIds": []
+        }
+        """.trimIndent()
 
         performCreatePortfolioAndExpect(requestBody, status().isForbidden)
     }
@@ -233,13 +252,19 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val requestBody =
-            """
-            {
-              "name": "User Portfolio",
-              "isMonitored": true
-            }
-            """.trimIndent()
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+
+        val requestBody = """
+        {
+          "portfolioName": "Monitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": true,
+          "monitoredFrameworks": ["sfdr"],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": "Standard",
+          "sharedUserIds": []
+        }
+        """.trimIndent()
 
         performCreatePortfolioAndExpect(requestBody, status().isCreated)
     }
@@ -257,13 +282,19 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val requestBody =
-            """
-            {
-              "name": "Unmonitored Portfolio",
-              "isMonitored": false
-            }
-            """.trimIndent()
+        doNothing().whenever(companyDataController).isCompanyIdValid(any())
+
+        val requestBody = """
+        {
+          "portfolioName": "Unmonitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": false,
+          "monitoredFrameworks": [],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": null,
+          "sharedUserIds": []
+        }
+        """.trimIndent()
 
         performCreatePortfolioAndExpect(requestBody, status().isCreated)
     }

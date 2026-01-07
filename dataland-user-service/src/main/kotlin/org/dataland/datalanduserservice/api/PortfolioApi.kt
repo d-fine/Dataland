@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @Suppress("TooManyFunctions")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface PortfolioApi {
+interface  PortfolioApi {
     /**
      * Get all portfolios for currently logged-in user.
      */
