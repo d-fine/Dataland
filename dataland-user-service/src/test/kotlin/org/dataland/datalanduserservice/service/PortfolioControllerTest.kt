@@ -4,11 +4,11 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
+import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -40,19 +40,43 @@ import java.util.UUID
 @AutoConfigureMockMvc
 class PortfolioControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val portfolioService: PortfolioService,
     @Autowired private val portfolioRepository: PortfolioRepository,
 ) {
     @MockitoBean(name = "PortfolioRightsUtilsComponent")
     private lateinit var portfolioRightsUtilsComponent: PortfolioRightsUtilsComponent
+
     @MockitoBean
     lateinit var companyDataController: CompanyDataControllerApi
-
 
     private val mockSecurityContext = mock<SecurityContext>()
 
     private val adminUserId = UUID.randomUUID()
     private val regularUserId = UUID.randomUUID()
+
+    private val monitoredRequestBody =
+        """
+        {
+          "portfolioName": "Monitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": true,
+          "monitoredFrameworks": ["sfdr"],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": "Standard",
+          "sharedUserIds": []
+        }
+        """.trimIndent()
+    private val notMonitoredRequestBody =
+        """
+        {
+          "portfolioName": "Unmonitored Portfolio",
+          "identifiers": ["company-1"],
+          "isMonitored": false,
+          "monitoredFrameworks": [],
+          "notificationFrequency": "Weekly",
+          "timeWindowThreshold": null,
+          "sharedUserIds": []
+        }
+        """.trimIndent()
 
     private val dummyAdminAuthentication: DatalandJwtAuthentication =
         AuthenticationMock.mockJwtAuthentication(
@@ -77,6 +101,21 @@ class PortfolioControllerTest(
             portfolioRightsUtilsComponent,
             companyDataController,
         )
+        val entity =
+            PortfolioEntity(
+                portfolioId = UUID.fromString(portfolioId),
+                userId = regularUserId.toString(),
+                portfolioName = "Test Portfolio",
+                creationTimestamp = System.currentTimeMillis(),
+                lastUpdateTimestamp = System.currentTimeMillis(),
+                companyIds = mutableSetOf("company-1"),
+                isMonitored = false,
+                monitoredFrameworks = emptySet(),
+                notificationFrequency = NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
+                sharedUserIds = emptySet(),
+            )
+        portfolioRepository.save(entity)
     }
 
     private fun setMockSecurityContext(authentication: DatalandJwtAuthentication) {
@@ -138,26 +177,8 @@ class PortfolioControllerTest(
 
     @Test
     fun `admins can get any portfolio`() {
-
-
         // For admins, the PortfolioRightsUtilsComponent is not consulted in the SpEL,
         // so no stubbing is necessary.
-
-        val entity = PortfolioEntity(
-            portfolioId = UUID.fromString(portfolioId),
-            userId = regularUserId.toString(),
-            portfolioName = "Test Portfolio",
-            creationTimestamp = System.currentTimeMillis(),
-            lastUpdateTimestamp = System.currentTimeMillis(),
-            companyIds = mutableSetOf("company-1"),
-            isMonitored = false,
-            monitoredFrameworks = emptySet(),
-            notificationFrequency = NotificationFrequency.Weekly,
-            timeWindowThreshold = null,
-            sharedUserIds = emptySet(),
-
-        )
-        portfolioRepository.save(entity)
 
         setMockSecurityContext(dummyAdminAuthentication)
         performGetPortfolioAndExpect(status().isOk)
@@ -175,22 +196,6 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
-        val entity = PortfolioEntity(
-            portfolioId = UUID.fromString(portfolioId),
-            userId = regularUserId.toString(),
-            portfolioName = "Test Portfolio",
-            creationTimestamp = System.currentTimeMillis(),
-            lastUpdateTimestamp = System.currentTimeMillis(),
-            companyIds = mutableSetOf("company-1"),
-            isMonitored = false,
-            monitoredFrameworks = emptySet(),
-            notificationFrequency = NotificationFrequency.Weekly,
-            timeWindowThreshold = null,
-            sharedUserIds = emptySet(),
-
-            )
-        portfolioRepository.save(entity)
-
         performGetPortfolioAndExpect(status().isForbidden)
     }
 
@@ -207,22 +212,6 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(false)
 
-        val entity = PortfolioEntity(
-            portfolioId = UUID.fromString(portfolioId),
-            userId = regularUserId.toString(),
-            portfolioName = "Test Portfolio",
-            creationTimestamp = System.currentTimeMillis(),
-            lastUpdateTimestamp = System.currentTimeMillis(),
-            companyIds = mutableSetOf("company-1"),
-            isMonitored = false,
-            monitoredFrameworks = emptySet(),
-            notificationFrequency = NotificationFrequency.Weekly,
-            timeWindowThreshold = null,
-            sharedUserIds = emptySet(),
-
-            )
-        portfolioRepository.save(entity)
-
         performGetPortfolioAndExpect(status().isOk)
     }
 
@@ -238,22 +227,6 @@ class PortfolioControllerTest(
             ),
         ).thenReturn(true)
 
-        val entity = PortfolioEntity(
-            portfolioId = UUID.fromString(portfolioId),
-            userId = regularUserId.toString(),
-            portfolioName = "Test Portfolio",
-            creationTimestamp = System.currentTimeMillis(),
-            lastUpdateTimestamp = System.currentTimeMillis(),
-            companyIds = mutableSetOf("company-1"),
-            isMonitored = false,
-            monitoredFrameworks = emptySet(),
-            notificationFrequency = NotificationFrequency.Weekly,
-            timeWindowThreshold = null,
-            sharedUserIds = emptySet(),
-
-            )
-        portfolioRepository.save(entity)
-
         performGetPortfolioAndExpect(status().isOk)
     }
 
@@ -267,19 +240,7 @@ class PortfolioControllerTest(
 
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        val requestBody = """
-        {
-          "portfolioName": "Monitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": true,
-          "monitoredFrameworks": ["sfdr"],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": "Standard",
-          "sharedUserIds": []
-        }
-        """.trimIndent()
-
-        performCreatePortfolioAndExpect(requestBody, status().isCreated)
+        performCreatePortfolioAndExpect(monitoredRequestBody, status().isCreated)
     }
 
     @Test
@@ -295,19 +256,7 @@ class PortfolioControllerTest(
 
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        val requestBody = """
-        {
-          "portfolioName": "Monitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": true,
-          "monitoredFrameworks": ["sfdr"],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": "Standard",
-          "sharedUserIds": []
-        }
-        """.trimIndent()
-
-        performCreatePortfolioAndExpect(requestBody, status().isForbidden)
+        performCreatePortfolioAndExpect(monitoredRequestBody, status().isForbidden)
     }
 
     @Test
@@ -323,19 +272,7 @@ class PortfolioControllerTest(
 
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        val requestBody = """
-        {
-          "portfolioName": "Monitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": true,
-          "monitoredFrameworks": ["sfdr"],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": "Standard",
-          "sharedUserIds": []
-        }
-        """.trimIndent()
-
-        performCreatePortfolioAndExpect(requestBody, status().isCreated)
+        performCreatePortfolioAndExpect(monitoredRequestBody, status().isCreated)
     }
 
     @Test
@@ -353,19 +290,7 @@ class PortfolioControllerTest(
 
         doNothing().whenever(companyDataController).isCompanyIdValid(any())
 
-        val requestBody = """
-        {
-          "portfolioName": "Unmonitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": false,
-          "monitoredFrameworks": [],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": null,
-          "sharedUserIds": []
-        }
-        """.trimIndent()
-
-        performCreatePortfolioAndExpect(requestBody, status().isCreated)
+        performCreatePortfolioAndExpect(notMonitoredRequestBody, status().isCreated)
     }
 
     // -----------------------
