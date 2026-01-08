@@ -202,7 +202,7 @@ class PortfolioSharingIntegrationTest
                     portfolioSharingService.patchSharing(
                         nonExistentId,
                         dummyPortfolio.toBasePortfolio(),
-                        correlationId = "corr-3"
+                        correlationId = "corr-3",
                     )
                 }
             Assertions.assertTrue(exception.message.contains(nonExistentId.toString()))

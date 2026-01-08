@@ -65,7 +65,7 @@ class PortfolioSharingService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString())
+            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString(), correlationId)
 
             val updatedPortfolioEntity =
                 originalPortfolio.toPortfolioEntity(
@@ -95,7 +95,7 @@ class PortfolioSharingService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString())
+            val originalPortfolio = portfolioService.getPortfolio(portfolioId.toString(), correlationId)
 
             val updatedPortfolioEntity =
                 originalPortfolio.toPortfolioEntity(

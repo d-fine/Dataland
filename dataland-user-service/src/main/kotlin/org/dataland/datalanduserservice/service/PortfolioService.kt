@@ -76,8 +76,10 @@ class PortfolioService
          * the portfolio if it belongs to the calling user.
          */
         @Transactional(readOnly = true)
-        fun getPortfolio(portfolioId: String): BasePortfolio {
-            val correlationId = UUID.randomUUID().toString()
+        fun getPortfolio(
+            portfolioId: String,
+            correlationId: String,
+        ): BasePortfolio {
             logger.info(
                 "Retrieve portfolio with portfolioId: $portfolioId." +
                     " CorrelationId: $correlationId.",
@@ -153,7 +155,7 @@ class PortfolioService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio = getPortfolio(portfolioId)
+            val originalPortfolio = getPortfolio(portfolioId, correlationId)
 
             val updatedPortfolioEntity =
                 PortfolioEntity(

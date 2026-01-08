@@ -44,8 +44,10 @@ class PortfolioController
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
 
-        override fun getPortfolio(portfolioId: String): ResponseEntity<BasePortfolio> =
-            ResponseEntity.ok(portfolioService.getPortfolio(portfolioId))
+        override fun getPortfolio(portfolioId: String): ResponseEntity<BasePortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(portfolioService.getPortfolio(portfolioId, correlationId))
+        }
 
         override fun getPortfoliosForUser(userId: String): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUserById(userId))
@@ -102,8 +104,12 @@ class PortfolioController
         override fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
             ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
 
-        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
-            ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioService.getPortfolio(portfolioId)))
+        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(
+                portfolioEnrichmentService.getEnrichedPortfolio(portfolioService.getPortfolio(portfolioId, correlationId)),
+            )
+        }
 
         override fun patchMonitoring(
             portfolioId: String,

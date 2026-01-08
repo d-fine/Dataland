@@ -56,7 +56,7 @@ class Validator
             if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId) && !isAdmin) {
                 throw PortfolioNotFoundApiException(portfolioId)
             }
-            val portfolioToBeReplaced = portfolioService.getPortfolio(portfolioId)
+            val portfolioToBeReplaced = portfolioService.getPortfolio(portfolioId, correlationId)
             if (portfolioService.existsPortfolioWithNameForUser(portfolioUpload.portfolioName, correlationId) &&
                 portfolioToBeReplaced.portfolioName != portfolioUpload.portfolioName
             ) {

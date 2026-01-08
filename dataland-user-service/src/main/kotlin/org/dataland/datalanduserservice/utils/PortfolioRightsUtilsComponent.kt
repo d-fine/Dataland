@@ -5,6 +5,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 /**
  * Utility bean for functionality concerning portfolio rights.
@@ -40,7 +41,10 @@ class PortfolioRightsUtilsComponent(
      * @param portfolioId the ID of the portfolio in question
      * @return true if the user is the owner of the portfolio, false otherwise
      */
-    fun isUserPortfolioOwner(portfolioId: String): Boolean = portfolioService.existsPortfolioForUser(portfolioId, "Authentication")
+    fun isUserPortfolioOwner(portfolioId: String): Boolean {
+        val correlationId = UUID.randomUUID().toString()
+        return portfolioService.existsPortfolioForUser(portfolioId, correlationId)
+    }
 
     /**
      * Check whether the specified portfolio is shared with the specified user.
@@ -52,7 +56,8 @@ class PortfolioRightsUtilsComponent(
         userId: String,
         portfolioId: String,
     ): Boolean {
-        val portfolio = portfolioService.getPortfolio(portfolioId)
+        val correlationId = UUID.randomUUID().toString()
+        val portfolio = portfolioService.getPortfolio(portfolioId, correlationId)
         return portfolio.sharedUserIds.contains(userId)
     }
 }

@@ -112,7 +112,7 @@ class PortfolioServiceTest {
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
             .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
-        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId, dummyCorrelationId) }
         verify(mockPortfolioRepository, times(1)).getPortfolioByPortfolioId(
             UUID.fromString(dummyPortfolio.portfolioId),
         )
@@ -129,7 +129,7 @@ class PortfolioServiceTest {
             .getPortfolioByPortfolioId(dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioService.getPortfolio(dummyPortfolioId.toString())
+            portfolioService.getPortfolio(dummyPortfolioId.toString(), dummyCorrelationId)
         }
     }
 
