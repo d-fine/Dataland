@@ -165,24 +165,70 @@ class AccountingServiceListenerTest {
         )
     }
 
-    @Test
-    fun `check that the wrong message type for withdrawn leads to an appropriate exception`() {
+    private fun stubInheritedRoles(
+        userId: String,
+        rolesByCompany: Map<String, List<String>>,
+    ) {
+        doReturn(rolesByCompany)
+            .whenever(mockInheritedRolesControllerApi)
+            .getInheritedRoles(userId)
+    }
+
+    private fun withdrawnPayload(
+        triggeringUserId: String = this.triggeringUserId,
+        associatedUserIds: List<String> = emptyList(),
+        requestedCompanyId: String = UUID.randomUUID().toString(),
+        requestedReportingPeriod: String = this.requestedReportingPeriod,
+        requestedFramework: String = this.requestedFramework,
+    ): String {
         val withdrawnMessage =
             RequestSetToWithdrawnMessage(
                 triggeringUserId = triggeringUserId,
                 dataSourcingId = dataSourcingId,
-                userIdsAssociatedRequestsForSameTriple = emptyList(),
-                requestedCompanyId = UUID.randomUUID().toString(),
+                userIdsAssociatedRequestsForSameTriple = associatedUserIds,
+                requestedCompanyId = requestedCompanyId,
                 requestedReportingPeriod = requestedReportingPeriod,
                 requestedFramework = requestedFramework,
             )
-        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
+
+        return defaultObjectMapper.writeValueAsString(withdrawnMessage)
+    }
+
+    private fun callWithdrawnListener(
+        payload: String,
+        type: String = MessageType.REQUEST_SET_TO_WITHDRAWN,
+    ) {
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = type,
+            correlationId = correlationId,
+        )
+    }
+
+    private fun stubBilledRequest(
+        billedCompanyId: String = this.billedCompanyId,
+        dataSourcingId: String = this.dataSourcingId,
+        entity: BilledRequestEntity?,
+    ) {
+        val id =
+            BilledRequestEntityId(
+                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
+            )
+
+        doReturn(Optional.ofNullable(entity))
+            .whenever(mockBilledRequestRepository)
+            .findById(id)
+    }
+
+    @Test
+    fun `check that the wrong message type for withdrawn leads to an appropriate exception`() {
+        val payload = withdrawnPayload()
 
         assertThrows<MessageQueueRejectException> {
-            accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            callWithdrawnListener(
                 payload = payload,
                 type = "some.wrong.message.type",
-                correlationId = correlationId,
             )
         }
     }
@@ -190,26 +236,17 @@ class AccountingServiceListenerTest {
     @Test
     fun `check that no billed request is deleted when withdrawing and triggering user is not a Dataland member`() {
         // Triggering user has no DatalandMember role
-        doReturn(
-            mapOf(billedCompanyId to emptyList<String>()),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
-
-        val withdrawnMessage =
-            RequestSetToWithdrawnMessage(
-                triggeringUserId = triggeringUserId,
-                dataSourcingId = dataSourcingId,
-                userIdsAssociatedRequestsForSameTriple = listOf(UUID.randomUUID().toString()),
-                requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = requestedReportingPeriod,
-                requestedFramework = requestedFramework,
-            )
-        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
-
-        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
-            payload = payload,
-            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
-            correlationId = correlationId,
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to emptyList()),
         )
+
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(UUID.randomUUID().toString()),
+            )
+
+        callWithdrawnListener(payload)
 
         verifyNoInteractions(mockBilledRequestRepository)
     }
@@ -218,30 +255,21 @@ class AccountingServiceListenerTest {
     fun `check that billed request is not deleted when another billable request for the same company exists`() {
         val associatedUserIdForSameCompany = UUID.randomUUID().toString()
 
-        doReturn(
-            mapOf(billedCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
-
-        doReturn(
-            mapOf(billedCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(associatedUserIdForSameCompany)
-
-        val withdrawnMessage =
-            RequestSetToWithdrawnMessage(
-                triggeringUserId = triggeringUserId,
-                dataSourcingId = dataSourcingId,
-                userIdsAssociatedRequestsForSameTriple = listOf(associatedUserIdForSameCompany),
-                requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = requestedReportingPeriod,
-                requestedFramework = requestedFramework,
-            )
-        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
-
-        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
-            payload = payload,
-            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
-            correlationId = correlationId,
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
         )
+        stubInheritedRoles(
+            userId = associatedUserIdForSameCompany,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(associatedUserIdForSameCompany),
+            )
+
+        callWithdrawnListener(payload)
 
         verifyNoInteractions(mockBilledRequestRepository)
     }
@@ -251,36 +279,25 @@ class AccountingServiceListenerTest {
         val otherAssociatedUserId = UUID.randomUUID().toString()
         val otherBilledCompanyId = UUID.randomUUID().toString()
 
-        doReturn(
-            mapOf(billedCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
-        doReturn(
-            mapOf(otherBilledCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(otherAssociatedUserId)
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+        stubInheritedRoles(
+            userId = otherAssociatedUserId,
+            rolesByCompany = mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        )
 
-        val withdrawnMessage =
-            RequestSetToWithdrawnMessage(
-                triggeringUserId = triggeringUserId,
-                dataSourcingId = dataSourcingId,
-                userIdsAssociatedRequestsForSameTriple = listOf(otherAssociatedUserId),
-                requestedCompanyId = UUID.randomUUID().toString(),
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(otherAssociatedUserId),
                 requestedReportingPeriod = "2025",
                 requestedFramework = "sfdr",
             )
-        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
-        doReturn(Optional.of(billedRequestEntity)).whenever(mockBilledRequestRepository).findById(
-            BilledRequestEntityId(
-                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
-            ),
-        )
+        stubBilledRequest(entity = billedRequestEntity)
 
-        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
-            payload = payload,
-            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
-            correlationId = correlationId,
-        )
+        callWithdrawnListener(payload)
 
         verify(mockBilledRequestRepository, times(1)).delete(billedRequestEntity)
     }
@@ -290,37 +307,24 @@ class AccountingServiceListenerTest {
         val otherAssociatedUserId = UUID.randomUUID().toString()
         val otherBilledCompanyId = UUID.randomUUID().toString()
 
-        doReturn(
-            mapOf(billedCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(triggeringUserId)
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
         // Associated user → different company with DatalandMember
-        doReturn(
-            mapOf(otherBilledCompanyId to listOf("DatalandMember")),
-        ).whenever(mockInheritedRolesControllerApi).getInheritedRoles(otherAssociatedUserId)
+        stubInheritedRoles(
+            userId = otherAssociatedUserId,
+            rolesByCompany = mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        )
 
-        val withdrawnMessage =
-            RequestSetToWithdrawnMessage(
-                triggeringUserId = triggeringUserId,
-                dataSourcingId = dataSourcingId,
-                userIdsAssociatedRequestsForSameTriple = listOf(otherAssociatedUserId),
-                requestedCompanyId = UUID.randomUUID().toString(),
-                requestedReportingPeriod = requestedReportingPeriod,
-                requestedFramework = requestedFramework,
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(otherAssociatedUserId),
             )
-        val payload = defaultObjectMapper.writeValueAsString(withdrawnMessage)
 
-        doReturn(Optional.empty<BilledRequestEntity>()).whenever(mockBilledRequestRepository).findById(
-            BilledRequestEntityId(
-                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
-                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
-            ),
-        )
+        stubBilledRequest(entity = null)
 
-        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
-            payload = payload,
-            type = MessageType.REQUEST_SET_TO_WITHDRAWN,
-            correlationId = correlationId,
-        )
+        callWithdrawnListener(payload)
 
         verify(mockBilledRequestRepository, times(0)).delete(any())
     }
