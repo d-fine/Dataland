@@ -1,8 +1,13 @@
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.PortfolioSharingPatch
+import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
@@ -39,7 +44,7 @@ abstract class AbstractPortfolioControllerTest {
     @Autowired
     protected lateinit var portfolioRepository: PortfolioRepository
 
-    @MockitoBean(name = "PortfolioRightsUtilsComponent")
+    @MockitoBean
     protected lateinit var portfolioRightsUtilsComponent: PortfolioRightsUtilsComponent
 
     @MockitoBean
@@ -52,47 +57,47 @@ abstract class AbstractPortfolioControllerTest {
     protected val sharedUserId: UUID = UUID.randomUUID()
 
     protected val monitoredRequestBody: String =
-        """
-        {
-          "portfolioName": "Monitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": true,
-          "monitoredFrameworks": ["sfdr"],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": "Standard",
-          "sharedUserIds": []
-        }
-        """.trimIndent()
+        defaultObjectMapper.writeValueAsString(
+            PortfolioUpload(
+                portfolioName = "Monitored Portfolio",
+                identifiers = setOf("company-1"),
+                isMonitored = true,
+                monitoredFrameworks = setOf("sfdr"),
+                notificationFrequency = NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
+                sharedUserIds = emptySet(),
+            ),
+        )
 
     protected val notMonitoredRequestBody: String =
-        """
-        {
-          "portfolioName": "Unmonitored Portfolio",
-          "identifiers": ["company-1"],
-          "isMonitored": false,
-          "monitoredFrameworks": [],
-          "notificationFrequency": "Weekly",
-          "timeWindowThreshold": null,
-          "sharedUserIds": []
-        }
-        """.trimIndent()
+        defaultObjectMapper.writeValueAsString(
+            PortfolioUpload(
+                portfolioName = "Unmonitored Portfolio",
+                identifiers = setOf("company-1"),
+                isMonitored = false,
+                monitoredFrameworks = emptySet(),
+                notificationFrequency = NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
+                sharedUserIds = emptySet(),
+            ),
+        )
 
     protected val monitoredPortfolioPatchRequestBody: String =
-        """
-        {
-          "isMonitored": true, 
-          "monitoredFrameworks": ["sfdr"], 
-          "notificationFrequency": "Weekly", 
-          "timeWindowThreshold": "Standard"
-        }
-        """.trimIndent()
+        defaultObjectMapper.writeValueAsString(
+            PortfolioMonitoringPatch(
+                isMonitored = true,
+                monitoredFrameworks = setOf("sfdr"),
+                notificationFrequency = NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
+            ),
+        )
 
     protected val sharingPatchRequestBody: String =
-        """
-        {
-          "sharedUserIds": ["$sharedUserId"]
-        }
-        """.trimIndent()
+        defaultObjectMapper.writeValueAsString(
+            PortfolioSharingPatch(
+                sharedUserIds = setOf(sharedUserId.toString()),
+            ),
+        )
 
     protected val dummyAdminAuthentication: DatalandJwtAuthentication =
         AuthenticationMock.mockJwtAuthentication(

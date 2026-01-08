@@ -1,20 +1,12 @@
 package org.dataland.datalanduserservice.controller
 
-import org.dataland.datalanduserservice.DatalandUserService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@SpringBootTest(
-    classes = [DatalandUserService::class],
-    properties = ["spring.profiles.active=nodb"],
-)
-@AutoConfigureMockMvc
 class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     @Test
     fun `admins can get any portfolio`() {
