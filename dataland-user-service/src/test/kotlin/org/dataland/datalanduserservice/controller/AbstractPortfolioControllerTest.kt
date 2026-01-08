@@ -55,12 +55,13 @@ abstract class AbstractPortfolioControllerTest {
     protected val adminUserId: UUID = UUID.randomUUID()
     protected val regularUserId: UUID = UUID.randomUUID()
     protected val sharedUserId: UUID = UUID.randomUUID()
+    protected val dummyCompanyId = "dummyCompanyId"
 
     protected val monitoredRequestBody: String =
         defaultObjectMapper.writeValueAsString(
             PortfolioUpload(
                 portfolioName = "Monitored Portfolio",
-                identifiers = setOf("company-1"),
+                identifiers = setOf(dummyCompanyId),
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
                 notificationFrequency = NotificationFrequency.Weekly,
@@ -73,7 +74,7 @@ abstract class AbstractPortfolioControllerTest {
         defaultObjectMapper.writeValueAsString(
             PortfolioUpload(
                 portfolioName = "Unmonitored Portfolio",
-                identifiers = setOf("company-1"),
+                identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 notificationFrequency = NotificationFrequency.Weekly,
@@ -131,7 +132,7 @@ abstract class AbstractPortfolioControllerTest {
                 portfolioName = "Test Portfolio",
                 creationTimestamp = System.currentTimeMillis(),
                 lastUpdateTimestamp = System.currentTimeMillis(),
-                companyIds = mutableSetOf("company-1"),
+                companyIds = mutableSetOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 notificationFrequency = NotificationFrequency.Weekly,
