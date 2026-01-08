@@ -1,16 +1,15 @@
-package org.dataland.datalanduserservice
+package org.dataland.datalanduserservice.service
 
+import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
-import org.dataland.datalanduserservice.service.PortfolioSharingService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -81,9 +80,9 @@ class PortfolioSharingIntegrationTest
             val entity = createPortfolioEntity(setOf(dummySharedUserId))
             portfolioRepository.save(entity)
             val result = portfolioSharingService.getAllSharedPortfoliosForCurrentUser()
-            assertEquals(1, result.size)
-            assertEquals(entity.portfolioId.toString(), result[0].portfolioId)
-            assertEquals(entity.portfolioName, result[0].portfolioName)
+            Assertions.assertEquals(1, result.size)
+            Assertions.assertEquals(entity.portfolioId.toString(), result[0].portfolioId)
+            Assertions.assertEquals(entity.portfolioName, result[0].portfolioName)
         }
 
         @Test
@@ -92,7 +91,7 @@ class PortfolioSharingIntegrationTest
             val entity = createPortfolioEntity(setOf(dummySharedOtherUserId))
             portfolioRepository.save(entity)
             val result = portfolioSharingService.getAllSharedPortfoliosForCurrentUser()
-            assertTrue(result.isEmpty())
+            Assertions.assertTrue(result.isEmpty())
         }
 
         @Test
@@ -101,7 +100,7 @@ class PortfolioSharingIntegrationTest
             val entityEmpty = createPortfolioEntity(sharedUserIds = emptySet())
             portfolioRepository.save(entityEmpty)
             val result = portfolioSharingService.getAllSharedPortfoliosForCurrentUser()
-            assertTrue(result.isEmpty())
+            Assertions.assertTrue(result.isEmpty())
         }
 
         @Test
@@ -111,9 +110,9 @@ class PortfolioSharingIntegrationTest
             val entity2 = createPortfolioEntity(setOf(dummySharedOtherUserId))
             portfolioRepository.saveAll(listOf(entity1, entity2))
             val result = portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser()
-            assertEquals(1, result.size)
-            assertEquals(entity1.portfolioName, result[0].portfolioName)
-            assertEquals(entity1.portfolioId.toString(), result[0].portfolioId)
+            Assertions.assertEquals(1, result.size)
+            Assertions.assertEquals(entity1.portfolioName, result[0].portfolioName)
+            Assertions.assertEquals(entity1.portfolioId.toString(), result[0].portfolioId)
         }
 
         @Test
@@ -122,7 +121,7 @@ class PortfolioSharingIntegrationTest
             val entity = createPortfolioEntity(setOf(dummySharedOtherUserId))
             portfolioRepository.save(entity)
             val result = portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser()
-            assertTrue(result.isEmpty())
+            Assertions.assertTrue(result.isEmpty())
         }
 
         @Test
@@ -131,7 +130,7 @@ class PortfolioSharingIntegrationTest
             val entity = createPortfolioEntity(emptySet())
             portfolioRepository.save(entity)
             val result = portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser()
-            assertTrue(result.isEmpty())
+            Assertions.assertTrue(result.isEmpty())
         }
 
         @Test
@@ -142,10 +141,10 @@ class PortfolioSharingIntegrationTest
             val entity3 = createPortfolioEntity(setOf(dummySharedOtherUserId))
             portfolioRepository.saveAll(listOf(entity1, entity2, entity3))
             val result = portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser()
-            assertEquals(2, result.size)
+            Assertions.assertEquals(2, result.size)
             val names = result.map { it.portfolioName }
-            assertTrue(entity1.portfolioName in names)
-            assertTrue(entity2.portfolioName in names)
+            Assertions.assertTrue(entity1.portfolioName in names)
+            Assertions.assertTrue(entity2.portfolioName in names)
         }
 
         @Test
@@ -166,12 +165,12 @@ class PortfolioSharingIntegrationTest
                     updatedPortfolio,
                     correlationId = "corr-1",
                 )
-            assertEquals(updatedSharedUserIds, result.sharedUserIds)
-            assertEquals(saved.portfolioId.toString(), result.portfolioId)
-            assertEquals(saved.creationTimestamp, result.creationTimestamp)
-            assertEquals(newTimestamp, result.lastUpdateTimestamp)
+            Assertions.assertEquals(updatedSharedUserIds, result.sharedUserIds)
+            Assertions.assertEquals(saved.portfolioId.toString(), result.portfolioId)
+            Assertions.assertEquals(saved.creationTimestamp, result.creationTimestamp)
+            Assertions.assertEquals(newTimestamp, result.lastUpdateTimestamp)
             val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
-            assertEquals(updatedSharedUserIds, reloaded?.sharedUserIds)
+            Assertions.assertEquals(updatedSharedUserIds, reloaded?.sharedUserIds)
         }
 
         @Test
@@ -190,7 +189,7 @@ class PortfolioSharingIntegrationTest
                     updatedPortfolio,
                     correlationId = "corr-2",
                 )
-            assertTrue(result.sharedUserIds.isEmpty())
+            Assertions.assertTrue(result.sharedUserIds.isEmpty())
         }
 
         @Test
@@ -200,9 +199,13 @@ class PortfolioSharingIntegrationTest
             val dummyPortfolio = createPortfolioEntity(emptySet())
             val exception =
                 assertThrows<PortfolioNotFoundApiException> {
-                    portfolioSharingService.patchSharing(nonExistentId, dummyPortfolio.toBasePortfolio(), correlationId = "corr-3")
+                    portfolioSharingService.patchSharing(
+                        nonExistentId,
+                        dummyPortfolio.toBasePortfolio(),
+                        correlationId = "corr-3"
+                    )
                 }
-            assertTrue(exception.message.contains(nonExistentId.toString()))
+            Assertions.assertTrue(exception.message.contains(nonExistentId.toString()))
         }
 
         @Test
@@ -212,10 +215,10 @@ class PortfolioSharingIntegrationTest
             val saved = portfolioRepository.save(entity)
             portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-1")
             val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
-            assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
-            assertEquals(saved.portfolioId, reloaded?.portfolioId)
-            assertEquals(saved.creationTimestamp, reloaded?.creationTimestamp)
-            assertEquals(saved.lastUpdateTimestamp, reloaded?.lastUpdateTimestamp)
+            Assertions.assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
+            Assertions.assertEquals(saved.portfolioId, reloaded?.portfolioId)
+            Assertions.assertEquals(saved.creationTimestamp, reloaded?.creationTimestamp)
+            Assertions.assertEquals(saved.lastUpdateTimestamp, reloaded?.lastUpdateTimestamp)
         }
 
         @Test
@@ -225,7 +228,7 @@ class PortfolioSharingIntegrationTest
             val saved = portfolioRepository.save(entity)
             portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-2")
             val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
-            assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
+            Assertions.assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
         }
 
         @Test
@@ -236,7 +239,7 @@ class PortfolioSharingIntegrationTest
                 assertThrows<PortfolioNotFoundApiException> {
                     portfolioSharingService.deleteCurrentUserFromSharing(nonExistentId, correlationId = "corr-del-3")
                 }
-            assertTrue(exception.message.contains(nonExistentId.toString()))
+            Assertions.assertTrue(exception.message.contains(nonExistentId.toString()))
         }
 
         @Test
@@ -246,6 +249,6 @@ class PortfolioSharingIntegrationTest
             val saved = portfolioRepository.save(entity)
             portfolioSharingService.deleteCurrentUserFromSharing(saved.portfolioId, correlationId = "corr-del-4")
             val reloaded = portfolioRepository.getPortfolioByPortfolioId(saved.portfolioId)
-            assertTrue(reloaded?.sharedUserIds?.isEmpty() == true)
+            Assertions.assertTrue(reloaded?.sharedUserIds?.isEmpty() == true)
         }
     }

@@ -1,4 +1,4 @@
-package org.dataland.datalanduserservice.service
+package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalanduserservice.DatalandUserService
