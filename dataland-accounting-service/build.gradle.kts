@@ -172,6 +172,7 @@ tasks.getByName("ktlintMainSourceSetCheck") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }
 
 ktlint {
