@@ -149,7 +149,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully created a new portfolio."),
-            ApiResponse(responseCode = "403", description = "Only Dataland members can activate portfolio monitoring."),
+            ApiResponse(responseCode = "403", description = "Only Dataland members can create a portfolio with monitoring."),
         ],
     )
     @PostMapping(
@@ -176,7 +176,10 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
-            ApiResponse(responseCode = "403", description = "Only Dataland members can activate portfolio monitoring."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to replace this portfolio or to activate portfolio monitoring.",
+            ),
         ],
     )
     @PutMapping(
