@@ -87,7 +87,7 @@ class AccountingServiceListener(
         correlationId: String,
     ) = logger.info(
         "The billed request for company ID $billedCompanyId and data sourcing ID $dataSourcingId was deleted. " +
-            "Skipping creation. Correlation ID: $correlationId.",
+            "Correlation ID: $correlationId.",
     )
 
     /**
@@ -213,10 +213,9 @@ class AccountingServiceListener(
                 if (associatedBilledCompanyId == billedCompanyId) {
                     logWithdrawRequestAbortionMessage(billedCompanyId, correlationId)
                     return@rejectMessageOnException
-                } else {
-                    deleteBilledRequest(billedCompanyId, requestSetToWithdrawnMessage.dataSourcingId, correlationId)
                 }
             }
+            deleteBilledRequest(billedCompanyId, requestSetToWithdrawnMessage.dataSourcingId, correlationId)
         }
     }
 
