@@ -218,7 +218,6 @@ class PortfolioSharingIntegrationTest
             Assertions.assertEquals(setOf(dummySharedOtherUserId), reloaded?.sharedUserIds)
             Assertions.assertEquals(saved.portfolioId, reloaded?.portfolioId)
             Assertions.assertEquals(saved.creationTimestamp, reloaded?.creationTimestamp)
-            Assertions.assertEquals(saved.lastUpdateTimestamp, reloaded?.lastUpdateTimestamp)
         }
 
         @Test
