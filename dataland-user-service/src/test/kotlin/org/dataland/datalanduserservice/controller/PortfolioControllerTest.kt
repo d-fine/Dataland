@@ -225,6 +225,31 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     }
 
     @Test
+    fun `admins can delete any portfolio`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performDeletePortfolioAndExpect(MockMvcResultMatchers.status().isNoContent)
+    }
+
+    @Test
+    fun `regular users cannot delete portfolio they do not own`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
+
+        performDeletePortfolioAndExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+
+    @Test
+    fun `regular users can delete their own portfolio`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
+
+        performDeletePortfolioAndExpect(MockMvcResultMatchers.status().isNoContent)
+    }
+
+    @Test
     fun `admins can get all shared portfolios for current user`() {
         setMockSecurityContext(dummyAdminAuthentication)
 
@@ -260,19 +285,43 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     }
 
     @Test
-    fun `regular users can patch sharing when they are owner`() {
+    fun `Dataland Members can patch sharing when they are owner`() {
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
+        whenever(
+            portfolioRightsUtilsComponent.isUserDatalandMember(
+                any(),
+            ),
+        ).thenReturn(true)
 
         performPatchSharingAndExpect(sharingPatchRequestBody, MockMvcResultMatchers.status().isOk)
     }
 
     @Test
-    fun `regular users cannot patch sharing when they are not owner`() {
+    fun `non Member users cannot patch sharing when they are owner`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
+        whenever(
+            portfolioRightsUtilsComponent.isUserDatalandMember(
+                any(),
+            ),
+        ).thenReturn(false)
+
+        performPatchSharingAndExpect(sharingPatchRequestBody, MockMvcResultMatchers.status().isForbidden)
+    }
+
+    @Test
+    fun `Dataland Members cannot patch sharing when they are not owner`() {
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
+        whenever(
+            portfolioRightsUtilsComponent.isUserDatalandMember(
+                any(),
+            ),
+        ).thenReturn(true)
 
         performPatchSharingAndExpect(sharingPatchRequestBody, MockMvcResultMatchers.status().isForbidden)
     }

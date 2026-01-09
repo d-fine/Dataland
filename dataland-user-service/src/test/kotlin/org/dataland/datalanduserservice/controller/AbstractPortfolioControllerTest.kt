@@ -241,4 +241,13 @@ abstract class AbstractPortfolioControllerTest {
                     .with(SecurityMockMvcRequestPostProcessors.securityContext(mockSecurityContext)),
             ).andExpect(statusMatcher)
     }
+
+    protected fun performDeletePortfolioAndExpect(statusMatcher: ResultMatcher) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .delete("/portfolios/$portfolioId/")
+                    .with(SecurityMockMvcRequestPostProcessors.securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
 }
