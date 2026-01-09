@@ -58,5 +58,16 @@ data class PortfolioUpload(
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
     )
     override val timeWindowThreshold: TimeWindowThreshold? = null,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String> = emptySet(),
 ) : Portfolio,
-    PortfolioMonitoring
+    PortfolioMonitoring,
+    PortfolioSharing

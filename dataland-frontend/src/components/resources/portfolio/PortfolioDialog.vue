@@ -229,6 +229,8 @@ async function savePortfolio(): Promise<void> {
       monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
       notificationFrequency: enrichedPortfolio.value?.notificationFrequency ?? NotificationFrequency.Weekly,
       timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? undefined,
+      // as unknown as Set<string> cast required to ensure proper json is created
+      sharedUserIds: Array.from(enrichedPortfolio.value?.sharedUserIds ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)

@@ -19,6 +19,7 @@ export function createPortfolio(): void {
       monitoredFrameworks: [] as unknown as Set<string>,
       notificationFrequency: NotificationFrequency.Weekly,
       timeWindowThreshold: undefined,
+      sharedUserIds: [] as unknown as Set<string>,
     };
     await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
   });

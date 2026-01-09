@@ -82,8 +82,19 @@ data class BasePortfolio(
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
     )
     override val timeWindowThreshold: TimeWindowThreshold?,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String>,
 ) : Portfolio,
-    PortfolioMonitoring {
+    PortfolioMonitoring,
+    PortfolioSharing {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
         portfolioName = portfolioUpload.portfolioName,
@@ -95,6 +106,7 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
         notificationFrequency = portfolioUpload.notificationFrequency,
         timeWindowThreshold = portfolioUpload.timeWindowThreshold,
+        sharedUserIds = emptySet(),
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -108,6 +120,21 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
         notificationFrequency = portfolioMonitoringPatch.notificationFrequency,
         timeWindowThreshold = portfolioMonitoringPatch.timeWindowThreshold,
+        sharedUserIds = emptySet(),
+    )
+
+    constructor(portfolioSharingPatch: PortfolioSharingPatch) : this(
+        portfolioId = UUID.randomUUID().toString(),
+        portfolioName = "",
+        userId = DatalandAuthentication.fromContext().userId,
+        creationTimestamp = Instant.now().toEpochMilli(),
+        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+        identifiers = emptySet(),
+        isMonitored = false,
+        monitoredFrameworks = emptySet(),
+        notificationFrequency = NotificationFrequency.Weekly,
+        timeWindowThreshold = null,
+        sharedUserIds = portfolioSharingPatch.sharedUserIds,
     )
 
     /**
@@ -122,6 +149,7 @@ data class BasePortfolio(
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
         notificationFrequency: NotificationFrequency = this.notificationFrequency,
         timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
+        sharedUserIds: Set<String> = this.sharedUserIds,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -134,5 +162,6 @@ data class BasePortfolio(
             monitoredFrameworks = monitoredFrameworks,
             notificationFrequency = notificationFrequency,
             timeWindowThreshold = timeWindowThreshold,
+            sharedUserIds = sharedUserIds,
         )
 }

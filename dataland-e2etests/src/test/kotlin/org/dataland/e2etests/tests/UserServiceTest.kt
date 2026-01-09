@@ -31,6 +31,7 @@ class UserServiceTest {
             isMonitored = false,
             monitoredFrameworks = emptySet(),
             notificationFrequency = NotificationFrequency.NoNotifications,
+            sharedUserIds = emptySet(),
             timeWindowThreshold = null,
         )
 
@@ -140,6 +141,7 @@ class UserServiceTest {
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
                 notificationFrequency = NotificationFrequency.NoNotifications,
+                sharedUserIds = emptySet(),
                 timeWindowThreshold = null,
             )
 
