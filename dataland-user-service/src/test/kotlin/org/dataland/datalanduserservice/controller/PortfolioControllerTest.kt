@@ -285,7 +285,7 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     }
 
     @Test
-    fun `Dataland Members can patch sharing when they are owner`() {
+    fun `dataland Members can patch sharing when they are owner`() {
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
@@ -313,7 +313,7 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     }
 
     @Test
-    fun `Dataland Members cannot patch sharing when they are not owner`() {
+    fun `dataland Members cannot patch sharing when they are not owner`() {
         setMockSecurityContext(dummyUserAuthentication)
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
