@@ -49,9 +49,7 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedSfdrDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options
