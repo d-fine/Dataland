@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
+import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
@@ -60,6 +61,7 @@ internal class DataControllerTest {
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val mockDataExportStore = mock<DataExportStore>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
@@ -130,6 +132,7 @@ internal class DataControllerTest {
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
+                mockDataExportStore,
                 mockCompanyQueryManager,
             )
     }

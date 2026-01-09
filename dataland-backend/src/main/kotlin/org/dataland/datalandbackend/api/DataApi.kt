@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
@@ -19,7 +18,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParame
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -163,75 +161,6 @@ interface DataApi<T> {
             defaultValue = "true",
         ) includeAliases: Boolean = true,
     ): ResponseEntity<ExportJob>
-
-    /**
-     * A method to post an export job of the CompanyAssociatedData by its reporting periods and company IDs.
-     */
-    @Operation(
-        summary = "Get information about export job being done.",
-        description =
-            "Check state of export job.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
-            ApiResponse(
-                responseCode = "204",
-                description = "No data for download available.",
-                content = [Content(mediaType = "")],
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Export job Id could not be found.",
-                content = [Content(mediaType = "")],
-            ),
-        ],
-    )
-    @GetMapping(
-        value = ["/export/state/{exportJobId}"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun getExportJobState(
-        @PathVariable(
-            value = "exportJobId",
-        ) exportJobId: String,
-    ): ResponseEntity<ExportJobProgressState>
-
-    /**
-     * A method to export the CompanyAssociatedData by its reporting periods and company IDs.
-     */
-    @Operation(
-        summary = "Export data exportJobId provided.",
-        description =
-            "Export data for each combination of reportingPeriod and companyId provided into a file of the " +
-                "specified format (CSV, Excel-compatible CSV, JSON).",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
-            ApiResponse(
-                responseCode = "204",
-                description = "No data for download available.",
-                content = [Content(mediaType = "")],
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Company Id could not be found.",
-                content = [Content(mediaType = "")],
-            ),
-        ],
-    )
-    @PostMapping(
-        value = ["/export/download/{exportJobId}"],
-        produces = ["application/octet-stream"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun exportCompanyAssociatedDataById(
-        @PathVariable(
-            value = "exportJobId",
-        ) exportJobId: String,
-    ): ResponseEntity<InputStreamResource>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its

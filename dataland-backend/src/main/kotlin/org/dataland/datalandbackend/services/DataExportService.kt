@@ -18,20 +18,15 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
-import java.time.Duration
-import java.time.Instant
-import java.util.UUID
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -51,11 +46,9 @@ class DataExportService<T>
             private const val COMPANY_NAME_POSITION = -3
             private const val COMPANY_LEI_POSITION = -2
             private const val REPORTING_PERIOD_POSITION = -1
-            private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 5L
         }
 
         private val objectMapper = defaultObjectMapper
-        private val exportJobStorage = mutableMapOf<String, MutableList<ExportJobEntity>>()
 
         /**
          * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
@@ -101,26 +94,6 @@ class DataExportService<T>
                     buildJsonStreamFromPortfolioAsJsonData(jsonData)
                 }
             }
-        }
-
-        /**
-         * Instantiates and saves ExportJob in memory.
-         */
-        fun createAndSaveExportJob(
-            correlationId: UUID,
-            fileType: ExportFileType,
-        ): ExportJobEntity {
-            val newExportJobEntity =
-                ExportJobEntity(
-                    correlationId,
-                    null,
-                    fileType,
-                    creationTime = Instant.now().toEpochMilli(),
-                )
-            exportJobStorage
-                .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf(newExportJobEntity) }
-                .add(newExportJobEntity)
-            return newExportJobEntity
         }
 
         /**
@@ -248,33 +221,6 @@ class DataExportService<T>
         }
 
         /**
-         * Filters exportJob associated to user by id and returns progressState
-         */
-        fun getExportJobState(exportJobId: UUID): ExportJobProgressState =
-            exportJobStorage[DatalandAuthentication.fromContext().userId]
-                ?.firstOrNull { it.id == exportJobId }
-                ?.progressState
-                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
-
-        /**
-         * Filters exportJob associated to user by id and returns fileType
-         */
-        fun getExportJobFileFormat(exportJobId: UUID): ExportFileType =
-            exportJobStorage[DatalandAuthentication.fromContext().userId]
-                ?.firstOrNull { it.id == exportJobId }
-                ?.fileType
-                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
-
-        /**
-         * Filters exportJob associated to user by id and returns fileToExport
-         */
-        fun exportCompanyAssociatedDataById(exportJobId: UUID): InputStreamResource =
-            exportJobStorage[DatalandAuthentication.fromContext().userId]
-                ?.firstOrNull { it.id == exportJobId }
-                ?.fileToExport
-                ?: throw DownloadDataNotFoundApiException("No corresponding job found for associated user.")
-
-        /**
          * Create a ByteStream to be used for CSV export from a list of JSON objects.
          * @param portfolioExportRows passed JSON objects to be exported
          * @param dataType the datatype specifying the framework
@@ -399,7 +345,7 @@ class DataExportService<T>
             val isAssembledDatasetParam = (frameworkTemplate != null)
 
             val (csvData, nonEmptyHeaderFields) =
-                DataExportUtils.Companion.getCsvDataAndNonEmptyFields(
+                DataExportUtils.getCsvDataAndNonEmptyFields(
                     portfolioExportRows,
                     keepValueFieldsOnly,
                 )
@@ -416,14 +362,14 @@ class DataExportService<T>
                     getOrderedHeaderFieldsForNonAssembledDataset(nonEmptyHeaderFields)
                 }
             val orderedHeaders =
-                DataExportUtils.Companion.getOrderedHeaders(
+                DataExportUtils.getOrderedHeaders(
                     nonEmptyHeaderFields,
                     orderedHeaderFields,
                     isAssembledDatasetParam,
                 )
             val readableHeaders =
                 if (includeAliases) {
-                    DataExportUtils.Companion.applyAliasRenaming(
+                    DataExportUtils.applyAliasRenaming(
                         orderedHeaders,
                         frameworkTemplate ?: portfolioExportRows.first(),
                     )
@@ -431,7 +377,7 @@ class DataExportService<T>
                     orderedHeaders.associateWith { it }
                 }
 
-            val mappedCsvData = DataExportUtils.Companion.mapReadableHeadersToCsvData(csvData, readableHeaders)
+            val mappedCsvData = DataExportUtils.mapReadableHeadersToCsvData(csvData, readableHeaders)
 
             val usedReadableHeaders =
                 mappedCsvData
@@ -443,7 +389,7 @@ class DataExportService<T>
             val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
 
             val csvSchema =
-                DataExportUtils.Companion.createCsvSchemaBuilder(
+                DataExportUtils.createCsvSchemaBuilder(
                     filteredReadableHeaders.values.toSet(),
                     orderedHeaders.mapNotNull { filteredReadableHeaders[it] },
                     isAssembledDatasetParam,
@@ -465,20 +411,4 @@ class DataExportService<T>
                     }.then(naturalOrder()),
                 ),
             )
-
-        @Suppress("UnusedPrivateMember")
-        @Scheduled(cron = "0 /10 * * * *")
-        private fun regularExportJobCleanup() {
-            val cutoff = Instant.now().minus(Duration.ofMinutes(MAX_AGE_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
-
-            exportJobStorage.values.forEach { jobs ->
-                jobs.removeAll { job ->
-                    job.creationTime < cutoff
-                }
-            }
-
-            exportJobStorage.entries.removeIf { (_, jobs) ->
-                jobs.isEmpty()
-            }
-        }
     }

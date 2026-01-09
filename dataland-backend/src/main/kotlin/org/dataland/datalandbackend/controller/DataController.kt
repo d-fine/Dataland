@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
+import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -23,20 +24,14 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.ContentDisposition
-import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 /**
@@ -50,6 +45,7 @@ open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService<T>,
+    private val dataExportStorage: DataExportStore,
     private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -192,7 +188,9 @@ open class DataController<T>(
         val correlationId = UUID.randomUUID()
         logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
 
-        val newExportJobEntity = dataExportService.createAndSaveExportJob(correlationId, exportRequestData.fileFormat)
+        val newExportJobEntity =
+            dataExportStorage
+                .createAndSaveExportJob(correlationId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
 
         try {
             // Async function
@@ -212,40 +210,6 @@ open class DataController<T>(
 
         return ResponseEntity
             .ok(ExportJob(id = correlationId))
-    }
-
-    override fun getExportJobState(exportJobId: String): ResponseEntity<ExportJobProgressState> {
-        val exportJobProgressState = dataExportService.getExportJobState(UUID.fromString(exportJobId))
-        return ResponseEntity.ok(exportJobProgressState)
-    }
-
-    override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> {
-        val exportFile = dataExportService.exportCompanyAssociatedDataById(UUID.fromString(exportJobId))
-        val fileFormat = dataExportService.getExportJobFileFormat(UUID.fromString(exportJobId))
-
-        return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(fileFormat))
-            .body(exportFile)
-    }
-
-    /**
-     * Builds HTTP headers for exporting data, setting the appropriate content type and
-     * content disposition for file download.
-     * @param exportFileType type of export selected by user
-     */
-
-    private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
-        val headers = HttpHeaders()
-        val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"))
-        val frameworkName = DataTypeNameMapper.getDisplayName(dataType.name)
-        headers.contentType = exportFileType.mediaType
-        headers.contentDisposition =
-            ContentDisposition
-                .attachment()
-                .filename("data-export-$frameworkName-$timestamp.${exportFileType.fileExtension}")
-                .build()
-        return headers
     }
 
     private fun buildStorableDataset(

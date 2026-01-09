@@ -12,6 +12,7 @@ class ExportJobEntity(
     val id: UUID,
     var fileToExport: InputStreamResource?,
     var fileType: ExportFileType,
+    var frameworkName: String,
     var progressState: ExportJobProgressState = ExportJobProgressState.Pending,
     var creationTime: Long,
 )
