@@ -64,6 +64,7 @@ class AccountingServiceTest {
     private val billableCompanyIdReaderB = uploadCompanyAsUploader()
     private val billableCompanyIdReaderC = uploadCompanyAsUploader()
     private val billableCompanyIdUploader = uploadCompanyAsUploader()
+    private val billableCompanyIdWithdraw = uploadCompanyAsUploader()
 
     private val dataReaderUserId = TechnicalUser.Reader.technicalUserId
     private val dataUploaderUserId = TechnicalUser.Uploader.technicalUserId
@@ -98,6 +99,14 @@ class AccountingServiceTest {
             requestState = state,
         )
     }
+
+    private fun patchRequestStateToWithdrawn(requestId: String) =
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(
+                dataRequestId = requestId,
+                requestState = RequestState.Withdrawn,
+            )
+        }
 
     private fun getBalance(companyId: String): BigDecimal = apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
 
@@ -167,6 +176,33 @@ class AccountingServiceTest {
             removeCompanyMemberRights(billableCompanyIdReaderC)
             removeCompanyOwnerRole(billableCompanyIdUploader, UUID.fromString(dataUploaderUserId))
             removeCompanyMemberRights(billableCompanyIdUploader)
+        }
+    }
+
+    @Test
+    fun `post a transaction then add a request set it to processing then withdraw and check the balance is restored`() {
+        assignCompanyOwnerRole(billableCompanyIdWithdraw, UUID.fromString(dataReaderUserId))
+        makeCompanyMember(billableCompanyIdWithdraw)
+        try {
+            postTransaction(billableCompanyIdWithdraw)
+
+            val requestedCompanyId = uploadCompanyAsUploader()
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            val requestId = createDummyRequestForCompany(requestedCompanyId)
+            patchRequestStateToProcessing(requestId)
+
+            await().atMost(Duration.ofSeconds(10)).untilAsserted {
+                assertEquals(initialCredit - BigDecimal("1.0"), getBalance(billableCompanyIdWithdraw))
+            }
+
+            patchRequestStateToWithdrawn(requestId)
+
+            await().atMost(Duration.ofSeconds(10)).untilAsserted {
+                assertEquals(initialCredit, getBalance(billableCompanyIdWithdraw))
+            }
+        } finally {
+            removeCompanyOwnerRole(billableCompanyIdWithdraw, UUID.fromString(dataReaderUserId))
+            removeCompanyMemberRights(billableCompanyIdWithdraw)
         }
     }
 }
