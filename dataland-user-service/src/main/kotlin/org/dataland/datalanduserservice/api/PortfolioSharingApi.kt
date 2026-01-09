@@ -56,7 +56,7 @@ interface PortfolioSharingApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully updated sharing."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins and portfolio owners can modify portfolio sharing."),
+            ApiResponse(responseCode = "403", description = "Only Dataland Members can modify portfolio sharing for their portfolios."),
         ],
     )
     @PatchMapping(
@@ -66,7 +66,8 @@ interface PortfolioSharingApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') " +
-            "and @PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId))",
+            "and @PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId)" +
+            "and @PortfolioRightsUtilsComponent.isUserDatalandMember(authentication.userId))",
     )
     fun patchSharing(
         @Parameter(

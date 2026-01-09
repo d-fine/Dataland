@@ -51,6 +51,26 @@
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -183,6 +203,10 @@
         "responses": {
           "204": {
             "description": "Successfully deleted existing portfolio.",
+            "content": {}
+          },
+          "403": {
+            "description": "You do not have the right to delete this portfolio.",
             "content": {}
           },
           "default": {
@@ -432,7 +456,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins and portfolio owners can modify portfolio sharing.",
+            "description": "Only Dataland Members can modify portfolio sharing for their portfolios.",
             "content": {
               "application/json": {
                 "schema": {
@@ -633,6 +657,26 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
             "content": {
               "application/json": {
                 "schema": {

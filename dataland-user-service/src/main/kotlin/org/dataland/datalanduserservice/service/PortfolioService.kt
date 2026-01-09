@@ -185,7 +185,7 @@ class PortfolioService
             logger.info(
                 "Delete portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.",
             )
-            return portfolioRepository.deleteByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+            return portfolioRepository.deleteByPortfolioId(UUID.fromString(portfolioId))
         }
 
         /**

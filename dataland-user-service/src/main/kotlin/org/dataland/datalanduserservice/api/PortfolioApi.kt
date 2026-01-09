@@ -62,6 +62,8 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved portfolio."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to access this portfolio."),
+            ApiResponse(responseCode = "404", description = "Portfolio with given portfolioId not found."),
         ],
     )
     @GetMapping(
@@ -213,6 +215,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "Successfully deleted existing portfolio."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to delete this portfolio."),
         ],
     )
     @DeleteMapping(
@@ -220,7 +223,8 @@ interface PortfolioApi {
         value = ["/portfolios/{portfolioId}/"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId))",
     )
     fun deletePortfolio(
         @Parameter(
@@ -261,6 +265,8 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to access this portfolio."),
+            ApiResponse(responseCode = "404", description = "Portfolio with given portfolioId not found."),
         ],
     )
     @GetMapping(
@@ -268,7 +274,9 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) or " +
+            "@PortfolioRightsUtilsComponent.isPortfolioSharedWithUser(authentication.userId, #portfolioId)))",
     )
     fun getEnrichedPortfolio(
         @Parameter(

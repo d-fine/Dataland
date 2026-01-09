@@ -20,7 +20,7 @@ class PortfolioRightsUtilsComponent(
      * @param userId the Dataland ID of the user in question
      * @return true if the user is a Dataland member, false otherwise
      */
-    private fun isUserDatalandMember(userId: String): Boolean =
+    fun isUserDatalandMember(userId: String): Boolean =
         DerivedRightsUtils.isUserDatalandMember(
             inheritedRolesControllerApi.getInheritedRoles(userId),
         )

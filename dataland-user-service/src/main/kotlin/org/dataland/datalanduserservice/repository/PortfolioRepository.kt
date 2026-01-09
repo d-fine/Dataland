@@ -24,14 +24,6 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     fun getPortfolioByPortfolioId(portfolioId: UUID): PortfolioEntity?
 
     /**
-     * Get specific portfolio by portfolioId for userId
-     */
-    fun getPortfolioByUserIdAndPortfolioId(
-        userId: String,
-        portfolioId: UUID,
-    ): PortfolioEntity?
-
-    /**
      * Return a paginated chunk of all portfolios that exist on Dataland.
      */
     override fun findAll(pageable: Pageable): Page<PortfolioEntity>
@@ -44,10 +36,7 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     /**
      * Delete specific portfolio by portfolioId for userId
      */
-    fun deleteByUserIdAndPortfolioId(
-        userId: String,
-        portfolioId: UUID,
-    )
+    fun deleteByPortfolioId(portfolioId: UUID)
 
     /**
      * Checks if specific portfolio with portfolioId for userId exists
