@@ -117,10 +117,41 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
 }
 
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/backend")
+            .get()
+            .toString(),
+    )
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateCommunityManagerClient")
+    dependsOn("generateBackendClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -141,6 +172,7 @@ tasks.getByName("ktlintMainSourceSetCheck") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }
 
 ktlint {
