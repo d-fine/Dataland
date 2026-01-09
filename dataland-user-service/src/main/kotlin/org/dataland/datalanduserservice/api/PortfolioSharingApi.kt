@@ -51,7 +51,7 @@ interface PortfolioSharingApi {
      */
     @Operation(
         summary = "Patch the portfolio sharing of a portfolio.",
-        description = "Updates the the list of user IDs with whom an existing portfolio is shared.",
+        description = "Updates the list of user IDs with whom an existing portfolio is shared.",
     )
     @ApiResponses(
         value = [
