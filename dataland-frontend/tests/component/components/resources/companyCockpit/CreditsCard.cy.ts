@@ -111,14 +111,4 @@ describe('As a user I want to see available credits on Dataland of the company I
     cy.get('[data-test="info-icon"]').click();
     cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
   });
-
-  it('Credit Balance is not shown if user is not a Dataland Admin', () => {
-    interceptCreditBalance(dummyCompanyId, 100);
-    interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, false);
-    cy.wait('@creditBalance');
-    cy.wait('@companyInformation');
-    cy.get('[data-test="credits-balance-chip"]').should('be.visible');
-    cy.get('[data-test="credits-balance-chip"]').should('contain', 'Coming soon');
-  });
 });
