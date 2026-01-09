@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -17,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -100,18 +102,26 @@ class AccountingServiceListenerTest {
     @ParameterizedTest
     @EnumSource(DataTypeEnum::class)
     fun `check that the datatype is handled correctly`(datatype: DataTypeEnum) {
-        val requestSetToProcessingMessage =
-            RequestSetToProcessingMessage(
-                triggeringUserId = triggeringUserId,
-                dataSourcingId = dataSourcingId,
-                requestedCompanyId = requestedCompanyId,
-                requestedReportingPeriod = requestedReportingPeriod,
+        val messageWithDatatype =
+            requestSetToProcessingMessage.copy(
                 requestedFramework = datatype.name,
             )
+        val payloadWithDatatype = defaultObjectMapper.writeValueAsString(messageWithDatatype)
 
-        val requestProcessingMessagePayload = defaultObjectMapper.writeValueAsString(requestSetToProcessingMessage)
+        doReturn(Optional.empty<BilledRequestEntity>())
+            .whenever(mockBilledRequestRepository)
+            .findById(
+                BilledRequestEntityId(
+                    billedCompanyId = UUID.fromString(billedCompanyId),
+                    dataSourcingId = UUID.fromString(dataSourcingId),
+                ),
+            )
+        doAnswer { invocation -> invocation.arguments[0] }
+            .whenever(mockBilledRequestRepository)
+            .save(any())
+
         accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
-            payload = requestProcessingMessagePayload,
+            payload = payloadWithDatatype,
             type = MessageType.REQUEST_SET_TO_PROCESSING,
             correlationId = correlationId,
         )
@@ -119,7 +129,15 @@ class AccountingServiceListenerTest {
         if (datatype == DataTypeEnum.nuclearMinusAndMinusGas) {
             verifyNoInteractions(mockBilledRequestRepository)
         } else {
-            verify(mockBilledRequestRepository, times(1)).save(any())
+            val captor = argumentCaptor<BilledRequestEntity>()
+            verify(mockBilledRequestRepository, times(1)).save(captor.capture())
+
+            val saved = captor.firstValue
+            assertEquals(datatype.name, saved.requestedFramework)
+            assertEquals(ValidationUtils.convertToUUID(billedCompanyId), saved.billedCompanyId)
+            assertEquals(ValidationUtils.convertToUUID(dataSourcingId), saved.dataSourcingId)
+            assertEquals(ValidationUtils.convertToUUID(requestedCompanyId), saved.requestedCompanyId)
+            assertEquals(requestedReportingPeriod, saved.requestedReportingPeriod)
         }
     }
 
