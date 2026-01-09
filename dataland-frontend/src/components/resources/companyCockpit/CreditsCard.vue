@@ -36,7 +36,7 @@
       <Divider />
       <div style="display: flex; justify-content: space-between; align-items: center">
         <span>Current Amount of Credits:</span>
-        <Chip :label="creditsBalance" data-test="credits-balance-chip" />
+        <Chip :label="creditsBalance !== null ? creditsBalance.toString() : '-'" data-test="credits-balance-chip" />
       </div>
       <div class="dataland-info-text small">{{ displayLei }}</div>
     </template>
@@ -58,7 +58,7 @@ import { type AxiosResponse } from 'axios';
 import { type CompanyInformation } from '@clients/backend';
 import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation.ts';
 
-const creditsBalance = ref<number>(0);
+const creditsBalance = ref<number | null>(null);
 const props = defineProps<{
   companyId: string;
 }>();
