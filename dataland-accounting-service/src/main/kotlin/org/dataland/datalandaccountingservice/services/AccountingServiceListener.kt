@@ -103,7 +103,7 @@ class AccountingServiceListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
         val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
-        if (requestSetToProcessingMessage.requestedFramework == DataTypeEnum.nuclearMinusAndMinusGas.name) {
+        if (requestSetToProcessingMessage.requestedFramework == DataTypeEnum.nuclearMinusAndMinusGas.value) {
             return
         }
         MessageQueueUtils.rejectMessageOnException {

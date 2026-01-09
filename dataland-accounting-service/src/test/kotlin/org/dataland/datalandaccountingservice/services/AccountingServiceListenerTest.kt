@@ -104,7 +104,7 @@ class AccountingServiceListenerTest {
     fun `check that the datatype is handled correctly`(datatype: DataTypeEnum) {
         val messageWithDatatype =
             requestSetToProcessingMessage.copy(
-                requestedFramework = datatype.name,
+                requestedFramework = datatype.value,
             )
         val payloadWithDatatype = defaultObjectMapper.writeValueAsString(messageWithDatatype)
 
@@ -133,7 +133,7 @@ class AccountingServiceListenerTest {
             verify(mockBilledRequestRepository, times(1)).save(captor.capture())
 
             val saved = captor.firstValue
-            assertEquals(datatype.name, saved.requestedFramework)
+            assertEquals(datatype.value, saved.requestedFramework)
             assertEquals(ValidationUtils.convertToUUID(billedCompanyId), saved.billedCompanyId)
             assertEquals(ValidationUtils.convertToUUID(dataSourcingId), saved.dataSourcingId)
             assertEquals(ValidationUtils.convertToUUID(requestedCompanyId), saved.requestedCompanyId)
