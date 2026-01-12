@@ -44,6 +44,7 @@ class PortfolioMonitoringServiceTest {
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
             NotificationFrequency.Weekly,
             timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
         )
 
     @BeforeEach
@@ -77,7 +78,7 @@ class PortfolioMonitoringServiceTest {
 
         doReturn(null)
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolioId))
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioMonitoringService.patchMonitoring(
@@ -102,7 +103,7 @@ class PortfolioMonitoringServiceTest {
 
         doReturn(originalPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
 
         val updatedPortfolio =
             portfolioMonitoringService.patchMonitoring(
