@@ -159,11 +159,7 @@
         </Column>
       </DataTable>
     </div>
-    <SuccessDialog
-      :visible="isSuccessDialogVisible"
-      message="Portfolio removed successfully."
-      @close="isSuccessDialogVisible = false"
-    />
+    <PortfolioRemoveSharing :visible="isRemoveDialogVisible" :portfolio-id="portfolioId" @close="closeRemoveDialog" />
   </div>
 </template>
 
@@ -191,7 +187,6 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch, computed } from 'vue';
 import DownloadData from '@/components/general/DownloadData.vue';
-import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
@@ -200,8 +195,7 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import PortfolioRemoveSharing from '@/components/resources/portfolio/PortfolioRemoveSharing.vue';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -252,7 +246,7 @@ class PortfolioEntryPrepared {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-// const emit = defineEmits(['update:portfolio-overview']);
+const emit = defineEmits(['update:portfolio-overview']);
 const countryOptions = ref<string[]>([]);
 const sectorOptions = ref<string[]>([]);
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
@@ -274,14 +268,13 @@ const props = defineProps<{
   portfolioId: string;
 }>();
 
-const isSuccessDialogVisible = ref(false);
+const isRemoveDialogVisible = ref(false);
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
-const isUserDatalandMemberOrAdmin = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
@@ -295,7 +288,6 @@ const sharedTagAttributes = computed(() => ({
 }));
 
 onMounted(() => {
-  void checkDatalandMembershipOrAdminRights();
   loadPortfolio();
 });
 
@@ -323,26 +315,6 @@ watch([enrichedPortfolio], () => {
     );
   }
 });
-
-/**
- * Checks whether the logged-in User is Dataland member or Admin
- */
-async function checkDatalandMembershipOrAdminRights(): Promise<void> {
-  const keycloak = await assertDefined(getKeycloakPromise)();
-  const keycloakUserId = keycloak.idTokenParsed?.sub;
-
-  if (keycloakUserId === undefined) {
-    isUserDatalandMemberOrAdmin.value = false;
-    return;
-  }
-
-  const response = await apiClientProvider.apiClients.inheritedRolesController.getInheritedRoles(keycloakUserId);
-  const inheritedRolesMap = response.data;
-
-  isUserDatalandMemberOrAdmin.value =
-    Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
-    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
-}
 
 /**
  * Returns the width (in percent of the total screen width) of a portfolio datatable column
@@ -489,25 +461,19 @@ async function handleDatasetDownload(
 }
 
 /**
- * To implement
+ * Opens the remove dialog for the current portfolio.
  */
 function openRemoveModal(): void {
-  // dialog.open(PortfolioDialog, {
-  //   props: {
-  //     header: 'Edit Portfolio',
-  //     modal: true,
-  //   },
-  //   data: {
-  //     portfolio: enrichedPortfolio.value,
-  //     isMonitoring: isMonitored.value,
-  //   },
-  //   onClose(options) {
-  //     if (!options?.data?.isDeleted) {
-  //       loadPortfolio();
-  //     }
-  //     emit('update:portfolio-overview');
-  //   },
-  // });
+  isRemoveDialogVisible.value = true;
+}
+
+/**
+ * Closes the remove dialog and reloads the portfolio data and shows the portfolio overview again.
+ */
+function closeRemoveDialog(): void {
+  isRemoveDialogVisible.value = false;
+  loadPortfolio();
+  emit('update:portfolio-overview');
 }
 
 /**
