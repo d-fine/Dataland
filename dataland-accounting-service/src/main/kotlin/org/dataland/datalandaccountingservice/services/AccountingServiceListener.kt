@@ -208,7 +208,7 @@ class AccountingServiceListener(
             if (billedCompanyId == null) {
                 return@rejectMessageOnException
             }
-            if (otherBillableRequestExistsForBillableCompany(requestSetToWithdrawnMessage, billedCompanyId)) {
+            if (sameBillableRequestExistsForBilledCompany(requestSetToWithdrawnMessage, billedCompanyId)) {
                 logWithdrawRequestAbortionMessage(billedCompanyId, correlationId)
                 return@rejectMessageOnException
             }
@@ -216,7 +216,7 @@ class AccountingServiceListener(
         }
     }
 
-    private fun otherBillableRequestExistsForBillableCompany(
+    private fun sameBillableRequestExistsForBilledCompany(
         requestSetToWithdrawnMessage: RequestSetToWithdrawnMessage,
         billedCompanyId: String,
     ): Boolean = requestSetToWithdrawnMessage.userIdsAssociatedRequestsForSameTriple.any { getBilledCompanyId(it) == billedCompanyId }
