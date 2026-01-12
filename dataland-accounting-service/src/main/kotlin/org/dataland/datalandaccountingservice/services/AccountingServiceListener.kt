@@ -208,16 +208,18 @@ class AccountingServiceListener(
             if (billedCompanyId == null) {
                 return@rejectMessageOnException
             }
-            for (userId in requestSetToWithdrawnMessage.userIdsAssociatedRequestsForSameTriple) {
-                val associatedBilledCompanyId = getBilledCompanyId(userId)
-                if (associatedBilledCompanyId == billedCompanyId) {
-                    logWithdrawRequestAbortionMessage(billedCompanyId, correlationId)
-                    return@rejectMessageOnException
-                }
+            if (otherBillableRequestExistsForBillableCompany(requestSetToWithdrawnMessage, billedCompanyId)) {
+                logWithdrawRequestAbortionMessage(billedCompanyId, correlationId)
+                return@rejectMessageOnException
             }
             deleteBilledRequest(billedCompanyId, requestSetToWithdrawnMessage.dataSourcingId, correlationId)
         }
     }
+
+    private fun otherBillableRequestExistsForBillableCompany(
+        requestSetToWithdrawnMessage: RequestSetToWithdrawnMessage,
+        billedCompanyId: String,
+    ): Boolean = requestSetToWithdrawnMessage.userIdsAssociatedRequestsForSameTriple.any { getBilledCompanyId(it) == billedCompanyId }
 
     /** Deletes a billed request from the database for the given billed company ID and data sourcing ID.
      */
