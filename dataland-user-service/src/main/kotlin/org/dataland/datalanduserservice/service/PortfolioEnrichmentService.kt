@@ -136,5 +136,6 @@ class PortfolioEnrichmentService
                 monitoredFrameworks = portfolio.monitoredFrameworks,
                 notificationFrequency = portfolio.notificationFrequency,
                 timeWindowThreshold = portfolio.timeWindowThreshold,
+                sharedUserIds = portfolio.sharedUserIds,
             )
     }

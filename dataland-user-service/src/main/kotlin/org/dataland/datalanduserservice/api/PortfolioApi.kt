@@ -62,6 +62,8 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved portfolio."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to access this portfolio."),
+            ApiResponse(responseCode = "404", description = "Portfolio with given portfolioId not found."),
         ],
     )
     @GetMapping(
@@ -69,7 +71,9 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) or " +
+            "@PortfolioRightsUtilsComponent.isPortfolioSharedWithUser(authentication.userId, #portfolioId)))",
     )
     fun getPortfolio(
         @Parameter(
@@ -147,7 +151,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully created a new portfolio."),
-            ApiResponse(responseCode = "403", description = "Only Dataland members can activate portfolio monitoring."),
+            ApiResponse(responseCode = "403", description = "Only Dataland members can create a portfolio with monitoring."),
         ],
     )
     @PostMapping(
@@ -157,7 +161,8 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
+            "authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun createPortfolio(
         @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
@@ -173,7 +178,10 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully replaced existing portfolio."),
-            ApiResponse(responseCode = "403", description = "Only Dataland members can activate portfolio monitoring."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to replace this portfolio or to activate portfolio monitoring.",
+            ),
         ],
     )
     @PutMapping(
@@ -183,7 +191,9 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(authentication.userId, #portfolioUpload.isMonitored))",
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) and " +
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
+            "authentication.userId, #portfolioUpload.isMonitored))",
     )
     fun replacePortfolio(
         @Parameter(
@@ -205,6 +215,7 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "Successfully deleted existing portfolio."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to delete this portfolio."),
         ],
     )
     @DeleteMapping(
@@ -212,7 +223,8 @@ interface PortfolioApi {
         value = ["/portfolios/{portfolioId}/"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId))",
     )
     fun deletePortfolio(
         @Parameter(
@@ -253,6 +265,8 @@ interface PortfolioApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved portfolios."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to access this portfolio."),
+            ApiResponse(responseCode = "404", description = "Portfolio with given portfolioId not found."),
         ],
     )
     @GetMapping(
@@ -260,7 +274,9 @@ interface PortfolioApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_USER')",
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) or " +
+            "@PortfolioRightsUtilsComponent.isPortfolioSharedWithUser(authentication.userId, #portfolioId)))",
     )
     fun getEnrichedPortfolio(
         @Parameter(
@@ -291,7 +307,8 @@ interface PortfolioApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and " +
-            "@DerivedRightsUtilsComponent.mayNonAdminUserManipulatePortfolio(" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) and " +
+            "@PortfolioRightsUtilsComponent.mayNonAdminUserManipulatePortfolioMonitoring(" +
             "authentication.userId, #portfolioMonitoringPatch.isMonitored" +
             "))",
     )

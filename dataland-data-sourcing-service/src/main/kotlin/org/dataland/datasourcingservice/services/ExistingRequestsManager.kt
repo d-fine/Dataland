@@ -1,8 +1,6 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -64,11 +62,13 @@ class ExistingRequestsManager
             adminComment: String?,
         ): StoredRequest {
             requestLogger.logMessageForPatchingRequestState(dataRequestId, newRequestState)
+
             val requestEntity =
                 requestRepository.findByIdAndFetchDataSourcingEntity(dataRequestId)
                     ?: throw RequestNotFoundApiException(
                         dataRequestId,
                     )
+            val oldRequestState = requestEntity.state
             requestEntity.lastModifiedDate = Instant.now().toEpochMilli()
             requestEntity.state = newRequestState
 
@@ -77,17 +77,35 @@ class ExistingRequestsManager
                 requestEntity.adminComment = adminComment
             }
 
-            if (requestValidForAccounting(requestEntity)) {
+            if (requestEntity.state == RequestState.Processing) {
                 val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
                 dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntity,
                 )
             } else {
+                val dataSourcingEntity = requestEntity.dataSourcingEntity
+                if (isWithdrawalOfProcessedOrProcessingRequest(newRequestState, oldRequestState) && dataSourcingEntity != null) {
+                    dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestWithdrawn(
+                        dataSourcingEntity = dataSourcingEntity,
+                        requestEntity = requestEntity,
+                    )
+                }
                 requestRepository.save(requestEntity)
             }
             return requestEntity.toStoredDataRequest()
         }
+
+        private fun isWithdrawalOfProcessedOrProcessingRequest(
+            newRequestState: RequestState,
+            oldRequestState: RequestState,
+        ): Boolean =
+            newRequestState == RequestState.Withdrawn &&
+                oldRequestState in
+                listOf(
+                    RequestState.Processing,
+                    RequestState.Processed,
+                )
 
         /**
          * Updates the priority of a data request identified by its ID.
@@ -134,7 +152,4 @@ class ExistingRequestsManager
                 .ifEmpty {
                     throw RequestNotFoundApiException(requestId)
                 }
-
-        private fun requestValidForAccounting(requestEntity: RequestEntity): Boolean =
-            requestEntity.state == RequestState.Processing && (requestEntity.dataType != DataTypeEnum.nuclearMinusAndMinusGas.name)
     }

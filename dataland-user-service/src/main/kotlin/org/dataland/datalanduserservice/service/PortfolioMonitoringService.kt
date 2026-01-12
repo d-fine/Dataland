@@ -36,7 +36,7 @@ class PortfolioMonitoringService
 
             val originalPortfolio =
                 portfolioRepository
-                    .getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
+                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
                     ?.toBasePortfolio()
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
