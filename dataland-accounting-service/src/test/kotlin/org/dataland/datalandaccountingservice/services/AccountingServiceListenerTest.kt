@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
+import org.dataland.datalandmessagequeueutils.messages.RequestSetToWithdrawnMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -162,5 +163,163 @@ class AccountingServiceListenerTest {
                 idsMatch && tripleMatches
             },
         )
+    }
+
+    private fun stubInheritedRoles(
+        userId: String,
+        rolesByCompany: Map<String, List<String>>,
+    ) {
+        doReturn(rolesByCompany)
+            .whenever(mockInheritedRolesControllerApi)
+            .getInheritedRoles(userId)
+    }
+
+    private fun withdrawnPayload(
+        triggeringUserId: String = this.triggeringUserId,
+        associatedUserIds: List<String> = emptyList(),
+        requestedCompanyId: String = UUID.randomUUID().toString(),
+        requestedReportingPeriod: String = this.requestedReportingPeriod,
+        requestedFramework: String = this.requestedFramework,
+    ): String {
+        val withdrawnMessage =
+            RequestSetToWithdrawnMessage(
+                triggeringUserId = triggeringUserId,
+                dataSourcingId = dataSourcingId,
+                userIdsAssociatedRequestsForSameTriple = associatedUserIds,
+                requestedCompanyId = requestedCompanyId,
+                requestedReportingPeriod = requestedReportingPeriod,
+                requestedFramework = requestedFramework,
+            )
+
+        return defaultObjectMapper.writeValueAsString(withdrawnMessage)
+    }
+
+    private fun callWithdrawnListener(
+        payload: String,
+        type: String = MessageType.REQUEST_SET_TO_WITHDRAWN,
+    ) {
+        accountingServiceListener.deleteBilledRequestOnRequestPatchToWithdrawn(
+            payload = payload,
+            type = type,
+            correlationId = correlationId,
+        )
+    }
+
+    private fun stubBilledRequest(
+        billedCompanyId: String = this.billedCompanyId,
+        dataSourcingId: String = this.dataSourcingId,
+        entity: BilledRequestEntity?,
+    ) {
+        val id =
+            BilledRequestEntityId(
+                billedCompanyId = ValidationUtils.convertToUUID(billedCompanyId),
+                dataSourcingId = ValidationUtils.convertToUUID(dataSourcingId),
+            )
+
+        doReturn(Optional.ofNullable(entity))
+            .whenever(mockBilledRequestRepository)
+            .findById(id)
+    }
+
+    @Test
+    fun `check that the wrong message type for withdrawn leads to an appropriate exception`() {
+        val payload = withdrawnPayload()
+
+        assertThrows<MessageQueueRejectException> {
+            callWithdrawnListener(
+                payload = payload,
+                type = "some.wrong.message.type",
+            )
+        }
+    }
+
+    @Test
+    fun `check that no billed request is deleted when withdrawing and triggering user is not a Dataland member`() {
+        // Triggering user has no DatalandMember role
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to emptyList()),
+        )
+
+        val payload = withdrawnPayload()
+
+        callWithdrawnListener(payload)
+
+        verifyNoInteractions(mockBilledRequestRepository)
+    }
+
+    @Test
+    fun `check that billed request is not deleted when another billable request for the same company exists`() {
+        val associatedUserIdForSameCompany = UUID.randomUUID().toString()
+
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+        stubInheritedRoles(
+            userId = associatedUserIdForSameCompany,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(associatedUserIdForSameCompany),
+            )
+
+        callWithdrawnListener(payload)
+
+        verifyNoInteractions(mockBilledRequestRepository)
+    }
+
+    @Test
+    fun `check that billed request is deleted when no other billable request for the same company exists`() {
+        val otherAssociatedUserId = UUID.randomUUID().toString()
+        val otherBilledCompanyId = UUID.randomUUID().toString()
+
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+        stubInheritedRoles(
+            userId = otherAssociatedUserId,
+            rolesByCompany = mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        )
+
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(otherAssociatedUserId),
+            )
+
+        stubBilledRequest(entity = billedRequestEntity)
+
+        callWithdrawnListener(payload)
+
+        verify(mockBilledRequestRepository, times(1)).delete(billedRequestEntity)
+    }
+
+    @Test
+    fun `check that no delete is executed when billed request does not exist`() {
+        val otherAssociatedUserId = UUID.randomUUID().toString()
+        val otherBilledCompanyId = UUID.randomUUID().toString()
+
+        stubInheritedRoles(
+            userId = triggeringUserId,
+            rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
+        )
+        stubInheritedRoles(
+            userId = otherAssociatedUserId,
+            rolesByCompany = mapOf(otherBilledCompanyId to listOf("DatalandMember")),
+        )
+
+        val payload =
+            withdrawnPayload(
+                associatedUserIds = listOf(otherAssociatedUserId),
+            )
+
+        stubBilledRequest(entity = null)
+
+        callWithdrawnListener(payload)
+
+        verify(mockBilledRequestRepository, times(0)).delete(any())
     }
 }
