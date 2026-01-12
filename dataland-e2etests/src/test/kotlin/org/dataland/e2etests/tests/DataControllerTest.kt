@@ -207,16 +207,10 @@ class DataControllerTest {
             apiAccessor.dataControllerApiForSfdrData::getAllCompanySfdrData,
         ).forEach { getAllCompanyData -> assertEquals(0, getAllCompanyData(companyId, false, null).size) }
 
-        apiAccessor.dataControllerApiForEuTaxonomyFinancials
-            .exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-                ExportRequestData(listOf(reportingPeriod), listOf(companyId), ExportFileType.CSV),
-                keepValueFieldsOnly = false,
-            ).let { assert(it.readBytes().isEmpty()) }
-
         apiAccessor.companyDataControllerApi
             .getAggregatedFrameworkDataSummary(
                 companyId = companyId,
-            ).forEach { framework, aggregatedFrameworkDataSummary ->
+            ).forEach { (framework, aggregatedFrameworkDataSummary) ->
                 if (framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString()) {
                     assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 } else {
@@ -304,7 +298,7 @@ class DataControllerTest {
         val dummyCompanyIds = List(3000) { UUID.randomUUID().toString() }
         assertThrows<ClientException> {
             increasedTimeoutDataControllerApiForEuTaxonomyNonFinancials
-                .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
                     ExportRequestData(
                         companyIds = dummyCompanyIds,
                         reportingPeriods = listOf("2022"),

@@ -2,6 +2,8 @@ package org.dataland.e2etests
 
 const val BASE_PATH_TO_DATALAND_BACKEND = "https://local-dev.dataland.com:443/api"
 
+const val BASE_PATH_TO_EXPORT_CONTROLLER = "https://local-dev.dataland.com:443/export"
+
 const val BASE_PATH_TO_QA_SERVICE = "https://local-dev.dataland.com:443/qa"
 
 const val BASE_PATH_TO_API_KEY_MANAGER = "https://local-dev.dataland.com:443/api-keys"

@@ -3685,12 +3685,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "enum": [
-                    "Pending",
-                    "Success",
-                    "Failure"
-                  ]
+                  "$ref": "#/components/schemas/ExportJobProgressState"
                 }
               }
             }
@@ -17935,6 +17930,14 @@
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
+      },
+      "ExportJobProgressState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Success",
+          "Failure"
+        ]
       },
       "DataAndMetaInformationVsmeData": {
         "required": [

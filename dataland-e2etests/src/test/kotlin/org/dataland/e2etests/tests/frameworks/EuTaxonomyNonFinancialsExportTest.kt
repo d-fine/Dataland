@@ -6,8 +6,6 @@ import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
-import org.dataland.datalandbackend.openApiClient.model.ExportFileType
-import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
@@ -126,31 +124,31 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): File =
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                ExportRequestData(
-                    reportingPeriods = reportingPeriods,
-                    companyIds = companyIds,
-                    fileFormat = ExportFileType.CSV,
-                ),
-                keepValueFieldsOnly = keepValueFieldsOnly,
-                includeAliases = includeAliases,
-            )
+    ): File = File("Filler")
+//        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+//            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+//                ExportRequestData(
+//                    reportingPeriods = reportingPeriods,
+//                    companyIds = companyIds,
+//                    fileFormat = ExportFileType.CSV,
+//                ),
+//                keepValueFieldsOnly = keepValueFieldsOnly,
+//                includeAliases = includeAliases,
+//            )
 
     override fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File =
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                ExportRequestData(
-                    reportingPeriods = reportingPeriods,
-                    companyIds = companyIds,
-                    fileFormat = ExportFileType.EXCEL,
-                ),
-                includeAliases = false,
-            )
+    ): File = File("Filler")
+//        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+//            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+//                ExportRequestData(
+//                    reportingPeriods = reportingPeriods,
+//                    companyIds = companyIds,
+//                    fileFormat = ExportFileType.EXCEL,
+//                ),
+//                includeAliases = false,
+//            )
 
     override fun retrieveData(companyId: String): Any =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials

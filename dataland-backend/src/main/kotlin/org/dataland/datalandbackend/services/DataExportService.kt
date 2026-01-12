@@ -187,7 +187,7 @@ class DataExportService<T>
             workbook.close()
         }
 
-        private fun buildCompanyExportData(
+        internal fun buildCompanyExportData(
             listDataDimensions: ListDataDimensions,
             clazz: Class<T>,
             correlationId: String,

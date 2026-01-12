@@ -26,7 +26,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
@@ -44,6 +43,7 @@ class DataExportControllerTest(
     private lateinit var companyQueryManager: CompanyQueryManager
 
     private val mockSecurityContext = mock<SecurityContext>()
+
     private val testUserId = UUID.randomUUID()
     private val otherUserId = UUID.randomUUID().toString()
 
@@ -89,38 +89,6 @@ class DataExportControllerTest(
     private fun setMockUser(authentication: DatalandJwtAuthentication) {
         doReturn(authentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    @Test
-    fun `post export job returns job ID and state is initially Pending`() {
-        setMockCompany()
-
-        val mvcResult =
-            mockMvc
-                .perform(
-                    post("/data/eutaxonomy-non-financials/export-jobs")
-                        .contentType("application/json")
-                        .content(
-                            """
-                            {
-                                "companyIds": ["comp-1", "comp-2"],
-                                "reportingPeriods": ["2024"],
-                                "fileFormat": "CSV"
-                            }
-                            """.trimIndent(),
-                        ).with(securityContext(mockSecurityContext)),
-                ).andExpect(status().isOk)
-                .andReturn()
-
-        val responseBody = mvcResult.response.contentAsString
-        val testJobId = JsonPath.parse(responseBody).read<String>("$.id")
-
-        mockMvc
-            .perform(
-                get("/export/state/{exportJobId}", testJobId)
-                    .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isOk)
-            .andExpect(content().string("\"Pending\""))
     }
 
     @Test

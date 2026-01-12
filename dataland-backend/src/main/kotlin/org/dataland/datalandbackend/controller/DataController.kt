@@ -206,8 +206,6 @@ open class DataController<T>(
             newExportJobEntity.progressState = ExportJobProgressState.Failure
             return ResponseEntity.noContent().build()
         }
-        logger.info("Creation of ${exportRequestData.fileFormat.name} for export successful. Correlation ID: $correlationId")
-
         return ResponseEntity
             .ok(ExportJob(id = correlationId))
     }
