@@ -45,6 +45,8 @@ import Tabs from 'primevue/tabs';
 import { inject, onMounted, ref, type Ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 interface TabInfo {
   label: string;
@@ -53,6 +55,7 @@ interface TabInfo {
 }
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const route = useRoute();
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
@@ -60,6 +63,7 @@ const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>
 
 const tabs = ref<Array<TabInfo>>([
   { label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
+  { label: 'SHARED PORTFOLIOS', route: '/shared-portfolios', isVisible: false },
   { label: 'COMPANIES', route: '/companies', isVisible: true },
   { label: 'MY DATASETS', route: '/datasets', isVisible: true },
   { label: 'QA', route: '/qualityassurance', isVisible: false },
@@ -75,6 +79,7 @@ const currentTabIndex = computed(() => {
 });
 
 onMounted(() => {
+  void setVisibilityForSharedPortfoliosTab();
   setVisibilityForTabWithQualityAssurance();
   setVisibilityForTabWithAccessRequestsForMyCompanies();
   setVisibilityForAdminTab();
@@ -96,13 +101,27 @@ function onTabChange(newIndex: number | string): void {
 }
 
 /**
+ * Sets the visibility of the tab for Shared Portfolios.
+ * If the user does have any shared portfolios, it is shown. Else it stays invisible.
+ */
+async function setVisibilityForSharedPortfoliosTab(): Promise<void> {
+  try {
+    const sharedPortfolioNames =
+      await apiClientProvider.apiClients.portfolioController.getAllSharedPortfolioNamesForCurrentUser();
+    tabs.value[1]!.isVisible = sharedPortfolioNames && sharedPortfolioNames.data.length > 0;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
  * Sets the visibility of the tab for Quality Assurance.
  * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
  */
 function setVisibilityForTabWithQualityAssurance(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise)
     .then((hasUserReviewerRights) => {
-      tabs.value[3]!.isVisible = hasUserReviewerRights;
+      tabs.value[4]!.isVisible = hasUserReviewerRights;
     })
     .catch((error) => console.log(error));
 }
@@ -117,7 +136,7 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
   if (companyOwnershipAssignments) {
-    tabs.value[6]!.isVisible = companyOwnershipAssignments.length > 0;
+    tabs.value[7]!.isVisible = companyOwnershipAssignments.length > 0;
   }
 }
 
@@ -128,8 +147,8 @@ function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
 function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
-      tabs.value[7]!.isVisible = hasUserAdminRights;
       tabs.value[8]!.isVisible = hasUserAdminRights;
+      tabs.value[9]!.isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }
