@@ -241,10 +241,7 @@ class AccountingServiceListenerTest {
             rolesByCompany = mapOf(billedCompanyId to emptyList()),
         )
 
-        val payload =
-            withdrawnPayload(
-                associatedUserIds = listOf(UUID.randomUUID().toString()),
-            )
+        val payload = withdrawnPayload()
 
         callWithdrawnListener(payload)
 
@@ -291,8 +288,6 @@ class AccountingServiceListenerTest {
         val payload =
             withdrawnPayload(
                 associatedUserIds = listOf(otherAssociatedUserId),
-                requestedReportingPeriod = "2025",
-                requestedFramework = "sfdr",
             )
 
         stubBilledRequest(entity = billedRequestEntity)
@@ -311,7 +306,6 @@ class AccountingServiceListenerTest {
             userId = triggeringUserId,
             rolesByCompany = mapOf(billedCompanyId to listOf("DatalandMember")),
         )
-        // Associated user → different company with DatalandMember
         stubInheritedRoles(
             userId = otherAssociatedUserId,
             rolesByCompany = mapOf(otherBilledCompanyId to listOf("DatalandMember")),
