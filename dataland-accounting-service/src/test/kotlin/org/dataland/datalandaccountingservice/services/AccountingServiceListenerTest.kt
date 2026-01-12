@@ -1,8 +1,8 @@
 package org.dataland.datalandaccountingservice.services
-
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
@@ -10,12 +10,16 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToWithdrawnMessage
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -93,6 +97,48 @@ class AccountingServiceListenerTest {
                 type = "some.wrong.message.type",
                 correlationId = correlationId,
             )
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(DataTypeEnum::class)
+    fun `check that the datatype is handled correctly`(datatype: DataTypeEnum) {
+        val messageWithDatatype =
+            requestSetToProcessingMessage.copy(
+                requestedFramework = datatype.value,
+            )
+        val payloadWithDatatype = defaultObjectMapper.writeValueAsString(messageWithDatatype)
+
+        doReturn(Optional.empty<BilledRequestEntity>())
+            .whenever(mockBilledRequestRepository)
+            .findById(
+                BilledRequestEntityId(
+                    billedCompanyId = UUID.fromString(billedCompanyId),
+                    dataSourcingId = UUID.fromString(dataSourcingId),
+                ),
+            )
+        doAnswer { invocation -> invocation.arguments[0] }
+            .whenever(mockBilledRequestRepository)
+            .save(any())
+
+        accountingServiceListener.createBilledRequestOnRequestPatchToStateProcessing(
+            payload = payloadWithDatatype,
+            type = MessageType.REQUEST_SET_TO_PROCESSING,
+            correlationId = correlationId,
+        )
+
+        if (datatype == DataTypeEnum.nuclearMinusAndMinusGas) {
+            verifyNoInteractions(mockBilledRequestRepository)
+        } else {
+            val captor = argumentCaptor<BilledRequestEntity>()
+            verify(mockBilledRequestRepository, times(1)).save(captor.capture())
+
+            val saved = captor.firstValue
+            assertEquals(datatype.value, saved.requestedFramework)
+            assertEquals(ValidationUtils.convertToUUID(billedCompanyId), saved.billedCompanyId)
+            assertEquals(ValidationUtils.convertToUUID(dataSourcingId), saved.dataSourcingId)
+            assertEquals(ValidationUtils.convertToUUID(requestedCompanyId), saved.requestedCompanyId)
+            assertEquals(requestedReportingPeriod, saved.requestedReportingPeriod)
         }
     }
 
