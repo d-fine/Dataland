@@ -2,7 +2,6 @@ package org.dataland.datalandaccountingservice.services
 
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 /**
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service
 class AccountingAuthorizationService(
     private val inheritedRolesControllerApi: InheritedRolesControllerApi,
 ) {
-    private val log = LoggerFactory.getLogger(AccountingAuthorizationService::class.java)
-
     /**
      * Check whether the currently authenticated user has any role in the specified company.
      */
