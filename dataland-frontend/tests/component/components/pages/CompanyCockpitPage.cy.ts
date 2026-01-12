@@ -12,7 +12,7 @@ import {
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { CompanyRole, CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole } from '@clients/communitymanager';
 import {
   KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
@@ -46,6 +46,11 @@ function validateSingleDataRequestButton(): void {
   cy.get('[data-test="singleDataRequestButton"]').should('exist');
 }
 
+/**
+ * Intercepts the company rights endpoint for the given company id and returns the company rights
+ * @param companyId
+ * @param companyRights such as "Member" (company)
+ */
 function interceptCompanyRights(companyId: string, companyRights: string[]): void {
   cy.intercept('GET', `**/community/company-rights/${companyId}*`, {
     statusCode: 200,
