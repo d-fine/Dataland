@@ -41,7 +41,7 @@
   </TheContent>
 </template>
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject } from 'vue';
+import { ref, reactive, watch, onMounted, inject, computed } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -89,11 +89,11 @@ const userRole = ref<CompanyRole | null>(null);
 const rightsLoaded = ref(false);
 const isCompanyDatalandMember = ref(false);
 
-const canViewCredits = () => {
+const canViewCredits = computed(() => {
   if (isUserDatalandAdmin.value == true) return true;
   if (isUserCompanyMember.value == true && isCompanyDatalandMember.value == true) return true;
   return false;
-};
+});
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
 for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
@@ -212,7 +212,7 @@ onMounted(async () => {
   const isUsersPage = path.endsWith('/users');
 
   const isUnauthorizedUser = !isUserCompanyMemberOrAdmin.value && (isCreditsPage || isUsersPage);
-  const isFeatureDisabled = !isCompanyDatalandMember && isCreditsPage;
+  const isFeatureDisabled = !isCompanyDatalandMember.value && isCreditsPage;
 
   if (isUnauthorizedUser || isFeatureDisabled) {
     activeTab.value = 'datasets';
