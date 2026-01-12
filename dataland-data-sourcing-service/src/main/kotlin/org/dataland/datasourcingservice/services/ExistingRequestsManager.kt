@@ -87,7 +87,7 @@ class ExistingRequestsManager
                 )
             } else {
                 val dataSourcingEntity = requestEntity.dataSourcingEntity
-                if (isWithdrawalOfProcessedOrProcessingRequest(requestEntity, oldRequestState) && dataSourcingEntity != null) {
+                if (isWithdrawalOfProcessedOrProcessingRequest(newRequestState, oldRequestState) && dataSourcingEntity != null) {
                     dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestWithdrawn(
                         dataSourcingEntity = dataSourcingEntity,
                         requestEntity = requestEntity,
@@ -99,10 +99,10 @@ class ExistingRequestsManager
         }
 
         private fun isWithdrawalOfProcessedOrProcessingRequest(
-            requestEntity: RequestEntity,
+            newRequestState: RequestState,
             oldRequestState: RequestState,
         ): Boolean =
-            requestEntity.state == RequestState.Withdrawn &&
+            newRequestState == RequestState.Withdrawn &&
                 oldRequestState in
                 listOf(
                     RequestState.Processing,
