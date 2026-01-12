@@ -100,13 +100,7 @@ class AccountingServiceTest {
         )
     }
 
-    private fun patchRequestStateToWithdrawn(requestId: String) =
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            apiAccessor.dataSourcingRequestControllerApi.patchRequestState(
-                dataRequestId = requestId,
-                requestState = RequestState.Withdrawn,
-            )
-        }
+    private fun patchRequestStateToWithdrawn(requestId: String) = patchRequestStateToProcessing(requestId, RequestState.Withdrawn)
 
     private fun getBalance(companyId: String): BigDecimal = apiAccessor.accountingServiceCreditsControllerApi.getBalance(companyId)
 
