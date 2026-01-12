@@ -32,15 +32,7 @@ class AccountingAuthorizationService(
         val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
         val rolesForCompany = inheritedRoles[companyId]
 
-        val hasRole = rolesForCompany?.isEmpty() != true
-
-        log.info(
-            "has User Role in Member Company: userId= {}, companyId = {}, rolesForCompany = {}, hasRole = {}",
-            userId,
-            companyId,
-            rolesForCompany,
-            hasRole,
-        )
+        val hasRole = !rolesForCompany.isNullOrEmpty()
 
         return hasRole
     }
