@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.RequestSetToProcessingMessage
+import org.dataland.datalandmessagequeueutils.messages.RequestSetToWithdrawnMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -63,6 +64,14 @@ class AccountingServiceListener(
             "Aborting the creation of an associated billed request object. Correlation ID: $correlationId.",
     )
 
+    private fun logWithdrawRequestAbortionMessage(
+        billableCompanyId: String,
+        correlationId: String,
+    ) = logger.info(
+        "There is another billable request for the same company with ID $billableCompanyId. " +
+            "Aborting the deletion of the associated billed request object. Correlation ID: $correlationId.",
+    )
+
     private fun logDuplicateBilledRequestMessage(
         billedCompanyId: String,
         dataSourcingId: String,
@@ -70,6 +79,15 @@ class AccountingServiceListener(
     ) = logger.info(
         "A billed request for company ID $billedCompanyId and data sourcing ID $dataSourcingId already exists. " +
             "Skipping creation. Correlation ID: $correlationId.",
+    )
+
+    private fun logDeleteBilledRequestMessage(
+        billedCompanyId: String,
+        dataSourcingId: String,
+        correlationId: String,
+    ) = logger.info(
+        "The billed request for company ID $billedCompanyId and data sourcing ID $dataSourcingId was deleted. " +
+            "Correlation ID: $correlationId.",
     )
 
     /**
@@ -155,5 +173,81 @@ class AccountingServiceListener(
                 )
             billedRequestRepository.save(billedRequestEntity)
         }
+    }
+
+    /**
+     * Deletes a billed request when a request is patched to the "Withdrawn" state, unless there is another
+     * billable request for the same company.
+     * @param payload the message payload
+     * @param type the message type
+     * @param correlationId the correlation ID of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.ACCOUNTING_SERVICE_REQUEST_WITHDRAWN,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_SOURCING_SERVICE_REQUEST_EVENTS),
+                key = [RoutingKeyNames.REQUEST_WITHDRAWN],
+            ),
+        ],
+    )
+    fun deleteBilledRequestOnRequestPatchToWithdrawn(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_WITHDRAWN)
+        val requestSetToWithdrawnMessage = MessageQueueUtils.readMessagePayload<RequestSetToWithdrawnMessage>(payload)
+        MessageQueueUtils.rejectMessageOnException {
+            val billedCompanyId = getBilledCompanyId(requestSetToWithdrawnMessage.triggeringUserId)
+            if (billedCompanyId == null) {
+                return@rejectMessageOnException
+            }
+            if (sameBillableRequestExistsForBilledCompany(requestSetToWithdrawnMessage, billedCompanyId)) {
+                logWithdrawRequestAbortionMessage(billedCompanyId, correlationId)
+                return@rejectMessageOnException
+            }
+            deleteBilledRequest(billedCompanyId, requestSetToWithdrawnMessage.dataSourcingId, correlationId)
+        }
+    }
+
+    private fun sameBillableRequestExistsForBilledCompany(
+        requestSetToWithdrawnMessage: RequestSetToWithdrawnMessage,
+        billedCompanyId: String,
+    ): Boolean = requestSetToWithdrawnMessage.userIdsAssociatedRequestsForSameTriple.any { getBilledCompanyId(it) == billedCompanyId }
+
+    /** Deletes a billed request from the database for the given billed company ID and data sourcing ID.
+     */
+    @Transactional
+    fun deleteBilledRequest(
+        billedCompanyId: String,
+        dataSourcingId: String,
+        correlationId: String,
+    ) {
+        val billedCompanyUUID = ValidationUtils.convertToUUID(billedCompanyId)
+        val dataSourcingUUID = ValidationUtils.convertToUUID(dataSourcingId)
+
+        val billedRequestEntityId =
+            BilledRequestEntityId(
+                billedCompanyId = billedCompanyUUID,
+                dataSourcingId = dataSourcingUUID,
+            )
+        val billedRequestEntity =
+            billedRequestRepository.findByIdOrNull(billedRequestEntityId)
+                ?: return
+        logDeleteBilledRequestMessage(
+            billedCompanyUUID.toString(),
+            dataSourcingId,
+            correlationId,
+        )
+        billedRequestRepository.delete(billedRequestEntity)
     }
 }
