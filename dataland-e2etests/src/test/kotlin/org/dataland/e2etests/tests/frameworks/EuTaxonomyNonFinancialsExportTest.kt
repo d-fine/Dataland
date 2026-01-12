@@ -6,11 +6,15 @@ import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
+import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
 import org.dataland.datalandbackend.openApiClient.model.RelativeAndAbsoluteFinancialShare
 import org.dataland.e2etests.utils.BaseExportTest
+import org.dataland.e2etests.utils.testDataProviders.awaitUntil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -124,31 +128,41 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): File = File("Filler")
-//        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-//            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-//                ExportRequestData(
-//                    reportingPeriods = reportingPeriods,
-//                    companyIds = companyIds,
-//                    fileFormat = ExportFileType.CSV,
-//                ),
-//                keepValueFieldsOnly = keepValueFieldsOnly,
-//                includeAliases = includeAliases,
-//            )
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.CSV,
+                    ),
+                    keepValueFieldsOnly = keepValueFieldsOnly,
+                    includeAliases = false,
+                ).id
+                .toString()
+        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File = File("Filler")
-//        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-//            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-//                ExportRequestData(
-//                    reportingPeriods = reportingPeriods,
-//                    companyIds = companyIds,
-//                    fileFormat = ExportFileType.EXCEL,
-//                ),
-//                includeAliases = false,
-//            )
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.EXCEL,
+                    ),
+                    includeAliases = false,
+                ).id
+                .toString()
+        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun retrieveData(companyId: String): Any =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
