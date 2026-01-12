@@ -108,58 +108,14 @@ class PortfolioServiceTest {
     fun `verify that retrieving portfolio by Id for dummyUser yields correct results`() {
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
             .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
-        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
-        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
-            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
+        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId, dummyCorrelationId) }
+        verify(mockPortfolioRepository, times(1)).getPortfolioByPortfolioId(
+            UUID.fromString(dummyPortfolio.portfolioId),
         )
-        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
-            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
-        )
-        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
-        assertEquals(
-            dummyPortfolio,
-            portfolioReturned,
-        )
-    }
-
-    @Test
-    fun `verify that dummy user cannot access admin portfolios`() {
-        doReturn(dummyPortfolio.toPortfolioEntity())
-            .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(adminUserId, UUID.fromString(dummyPortfolio.portfolioId))
-        doReturn(dummyPortfolio.toPortfolioEntity())
-            .whenever(mockPortfolioRepository)
-            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
-        assertThrows<PortfolioNotFoundApiException> {
-            portfolioService.getPortfolio(dummyPortfolio.portfolioId)
-        }
-        verify(mockPortfolioRepository, times(1)).getPortfolioByUserIdAndPortfolioId(
-            dummyUserId, UUID.fromString(dummyPortfolio.portfolioId),
-        )
-        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
-            adminUserId, UUID.fromString(dummyPortfolio.portfolioId),
-        )
-        verify(mockPortfolioRepository, times(0)).getPortfolioByPortfolioId(any())
-    }
-
-    @Test
-    fun `verify that admin can access dummy user portfolio`() {
-        doReturn(dummyPortfolio.toPortfolioEntity())
-            .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
-        doReturn(dummyPortfolio.toPortfolioEntity())
-            .whenever(mockPortfolioRepository)
-            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
-        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
-        val portfolioReturned = assertDoesNotThrow { portfolioService.getPortfolio(dummyPortfolio.portfolioId) }
-        verify(mockPortfolioRepository, times(0)).getPortfolioByUserIdAndPortfolioId(
-            any(), any(),
-        )
-        verify(mockPortfolioRepository, times(1)).getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
         assertEquals(
             dummyPortfolio,
             portfolioReturned,
@@ -170,10 +126,10 @@ class PortfolioServiceTest {
     fun `verify that service throws PortfolioNotFoundApiException if portfolio cannot be found for user`() {
         doReturn(null)
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+            .getPortfolioByPortfolioId(dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
-            portfolioService.getPortfolio(dummyPortfolioId.toString())
+            portfolioService.getPortfolio(dummyPortfolioId.toString(), dummyCorrelationId)
         }
     }
 
@@ -220,7 +176,7 @@ class PortfolioServiceTest {
 
         doReturn(dummyPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
 
         assertDoesNotThrow {
             portfolioService.replacePortfolio(dummyPortfolio.portfolioId, dummyPortfolio2, dummyCorrelationId)
@@ -234,10 +190,34 @@ class PortfolioServiceTest {
     }
 
     @Test
+    fun `test that replacing a portfolio as admin for a different user returns the correct response`() {
+        resetSecurityContext(adminUserId, setOf(DatalandRealmRole.ROLE_ADMIN))
+
+        val portfolioEntityCaptor = argumentCaptor<PortfolioEntity>()
+
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+
+        val newPortfolio = buildPortfolio(portfolioName = "Portfolio New", userId = adminUserId)
+
+        assertDoesNotThrow {
+            portfolioService.replacePortfolio(dummyPortfolio.portfolioId, newPortfolio, dummyCorrelationId)
+        }
+
+        verify(mockPortfolioRepository).save(portfolioEntityCaptor.capture())
+
+        assertEquals(dummyPortfolio.portfolioId, portfolioEntityCaptor.firstValue.portfolioId.toString())
+        assertEquals(dummyPortfolio.creationTimestamp, portfolioEntityCaptor.firstValue.creationTimestamp)
+        assertEquals(dummyPortfolio.isMonitored, portfolioEntityCaptor.firstValue.isMonitored)
+        assertEquals(dummyPortfolio.userId, portfolioEntityCaptor.firstValue.userId)
+    }
+
+    @Test
     fun `test that attempting to replace a non existing portfolio throws a PortfolioNotFoundApiException`() {
         doReturn(null)
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+            .getPortfolioByPortfolioId(dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.replacePortfolio(
@@ -276,5 +256,6 @@ class PortfolioServiceTest {
         monitoredFrameworks = emptySet(),
         NotificationFrequency.Weekly,
         timeWindowThreshold = null,
+        sharedUserIds = emptySet(),
     )
 }

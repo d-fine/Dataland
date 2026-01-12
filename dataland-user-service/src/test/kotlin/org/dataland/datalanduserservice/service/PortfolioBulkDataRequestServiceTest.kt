@@ -134,6 +134,7 @@ class PortfolioBulkDataRequestServiceTest {
         isMonitored = true,
         monitoredFrameworks = frameworks,
         timeWindowThreshold = TimeWindowThreshold.Standard,
+        sharedUserIds = emptySet(),
     )
 
     @Test
