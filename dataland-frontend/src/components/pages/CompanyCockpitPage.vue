@@ -12,7 +12,7 @@
       >
         <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
         <Tab value="users" data-test="usersTab">Users</Tab>
-        <Tab v-if="canViewCredits" value="credits" data-test="creditsTab">Credits</Tab>
+        <Tab value="credits" v-if="canViewCredits" data-test="creditsTab">Credits</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="datasets">
@@ -90,7 +90,10 @@ const rightsLoaded = ref(false);
 const isCompanyDatalandMember = ref(false);
 
 const canViewCredits = computed(() => {
-  return isCompanyDatalandMember.value || isUserDatalandAdmin.value;
+  if (isUserDatalandAdmin.value == true) return true;
+  if (isUserCompanyMember.value == true && isCompanyDatalandMember.value == true) return true;
+
+  return false;
 });
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});

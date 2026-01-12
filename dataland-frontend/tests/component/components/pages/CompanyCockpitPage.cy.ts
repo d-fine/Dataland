@@ -12,7 +12,7 @@ import {
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { CompanyRole } from '@clients/communitymanager';
+import { CompanyRole, CompanyRoleAssignment } from '@clients/communitymanager';
 import {
   KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
@@ -44,6 +44,13 @@ function validateClaimOwnershipPanel(isThisExpected: boolean): void {
  */
 function validateSingleDataRequestButton(): void {
   cy.get('[data-test="singleDataRequestButton"]').should('exist');
+}
+
+function interceptCompanyRights(companyId: string, companyRights: string[]): void {
+  cy.intercept('GET', `**/community/company-rights/${companyId}*`, {
+    statusCode: 200,
+    body: companyRights,
+  }).as('companyRights');
 }
 
 describe('Component test for the company cockpit', () => {
@@ -321,5 +328,43 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, []);
     cy.get('[data-test="usersTab"]').should('not.exist');
+  });
+
+  it('Credits tab is visible for Dataland Admins', () => {
+    interceptCompanyRights(dummyCompanyId, []);
+
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
+
+    cy.wait('@companyRights');
+
+    cy.get('[data-test="creditsTab"]').should('be.visible').click();
+    cy.get('[data-test="creditsBalance"]').should('be.visible');
+  });
+
+  it('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
+
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@companyRights');
+
+    cy.get('[data-test="usersTab"]').should('be.visible').click();
+    cy.get('[data-test="creditsTab"]').should('be.visible');
+  });
+
+  it('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
+    interceptCompanyRights(dummyCompanyId, []);
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
+
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@companyRights');
+
+    cy.get('[data-test="usersTab"]').should('be.visible').click();
+    cy.get('[data-test="creditsTab"]').should('not.exist');
   });
 });
