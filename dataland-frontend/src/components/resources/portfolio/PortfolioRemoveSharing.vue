@@ -9,9 +9,9 @@
     data-test="remove-sharing-modal"
   >
     <div style="text-align: center; padding: 8px 0">
-      <div style="margin-top: 8px; white-space: pre-line">
-        Are you sure you want to remove this portfolio? You will no longer have access to this portfolio unless the
-        creator shares it with you again.
+      <div style="margin-top: 8px; white-space: pre-line; text-align: left">
+        Are you sure you want to remove this portfolio? You will no longer have access <br />
+        to this portfolio unless the creator shares it with you again.
       </div>
     </div>
     <template #footer>

@@ -3,16 +3,11 @@
     :portfolio-id="props.portfolioId"
     empty-text="Currently there are no companies in this portfolio or no companies match your filters."
   >
-    <template #actions="{ enrichedPortfolio, monitoredTagAttributes, resetFilters, openDownload }">
+    <template #actions="{ monitoredTagAttributes, resetFilters, openDownload }">
       <Button @click="openRemoveModal()" data-test="remove-portfolio" label="REMOVE PORTFOLIO" icon="pi pi-times" />
       <Button @click="openDownload" data-test="download-portfolio" label="DOWNLOAD PORTFOLIO" icon="pi pi-download" />
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-      <Tag
-        :value="`Shared by ${enrichedPortfolio?.userId ?? ''}`"
-        icon="pi pi-share-alt"
-        severity="info"
-        data-test="shared-by-tag"
-      />
+      <Tag :value="`Shared by ${ownerEmail ?? ''}`" icon="pi pi-share-alt" severity="info" data-test="shared-by-tag" />
       <Button
         class="reset-button-align-right"
         data-test="reset-filter"
