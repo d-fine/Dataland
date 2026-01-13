@@ -157,6 +157,16 @@ abstract class AbstractPortfolioControllerTest {
             ).andExpect(statusMatcher)
     }
 
+    protected fun performGetPortfolioAccessRightsAndExpect(statusMatcher: ResultMatcher) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/portfolios/$portfolioId/access-rights")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(SecurityMockMvcRequestPostProcessors.securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
     protected fun performCreatePortfolioAndExpect(
         requestBody: String,
         statusMatcher: ResultMatcher,

@@ -360,4 +360,56 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
 
         performDeleteCurrentUserFromSharingAndExpect(MockMvcResultMatchers.status().isForbidden)
     }
+
+    @Test
+    fun `admins can get portfolio access rights for any portfolio`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        performGetPortfolioAccessRightsAndExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun `regular users cannot get portfolio access rights if they are neither owner nor portfolio is shared`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
+        whenever(
+            portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
+                any(),
+                eq(portfolioId),
+            ),
+        ).thenReturn(false)
+
+        performGetPortfolioAccessRightsAndExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+
+    @Test
+    fun `regular users can get portfolio access rights if they are owner`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
+        whenever(
+            portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
+                any(),
+                eq(portfolioId),
+            ),
+        ).thenReturn(false)
+
+        performGetPortfolioAccessRightsAndExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun `regular users can get portfolio access rights if portfolio is shared with them`() {
+        setMockSecurityContext(dummyUserAuthentication)
+
+        whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
+        whenever(
+            portfolioRightsUtilsComponent.isPortfolioSharedWithUser(
+                any(),
+                eq(portfolioId),
+            ),
+        ).thenReturn(true)
+
+        performGetPortfolioAccessRightsAndExpect(MockMvcResultMatchers.status().isOk)
+    }
 }
