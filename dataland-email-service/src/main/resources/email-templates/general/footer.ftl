@@ -47,6 +47,21 @@
         <td></td>
         <td></td>
     </tr>
+    <tr>
+        <@linkWithIcon url="${baseUrl}/data-sourcing/swagger-ui/index.html" linkText="DATA SOURCING"/>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <@linkWithIcon url="${baseUrl}/accounting/swagger-ui/index.html" linkText="ACCOUNTING"/>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <@linkWithIcon url="${baseUrl}/specifications/swagger-ui/index.html" linkText="SPECIFICATIONS"/>
+        <td></td>
+        <td></td>
+    </tr>
     <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
