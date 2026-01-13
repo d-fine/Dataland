@@ -17,12 +17,12 @@ data class PortfolioUserDetails(
         example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
-    @field:JsonProperty(required = true)
+    @field:JsonProperty(required = false)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
-    val userEmail: String,
+    val userEmail: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION,
