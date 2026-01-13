@@ -31,6 +31,19 @@
               <a href="/qa/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">QUALITY ASSURANCE</a>
             </li>
             <li><a href="/users/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">USERS</a></li>
+            <li>
+              <a href="/data-sourcing/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
+                >DATA SOURCING</a
+              >
+            </li>
+            <li>
+              <a href="/accounting/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">ACCOUNTING</a>
+            </li>
+            <li>
+              <a href="/specifications/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
+                >SPECIFICATIONS</a
+              >
+            </li>
           </ul>
         </div>
         <div class="footer__column" @click="isSmallScreen && toggleAccordion('esgframeworks')">
