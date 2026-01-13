@@ -335,39 +335,39 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="usersTab"]').should('not.exist');
   });
 
-  it('Credits tab is visible for Dataland Admins', () => {
+  it.only('Credits tab is visible for Dataland Admins', () => {
     interceptCompanyRights(dummyCompanyId, []);
 
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
 
-    cy.wait('@companyRights');
+    cy.wait('@fetchCompanyRights');
 
     cy.get('[data-test="creditsTab"]').should('be.visible').click();
     cy.get('[data-test="creditsBalance"]').should('be.visible');
   });
 
-  it('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
+  it.only('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
     interceptCompanyRights(dummyCompanyId, ['Member']);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
 
-    cy.wait('@companyRights');
+    cy.wait('@fetchCompanyRights');
 
     cy.get('[data-test="usersTab"]').should('be.visible').click();
     cy.get('[data-test="creditsTab"]').should('be.visible');
   });
 
-  it('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
+  it.only('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
     interceptCompanyRights(dummyCompanyId, []);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
 
-    cy.wait('@companyRights');
+    cy.wait('@fetchCompanyRights');
 
     cy.get('[data-test="usersTab"]').should('be.visible').click();
     cy.get('[data-test="creditsTab"]').should('not.exist');
