@@ -90,8 +90,8 @@ const rightsLoaded = ref(false);
 const isCompanyDatalandMember = ref(false);
 
 const canViewCredits = computed(() => {
-  if (isUserDatalandAdmin.value == true) return true;
-  if (isUserCompanyMember.value == true && isCompanyDatalandMember.value == true) return true;
+  if (isUserDatalandAdmin.value) return true;
+  if (isUserCompanyMember.value && isCompanyDatalandMember.value) return true;
   return false;
 });
 
