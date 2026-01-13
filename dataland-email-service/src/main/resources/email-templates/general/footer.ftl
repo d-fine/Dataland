@@ -47,16 +47,19 @@
         <td></td>
         <td></td>
     </tr>
+    <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/data-sourcing/swagger-ui/index.html" linkText="DATA SOURCING"/>
         <td></td>
         <td></td>
     </tr>
+    <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/accounting/swagger-ui/index.html" linkText="ACCOUNTING"/>
         <td></td>
         <td></td>
     </tr>
+    <@spacerRowSmall/>
     <tr>
         <@linkWithIcon url="${baseUrl}/specifications/swagger-ui/index.html" linkText="SPECIFICATIONS"/>
         <td></td>
@@ -64,18 +67,30 @@
     </tr>
     <@spacerRowSmall/>
     <tr>
+        <td></td>
         <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
-        <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
         <td></td>
     </tr>
     <@spacerRowSmall/>
     <tr>
         <td></td>
-        <td style="line-height: 22px">
-            <img src="${linkedInImage}" width="22" height="23" alt="in" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; vertical-align: middle;">&nbsp;
-            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">LINKEDIN</a>
-        </td>
         <td></td>
+        <td style="line-height: 22px">
+            <span style="color: #c0c0c0; font-size: 14px">Follow Dataland</span>
+        </td>
+    </tr>
+    <@spacerRowSmall/>
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="line-height: 22px">
+            <img src="${linkedInImage}" width="22" height="23" alt="in"
+                 style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; vertical-align: middle;">&nbsp;
+            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank"
+               style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">
+                LINKEDIN
+            </a>
+        </td>
     </tr>
     <@spacerRowHorizontalLine color="#c0c0c0" width="560px"/>
     <@spacerRowSmall/>
