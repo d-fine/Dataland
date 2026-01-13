@@ -1,5 +1,5 @@
 <template>
-  <TheContent class="flex">
+  <TheContent class="flex" data-test="company-cockpit-root">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <Tabs v-model:value="activeTab">
       <TabList

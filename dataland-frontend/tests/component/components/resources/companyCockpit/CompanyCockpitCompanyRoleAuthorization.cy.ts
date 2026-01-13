@@ -46,16 +46,27 @@ describe('Component test for the authorization of company cockpit components', (
 
   it('Users Page is visible for a Company Analyst', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
+
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
-    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
-    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
-    cy.get('[data-test="usersTab"]').click();
-    cy.get('[data-test=sfdr-summary-panel]').should('not.be.visible');
-    cy.get('[data-test="company-roles-card"]').should('be.visible');
-    cy.get('[data-test="datasetsTab"]').click();
-    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
-    cy.get('[data-test="company-roles-card"]').should('not.be.visible');
+
+    cy.get('[data-test="company-cockpit-root"]')
+      .last()
+      .within(() => {
+        cy.wait('@fetchRoleAssignments');
+
+        cy.get('[data-test="datasetsTab"]').filter(':visible').contains('Datasets').click();
+        cy.get('[data-test=sfdr-summary-panel]').filter(':visible').should('be.visible');
+        cy.get('[data-test="company-roles-card"]').filter(':visible').should('not.exist');
+
+        cy.get('[data-test="usersTab"]').filter(':visible').contains('Users').click();
+        cy.get('[data-test="company-roles-card"]').filter(':visible').should('exist');
+        cy.get('[data-test=sfdr-summary-panel]').filter(':visible').should('not.exist');
+
+        cy.get('[data-test="datasetsTab"]').filter(':visible').contains('Datasets').click();
+        cy.get('[data-test=sfdr-summary-panel]').filter(':visible').should('exist');
+        cy.get('[data-test="company-roles-card"]').filter(':visible').should('not.exist');
+      });
   });
 
   it('Users Page is not visible for a user that is not a Company Member', () => {
@@ -67,31 +78,12 @@ describe('Component test for the authorization of company cockpit components', (
 
   it('Users are being displayed correctly in the Users Page', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
-    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
-      const q = req.query as Record<string, string | undefined>;
-      if (q.role === CompanyRole.Analyst) {
-        req.reply({
-          statusCode: 200,
-          body: [
-            {
-              companyRole: 'Analyst',
-              companyId: dummyCompanyId,
-              userId: dummyUserId,
-              email: dummyEmail,
-              firstName: dummyFirstName,
-              lastName: dummyLastName,
-            },
-          ],
-        });
-      } else {
-        req.reply({ statusCode: 200, body: [] });
-      }
-    }).as('roleFetch');
+
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
-    cy.wait('@roleFetch');
+    cy.wait('@fetchRoleAssignments');
     cy.get('[data-test="usersTab"]').click();
-    cy.wait('@roleFetch');
+    cy.wait('@fetchRoleAssignments');
     cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
     cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
       cy.get('td', { timeout: 10000 }).should('exist');
