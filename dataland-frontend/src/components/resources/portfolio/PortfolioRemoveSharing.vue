@@ -30,12 +30,12 @@ import { inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 const props = defineProps<{ visible: boolean; portfolioId: string }>();
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'sharing-removed']);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 /**
- * Close the dialog when it is no longer visible
+ * Close the dialog when it is no longer visible (e.g. mask click / ESC)
  */
 function onUpdateVisible(newValue: boolean): void {
   if (!newValue) emit('close');
@@ -46,6 +46,6 @@ function onUpdateVisible(newValue: boolean): void {
  */
 async function removePortfolio(): Promise<void> {
   await apiClientProvider.apiClients.portfolioController.deleteCurrentUserFromSharing(props.portfolioId);
-  emit('close');
+  emit('sharing-removed');
 }
 </script>

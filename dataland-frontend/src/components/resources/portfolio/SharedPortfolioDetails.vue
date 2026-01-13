@@ -21,7 +21,8 @@
       <PortfolioRemoveSharing
         :visible="isRemoveDialogVisible"
         :portfolio-id="props.portfolioId"
-        @close="() => closeRemoveDialog(reload)"
+        @close="isRemoveDialogVisible = false"
+        @sharing-removed="() => onRemoveSharing(reload)"
       />
     </template>
   </PortfolioDetailsBase>
@@ -58,9 +59,9 @@ function openRemoveModal(): void {
 }
 
 /**
- * Closes the remove dialog, reloads the portfolio data and notifies the overview.
+ * Handles successful removal: closes dialog, reloads data and notifies overview.
  */
-function closeRemoveDialog(reload: () => void): void {
+function onRemoveSharing(reload: () => void): void {
   isRemoveDialogVisible.value = false;
   reload();
   emit('update:portfolio-overview');

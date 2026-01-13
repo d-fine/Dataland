@@ -9,6 +9,7 @@ const portfolioId = 'test-portfolio-id';
  */
 function mountComponent(): void {
   const onCloseSpy = cy.spy().as('onCloseSpy');
+  const onSharingRemovedSpy = cy.spy().as('onSharingRemovedSpy');
 
   // @ts-ignore
   cy.mountWithPlugins(PortfolioRemoveSharing, {
@@ -19,6 +20,7 @@ function mountComponent(): void {
       visible: true,
       portfolioId,
       onClose: onCloseSpy,
+      onSharingRemoved: onSharingRemovedSpy,
     },
   });
 }
@@ -41,12 +43,12 @@ describe('PortfolioRemoveSharing dialog', () => {
 
   it('emits "close" when CANCEL is clicked and does not call the API', () => {
     cy.intercept('DELETE', '**/users/portfolios/shared/*').as('removePortfolio');
-
     mountComponent();
 
     cy.get('[data-test="remove-cancel-button"]').click();
 
     cy.get('@onCloseSpy').should('have.been.calledOnce');
+    cy.get('@onSharingRemovedSpy').should('not.have.been.called');
 
     cy.get('@removePortfolio.all').should('have.length', 0);
   });
@@ -55,7 +57,6 @@ describe('PortfolioRemoveSharing dialog', () => {
     cy.intercept('DELETE', '**/users/portfolios/shared/*', {
       statusCode: 204,
     }).as('removePortfolio');
-
     mountComponent();
 
     cy.get('[data-test="remove-confirmation-button"]').click();
@@ -65,6 +66,7 @@ describe('PortfolioRemoveSharing dialog', () => {
       expect(interception.request.url).to.include(portfolioId);
     });
 
-    cy.get('@onCloseSpy').should('have.been.calledOnce');
+    cy.get('@onCloseSpy').should('not.have.been.called');
+    cy.get('@onSharingRemovedSpy').should('have.been.calledOnce');
   });
 });
