@@ -1,52 +1,42 @@
 <template>
-  <PortfolioDetailsBase :portfolio-id="portfolioId">
-    <template
-        #actions="{
-        enrichedPortfolio,
-        isMonitored,
-        monitoredTagAttributes,
-        resetFilters,
-        openDownload,
-        reload,
-      }"
-    >
+  <PortfolioDetailsBase :portfolio-id="props.portfolioId">
+    <template #actions="{ enrichedPortfolio, monitoredTagAttributes, resetFilters, openDownload, reload }">
       <Button
-          @click="openEditModal(enrichedPortfolio, reload)"
-          data-test="edit-portfolio"
-          label="EDIT PORTFOLIO"
-          icon="pi pi-pencil"
+        @click="openEditModal(enrichedPortfolio, reload)"
+        data-test="edit-portfolio"
+        label="EDIT PORTFOLIO"
+        icon="pi pi-pencil"
       />
-      <Button
-          @click="openDownload"
-          data-test="download-portfolio"
-          label="DOWNLOAD PORTFOLIO"
-          icon="pi pi-download"
-      />
+      <Button @click="openDownload" data-test="download-portfolio" label="DOWNLOAD PORTFOLIO" icon="pi pi-download" />
       <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can activate monitoring' : ''">
         <Button
-            @click="openMonitoringModal(enrichedPortfolio, isMonitored, reload)"
-            data-test="monitor-portfolio"
-            :disabled="!isUserDatalandMemberOrAdmin"
-            icon="pi pi-bell"
-            label="ACTIVE MONITORING"
+          @click="openMonitoringModal(enrichedPortfolio, reload)"
+          data-test="monitor-portfolio"
+          :disabled="!isUserDatalandMemberOrAdmin"
+          icon="pi pi-bell"
+          label="ACTIVE MONITORING"
         />
       </div>
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
       <Button
-          class="reset-button-align-right"
-          data-test="reset-filter"
-          @click="resetFilters"
-          variant="text"
-          label="RESET"
+        class="reset-button-align-right"
+        data-test="reset-filter"
+        @click="resetFilters"
+        variant="text"
+        label="RESET"
       />
     </template>
 
     <template #dialogs="{ isMonitored }">
       <SuccessDialog
-          :visible="isSuccessDialogVisible"
-          :message="successDialogMessage"
-          @close="isSuccessDialogVisible = false"
+        :visible="isSuccessDialogVisible"
+        :message="
+          isMonitored
+            ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
+            : 'Portfolio monitoring updated successfully.'
+        "
+        @close="isSuccessDialogVisible = false"
       />
     </template>
   </PortfolioDetailsBase>
@@ -59,13 +49,14 @@ import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonit
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { computed, inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useDialog } from 'primevue/usedialog';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { type EnrichedPortfolio } from '@clients/userservice';
 
 const props = defineProps<{
   portfolioId: string;
@@ -79,21 +70,15 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const isUserDatalandMemberOrAdmin = ref(false);
 const isSuccessDialogVisible = ref(false);
-const isMonitoredAfterChange = ref<boolean>(false);
 
-/**
- * Success message depending on "is monitored" after change
- */
-const successDialogMessage = computed(() =>
-    isMonitoredAfterChange.value
-        ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
-        : 'Portfolio monitoring updated successfully.'
-);
+onMounted(() => {
+  void checkDatalandMembershipOrAdminRights();
+});
 
 /**
  * Checks whether the logged-in User is Dataland member or Admin
  */
-onMounted(async () => {
+async function checkDatalandMembershipOrAdminRights(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
 
@@ -106,16 +91,16 @@ onMounted(async () => {
   const inheritedRolesMap = response.data;
 
   isUserDatalandMemberOrAdmin.value =
-      Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
-      (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
-});
+    Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
+    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
+}
 
 /**
  * Opens the PortfolioDialog with the current portfolio's data for editing.
  * Once the dialog is closed, it reloads the portfolio data and emits an update event
  * to refresh the portfolio overview.
  */
-function openEditModal(enrichedPortfolio: any, reload: () => void): void {
+function openEditModal(enrichedPortfolio: EnrichedPortfolio, reload: () => void): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -138,7 +123,7 @@ function openEditModal(enrichedPortfolio: any, reload: () => void): void {
  * Opens the PortfolioMonitoring with the current portfolio's data.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function openMonitoringModal(enrichedPortfolio: any, isMonitored: boolean, reload: () => void): void {
+function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio, reload: () => void): void {
   const fullName = 'Monitoring of ' + enrichedPortfolio?.portfolioName;
   dialog.open(PortfolioMonitoring, {
     props: {
@@ -160,8 +145,6 @@ function openMonitoringModal(enrichedPortfolio: any, isMonitored: boolean, reloa
     },
     onClose(options) {
       if (options?.data?.monitoringSaved) {
-        // reflect the new monitoring state in the success dialog message
-        // isMonitoredAfterChange.value = options.data.isMonitored ?? isMonitored;
         isSuccessDialogVisible.value = true;
         reload();
         emit('update:portfolio-overview');
