@@ -10,11 +10,13 @@ import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
+import org.dataland.datalanduserservice.service.PortfolioSharingService
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -49,6 +51,9 @@ abstract class AbstractPortfolioControllerTest {
 
     @MockitoBean
     protected lateinit var companyDataController: CompanyDataControllerApi
+
+    @MockitoBean
+    protected lateinit var portfolioSharingService: PortfolioSharingService
 
     protected val mockSecurityContext: SecurityContext = mock()
 
@@ -122,6 +127,7 @@ abstract class AbstractPortfolioControllerTest {
             mockSecurityContext,
             portfolioRightsUtilsComponent,
             companyDataController,
+            portfolioSharingService,
         )
         portfolioRepository.deleteAll()
 
@@ -140,6 +146,13 @@ abstract class AbstractPortfolioControllerTest {
                 sharedUserIds = emptySet(),
             )
         portfolioRepository.save(entity)
+
+        whenever(
+            portfolioSharingService.getPortfolioAccessRights(
+                any(),
+                any(),
+            ),
+        ).thenReturn(emptyList())
     }
 
     protected fun setMockSecurityContext(authentication: DatalandJwtAuthentication) {
