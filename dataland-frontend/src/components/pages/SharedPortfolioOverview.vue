@@ -24,7 +24,7 @@
           />
         </TabPanel>
         <TabPanel value="no-portfolios-available">
-          <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
+          <h1 v-if="!portfolioNames || portfolioNames.length === 0">No Portfolios available.</h1>
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -36,80 +36,26 @@ import TheContent from '@/components/generics/TheContent.vue';
 import SharedPortfolioDetails from '@/components/resources/portfolio/SharedPortfolioDetails.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { BasePortfolioName } from '@clients/userservice';
+import { inject } from 'vue';
 import type Keycloak from 'keycloak-js';
-import Tab from 'primevue/tab';
-import TabList from 'primevue/tablist';
-import TabPanel from 'primevue/tabpanel';
-import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref } from 'vue';
-import { useSessionStorage } from '@vueuse/core';
-
-/**
- * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
- * It includes functionality to add new portfolios, and to switch between existing ones.
- */
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+import type { BasePortfolioName } from '@clients/userservice';
+import { usePortfolioOverview } from '@/components/resources/portfolio/usePortfolioOverview.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
-const SESSION_STORAGE_KEY = 'last-selected-shared-portfolio-id';
-const currentPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
-const portfolioNames = ref<BasePortfolioName[]>([]);
-
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-onMounted(() => {
-  void getPortfolios().then(() => setCurrentPortfolioId());
+const { currentPortfolioId, portfolioNames, getPortfolios, onTabChange } = usePortfolioOverview({
+  sessionStorageKey: 'last-selected-shared-portfolio-id',
+  async fetchPortfolios(): Promise<BasePortfolioName[]> {
+    const res = await apiClientProvider.apiClients.portfolioController.getAllSharedPortfolioNamesForCurrentUser();
+    return res.data;
+  },
 });
-
-/**
- * Retrieve all portfolios for the currently logged-in user.
- */
-async function getPortfolios(): Promise<void> {
-  try {
-    const response = await apiClientProvider.apiClients.portfolioController.getAllSharedPortfolioNamesForCurrentUser();
-    portfolioNames.value = response.data;
-    setCurrentPortfolioId();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-/**
- * Sets the current portfolio ID based on the following priority:
- * 1. If a portfolioId is provided (e.g. after creating a new portfolio), use it if valid.
- * 2. If not, and a session-stored portfolioId exists, use it if valid.
- * 3. If none of the above are valid, fall back to the first portfolio in the list.
- */
-function setCurrentPortfolioId(portfolioId?: string): void {
-  if (portfolioNames.value.length === 0) {
-    currentPortfolioId.value = undefined;
-    return;
-  }
-
-  if (portfolioId && portfolioNames.value.some((portfolio) => portfolio.portfolioId === portfolioId)) {
-    currentPortfolioId.value = portfolioId;
-    return;
-  }
-
-  if (
-    currentPortfolioId.value &&
-    portfolioNames.value.some((portfolio) => portfolio.portfolioId === currentPortfolioId.value)
-  ) {
-    return;
-  }
-
-  currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
-}
-
-/**
- * Handles the tab change event by changing the currentPortfolioId.
- * @param value The value of the tab aka the portfolioId of the selected portfolio.
- */
-function onTabChange(value: string | number): void {
-  setCurrentPortfolioId(String(value));
-}
 </script>
 
 <style scoped>
