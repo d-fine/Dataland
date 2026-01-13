@@ -36,8 +36,12 @@
 import PortfolioDetailsBase from '@/components/resources/portfolio/PortfolioDetailsBase.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import PortfolioRemoveSharing from '@/components/resources/portfolio/PortfolioRemoveSharing.vue';
+import type Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { type PortfolioUserDetails, PortfolioUserDetailsPortfolioAccessRightEnum } from '@clients/userservice';
 
 const props = defineProps<{
   portfolioId: string;
@@ -45,7 +49,11 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:portfolio-overview']);
 
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+
 const isRemoveDialogVisible = ref(false);
+const ownerEmail = ref<string | null>(null);
 
 /**
  * Opens the remove dialog for the current portfolio.
@@ -62,6 +70,25 @@ function closeRemoveDialog(reload: () => void): void {
   reload();
   emit('update:portfolio-overview');
 }
+
+/**
+ * Loads the email of the portfolio owner.
+ */
+async function loadOwnerEmail(): Promise<void> {
+  try {
+    const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(props.portfolioId);
+    const owner = response.data.find(
+      (user: PortfolioUserDetails) => user.portfolioAccessRight === PortfolioUserDetailsPortfolioAccessRightEnum.Owner
+    );
+    ownerEmail.value = owner?.userEmail ?? null;
+  } catch (error) {
+    console.error('Error loading portfolio access rights:', error);
+  }
+}
+
+onMounted(() => {
+  void loadOwnerEmail();
+});
 </script>
 
 <style scoped>

@@ -716,6 +716,97 @@
         ]
       }
     },
+    "/portfolios/{portfolioId}/access-rights": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get access rights for all users with access rights to this portfolio.",
+        "description": "Retrieves user details and access rights for all users with access rights to this portfolio.",
+        "operationId": "getPortfolioAccessRights",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved access rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/users/{userId}": {
       "get": {
         "tags": [
@@ -1626,6 +1717,34 @@
             "example": {
               "sfdr": "2024, 2023, 2022"
             }
+          }
+        }
+      },
+      "PortfolioUserDetails": {
+        "required": [
+          "portfolioAccessRight",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "portfolioAccessRight": {
+            "type": "string",
+            "description": "The access rights that the user has for the shared portfolio.",
+            "example": "Owner",
+            "enum": [
+              "Owner",
+              "ReadOnly"
+            ]
           }
         }
       },
