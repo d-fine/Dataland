@@ -335,7 +335,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="usersTab"]').should('not.exist');
   });
 
-  it.only('Credits tab is visible for Dataland Admins', () => {
+  it('Credits tab is visible for Dataland Admins', () => {
     interceptCompanyRights(dummyCompanyId, []);
 
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
@@ -347,7 +347,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="creditsBalance"]').should('be.visible');
   });
 
-  it.only('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
+  it('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
     interceptCompanyRights(dummyCompanyId, ['Member']);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
@@ -360,7 +360,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="creditsTab"]').should('be.visible');
   });
 
-  it.only('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
+  it('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
     interceptCompanyRights(dummyCompanyId, []);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
