@@ -1,8 +1,8 @@
 package org.dataland.datalandaccountingservice.services
-
 import org.dataland.datalandaccountingservice.entities.BilledRequestEntity
 import org.dataland.datalandaccountingservice.model.BilledRequestEntityId
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
@@ -121,6 +121,9 @@ class AccountingServiceListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.REQUEST_SET_TO_PROCESSING)
         val requestSetToProcessingMessage = MessageQueueUtils.readMessagePayload<RequestSetToProcessingMessage>(payload)
+        if (requestSetToProcessingMessage.requestedFramework == DataTypeEnum.nuclearMinusAndMinusGas.value) {
+            return
+        }
         MessageQueueUtils.rejectMessageOnException {
             logBilledRequestMessage(requestSetToProcessingMessage, correlationId)
 
