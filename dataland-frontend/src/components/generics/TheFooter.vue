@@ -403,13 +403,6 @@ onUnmounted(() => {
 
 @media only screen and (max-width: 768px) {
   .footer {
-    &__column {
-      &--techhub {
-        .footer__column--list {
-          column-count: 1;
-        }
-      }
-    }
     padding: 4rem 1.5rem 2.5rem;
 
     &--title {
