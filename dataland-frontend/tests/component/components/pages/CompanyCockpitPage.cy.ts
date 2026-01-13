@@ -55,7 +55,7 @@ function interceptCompanyRights(companyId: string, companyRights: string[]): voi
   cy.intercept('GET', `**/community/company-rights/${companyId}*`, {
     statusCode: 200,
     body: companyRights,
-  }).as('companyRights');
+  }).as('fetchCompanyRights');
 }
 
 describe('Component test for the company cockpit', () => {

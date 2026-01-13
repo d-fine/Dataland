@@ -71,15 +71,24 @@ function generateDocumentMetaInformation(
  * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
  * - A mapping of data types to the corresponding aggregated framework data summary for testing.
  */
+
+export interface MockRequestsOptions {
+  stubRoleAssignments?: boolean;
+}
 export function mockRequestsOnMounted(
   hasCompanyAtLeastOneOwner: boolean,
   companyInformationForTest: CompanyInformation,
-  mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>
+  mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>,
+  options: MockRequestsOptions = {}
 ): void {
-  cy.intercept(`/**/community/company-rights/${dummyCompanyId}`, {
-    statusCode: 200,
-    body: ['Member'],
-  }).as('fetchCompanyRights');
+  const { stubRoleAssignments = true } = options;
+
+  //if (stubCompanyRights) {
+  //  cy.intercept(`/**/community/company-rights/${dummyCompanyId}`, {
+  //    statusCode: 200,
+  //    body: ['Member'],
+  //  }).as('fetchCompanyRights');
+  //}
 
   cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance`, {
     statusCode: 200,
@@ -112,26 +121,28 @@ export function mockRequestsOnMounted(
     });
   }).as('fetchDocumentMetadata');
 
-  cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
-    const q = req.query as Record<string, string | undefined>;
-    if (q.role === 'Analyst') {
-      req.reply({
-        statusCode: 200,
-        body: [
-          {
-            companyRole: 'Analyst',
-            companyId: dummyCompanyId,
-            userId: dummyUserId,
-            email: dummyEmail,
-            firstName: dummyFirstName,
-            lastName: 'mock-last-name',
-          },
-        ],
-      });
-    } else {
-      req.reply({ statusCode: 200, body: [] });
-    }
-  }).as('fetchRoleAssignments');
+  if (stubRoleAssignments) {
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      const q = req.query as Record<string, string | undefined>;
+      if (q.role === 'Analyst') {
+        req.reply({
+          statusCode: 200,
+          body: [
+            {
+              companyRole: 'Analyst',
+              companyId: dummyCompanyId,
+              userId: dummyUserId,
+              email: dummyEmail,
+              firstName: dummyFirstName,
+              lastName: 'mock-last-name',
+            },
+          ],
+        });
+      } else {
+        req.reply({ statusCode: 200, body: [] });
+      }
+    }).as('fetchRoleAssignments');
+  }
 }
 
 /**

@@ -56,7 +56,8 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary,
+      { stubRoleAssignments: false }
     );
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
@@ -80,7 +81,8 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary,
+      { stubRoleAssignments: false }
     );
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
@@ -98,7 +100,8 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
-      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary,
+      { stubRoleAssignments: false }
     );
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
