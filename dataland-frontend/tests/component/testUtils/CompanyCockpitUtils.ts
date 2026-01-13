@@ -69,6 +69,7 @@ function generateDocumentMetaInformation(
  * @param {boolean} hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
  * @param {CompanyInformation} companyInformationForTest - Mock details of the company information to be returned.
  * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
+ * @param {MockRequestsOptions} options - Additional options for mocking requests.
  * - A mapping of data types to the corresponding aggregated framework data summary for testing.
  */
 
@@ -82,13 +83,6 @@ export function mockRequestsOnMounted(
   options: MockRequestsOptions = {}
 ): void {
   const { stubRoleAssignments = true } = options;
-
-  //if (stubCompanyRights) {
-  //  cy.intercept(`/**/community/company-rights/${dummyCompanyId}`, {
-  //    statusCode: 200,
-  //    body: ['Member'],
-  //  }).as('fetchCompanyRights');
-  //}
 
   cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance`, {
     statusCode: 200,
