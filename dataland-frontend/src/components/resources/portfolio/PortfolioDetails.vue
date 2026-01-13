@@ -100,7 +100,7 @@ async function checkDatalandMembershipOrAdminRights(): Promise<void> {
  * Once the dialog is closed, it reloads the portfolio data and emits an update event
  * to refresh the portfolio overview.
  */
-function openEditModal(enrichedPortfolio: EnrichedPortfolio, reload: () => void): void {
+function openEditModal(enrichedPortfolio: EnrichedPortfolio | undefined, reload: () => void): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -123,7 +123,7 @@ function openEditModal(enrichedPortfolio: EnrichedPortfolio, reload: () => void)
  * Opens the PortfolioMonitoring with the current portfolio's data.
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
-function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio, reload: () => void): void {
+function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, reload: () => void): void {
   const fullName = 'Monitoring of ' + enrichedPortfolio?.portfolioName;
   dialog.open(PortfolioMonitoring, {
     props: {
