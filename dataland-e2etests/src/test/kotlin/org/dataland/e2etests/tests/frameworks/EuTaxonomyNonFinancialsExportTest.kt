@@ -131,7 +131,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     ): File {
         val exportJobId =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                .postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
                     ExportRequestData(
                         reportingPeriods = reportingPeriods,
                         companyIds = companyIds,
@@ -151,7 +151,7 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
     ): File {
         val exportJobId =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                .postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
                     ExportRequestData(
                         reportingPeriods = reportingPeriods,
                         companyIds = companyIds,
