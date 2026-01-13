@@ -4,26 +4,26 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 const userId = 'test-user-id';
 const portfolioId = 'test-portfolio-id';
 
+/**
+ * Helper to mount the component with default props and a close spy.
+ */
+function mountComponent(): void {
+  const onCloseSpy = cy.spy().as('onCloseSpy');
+
+  // @ts-ignore
+  cy.mountWithPlugins(PortfolioRemoveSharing, {
+    keycloak: minimalKeycloakMock({
+      userId,
+    }),
+    props: {
+      visible: true,
+      portfolioId,
+      onClose: onCloseSpy,
+    },
+  });
+}
+
 describe('PortfolioRemoveSharing dialog', () => {
-  /**
-   * Helper to mount the component with default props and a close spy.
-   */
-  function mountComponent(): void {
-    const onCloseSpy = cy.spy().as('onCloseSpy');
-
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioRemoveSharing, {
-      keycloak: minimalKeycloakMock({
-        userId,
-      }),
-      props: {
-        visible: true,
-        portfolioId,
-        onClose: onCloseSpy,
-      },
-    });
-  }
-
   it('renders the dialog with correct text and buttons when visible', () => {
     mountComponent();
 
