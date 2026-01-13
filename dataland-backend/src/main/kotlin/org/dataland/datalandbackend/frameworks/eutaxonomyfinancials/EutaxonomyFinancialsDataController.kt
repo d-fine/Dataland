@@ -34,13 +34,13 @@ class EutaxonomyFinancialsDataController
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
         dataExportService: DataExportService<EutaxonomyFinancialsData>,
-        dataExportStorage: DataExportStore,
+        dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<EutaxonomyFinancialsData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,
-            dataExportStorage,
+            dataExportStore,
             companyQueryManager,
             EutaxonomyFinancialsData::class.java,
         ) {

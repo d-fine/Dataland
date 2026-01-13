@@ -7,6 +7,7 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ExportFileType,
+  type ExportJob,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -39,16 +40,15 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
     return this.openApiDataController.postCompanyAssociatedPcafData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedPcafDataByDimensions(
+  ): AxiosPromise<ExportJob> {
+    return this.openApiDataController.postExportJobCompanyAssociatedPcafDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,

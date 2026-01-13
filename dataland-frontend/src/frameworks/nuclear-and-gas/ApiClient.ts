@@ -7,6 +7,7 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ExportFileType,
+  type ExportJob,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -47,16 +48,15 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     return this.openApiDataController.postCompanyAssociatedNuclearAndGasData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataByDimensions(
+  ): AxiosPromise<ExportJob> {
+    return this.openApiDataController.postExportJobCompanyAssociatedNuclearAndGasDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
