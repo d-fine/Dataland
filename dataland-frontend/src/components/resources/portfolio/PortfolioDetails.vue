@@ -452,18 +452,14 @@ function getCompanyIds(): string[] {
 
 /**
  * Polls the export job status until completion or timeout
- * @param frameworkDataApi the API client to use for polling
  * @param exportJobId the ID of the export job to poll
  * @throws Error if job fails or times out
  */
-async function pollExportJobStatus(
-  frameworkDataApi: PublicFrameworkDataApi<FrameworkData>,
-  exportJobId: string
-): Promise<void> {
+async function pollExportJobStatus(exportJobId: string): Promise<void> {
   let state: ExportJobProgressState = ExportJobProgressState.Pending;
 
   for (let attempt = 0; attempt < EXPORT_MAX_POLL_ATTEMPTS; attempt++) {
-    const stateResponse = await frameworkDataApi.getExportJobState(exportJobId);
+    const stateResponse = await apiClientProvider.apiClients.dataExportController.getExportJobState(exportJobId);
     state = stateResponse.data;
 
     if (state === ExportJobProgressState.Success) return;
@@ -474,7 +470,7 @@ async function pollExportJobStatus(
     await new Promise((resolve) => setTimeout(resolve, EXPORT_POLL_INTERVAL_MS));
   }
 
-  if (state !== ExportJobProgressState.Success) {
+  if (state === ExportJobProgressState.Pending) {
     throw new Error('Export timeout - please try again with fewer companies or reporting periods');
   }
 }
@@ -533,13 +529,16 @@ async function handleDatasetDownload(
       includeAlias
     );
 
-    await pollExportJobStatus(frameworkDataApi, assertDefined(jobResponse.data.id));
+    await pollExportJobStatus(assertDefined(jobResponse.data.id));
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
-    const response = await frameworkDataApi.exportCompanyAssociatedDataById(jobResponse.data.id, options);
+    const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
+      jobResponse.data.id,
+      options
+    );
     const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);
 
     forceFileDownload(content, filename);

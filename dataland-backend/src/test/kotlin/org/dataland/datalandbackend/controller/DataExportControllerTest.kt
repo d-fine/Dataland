@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.jayway.jsonpath.JsonPath
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.exceptions.JOBNOTFOUNDSUMMARY
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -29,6 +30,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
+
+const val JSONPATHEXP = "$.errors[0].summary"
 
 @SpringBootTest(
     classes = [DatalandBackend::class],
@@ -92,7 +95,7 @@ class DataExportControllerTest(
     }
 
     @Test
-    fun `get export job state returns 404 for non-existent job`() {
+    fun `get export job state returns 404 for not existent job`() {
         val nonExistentJobId = UUID.randomUUID()
 
         mockMvc
@@ -101,13 +104,13 @@ class DataExportControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
-                jsonPath("$.errors[0].summary")
-                    .value("No corresponding job found for associated user."),
+                jsonPath(JSONPATHEXP)
+                    .value(JOBNOTFOUNDSUMMARY),
             )
     }
 
     @Test
-    fun `user cannot access other user's export job`() {
+    fun `user cannot access other users export job`() {
         setMockCompany()
         val mvcResult =
             mockMvc
@@ -130,8 +133,8 @@ class DataExportControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
-                jsonPath("$.errors[0].summary")
-                    .value("No corresponding job found for associated user."),
+                jsonPath(JSONPATHEXP)
+                    .value(JOBNOTFOUNDSUMMARY),
             )
     }
 
@@ -145,8 +148,8 @@ class DataExportControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
-                jsonPath("$.errors[0].summary")
-                    .value("No corresponding job found for associated user."),
+                jsonPath(JSONPATHEXP)
+                    .value(JOBNOTFOUNDSUMMARY),
             )
     }
 }

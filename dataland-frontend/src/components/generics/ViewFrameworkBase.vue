@@ -445,14 +445,31 @@ async function handleDatasetDownload(
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
     const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
-    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedYears,
-      [props.companyID],
-      exportFileType,
-      keepValuesOnly,
-      includeAlias,
-      options
-    );
+    // This needs to be fixed. This is just temporary to get the frameworktoolbox to work
+    const exportJobId = (
+      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+        selectedYears,
+        [props.companyID],
+        exportFileType,
+        keepValuesOnly,
+        includeAlias,
+        options
+      )
+    ).data.id;
+    let counter = 0;
+    let exportJobState = 'Pending';
+    while (counter < 10 && exportJobState == 'Pending') {
+      const responseState = await apiClientProvider.apiClients.dataExportController.getExportJobState(exportJobId);
+      exportJobState = responseState.data;
+      counter += 1;
+    }
+
+    if (exportJobState != 'Success') {
+      console.error('Download did not work');
+      throw new Error('Download did not work');
+    }
+    const response =
+      await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(exportJobId);
 
     const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
     forceFileDownload(content, filename);
