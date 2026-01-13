@@ -236,7 +236,7 @@ onUnmounted(() => {
   &__row--top {
     padding-bottom: 2.5rem;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 55% 45%;
   }
 
   &__row--bottom {
@@ -258,12 +258,12 @@ onUnmounted(() => {
 
     &--columns {
       display: grid;
-      grid-template-columns: 2fr 2fr 1fr;
+      grid-template-columns: 4fr 2fr 1fr;
       grid-template-rows: repeat(2, 1fr);
       justify-content: space-between;
       justify-items: start;
       text-align: start;
-      gap: 1rem 0;
+      gap: 1rem 1rem;
     }
 
     &--logo {
@@ -311,6 +311,18 @@ onUnmounted(() => {
 
     &--techhub {
       grid-row: span 2;
+      .footer__column--list {
+        column-count: 2;
+        column-gap: 1rem;
+
+        li {
+          break-inside: avoid;
+        }
+      }
+      .footer--link {
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
     }
 
     &--integration {
@@ -391,6 +403,13 @@ onUnmounted(() => {
 
 @media only screen and (max-width: 768px) {
   .footer {
+    &__column {
+      &--techhub {
+        .footer__column--list {
+          column-count: 1;
+        }
+      }
+    }
     padding: 4rem 1.5rem 2.5rem;
 
     &--title {
