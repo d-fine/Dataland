@@ -214,6 +214,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -264,12 +265,12 @@ class PortfolioEntryPrepared {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-const emit = defineEmits(['update:portfolio-overview']);
 const countryOptions = ref<string[]>([]);
 const sectorOptions = ref<string[]>([]);
 const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
+const queryClient = useQueryClient();
 let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
@@ -516,10 +517,12 @@ function openEditModal(): void {
       isMonitoring: isMonitored.value,
     },
     onClose(options) {
+      if(options?.type == 'config-close') {
+        queryClient.invalidateQueries({queryKey: ['portfolioNames']});
+      }
       if (!options?.data?.isDeleted) {
         loadPortfolio();
       }
-      emit('update:portfolio-overview');
     },
   });
 }
@@ -556,7 +559,6 @@ function openDownloadModal(): void {
     },
     onClose() {
       loadPortfolio();
-      emit('update:portfolio-overview');
     },
   });
 }
@@ -589,7 +591,6 @@ function openMonitoringModal(): void {
       if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
         loadPortfolio();
-        emit('update:portfolio-overview');
       }
     },
   });

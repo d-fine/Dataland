@@ -30,9 +30,9 @@ function instantiateVueApp(): void {
   );
   app.use(plugin, defaultConfig);
   app.use(VueQueryPlugin, (<VueQueryPluginOptions>{
-    queryClientConfig: {
-        defaultOptions: { queries: { staleTime: 5*60*1000 } }
-    }
+      queryClientConfig: {
+          defaultOptions: { queries: { staleTime: 5*60*1000 } }
+      }
   }));
   app.use(DialogService);
   app.use(router);

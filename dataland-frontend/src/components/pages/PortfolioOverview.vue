@@ -20,7 +20,6 @@
         <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
           <PortfolioDetails
             :portfolioId="portfolio.portfolioId"
-            @update:portfolio-overview="getPortfolios"
             :data-test="`portfolio-${portfolio.portfolioName}`"
           />
         </TabPanel>
@@ -47,8 +46,9 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref } from 'vue';
+import {inject, watch} from 'vue';
 import { useSessionStorage } from '@vueuse/core';
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 
 /**
  * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
@@ -60,53 +60,37 @@ const dialog = useDialog();
 
 const SESSION_STORAGE_KEY = 'last-selected-portfolio-id';
 const currentPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
-const portfolioNames = ref<BasePortfolioName[]>([]);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-onMounted(() => {
-  void getPortfolios().then(() => setCurrentPortfolioId());
+const queryClient = useQueryClient();
+const { data: portfolioNames } = useQuery<BasePortfolioName[]>({
+  queryKey: ['portfolioNames'],
+  queryFn: () =>
+      apiClientProvider.apiClients.portfolioController
+          .getAllPortfolioNamesForCurrentUser()
+          .then((response) => response.data)
 });
 
-/**
- * Retrieve all portfolios for the currently logged-in user.
- */
-async function getPortfolios(): Promise<void> {
-  try {
-    const response = await apiClientProvider.apiClients.portfolioController.getAllPortfolioNamesForCurrentUser();
-    portfolioNames.value = response.data;
-    setCurrentPortfolioId();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-/**
- * Sets the current portfolio ID based on the following priority:
- * 1. If a portfolioId is provided (e.g. after creating a new portfolio), use it if valid.
- * 2. If not, and a session-stored portfolioId exists, use it if valid.
- * 3. If none of the above are valid, fall back to the first portfolio in the list.
- */
-function setCurrentPortfolioId(portfolioId?: string): void {
-  if (portfolioNames.value.length === 0) {
-    currentPortfolioId.value = undefined;
-    return;
-  }
-
-  if (portfolioId && portfolioNames.value.some((portfolio) => portfolio.portfolioId === portfolioId)) {
-    currentPortfolioId.value = portfolioId;
-    return;
-  }
-
-  if (
-    currentPortfolioId.value &&
-    portfolioNames.value.some((portfolio) => portfolio.portfolioId === currentPortfolioId.value)
-  ) {
-    return;
-  }
-
-  currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
-}
+watch(
+    portfolioNames,
+    () => {
+      if (
+          !portfolioNames.value ||
+          portfolioNames.value.length === 0
+      ) {
+        currentPortfolioId.value = undefined;
+      } else if (!currentPortfolioId.value) {
+        currentPortfolioId.value = portfolioNames.value[0].portfolioId;
+      } else {
+        const currentPortfolioIdExists = portfolioNames.value.some(
+            (p) => p.portfolioId === currentPortfolioId.value
+        );
+        if (!currentPortfolioIdExists) {
+          currentPortfolioId.value = portfolioNames.value[0].portfolioId;
+        }
+      }
+    }
+)
 
 /**
  * Opens the PortfolioDialog, reloads all portfolios and
@@ -118,15 +102,11 @@ function addNewPortfolio(): void {
       header: 'Add Portfolio',
       modal: true,
     },
-    onClose(options) {
+    async onClose(options) {
       const basePortfolioName = options?.data as BasePortfolioName;
       if (basePortfolioName) {
-        void getPortfolios().then(() => {
-          setCurrentPortfolioId(
-            portfolioNames.value.find((portfolio) => portfolio.portfolioId == basePortfolioName.portfolioId)
-              ?.portfolioId
-          );
-        });
+        await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
+        currentPortfolioId.value = basePortfolioName.portfolioId;
       }
     },
   });
@@ -137,7 +117,7 @@ function addNewPortfolio(): void {
  * @param value The value of the tab aka the portfolioId of the selected portfolio.
  */
 function onTabChange(value: string | number): void {
-  setCurrentPortfolioId(String(value));
+  currentPortfolioId.value = String(value);
 }
 </script>
 
