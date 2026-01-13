@@ -56,7 +56,7 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
     includeAliases?: boolean,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJob> {
-    return this.openApiDataController.postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+    return this.openApiDataController.postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,

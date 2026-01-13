@@ -298,7 +298,7 @@ class DataControllerTest {
         val dummyCompanyIds = List(3000) { UUID.randomUUID().toString() }
         assertThrows<ClientException> {
             increasedTimeoutDataControllerApiForEuTaxonomyNonFinancials
-                .postExportJobAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                .postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
                     ExportRequestData(
                         companyIds = dummyCompanyIds,
                         reportingPeriods = listOf("2022"),
