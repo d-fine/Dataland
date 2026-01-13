@@ -90,9 +90,7 @@ const rightsLoaded = ref(false);
 const isCompanyDatalandMember = ref(false);
 
 const canViewCredits = computed(() => {
-  if (isUserDatalandAdmin.value) return true;
-  if (isUserCompanyMember.value && isCompanyDatalandMember.value) return true;
-  return false;
+  return isUserDatalandAdmin.value || (isUserCompanyMember.value && isCompanyDatalandMember.value);
 });
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
