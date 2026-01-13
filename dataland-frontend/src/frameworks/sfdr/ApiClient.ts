@@ -7,7 +7,6 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ExportFileType,
-  type ExportJob,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -47,7 +46,8 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): AxiosPromise<ExportJob> {
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
     return this.openApiDataController.postExportJobCompanyAssociatedSfdrDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,

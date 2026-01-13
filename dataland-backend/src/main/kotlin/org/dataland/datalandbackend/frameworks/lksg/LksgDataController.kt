@@ -34,13 +34,13 @@ class LksgDataController
         datasetStorageService: DataManager,
         dataMetaInformationManager: DataMetaInformationManager,
         dataExportService: DataExportService<LksgData>,
-        dataExportStorage: DataExportStore,
+        dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<LksgData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,
-            dataExportStorage,
+            dataExportStore,
             companyQueryManager,
             LksgData::class.java,
         ) {

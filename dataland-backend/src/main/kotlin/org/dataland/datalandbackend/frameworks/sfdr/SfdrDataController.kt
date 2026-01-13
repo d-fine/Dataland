@@ -34,13 +34,13 @@ class SfdrDataController
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
         dataExportService: DataExportService<SfdrData>,
-        dataExportStorage: DataExportStore,
+        dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<SfdrData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,
-            dataExportStorage,
+            dataExportStore,
             companyQueryManager,
             SfdrData::class.java,
         ) {

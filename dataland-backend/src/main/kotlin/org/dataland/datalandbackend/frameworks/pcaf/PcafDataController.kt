@@ -34,13 +34,13 @@ class PcafDataController
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
         dataExportService: DataExportService<PcafData>,
-        dataExportStorage: DataExportStore,
+        dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<PcafData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,
-            dataExportStorage,
+            dataExportStore,
             companyQueryManager,
             PcafData::class.java,
         ) {
