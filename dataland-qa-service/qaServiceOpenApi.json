@@ -1701,7 +1701,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
@@ -1804,7 +1803,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
@@ -6865,7 +6863,6 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "integrationTesting",
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",

@@ -4,7 +4,7 @@
 		"userId": "2de768ef-a5e0-48c1-a189-164f7c059ead",
 		"creationTimestamp": 386,
 		"notifyMeImmediately": true,
-		"dataType": "integrationTesting",
+		"dataType": "sfdr",
 		"reportingPeriod": "2021",
 		"datalandCompanyId": "e86cf042-df35-4965-91e2-49464a5a6d26",
 		"messageHistory": [
