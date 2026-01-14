@@ -71,12 +71,12 @@
 
 <#macro linkWithIcon(url, linkText)>
     <td>
-        <span style="color: #ffffff;">
+        <span style="color: #ffffff; border: 0 none">
             <a href="${url}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none;">
                 ${linkText}
             </a>
             &nbsp;&nbsp;
-            <span style="font-family: Calibri, sans-serif; font-weight: bold;">&#8599;</span>
+            <span style="font-family: Calibri, sans-serif; font-weight: bold; border: 0 none;">&#8599;</span>
         </span>
     </td>
 </#macro>
