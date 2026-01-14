@@ -319,10 +319,6 @@ onUnmounted(() => {
           break-inside: avoid;
         }
       }
-      .footer--link {
-        overflow-wrap: break-word;
-        word-break: break-word;
-      }
     }
 
     &--integration {
