@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.ExportJobEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
-import org.dataland.datalandbackend.exceptions.JOBNOTFOUNDSUMMARY
+import org.dataland.datalandbackend.exceptions.JOB_NOT_FOUND_SUMMARY
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -57,7 +57,7 @@ class DataExportStore {
         return exportJobStorage[DatalandAuthentication.fromContext().userId]
             ?.firstOrNull { it.id == exportJobId }
             ?.progressState
-            ?: throw DownloadDataNotFoundApiException(JOBNOTFOUNDSUMMARY)
+            ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)
     }
 
     /**
@@ -66,7 +66,7 @@ class DataExportStore {
     fun getExportJob(exportJobId: UUID): ExportJobEntity =
         exportJobStorage[DatalandAuthentication.fromContext().userId]
             ?.firstOrNull { it.id == exportJobId }
-            ?: throw DownloadDataNotFoundApiException(JOBNOTFOUNDSUMMARY)
+            ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)
 
     @Suppress("UnusedPrivateMember")
     @Scheduled(cron = "0 /10 * * * *")

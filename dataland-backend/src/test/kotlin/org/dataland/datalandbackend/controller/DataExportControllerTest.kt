@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.jayway.jsonpath.JsonPath
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.exceptions.JOBNOTFOUNDSUMMARY
+import org.dataland.datalandbackend.exceptions.JOB_NOT_FOUND_SUMMARY
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -105,7 +105,7 @@ class DataExportControllerTest(
             ).andExpect(status().isNotFound)
             .andExpect(
                 jsonPath(JSONPATHEXP)
-                    .value(JOBNOTFOUNDSUMMARY),
+                    .value(JOB_NOT_FOUND_SUMMARY),
             )
     }
 
@@ -134,12 +134,12 @@ class DataExportControllerTest(
             ).andExpect(status().isNotFound)
             .andExpect(
                 jsonPath(JSONPATHEXP)
-                    .value(JOBNOTFOUNDSUMMARY),
+                    .value(JOB_NOT_FOUND_SUMMARY),
             )
     }
 
     @Test
-    fun `export download returns 404 for non-existent job`() {
+    fun `export download returns 404 for non existent job`() {
         val nonExistentJobId = UUID.randomUUID()
 
         mockMvc
@@ -149,7 +149,7 @@ class DataExportControllerTest(
             ).andExpect(status().isNotFound)
             .andExpect(
                 jsonPath(JSONPATHEXP)
-                    .value(JOBNOTFOUNDSUMMARY),
+                    .value(JOB_NOT_FOUND_SUMMARY),
             )
     }
 }

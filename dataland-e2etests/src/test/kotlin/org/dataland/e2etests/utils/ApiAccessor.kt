@@ -32,7 +32,6 @@ import org.dataland.e2etests.BASE_PATH_TO_ACCOUNTING_SERVICE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.BASE_PATH_TO_DATA_SOURCING_SERVICE
-import org.dataland.e2etests.BASE_PATH_TO_EXPORT_CONTROLLER
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -59,7 +58,7 @@ class ApiAccessor {
     val emailAddressControllerApi = EmailAddressControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
-    val exportControllerApi = DataExportControllerApi(BASE_PATH_TO_EXPORT_CONTROLLER)
+    val exportControllerApi = DataExportControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
