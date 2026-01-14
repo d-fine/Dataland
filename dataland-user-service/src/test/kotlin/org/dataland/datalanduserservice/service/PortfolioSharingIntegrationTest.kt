@@ -49,7 +49,7 @@ class PortfolioSharingIntegrationTest
         private val dummySharedUserId = "sharedUserId"
         private val dummySharedOtherUserId = "sharedOtherUserId"
         private val dummyUsername = "dummyUsername"
-        private val dummyOwnerMailAdress = "owner@example.com"
+        private val dummyOwnerMailAddress = "owner@example.com"
 
         private fun createPortfolioEntity(sharedUserIds: Set<String>): PortfolioEntity {
             val timestamp = Instant.now().toEpochMilli()
@@ -279,7 +279,7 @@ class PortfolioSharingIntegrationTest
 
             val ownerUser =
                 mock<KeycloakUserInfo> {
-                    on { email } doReturn dummyOwnerMailAdress
+                    on { email } doReturn dummyOwnerMailAddress
                 }
             val sharedUser =
                 mock<KeycloakUserInfo> {
@@ -303,7 +303,7 @@ class PortfolioSharingIntegrationTest
             Assertions.assertEquals(3, result.size)
 
             val ownerDetails = result.first { it.userId == dummyOwnerUserId }
-            Assertions.assertEquals(dummyOwnerMailAdress, ownerDetails.userEmail)
+            Assertions.assertEquals(dummyOwnerMailAddress, ownerDetails.userEmail)
             Assertions.assertEquals(PortfolioAccessRight.Owner, ownerDetails.portfolioAccessRight)
 
             val sharedDetails = result.filter { it.userId != dummyOwnerUserId }
@@ -331,7 +331,7 @@ class PortfolioSharingIntegrationTest
 
             val ownerUser =
                 mock<KeycloakUserInfo> {
-                    on { email } doReturn dummyOwnerMailAdress
+                    on { email } doReturn dummyOwnerMailAddress
                 }
             whenever(keycloakUserService.getUser(dummyOwnerUserId)).thenReturn(ownerUser)
 
@@ -341,8 +341,10 @@ class PortfolioSharingIntegrationTest
                     correlationId = "corr-access-2",
                 )
 
+            Assertions.assertEquals(3, result.size)
+
             val ownerDetails = result.first { it.userId == dummyOwnerUserId }
-            Assertions.assertEquals(dummyOwnerMailAdress, ownerDetails.userEmail)
+            Assertions.assertEquals(dummyOwnerMailAddress, ownerDetails.userEmail)
             Assertions.assertEquals(PortfolioAccessRight.Owner, ownerDetails.portfolioAccessRight)
 
             val sharedDetails = result.filter { it.userId != dummyOwnerUserId }
