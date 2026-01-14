@@ -1,6 +1,8 @@
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.PortfolioEntity
@@ -10,7 +12,6 @@ import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
-import org.dataland.datalanduserservice.service.PortfolioSharingService
 import org.dataland.datalanduserservice.utils.PortfolioRightsUtilsComponent
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -53,7 +54,7 @@ abstract class AbstractPortfolioControllerTest {
     protected lateinit var companyDataController: CompanyDataControllerApi
 
     @MockitoBean
-    protected lateinit var portfolioSharingService: PortfolioSharingService
+    protected lateinit var keycloakUserService: KeycloakUserService
 
     protected val mockSecurityContext: SecurityContext = mock()
 
@@ -127,7 +128,7 @@ abstract class AbstractPortfolioControllerTest {
             mockSecurityContext,
             portfolioRightsUtilsComponent,
             companyDataController,
-            portfolioSharingService,
+            keycloakUserService,
         )
         portfolioRepository.deleteAll()
 
@@ -146,18 +147,23 @@ abstract class AbstractPortfolioControllerTest {
                 sharedUserIds = emptySet(),
             )
         portfolioRepository.save(entity)
-
-        whenever(
-            portfolioSharingService.getPortfolioAccessRights(
-                any(),
-                any(),
-            ),
-        ).thenReturn(emptyList())
     }
 
     protected fun setMockSecurityContext(authentication: DatalandJwtAuthentication) {
         doReturn(authentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    protected fun mockKeycloakUserServiceGetUser() {
+        whenever(keycloakUserService.getUser(any())).thenAnswer { invocation ->
+            val userId = invocation.getArgument<String>(0)
+            KeycloakUserInfo(
+                email = "dummy+$userId@example.com",
+                userId = userId,
+                firstName = "FirstName",
+                lastName = "LastName",
+            )
+        }
     }
 
     protected fun performGetPortfolioAndExpect(statusMatcher: ResultMatcher) {

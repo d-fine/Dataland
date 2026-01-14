@@ -364,6 +364,7 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     @Test
     fun `admins can get portfolio access rights for any portfolio`() {
         setMockSecurityContext(dummyAdminAuthentication)
+        mockKeycloakUserServiceGetUser()
 
         performGetPortfolioAccessRightsAndExpect(MockMvcResultMatchers.status().isOk)
     }
@@ -386,6 +387,7 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     @Test
     fun `regular users can get portfolio access rights if they are owner`() {
         setMockSecurityContext(dummyUserAuthentication)
+        mockKeycloakUserServiceGetUser()
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(true)
         whenever(
@@ -401,6 +403,7 @@ class PortfolioControllerTest : AbstractPortfolioControllerTest() {
     @Test
     fun `regular users can get portfolio access rights if portfolio is shared with them`() {
         setMockSecurityContext(dummyUserAuthentication)
+        mockKeycloakUserServiceGetUser()
 
         whenever(portfolioRightsUtilsComponent.isUserPortfolioOwner(portfolioId)).thenReturn(false)
         whenever(
