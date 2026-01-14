@@ -323,31 +323,41 @@ describe('Component test for the company cockpit', () => {
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
   });
 
-  it('Users Page has to be visible for Dataland Admins', () => {
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
-    cy.get('[data-test="usersTab"]').should('be.visible').click();
-  });
-
-  it('Users Page is not visible for non Dataland Admins', () => {
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
-    cy.get('[data-test="usersTab"]').should('not.exist');
-  });
-
-  it('Credits tab is visible for Dataland Admins', () => {
+  it('Check tab and content visibility for Dataland Admins', () => {
     interceptCompanyRights(dummyCompanyId, []);
-
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
 
     cy.wait('@fetchCompanyRights');
 
+    cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('be.visible').click();
     cy.get('[data-test="creditsBalance"]').should('be.visible');
   });
 
-  it('Credits page is visible if user has a company role and company is Dataland Member', (): void => {
+  it('Check tab and content visibility for users without admin and without company rights', () => {
+    interceptCompanyRights(dummyCompanyId, []);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
+
+    cy.wait('@fetchCompanyRights');
+    cy.get('[data-test="usersTab"]').should('not.exist');
+    cy.get('[data-test="creditsTab"]').should('not.exist');
+  });
+
+  it('Check tab and content visibility for users with company rights for a non member company', () => {
+    interceptCompanyRights(dummyCompanyId, []);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, [
+      generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId),
+    ]);
+
+    cy.wait('@fetchCompanyRights');
+    cy.get('[data-test="usersTab"]').should('be.visible');
+    cy.get('[data-test="creditsTab"]').should('not.exist');
+  });
+
+  it('Check tab and content visibility for users with company rights for a member company', (): void => {
     interceptCompanyRights(dummyCompanyId, ['Member']);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
@@ -358,18 +368,5 @@ describe('Component test for the company cockpit', () => {
 
     cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('be.visible');
-  });
-
-  it('Credits Tab is not visible if user has a company role, but company is NOT Dataland Member', (): void => {
-    interceptCompanyRights(dummyCompanyId, []);
-    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
-
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
-
-    cy.wait('@fetchCompanyRights');
-
-    cy.get('[data-test="usersTab"]').should('be.visible');
-    cy.get('[data-test="creditsTab"]').should('not.exist');
   });
 });
