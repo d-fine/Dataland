@@ -73,10 +73,10 @@ export interface MockRequestsOptions {
 /**
  * Mocks API requests that are triggered when the component is mounted.
  *
- * @param hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
- * @param companyInformationForTest - Mock details of the company information to be returned.
- * @param mockMapOfDataTypeToAggregatedFrameworkDataSummary - Mapping of data types to their aggregated framework data summary.
- * @param options - Additional options for mocking requests.
+ * @param {boolean} hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
+ * @param {CompanyInformation} companyInformationForTest - Mock details of the company information to be returned.
+ * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
+ * @param {MockRequestsOptions} options - Additional options for mocking requests.
  */
 export function mockRequestsOnMounted(
   hasCompanyAtLeastOneOwner: boolean,

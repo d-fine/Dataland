@@ -163,16 +163,14 @@ async function setUserRights(refreshUserRole: boolean): Promise<void> {
 /**
  * Checks if the company is a Dataland Member.
  */
-async function checkIfCompanyIsDatalandMember(): Promise<boolean> {
+async function checkIfCompanyIsDatalandMember(): Promise<void> {
   try {
     const companyRightResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
       props.companyId
     );
-    isCompanyDatalandMember.value = companyRightResponse.data.some((right: string) => right.includes('Member'));
-    return true;
+    isCompanyDatalandMember.value = companyRightResponse.data.includes('Member');
   } catch (error) {
     console.error('Failed to retrieve company rights', error);
-    return false;
   }
 }
 
@@ -206,18 +204,18 @@ onMounted(async () => {
 
   const path = router.currentRoute.value.path;
 
-  const isCreditsPage = path.endsWith('/credits');
-  const isUsersPage = path.endsWith('/users');
+  const onCreditsPage = path.endsWith('/credits');
+  const onUsersPage = path.endsWith('/users');
 
-  const isUnauthorizedUser = !isUserCompanyMemberOrAdmin.value && (isCreditsPage || isUsersPage);
-  const isFeatureDisabled = !isCompanyDatalandMember.value && isCreditsPage;
+  const isUnauthorizedUser = !isUserCompanyMemberOrAdmin.value && (onCreditsPage || onUsersPage);
+  const isPageDisabled = !isCompanyDatalandMember.value && onCreditsPage;
 
-  if (isUnauthorizedUser || isFeatureDisabled) {
+  if (isUnauthorizedUser || isPageDisabled) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
-  } else if (path.endsWith('/credits')) {
+  } else if (onCreditsPage) {
     activeTab.value = 'credits';
-  } else if (path.endsWith('/users')) {
+  } else if (onUsersPage) {
     activeTab.value = 'users';
   } else {
     activeTab.value = 'datasets';

@@ -356,7 +356,7 @@ describe('Component test for the company cockpit', () => {
 
     cy.wait('@fetchCompanyRights');
 
-    cy.get('[data-test="usersTab"]').should('be.visible').click();
+    cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('be.visible');
   });
 
@@ -369,7 +369,7 @@ describe('Component test for the company cockpit', () => {
 
     cy.wait('@fetchCompanyRights');
 
-    cy.get('[data-test="usersTab"]').should('be.visible').click();
+    cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('not.exist');
   });
 });
