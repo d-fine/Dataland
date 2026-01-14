@@ -264,13 +264,9 @@ class PortfolioEntryPrepared {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-//const countryOptions = ref<string[]>([]);
-//const sectorOptions = ref<string[]>([]);
-//const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 const queryClient = useQueryClient();
-//let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -292,12 +288,7 @@ const successDialogMessage = computed(() =>
     : 'Portfolio monitoring updated successfully.'
 );
 const isSuccessDialogVisible = ref(false);
-//const enrichedPortfolio = ref<EnrichedPortfolio>();
-//const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-//const isLoading = ref(true);
-//const isError = ref(false);
-//const isMonitored = ref<boolean>(false);
 const isUserDatalandMemberOrAdmin = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
@@ -313,6 +304,8 @@ const {
   error,
 } = useQuery({
   queryKey: ['portfolio', props.portfolioId],
+  staleTime: 20 * 1000,
+  gcTime: 300 * 1000,
   queryFn: () =>
     apiClientProvider.apiClients.portfolioController
       .getEnrichedPortfolio(props.portfolioId)
@@ -322,8 +315,6 @@ const {
 
 onMounted(() => {
   void checkDatalandMembershipOrAdminRights();
-  // No call in on mount needed because tanstack query calls automatically on mount
-  //loadPortfolio();
 });
 
 const portfolioEntriesToDisplay = computed(() => {
@@ -337,35 +328,7 @@ const reportingPeriodsPerFramework = computed(() => {
   if (!enrichedPortfolio.value) return new Map();
   return groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
 });
-// REPLACE WHOLE WATCH BLOCK WITH computed (derived state)
-// BEFORE:
 
-//watch([enrichedPortfolio], () => {
-//  const entries = portfolioEntriesToDisplay.value || [];
-//
-//  countryOptions.value = Array.from(
-//    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
-//  ).sort();
-//
-//  sectorOptions.value = Array.from(
-//    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
-//  ).sort();
-//
-//  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
-//    reportingPeriodOptions.value.set(
-//      framework,
-//      Array.from(
-//        new Set(
-//          entries
-//            .map((entry) => getAvailableReportingPeriods(entry, framework))
-//            .filter((period): period is string => typeof period === 'string')
-//        )
-//      ).sort()
-//    );
-//  }
-//});
-
-// AFTER:
 const countryOptions = computed(() => {
   const entries = portfolioEntriesToDisplay.value;
   return Array.from(new Set(entries.map((entry) => entry.country).filter((c): c is string => !!c))).sort();
@@ -453,28 +416,6 @@ function getAvailableReportingPeriods(
       return undefined;
   }
 }
-
-/**
- * (Re-)loads a portfolio
- */
-
-//function loadPortfolio(): void {
-//  isLoading.value = true;
-//  apiClientProvider.apiClients.portfolioController
-//    .getEnrichedPortfolio(props.portfolioId)
-//    .then((response) => {
-//      enrichedPortfolio.value = response.data;
-//
-//      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-//      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
-//      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
-//    })
-//    .catch((error) => {
-//      console.error(error);
-//      isError.value = true;
-//    })
-//    .finally(() => (isLoading.value = false));
-//}
 
 /**
  * Resets all filters
@@ -574,9 +515,6 @@ function openEditModal(): void {
       if (options?.type == 'config-close') {
         queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
       }
-      if (!options?.data?.isDeleted) {
-        queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
-      }
     },
   });
 }
@@ -644,7 +582,6 @@ function openMonitoringModal(): void {
     onClose(options) {
       if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
-        // loadPortfolio();
       }
     },
   });
