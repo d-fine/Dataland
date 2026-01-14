@@ -1,6 +1,6 @@
 <template>
   <div v-bind="$attrs">
-    <div v-if="isLoading" class="d-center-div text-center px-7 py-4">
+    <div v-if="isPending" class="d-center-div text-center px-7 py-4">
       <h1>Loading portfolio data...</h1>
       <DatalandProgressSpinner />
     </div>
@@ -214,8 +214,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
-
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/vue-query';
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
  * by transforming and enriching fields, such as converting country codes to names,
@@ -265,13 +264,13 @@ class PortfolioEntryPrepared {
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-const countryOptions = ref<string[]>([]);
-const sectorOptions = ref<string[]>([]);
-const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
+//const countryOptions = ref<string[]>([]);
+//const sectorOptions = ref<string[]>([]);
+//const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 const queryClient = useQueryClient();
-let reportingPeriodsPerFramework: Map<string, string[]>;
+//let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -293,12 +292,12 @@ const successDialogMessage = computed(() =>
     : 'Portfolio monitoring updated successfully.'
 );
 const isSuccessDialogVisible = ref(false);
-const enrichedPortfolio = ref<EnrichedPortfolio>();
-const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
+//const enrichedPortfolio = ref<EnrichedPortfolio>();
+//const portfolioEntriesToDisplay = ref([] as PortfolioEntryPrepared[]);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const isLoading = ref(true);
-const isError = ref(false);
-const isMonitored = ref<boolean>(false);
+//const isLoading = ref(true);
+//const isError = ref(false);
+//const isMonitored = ref<boolean>(false);
 const isUserDatalandMemberOrAdmin = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
@@ -307,36 +306,90 @@ const monitoredTagAttributes = computed(() => ({
   severity: isMonitored.value ? 'success' : 'danger',
 }));
 
-onMounted(() => {
-  void checkDatalandMembershipOrAdminRights();
-  loadPortfolio();
+const {
+  data: enrichedPortfolio,
+  isPending,
+  isError,
+  error,
+} = useQuery({
+  queryKey: ['portfolio', props.portfolioId],
+  queryFn: () =>
+    apiClientProvider.apiClients.portfolioController
+      .getEnrichedPortfolio(props.portfolioId)
+      .then((response) => response.data),
+  placeholderData: keepPreviousData,
 });
 
-watch([enrichedPortfolio], () => {
-  const entries = portfolioEntriesToDisplay.value || [];
+onMounted(() => {
+  void checkDatalandMembershipOrAdminRights();
+  // No call in on mount needed because tanstack query calls automatically on mount
+  //loadPortfolio();
+});
 
-  countryOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
-  ).sort();
+const portfolioEntriesToDisplay = computed(() => {
+  if (!enrichedPortfolio.value) return [];
+  return enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+});
 
-  sectorOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
-  ).sort();
+const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false);
+
+const reportingPeriodsPerFramework = computed(() => {
+  if (!enrichedPortfolio.value) return new Map();
+  return groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
+});
+// REPLACE WHOLE WATCH BLOCK WITH computed (derived state)
+// BEFORE:
+
+//watch([enrichedPortfolio], () => {
+//  const entries = portfolioEntriesToDisplay.value || [];
+//
+//  countryOptions.value = Array.from(
+//    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
+//  ).sort();
+//
+//  sectorOptions.value = Array.from(
+//    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
+//  ).sort();
+//
+//  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
+//    reportingPeriodOptions.value.set(
+//      framework,
+//      Array.from(
+//        new Set(
+//          entries
+//            .map((entry) => getAvailableReportingPeriods(entry, framework))
+//            .filter((period): period is string => typeof period === 'string')
+//        )
+//      ).sort()
+//    );
+//  }
+//});
+
+// AFTER:
+const countryOptions = computed(() => {
+  const entries = portfolioEntriesToDisplay.value;
+  return Array.from(new Set(entries.map((entry) => entry.country).filter((c): c is string => !!c))).sort();
+});
+
+const sectorOptions = computed(() => {
+  const entries = portfolioEntriesToDisplay.value;
+  return Array.from(new Set(entries.map((entry) => entry.sector).filter((s): s is string => !!s))).sort();
+});
+
+const reportingPeriodOptions = computed(() => {
+  const options = new Map<string, string[]>();
+  const entries = portfolioEntriesToDisplay.value;
 
   for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
-    reportingPeriodOptions.value.set(
+    options.set(
       framework,
       Array.from(
-        new Set(
-          entries
-            .map((entry) => getAvailableReportingPeriods(entry, framework))
-            .filter((period): period is string => typeof period === 'string')
-        )
+        new Set(entries.map((entry) => getAvailableReportingPeriods(entry, framework)).filter((p): p is string => !!p))
       ).sort()
     );
   }
+  return options;
 });
-
 /**
  * Checks whether the logged-in User is Dataland member or Admin
  */
@@ -404,23 +457,24 @@ function getAvailableReportingPeriods(
 /**
  * (Re-)loads a portfolio
  */
-function loadPortfolio(): void {
-  isLoading.value = true;
-  apiClientProvider.apiClients.portfolioController
-    .getEnrichedPortfolio(props.portfolioId)
-    .then((response) => {
-      enrichedPortfolio.value = response.data;
 
-      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
-      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
-    })
-    .catch((error) => {
-      console.error(error);
-      isError.value = true;
-    })
-    .finally(() => (isLoading.value = false));
-}
+//function loadPortfolio(): void {
+//  isLoading.value = true;
+//  apiClientProvider.apiClients.portfolioController
+//    .getEnrichedPortfolio(props.portfolioId)
+//    .then((response) => {
+//      enrichedPortfolio.value = response.data;
+//
+//      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
+//      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
+//      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
+//    })
+//    .catch((error) => {
+//      console.error(error);
+//      isError.value = true;
+//    })
+//    .finally(() => (isLoading.value = false));
+//}
 
 /**
  * Resets all filters
@@ -517,11 +571,11 @@ function openEditModal(): void {
       isMonitoring: isMonitored.value,
     },
     onClose(options) {
-      if(options?.type == 'config-close') {
-        queryClient.invalidateQueries({queryKey: ['portfolioNames']});
+      if (options?.type == 'config-close') {
+        queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
       }
       if (!options?.data?.isDeleted) {
-        loadPortfolio();
+        queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
       }
     },
   });
@@ -550,7 +604,7 @@ function openDownloadModal(): void {
       },
     },
     data: {
-      reportingPeriodsPerFramework: reportingPeriodsPerFramework,
+      reportingPeriodsPerFramework: reportingPeriodsPerFramework.value,
       isDownloading: isDownloading,
       downloadErrors: downloadErrors,
     },
@@ -558,7 +612,7 @@ function openDownloadModal(): void {
       onDownloadDataset: handleDatasetDownload,
     },
     onClose() {
-      loadPortfolio();
+      queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
     },
   });
 }
@@ -590,7 +644,7 @@ function openMonitoringModal(): void {
     onClose(options) {
       if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
-        loadPortfolio();
+        // loadPortfolio();
       }
     },
   });
