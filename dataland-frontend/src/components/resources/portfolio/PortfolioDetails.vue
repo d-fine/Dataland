@@ -28,7 +28,25 @@
           />
         </div>
 
+        <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can share portfolios' : ''">
+          <Button
+            @click="openShareModal()"
+            data-test="share-portfolio"
+            :disabled="!isUserDatalandMemberOrAdmin"
+            icon="pi pi-share-alt"
+            label="SHARE PORTFOLIO"
+          />
+        </div>
+
         <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+
+        <Tag
+          v-if="sharedUserCount > 0"
+          :value="`Shared with ${sharedUserCount} user${sharedUserCount === 1 ? '' : 's'}`"
+          icon="pi pi-users"
+          severity="info"
+          data-test="shared-users-tag"
+        />
         <Button
           class="reset-button-align-right"
           data-test="reset-filter"
@@ -202,6 +220,7 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { inject, onMounted, ref, watch, computed } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
+import SharePortfolioDialog from '@/components/resources/portfolio/SharePortfolioDialog.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
@@ -305,6 +324,8 @@ const monitoredTagAttributes = computed(() => ({
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
   severity: isMonitored.value ? 'success' : 'danger',
 }));
+
+const sharedUserCount = computed(() => Array.from(enrichedPortfolio.value?.sharedUserIds ?? []).length);
 
 onMounted(() => {
   void checkDatalandMembershipOrAdminRights();
@@ -590,6 +611,27 @@ function openMonitoringModal(): void {
         isSuccessDialogVisible.value = true;
         loadPortfolio();
         emit('update:portfolio-overview');
+      }
+    },
+  });
+}
+
+/**
+ * Opens the SharePortfolioDialog to manage which users have access to the portfolio.
+ * Once the dialog is closed with saved changes, it reloads the portfolio data.
+ */
+function openShareModal(): void {
+  dialog.open(SharePortfolioDialog, {
+    props: {
+      modal: true,
+      header: 'Manage Portfolio Access',
+    },
+    data: {
+      portfolioId: props.portfolioId,
+    },
+    onClose(options) {
+      if (options?.data?.saved) {
+        loadPortfolio();
       }
     },
   });

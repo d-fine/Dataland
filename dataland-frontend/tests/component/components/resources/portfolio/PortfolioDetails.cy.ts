@@ -23,6 +23,7 @@ let memberConfigurationParametersWithMonitoring: ConfigurationParameters;
 let adminConfigurationParametersWithoutMonitoring: ConfigurationParameters;
 let adminConfigurationParametersWithMonitoring: ConfigurationParameters;
 let largePortfolioConfigurationParameters: ConfigurationParameters;
+let portfolioFixtureWithSharing: EnrichedPortfolio;
 
 /**
  * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
@@ -44,6 +45,7 @@ function interceptApiCallsAndMountAndWaitForDownload(
       .mountWithPlugins(PortfolioDetails, {
         keycloak: minimalKeycloakMock({
           userId: userId,
+          roles: configurationParameters.keycloakRoles,
         }),
         props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
       })
@@ -73,7 +75,11 @@ describe('Check the portfolio details view', function (): void {
   before(function () {
     cy.fixture('enrichedPortfolio.json')
       .then(function (jsonContent) {
-        portfolioFixtureWithoutMonitoring = jsonContent as EnrichedPortfolio;
+        portfolioFixtureWithoutMonitoring = {
+          ...(jsonContent as EnrichedPortfolio),
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: [] as unknown as Set<string>,
+        } as EnrichedPortfolio;
       })
       .then(() => {
         nonMemberConfigurationParameters = {
@@ -89,7 +95,8 @@ describe('Check the portfolio details view', function (): void {
         portfolioFixtureWithMonitoring = {
           ...portfolioFixtureWithoutMonitoring,
           isMonitored: true,
-          monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
+          // as unknown as Set<string> cast required to ensure proper json is created
+          monitoredFrameworks: ['sfdr', 'eutaxonomy'] as unknown as Set<string>,
         } as EnrichedPortfolio;
         memberConfigurationParametersWithMonitoring = {
           inheritedRoleMap: datalandMemberInheritedRoleMap,
@@ -106,6 +113,18 @@ describe('Check the portfolio details view', function (): void {
           inheritedRoleMap: {},
           keycloakRoles: ['ROLE_ADMIN'],
           portfolioResponse: portfolioFixtureWithMonitoring,
+        };
+
+        portfolioFixtureWithSharing = {
+          ...portfolioFixtureWithoutMonitoring,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: ['user-1', 'user-2'] as unknown as Set<string>,
+        } as EnrichedPortfolio;
+
+        memberConfigurationParametersWithSharing = {
+          inheritedRoleMap: datalandMemberInheritedRoleMap,
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithSharing,
         };
       });
     cy.fixture('largeEnrichedPortfolio.json')
@@ -222,6 +241,34 @@ describe('Check the portfolio details view', function (): void {
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio actively monitored');
+      });
+    });
+  }
+
+  it('Check Share Button for non Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      cy.get('[data-test="share-portfolio"]').should('be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+    });
+  });
+
+  for (const testMode of testModes) {
+    it('Check Share Button and No Sharing Tag for Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, false);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
+        cy.get('[data-test="share-portfolio"]').should('not.be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+        cy.get('[data-test="shared-users-tag"]').should('not.exist');
+      });
+    });
+
+    it('Check Shared Users Tag for Dataland ' + testMode, function (): void {
+      const configWithSharing = {
+        ...getTestModeConfigurationParameters(testMode, false),
+        portfolioResponse: portfolioFixtureWithSharing,
+      };
+
+      interceptApiCallsAndMountAndWaitForDownload(configWithSharing).then(() => {
+        cy.get('[data-test="shared-users-tag"]').should('be.visible').and('contain.text', 'Shared with 2 users');
       });
     });
   }
