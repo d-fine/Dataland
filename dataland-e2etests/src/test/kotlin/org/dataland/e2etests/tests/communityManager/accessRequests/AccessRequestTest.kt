@@ -97,7 +97,7 @@ class AccessRequestTest {
     fun `premium user makes private request and has no access to active dataset and matching dataset exists`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
-
+        Thread.sleep(1000)
         val timestampBeforeSingleRequest =
             postVSMERequestWithTimestampForTechnicalUser(
                 TechnicalUser.PremiumUser, companyId, "2022",
