@@ -14,7 +14,6 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { CompanyRole } from '@clients/communitymanager';
 import {
-  KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -46,18 +45,6 @@ function validateSingleDataRequestButton(): void {
   cy.get('[data-test="singleDataRequestButton"]').should('exist');
 }
 
-/**
- * Intercepts the company rights endpoint for the given company id and returns the company rights
- * @param companyId
- * @param companyRights such as "Member" (company)
- */
-function interceptCompanyRights(companyId: string, companyRights: string[]): void {
-  cy.intercept('GET', `**/community/company-rights/${companyId}*`, {
-    statusCode: 200,
-    body: companyRights,
-  }).as('fetchCompanyRights');
-}
-
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
@@ -69,6 +56,10 @@ describe('Component test for the company cockpit', () => {
     DataTypeEnum.Sfdr,
   ]);
   let allFrameworks: Set<DataTypeEnum>;
+  const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyLastName = 'mock-last-name';
+  const dummyEmail = 'mock@Company.com';
 
   before(function () {
     cy.clearLocalStorage();
@@ -323,50 +314,31 @@ describe('Component test for the company cockpit', () => {
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
   });
 
-  it('Check tab and content visibility for Dataland Admins', () => {
-    interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
-
-    cy.wait('@fetchCompanyRights');
-
-    cy.get('[data-test="usersTab"]').should('be.visible');
-    cy.get('[data-test="creditsTab"]').should('be.visible').click();
-    cy.get('[data-test="creditsBalance"]').should('be.visible');
-  });
-
-  it('Check tab and content visibility for users without admin and without company rights', () => {
-    interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
-
-    cy.wait('@fetchCompanyRights');
-    cy.get('[data-test="usersTab"]').should('not.exist');
-    cy.get('[data-test="creditsTab"]').should('not.exist');
-  });
-
-  it('Check tab and content visibility for users with company rights for a non member company', () => {
-    interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, undefined, [
-      generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId),
-    ]);
-
-    cy.wait('@fetchCompanyRights');
-    cy.get('[data-test="usersTab"]').should('be.visible');
-    cy.get('[data-test="creditsTab"]').should('not.exist');
-  });
-
-  it('Check tab and content visibility for users with company rights for a member company', (): void => {
-    interceptCompanyRights(dummyCompanyId, ['Member']);
+  it('Users are being displayed correctly in the Users Page', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
 
-    cy.wait('@fetchCompanyRights');
+    cy.wait('@fetchRoleAssignments');
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test="company-roles-card"]').filter(':visible').should('exist');
+    cy.get('[data-test=sfdr-summary-panel]').filter(':visible').should('not.exist');
 
-    cy.get('[data-test="usersTab"]').should('be.visible');
-    cy.get('[data-test="creditsTab"]').should('be.visible');
+    cy.wait('@fetchRoleAssignments');
+    cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
+      cy.get('td').contains(dummyFirstName).should('exist');
+      cy.get('td').contains(dummyLastName).should('exist');
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('td').contains(dummyUserId).should('exist');
+    });
+    cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
+    });
   });
 });

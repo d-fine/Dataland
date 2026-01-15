@@ -204,16 +204,13 @@ onMounted(async () => {
 
   const path = router.currentRoute.value.path;
 
-  const onCreditsPage = path.endsWith('/credits');
+  const onCreditsTab = path.endsWith('/credits');
   const onUsersPage = path.endsWith('/users');
 
-  const isUnauthorizedUser = !isUserCompanyMemberOrAdmin.value && (onCreditsPage || onUsersPage);
-  const isPageDisabled = !isUserDatalandAdmin.value && !isCompanyDatalandMember.value && onCreditsPage;
-
-  if (isUnauthorizedUser || isPageDisabled) {
+  if ((!canViewCredits && onCreditsTab) || (!isUserCompanyMemberOrAdmin.value && onCreditsTab)) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
-  } else if (onCreditsPage) {
+  } else if (onCreditsTab) {
     activeTab.value = 'credits';
   } else if (onUsersPage) {
     activeTab.value = 'users';

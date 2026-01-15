@@ -64,28 +64,17 @@ function generateDocumentMetaInformation(
 }
 
 /**
- * Options for {@link mockRequestsOnMounted}.
- */
-export interface MockRequestsOptions {
-  stubRoleAssignments?: boolean;
-}
-
-/**
  * Mocks API requests that are triggered when the component is mounted.
  *
  * @param {boolean} hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
  * @param {CompanyInformation} companyInformationForTest - Mock details of the company information to be returned.
  * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
- * @param {MockRequestsOptions} options - Additional options for mocking requests.
  */
 export function mockRequestsOnMounted(
   hasCompanyAtLeastOneOwner: boolean,
   companyInformationForTest: CompanyInformation,
-  mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>,
-  options: MockRequestsOptions = {}
+  mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>
 ): void {
-  const { stubRoleAssignments = true } = options;
-
   cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance`, {
     statusCode: 200,
     body: 100,
@@ -117,28 +106,26 @@ export function mockRequestsOnMounted(
     });
   }).as('fetchDocumentMetadata');
 
-  if (stubRoleAssignments) {
-    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
-      const q = req.query as Record<string, string | undefined>;
-      if (q.role === 'Analyst') {
-        req.reply({
-          statusCode: 200,
-          body: [
-            {
-              companyRole: 'Analyst',
-              companyId: dummyCompanyId,
-              userId: dummyUserId,
-              email: dummyEmail,
-              firstName: dummyFirstName,
-              lastName: 'mock-last-name',
-            },
-          ],
-        });
-      } else {
-        req.reply({ statusCode: 200, body: [] });
-      }
-    }).as('fetchRoleAssignments');
-  }
+  cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+    const q = req.query as Record<string, string | undefined>;
+    if (q.role === 'Analyst') {
+      req.reply({
+        statusCode: 200,
+        body: [
+          {
+            companyRole: 'Analyst',
+            companyId: dummyCompanyId,
+            userId: dummyUserId,
+            email: dummyEmail,
+            firstName: dummyFirstName,
+            lastName: 'mock-last-name',
+          },
+        ],
+      });
+    } else {
+      req.reply({ statusCode: 200, body: [] });
+    }
+  }).as('fetchRoleAssignments');
 }
 
 /**
