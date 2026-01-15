@@ -61,7 +61,6 @@ internal class DataControllerTest {
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
-    private val mockDataExportStore = mock<DataExportStore>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
@@ -132,7 +131,7 @@ internal class DataControllerTest {
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
-                mockDataExportStore,
+                DataExportStore(),
                 mockCompanyQueryManager,
             )
     }
