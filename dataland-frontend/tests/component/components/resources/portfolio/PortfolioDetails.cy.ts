@@ -120,12 +120,6 @@ describe('Check the portfolio details view', function (): void {
           // as unknown as Set<string> cast required to ensure proper json is created
           sharedUserIds: ['user-1', 'user-2'] as unknown as Set<string>,
         } as EnrichedPortfolio;
-
-        memberConfigurationParametersWithSharing = {
-          inheritedRoleMap: datalandMemberInheritedRoleMap,
-          keycloakRoles: ['ROLE_USER'],
-          portfolioResponse: portfolioFixtureWithSharing,
-        };
       });
     cy.fixture('largeEnrichedPortfolio.json')
       .then(function (jsonContent) {
