@@ -451,7 +451,7 @@ async function handleDatasetDownload(
       options
     );
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
+    const content = exportFileType === ExportFileType.Json ? JSON.stringify(response.data) : response.data;
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);
