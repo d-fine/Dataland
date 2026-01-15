@@ -2,7 +2,7 @@
   <div v-bind="$attrs">
     <div v-if="isPending" class="d-center-div text-center px-7 py-4">
       <h1>Loading portfolio data...</h1>
-      <DatalandProgressSpinner />
+      <DatalandProgressSpinner/>
     </div>
     <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
       <h1>Error loading portfolio data</h1>
@@ -11,63 +11,60 @@
     </div>
     <div v-else>
       <div class="button_bar">
-        <Button @click="openEditModal()" data-test="edit-portfolio" label="EDIT PORTFOLIO" icon="pi pi-pencil" />
+        <Button data-test="edit-portfolio" icon="pi pi-pencil" label="EDIT PORTFOLIO" @click="openEditModal()"/>
         <Button
-          @click="openDownloadModal()"
-          data-test="download-portfolio"
-          label="DOWNLOAD PORTFOLIO"
-          icon="pi pi-download"
+            data-test="download-portfolio"
+            icon="pi pi-download"
+            label="DOWNLOAD PORTFOLIO"
+            @click="openDownloadModal()"
         />
         <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can activate monitoring' : ''">
           <Button
-            @click="openMonitoringModal()"
-            data-test="monitor-portfolio"
-            :disabled="!isUserDatalandMemberOrAdmin"
-            icon="pi pi-bell"
-            label="ACTIVE MONITORING"
+              :disabled="!isUserDatalandMemberOrAdmin"
+              data-test="monitor-portfolio"
+              icon="pi pi-bell"
+              label="ACTIVE MONITORING"
+              @click="openMonitoringModal()"
           />
         </div>
 
-        <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+        <Tag data-test="is-monitored-tag" v-if="isBasePortfolioSuccess" v-bind="monitoredTagAttributes"/>
         <Button
-          class="reset-button-align-right"
-          data-test="reset-filter"
-          @click="resetFilters()"
-          variant="text"
-          label="RESET"
+            class="reset-button-align-right"
+            data-test="reset-filter"
+            label="RESET"
+            variant="text"
+            @click="resetFilters()"
         />
       </div>
 
       <DataTable
-        stripedRows
-        removableSort
-        v-model:filters="filters"
-        filterDisplay="menu"
-        :value="portfolioEntriesToDisplay"
-        tableStyle="min-width: 50rem"
-        sortField="companyName"
-        :sortOrder="1"
-        :paginator="portfolioEntriesToDisplay.length > MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
-        :rows="MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+          v-model:filters="filters"
+          :paginator="portfolioEntriesToDisplay.length > MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+          :rows="MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE"
+          :sortOrder="1"
+          :value="portfolioEntriesToDisplay"
+          filterDisplay="menu"
+          removableSort
+          sortField="companyName"
+          stripedRows
+          tableStyle="min-width: 50rem"
       >
         <template #empty>
           Currently there are no companies in your portfolio or no companies match your filters. Edit the portfolio to
           add companies or remove filter criteria.
         </template>
         <Column
-          :sortable="true"
-          field="companyName"
-          header="Company Name"
-          :showFilterMatchModes="false"
-          style="width: 15%"
+            :showFilterMatchModes="false"
+            :sortable="true"
+            field="companyName"
+            header="Company Name"
+            style="width: 15%"
         >
           <template #body="portfolioEntry">
             <Button
-              :label="portfolioEntry.data.companyName"
-              variant="link"
-              data-test="view-company-button"
-              @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
-              :pt="{
+                :label="portfolioEntry.data.companyName"
+                :pt="{
                 label: {
                   style: 'font-weight: normal; text-align: left;',
                 },
@@ -75,46 +72,49 @@
                   style: 'padding-left: 0;',
                 },
               }"
+                data-test="view-company-button"
+                variant="link"
+                @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
             />
           </template>
           <template #filter="{ filterModel, filterCallback }">
             <InputText
-              v-model="filterModel.value"
-              type="text"
-              @input="filterCallback()"
-              placeholder="Filter by company name"
-              :data-test="'companyNameFilterValue'"
+                v-model="filterModel.value"
+                :data-test="'companyNameFilterValue'"
+                placeholder="Filter by company name"
+                type="text"
+                @input="filterCallback()"
             />
           </template>
         </Column>
-        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :showFilterMatchModes="false" :sortable="true" field="country" header="Country" style="width: 12.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="countryFilterOverlay">
               <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
                 <Checkbox
-                  v-model="filterModel.value"
-                  :inputId="country"
-                  name="country"
-                  :value="country"
-                  data-test="countryFilterValue"
-                  @change="filterCallback"
+                    v-model="filterModel.value"
+                    :inputId="country"
+                    :value="country"
+                    data-test="countryFilterValue"
+                    name="country"
+                    @change="filterCallback"
                 />
                 <label :for="country">{{ country }}</label>
               </div>
             </div>
           </template>
         </Column>
-        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :showFilterMatchModes="false" :sortable="true" field="sector" header="Sector" style="width: 12.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="sectorFilterOverlay">
               <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
                 <Checkbox
-                  v-model="filterModel.value"
-                  :inputId="sector"
-                  name="sector"
-                  :value="sector"
-                  data-test="sectorFilterValue"
-                  @change="filterCallback"
+                    v-model="filterModel.value"
+                    :inputId="sector"
+                    :value="sector"
+                    data-test="sectorFilterValue"
+                    name="sector"
+                    @change="filterCallback"
                 />
                 <label :for="sector">{{ sector }}</label>
               </div>
@@ -122,21 +122,19 @@
           </template>
         </Column>
         <Column
-          v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
-          :key="framework"
-          :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
-          :sortable="true"
-          :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
-          :header="humanizeStringOrNumber(framework)"
-          :showFilterMatchModes="false"
+            v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
+            :key="framework"
+            :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
+            :header="humanizeStringOrNumber(framework)"
+            :showFilterMatchModes="false"
+            :sortable="true"
+            :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
         >
           <template #body="portfolioEntry">
             <Button
-              v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-              :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-              variant="link"
-              @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
-              :pt="{
+                v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
+                :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
+                :pt="{
                 label: {
                   style: 'font-weight: normal; text-align: left;',
                 },
@@ -144,23 +142,25 @@
                   style: 'padding-left: 0;',
                 },
               }"
+                variant="link"
+                @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
             />
             <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
           </template>
           <template #filter="{ filterModel, filterCallback }">
             <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
               <div
-                v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
-                :key="availableReportingPeriods"
-                class="filter-checkbox"
+                  v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
+                  :key="availableReportingPeriods"
+                  class="filter-checkbox"
               >
                 <Checkbox
-                  v-model="filterModel.value"
-                  :inputId="availableReportingPeriods"
-                  name="availableReportingPeriods"
-                  :value="availableReportingPeriods"
-                  :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
-                  @change="filterCallback"
+                    v-model="filterModel.value"
+                    :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+                    :inputId="availableReportingPeriods"
+                    :value="availableReportingPeriods"
+                    name="availableReportingPeriods"
+                    @change="filterCallback"
                 />
                 <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
               </div>
@@ -170,28 +170,28 @@
       </DataTable>
     </div>
     <SuccessDialog
-      :visible="isSuccessDialogVisible"
-      :message="successDialogMessage"
-      @close="isSuccessDialogVisible = false"
+        :message="successDialogMessage"
+        :visible="isSuccessDialogVisible"
+        @close="isSuccessDialogVisible = false"
     />
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
+import {ApiClientProvider} from '@/services/ApiClients.ts';
 import {
   ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
   MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
   MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE,
 } from '@/utils/Constants.ts';
-import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
-import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
-import { FilterMatchMode } from '@primevue/core/api';
+import {getCountryNameFromCountryCode} from '@/utils/CountryCodeConverter.ts';
+import {convertKebabCaseToCamelCase, humanizeStringOrNumber} from '@/utils/StringFormatter.ts';
+import {assertDefined} from '@/utils/TypeScriptUtils.ts';
+import type {EnrichedPortfolioEntry} from '@clients/userservice';
+import {type CompanyIdAndName, DataTypeEnum, ExportFileType} from '@clients/backend';
+import {FilterMatchMode} from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
@@ -199,22 +199,23 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import Tag from 'primevue/tag';
-import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref, watch, computed } from 'vue';
+import {useDialog} from 'primevue/usedialog';
+import {computed, inject, onMounted, ref} from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
-import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
-import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
-import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import type { AxiosError, AxiosRequestConfig } from 'axios';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
-import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
+import type {PublicFrameworkDataApi} from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import type {FrameworkData} from '@/utils/GenericFrameworkTypes.ts';
+import {getFrameworkDataApiForIdentifier} from '@/frameworks/FrameworkApiUtils.ts';
+import {ExportFileTypeInformation} from '@/types/ExportFileTypeInformation.ts';
+import type {AxiosError, AxiosRequestConfig} from 'axios';
+import {getDateStringForDataExport} from '@/utils/DataFormatUtils.ts';
+import {forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio} from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/vue-query';
+import {checkIfUserHasRole} from '@/utils/KeycloakUtils.ts';
+import {KEYCLOAK_ROLE_ADMIN} from '@/utils/KeycloakRoles.ts';
+import {keepPreviousData, useQuery} from '@tanstack/vue-query';
+
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
  * by transforming and enriching fields, such as converting country codes to names,
@@ -242,22 +243,22 @@ class PortfolioEntryPrepared {
 
     for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
       this.frameworkHyphenatedNamesToDataRef.set(
-        framework,
-        portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
+          framework,
+          portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
           (portfolioEntry.availableReportingPeriods[framework]
-            ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
-            : undefined)
+              ? `/companies/${portfolioEntry.companyId}/frameworks/${framework}`
+              : undefined)
       );
     }
 
     this.sfdrAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
+        portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr] || 'No data available';
     this.eutaxonomyFinancialsAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials] || 'No data available';
+        portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials] || 'No data available';
     this.eutaxonomyNonFinancialsAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
+        portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
+        portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
   }
 }
 
@@ -266,50 +267,64 @@ const dialog = useDialog();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
-const queryClient = useQueryClient();
 
 const filters = ref({
-  companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  country: { value: [], matchMode: FilterMatchMode.IN },
-  sector: { value: [], matchMode: FilterMatchMode.IN },
-  sfdrAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  eutaxonomyFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  nuclearAndGasAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  companyName: {value: null, matchMode: FilterMatchMode.CONTAINS},
+  country: {value: [], matchMode: FilterMatchMode.IN},
+  sector: {value: [], matchMode: FilterMatchMode.IN},
+  sfdrAvailableReportingPeriods: {value: [], matchMode: FilterMatchMode.IN},
+  eutaxonomyFinancialsAvailableReportingPeriods: {value: [], matchMode: FilterMatchMode.IN},
+  eutaxonomyNonFinancialsAvailableReportingPeriods: {value: [], matchMode: FilterMatchMode.IN},
+  nuclearAndGasAvailableReportingPeriods: {value: [], matchMode: FilterMatchMode.IN},
 });
 
 const props = defineProps<{
   portfolioId: string;
 }>();
 
-const successDialogMessage = computed(() =>
-  isMonitored.value
-    ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
-    : 'Portfolio monitoring updated successfully.'
+const successDialogMessage = computed(() => {
+      if (isBasePortfolioFetching.value) return 'Updating portfolio monitoring...';
+      else if (isBasePortfolioError.value) return 'An error occurred while updating portfolio monitoring. Please try again later.'
+      else return basePortfolio.value?.isMonitored
+            ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
+            : 'Portfolio monitoring updated successfully.'
+    }
 );
 const isSuccessDialogVisible = ref(false);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isUserDatalandMemberOrAdmin = ref(false);
 
 const monitoredTagAttributes = computed(() => ({
-  value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
-  icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
-  severity: isMonitored.value ? 'success' : 'danger',
+  value: basePortfolio.value?.isMonitored ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
+  icon: basePortfolio.value?.isMonitored ? 'pi pi-check-circle' : 'pi pi-times-circle',
+  severity: basePortfolio.value?.isMonitored ? 'success' : 'danger',
 }));
 
 const {
   data: enrichedPortfolio,
   isPending,
   isError,
-  error,
 } = useQuery({
-  queryKey: ['portfolio', props.portfolioId],
-  staleTime: 20 * 1000,
-  gcTime: 300 * 1000,
+  queryKey: ['enrichedPortfolio', props.portfolioId],
+  staleTime: 3600 * 1000,
   queryFn: () =>
-    apiClientProvider.apiClients.portfolioController
-      .getEnrichedPortfolio(props.portfolioId)
-      .then((response) => response.data),
+      apiClientProvider.apiClients.portfolioController
+          .getEnrichedPortfolio(props.portfolioId)
+          .then((response) => response.data),
+  placeholderData: keepPreviousData,
+});
+
+const {
+  data: basePortfolio,
+  isError: isBasePortfolioError,
+  isFetching: isBasePortfolioFetching,
+  isSuccess: isBasePortfolioSuccess,
+} = useQuery({
+  queryKey: ['basePortfolio', props.portfolioId],
+  queryFn: () =>
+      apiClientProvider.apiClients.portfolioController
+          .getPortfolio(props.portfolioId)
+          .then((response) => response.data),
   placeholderData: keepPreviousData,
 });
 
@@ -321,8 +336,6 @@ const portfolioEntriesToDisplay = computed(() => {
   if (!enrichedPortfolio.value) return [];
   return enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
 });
-
-const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false);
 
 const reportingPeriodsPerFramework = computed(() => {
   if (!enrichedPortfolio.value) return new Map();
@@ -345,14 +358,15 @@ const reportingPeriodOptions = computed(() => {
 
   for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
     options.set(
-      framework,
-      Array.from(
-        new Set(entries.map((entry) => getAvailableReportingPeriods(entry, framework)).filter((p): p is string => !!p))
-      ).sort()
+        framework,
+        Array.from(
+            new Set(entries.map((entry) => getAvailableReportingPeriods(entry, framework)).filter((p): p is string => !!p))
+        ).sort()
     );
   }
   return options;
 });
+
 /**
  * Checks whether the logged-in User is Dataland member or Admin
  */
@@ -369,8 +383,8 @@ async function checkDatalandMembershipOrAdminRights(): Promise<void> {
   const inheritedRolesMap = response.data;
 
   isUserDatalandMemberOrAdmin.value =
-    Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
-    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
+      Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
+      (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
 }
 
 /**
@@ -400,8 +414,8 @@ function widthOfFrameworkColumn(framework: string): string {
  * @param frameworkName
  */
 function getAvailableReportingPeriods(
-  portfolioEntryPrepared: PortfolioEntryPrepared,
-  frameworkName: string
+    portfolioEntryPrepared: PortfolioEntryPrepared,
+    frameworkName: string
 ): string | undefined {
   switch (frameworkName) {
     case DataTypeEnum.Sfdr:
@@ -452,19 +466,19 @@ function getCompanyIds(): string[] {
  * @param includeAlias selected type of field names
  */
 async function handleDatasetDownload(
-  selectedYears: string[],
-  selectedFileType: string,
-  selectedFramework: DataTypeEnum,
-  keepValuesOnly: boolean,
-  includeAlias: boolean
+    selectedYears: string[],
+    selectedFileType: string,
+    selectedFramework: DataTypeEnum,
+    keepValuesOnly: boolean,
+    includeAlias: boolean
 ): Promise<void> {
   isDownloading.value = true;
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
-      selectedFramework,
-      apiClientProvider
+        selectedFramework,
+        apiClientProvider
     ) as PublicFrameworkDataApi<FrameworkData>;
 
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
@@ -472,18 +486,18 @@ async function handleDatasetDownload(
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
-      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
+        fileExtension === 'xlsx' ? {responseType: 'arraybuffer'} : undefined;
 
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
     const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
     const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedYears,
-      getCompanyIds(),
-      exportFileType,
-      keepValuesOnly,
-      includeAlias,
-      options
+        selectedYears,
+        getCompanyIds(),
+        exportFileType,
+        keepValuesOnly,
+        includeAlias,
+        options
     );
 
     const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
@@ -509,13 +523,7 @@ function openEditModal(): void {
     },
     data: {
       portfolio: enrichedPortfolio.value,
-      isMonitoring: isMonitored.value,
-    },
-    onClose(options) {
-      if (options?.type == 'config-close') {
-        queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
-      }
-    },
+    }
   });
 }
 
@@ -548,10 +556,7 @@ function openDownloadModal(): void {
     },
     emits: {
       onDownloadDataset: handleDatasetDownload,
-    },
-    onClose() {
-      queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
-    },
+    }
   });
 }
 
@@ -577,7 +582,7 @@ function openMonitoringModal(): void {
       },
     },
     data: {
-      portfolio: enrichedPortfolio.value,
+      portfolio: basePortfolio.value,
     },
     onClose(options) {
       if (options?.data?.monitoringSaved) {
@@ -613,6 +618,7 @@ label {
   transform: translate(-50%, -50%);
   background-color: white;
 }
+
 .reset-button-align-right {
   margin-left: auto;
 }

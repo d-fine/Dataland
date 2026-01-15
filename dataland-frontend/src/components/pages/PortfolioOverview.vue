@@ -74,7 +74,7 @@ import Tabs from 'primevue/tabs';
 import { useDialog } from 'primevue/usedialog';
 import { computed, inject, watch } from 'vue';
 import { useSessionStorage } from '@vueuse/core';
-import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/vue-query';
+import { useQuery, keepPreviousData } from '@tanstack/vue-query';
 import Skeleton from 'primevue/skeleton';
 
 /**
@@ -90,7 +90,6 @@ const userSelectedPortfolioId = useSessionStorage<string | undefined>(SESSION_ST
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const queryClient = useQueryClient();
 const {
   data: portfolioNames,
   isLoading,
@@ -128,11 +127,10 @@ function addNewPortfolio(): void {
       header: 'Add Portfolio',
       modal: true,
     },
-    async onClose(options) {
+    onClose(options) {
       const basePortfolioName = options?.data as BasePortfolioName;
       if (basePortfolioName) {
         userSelectedPortfolioId.value = basePortfolioName.portfolioId;
-        await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
       }
     },
   });
