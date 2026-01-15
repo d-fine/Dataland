@@ -1,6 +1,7 @@
 // EU Taxonomy Implementation
 package org.dataland.e2etests.tests.frameworks
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.Activity
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
@@ -14,12 +15,12 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuT
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
 import org.dataland.datalandbackend.openApiClient.model.RelativeAndAbsoluteFinancialShare
 import org.dataland.e2etests.utils.BaseExportTest
-import org.dataland.e2etests.utils.testDataProviders.awaitUntil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancialsData>() {
     private lateinit var fullTestData: EutaxonomyNonFinancialsData
@@ -138,10 +139,12 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                         fileFormat = ExportFileType.CSV,
                     ),
                     keepValueFieldsOnly = keepValueFieldsOnly,
-                    includeAliases = false,
+                    includeAliases = includeAliases,
                 ).id
                 .toString()
-        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
         return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
     }
 
@@ -160,7 +163,9 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
                     includeAliases = false,
                 ).id
                 .toString()
-        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
         return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
     }
 

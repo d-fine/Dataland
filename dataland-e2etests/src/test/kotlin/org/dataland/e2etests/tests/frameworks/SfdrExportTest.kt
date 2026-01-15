@@ -1,6 +1,7 @@
 // SFDR Test Implementation
 package org.dataland.e2etests.tests.frameworks
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
 import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
 import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
@@ -10,11 +11,11 @@ import org.dataland.datalandbackend.openApiClient.model.QualityOptions
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.YesNo
 import org.dataland.e2etests.utils.BaseExportTest
-import org.dataland.e2etests.utils.testDataProviders.awaitUntil
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class SfdrExportTest : BaseExportTest<SfdrData>() {
     private lateinit var fullTestData: SfdrData
@@ -105,10 +106,12 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                         fileFormat = ExportFileType.CSV,
                     ),
                     keepValueFieldsOnly = keepValueFieldsOnly,
-                    includeAliases = false,
+                    includeAliases = includeAliases,
                 ).id
                 .toString()
-        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
         return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
     }
 
@@ -122,12 +125,14 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
                     ExportRequestData(
                         reportingPeriods = reportingPeriods,
                         companyIds = companyIds,
-                        fileFormat = ExportFileType.CSV,
+                        fileFormat = ExportFileType.EXCEL,
                     ),
                     includeAliases = false,
                 ).id
                 .toString()
-        awaitUntil { apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success }
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
         return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
     }
 

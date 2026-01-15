@@ -190,7 +190,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType, ExportJobProgressState } from '@clients/backend';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -214,10 +214,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-
-const EXPORT_POLL_INTERVAL_MS = 500;
-const EXPORT_MAX_POLL_ATTEMPTS = 180;
-
+import { pollExportJobStatus } from '@/utils/ExportUtils.ts';
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
  * by transforming and enriching fields, such as converting country codes to names,
@@ -451,31 +448,6 @@ function getCompanyIds(): string[] {
 }
 
 /**
- * Polls the export job status until completion or timeout
- * @param exportJobId the ID of the export job to poll
- * @throws Error if job fails or times out
- */
-async function pollExportJobStatus(exportJobId: string): Promise<void> {
-  let state: ExportJobProgressState = ExportJobProgressState.Pending;
-
-  for (let attempt = 0; attempt < EXPORT_MAX_POLL_ATTEMPTS; attempt++) {
-    const stateResponse = await apiClientProvider.apiClients.dataExportController.getExportJobState(exportJobId);
-    state = stateResponse.data;
-
-    if (state === ExportJobProgressState.Success) return;
-    if (state === ExportJobProgressState.Failure) {
-      throw new Error('Export job failed on server');
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, EXPORT_POLL_INTERVAL_MS));
-  }
-
-  if (state === ExportJobProgressState.Pending) {
-    throw new Error('Export timeout - please try again with fewer companies or reporting periods');
-  }
-}
-
-/**
  * Prepares the downloaded file by building filename and formatting content
  * @param exportFileType the file type for export
  * @param selectedFramework the framework being exported
@@ -521,22 +493,24 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
-    const jobResponse = await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
-      selectedYears,
-      getCompanyIds(),
-      exportFileType,
-      keepValuesOnly,
-      includeAlias
-    );
+    const exportJobId = (
+      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+        selectedYears,
+        getCompanyIds(),
+        exportFileType,
+        keepValuesOnly,
+        includeAlias
+      )
+    ).data.id;
 
-    await pollExportJobStatus(assertDefined(jobResponse.data.id));
+    await pollExportJobStatus(assertDefined(exportJobId), apiClientProvider.apiClients.dataExportController);
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
     const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
-      jobResponse.data.id,
+      exportJobId,
       options
     );
     const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);

@@ -115,6 +115,7 @@ import DownloadData from '@/components/general/DownloadData.vue';
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
+import { pollExportJobStatus } from '@/utils/ExportUtils.ts';
 
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
@@ -445,7 +446,6 @@ async function handleDatasetDownload(
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
     const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
-    // This needs to be fixed. This is just temporary to get the frameworktoolbox to work
     const exportJobId = (
       await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
         selectedYears,
@@ -456,22 +456,14 @@ async function handleDatasetDownload(
         options
       )
     ).data.id;
-    let counter = 0;
-    let exportJobState = 'Pending';
-    while (counter < 10 && exportJobState == 'Pending') {
-      const responseState = await apiClientProvider.apiClients.dataExportController.getExportJobState(exportJobId);
-      exportJobState = responseState.data;
-      counter += 1;
-    }
 
-    if (exportJobState != 'Success') {
-      console.error('Download did not work');
-      throw new Error('Download did not work');
-    }
-    const response =
-      await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(exportJobId);
+    await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
+    const responseData = (
+      await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(exportJobId)
+    ).data;
+
+    const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : responseData;
     forceFileDownload(content, filename);
   } catch (err) {
     downloadErrors.value = `${(err as AxiosError).message}`;
