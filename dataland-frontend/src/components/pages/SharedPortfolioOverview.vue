@@ -34,5 +34,3 @@ const { currentPortfolioId, portfolioNames, getPortfolios, onTabChange } = usePo
   },
 });
 </script>
-
-<style scoped></style>

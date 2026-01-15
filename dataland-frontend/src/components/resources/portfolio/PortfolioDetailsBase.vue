@@ -404,11 +404,7 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts company IDs from the selected portfolio
  */
 function getCompanyIds(): string[] {
-  const companies: CompanyIdAndName[] = (enrichedPortfolio.value?.entries ?? []).map((entry) => ({
-    companyId: entry.companyId,
-    companyName: entry.companyName,
-  }));
-  portfolioCompanies.value = getUniqueSortedCompanies(companies);
+  portfolioCompanies.value = getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []);
   return portfolioCompanies.value.map((company) => company.companyId);
 }
 

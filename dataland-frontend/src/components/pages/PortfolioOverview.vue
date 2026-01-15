@@ -64,5 +64,3 @@ function addNewPortfolio(): void {
   });
 }
 </script>
-
-<style scoped></style>
