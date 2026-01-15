@@ -53,7 +53,7 @@ describe('PortfolioRemoveSharing dialog', () => {
     cy.get('@removePortfolio.all').should('have.length', 0);
   });
 
-  it('calls deleteCurrentUserFromSharing with the portfolioId and emits "close" when REMOVE PORTFOLIO is clicked', () => {
+  it('calls deleteCurrentUserFromSharing with the portfolioId and emits "sharing-removed" when REMOVE PORTFOLIO is clicked', () => {
     cy.intercept('DELETE', '**/users/portfolios/shared/*', {
       statusCode: 204,
     }).as('removePortfolio');

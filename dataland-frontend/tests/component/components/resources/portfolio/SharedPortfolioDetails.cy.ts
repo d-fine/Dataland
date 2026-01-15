@@ -1,8 +1,8 @@
 import SharedPortfolioDetails from '@/components/resources/portfolio/SharedPortfolioDetails.vue';
 import {
   type EnrichedPortfolio,
-  type PortfolioUserDetails,
-  PortfolioUserDetailsPortfolioAccessRightEnum,
+  type PortfolioUserAccessRight,
+  PortfolioUserAccessRightPortfolioAccessRoleEnum,
 } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
@@ -49,11 +49,11 @@ function interceptApiCallsAndMountAndWaitForDownload(
  * Intercepts the API call for fetching portfolio access rights and provides a mock response.
  */
 function interceptPortfolioAccessRightsCall(): void {
-  const response: PortfolioUserDetails[] = [
+  const response: PortfolioUserAccessRight[] = [
     {
       userId: adminId,
       userEmail: adminEmail,
-      portfolioAccessRight: PortfolioUserDetailsPortfolioAccessRightEnum.Owner,
+      portfolioAccessRole: PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner,
     },
   ];
 

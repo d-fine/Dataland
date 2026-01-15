@@ -28,7 +28,7 @@ export function usePortfolioOverview({
   const portfolioNames = ref<BasePortfolioName[]>([]);
 
   onMounted(() => {
-    void getPortfolios().then(() => setCurrentPortfolioId());
+    void getPortfolios();
   });
 
   /**
