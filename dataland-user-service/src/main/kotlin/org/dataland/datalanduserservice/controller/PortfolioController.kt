@@ -11,7 +11,7 @@ import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioSharingPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
-import org.dataland.datalanduserservice.model.PortfolioUserDetails
+import org.dataland.datalanduserservice.model.PortfolioUserAccessRight
 import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
@@ -163,7 +163,7 @@ class PortfolioController
         override fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
             ResponseEntity.ok(portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser())
 
-        override fun getPortfolioAccessRights(portfolioId: String): ResponseEntity<List<PortfolioUserDetails>> {
+        override fun getPortfolioAccessRights(portfolioId: String): ResponseEntity<List<PortfolioUserAccessRight>> {
             val correlationId = UUID.randomUUID().toString()
             return ResponseEntity.ok(
                 portfolioSharingService.getPortfolioAccessRights(

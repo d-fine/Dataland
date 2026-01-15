@@ -37,7 +37,7 @@ import PortfolioRemoveSharing from '@/components/resources/portfolio/PortfolioRe
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type PortfolioUserDetails, PortfolioUserDetailsPortfolioAccessRightEnum } from '@clients/userservice';
+import { type PortfolioUserAccessRight, PortfolioUserAccessRightPortfolioAccessRoleEnum } from '@clients/userservice';
 
 const props = defineProps<{
   portfolioId: string;
@@ -74,7 +74,8 @@ async function loadOwnerEmail(): Promise<void> {
   try {
     const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(props.portfolioId);
     const owner = response.data.find(
-      (user: PortfolioUserDetails) => user.portfolioAccessRight === PortfolioUserDetailsPortfolioAccessRightEnum.Owner
+      (user: PortfolioUserAccessRight) =>
+        user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner
     );
     ownerEmail.value = owner?.userEmail ?? null;
   } catch (error) {

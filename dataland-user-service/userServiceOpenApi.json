@@ -744,7 +744,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
                   }
                 }
               }
@@ -757,7 +757,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
                   }
                 }
               }
@@ -770,7 +770,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PortfolioUserDetails"
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
                   }
                 }
               }
@@ -1720,9 +1720,9 @@
           }
         }
       },
-      "PortfolioUserDetails": {
+      "PortfolioUserAccessRight": {
         "required": [
-          "portfolioAccessRight",
+          "portfolioAccessRole",
           "userId"
         ],
         "type": "object",
@@ -1737,13 +1737,13 @@
             "description": "The email address of the Dataland user in question.",
             "example": "test@example.com"
           },
-          "portfolioAccessRight": {
+          "portfolioAccessRole": {
             "type": "string",
             "description": "The access rights that the user has for the shared portfolio.",
             "example": "Owner",
             "enum": [
               "Owner",
-              "ReadOnly"
+              "Reader"
             ]
           }
         }

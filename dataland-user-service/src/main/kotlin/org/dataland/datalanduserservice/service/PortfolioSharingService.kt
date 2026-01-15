@@ -4,8 +4,8 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
-import org.dataland.datalanduserservice.model.PortfolioUserDetails
-import org.dataland.datalanduserservice.model.enums.PortfolioAccessRight
+import org.dataland.datalanduserservice.model.PortfolioUserAccessRight
+import org.dataland.datalanduserservice.model.enums.PortfolioAccessRole
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -117,31 +117,31 @@ class PortfolioSharingService
          * Get the access rights of all users for a specific portfolio.
          * @param portfolioId the ID of the portfolio
          * @param correlationId a unique identifier for tracking the request
-         * @return a list of PortfolioUserDetails objects representing the users and their access rights
+         * @return a list of PortfolioUserAccessRight objects representing the users and their access rights
          * @throws PortfolioNotFoundApiException if the portfolio with the given ID does not exist
          */
         fun getPortfolioAccessRights(
             portfolioId: UUID,
             correlationId: String,
-        ): List<PortfolioUserDetails> {
+        ): List<PortfolioUserAccessRight> {
             val portfolio = portfolioService.getPortfolio(portfolioId.toString(), correlationId)
 
             val isCurrentUserOwner = DatalandAuthentication.fromContext().userId == portfolio.userId
 
             val ownerUserDetails =
-                PortfolioUserDetails(
+                PortfolioUserAccessRight(
                     userId = portfolio.userId,
                     userEmail = keycloakUserService.getUser(portfolio.userId).email,
-                    portfolioAccessRight = PortfolioAccessRight.Owner,
+                    portfolioAccessRole = PortfolioAccessRole.Owner,
                 )
 
             val nonOwnerUserDetails =
                 portfolio.sharedUserIds.let { sharedUserIds ->
                     sharedUserIds.map { userId ->
-                        PortfolioUserDetails(
+                        PortfolioUserAccessRight(
                             userId = userId,
                             userEmail = if (isCurrentUserOwner) keycloakUserService.getUser(userId).email else null,
-                            portfolioAccessRight = PortfolioAccessRight.ReadOnly,
+                            portfolioAccessRole = PortfolioAccessRole.Reader,
                         )
                     }
                 }

@@ -7,7 +7,7 @@ import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
-import org.dataland.datalanduserservice.model.enums.PortfolioAccessRight
+import org.dataland.datalanduserservice.model.enums.PortfolioAccessRole
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -74,6 +74,36 @@ class PortfolioSharingIntegrationTest
                 AuthenticationMock.mockJwtAuthentication(dummyUsername, userId, roles = setOf(DatalandRealmRole.ROLE_USER))
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
             SecurityContextHolder.setContext(mockSecurityContext)
+        }
+
+        private fun setupPortfolioAccessRightsPortfolioAndMocks(): UUID {
+            val entity =
+                createPortfolioEntity(
+                    setOf(
+                        dummySharedUserId,
+                        dummySharedOtherUserId,
+                    ),
+                )
+            val saved = portfolioRepository.save(entity)
+
+            val ownerUser =
+                mock<KeycloakUserInfo> {
+                    on { email } doReturn dummyOwnerMailAddress
+                }
+            val sharedUser =
+                mock<KeycloakUserInfo> {
+                    on { email } doReturn "shared@example.com"
+                }
+            val sharedOtherUser =
+                mock<KeycloakUserInfo> {
+                    on { email } doReturn "shared-other@example.com"
+                }
+
+            whenever(keycloakUserService.getUser(dummyOwnerUserId)).thenReturn(ownerUser)
+            whenever(keycloakUserService.getUser(dummySharedUserId)).thenReturn(sharedUser)
+            whenever(keycloakUserService.getUser(dummySharedOtherUserId)).thenReturn(sharedOtherUser)
+
+            return saved.portfolioId
         }
 
         @BeforeEach
@@ -261,42 +291,18 @@ class PortfolioSharingIntegrationTest
 
         /**
          * When the current user is the owner:
-         *  - Owner has access right Owner and a non-null email
-         *  - Shared users have access right ReadOnly and non-null emails
+         *  - Owner has access role Owner and a non-null email
+         *  - Shared users have access role Reader and non-null emails
          */
         @Test
         fun `getPortfolioAccessRights returns owner and shared users with emails when current user is owner`() {
             setAuthenticationContext(dummyOwnerUserId)
 
-            val entity =
-                createPortfolioEntity(
-                    setOf(
-                        dummySharedUserId,
-                        dummySharedOtherUserId,
-                    ),
-                )
-            val saved = portfolioRepository.save(entity)
-
-            val ownerUser =
-                mock<KeycloakUserInfo> {
-                    on { email } doReturn dummyOwnerMailAddress
-                }
-            val sharedUser =
-                mock<KeycloakUserInfo> {
-                    on { email } doReturn "shared@example.com"
-                }
-            val sharedOtherUser =
-                mock<KeycloakUserInfo> {
-                    on { email } doReturn "shared-other@example.com"
-                }
-
-            whenever(keycloakUserService.getUser(dummyOwnerUserId)).thenReturn(ownerUser)
-            whenever(keycloakUserService.getUser(dummySharedUserId)).thenReturn(sharedUser)
-            whenever(keycloakUserService.getUser(dummySharedOtherUserId)).thenReturn(sharedOtherUser)
+            val portfolioId = setupPortfolioAccessRightsPortfolioAndMocks()
 
             val result =
                 portfolioSharingService.getPortfolioAccessRights(
-                    saved.portfolioId,
+                    portfolioId,
                     correlationId = "corr-access-1",
                 )
 
@@ -304,40 +310,27 @@ class PortfolioSharingIntegrationTest
 
             val ownerDetails = result.first { it.userId == dummyOwnerUserId }
             Assertions.assertEquals(dummyOwnerMailAddress, ownerDetails.userEmail)
-            Assertions.assertEquals(PortfolioAccessRight.Owner, ownerDetails.portfolioAccessRight)
+            Assertions.assertEquals(PortfolioAccessRole.Owner, ownerDetails.portfolioAccessRole)
 
             val sharedDetails = result.filter { it.userId != dummyOwnerUserId }
-            Assertions.assertTrue(sharedDetails.all { it.portfolioAccessRight == PortfolioAccessRight.ReadOnly })
+            Assertions.assertTrue(sharedDetails.all { it.portfolioAccessRole == PortfolioAccessRole.Reader })
             Assertions.assertTrue(sharedDetails.all { it.userEmail != null })
         }
 
         /**
          * When the current user is not the owner:
          *  - Owner still has a non-null email
-         *  - Shared users have access right ReadOnly but userEmail must be null
+         *  - Shared users have access role Reader but userEmail must be null
          */
         @Test
         fun `getPortfolioAccessRights hides shared user emails when current user is not owner`() {
             setAuthenticationContext(dummySharedUserId)
 
-            val entity =
-                createPortfolioEntity(
-                    setOf(
-                        dummySharedUserId,
-                        dummySharedOtherUserId,
-                    ),
-                )
-            val saved = portfolioRepository.save(entity)
-
-            val ownerUser =
-                mock<KeycloakUserInfo> {
-                    on { email } doReturn dummyOwnerMailAddress
-                }
-            whenever(keycloakUserService.getUser(dummyOwnerUserId)).thenReturn(ownerUser)
+            val portfolioId = setupPortfolioAccessRightsPortfolioAndMocks()
 
             val result =
                 portfolioSharingService.getPortfolioAccessRights(
-                    saved.portfolioId,
+                    portfolioId,
                     correlationId = "corr-access-2",
                 )
 
@@ -345,10 +338,10 @@ class PortfolioSharingIntegrationTest
 
             val ownerDetails = result.first { it.userId == dummyOwnerUserId }
             Assertions.assertEquals(dummyOwnerMailAddress, ownerDetails.userEmail)
-            Assertions.assertEquals(PortfolioAccessRight.Owner, ownerDetails.portfolioAccessRight)
+            Assertions.assertEquals(PortfolioAccessRole.Owner, ownerDetails.portfolioAccessRole)
 
             val sharedDetails = result.filter { it.userId != dummyOwnerUserId }
-            Assertions.assertTrue(sharedDetails.all { it.portfolioAccessRight == PortfolioAccessRight.ReadOnly })
+            Assertions.assertTrue(sharedDetails.all { it.portfolioAccessRole == PortfolioAccessRole.Reader })
             Assertions.assertTrue(sharedDetails.all { it.userEmail == null })
         }
 

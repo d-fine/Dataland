@@ -10,7 +10,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceO
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioSharingPatch
-import org.dataland.datalanduserservice.model.PortfolioUserDetails
+import org.dataland.datalanduserservice.model.PortfolioUserAccessRight
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -160,5 +160,5 @@ interface PortfolioSharingApi {
             required = true,
         )
         @PathVariable("portfolioId") portfolioId: String,
-    ): ResponseEntity<List<PortfolioUserDetails>>
+    ): ResponseEntity<List<PortfolioUserAccessRight>>
 }

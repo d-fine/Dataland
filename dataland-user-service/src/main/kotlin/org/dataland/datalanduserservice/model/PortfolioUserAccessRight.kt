@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
-import org.dataland.datalanduserservice.model.enums.PortfolioAccessRight
+import org.dataland.datalanduserservice.model.enums.PortfolioAccessRole
 
 /**
  * --- API model ---
- * Portfolio User Details API model
+ * Portfolio User Access Right API model
  */
-data class PortfolioUserDetails(
+data class PortfolioUserAccessRight(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.GENERAL_USER_ID_DESCRIPTION,
@@ -28,5 +28,5 @@ data class PortfolioUserDetails(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ACCESS_RIGHTS_EXAMPLE,
     )
-    val portfolioAccessRight: PortfolioAccessRight,
+    val portfolioAccessRole: PortfolioAccessRole,
 )
