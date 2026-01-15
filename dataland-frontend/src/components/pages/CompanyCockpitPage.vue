@@ -208,7 +208,7 @@ onMounted(async () => {
   const onUsersPage = path.endsWith('/users');
 
   const isUnauthorizedUser = !isUserCompanyMemberOrAdmin.value && (onCreditsPage || onUsersPage);
-  const isPageDisabled = !isCompanyDatalandMember.value && onCreditsPage;
+  const isPageDisabled = !isUserDatalandAdmin.value && !isCompanyDatalandMember.value && onCreditsPage;
 
   if (isUnauthorizedUser || isPageDisabled) {
     activeTab.value = 'datasets';
