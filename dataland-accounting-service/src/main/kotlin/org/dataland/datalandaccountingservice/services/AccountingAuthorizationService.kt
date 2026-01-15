@@ -1,5 +1,6 @@
 package org.dataland.datalandaccountingservice.services
 
+import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.stereotype.Service
@@ -21,14 +22,13 @@ class AccountingAuthorizationService(
             } catch (_: IllegalArgumentException) {
                 null
             }
-
-        if (userId.isNullOrBlank()) {
-            return false
-        }
-
-        val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
-        val rolesForCompany = inheritedRoles[companyId]
-
-        return !rolesForCompany.isNullOrEmpty()
+        val hasRole =
+            if (userId.isNullOrBlank()) {
+                false
+            } else {
+                val inheritedRoles = inheritedRolesControllerApi.getInheritedRoles(userId)
+                inheritedRoles[companyId]?.contains(InheritedRole.DatalandMember.name) == true
+            }
+        return hasRole
     }
 }
