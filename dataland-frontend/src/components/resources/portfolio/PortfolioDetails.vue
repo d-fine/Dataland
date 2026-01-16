@@ -18,7 +18,26 @@
         />
       </div>
 
+      <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can share portfolios' : ''">
+        <Button
+          @click="openShareModal()"
+          data-test="share-portfolio"
+          :disabled="!isUserDatalandMemberOrAdmin"
+          icon="pi pi-share-alt"
+          label="SHARE PORTFOLIO"
+        />
+      </div>
+
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+
+      <Tag
+        v-if="sharedUserCount > 0"
+        :value="`Shared with ${sharedUserCount} user${sharedUserCount === 1 ? '' : 's'}`"
+        icon="pi pi-users"
+        severity="info"
+        data-test="shared-users-tag"
+      />
+
       <Button
         class="reset-button-align-right"
         data-test="reset-filter"
@@ -70,6 +89,8 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const isUserDatalandMemberOrAdmin = ref(false);
 const isSuccessDialogVisible = ref(false);
+
+const sharedUserCount = computed(() => Array.from(enrichedPortfolio.value?.sharedUserIds ?? []).length);
 
 onMounted(() => {
   void checkDatalandMembershipOrAdminRights();
@@ -148,6 +169,27 @@ function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, r
         isSuccessDialogVisible.value = true;
         reload();
         emit('update:portfolio-overview');
+      }
+    },
+  });
+}
+
+/**
+ * Opens the SharePortfolioDialog to manage which users have access to the portfolio.
+ * Once the dialog is closed with saved changes, it reloads the portfolio data.
+ */
+function openShareModal(): void {
+  dialog.open(SharePortfolioDialog, {
+    props: {
+      modal: true,
+      header: 'Manage Portfolio Access',
+    },
+    data: {
+      portfolioId: props.portfolioId,
+    },
+    onClose(options) {
+      if (options?.data?.saved) {
+        loadPortfolio();
       }
     },
   });
