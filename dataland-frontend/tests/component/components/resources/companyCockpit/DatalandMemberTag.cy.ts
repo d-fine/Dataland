@@ -50,14 +50,13 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
-    interceptCompanyRights(dummyCompanyId, ['Member']);
-    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
-
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
 
@@ -74,14 +73,13 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser: CompanyRoleAssignmentExtended[] = [];
     const hasCompanyAtLeastOneOwner = true;
 
-    interceptCompanyRights(dummyCompanyId, ['Member']);
-    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
-
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
+    interceptCompanyRights(dummyCompanyId, ['Member']);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
     cy.wait('@extendedCompanyRoleAssignments');
@@ -92,14 +90,13 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
-    interceptCompanyRights(dummyCompanyId, []);
-    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
-
     mockRequestsOnMounted(
       hasCompanyAtLeastOneOwner,
       companyInformationForTest,
       mockMapOfDataTypeToAggregatedFrameworkDataSummary
     );
+    interceptCompanyRights(dummyCompanyId, []);
+    interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
     mountCompanyCockpitWithAuthentication(true, true, undefined, companyRoleAssignmentsOfUser);
 
