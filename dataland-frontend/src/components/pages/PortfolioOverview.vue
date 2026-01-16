@@ -1,32 +1,57 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <Tabs
-      :value="currentPortfolioId || 'no-portfolios-available'"
-      :scrollable="true"
-      data-test="portfolios"
-      @update:value="onTabChange"
-    >
+    <Tabs :value="activePortfolioId" :scrollable="true" data-test="portfolios" @update:value="onTabChange">
       <div class="tabs-container">
         <TabList>
-          <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-            <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
-              {{ portfolio.portfolioName }}
-            </div>
-          </Tab>
+          <template v-if="isPending">
+            <Tab value="loading-placeholder" disabled>
+              <Skeleton width="8rem" height="1.2rem" />
+            </Tab>
+            <Tab value="loading-2" disabled>
+              <Skeleton width="6rem" height="1.2rem" />
+            </Tab>
+            <Tab value="loading-3" disabled>
+              <Skeleton width="7rem" height="1.2rem" />
+            </Tab>
+          </template>
+
+          <template v-else>
+            <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+              <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
+                {{ portfolio.portfolioName }}
+              </div>
+            </Tab>
+          </template>
         </TabList>
-        <PrimeButton label="ADD NEW PORTFOLIO" @click="addNewPortfolio" icon="pi pi-plus" data-test="add-portfolio" />
+
+        <PrimeButton
+          label="ADD NEW PORTFOLIO"
+          @click="addNewPortfolio"
+          icon="pi pi-plus"
+          data-test="add-portfolio"
+          :disabled="isPending"
+        />
       </div>
+
       <TabPanels>
-        <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-          <PortfolioDetails
-            :portfolioId="portfolio.portfolioId"
-            @update:portfolio-overview="getPortfolios"
-            :data-test="`portfolio-${portfolio.portfolioName}`"
-          />
+        <TabPanel v-if="isPending" value="loading-placeholder">
+          <div class="flex flex-col gap-4">
+            <Skeleton width="40%" height="2rem" class="mb-2" />
+            <Skeleton width="100%" height="10rem" />
+          </div>
         </TabPanel>
-        <TabPanel value="no-portfolios-available">
-          <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
-        </TabPanel>
+
+        <template v-else>
+          <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+            <PortfolioDetails
+              :portfolioId="portfolio.portfolioId"
+              :data-test="`portfolio-${portfolio.portfolioName}`"
+            />
+          </TabPanel>
+          <TabPanel value="no-portfolios-available">
+            <h1 v-if="!portfolioNames || portfolioNames.length == 0">No Portfolios available.</h1>
+          </TabPanel>
+        </template>
       </TabPanels>
     </Tabs>
   </TheContent>
@@ -47,8 +72,10 @@ import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
 import { useDialog } from 'primevue/usedialog';
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, watch } from 'vue';
 import { useSessionStorage } from '@vueuse/core';
+import { useQuery, keepPreviousData } from '@tanstack/vue-query';
+import Skeleton from 'primevue/skeleton';
 
 /**
  * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
@@ -59,54 +86,36 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const dialog = useDialog();
 
 const SESSION_STORAGE_KEY = 'last-selected-portfolio-id';
-const currentPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
-const portfolioNames = ref<BasePortfolioName[]>([]);
+const userSelectedPortfolioId = useSessionStorage<string | undefined>(SESSION_STORAGE_KEY, undefined);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-onMounted(() => {
-  void getPortfolios().then(() => setCurrentPortfolioId());
+const {
+  data: portfolioNames,
+  isLoading,
+  isPending,
+} = useQuery<BasePortfolioName[]>({
+  queryKey: ['portfolioNames'],
+  placeholderData: keepPreviousData,
+  staleTime: 1000 * 60 * 5, // 5 minutes
+  gcTime: 1000 * 60 * 10, // Keep in Garbage Collection for 10 minutes
+  queryFn: () =>
+    apiClientProvider.apiClients.portfolioController
+      .getAllPortfolioNamesForCurrentUser()
+      .then((response) => response.data),
 });
 
-/**
- * Retrieve all portfolios for the currently logged-in user.
- */
-async function getPortfolios(): Promise<void> {
-  try {
-    const response = await apiClientProvider.apiClients.portfolioController.getAllPortfolioNamesForCurrentUser();
-    portfolioNames.value = response.data;
-    setCurrentPortfolioId();
-  } catch (error) {
-    console.log(error);
-  }
-}
+const activePortfolioId = computed((): string => {
+  if (isPending.value) return 'loading-placeholder';
+  const portfolios = portfolioNames.value || [];
+  if (portfolios.length === 0) return 'no-portfolios-available';
 
-/**
- * Sets the current portfolio ID based on the following priority:
- * 1. If a portfolioId is provided (e.g. after creating a new portfolio), use it if valid.
- * 2. If not, and a session-stored portfolioId exists, use it if valid.
- * 3. If none of the above are valid, fall back to the first portfolio in the list.
- */
-function setCurrentPortfolioId(portfolioId?: string): void {
-  if (portfolioNames.value.length === 0) {
-    currentPortfolioId.value = undefined;
-    return;
-  }
+  const currentSelection = userSelectedPortfolioId.value;
+  const isSelectionValid = currentSelection && portfolios.some((p) => p.portfolioId === currentSelection);
+  if (isSelectionValid) return currentSelection;
 
-  if (portfolioId && portfolioNames.value.some((portfolio) => portfolio.portfolioId === portfolioId)) {
-    currentPortfolioId.value = portfolioId;
-    return;
-  }
-
-  if (
-    currentPortfolioId.value &&
-    portfolioNames.value.some((portfolio) => portfolio.portfolioId === currentPortfolioId.value)
-  ) {
-    return;
-  }
-
-  currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
-}
+  return portfolios[0]?.portfolioId || 'no-portfolios-available';
+});
 
 /**
  * Opens the PortfolioDialog, reloads all portfolios and
@@ -121,12 +130,7 @@ function addNewPortfolio(): void {
     onClose(options) {
       const basePortfolioName = options?.data as BasePortfolioName;
       if (basePortfolioName) {
-        void getPortfolios().then(() => {
-          setCurrentPortfolioId(
-            portfolioNames.value.find((portfolio) => portfolio.portfolioId == basePortfolioName.portfolioId)
-              ?.portfolioId
-          );
-        });
+        userSelectedPortfolioId.value = basePortfolioName.portfolioId;
       }
     },
   });
@@ -137,7 +141,7 @@ function addNewPortfolio(): void {
  * @param value The value of the tab aka the portfolioId of the selected portfolio.
  */
 function onTabChange(value: string | number): void {
-  setCurrentPortfolioId(String(value));
+  userSelectedPortfolioId.value = String(value);
 }
 </script>
 

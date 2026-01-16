@@ -77,7 +77,11 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { type EnrichedPortfolio, NotificationFrequency, type PortfolioMonitoringPatch } from '@clients/userservice';
+import {
+  type BasePortfolio,
+  NotificationFrequency,
+  type PortfolioMonitoringPatch
+} from '@clients/userservice';
 import {
   PortfolioMonitoringPatchTimeWindowThresholdEnum,
   EnrichedPortfolioTimeWindowThresholdEnum,
@@ -90,6 +94,7 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import Message from 'primevue/message';
 import Select from 'primevue/select';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { useQueryClient } from "@tanstack/vue-query";
 
 type MonitoringOption = {
   value: string;
@@ -99,6 +104,7 @@ type MonitoringOption = {
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const queryClient = useQueryClient();
 
 const portfolioControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
   .portfolioController;
@@ -115,7 +121,7 @@ const availableFrameworkMonitoringOptions = ref<MonitoringOption[]>([
   { value: 'eutaxonomy', label: 'EU Taxonomy', isActive: false },
 ]);
 const showFrameworksError = ref(false);
-const portfolio = ref<EnrichedPortfolio>();
+const portfolio = ref<BasePortfolio>();
 const isMonitoringActive = ref(false);
 const timeWindowThreshold = ref(false);
 const previousFrameworks = ref<Set<string>>(new Set());
@@ -128,7 +134,7 @@ const selectedFrameworkOptions = computed(() => {
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.portfolio) {
-    portfolio.value = data.portfolio as EnrichedPortfolio;
+    portfolio.value = data.portfolio as BasePortfolio;
     prefillModal();
   } else {
     dialogRef?.value.close();
@@ -202,6 +208,7 @@ async function patchPortfolioMonitoring(): Promise<void> {
 
   try {
     await portfolioControllerApi.patchMonitoring(portfolio.value!.portfolioId, portfolioMonitoringPatch);
+    await queryClient.invalidateQueries({ queryKey: ['basePortfolio', portfolio.value!.portfolioId] });
     dialogRef?.value.close({ monitoringSaved: true });
   } catch (error) {
     console.error('Error submitting Monitoring Patch for Portfolio:', error);
@@ -226,8 +233,7 @@ function prefillModal(): void {
     return;
   }
 
-  const monitoredFrameworksRaw = portfolio.value.monitoredFrameworks as string[] | undefined;
-  const monitoredFrameworks = new Set(monitoredFrameworksRaw ?? []);
+  const monitoredFrameworks = new Set(portfolio.value.monitoredFrameworks);
 
   availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
     ...option,

@@ -100,6 +100,7 @@ import { useDialog } from 'primevue/usedialog';
 import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
+import {useQueryClient} from "@tanstack/vue-query";
 
 class CompanyIdAndName {
   companyId: string;
@@ -113,6 +114,7 @@ class CompanyIdAndName {
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const queryClient = useQueryClient();
 
 const companyIdentifiersInput = ref('');
 const showIdentifierError = ref(false);
@@ -122,6 +124,7 @@ const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
+var initialPortfolioIdentifiers: Set<string> = new Set();
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
@@ -145,6 +148,7 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   enrichedPortfolio.value = portfolio;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
+  initialPortfolioIdentifiers = new Set(portfolioCompanies.value.map((company) => company.companyId));
 });
 
 /**
@@ -235,6 +239,13 @@ async function savePortfolio(): Promise<void> {
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
       : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
+    await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
+    if (portfolioId.value) {
+      await queryClient.invalidateQueries({ queryKey: ['basePortfolio', portfolioId.value] });
+      if (initialPortfolioIdentifiers.symmetricDifference(new Set(portfolioUpload.identifiers)).size !== 0) {
+        await queryClient.invalidateQueries({queryKey: ['enrichedPortfolio', portfolioId.value]});
+      }
+    }
 
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
@@ -274,6 +285,9 @@ async function deletePortfolio(): Promise<void> {
     dialogRef?.value.close({
       isDeleted: true,
     });
+    await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
+    await queryClient.removeQueries({ queryKey: ['enrichedPortfolio', portfolioId.value] });
+    await queryClient.removeQueries({ queryKey: ['basePortfolio', portfolioId.value] });
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }

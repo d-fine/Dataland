@@ -14,6 +14,7 @@ import '@/assets/fonts/ibm-plex-sans.scss';
 import '@/assets/theme/main.css';
 import '@formkit/themes/genesis';
 import router from './router';
+import {VueQueryPlugin, VueQueryPluginOptions} from "@tanstack/vue-query";
 
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
@@ -28,6 +29,11 @@ function instantiateVueApp(): void {
     }) as PiniaPlugin
   );
   app.use(plugin, defaultConfig);
+  app.use(VueQueryPlugin, (<VueQueryPluginOptions>{
+      queryClientConfig: {
+          defaultOptions: { queries: { staleTime: 5*60*1000 } }
+      }
+  }));
   app.use(DialogService);
   app.use(router);
   app.use(PrimeVue, {
