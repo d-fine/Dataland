@@ -411,16 +411,15 @@ abstract class BaseExportTest<T> {
                 ExportTestUtils.getReadableCsvFile(exportWithoutAlias),
             )
 
-        val valuePattern = alias
         ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithAlias,
-            columnNamePart = valuePattern,
+            columnNamePart = alias,
             shouldExist = true,
             contextMessage = "CSV export with includeAlias=true should include value of test field",
         )
         ExportTestUtils.assertColumnPatternExistsOrNot(
             headers = headersWithoutAlias,
-            columnNamePart = valuePattern,
+            columnNamePart = alias,
             shouldExist = false,
             contextMessage = "CSV export with includeAlias=false should not include value of test field",
         )

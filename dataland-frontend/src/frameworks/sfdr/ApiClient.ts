@@ -39,7 +39,7 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     return this.openApiDataController.postCompanyAssociatedSfdrData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
@@ -48,10 +48,8 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedSfdrDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+    return this.openApiDataController.postExportJobCompanyAssociatedSfdrDataByDimensions(
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options

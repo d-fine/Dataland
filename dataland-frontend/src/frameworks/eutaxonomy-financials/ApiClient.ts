@@ -47,7 +47,7 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
     return this.openApiDataController.postCompanyAssociatedEutaxonomyFinancialsData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
@@ -56,10 +56,8 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-      reportingPeriods,
-      companyIds,
-      fileFormat,
+    return this.openApiDataController.postExportJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
+      { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
       includeAliases,
       options

@@ -115,6 +115,7 @@ import DownloadData from '@/components/general/DownloadData.vue';
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
+import { pollExportJobStatus } from '@/utils/ExportUtils.ts';
 
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
@@ -445,16 +446,24 @@ async function handleDatasetDownload(
     const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
     const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
-    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedYears,
-      [props.companyID],
-      exportFileType,
-      keepValuesOnly,
-      includeAlias,
-      options
-    );
+    const exportJobId = (
+      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+        selectedYears,
+        [props.companyID],
+        exportFileType,
+        keepValuesOnly,
+        includeAlias,
+        options
+      )
+    ).data.id;
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
+    await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
+
+    const responseData = (
+      await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(exportJobId)
+    ).data;
+
+    const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : responseData;
     forceFileDownload(content, filename);
   } catch (err) {
     downloadErrors.value = `${(err as AxiosError).message}`;

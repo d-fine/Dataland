@@ -29,11 +29,11 @@ object ExportTestUtils {
 
     /**
      * Provides a readable CSV file with the same name (without extension) as the given file,
-     * if such a file exists. If the provided file is an excel file, it will be converted to csv.
+     * if such a file exists. If the provided file is an Excel file, it will be converted to csv.
      * Otherwise, returns the given file.
      *
      * @param exportFile The file to check for a corresponding CSV version.
-     * @return A readable CSV file if it exists (excel files will be converted to csv), otherwise the originally provided file.
+     * @return A readable CSV file if it exists (Excel files will be converted to csv), otherwise the originally provided file.
      */
     fun getReadableCsvFile(exportFile: File): File =
         if (exportFile.extension.lowercase() == "csv") {
@@ -171,11 +171,13 @@ object ExportTestUtils {
                         inQuotes = !inQuotes
                     }
                 }
+
                 c == ',' && !inQuotes -> {
                     // if we're not in quotes, then we have encountered a delimiter '
                     result.add(current.toString())
                     current = StringBuilder()
                 }
+
                 else -> {
                     current.append(c)
                 }

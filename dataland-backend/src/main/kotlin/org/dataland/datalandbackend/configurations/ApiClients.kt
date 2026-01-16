@@ -10,13 +10,15 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.annotation.EnableAsync
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
  */
 @Configuration
+@EnableAsync
 class ApiClients(
-    @Value("\${dataland.community-manager.base-url}") private val communitymanagerBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
     @Value("\${dataland.documentmanager.base-url}") private val documentManagerBaseUrl: String,
     @Value("\${dataland.specification-service.base-url}") private val specificationServiceBaseUrl: String,
 ) {
@@ -26,7 +28,7 @@ class ApiClients(
     @Bean
     fun getCompanyRolesApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the DataAccessControllerApi of the community manager
@@ -34,7 +36,7 @@ class ApiClients(
     @Bean
     fun getDataAccessControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): DataAccessControllerApi = DataAccessControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+    ): DataAccessControllerApi = DataAccessControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
@@ -42,7 +44,7 @@ class ApiClients(
     @Bean
     fun getRequestsApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): RequestControllerApi = RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+    ): RequestControllerApi = RequestControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the DocumentControllerApi of the document manager

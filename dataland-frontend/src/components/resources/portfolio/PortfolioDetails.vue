@@ -214,7 +214,7 @@ import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } fr
 import router from '@/router';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
-
+import { pollExportJobStatus } from '@/utils/ExportUtils.ts';
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
  * by transforming and enriching fields, such as converting country codes to names,
@@ -448,6 +448,26 @@ function getCompanyIds(): string[] {
 }
 
 /**
+ * Prepares the downloaded file by building filename and formatting content
+ * @param exportFileType the file type for export
+ * @param selectedFramework the framework being exported
+ * @param responseData the raw response data from the API
+ * @returns object containing filename and formatted content
+ */
+function prepareDownloadFile(
+  exportFileType: ExportFileType,
+  selectedFramework: DataTypeEnum,
+  responseData: string | ArrayBuffer | object
+): { filename: string; content: string | ArrayBuffer } {
+  const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+  const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
+  const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+  const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : (responseData as string | ArrayBuffer);
+
+  return { filename, content };
+}
+
+/**
  * Download the dataset from the selected reporting period as a file in the selected format
  * @param selectedYears selected reporting year
  * @param selectedFileType selected export file type
@@ -465,7 +485,6 @@ async function handleDatasetDownload(
   isDownloading.value = true;
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider
@@ -474,23 +493,28 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
+    const exportJobId = (
+      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+        selectedYears,
+        getCompanyIds(),
+        exportFileType,
+        keepValuesOnly,
+        includeAlias
+      )
+    ).data.id;
+
+    await pollExportJobStatus(assertDefined(exportJobId), apiClientProvider.apiClients.dataExportController);
+
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
-    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
-
-    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedYears,
-      getCompanyIds(),
-      exportFileType,
-      keepValuesOnly,
-      includeAlias,
+    const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
+      exportJobId,
       options
     );
+    const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(response.data) : response.data;
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);

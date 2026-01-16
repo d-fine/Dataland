@@ -96,7 +96,7 @@ describeIf(
      * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
+      cy.wait(Cypress.env('long_timeout_in_ms') as number); // optional short delay
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
@@ -118,7 +118,7 @@ describeIf(
      * @param useAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyAliases(partialFileNamePrefix: string, fileExtension: string, useAliases: boolean): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+      cy.wait(Cypress.env('long_timeout_in_ms') as number);
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
