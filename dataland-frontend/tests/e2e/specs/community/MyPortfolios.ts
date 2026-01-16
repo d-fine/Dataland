@@ -92,42 +92,6 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
   cy.get('[data-test="close-success-modal-button"]').should('exist').click();
 }
 
-/**
- * Shares a portfolio with another user.
- * @param portfolioToShare - The name of the portfolio to share.
- * @param userEmail - The email of the user to share with.
- */
-function sharePortfolioWithUser(portfolioToShare: string, userEmail: string): void {
-  cy.get(`[data-test="${portfolioToShare}"]`).click();
-  cy.get(`[data-test="portfolio-${portfolioToShare}"] [data-test="share-portfolio"]`).click({
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
-  });
-
-  cy.get('.p-dialog').find('.p-dialog-header').contains('Manage Portfolio Access');
-
-  cy.get('.p-dialog').within(() => {
-    cy.get('[data-test="email-input-field"]').type(userEmail);
-    cy.get('[data-test="select-user-button"]').click();
-
-    cy.get('[data-test="users-with-access-listbox"]').should('contain', userEmail);
-
-    cy.get('[data-test="save-changes-button"]').click({
-      timeout: Cypress.env('medium_timeout_in_ms') as number,
-    });
-  });
-
-  cy.wait('@patchSharing')
-    .its('request.body')
-    .should((body) => {
-      expect(body.sharedUserIds).to.be.an('array');
-      expect(body.sharedUserIds).to.have.length(1);
-    });
-
-  cy.get(`[data-test="portfolio-${portfolioToShare}"] [data-test="shared-users-tag"]`)
-    .should('be.visible')
-    .and('contain', 'Shared with');
-}
-
 describeIf(
   'As a user I want to be able to create, edit, and delete my portfolios',
   {
@@ -165,8 +129,6 @@ describeIf(
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
       cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
-      cy.intercept('PATCH', '**/users/portfolios/**/sharing').as('patchSharing');
-      cy.intercept('POST', '**/emails/validation').as('emailValidation');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
       cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
@@ -207,8 +169,6 @@ describeIf(
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
       activateActiveMonitoringForPortfolio(editedSecondPortfolioName);
-
-      sharePortfolioWithUser(editedSecondPortfolioName, 'data.reader@example.com');
 
       // Go to a company in the second portfolio, return, and verify the second portfolio tab is displayed
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');

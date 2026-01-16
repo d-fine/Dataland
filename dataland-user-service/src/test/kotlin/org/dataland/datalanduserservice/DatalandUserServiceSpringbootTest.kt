@@ -75,6 +75,7 @@ class DatalandUserServiceSpringbootTest
                 isMonitored,
                 dummyMonitoredFrameworks,
                 NotificationFrequency.Weekly,
+                sharedUserIds = setOf(userId),
             )
 
         private val dummyPortfolioUpload2 =
@@ -84,6 +85,7 @@ class DatalandUserServiceSpringbootTest
                 isMonitored,
                 dummyMonitoredFrameworks,
                 NotificationFrequency.Weekly,
+                sharedUserIds = setOf(userId),
             )
 
         @BeforeEach
@@ -141,6 +143,7 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
                 assertEquals(dummyPortfolioUpload2.identifiers, portfolioResponse.identifiers)
+                assertEquals(dummyPortfolioUpload2.sharedUserIds, portfolioResponse.sharedUserIds)
             }
 
             @Test

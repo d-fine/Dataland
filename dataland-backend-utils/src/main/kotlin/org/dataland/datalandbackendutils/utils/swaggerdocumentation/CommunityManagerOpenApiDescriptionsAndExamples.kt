@@ -45,10 +45,8 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION = "Contains all company identifiers that were rejected by Dataland"
     const val REJECTED_COMPANY_IDENTIFIERS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE}\"]"
 
-    const val GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the Dataland user in question."
     const val DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
     const val COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user in the company role assignment."
-    const val USER_EMAIL_ADDRESS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE
 
     const val GENERAL_FIRST_NAME_DESCRIPTION = "The first name of the Dataland user in question."
     const val FIRST_NAME_EXAMPLE = "Jane"
