@@ -49,9 +49,13 @@ data class PortfolioEntity(
     val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
     @Enumerated(EnumType.STRING)
     val timeWindowThreshold: TimeWindowThreshold? = null,
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "portfolio_shared_users", joinColumns = [JoinColumn(name = "portfolio_id")])
+    @Column(name = "shared_user_ids")
+    val sharedUserIds: Set<String>?,
 ) {
     /**
-     * create PortfolioResponse from entity
+     * Converts this PortfolioEntity to a BasePortfolio API model.
      */
     fun toBasePortfolio(): BasePortfolio =
         BasePortfolio(
@@ -65,5 +69,6 @@ data class PortfolioEntity(
             monitoredFrameworks ?: emptySet(),
             notificationFrequency,
             timeWindowThreshold,
+            sharedUserIds ?: emptySet(),
         )
 }

@@ -36,6 +36,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       monitoredFrameworks: new Set('sfdr'),
       notificationFrequency: NotificationFrequency.NoNotifications,
       timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p2',
@@ -48,6 +49,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       monitoredFrameworks: new Set(),
       notificationFrequency: NotificationFrequency.NoNotifications,
       timeWindowThreshold: undefined,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p3',
@@ -60,6 +62,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
       notificationFrequency: NotificationFrequency.NoNotifications,
       timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
   ];
 

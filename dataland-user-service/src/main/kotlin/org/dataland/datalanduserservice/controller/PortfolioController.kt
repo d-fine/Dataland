@@ -2,17 +2,21 @@ package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.api.PortfolioApi
+import org.dataland.datalanduserservice.api.PortfolioSharingApi
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.PortfolioSharingPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.SupportRequestData
 import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
 import org.dataland.datalanduserservice.service.PortfolioService
+import org.dataland.datalanduserservice.service.PortfolioSharingService
 import org.dataland.datalanduserservice.utils.Validator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -23,7 +27,7 @@ import java.util.UUID
 /**
  * RestController for the Portfolio API
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @RestController
 class PortfolioController
     @Autowired
@@ -32,14 +36,18 @@ class PortfolioController
         private val validator: Validator,
         private val portfolioEnrichmentService: PortfolioEnrichmentService,
         private val portfolioMonitoringService: PortfolioMonitoringService,
+        private val portfolioSharingService: PortfolioSharingService,
         private val messageQueuePublisherService: MessageQueuePublisherService,
         private val companyDataControllerApi: CompanyDataControllerApi,
-    ) : PortfolioApi {
+    ) : PortfolioApi,
+        PortfolioSharingApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUser())
 
-        override fun getPortfolio(portfolioId: String): ResponseEntity<BasePortfolio> =
-            ResponseEntity.ok(portfolioService.getPortfolio(portfolioId))
+        override fun getPortfolio(portfolioId: String): ResponseEntity<BasePortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(portfolioService.getPortfolio(portfolioId, correlationId))
+        }
 
         override fun getPortfoliosForUser(userId: String): ResponseEntity<List<BasePortfolio>> =
             ResponseEntity.ok(portfolioService.getAllPortfoliosForUserById(userId))
@@ -96,8 +104,12 @@ class PortfolioController
         override fun getAllPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
             ResponseEntity.ok(portfolioService.getAllPortfolioNamesForCurrentUser())
 
-        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> =
-            ResponseEntity.ok(portfolioEnrichmentService.getEnrichedPortfolio(portfolioService.getPortfolio(portfolioId)))
+        override fun getEnrichedPortfolio(portfolioId: String): ResponseEntity<EnrichedPortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(
+                portfolioEnrichmentService.getEnrichedPortfolio(portfolioService.getPortfolio(portfolioId, correlationId)),
+            )
+        }
 
         override fun patchMonitoring(
             portfolioId: String,
@@ -118,4 +130,35 @@ class PortfolioController
             messageQueuePublisherService.publishSupportRequest(supportRequestData, correlationId)
             return ResponseEntity.status(HttpStatus.CREATED).build()
         }
+
+        override fun getAllSharedPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
+            ResponseEntity.ok(portfolioSharingService.getAllSharedPortfoliosForCurrentUser())
+
+        override fun patchSharing(
+            portfolioId: String,
+            portfolioSharingPatch: PortfolioSharingPatch,
+        ): ResponseEntity<BasePortfolio> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity.ok(
+                portfolioSharingService.patchSharing(
+                    ValidationUtils.convertToUUID(portfolioId),
+                    BasePortfolio(portfolioSharingPatch),
+                    correlationId,
+                ),
+            )
+        }
+
+        override fun deleteCurrentUserFromSharing(portfolioId: String): ResponseEntity<Unit> {
+            val correlationId = UUID.randomUUID().toString()
+            return ResponseEntity(
+                portfolioSharingService.deleteCurrentUserFromSharing(
+                    ValidationUtils.convertToUUID(portfolioId),
+                    correlationId,
+                ),
+                HttpStatus.NO_CONTENT,
+            )
+        }
+
+        override fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>> =
+            ResponseEntity.ok(portfolioSharingService.getAllSharedPortfolioNamesForCurrentUser())
     }
