@@ -106,7 +106,7 @@ data class BasePortfolio(
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
         notificationFrequency = portfolioUpload.notificationFrequency,
         timeWindowThreshold = portfolioUpload.timeWindowThreshold,
-        sharedUserIds = emptySet(),
+        sharedUserIds = portfolioUpload.sharedUserIds,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
