@@ -29,7 +29,7 @@ data class CompanyRoleAssignmentExtended(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val email: String,
     @field:JsonProperty(required = false)

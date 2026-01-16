@@ -1,6 +1,8 @@
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalanduserservice.DatalandUserService
 import org.dataland.datalanduserservice.entity.PortfolioEntity
@@ -15,6 +17,7 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -49,6 +52,9 @@ abstract class AbstractPortfolioControllerTest {
 
     @MockitoBean
     protected lateinit var companyDataController: CompanyDataControllerApi
+
+    @MockitoBean
+    protected lateinit var keycloakUserService: KeycloakUserService
 
     protected val mockSecurityContext: SecurityContext = mock()
 
@@ -122,6 +128,7 @@ abstract class AbstractPortfolioControllerTest {
             mockSecurityContext,
             portfolioRightsUtilsComponent,
             companyDataController,
+            keycloakUserService,
         )
         portfolioRepository.deleteAll()
 
@@ -147,11 +154,33 @@ abstract class AbstractPortfolioControllerTest {
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
+    protected fun mockKeycloakUserServiceGetUser() {
+        whenever(keycloakUserService.getUser(any())).thenAnswer { invocation ->
+            val userId = invocation.getArgument<String>(0)
+            KeycloakUserInfo(
+                email = "dummy+$userId@example.com",
+                userId = userId,
+                firstName = "FirstName",
+                lastName = "LastName",
+            )
+        }
+    }
+
     protected fun performGetPortfolioAndExpect(statusMatcher: ResultMatcher) {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
                     .get("/portfolios/$portfolioId/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(SecurityMockMvcRequestPostProcessors.securityContext(mockSecurityContext)),
+            ).andExpect(statusMatcher)
+    }
+
+    protected fun performGetPortfolioAccessRightsAndExpect(statusMatcher: ResultMatcher) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/portfolios/$portfolioId/access-rights")
                     .contentType(MediaType.APPLICATION_JSON)
                     .with(SecurityMockMvcRequestPostProcessors.securityContext(mockSecurityContext)),
             ).andExpect(statusMatcher)
