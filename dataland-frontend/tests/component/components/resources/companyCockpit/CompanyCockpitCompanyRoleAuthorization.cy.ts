@@ -2,12 +2,11 @@ import {
   generateCompanyRoleAssignment,
   mountCompanyCockpitWithAuthentication,
   mockRequestsOnMounted,
-  validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
 import { setupCompanyCockpitFixtures } from './testUtils';
 import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
-import { KEYCLOAK_ROLES, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 /**
  * Intercepts the company rights endpoint for the given company id and returns the company rights

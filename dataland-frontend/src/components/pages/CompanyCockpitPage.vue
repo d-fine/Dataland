@@ -205,14 +205,14 @@ onMounted(async () => {
   const path = router.currentRoute.value.path;
 
   const onCreditsTab = path.endsWith('/credits');
-  const onUsersPage = path.endsWith('/users');
+  const onUsersTab = path.endsWith('/users');
 
-  if ((!canViewCredits && onCreditsTab) || (!isUserCompanyMemberOrAdmin.value && onCreditsTab)) {
+  if ((!canViewCredits.value && onCreditsTab) || (!isUserCompanyMemberOrAdmin.value && onUsersTab)) {
     activeTab.value = 'datasets';
     await router.replace({ path: `/companies/${props.companyId}` });
   } else if (onCreditsTab) {
     activeTab.value = 'credits';
-  } else if (onUsersPage) {
+  } else if (onUsersTab) {
     activeTab.value = 'users';
   } else {
     activeTab.value = 'datasets';
