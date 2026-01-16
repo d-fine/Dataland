@@ -179,34 +179,6 @@ internal class DataControllerTest {
         }
     }
 
-    @Test
-    fun playground() {
-        whenever(mockCompanyQueryManager.validateCompanyIdentifiers(any()))
-            .doReturn(
-                listOf(
-                    CompanyIdentifierValidationResult(
-                        identifier = "LEI",
-                        companyInformation =
-                            BasicCompanyInformation(
-                                "comp-1",
-                                "company name",
-                                "Berlin",
-                                "DE",
-                                null, null,
-                            ),
-                    ),
-                ),
-            )
-
-        dataController.postExportJobCompanyAssociatedDataByDimensions(
-            ExportRequestData(
-                reportingPeriods = listOf(testReportingPeriod),
-                companyIds = listOf(testCompanyId),
-                fileFormat = ExportFileType.CSV,
-            ),
-        )
-    }
-
     @ParameterizedTest
     @EnumSource(ExportFileType::class)
     fun `test that the export functionality returns 404 if all input companyIds are invalid`(exportFileType: ExportFileType) {
