@@ -205,6 +205,9 @@ onUnmounted(() => {
     letter-spacing: 0.05rem;
     text-transform: uppercase;
     text-decoration: none;
+    display: inline-flex;
+    gap: 0.25rem;
+    white-space: nowrap;
 
     &:hover {
       text-decoration: underline;
@@ -220,7 +223,7 @@ onUnmounted(() => {
       height: 1rem;
       background-image: url(/static/icons/Arrow--up-right.svg);
       background-size: cover;
-      position: relative;
+      position: static;
       margin-left: 0.5rem;
       filter: invert(1);
     }
@@ -236,7 +239,7 @@ onUnmounted(() => {
   &__row--top {
     padding-bottom: 2.5rem;
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 40% 60%;
   }
 
   &__row--bottom {
