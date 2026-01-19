@@ -239,7 +239,7 @@ onUnmounted(() => {
   &__row--top {
     padding-bottom: 2.5rem;
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 30% 70%;
   }
 
   &__row--bottom {
