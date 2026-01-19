@@ -59,6 +59,9 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val DATA_REQUEST_USER_ID_DESCRIPTION = "The ID of the user who created the data request."
     const val USER_ID_EXAMPLE = GENERAL_UUID_EXAMPLE
 
+    const val GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the Dataland user in question."
+    const val USER_EMAIL_ADDRESS_EXAMPLE = GENERAL_EMAIL_EXAMPLE
+
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE
 
@@ -70,4 +73,12 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val COMPANY_SEARCH_STRING_DESCRIPTION =
         "Search string used for company substring matching. Matched against company names and identifiers."
     const val COMPANY_SEARCH_STRING_EXAMPLE = "Inc."
+
+    const val PROXY_ID_DESCRIPTION = "The unique identifier of the company proxy relation."
+    const val PROXY_ID_EXAMPLE = GENERAL_UUID_EXAMPLE
+
+    const val PROXIED_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is being proxied."
+    const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."
+    const val PROXIED_FRAMEWORKS_DESCRIPTION = "Framework for which proxying is permitted. Null means all frameworks."
+    const val PROXIED_REPORTING_PERIODS_DESCRIPTION = "Reporting period for which proxying is permitted. Null means all reporting periods."
 }

@@ -43,6 +43,7 @@ tasks.register("generateClients") {
     dependsOn("generateEmailServiceClient")
     dependsOn("generateUserServiceClient")
     dependsOn("generateDataSourcingServiceClient")
+    dependsOn("generateAccountingServiceClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -248,6 +249,29 @@ tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.g
     )
 }
 
+tasks.register("generateAccountingServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the accounting service."
+    group = "clients"
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.accountingservice"
+    input = project.file("${project.rootDir}/dataland-accounting-service/accountingServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/accountingservice")
+            .get()
+            .toString(),
+    )
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 sourceSets {
     val main by getting
     main.java.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
@@ -257,6 +281,7 @@ sourceSets {
     main.java.srcDir(layout.buildDirectory.dir("clients/communitymanager/src/main/kotlin"))
     main.java.srcDir(layout.buildDirectory.dir("clients/userservice/src/main/kotlin"))
     main.java.srcDir(layout.buildDirectory.dir("clients/datasourcingservice/src/main/kotlin"))
+    main.java.srcDir(layout.buildDirectory.dir("clients/accountingservice/src/main/kotlin"))
 }
 
 ktlint {

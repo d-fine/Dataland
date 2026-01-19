@@ -1,5 +1,6 @@
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
-import { type BasePortfolio } from '@clients/userservice';
+import { type BasePortfolio, NotificationFrequency } from '@clients/userservice';
+import { BasePortfolioTimeWindowThresholdEnum } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 /**
@@ -33,6 +34,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 1,
       isMonitored: true,
       monitoredFrameworks: new Set('sfdr'),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p2',
@@ -43,6 +47,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 456,
       isMonitored: false,
       monitoredFrameworks: new Set(),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: undefined,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p3',
@@ -53,6 +60,9 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       lastUpdateTimestamp: 9999,
       isMonitored: true,
       monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
   ];
 

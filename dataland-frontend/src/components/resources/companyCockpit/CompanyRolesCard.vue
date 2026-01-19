@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 
 import Button from 'primevue/button';
@@ -256,7 +256,7 @@ const selectedRole = ref<CompanyRole | null>(null);
 let currentUserId: string | undefined = undefined;
 
 const isGlobalAdmin = ref(false);
-const showInfoMessage = useStorage<boolean>(`showInfoMessage-${props.role}`, true);
+const showInfoMessage = useStorage<boolean>(`showInfoMessageCompanyRoles-${props.role}`, true);
 
 const groups: CompanyRoleDetails[] = [
   {

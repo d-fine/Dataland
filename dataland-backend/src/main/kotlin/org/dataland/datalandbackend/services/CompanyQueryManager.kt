@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -56,7 +57,7 @@ class CompanyQueryManager
         @Throws(ResourceNotFoundApiException::class)
         fun assertCompanyIdExists(companyId: String) {
             if (!checkCompanyIdExists(companyId)) {
-                throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
+                throw ResourceNotFoundApiException(COMPANY_NOT_FOUND, "Dataland does not know the company ID $companyId")
             }
         }
 

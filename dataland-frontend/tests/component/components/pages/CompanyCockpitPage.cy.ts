@@ -14,7 +14,6 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { CompanyRole } from '@clients/communitymanager';
 import {
-  KEYCLOAK_ROLE_ADMIN,
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -57,6 +56,10 @@ describe('Component test for the company cockpit', () => {
     DataTypeEnum.Sfdr,
   ]);
   let allFrameworks: Set<DataTypeEnum>;
+  const dummyUserId = 'mock-user-id';
+  const dummyFirstName = 'mock-first-name';
+  const dummyLastName = 'mock-last-name';
+  const dummyEmail = 'mock@Company.com';
 
   before(function () {
     cy.clearLocalStorage();
@@ -311,15 +314,31 @@ describe('Component test for the company cockpit', () => {
     validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
   });
 
-  it('Users Page has to be visible for Dataland Admins', () => {
-    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
-    cy.get('[data-test="usersTab"]').should('be.visible').click();
-  });
+  it('Users are being displayed correctly in the Users Page', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
-  it('Users Page is not visible for non Dataland Admins', () => {
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
-    mountCompanyCockpitWithAuthentication(true, false, undefined, []);
-    cy.get('[data-test="usersTab"]').should('not.exist');
+    mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
+
+    cy.wait('@fetchRoleAssignments');
+    cy.get('[data-test="usersTab"]').click();
+    cy.get('[data-test="company-roles-card"]').filter(':visible').should('exist');
+    cy.get('[data-test=sfdr-summary-panel]').filter(':visible').should('not.exist');
+
+    cy.wait('@fetchRoleAssignments');
+    cy.get('[data-test="company-roles-card"]', { timeout: 10000 }).should('exist');
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
+      cy.get('td', { timeout: 10000 }).should('exist');
+      cy.get('td').contains(dummyFirstName).should('exist');
+      cy.get('td').contains(dummyLastName).should('exist');
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('td').contains(dummyUserId).should('exist');
+    });
+    cy.contains('[data-test="company-roles-card"]', 'Admins').within(() => {
+      cy.get('td').contains(dummyFirstName).should('not.exist');
+      cy.get('td').contains(dummyLastName).should('not.exist');
+      cy.get('td').contains(dummyEmail).should('not.exist');
+      cy.get('td').contains(dummyUserId).should('not.exist');
+    });
   });
 });

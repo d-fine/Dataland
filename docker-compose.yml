@@ -1,4 +1,3 @@
-version: "3.8"
 # Docker-compose file for the dataland stack.
 # Things can be configured by using docker-compose profiles. Valid profiles:
 # production: The profile to be used if the stack is deployed in a production-like setup
@@ -282,8 +281,8 @@ services:
       KEYCLOAK_PREMIUM_USER_PASSWORD: ${KEYCLOAK_PREMIUM_USER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
       GRAFANA_ADMIN: ${GRAFANA_ADMIN}
       GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
@@ -302,7 +301,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.11.1@sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544
+    image: node:24.12.0@sha256:b52a8d1206132b36d60e51e413d9a81336e8a0206d3b648cabd6d5a49c4c0f54
     networks:
       internal:
         aliases:
@@ -406,8 +405,8 @@ services:
     command: initialize
     environment:
       <<: *mailjet-api-id-and-secret
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_READER_VALUE: ${KEYCLOAK_READER_VALUE}
@@ -467,6 +466,7 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
@@ -552,6 +552,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
+      USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
     depends_on:
       - user-service-db
@@ -725,7 +726,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:db3b1082629f4b3a15390436f64ed4de1676b2e593d8282a50f40e92e20e6a9d
+    image: postgres:alpine@sha256:b40d931bd0e7ce6eecc59a5a6ac3b3c04a01e559750e73e7086b6dbd7f8bf545
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -786,6 +787,11 @@ services:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    healthcheck:
+      test: ["CMD", "/usr/bin/loki", "-config.file=/etc/loki/loki-config.yaml", "-verify-config"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:

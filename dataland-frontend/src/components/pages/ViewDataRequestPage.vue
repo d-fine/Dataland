@@ -130,7 +130,7 @@
             <Divider />
             <p class="dataland-info-text normal" style="align-items: baseline">
               If you want to stop the processing of this request, you can withdraw it. The data provider will no longer
-              process this request.
+              process this request. The request will not be billed.
             </p>
             <PrimeButton
               data-test="withdraw-request-button"
@@ -147,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, inject, onMounted, defineProps } from 'vue';
+import { ref, reactive, inject, onMounted } from 'vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';

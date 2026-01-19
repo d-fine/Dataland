@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.repository
 
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -23,14 +24,6 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     fun getPortfolioByPortfolioId(portfolioId: UUID): PortfolioEntity?
 
     /**
-     * Get specific portfolio by portfolioId for userId
-     */
-    fun getPortfolioByUserIdAndPortfolioId(
-        userId: String,
-        portfolioId: UUID,
-    ): PortfolioEntity?
-
-    /**
      * Return a paginated chunk of all portfolios that exist on Dataland.
      */
     override fun findAll(pageable: Pageable): Page<PortfolioEntity>
@@ -43,10 +36,7 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     /**
      * Delete specific portfolio by portfolioId for userId
      */
-    fun deleteByUserIdAndPortfolioId(
-        userId: String,
-        portfolioId: UUID,
-    )
+    fun deleteByPortfolioId(portfolioId: UUID)
 
     /**
      * Checks if specific portfolio with portfolioId for userId exists
@@ -63,4 +53,14 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
         userId: String,
         portfolioName: String,
     ): Boolean
+
+    /**
+     * Find all portfolios with specific notification frequency that are monitored
+     */
+    fun findAllByNotificationFrequencyAndIsMonitoredIsTrue(notificationFrequency: NotificationFrequency): List<PortfolioEntity>
+
+    /**
+     * Retrieve all portfolios where the given userId is in sharedUserIds
+     */
+    fun findAllBySharedUserIdsContaining(userId: String): List<PortfolioEntity>
 }

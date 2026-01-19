@@ -17,6 +17,8 @@ object MessageType {
     const val PRIVATE_DATA_RECEIVED = "Private Data received"
     const val QA_STATUS_UPDATED = "QA status updated"
     const val DATA_NONSOURCEABLE = "Data non-sourceable"
+    const val DATASOURCING_NONSOURCEABLE = "DataSourcing non-sourceable"
     const val PORTFOLIO_UPDATE = "portfolio.update"
     const val REQUEST_SET_TO_PROCESSING = "Request set to processing"
+    const val REQUEST_SET_TO_WITHDRAWN = "Request set to withdrawn"
 }

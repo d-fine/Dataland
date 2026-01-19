@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotEmpty
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.utils.MonitoringIsValid
 
 /**
@@ -45,5 +46,28 @@ data class PortfolioUpload(
             ),
     )
     override val monitoredFrameworks: Set<String> = emptySet(),
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
+    )
+    override val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val timeWindowThreshold: TimeWindowThreshold? = null,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String> = emptySet(),
 ) : Portfolio,
-    PortfolioMonitoring
+    PortfolioMonitoring,
+    PortfolioSharing

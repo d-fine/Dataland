@@ -1,8 +1,9 @@
 import { defineConfig } from 'cypress';
-import { promises, rmdir } from 'fs';
+import { promises } from 'fs';
 import { createHash } from 'crypto';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
+import { computeFakeFixtureDocumentIds } from './tests/e2e/support/node/fixtureDocuments';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -24,8 +25,8 @@ export default defineConfig({
     KEYCLOAK_PREMIUM_USER_PASSWORD: process.env.KEYCLOAK_PREMIUM_USER_PASSWORD,
     KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
     KEYCLOAK_READER_PASSWORD: process.env.KEYCLOAK_READER_PASSWORD,
-    KEYCLOAK_ADMIN_PASSWORD: process.env.KEYCLOAK_ADMIN_PASSWORD,
-    KEYCLOAK_ADMIN: process.env.KEYCLOAK_ADMIN,
+    KC_BOOTSTRAP_ADMIN_USERNAME: process.env.KC_BOOTSTRAP_ADMIN_USERNAME,
+    KC_BOOTSTRAP_ADMIN_PASSWORD: process.env.KC_BOOTSTRAP_ADMIN_PASSWORD,
     PGADMIN_PASSWORD: process.env.PGADMIN_PASSWORD,
     RABBITMQ_PASS: process.env.RABBITMQ_PASS,
     RABBITMQ_USER: process.env.RABBITMQ_USER,
@@ -96,16 +97,13 @@ export default defineConfig({
         },
       });
       on('task', {
-        deleteFolder(folderName) {
-          return new Promise((resolve, reject) => {
-            rmdir(folderName, { recursive: true }, (err) => {
-              if (err) {
-                console.error(err);
-                return reject(err);
-              }
-              resolve(null);
-            });
-          });
+        async deleteFolder(folderName: string) {
+          try {
+            await promises.rm(folderName, { recursive: true, force: true });
+          } catch (err) {
+            console.error(`deleteFolder error for ${folderName}:`, err);
+          }
+          return null;
         },
       });
 
@@ -157,6 +155,16 @@ export default defineConfig({
         },
       });
       on('task', {
+        async fileExists(path: string) {
+          try {
+            await promises.access(path);
+            return true;
+          } catch {
+            return false;
+          }
+        },
+      });
+      on('task', {
         createUniquePdfFixture() {
           const fs = require('fs');
           const path = require('path');
@@ -191,7 +199,7 @@ export default defineConfig({
           return filename;
         },
       });
-
+      config.env.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',

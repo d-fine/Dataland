@@ -3,6 +3,8 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,7 +25,6 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioMonitoringServiceTest {
     private val mockPortfolioRepository = mock<PortfolioRepository>()
-    private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
     private val mockSecurityContext = mock<SecurityContext>()
     private lateinit var portfolioMonitoringService: PortfolioMonitoringService
 
@@ -41,6 +42,9 @@ class PortfolioMonitoringServiceTest {
             identifiers = setOf("companyId"),
             isMonitored = false,
             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+            NotificationFrequency.Weekly,
+            timeWindowThreshold = null,
+            sharedUserIds = emptySet(),
         )
 
     @BeforeEach
@@ -48,7 +52,7 @@ class PortfolioMonitoringServiceTest {
         resetSecurityContext()
         doAnswer { it.arguments[0] }.whenever(mockPortfolioRepository).save(any())
         portfolioMonitoringService =
-            PortfolioMonitoringService(mockPortfolioBulkDataRequestService, mockPortfolioRepository)
+            PortfolioMonitoringService(mockPortfolioRepository)
     }
 
     private fun resetSecurityContext() {
@@ -68,11 +72,13 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(null)
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolioId))
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioMonitoringService.patchMonitoring(
@@ -91,11 +97,13 @@ class PortfolioMonitoringServiceTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         doReturn(originalPortfolio.toPortfolioEntity())
             .whenever(mockPortfolioRepository)
-            .getPortfolioByUserIdAndPortfolioId(dummyUserId, UUID.fromString(dummyPortfolio.portfolioId))
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
 
         val updatedPortfolio =
             portfolioMonitoringService.patchMonitoring(
@@ -109,5 +117,6 @@ class PortfolioMonitoringServiceTest {
         assertEquals(originalPortfolio.identifiers, updatedPortfolio.identifiers)
         assertEquals(portfolioMonitoringPatch.isMonitored, updatedPortfolio.isMonitored)
         assertEquals(portfolioMonitoringPatch.monitoredFrameworks, updatedPortfolio.monitoredFrameworks)
+        assertEquals(portfolioMonitoringPatch.timeWindowThreshold, updatedPortfolio.timeWindowThreshold)
     }
 }

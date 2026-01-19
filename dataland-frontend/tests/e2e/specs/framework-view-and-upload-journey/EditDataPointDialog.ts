@@ -30,8 +30,14 @@ function openEditDialog(dataPointType: string): void {
  */
 function saveDataPoint(): void {
   cy.intercept('POST', '**/api/data-points?bypassQa=true').as('saveDataPoint');
+  cy.intercept('GET', '**/api/data/sfdr/companies/**').as('reloadSfdr');
+
   cy.get('[data-test="save-data-point-button"]').should('be.visible').click();
+
   cy.wait('@saveDataPoint').its('response.statusCode').should('be.oneOf', [200, 201]);
+  cy.wait('@reloadSfdr');
+
+  cy.get('div.p-dialog-content').should('not.exist');
 }
 
 /**
@@ -90,7 +96,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '17,992.73');
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '78,448.67');
         });
 
       cy.get('[data-test="quality-select"]')
@@ -100,7 +106,6 @@ describeIf(
 
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
-      cy.get('[data-test="comment-textarea"]').should('have.value', 'connect haptic program');
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
@@ -152,7 +157,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '1,838,828,082.29');
+          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '2,079,638,442.05');
 
           cy.get('[data-test="currency"]').should('exist');
         });
@@ -163,7 +168,14 @@ describeIf(
       cy.get('[data-test="currency-value-input"] input').blur();
 
       cy.get('[data-test="currency"]').click();
-      cy.get('[aria-label="East Caribbean Dollar (XCD)"]').click();
+      cy.get('.p-select-overlay').should('be.visible');
+
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist').scrollIntoView();
+      });
+      cy.get('.p-select-overlay').within(() => {
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').click();
+      });
 
       saveDataPoint();
       verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');

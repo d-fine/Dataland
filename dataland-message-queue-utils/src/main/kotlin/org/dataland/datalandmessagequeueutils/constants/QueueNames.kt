@@ -16,5 +16,8 @@ object QueueNames {
     const val BACKEND_DATA_POINT_QA_STATUS_UPDATED = "backend.updateDataPointQaStatus"
     const val USER_SERVICE_PORTFOLIO_UPDATE = "user-service.updatePortfolio"
     const val DATA_SOURCING_SERVICE_DATASET_QA_STATUS_UPDATE = "data-sourcing-service.datasetQaStatusUpdate"
+    const val USER_SERVICE_NON_SOURCABLE_EVENT = "user-service.processMessageForDataReportedAsNonSourceable"
+    const val USER_SERVICE_QA_STATUS_UPDATE_EVENT = "user-service.processMessageForAvailableDataAndUpdates"
     const val ACCOUNTING_SERVICE_REQUEST_PROCESSING = "accounting-service.requestProcessing"
+    const val ACCOUNTING_SERVICE_REQUEST_WITHDRAWN = "accounting-service.requestWithdrawn"
 }

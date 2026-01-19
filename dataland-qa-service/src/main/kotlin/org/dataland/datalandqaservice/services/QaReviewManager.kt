@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -63,17 +64,12 @@ class QaReviewManager(
         val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
         val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
-        val qaReviewEntity =
-            saveQaReviewEntity(
-                dataId = dataId,
-                qaStatus = qaStatus,
-                triggeringUserId = triggeringUserId,
-                comment = comment,
-                correlationId = correlationId,
-            )
-
-        this.sendQaStatusUpdateMessage(
-            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
+        handleQaChange(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            triggeringUserId = triggeringUserId,
+            comment = comment,
+            correlationId = correlationId,
         )
     }
 
@@ -175,20 +171,20 @@ class QaReviewManager(
     }
 
     /**
-     * Saves QaReviewEntity to database
+     * Handles Qa changes by creating and saving QaReviewEntity, and sending messages.
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId the ID for the process triggering the change
      */
     @Transactional
-    fun saveQaReviewEntity(
+    fun handleQaChange(
         dataId: String,
         qaStatus: QaStatus,
         triggeringUserId: String,
         comment: String?,
         correlationId: String,
-    ): QaReviewEntity {
+    ) {
         val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
@@ -206,7 +202,9 @@ class QaReviewManager(
                 triggeringUserId = triggeringUserId,
                 comment = comment,
             )
-        return qaReviewRepository.save(qaReviewEntity)
+        this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
+
+        qaReviewRepository.save(qaReviewEntity)
     }
 
     /**
@@ -237,15 +235,18 @@ class QaReviewManager(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
     ) {
+        val pastActiveDataId =
+            getDataIdOfCurrentlyActiveDataset(
+                qaReviewEntity.companyId,
+                qaReviewEntity.framework,
+                qaReviewEntity.reportingPeriod,
+            )
+        val isUpdate = pastActiveDataId != null
         val currentlyActiveDataId =
             if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
                 qaReviewEntity.dataId
             } else {
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
-                )
+                pastActiveDataId
             }
 
         val qaStatusChangeMessage =
@@ -253,6 +254,13 @@ class QaReviewManager(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
+                basicDataDimensions =
+                    BasicDataDimensions(
+                        companyId = qaReviewEntity.companyId,
+                        dataType = qaReviewEntity.framework,
+                        reportingPeriod = qaReviewEntity.reportingPeriod,
+                    ),
+                isUpdate = isUpdate,
             )
 
         logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")

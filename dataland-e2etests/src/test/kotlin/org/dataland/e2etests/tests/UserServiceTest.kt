@@ -9,6 +9,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.UserService
 import org.dataland.userService.openApiClient.model.EnrichedPortfolio
+import org.dataland.userService.openApiClient.model.NotificationFrequency
 import org.dataland.userService.openApiClient.model.PortfolioMonitoringPatch
 import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,6 +30,9 @@ class UserServiceTest {
             identifiers = companyIds,
             isMonitored = false,
             monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.NoNotifications,
+            sharedUserIds = emptySet(),
+            timeWindowThreshold = null,
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -128,7 +132,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `portfolio yields expected bulk requests after activating monitoring`() {
+    fun `portfolio yields no requests after activating monitoring`() {
         val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifierFYEAndReportingShift().actualStoredCompany.companyId
         val portfolioUpload =
             PortfolioUpload(
@@ -136,6 +140,9 @@ class UserServiceTest {
                 identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
+                notificationFrequency = NotificationFrequency.NoNotifications,
+                sharedUserIds = emptySet(),
+                timeWindowThreshold = null,
             )
 
         val portfolio =
@@ -157,6 +164,8 @@ class UserServiceTest {
                         PortfolioMonitoringPatch(
                             isMonitored = true,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                            notificationFrequency = NotificationFrequency.NoNotifications,
+                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.Standard,
                         ),
                     )
                 }
@@ -176,7 +185,7 @@ class UserServiceTest {
                 }
             }
 
-        assertEquals(3, requests.size)
+        assertEquals(0, requests.size)
         assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
     }
 }

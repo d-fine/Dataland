@@ -23,6 +23,7 @@ const MyDataRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/MyDataRequestsOverviewLegacy.vue');
 
 const PortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/PortfolioOverview.vue');
+const SharedPortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/SharedPortfolioOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
 const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/ViewDataRequestPageLegacy.vue');
@@ -97,7 +98,7 @@ const routes = [
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
     meta: {
-      initialTabIndex: 1,
+      initialTabIndex: 2,
       requiresAuthentication: true,
     },
   },
@@ -150,7 +151,16 @@ const routes = [
   {
     path: `/companies/:companyId/users`,
     props: true,
-    name: 'CompanyCockpitPage',
+    name: 'CompanyCockpitPageUsers',
+    component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/companies/:companyId/credits`,
+    props: true,
+    name: 'CompanyCockpitPageCredits',
     component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: true,
@@ -161,7 +171,7 @@ const routes = [
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
     meta: {
-      initialTabIndex: 7,
+      initialTabIndex: 8,
       requiresAuthentication: true,
     },
   },
@@ -170,7 +180,7 @@ const routes = [
     name: 'Admin overview for all requests (Legacy)',
     component: AdminRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 8,
+      initialTabIndex: 9,
       requiresAuthentication: true,
     },
   },
@@ -179,7 +189,7 @@ const routes = [
     name: 'UI for quality assurance',
     component: QualityAssurance,
     meta: {
-      initialTabIndex: 3,
+      initialTabIndex: 4,
       requiresAuthentication: true,
     },
   },
@@ -188,7 +198,7 @@ const routes = [
     name: 'Dataset Overview',
     component: DatasetOverview,
     meta: {
-      initialTabIndex: 2,
+      initialTabIndex: 3,
       requiresAuthentication: true,
     },
   },
@@ -197,7 +207,7 @@ const routes = [
     name: 'MyDataRequestsOverview',
     component: MyDataRequestsOverview,
     meta: {
-      initialTabIndex: 4,
+      initialTabIndex: 5,
       requiresAuthentication: true,
     },
   },
@@ -206,7 +216,7 @@ const routes = [
     name: 'MyDataRequestsOverview (Legacy)',
     component: MyDataRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 5,
+      initialTabIndex: 6,
       requiresAuthentication: true,
     },
   },
@@ -233,7 +243,7 @@ const routes = [
     name: 'CompanyDataRequestsOverview',
     component: CompanyDataRequestsOverview,
     meta: {
-      initialTabIndex: 6,
+      initialTabIndex: 7,
       requiresAuthentication: true,
     },
   },
@@ -252,6 +262,15 @@ const routes = [
     component: PortfolioOverview,
     meta: {
       initialTabIndex: 0,
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/shared-portfolios',
+    name: 'Shared Portfolio Overview',
+    component: SharedPortfolioOverview,
+    meta: {
+      initialTabIndex: 1,
       requiresAuthentication: true,
     },
   },

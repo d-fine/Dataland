@@ -7,24 +7,22 @@ COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM registry.access.redhat.com/ubi9@sha256:bbac76ac0310eefd6298ed3ab3c1710e1c842f1f778800de0f49e660b402bdc5 AS ubi-micro-build
+FROM registry.access.redhat.com/ubi9@sha256:2c9bb68a869abf7d7417f6639509ab5eb8500d8429ea11ab59e677be5545162b AS ubi-micro-build
 RUN mkdir -p /mnt/rootfs
 RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
-FROM quay.io/keycloak/keycloak:24.0.5@sha256:f8ade94c1d0ad2f2fa7734a455fee5392764f402c43ca35e9af6bf63a2541dc9
+FROM quay.io/keycloak/keycloak:26.4.6@sha256:d0d4037f17521a7f06137afd5a0eecb1f977f4ade773ae7755f1ee82cad8a576
 
 COPY --from=ubi-micro-build /mnt/rootfs /
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
 ENV KC_DB_USERNAME=keycloak
-ENV KC_HOSTNAME_STRICT=false
-ENV KC_HOSTNAME_STRICT_HTTPS=false
 ENV KC_HTTP_ENABLED=true
-ENV KC_PROXY_ADDRESS_FORWARDING=true
-ENV KC_PROXY=edge
+ENV KC_PROXY_HEADERS=xforwarded
 ENV KC_HTTP_RELATIVE_PATH=keycloak
-ENV KC_HOSTNAME_ADMIN=dataland-admin:6789
+ENV KC_HOSTNAME=https://keycloak:8080
+ENV KC_HOSTNAME_ADMIN=http://dataland-admin:6789/keycloak
 COPY --from=builder /app/dataland-keycloak/dataland_theme/login/build/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin

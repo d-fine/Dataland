@@ -13,8 +13,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 data class KeycloakUserInfo(
     @JsonProperty("email")
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val email: String?,
     @JsonProperty("id", required = true)

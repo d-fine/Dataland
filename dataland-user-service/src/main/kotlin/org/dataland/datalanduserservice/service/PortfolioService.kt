@@ -1,11 +1,12 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -22,7 +23,6 @@ class PortfolioService
     @Autowired
     constructor(
         private val portfolioRepository: PortfolioRepository,
-        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
 
@@ -40,7 +40,7 @@ class PortfolioService
                 "Check if portfolio with portfolioId: $portfolioId exists for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
             )
-            return portfolioRepository.existsByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+            return portfolioRepository.existsByUserIdAndPortfolioId(userId, ValidationUtils.convertToUUID(portfolioId))
         }
 
         /**
@@ -76,23 +76,18 @@ class PortfolioService
          * the portfolio if it belongs to the calling user.
          */
         @Transactional(readOnly = true)
-        fun getPortfolio(portfolioId: String): BasePortfolio {
-            val userId = DatalandAuthentication.fromContext().userId
-            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            val correlationId = UUID.randomUUID().toString()
+        fun getPortfolio(
+            portfolioId: String,
+            correlationId: String,
+        ): BasePortfolio {
             logger.info(
-                "Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId." +
+                "Retrieve portfolio with portfolioId: $portfolioId." +
                     " CorrelationId: $correlationId.",
             )
-            return if (userIsAdmin) {
-                portfolioRepository
-                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
-                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
-            } else {
-                portfolioRepository
-                    .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                    ?.toBasePortfolio() ?: throw PortfolioNotFoundApiException(portfolioId)
-            }
+            return portfolioRepository
+                .getPortfolioByPortfolioId(ValidationUtils.convertToUUID(portfolioId))
+                ?.toBasePortfolio()
+                ?: throw PortfolioNotFoundApiException(portfolioId)
         }
 
         /**
@@ -143,9 +138,7 @@ class PortfolioService
             logger.info(
                 "Create new portfolio for user with userId: ${portfolio.userId}.CorrelationId: $correlationId.",
             )
-            val newPortfolio = portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
-            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(newPortfolio)
-            return newPortfolio
+            return portfolioRepository.save(portfolio.toPortfolioEntity()).toBasePortfolio()
         }
 
         /**
@@ -162,22 +155,24 @@ class PortfolioService
                     " CorrelationId: $correlationId.",
             )
 
-            val originalPortfolio =
-                portfolioRepository.getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
-                    ?: throw PortfolioNotFoundApiException(portfolioId)
+            val originalPortfolio = getPortfolio(portfolioId, correlationId)
 
             val updatedPortfolioEntity =
-                portfolio.toPortfolioEntity(
-                    portfolioId,
-                    originalPortfolio.creationTimestamp,
-                    portfolio.lastUpdateTimestamp,
-                    portfolio.isMonitored,
-                    portfolio.monitoredFrameworks,
+                PortfolioEntity(
+                    portfolioId = UUID.fromString(portfolioId),
+                    portfolioName = portfolio.portfolioName,
+                    userId = originalPortfolio.userId,
+                    creationTimestamp = originalPortfolio.creationTimestamp,
+                    lastUpdateTimestamp = portfolio.lastUpdateTimestamp,
+                    companyIds = portfolio.identifiers.toMutableSet(),
+                    isMonitored = portfolio.isMonitored,
+                    monitoredFrameworks = portfolio.monitoredFrameworks,
+                    notificationFrequency = portfolio.notificationFrequency,
+                    timeWindowThreshold = portfolio.timeWindowThreshold,
+                    sharedUserIds = portfolio.sharedUserIds,
                 )
-            val updatedPortfolio = portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
-            portfolioBulkDataRequestService.createBulkDataRequestsForPortfolioIfMonitored(updatedPortfolio)
 
-            return updatedPortfolio
+            return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()
         }
 
         /**
@@ -190,7 +185,7 @@ class PortfolioService
             logger.info(
                 "Delete portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.",
             )
-            return portfolioRepository.deleteByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+            return portfolioRepository.deleteByPortfolioId(UUID.fromString(portfolioId))
         }
 
         /**

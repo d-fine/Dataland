@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 
 /**
  * --- API model ---
@@ -45,4 +46,22 @@ data class EnrichedPortfolio(
             ),
     )
     val monitoredFrameworks: Set<String>?,
+    @field:JsonProperty(required = true)
+    val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    val timeWindowThreshold: TimeWindowThreshold? = null,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    val sharedUserIds: Set<String>?,
 )

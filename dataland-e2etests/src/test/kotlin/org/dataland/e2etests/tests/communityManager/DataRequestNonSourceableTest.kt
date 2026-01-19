@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests.communityManager
 
-import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
@@ -14,11 +13,11 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
+import org.dataland.e2etests.utils.testDataProviders.awaitUntilAsserted
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestNonSourceableTest {
@@ -108,17 +107,10 @@ class DataRequestNonSourceableTest {
         )
     }
 
-    private fun awaitUntilAsserted(operation: () -> Any) =
-        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
-            operation()
-        }
-
     @Test
     fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
         // Post requests for 2023 and 2024 as premium user.
-        val requestIdsFirstUser = postTwoDataRequestForSameUserAndReturnRequestIds()
-        val requestIdFirstUserRequest2023 = requestIdsFirstUser.first
-        val requestIdFirstUserRequest2024 = requestIdsFirstUser.second
+        val (requestIdFirstUserRequest2023, requestIdFirstUserRequest2024) = postTwoDataRequestForSameUserAndReturnRequestIds()
 
         // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()

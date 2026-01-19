@@ -51,6 +51,26 @@
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -122,7 +142,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland members can activate portfolio monitoring.",
+            "description": "You do not have the right to replace this portfolio or to activate portfolio monitoring.",
             "content": {
               "application/json": {
                 "schema": {
@@ -183,6 +203,10 @@
         "responses": {
           "204": {
             "description": "Successfully deleted existing portfolio.",
+            "content": {}
+          },
+          "403": {
+            "description": "You do not have the right to delete this portfolio.",
             "content": {}
           },
           "default": {
@@ -350,7 +374,89 @@
             }
           },
           "403": {
-            "description": "Only Dataland members can activate portfolio monitoring.",
+            "description": "Only Dataland members can create a portfolio with monitoring.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/{portfolioId}/sharing": {
+      "patch": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Patch the portfolio sharing of a portfolio.",
+        "description": "Updates the list of user IDs with whom an existing portfolio is shared.",
+        "operationId": "patchSharing",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioSharingPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated sharing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasePortfolio"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland Members can modify portfolio sharing for their portfolios.",
             "content": {
               "application/json": {
                 "schema": {
@@ -487,6 +593,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
+                  "description": "The unique identifiers under which a company can be found on Dataland.",
                   "items": {
                     "type": "string"
                   }
@@ -558,6 +665,117 @@
               }
             }
           },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichedPortfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/{portfolioId}/access-rights": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get access rights for all users with access rights to this portfolio.",
+        "description": "Retrieves user details and access rights for all users with access rights to this portfolio.",
+        "operationId": "getPortfolioAccessRights",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved access rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to access this portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio with given portfolioId not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioUserAccessRight"
+                  }
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -617,6 +835,112 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BasePortfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/shared": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all shared portfolios for the currently logged-in user.",
+        "description": "All shared portfolios for the currently logged-in user are retrieved.",
+        "operationId": "getAllSharedPortfoliosForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all shared portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/shared/names": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all shared portfolio names for the currently logged-in user.",
+        "description": "All shared portfolio names for the currently logged-in user are retrieved.",
+        "operationId": "getAllSharedPortfolioNamesForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all shared portfolio names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasePortfolioName"
                   }
                 }
               }
@@ -952,16 +1276,89 @@
           }
         }
       }
+    },
+    "/portfolios/shared/{portfolioId}": {
+      "delete": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Delete the sharing of a portfolio for the currently logged-in user.",
+        "description": "The currently logged-in user is removed from the list of users with whom the portfolio is shared.",
+        "operationId": "deleteCurrentUserFromSharing",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "description": "The unique identifier to identify the portfolio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted sharing for the current user.",
+            "content": {}
+          },
+          "403": {
+            "description": "You can only remove yourself from portfolios that are shared with you.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "NotificationFrequency": {
+        "type": "string",
+        "description": "Possible frequencies in which notifications can be received.",
+        "example": "Weekly",
+        "enum": [
+          "NoNotifications",
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ]
+      },
       "PortfolioUpload": {
         "required": [
           "identifiers",
           "isMonitored",
           "monitoredFrameworks",
-          "portfolioName"
+          "notificationFrequency",
+          "portfolioName",
+          "sharedUserIds"
         ],
         "type": "object",
         "properties": {
@@ -996,6 +1393,29 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1006,8 +1426,10 @@
           "isMonitored",
           "lastUpdateTimestamp",
           "monitoredFrameworks",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
+          "sharedUserIds",
           "userId"
         ],
         "type": "object",
@@ -1064,6 +1486,29 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1086,10 +1531,30 @@
           }
         }
       },
+      "PortfolioSharingPatch": {
+        "required": [
+          "sharedUserIds"
+        ],
+        "type": "object",
+        "properties": {
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "PortfolioMonitoringPatch": {
         "required": [
           "isMonitored",
-          "monitoredFrameworks"
+          "monitoredFrameworks",
+          "notificationFrequency"
         ],
         "type": "object",
         "properties": {
@@ -1107,12 +1572,25 @@
             "items": {
               "type": "string"
             }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
           }
         }
       },
       "EnrichedPortfolio": {
         "required": [
           "entries",
+          "notificationFrequency",
           "portfolioId",
           "portfolioName",
           "userId"
@@ -1150,6 +1628,29 @@
             "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
             "example": [
               "sfdr"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "notificationFrequency": {
+            "$ref": "#/components/schemas/NotificationFrequency"
+          },
+          "timeWindowThreshold": {
+            "type": "string",
+            "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
+            "example": "Standard",
+            "enum": [
+              "Standard",
+              "Extended"
+            ]
+          },
+          "sharedUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "A list of user IDs with whom the portfolio is shared.",
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
             ],
             "items": {
               "type": "string"
@@ -1216,6 +1717,34 @@
             "example": {
               "sfdr": "2024, 2023, 2022"
             }
+          }
+        }
+      },
+      "PortfolioUserAccessRight": {
+        "required": [
+          "portfolioAccessRole",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The Dataland user ID of the user in question.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "The email address of the Dataland user in question.",
+            "example": "test@example.com"
+          },
+          "portfolioAccessRole": {
+            "type": "string",
+            "description": "The access rights that the user has for the shared portfolio.",
+            "example": "Owner",
+            "enum": [
+              "Owner",
+              "Reader"
+            ]
           }
         }
       },
