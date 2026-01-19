@@ -17,7 +17,7 @@ annotation class UserIdParameterNonRequired
 @Retention(AnnotationRetention.RUNTIME)
 @Parameter(
     description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
-    example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+    example = GeneralOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     required = false,
 )
 annotation class DataRequestUserEmailAddressParameterNonRequired

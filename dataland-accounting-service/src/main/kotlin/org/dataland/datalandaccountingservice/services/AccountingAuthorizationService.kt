@@ -15,7 +15,6 @@ class AccountingAuthorizationService(
     /**
      * Check whether the currently authenticated user has any role in the specified company.
      */
-
     fun hasUserRoleInMemberCompany(companyId: String): Boolean {
         val userId =
             try {
@@ -23,7 +22,6 @@ class AccountingAuthorizationService(
             } catch (_: IllegalArgumentException) {
                 null
             }
-
         val hasRole =
             if (userId.isNullOrBlank()) {
                 false

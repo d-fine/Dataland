@@ -36,6 +36,9 @@ object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_SHARED_USER_IDS_DESCRIPTION = "A list of user IDs with whom the portfolio is shared."
     const val PORTFOLIO_SHARED_USER_IDS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"]"
 
+    const val PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION = "The access rights that the user has for the shared portfolio."
+    const val PORTFOLIO_ACCESS_RIGHTS_EXAMPLE = "Owner"
+
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
         "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":\"2024, 2023, 2022\"}"

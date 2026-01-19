@@ -10,6 +10,16 @@ function fillMandatoryFields(): void {
   singleDataRequestPage.chooseFrameworkLksg();
 }
 
+/**
+ * Asserts that the given reporting period is either visible or not present depending on shouldExist
+ * @param reportingPeriod
+ * @param shouldExist
+ */
+function assertWhetherReportingPeriodExists(reportingPeriod: string, shouldExist: boolean): void {
+  const chainer = shouldExist ? 'be.visible' : 'not.exist';
+  cy.get("[data-test='toggle-chip']").contains(reportingPeriod).should(chainer);
+}
+
 describe('Component tests for the single data request page', function (): void {
   it('check submitting successfully', function (): void {
     cy.mountWithPlugins(SingleDataRequestComponent, {
@@ -62,6 +72,21 @@ describe('Component tests for the single data request page', function (): void {
       cy.get("[data-test='quotaReachedModal']").should('be.visible');
       cy.get("[data-test='closeMaxRequestsReachedModalButton']").should('be.visible').click();
       cy.get("[data-test='quotaReachedModal']").should('not.exist');
+    });
+  });
+
+  it('check available reporting periods', function (): void {
+    cy.mountWithPlugins(SingleDataRequestComponent, {
+      keycloak: minimalKeycloakMock({}),
+    }).then(() => {
+      assertWhetherReportingPeriodExists('2026', false);
+      assertWhetherReportingPeriodExists('2025', true);
+      assertWhetherReportingPeriodExists('2024', true);
+      assertWhetherReportingPeriodExists('2023', true);
+      assertWhetherReportingPeriodExists('2022', true);
+      assertWhetherReportingPeriodExists('2021', true);
+      assertWhetherReportingPeriodExists('2020', true);
+      assertWhetherReportingPeriodExists('2019', false);
     });
   });
 });

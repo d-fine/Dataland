@@ -27,7 +27,7 @@ function mountComponent(dummyCompanyId: string, isDatalandAdmin: boolean): void 
  * @param dummyCompanyId of the company to get the balance for
  * @param body of the response
  */
-function interceptCreditBalance(dummyCompanyId: string, body: number): void {
+function interceptCreditBalance(dummyCompanyId: string, body: number | null): void {
   cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance*`, {
     statusCode: 200,
     body: body,
@@ -112,13 +112,13 @@ describe('As a user I want to see available credits on Dataland of the company I
     cy.get('[data-test="info-message"]').should('contain', expectedInfoText);
   });
 
-  it('Credit Balance is not shown if user is not a Dataland Admin', () => {
-    interceptCreditBalance(dummyCompanyId, 100);
+  it('The creditsCard displays "-" if no creditsBalance is null', () => {
+    interceptCreditBalance(dummyCompanyId, null);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, false);
+    mountComponent(dummyCompanyId, true);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
-    cy.get('[data-test="credits-balance-chip"]').should('be.visible');
-    cy.get('[data-test="credits-balance-chip"]').should('contain', 'Coming soon');
+
+    cy.get('[data-test="credits-balance-chip"]').should('contain', '-');
   });
 });
