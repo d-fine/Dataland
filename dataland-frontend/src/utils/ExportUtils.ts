@@ -1,4 +1,13 @@
-import { type DataExportControllerApi, ExportJobProgressState } from '@clients/backend';
+import {
+  type DataExportControllerApi,
+  type DataTypeEnum,
+  type ExportFileType,
+  ExportJobProgressState,
+} from '@clients/backend';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 const EXPORT_POLL_INTERVAL_MS = 500;
 const EXPORT_MAX_POLL_ATTEMPTS = 180;
 
@@ -29,4 +38,24 @@ export async function pollExportJobStatus(
   if (state === ExportJobProgressState.Pending) {
     throw new Error('Export timeout - please try again with fewer companies or reporting periods');
   }
+}
+
+/**
+ * Prepares the downloaded file by building filename and formatting content
+ * @param exportFileType the file type for export
+ * @param selectedFramework the framework being exported
+ * @param responseData the raw response data from the API
+ * @returns object containing filename and formatted content
+ */
+export function prepareDownloadFile(
+  exportFileType: ExportFileType,
+  selectedFramework: DataTypeEnum,
+  responseData: string | ArrayBuffer | object
+): { filename: string; content: string | ArrayBuffer } {
+  const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+  const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
+  const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
+  const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : (responseData as string | ArrayBuffer);
+
+  return { filename, content };
 }

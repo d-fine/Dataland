@@ -129,6 +129,30 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     isTabVisible(RoleBasedTabs.Qa, true);
     isTabVisible(RoleBasedTabs.AllDataRequests, true);
   });
+
+  it('Validate tabs for a logged-in Dataland-User with shared portfolios', function () {
+    cy.intercept('GET', '**/users/portfolios/shared/names', {
+      statusCode: 200,
+      body: [
+        {
+          portfolioId: 'dummy-id',
+          portfolioName: 'Shared Portfolio 1',
+        },
+      ],
+    });
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
+    isTabVisible('SHARED PORTFOLIOS', true);
+  });
+
+  it('Validate tabs for a logged-in Dataland-User without shared portfolios', function () {
+    cy.intercept('GET', '**/users/portfolios/shared/names', {
+      statusCode: 200,
+      body: [],
+    });
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
+    isTabVisible('SHARED PORTFOLIOS', false);
+  });
+
   it('Validate if route navigation leads to correct route when tab is changed', () => {
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
     cy.get('[data-pc-name="tablist"]').contains('MY DATASETS').click();

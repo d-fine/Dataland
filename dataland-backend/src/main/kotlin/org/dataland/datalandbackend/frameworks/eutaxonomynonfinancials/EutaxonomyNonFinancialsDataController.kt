@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -33,7 +34,7 @@ class EutaxonomyNonFinancialsDataController
     constructor(
         datasetStorageService: AssembledDataManager,
         dataMetaInformationManager: DataMetaInformationManager,
-        dataExportService: DataExportService<EutaxonomyNonFinancialsData>,
+        @Qualifier("AssembledExportService") dataExportService: DataExportService<EutaxonomyNonFinancialsData>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
     ) : DataController<EutaxonomyNonFinancialsData>(

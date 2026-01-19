@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param companyQueryManager service for managing query regarding company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data

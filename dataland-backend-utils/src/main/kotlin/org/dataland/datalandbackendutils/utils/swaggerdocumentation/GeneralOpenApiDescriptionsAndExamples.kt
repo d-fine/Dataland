@@ -59,6 +59,9 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val DATA_REQUEST_USER_ID_DESCRIPTION = "The ID of the user who created the data request."
     const val USER_ID_EXAMPLE = GENERAL_UUID_EXAMPLE
 
+    const val GENERAL_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the Dataland user in question."
+    const val USER_EMAIL_ADDRESS_EXAMPLE = GENERAL_EMAIL_EXAMPLE
+
     const val COMPANY_SINGLE_IDENTIFIER_DESCRIPTION = "Unique identifier to find a company."
     const val COMPANY_SINGLE_IDENTIFIER_EXAMPLE = GENERAL_LEI_EXAMPLE
 

@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceO
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
 import org.dataland.datalanduserservice.model.PortfolioSharingPatch
+import org.dataland.datalanduserservice.model.PortfolioUserAccessRight
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -128,4 +129,36 @@ interface PortfolioSharingApi {
         "hasRole('ROLE_USER')",
     )
     fun getAllSharedPortfolioNamesForCurrentUser(): ResponseEntity<List<BasePortfolioName>>
+
+    /**
+     * Get access rights for all users with access rights to this portfolio.
+     */
+    @Operation(
+        summary = "Get access rights for all users with access rights to this portfolio.",
+        description = "Retrieves user details and access rights for all users with access rights to this portfolio.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved access rights."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to access this portfolio."),
+            ApiResponse(responseCode = "404", description = "Portfolio with given portfolioId not found."),
+        ],
+    )
+    @GetMapping(
+        value = ["/portfolios/{portfolioId}/access-rights"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and (" +
+            "@PortfolioRightsUtilsComponent.isUserPortfolioOwner(#portfolioId) or " +
+            "@PortfolioRightsUtilsComponent.isPortfolioSharedWithUser(authentication.userId, #portfolioId)))",
+    )
+    fun getPortfolioAccessRights(
+        @Parameter(
+            description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_DESCRIPTION,
+            example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable("portfolioId") portfolioId: String,
+    ): ResponseEntity<List<PortfolioUserAccessRight>>
 }

@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.stereotype.Service
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap
 class DataControllerProviderService
     @Autowired
     constructor(
-        private val dataExportService: DataExportService<Any>,
+        @Qualifier("AssembledExportService") private val dataExportService: DataExportService<Any>,
         private val dataExportStore: DataExportStore,
         private val storedDataManager: DataManager,
         private val assembledDataManager: AssembledDataManager,

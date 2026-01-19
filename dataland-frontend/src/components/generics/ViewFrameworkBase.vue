@@ -115,7 +115,7 @@ import DownloadData from '@/components/general/DownloadData.vue';
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import { pollExportJobStatus } from '@/utils/ExportUtils.ts';
+import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
 
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
@@ -124,7 +124,6 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
@@ -145,10 +144,8 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import OverlayPanel from 'primevue/overlaypanel';
 import { computed, inject, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
 import { useDialog } from 'primevue/usedialog';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
 
 const props = defineProps<{
@@ -438,13 +435,9 @@ async function handleDatasetDownload(
 
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
-
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
-
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
-    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
 
     const exportJobId = (
       await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
@@ -459,11 +452,12 @@ async function handleDatasetDownload(
 
     await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
 
-    const responseData = (
-      await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(exportJobId)
-    ).data;
+    const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
+      exportJobId,
+      options
+    );
+    const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);
 
-    const content = exportFileType === 'JSON' ? JSON.stringify(responseData) : responseData;
     forceFileDownload(content, filename);
   } catch (err) {
     downloadErrors.value = `${(err as AxiosError).message}`;
