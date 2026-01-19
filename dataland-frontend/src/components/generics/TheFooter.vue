@@ -205,6 +205,7 @@ onUnmounted(() => {
     letter-spacing: 0.05rem;
     text-transform: uppercase;
     text-decoration: none;
+    align-items: center;
     display: inline-flex;
     gap: 0.25rem;
     white-space: nowrap;
@@ -224,7 +225,6 @@ onUnmounted(() => {
       background-image: url(/static/icons/Arrow--up-right.svg);
       background-size: cover;
       position: static;
-      margin-left: 0.5rem;
       filter: invert(1);
     }
   }
