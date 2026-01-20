@@ -1,6 +1,15 @@
 <template>
   <PortfolioDetailsBase :portfolio-id="props.portfolioId">
-    <template #actions="{ enrichedPortfolio, monitoredTagAttributes, resetFilters, openDownload, reload }">
+    <template
+      #actions="{
+        enrichedPortfolio,
+        monitoredTagAttributes,
+        sharedUsersTagAttributes,
+        resetFilters,
+        openDownload,
+        reload,
+      }"
+    >
       <Button
         @click="openEditModal(enrichedPortfolio, reload)"
         data-test="edit-portfolio"
@@ -20,7 +29,7 @@
 
       <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can share portfolios' : ''">
         <Button
-          @click="openShareModal()"
+          @click="openShareModal(reload)"
           data-test="share-portfolio"
           :disabled="!isUserDatalandMemberOrAdmin"
           icon="pi pi-share-alt"
@@ -29,14 +38,7 @@
       </div>
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-
-      <Tag
-        v-if="sharedUserCount > 0"
-        :value="`Shared with ${sharedUserCount} user${sharedUserCount === 1 ? '' : 's'}`"
-        icon="pi pi-users"
-        severity="info"
-        data-test="shared-users-tag"
-      />
+      <Tag v-if="sharedUsersTagAttributes" v-bind="sharedUsersTagAttributes" data-test="shared-users-tag" />
 
       <Button
         class="reset-button-align-right"
@@ -65,6 +67,7 @@
 import PortfolioDetailsBase from '@/components/resources/portfolio/PortfolioDetailsBase.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
+import SharePortfolioDialog from '@/components/resources/portfolio/SharePortfolioDialog.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
@@ -89,8 +92,6 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const isUserDatalandMemberOrAdmin = ref(false);
 const isSuccessDialogVisible = ref(false);
-
-const sharedUserCount = computed(() => Array.from(enrichedPortfolio.value?.sharedUserIds ?? []).length);
 
 onMounted(() => {
   void checkDatalandMembershipOrAdminRights();
@@ -177,8 +178,9 @@ function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, r
 /**
  * Opens the SharePortfolioDialog to manage which users have access to the portfolio.
  * Once the dialog is closed with saved changes, it reloads the portfolio data.
+ * @param reload - Function to reload the portfolio data
  */
-function openShareModal(): void {
+function openShareModal(reload: () => void): void {
   dialog.open(SharePortfolioDialog, {
     props: {
       modal: true,
@@ -189,7 +191,8 @@ function openShareModal(): void {
     },
     onClose(options) {
       if (options?.data?.saved) {
-        loadPortfolio();
+        reload();
+        emit('update:portfolio-overview');
       }
     },
   });

@@ -101,6 +101,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import { AxiosError } from 'axios';
+import { PortfolioUserAccessRightPortfolioAccessRoleEnum } from '@clients/userservice';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -151,13 +152,15 @@ function generateInitials(name: string): string {
 async function loadUsersWithAccess(): Promise<void> {
   isLoadingUsers.value = true;
   try {
-    const portfolio = await apiClientProvider.apiClients.portfolioController.getPortfolio(portfolioId.value);
-    usersWithAccess.value = Array.from(portfolio.data.sharedUserIds ?? []).map((userId) => ({
-      email: '',
-      userId,
-      name: userId,
-      initials: userId.substring(0, 2).toUpperCase(),
-    }));
+    const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(portfolioId.value);
+    usersWithAccess.value = response.data
+      .filter((user) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Reader)
+      .map((user) => ({
+        email: user.userEmail ?? '',
+        userId: user.userId,
+        name: user.userEmail ?? user.userId,
+        initials: generateInitials(user.userEmail ?? user.userId),
+      }));
   } catch (error) {
     console.error('Error loading users with access:', error);
     errorMessage.value = 'Failed to load users with access.';

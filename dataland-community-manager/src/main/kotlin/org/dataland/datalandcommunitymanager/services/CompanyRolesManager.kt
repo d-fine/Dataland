@@ -241,19 +241,15 @@ class CompanyRolesManager(
     }
 
     /**
-     * Verifies if the user with the specified userId has the role CompanyOwner or Admin for
-     * at least one company on Dataland.
+     * Verifies if the current user has any company role assignment for at least one company on Dataland.
      */
     @Transactional(readOnly = true)
-    fun currentUserIsOwnerOrAdminOfAtLeastOneCompany(): Boolean {
-        val userId = DatalandAuthentication.fromContextOrNull()?.userId
-        if (userId == null) return false
+    fun currentUserHasAnyCompanyRole(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
         return companyRoleAssignmentRepository
             .getCompanyRoleAssignmentsByProvidedParameters(
                 companyId = null, userId = userId, companyRole = null,
-            ).any {
-                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
-            }
+            ).isNotEmpty()
     }
 
     /**

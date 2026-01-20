@@ -15,6 +15,7 @@
           name="actions"
           :enriched-portfolio="enrichedPortfolio"
           :monitored-tag-attributes="monitoredTagAttributes"
+          :shared-users-tag-attributes="sharedUsersTagAttributes"
           :reset-filters="resetFilters"
           :open-download="openDownloadModal"
           :reload="loadPortfolio"
@@ -283,6 +284,16 @@ const monitoredTagAttributes = computed(() => ({
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
   severity: isMonitored.value ? 'success' : 'danger',
 }));
+
+const sharedUsersTagAttributes = computed(() => {
+  const count = Array.from(enrichedPortfolio.value?.sharedUserIds ?? []).length;
+  if (count === 0) return null;
+  return {
+    value: `Shared with ${count} user${count === 1 ? '' : 's'}`,
+    icon: 'pi pi-users',
+    severity: 'info' as const,
+  };
+});
 
 const resolvedEmptyText = computed(() => props.emptyText);
 

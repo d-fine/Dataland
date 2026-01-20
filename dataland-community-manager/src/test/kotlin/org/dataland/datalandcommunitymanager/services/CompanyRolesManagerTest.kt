@@ -232,18 +232,16 @@ class CompanyRolesManagerTest {
     }
 
     @Test
-    fun `check that an unauthenticated user is not considered owner or admin of any company`() {
+    fun `check that an unauthenticated user is not considered to have any company role`() {
         doReturn(null).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
 
-        assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        assertFalse(companyRolesManager.currentUserHasAnyCompanyRole())
     }
 
     @ParameterizedTest
     @EnumSource(value = CompanyRole::class)
-    fun `check that the different company roles pass or fail the authorization check for user lookup by email as appropriate`(
-        companyRole: CompanyRole,
-    ) {
+    fun `check that all company roles pass the authorization check for user lookup by email`(companyRole: CompanyRole) {
         val companyOwnerUserId = "user-id-of-company-owner"
         doReturn(companyOwnerUserId).whenever(mockDatalandJwtAuthentication).userId
         doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
@@ -263,11 +261,7 @@ class CompanyRolesManagerTest {
                 companyRole = null,
             )
 
-        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)) {
-            assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
-        } else {
-            assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
-        }
+        assertTrue(companyRolesManager.currentUserHasAnyCompanyRole())
     }
 
     @Test
