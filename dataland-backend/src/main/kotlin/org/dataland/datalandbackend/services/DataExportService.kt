@@ -415,42 +415,32 @@ open class DataExportService<T>(
  * Necessary since Springs wiring is static, datasetStorageService cannot be specified dynamically.
  */
 @Configuration
-class DataExportConfig {
+class DataExportConfig(
+    private val dataPointUtils: DataPointUtils,
+    private val referencedReportsUtilities: ReferencedReportsUtilities,
+    private val specificationApi: SpecificationControllerApi,
+    private val companyQueryManager: CompanyQueryManager,
+) {
     /**
-     * Prepares the data structure for assembled frameworks
-     * @return DataExportService used for wiring
+     * DataExportService for assembled frameworks which should be most frameworks
      */
     @Bean
     @Qualifier("AssembledExportService")
     fun assembledExportService(
-        dataPointUtils: DataPointUtils,
-        referencedReportsUtilities: ReferencedReportsUtilities,
-        specificationApi: SpecificationControllerApi,
-        companyQueryManager: CompanyQueryManager,
         @Qualifier("AssembledDataManager") datasetStorageService: DatasetStorageService,
-    ): DataExportService<*> =
-        DataExportService<Any>(
-            dataPointUtils,
-            referencedReportsUtilities,
-            specificationApi,
-            companyQueryManager,
-            datasetStorageService,
-        )
+    ): DataExportService<*> = createExportService(datasetStorageService)
 
     /**
-     * Prepares the data structure for unassembled frameworks, e.g. lksg
-     * @return DataExportService used for wiring
+     * DataExportService for unassembled frameworks e.g. lksg
      */
     @Bean
     @Qualifier("UnassembledExportService")
     fun unassembledExportService(
-        dataPointUtils: DataPointUtils,
-        referencedReportsUtilities: ReferencedReportsUtilities,
-        specificationApi: SpecificationControllerApi,
-        companyQueryManager: CompanyQueryManager,
         @Qualifier("DataManager") datasetStorageService: DatasetStorageService,
-    ): DataExportService<*> =
-        DataExportService<Any>(
+    ): DataExportService<*> = createExportService(datasetStorageService)
+
+    private fun createExportService(datasetStorageService: DatasetStorageService): DataExportService<Any> =
+        DataExportService(
             dataPointUtils,
             referencedReportsUtilities,
             specificationApi,
