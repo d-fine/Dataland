@@ -10,7 +10,7 @@ import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
+import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.datasourcingservice.utils.ADMIN_COMMENT
@@ -155,8 +155,8 @@ class RequestQueryManagerTest
                     ?.split(';')
                     ?.map { RequestState.valueOf(it) }
                     ?.toSet()
-            val requestSearchFilter =
-                RequestSearchFilter<UUID>(
+            val mixedRequestSearchFilter =
+                MixedRequestSearchFilter<UUID>(
                     companyId = testCase.companyId?.let { UUID.fromString(it) },
                     dataTypes = testCase.dataType?.let { setOf(it) },
                     reportingPeriods = reportingPeriods,
@@ -167,8 +167,8 @@ class RequestQueryManagerTest
                     companySearchString = testCase.companySearchString,
                     adminComment = testCase.adminCommentSearchString,
                 )
-            val actualResults = requestQueryManager.searchRequests(requestSearchFilter)
-            val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
+            val actualResults = requestQueryManager.searchRequests(mixedRequestSearchFilter)
+            val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(mixedRequestSearchFilter)
             Assertions.assertEquals(expectedResults.size, actualResults.size)
             Assertions.assertEquals(expectedResults.size, actualNumberOfResultsAccordingToEndpoint)
             expectedResults.forEach { expected ->
@@ -223,7 +223,7 @@ class RequestQueryManagerTest
         @Test
         fun `test sorting of requests works as expected`() {
             setupFourTestRequests()
-            val filter = RequestSearchFilter<UUID>()
+            val filter = MixedRequestSearchFilter<UUID>()
             val results = requestQueryManager.searchRequests(filter)
             val expectedOrder =
                 listOf(

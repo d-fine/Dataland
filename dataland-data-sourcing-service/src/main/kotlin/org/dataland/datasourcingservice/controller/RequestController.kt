@@ -4,10 +4,10 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -101,24 +101,8 @@ class RequestController
                     ),
                 )
 
-        override fun postRequestSearch(
-            requestSearchFilter: RequestSearchFilter<String>,
-            chunkSize: Int,
-            chunkIndex: Int,
-        ): ResponseEntity<List<ExtendedStoredRequest>> =
+        override fun postRequestCountQuery(mixedRequestSearchFilter: MixedRequestSearchFilter<String>): ResponseEntity<Int> =
             ResponseEntity.ok(
-                requestQueryManager.searchRequests(
-                    requestSearchFilter.convertToSearchFilterWithUUIDs(), chunkSize, chunkIndex,
-                ),
-            )
-
-        override fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>> =
-            ResponseEntity.ok(
-                requestQueryManager.getRequestsForRequestingUser(),
-            )
-
-        override fun postRequestCountQuery(requestSearchFilter: RequestSearchFilter<String>): ResponseEntity<Int> =
-            ResponseEntity.ok(
-                requestQueryManager.getNumberOfRequests(requestSearchFilter.convertToSearchFilterWithUUIDs()),
+                requestQueryManager.getNumberOfRequests(mixedRequestSearchFilter.convertToSearchFilterWithUUIDs()),
             )
     }

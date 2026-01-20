@@ -11,13 +11,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -287,48 +286,6 @@ interface RequestApi {
     ): ResponseEntity<List<StoredRequest>>
 
     /**
-     * Search requests by filters.
-     */
-    @Operation(
-        summary = "Search requests by filters.",
-        description =
-            "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved requests."),
-            ApiResponse(
-                responseCode = "400",
-                description = "At least one of your provided filters is not of the correct format.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins have the right to search among all requests.",
-                content = [Content(array = ArraySchema())],
-            ),
-        ],
-    )
-    @PostMapping(
-        value = ["/search"],
-        consumes = ["application/json"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun postRequestSearch(
-        @RequestBody
-        requestSearchFilter: RequestSearchFilter<String>,
-        @RequestParam(defaultValue = "100")
-        chunkSize: Int,
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.CHUNK_INDEX_DESCRIPTION,
-            required = false,
-        )
-        @RequestParam(defaultValue = "0")
-        chunkIndex: Int,
-    ): ResponseEntity<List<ExtendedStoredRequest>>
-
-    /**
      * Get the number of requests based on filters.
      */
     @Operation(
@@ -359,25 +316,6 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postRequestCountQuery(
         @RequestBody
-        requestSearchFilter: RequestSearchFilter<String>,
+        mixedRequestSearchFilter: MixedRequestSearchFilter<String>,
     ): ResponseEntity<Int>
-
-    /** A method for users to get all their existing data requests.
-     * @return all data requests of the user in a list
-     */
-    @Operation(
-        summary = "Get all stored data requests of the user making the request.",
-        description = "Gets all the stored data request created by the user who is making the request.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data requests for the user."),
-        ],
-    )
-    @GetMapping(
-        value = ["/user"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>>
 }

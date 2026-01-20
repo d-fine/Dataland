@@ -2,7 +2,7 @@ package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.controller.RequestController
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
+import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestCreationService
@@ -64,8 +64,8 @@ class RequestControllerTest {
         if (companyId == NON_UUID_STRING || userId == NON_UUID_STRING) {
             assertThrows<ResourceNotFoundApiException> {
                 requestController.postRequestSearch(
-                    requestSearchFilter =
-                        RequestSearchFilter<String>(
+                    mixedRequestSearchFilter =
+                        MixedRequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -75,8 +75,8 @@ class RequestControllerTest {
             }
             assertThrows<ResourceNotFoundApiException> {
                 requestController.postRequestCountQuery(
-                    requestSearchFilter =
-                        RequestSearchFilter<String>(
+                    mixedRequestSearchFilter =
+                        MixedRequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -85,8 +85,8 @@ class RequestControllerTest {
         } else {
             assertDoesNotThrow {
                 requestController.postRequestSearch(
-                    requestSearchFilter =
-                        RequestSearchFilter<String>(
+                    mixedRequestSearchFilter =
+                        MixedRequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -96,8 +96,8 @@ class RequestControllerTest {
             }
             assertDoesNotThrow {
                 requestController.postRequestCountQuery(
-                    requestSearchFilter =
-                        RequestSearchFilter<String>(
+                    mixedRequestSearchFilter =
+                        MixedRequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),

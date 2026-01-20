@@ -1,9 +1,9 @@
-package org.dataland.datasourcingservice.model.request
+package org.dataland.datasourcingservice.model.mixed
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
@@ -17,7 +17,7 @@ import java.util.UUID
  * If a field is provided, only requests matching the filter criteria are returned.
  * This data class is generic to accommodate versions where companyId and userId are of type String or UUID.
  */
-data class RequestSearchFilter<IdType>(
+data class MixedRequestSearchFilter<IdType>(
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
@@ -97,17 +97,17 @@ data class RequestSearchFilter<IdType>(
      * @return RequestSearchFilter with UUID IDs
      */
     @JsonIgnore
-    fun convertToSearchFilterWithUUIDs(): RequestSearchFilter<UUID> =
-        RequestSearchFilter<UUID>(
+    fun convertToSearchFilterWithUUIDs(): MixedRequestSearchFilter<UUID> =
+        MixedRequestSearchFilter<UUID>(
             companyId =
                 this.companyId?.let {
-                    convertToUUID(it.toString())
+                    ValidationUtils.convertToUUID(it.toString())
                 },
             dataTypes = this.dataTypes,
             reportingPeriods = this.reportingPeriods,
             userId =
                 this.userId?.let {
-                    convertToUUID(it.toString())
+                    ValidationUtils.convertToUUID(it.toString())
                 },
             requestStates = this.requestStates,
             requestPriorities = this.requestPriorities,

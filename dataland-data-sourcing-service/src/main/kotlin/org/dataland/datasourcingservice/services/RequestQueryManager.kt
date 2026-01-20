@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,14 +28,14 @@ class RequestQueryManager
     ) {
         /**
          * Method to get all data requests based on filters.
-         * @param requestSearchFilter the search filter containing relevant search parameters
+         * @param mixedRequestSearchFilter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
          * @param chunkSize the size of entries per chunk which should be returned
          * @return all filtered data requests
          */
         @Transactional(readOnly = true)
         fun searchRequests(
-            requestSearchFilter: RequestSearchFilter<UUID>,
+            mixedRequestSearchFilter: MixedRequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<ExtendedStoredRequest> {
@@ -53,10 +53,10 @@ class RequestQueryManager
 
             val matchingIdsPage =
                 requestRepository.searchRequests(
-                    searchFilter = requestSearchFilter,
+                    searchFilter = mixedRequestSearchFilter,
                     pageable = pageRequest,
-                    companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
-                    userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
+                    companyIds = companyIdsMatchingSearchString(mixedRequestSearchFilter.companySearchString),
+                    userIds = setupEmailAddressFilter(mixedRequestSearchFilter.emailAddress),
                 )
 
             val ids = matchingIdsPage.content
@@ -142,15 +142,15 @@ class RequestQueryManager
 
         /**
          * Get the number of requests that match the optional filters.
-         * @param requestSearchFilter to filter by
+         * @param mixedRequestSearchFilter to filter by
          * @return the number of matching requests
          */
         @Transactional(readOnly = true)
-        fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
+        fun getNumberOfRequests(mixedRequestSearchFilter: MixedRequestSearchFilter<UUID>): Int =
             requestRepository.getNumberOfRequests(
-                requestSearchFilter,
-                companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
-                userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
+                mixedRequestSearchFilter,
+                companyIds = companyIdsMatchingSearchString(mixedRequestSearchFilter.companySearchString),
+                userIds = setupEmailAddressFilter(mixedRequestSearchFilter.emailAddress),
             )
 
         /**
