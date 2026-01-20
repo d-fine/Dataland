@@ -19,49 +19,24 @@
     <@spacerRow/>
     <@spacerRow/>
     <tr>
-        <td style="color: #c0c0c0; font-size: 14px">Tech Hub</td>
         <td style="color: #c0c0c0; font-size: 14px">ESG Frameworks</td>
+        <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
         <td style="color: #c0c0c0; font-size: 14px">&nbsp;</td>
     </tr>
     <@spacerRowSmall/>
     <tr>
-        <@linkWithIcon url="${baseUrl}/api/swagger-ui/index.html" linkText="DATASETS"/>
         <@linkWithIcon url="https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation" linkText="OVERVIEW"/>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <@linkWithIcon url="${baseUrl}/documents/swagger-ui/index.html" linkText="DOCUMENTS"/>
-        <td></td>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <@linkWithIcon url="${baseUrl}/community/swagger-ui/index.html" linkText="COMMUNITY"/>
-        <td></td>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <@linkWithIcon url="${baseUrl}/qa/swagger-ui/index.html" linkText="QUALITY ASSURANCE"/>
-        <td></td>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <@linkWithIcon url="${baseUrl}/users/swagger-ui/index.html" linkText="USERS"/>
-        <td style="color: #c0c0c0; font-size: 14px">Follow Dataland</td>
-        <td></td>
-    </tr>
-    <@spacerRowSmall/>
-    <tr>
-        <td></td>
         <td style="line-height: 22px">
-            <img src="${linkedInImage}" width="22" height="23" alt="in" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; vertical-align: middle;">&nbsp;
-            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">LINKEDIN</a>
+            <img src="${linkedInImage}" width="22" height="23" alt="in"
+                 style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; vertical-align: middle;">&nbsp;
+            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank"
+               style="border: 0 none; font-weight: bolder; font-size: 16px; color: #ffffff; text-decoration: none; vertical-align: middle;">
+                LINKEDIN
+            </a>
         </td>
         <td></td>
     </tr>
+
     <@spacerRowHorizontalLine color="#c0c0c0" width="560px"/>
     <@spacerRowSmall/>
     <tr>

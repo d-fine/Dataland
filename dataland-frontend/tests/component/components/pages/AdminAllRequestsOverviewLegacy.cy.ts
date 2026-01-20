@@ -127,7 +127,7 @@ describe('Component test for the admin-requests-overview page', () => {
       generateExtendedStoredDataRequest({
         userEmailAddress: mailDelta,
         framework: DataTypeEnum.Sfdr,
-        requestStatus: RequestStatus.Resolved,
+        requestStatus: RequestStatus.Closed,
         accessStatus: AccessStatus.Public,
         adminComment: commentDelta,
         requestPriority: RequestPriority.Low,
@@ -264,8 +264,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via data request status dropdown filter works as expected
    */
   function validateRequestStatusFilter(): void {
-    const requestStatusToFilterFor = RequestStatus.Open;
-    const mockResponse = [mockRequests[0]];
+    const requestStatusToFilterFor = RequestStatus.Closed;
+    const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?requestStatus=${requestStatusToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
@@ -280,7 +280,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
-    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
