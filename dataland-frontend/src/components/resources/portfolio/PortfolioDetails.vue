@@ -200,7 +200,7 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
@@ -212,10 +212,9 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/vue-query';
 import { useQueryClient } from '@tanstack/vue-query';
+import { useIsUserDatalandMemberOrAdmin } from '@/backend-access/community-manager/inheritedRoles.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -366,30 +365,9 @@ const reportingPeriodOptions = computed(() => {
  */
 const {
   data: isUserDatalandMemberOrAdmin,
-  isPending: isUserDatalandMemberOrAdminQueryPending,
-  error: isUserDatalandMemberOrAdminQueryError,
-} = useQuery({
-  queryKey: ['isUserDatalandMemberOrAdmin'],
-  staleTime: 3600 * 1000,
-  queryFn: async () => {
-    const keycloak = await assertDefined(getKeycloakPromise)();
-    const keycloakUserId = keycloak.idTokenParsed?.sub;
-
-    if (keycloakUserId === undefined) {
-      return false;
-    }
-
-    const response = await apiClientProvider.apiClients.inheritedRolesController.getInheritedRoles(keycloakUserId);
-    const inheritedRolesMap = response.data;
-
-    const isMember = Object.values(inheritedRolesMap).flat().includes('DatalandMember');
-    const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-
-    return isMember || isAdmin;
-  },
-  placeholderData: keepPreviousData,
-  initialData: false,
-});
+  isPending: isUserDatalandMemberOrAdminPending,
+  isError: isUserDatalandMemberOrAdminError,
+} = useIsUserDatalandMemberOrAdmin();
 
 /**
  * Returns the width (in percent of the total screen width) of a portfolio datatable column
