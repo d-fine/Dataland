@@ -25,6 +25,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   enum RoleBasedTabs {
+    MyCompany = 'MY COMPANY',
     Qa = 'QA',
     DataAccessRequests = 'DATA REQUESTS FOR MY COMPANIES',
     AllDataRequests = 'ALL DATA REQUESTS',
@@ -107,7 +108,28 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     isTabVisible(RoleBasedTabs.Qa, false);
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
 
+    isTabVisible(RoleBasedTabs.MyCompany, true);
     isTabVisible(RoleBasedTabs.DataAccessRequests, true);
+  });
+
+  it('Validate tabs for a logged-in Dataland-Reader with analyst company role', function () {
+    const companyRoleAssignments: CompanyRoleAssignmentExtended[] = [
+      {
+        companyRole: CompanyRole.Analyst,
+        companyId: dummyCompanyId,
+        userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
+      },
+    ];
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);
+    assertThatStandardTabsAreAllVisible();
+
+    isTabVisible(RoleBasedTabs.Qa, false);
+    isTabVisible(RoleBasedTabs.AllDataRequests, false);
+    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
+
+    isTabVisible(RoleBasedTabs.MyCompany, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reviewer with no company role assignments', function () {
@@ -115,6 +137,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     assertThatStandardTabsAreAllVisible();
 
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
+    isTabVisible(RoleBasedTabs.MyCompany, false);
     isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.Qa, true);
@@ -124,6 +147,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_ADMIN], []);
     assertThatStandardTabsAreAllVisible();
 
+    isTabVisible(RoleBasedTabs.MyCompany, false);
     isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.Qa, true);
@@ -157,5 +181,27 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
     cy.get('[data-pc-name="tablist"]').contains('MY DATASETS').click();
     cy.get(`[data-pc-name="tab"][data-p-active="true"]`).contains(AlwaysVisibleTabs.MyDatasets).should('exist');
+  });
+
+  it('Validate route navigation for MY COMPANY tab', () => {
+    const companyRoleAssignments: CompanyRoleAssignmentExtended[] = [
+      {
+        companyRole: CompanyRole.Analyst,
+        companyId: dummyCompanyId,
+        userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
+      },
+      {
+        companyRole: CompanyRole.CompanyOwner,
+        companyId: 'another-dummy-id',
+        userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
+      },
+    ];
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);
+    cy.get('[data-pc-name="tablist"]').contains('MY COMPANY').click();
+    cy.url().should('include', `/companies/${dummyCompanyId}`);
   });
 });

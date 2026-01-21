@@ -66,6 +66,7 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'my-portfolios', label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
   { id: 'shared-portfolios', label: 'SHARED PORTFOLIOS', route: '/shared-portfolios', isVisible: false },
   { id: 'companies', label: 'COMPANIES', route: '/companies', isVisible: true },
+  { id: 'my-company', label: 'MY COMPANY', route: '/companies', isVisible: false },
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
@@ -92,12 +93,12 @@ const currentTabIndex = computed(() => {
 onMounted(() => {
   setVisibilityForSharedPortfoliosTab();
   setVisibilityForTabWithQualityAssurance();
-  setVisibilityForTabWithAccessRequestsForMyCompanies();
+  configureCompanyRelatedTabs();
   setVisibilityForAdminTab();
 });
 
 watchEffect(() => {
-  setVisibilityForTabWithAccessRequestsForMyCompanies();
+  configureCompanyRelatedTabs();
 });
 
 /**
@@ -144,11 +145,23 @@ function setVisibilityForTabWithQualityAssurance(): void {
 }
 
 /**
- * Sets the visibility of the tab for data access requests to companies of the current user.
- * If the user does have any company ownership, the tab is shown. Else it stays invisible.
+ * Configures company-related tabs based on the current user's company role assignments.
+ * - Shows and sets the route for the "My Company" tab when a company assignment exists.
+ * - Shows the "Data requests for my companies" tab if the user is a company owner.
  */
-function setVisibilityForTabWithAccessRequestsForMyCompanies(): void {
-  if (!companyRoleAssignments?.value?.length) return;
+function configureCompanyRelatedTabs(): void {
+  const firstAssignment = companyRoleAssignments?.value?.[0];
+  const myCompanyTab = getTabById('my-company');
+
+  if (firstAssignment) {
+    myCompanyTab.isVisible = true;
+    myCompanyTab.route = `/companies/${firstAssignment.companyId}`;
+  } else {
+    myCompanyTab.isVisible = false;
+    myCompanyTab.route = `/companies`;
+    return;
+  }
+
   const companyOwnershipAssignments = companyRoleAssignments.value.filter(
     (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
   );
