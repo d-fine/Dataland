@@ -140,23 +140,33 @@ onMounted(async () => {
 });
 
 /**
+ * Enriches a user with name and initials by fetching details from the email validation API.
+ * Falls back to email/userId if the API call fails.
+ */
+async function enrichUserWithDetails(userId: string, email: string): Promise<User> {
+  try {
+    const response = await apiClientProvider.apiClients.emailAddressController.postEmailAddressValidation({ email });
+    const name = `${response.data.firstName || ''} ${response.data.lastName || ''}`.trim() || email;
+    return { email, userId, name, initials: generateInitials(name) };
+  } catch {
+    const fallbackName = email || userId;
+    return { email, userId, name: fallbackName, initials: generateInitials(fallbackName) };
+  }
+}
+
+/**
  * Loads users who currently have access to the portfolio.
  */
 async function loadUsersWithAccess(): Promise<void> {
   isLoadingUsers.value = true;
   try {
     const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(portfolioId.value);
-    usersPortfolioIsSharedWith.value = response.data
-      .filter((user) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Reader)
-      .map(
-        (user) =>
-          ({
-            email: user.userEmail ?? '',
-            userId: user.userId,
-            name: user.userEmail ?? user.userId,
-            initials: generateInitials(user.userEmail ?? user.userId),
-          }) as User
-      );
+    const readers = response.data.filter(
+      (user) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Reader
+    );
+    usersPortfolioIsSharedWith.value = await Promise.all(
+      readers.map((user) => enrichUserWithDetails(user.userId, user.userEmail ?? ''))
+    );
   } catch (error) {
     console.error('Error loading users with access:', error);
     errorMessage.value = 'Failed to load users with access.';

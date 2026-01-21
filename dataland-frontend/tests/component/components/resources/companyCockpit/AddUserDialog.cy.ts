@@ -144,7 +144,7 @@ describe('AddMemberDialog Component Tests', function () {
   describe('Input Validation and Error Handling', function () {
     it('handles invalid inputs correctly', function () {
       addUser('invalid@test.com');
-      cy.get('[data-test="unknown-user-error"]').should(
+      cy.get('[data-test="search-error"]').should(
         'contain',
         'There is no registered Dataland user with this email address.'
       );
@@ -152,18 +152,18 @@ describe('AddMemberDialog Component Tests', function () {
 
     it('prevents duplicate user selection', function () {
       addUser('existing@test.com');
-      cy.get('[data-test="unknown-user-error"]').should('contain', 'already been selected');
+      cy.get('[data-test="search-error"]').should('contain', 'already been selected');
       addUser('john@doe.com');
       addUser('john@doe.com');
-      cy.get('[data-test="unknown-user-error"]').should('contain', 'already been selected');
+      cy.get('[data-test="search-error"]').should('contain', 'already been selected');
     });
 
     it('clears error message on new validation attempt', function () {
       addUser('invalid@test.com');
-      cy.get('[data-test="unknown-user-error"]').should('be.visible');
+      cy.get('[data-test="search-error"]').should('be.visible');
 
       addUser('invalid2@test.com');
-      cy.get('[data-test="unknown-user-error"]').should('contain', 'Unknown email');
+      cy.get('[data-test="search-error"]').should('contain', 'Unknown email');
     });
   });
 

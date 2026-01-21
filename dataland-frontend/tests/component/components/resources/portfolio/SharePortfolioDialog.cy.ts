@@ -112,17 +112,17 @@ describe('SharePortfolioDialog Component Tests', function () {
     cy.wait('@getPortfolioAccessRights');
 
     addUser('invalid@test.com');
-    cy.get('[data-test="error-message"]').should(
+    cy.get('[data-test="search-error"]').should(
       'contain',
       'There is no registered Dataland user with this email address.'
     );
 
     addUser('john@doe.com');
     cy.contains('John Doe').should('be.visible');
-    cy.get('[data-test="error-message"]').should('not.exist');
+    cy.get('[data-test="search-error"]').should('not.exist');
 
     addUser('john@doe.com');
-    cy.get('[data-test="error-message"]').should('contain', 'already has access');
+    cy.get('[data-test="search-error"]').should('contain', 'already has access');
   });
 
   it('saves changes and closes dialog', function () {
