@@ -3,25 +3,11 @@
     <Tabs :value="activePortfolioId" :scrollable="true" data-test="portfolios" @update:value="onTabChange">
       <div class="tabs-container">
         <TabList>
-          <template v-if="isPending">
-            <Tab value="loading-placeholder" disabled>
-              <Skeleton width="8rem" height="1.2rem" />
-            </Tab>
-            <Tab value="loading-2" disabled>
-              <Skeleton width="6rem" height="1.2rem" />
-            </Tab>
-            <Tab value="loading-3" disabled>
-              <Skeleton width="7rem" height="1.2rem" />
-            </Tab>
-          </template>
-
-          <template v-else>
-            <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
-              <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
-                {{ portfolio.portfolioName }}
-              </div>
-            </Tab>
-          </template>
+          <Tab v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+            <div class="tabview-header" :title="portfolio.portfolioName" :data-test="portfolio.portfolioName">
+              {{ portfolio.portfolioName }}
+            </div>
+          </Tab>
         </TabList>
 
         <PrimeButton
@@ -29,12 +15,12 @@
           @click="addNewPortfolio"
           icon="pi pi-plus"
           data-test="add-portfolio"
-          :disabled="isPending"
+          :disabled="isPortfolioNamesPending"
         />
       </div>
 
       <TabPanels>
-        <TabPanel v-if="isPending" value="loading-placeholder">
+        <TabPanel v-if="isPortfolioNamesPending" value="loading-placeholder">
           <div class="flex flex-col gap-4">
             <Skeleton width="40%" height="2rem" class="mb-2" />
             <Skeleton width="100%" height="10rem" />
@@ -76,6 +62,7 @@ import { computed, inject, watch } from 'vue';
 import { useSessionStorage } from '@vueuse/core';
 import { useQuery, keepPreviousData } from '@tanstack/vue-query';
 import Skeleton from 'primevue/skeleton';
+import { useGetAllPortfolioNamesForCurrentUser } from '@/backend-access/user-service/portfolio.ts';
 
 /**
  * This component displays the portfolio overview page, allowing users to view and manage their portfolios.
@@ -90,23 +77,21 @@ const userSelectedPortfolioId = useSessionStorage<string | undefined>(SESSION_ST
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const {
-  data: portfolioNames,
-  isLoading,
-  isPending,
-} = useQuery<BasePortfolioName[]>({
-  queryKey: ['portfolioNames'],
-  placeholderData: keepPreviousData,
-  staleTime: 1000 * 60 * 5, // 5 minutes
-  gcTime: 1000 * 60 * 10, // Keep in Garbage Collection for 10 minutes
-  queryFn: () =>
-    apiClientProvider.apiClients.portfolioController
-      .getAllPortfolioNamesForCurrentUser()
-      .then((response) => response.data),
-});
+//const { data: portfolioNames, isPending: isPortfolioNamesPending } = useQuery<BasePortfolioName[]>({
+//  queryKey: ['portfolioNames'],
+//  placeholderData: keepPreviousData,
+//  staleTime: 1000 * 60 * 5, // 5 minutes
+//  gcTime: 1000 * 60 * 10, // Keep in Garbage Collection for 10 minutes
+//  queryFn: () =>
+//    apiClientProvider.apiClients.portfolioController
+//      .getAllPortfolioNamesForCurrentUser()
+//      .then((response) => response.data),
+//});
+
+const { data: portfolioNames, isPending: isPortfolioNamesPending } = useGetAllPortfolioNamesForCurrentUser();
 
 const activePortfolioId = computed((): string => {
-  if (isPending.value) return 'loading-placeholder';
+  if (isPortfolioNamesPending.value) return 'loading-placeholder';
   const portfolios = portfolioNames.value || [];
   if (portfolios.length === 0) return 'no-portfolios-available';
 

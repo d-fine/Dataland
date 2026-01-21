@@ -103,7 +103,6 @@ export default defineComponent({
         return this.keycloakAuthenticated;
       }),
       apiClientProvider: computed(() => this.apiClientProvider),
-      [apiClientProviderKey]: computed(() => this.apiClientProvider),
       useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
     };
   },
