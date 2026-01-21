@@ -524,8 +524,8 @@ function openEditModal(): void {
     },
     onClose(options) {
       if (options?.data?.monitoringSaved) {
-        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.detail(props.portfolioId) });
-        queryClient.invalidateQueries({ queryKey: ['basePortfolio', props.portfolioId] });
+        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.base(props.portfolioId) });
+        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.enriched(props.portfolioId) });
         isSuccessDialogVisible.value = true;
       }
     },
