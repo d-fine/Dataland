@@ -5,6 +5,7 @@ import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { useApiClientProvider } from '@/backend-access/apiClientProviderHelper.ts';
 
 export const inheritedRolesKeys = {
   all: ['inheritedRoles'] as const,
@@ -13,7 +14,7 @@ export const inheritedRolesKeys = {
 
 export function useIsUserDatalandMemberOrAdmin() {
   const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const apiClientProvider = useApiClientProvider();
 
   return useQuery({
     queryKey: inheritedRolesKeys.permissions(),

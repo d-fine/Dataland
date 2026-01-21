@@ -126,5 +126,3 @@ export class ApiClientProvider {
     };
   }
 }
-
-export const apiClientProviderKey: InjectionKey<ApiClientProvider> = Symbol('apiClientProvider');

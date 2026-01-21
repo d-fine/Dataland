@@ -1,8 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/vue-query';
-import { inject, type Ref, unref } from 'vue';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { ApiClientProvider } from '@/services/ApiClients';
-import type Keycloak from 'keycloak-js';
+import { type Ref, unref } from 'vue';
+import { useApiClientProvider } from '@/backend-access/apiClientProviderHelper.ts';
 
 export const portfolioControllerKeys = {
   all: ['portfolioController'] as const,
@@ -11,8 +9,7 @@ export const portfolioControllerKeys = {
 };
 
 export function useGetEnrichedPortfolio(portfolioId: Ref<string>) {
-  const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const apiClientProvider = useApiClientProvider();
 
   return useQuery({
     queryKey: portfolioControllerKeys.enriched(unref(portfolioId)),
@@ -26,8 +23,7 @@ export function useGetEnrichedPortfolio(portfolioId: Ref<string>) {
 }
 
 export function useGetPortfolio(portfolioId: Ref<string>) {
-  const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const apiClientProvider = useApiClientProvider();
 
   return useQuery({
     queryKey: portfolioControllerKeys.base(unref(portfolioId)),
