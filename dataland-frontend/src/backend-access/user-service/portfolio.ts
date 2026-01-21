@@ -4,9 +4,9 @@ import { useApiClientProvider } from '@/backend-access/apiClientProviderHelper.t
 
 export const portfolioControllerKeys = {
   all: ['portfolioController'] as const,
-  enriched: (id: string) => [...portfolioControllerKeys.all, 'enriched', id] as const,
-  base: (id: string) => [...portfolioControllerKeys.all, 'base', id] as const,
-  allForUser: () => [...portfolioControllerKeys.all, 'allForUser'] as const,
+  enriched: (id: string) => [...portfolioControllerKeys.all, 'getEnrichedPortfolio', id] as const,
+  base: (id: string) => [...portfolioControllerKeys.all, 'getPortfolio', id] as const,
+  allForUser: () => [...portfolioControllerKeys.all, 'getAllPortfolioNamesForCurrentUser'] as const,
 };
 
 export function useGetEnrichedPortfolio(portfolioId: MaybeRef<string>) {
