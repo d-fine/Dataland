@@ -96,6 +96,7 @@ class DatabaseStringDataStore(
                                 payload,
                             ).dataId
                     }
+
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         MessageQueueUtils
@@ -103,10 +104,13 @@ class DatabaseStringDataStore(
                                 payload,
                             ).dataId
                     }
-                    else -> throw MessageQueueRejectException(
-                        "Routing Key '$receivedRoutingKey' unknown. " +
-                            "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
-                    )
+
+                    else -> {
+                        throw MessageQueueRejectException(
+                            "Routing Key '$receivedRoutingKey' unknown. " +
+                                "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+                        )
+                    }
                 }
             MessageQueueUtils.validateDataId(dataId)
             val data = retrieveData(dataId, correlationId)
@@ -250,7 +254,7 @@ class DatabaseStringDataStore(
         dataIds: List<String>,
         correlationId: String,
     ): Map<String, StorableDataPoint> {
-        val retrievedEntries = dataPointItemRepository.findAllById(dataIds)
+        val retrievedEntries = dataPointItemRepository.findAllByIdInBatches(dataIds)
         val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
         if (missingIdentifiers.isNotEmpty()) {
             logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
