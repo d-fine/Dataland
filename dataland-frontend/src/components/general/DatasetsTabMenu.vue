@@ -23,7 +23,7 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, type Ref, computed } from 'vue';
+import { inject, onMounted, ref, type Ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
@@ -41,7 +41,9 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const route = useRoute();
 
 // Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
-const companyRoleAssignments = inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments');
+const companyRoleAssignments = assertDefined(
+  inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments')
+);
 
 const tabs = ref<Array<TabInfo>>([
   { id: 'my-portfolios', label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
@@ -70,18 +72,12 @@ const tabs = ref<Array<TabInfo>>([
 const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || tab.id === currentTabId.value));
 
 const currentTabId = computed<TabInfo['id']>(() => {
-  const defaultId = route.meta.initialTabId as TabInfo['id'] | undefined;
-
-  if (route.name === 'Company Cockpit') {
-    const myCompanyId = companyRoleAssignments?.value?.[0]?.companyId;
-    const currentCompanyId = route.params.companyId as string | undefined;
-
-    if (myCompanyId && currentCompanyId && myCompanyId === currentCompanyId) {
-      return getTabById('my-company').id;
-    }
+  const myCompanyId = companyRoleAssignments.value?.[0]?.companyId;
+  if (myCompanyId && route.path.includes(`/companies/${myCompanyId}`)) {
+    return getTabById('my-company').id;
   }
 
-  return defaultId ?? '';
+  return (route.meta.initialTabId as TabInfo['id']) ?? '';
 });
 
 onMounted(() => {
@@ -91,16 +87,20 @@ onMounted(() => {
   setVisibilityForAdminTab();
 });
 
+watch(companyRoleAssignments, () => {
+  configureCompanyRelatedTabs();
+});
+
 /**
  * Handles the tab change event.
  */
-const onTabChange = (newTab: string | number): void => {
+function onTabChange(newTab: string | number): void {
   const newId = String(newTab);
   const tab = getTabById(newId);
   router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
-};
+}
 
 /**
  * Gets a tab by its ID.
@@ -140,10 +140,10 @@ function setVisibilityForTabWithQualityAssurance(): void {
  * - Shows the "Data requests for my companies" tab if the user is a company owner.
  */
 function configureCompanyRelatedTabs(): void {
-  const assignments = companyRoleAssignments?.value ?? [];
   const myCompanyTab = getTabById('my-company');
   const requestsForMyCompaniesTab = getTabById('data-requests-for-my-companies');
 
+  const assignments = companyRoleAssignments.value ?? [];
   const firstAssignment = assignments[0];
 
   if (!firstAssignment) {
