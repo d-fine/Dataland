@@ -118,7 +118,7 @@
     </Card>
   </div>
   <div class="dialog-actions">
-    <Message v-if="errorMessage" severity="error" data-test="error-message" variant="simple" size="small">
+    <Message v-if="errorMessage" severity="error" data-test="error-message" :pt="{ root: { style: 'margin: 0;' } }">
       {{ errorMessage }}
     </Message>
     <Button
@@ -289,7 +289,7 @@ async function handleAddUser(): Promise<void> {
     emit('users-added', 'User(s) successfully added.');
   } catch (error) {
     if (error instanceof AxiosError) {
-      errorMessage.value = error.response?.data?.errors?.[0]?.message;
+      errorMessage.value = error.response?.data?.errors?.[0]?.message || 'Failed to add users.';
     } else {
       errorMessage.value = 'An unknown error occurred while adding users.';
       console.error(error);
@@ -396,6 +396,8 @@ async function getSuggestedUsers(): Promise<User[]> {
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .select-container {

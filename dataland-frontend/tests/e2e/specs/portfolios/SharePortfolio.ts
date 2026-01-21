@@ -19,7 +19,7 @@ describeIf(
 
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(
-          `Company-Created-For-Share-Portfolio-Test ${timestamp}`
+          `Company-Created-For-Share-Portfolio-Test-${timestamp}`
         );
         const uploadResult = await uploadCompanyViaApi(token, companyToUpload);
         const companyId = uploadResult.companyId;

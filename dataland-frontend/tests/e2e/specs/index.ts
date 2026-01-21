@@ -37,7 +37,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./sfdr');
   require('./lksg');
   require('./company-cockpit');
-  require('./user-experience');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
@@ -46,6 +45,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./vsme');
   require('./pcaf');
   require('./company-ownership');
+  require('./user-experience');
   require('./portfolios');
   require('./data-sourcing');
 }

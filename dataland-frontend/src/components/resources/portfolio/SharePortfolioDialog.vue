@@ -75,7 +75,7 @@
     </Card>
   </div>
   <div class="dialog-actions">
-    <Message v-if="errorMessage" severity="error" data-test="error-message" variant="simple" size="small">
+    <Message v-if="errorMessage" severity="error" data-test="error-message" :pt="{ root: { style: 'margin: 0;' } }">
       {{ errorMessage }}
     </Message>
     <Button
@@ -180,7 +180,7 @@ async function loadUsersWithAccess(): Promise<void> {
  * @param email - The email address to validate and add
  */
 async function selectUser(email: string): Promise<void> {
-  email = email.trim();
+  email = email.trim().toLowerCase();
   if (!email) return;
   searchError.value = '';
 
@@ -301,6 +301,8 @@ async function handleSaveChanges(): Promise<void> {
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 @media (max-width: 1440px) {

@@ -247,7 +247,7 @@ describe('Check the portfolio details view', function (): void {
   });
 
   for (const testMode of testModes) {
-    it('Check Share Button and No Sharing Tag for not-shared portfolio Dataland ' + testMode, function (): void {
+    it('Check Share Button and No Sharing Tag for not shared portfolio Dataland ' + testMode, function (): void {
       const configurationParameters = getTestModeConfigurationParameters(testMode, false);
 
       interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
