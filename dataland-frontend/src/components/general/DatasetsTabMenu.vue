@@ -1,32 +1,13 @@
 <template>
   <Tabs :value="currentTabId" @update:value="onTabChange">
     <TabList>
-      <Tab
-        v-for="tab in tabs"
-        :key="tab.id"
-        :value="tab.id"
-        :disabled="!(tab.id === currentTabId || (tab.isVisible ?? true))"
-        :pt="{
-          root: ({ props }) => {
-            return {
-              style: {
-                display: props.disabled ? 'none' : '',
-              },
-            };
-          },
-        }"
-      >
+      <Tab v-for="tab in visibleTabs" :key="tab.id" :value="tab.id">
         {{ tab.label }}
       </Tab>
     </TabList>
     <TabPanels>
-      <TabPanel
-        v-for="tab in tabs"
-        :key="tab.id"
-        :value="tab.id"
-        :disabled="!(tab.id === currentTabId || (tab.isVisible ?? true))"
-      >
-        <slot v-if="tab.id === currentTabId" />
+      <TabPanel :value="currentTabId">
+        <slot />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -42,7 +23,7 @@ import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, type Ref, computed, watchEffect } from 'vue';
+import { inject, onMounted, ref, type Ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
@@ -86,8 +67,10 @@ const tabs = ref<Array<TabInfo>>([
   },
 ]);
 
-const currentTabId = computed(() => {
-  const defaultId = (route.meta.initialTabId as string) ?? 'my-portfolios';
+const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || tab.id === currentTabId.value));
+
+const currentTabId = computed<TabInfo['id']>(() => {
+  const defaultId = route.meta.initialTabId as TabInfo['id'] | undefined;
 
   if (route.name === 'Company Cockpit') {
     const myCompanyId = companyRoleAssignments?.value?.[0]?.companyId;
@@ -98,7 +81,7 @@ const currentTabId = computed(() => {
     }
   }
 
-  return defaultId;
+  return defaultId ?? '';
 });
 
 onMounted(() => {
@@ -108,19 +91,16 @@ onMounted(() => {
   setVisibilityForAdminTab();
 });
 
-watchEffect(() => {
-  configureCompanyRelatedTabs();
-});
-
 /**
  * Handles the tab change event.
  */
-function onTabChange(newId: string): void {
+const onTabChange = (newTab: string | number): void => {
+  const newId = String(newTab);
   const tab = getTabById(newId);
   router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
-}
+};
 
 /**
  * Gets a tab by its ID.

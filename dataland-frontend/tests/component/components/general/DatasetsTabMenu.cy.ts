@@ -12,7 +12,7 @@ import router from '@/router';
  * @param isTabExpectedToBeVisible describes if the tab is expected to be visible on the navigation bar
  */
 function isTabVisible(textInTab: string, isTabExpectedToBeVisible: boolean): void {
-  const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.be.visible';
+  const visibilityAssertion = isTabExpectedToBeVisible ? 'be.visible' : 'not.exist';
   cy.get('[data-pc-name="tablist"]').contains(textInTab).should(visibilityAssertion);
 }
 
