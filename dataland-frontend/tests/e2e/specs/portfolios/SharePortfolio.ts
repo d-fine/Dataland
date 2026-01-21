@@ -18,7 +18,9 @@ describeIf(
       portfolioName = `E2E-Share-${timestamp}`;
 
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-        const companyToUpload = generateDummyCompanyInformation(`Test Co. Share ${timestamp}`);
+        const companyToUpload = generateDummyCompanyInformation(
+          `Company-Created-For-Share-Portfolio-Test ${timestamp}`
+        );
         const uploadResult = await uploadCompanyViaApi(token, companyToUpload);
         const companyId = uploadResult.companyId;
 
@@ -38,10 +40,11 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.visitAndCheckAppMount('/portfolios');
+      cy.wait(['@getPortfolioNames']);
     });
 
     it('Share portfolio with user, verify receiver can see it, and receiver removes it from view', () => {
@@ -53,6 +56,7 @@ describeIf(
         'exist'
       );
       cy.get(`[data-test="${portfolioName}"]`).click();
+      cy.wait(['@getEnrichedPortfolio']);
 
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="share-portfolio"]`).click({
         timeout: Cypress.env('medium_timeout_in_ms') as number,
@@ -109,7 +113,9 @@ describeIf(
       cy.get('[data-test="remove-confirmation-button"]').click();
       cy.wait('@deleteSharing').its('response.statusCode').should('eq', 204);
       cy.get(`[data-test="${portfolioName}"]`).should('not.exist');
+    });
 
+    after(() => {
       getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const portfolioApi = new PortfolioControllerApi(new Configuration({ accessToken: token }));
         await portfolioApi.deletePortfolio(portfolioId);

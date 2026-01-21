@@ -23,7 +23,6 @@ let memberConfigurationParametersWithMonitoring: ConfigurationParameters;
 let adminConfigurationParametersWithoutMonitoring: ConfigurationParameters;
 let adminConfigurationParametersWithMonitoring: ConfigurationParameters;
 let largePortfolioConfigurationParameters: ConfigurationParameters;
-let portfolioFixtureWithSharing: EnrichedPortfolio;
 
 /**
  * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
@@ -71,6 +70,7 @@ describe('Check the portfolio details view', function (): void {
   let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
   let portfolioFixtureWithMonitoring: EnrichedPortfolio;
   let largePortfolioFixture: EnrichedPortfolio;
+  let portfolioFixtureWithSharing: EnrichedPortfolio;
 
   before(function () {
     cy.fixture('enrichedPortfolio.json')
@@ -242,11 +242,12 @@ describe('Check the portfolio details view', function (): void {
   it('Check Share Button for non Dataland member', function (): void {
     interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       cy.get('[data-test="share-portfolio"]').should('be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+      cy.get('[data-test="shared-users-tag"]').should('not.exist');
     });
   });
 
   for (const testMode of testModes) {
-    it('Check Share Button and No Sharing Tag for Dataland ' + testMode, function (): void {
+    it('Check Share Button and No Sharing Tag for not-shared portfolio Dataland ' + testMode, function (): void {
       const configurationParameters = getTestModeConfigurationParameters(testMode, false);
 
       interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
@@ -255,7 +256,7 @@ describe('Check the portfolio details view', function (): void {
       });
     });
 
-    it('Check Shared Users Tag for Dataland ' + testMode, function (): void {
+    it('Check Shared Users Tag for shared portfolio for Dataland ' + testMode, function (): void {
       const configWithSharing = {
         ...getTestModeConfigurationParameters(testMode, false),
         portfolioResponse: portfolioFixtureWithSharing,

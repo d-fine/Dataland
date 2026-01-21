@@ -1,15 +1,6 @@
 <template>
   <PortfolioDetailsBase :portfolio-id="props.portfolioId">
-    <template
-      #actions="{
-        enrichedPortfolio,
-        monitoredTagAttributes,
-        sharedUsersTagAttributes,
-        resetFilters,
-        openDownload,
-        reload,
-      }"
-    >
+    <template #actions="{ enrichedPortfolio, monitoredTagAttributes, resetFilters, openDownload, reload }">
       <Button
         @click="openEditModal(enrichedPortfolio, reload)"
         data-test="edit-portfolio"
@@ -38,7 +29,13 @@
       </div>
 
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-      <Tag v-if="sharedUsersTagAttributes" v-bind="sharedUsersTagAttributes" data-test="shared-users-tag" />
+      <Tag
+        v-if="Array.from(enrichedPortfolio?.sharedUserIds ?? []).length > 0"
+        :value="`Shared with ${Array.from(enrichedPortfolio?.sharedUserIds ?? []).length} user${Array.from(enrichedPortfolio?.sharedUserIds ?? []).length === 1 ? '' : 's'}`"
+        icon="pi pi-users"
+        severity="info"
+        data-test="shared-users-tag"
+      />
 
       <Button
         class="reset-button-align-right"
@@ -192,7 +189,6 @@ function openShareModal(reload: () => void): void {
     onClose(options) {
       if (options?.data?.saved) {
         reload();
-        emit('update:portfolio-overview');
       }
     },
   });

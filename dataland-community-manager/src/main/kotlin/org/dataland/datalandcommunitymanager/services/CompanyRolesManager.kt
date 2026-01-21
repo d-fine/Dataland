@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
+import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
@@ -31,6 +32,7 @@ class CompanyRolesManager(
     @Autowired private val companyOwnershipRequestedEmailMessageBuilder: CompanyOwnershipRequestedEmailMessageBuilder,
     @Autowired private val companyOwnershipAcceptedEmailMessageBuilder: CompanyOwnershipAcceptedEmailMessageBuilder,
     @Autowired private val keycloakUserService: KeycloakUserService,
+    @Autowired private val companyRightsManager: CompanyRightsManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -241,15 +243,36 @@ class CompanyRolesManager(
     }
 
     /**
-     * Verifies if the current user has any company role assignment for at least one company on Dataland.
+     * Verifies if the user with the specified userId has the role CompanyOwner or Admin for
+     * at least one company on Dataland.
      */
     @Transactional(readOnly = true)
-    fun currentUserHasAnyCompanyRole(): Boolean {
-        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+    fun currentUserIsOwnerOrAdminOfAtLeastOneCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId
+        if (userId == null) return false
         return companyRoleAssignmentRepository
             .getCompanyRoleAssignmentsByProvidedParameters(
                 companyId = null, userId = userId, companyRole = null,
-            ).isNotEmpty()
+            ).any {
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
+            }
+    }
+
+    /**
+     * Verifies if the current user has any company role for at least one Dataland Member company.
+     */
+    @Transactional(readOnly = true)
+    fun currentUserHasRoleInMemberCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+        val userCompanyRoleAssignments =
+            companyRoleAssignmentRepository
+                .getCompanyRoleAssignmentsByProvidedParameters(
+                    companyId = null, userId = userId, companyRole = null,
+                )
+        return userCompanyRoleAssignments.any { assignment ->
+            val companyRights = companyRightsManager.getCompanyRights(UUID.fromString(assignment.companyId))
+            companyRights.contains(CompanyRight.Member)
+        }
     }
 
     /**

@@ -15,15 +15,15 @@
             <Button label="SELECT" @click="selectUser(searchQuery)" data-test="select-user-button" />
           </div>
           <Message
-            v-if="errorMessage"
+            v-if="searchError"
             severity="error"
-            data-test="error-message"
+            data-test="search-error"
             :pt="{
               root: { style: 'margin-top: var(--spacing-xxs); max-width:30rem' },
               text: { style: 'white-space: normal; overflow-wrap: anywhere; word-break: break-word;' },
             }"
           >
-            {{ errorMessage }}
+            {{ searchError }}
           </Message>
         </div>
       </template>
@@ -37,9 +37,9 @@
         </div>
 
         <template v-if="!isLoadingUsers">
-          <div v-if="usersWithAccess.length > 0">
+          <div v-if="usersPortfolioIsSharedWith.length > 0">
             <Listbox
-              :options="usersWithAccess"
+              :options="usersPortfolioIsSharedWith"
               data-test="users-with-access-listbox"
               style="min-height: 4rem; margin-top: 21px"
               :highlightOnSelect="false"
@@ -75,6 +75,9 @@
     </Card>
   </div>
   <div class="dialog-actions">
+    <Message v-if="errorMessage" severity="error" data-test="error-message" variant="simple" size="small">
+      {{ errorMessage }}
+    </Message>
     <Button
       label="SAVE CHANGES"
       icon="pi pi-check"
@@ -99,6 +102,7 @@ import Message from 'primevue/message';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { generateInitials } from '@/utils/StringFormatter.ts';
 import type Keycloak from 'keycloak-js';
 import { AxiosError } from 'axios';
 import { PortfolioUserAccessRightPortfolioAccessRoleEnum } from '@clients/userservice';
@@ -114,15 +118,16 @@ type User = {
   initials: string;
 };
 
-const usersWithAccess = ref<User[]>([]);
+const usersPortfolioIsSharedWith = ref<User[]>([]);
 const searchQuery = ref('');
+const searchError = ref('');
 const errorMessage = ref('');
 const isLoadingUsers = ref(false);
 const isSaving = ref(false);
 const portfolioId = ref<string>('');
 
 const userCountText = computed(() => {
-  const count = usersWithAccess.value.length;
+  const count = usersPortfolioIsSharedWith.value.length;
   return `${count} User${count === 1 ? '' : 's'}`;
 });
 
@@ -135,32 +140,23 @@ onMounted(async () => {
 });
 
 /**
- * Generates initials from a given name.
- * @param name - The full name of the user
- * @returns The initials derived from the name
- */
-function generateInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase())
-    .join('');
-}
-
-/**
  * Loads users who currently have access to the portfolio.
  */
 async function loadUsersWithAccess(): Promise<void> {
   isLoadingUsers.value = true;
   try {
     const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(portfolioId.value);
-    usersWithAccess.value = response.data
+    usersPortfolioIsSharedWith.value = response.data
       .filter((user) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Reader)
-      .map((user) => ({
-        email: user.userEmail ?? '',
-        userId: user.userId,
-        name: user.userEmail ?? user.userId,
-        initials: generateInitials(user.userEmail ?? user.userId),
-      }));
+      .map(
+        (user) =>
+          ({
+            email: user.userEmail ?? '',
+            userId: user.userId,
+            name: user.userEmail ?? user.userId,
+            initials: generateInitials(user.userEmail ?? user.userId),
+          }) as User
+      );
   } catch (error) {
     console.error('Error loading users with access:', error);
     errorMessage.value = 'Failed to load users with access.';
@@ -174,8 +170,9 @@ async function loadUsersWithAccess(): Promise<void> {
  * @param email - The email address to validate and add
  */
 async function selectUser(email: string): Promise<void> {
+  email = email.trim();
   if (!email) return;
-  errorMessage.value = '';
+  searchError.value = '';
 
   try {
     const response = await apiClientProvider.apiClients.emailAddressController.postEmailAddressValidation({
@@ -188,18 +185,18 @@ async function selectUser(email: string): Promise<void> {
       initials: generateInitials(`${response.data.firstName || ''} ${response.data.lastName || ''}`.trim() || email),
     };
 
-    if (usersWithAccess.value.some((u) => u.userId === user.userId)) {
-      errorMessage.value = 'This user already has access to the portfolio.';
+    if (usersPortfolioIsSharedWith.value.some((u) => u.userId === user.userId)) {
+      searchError.value = 'This user already has access to the portfolio.';
       return;
     }
 
-    usersWithAccess.value.push(user);
+    usersPortfolioIsSharedWith.value.push(user);
     searchQuery.value = '';
   } catch (error) {
     if (error instanceof AxiosError) {
-      errorMessage.value = error.response?.data?.errors?.[0]?.message || 'Failed to validate email address.';
+      searchError.value = error.response?.data?.errors?.[0]?.message || 'Failed to validate email address.';
     } else {
-      errorMessage.value = 'An unknown error occurred.';
+      searchError.value = 'An unknown error occurred.';
       console.error(error);
     }
   }
@@ -210,7 +207,7 @@ async function selectUser(email: string): Promise<void> {
  * @param userId - The user ID to remove
  */
 function handleRemoveUser(userId: string): void {
-  usersWithAccess.value = usersWithAccess.value.filter((user) => user.userId !== userId);
+  usersPortfolioIsSharedWith.value = usersPortfolioIsSharedWith.value.filter((user) => user.userId !== userId);
 }
 
 /**
@@ -220,7 +217,7 @@ async function handleSaveChanges(): Promise<void> {
   isSaving.value = true;
   try {
     // as unknown as Set<string> cast required to ensure proper json is created
-    const sharedUserIds = usersWithAccess.value.map((user) => user.userId) as unknown as Set<string>;
+    const sharedUserIds = usersPortfolioIsSharedWith.value.map((user) => user.userId) as unknown as Set<string>;
     await apiClientProvider.apiClients.portfolioController.patchSharing(portfolioId.value, { sharedUserIds });
     dialogRef?.value.close({ saved: true });
   } catch (error) {

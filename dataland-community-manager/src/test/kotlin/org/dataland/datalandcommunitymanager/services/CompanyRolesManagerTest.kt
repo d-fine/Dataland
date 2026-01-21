@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
+import org.dataland.datalandcommunitymanager.model.companyRights.CompanyRight
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentExtended
@@ -44,6 +45,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.io.File
 import java.util.Optional
+import java.util.UUID
 
 class CompanyRolesManagerTest {
     private lateinit var companyRolesManager: CompanyRolesManager
@@ -55,6 +57,7 @@ class CompanyRolesManagerTest {
     private val mockDatalandJwtAuthentication = mock<DatalandJwtAuthentication>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockCompanyRightsManager = mock<CompanyRightsManager>()
 
     private val objectMapper = JsonUtils.defaultObjectMapper
 
@@ -106,6 +109,7 @@ class CompanyRolesManagerTest {
             mockDatalandJwtAuthentication,
             mockSecurityContext,
             mockKeycloakUserService,
+            mockCompanyRightsManager,
         )
     }
 
@@ -170,6 +174,7 @@ class CompanyRolesManagerTest {
                 mockCompanyOwnershipRequestedEmailMessageBuilder,
                 mockCompanyOwnershipAcceptedEmailMessageBuilder,
                 mockKeycloakUserService,
+                mockCompanyRightsManager,
             )
     }
 
@@ -232,16 +237,18 @@ class CompanyRolesManagerTest {
     }
 
     @Test
-    fun `check that an unauthenticated user is not considered to have any company role`() {
+    fun `check that an unauthenticated user is not considered owner or admin of any company`() {
         doReturn(null).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
 
-        assertFalse(companyRolesManager.currentUserHasAnyCompanyRole())
+        assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
     }
 
     @ParameterizedTest
     @EnumSource(value = CompanyRole::class)
-    fun `check that all company roles pass the authorization check for user lookup by email`(companyRole: CompanyRole) {
+    fun `check that the different company roles pass or fail the authorization check for user lookup by email as appropriate`(
+        companyRole: CompanyRole,
+    ) {
         val companyOwnerUserId = "user-id-of-company-owner"
         doReturn(companyOwnerUserId).whenever(mockDatalandJwtAuthentication).userId
         doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
@@ -261,7 +268,75 @@ class CompanyRolesManagerTest {
                 companyRole = null,
             )
 
-        assertTrue(companyRolesManager.currentUserHasAnyCompanyRole())
+        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)) {
+            assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        } else {
+            assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
+        }
+    }
+
+    @Test
+    fun `check that an unauthenticated user is not considered to have role in member company`() {
+        doReturn(null).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+
+        assertFalse(companyRolesManager.currentUserHasRoleInMemberCompany())
+    }
+
+    @Test
+    fun `check that user with role in non-member company returns false for member company check`() {
+        val userId = "user-id"
+        val nonMemberCompanyId = "00000000-0000-0000-0000-000000000001"
+        doReturn(userId).whenever(mockDatalandJwtAuthentication).userId
+        doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+        doReturn(
+            listOf(
+                CompanyRoleAssignmentEntity(
+                    companyRole = CompanyRole.Analyst,
+                    companyId = nonMemberCompanyId,
+                    userId = userId,
+                ),
+            ),
+        ).whenever(mockCompanyRoleAssignmentRepository)
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null,
+                userId = userId,
+                companyRole = null,
+            )
+        doReturn(emptyList<CompanyRight>())
+            .whenever(mockCompanyRightsManager)
+            .getCompanyRights(UUID.fromString(nonMemberCompanyId))
+
+        assertFalse(companyRolesManager.currentUserHasRoleInMemberCompany())
+    }
+
+    @Test
+    fun `check that user with role in member company returns true for member company check`() {
+        val userId = "user-id"
+        val memberCompanyId = "12345678-1234-1234-1234-123456789012"
+        doReturn(userId).whenever(mockDatalandJwtAuthentication).userId
+        doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+        doReturn(
+            listOf(
+                CompanyRoleAssignmentEntity(
+                    companyRole = CompanyRole.Analyst,
+                    companyId = memberCompanyId,
+                    userId = userId,
+                ),
+            ),
+        ).whenever(mockCompanyRoleAssignmentRepository)
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null,
+                userId = userId,
+                companyRole = null,
+            )
+        doReturn(listOf(CompanyRight.Member))
+            .whenever(mockCompanyRightsManager)
+            .getCompanyRights(UUID.fromString(memberCompanyId))
+
+        assertTrue(companyRolesManager.currentUserHasRoleInMemberCompany())
     }
 
     @Test
