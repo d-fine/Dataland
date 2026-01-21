@@ -435,9 +435,6 @@ async function handleDatasetDownload(
 
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
-    const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-    const options: AxiosRequestConfig | undefined =
-      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
     const exportJobId = (
       await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
@@ -445,12 +442,15 @@ async function handleDatasetDownload(
         [props.companyID],
         exportFileType,
         keepValuesOnly,
-        includeAlias,
-        options
+        includeAlias
       )
     ).data.id;
 
     await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
+
+    const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+    const options: AxiosRequestConfig | undefined =
+      fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
     const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
       exportJobId,
