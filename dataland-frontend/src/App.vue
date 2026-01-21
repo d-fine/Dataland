@@ -9,6 +9,7 @@
     <router-view />
   </component>
   <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
+  <VueQueryDevtools />
 </template>
 
 <script lang="ts">
@@ -24,7 +25,7 @@ import {
 import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
-import { ApiClientProvider, apiClientProviderKey } from '@/services/ApiClients';
+import { ApiClientProvider } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
@@ -34,6 +35,7 @@ import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { useDialog } from 'primevue/usedialog';
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -42,7 +44,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
+  components: { VueQueryDevtools, TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {
