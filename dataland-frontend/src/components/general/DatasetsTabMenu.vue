@@ -115,9 +115,8 @@ watchEffect(() => {
 /**
  * Handles the tab change event.
  */
-function onTabChange(newId: string | number): void {
-  const tab = tabs.value.find((t) => t.id === newId);
-  if (!tab) return;
+function onTabChange(newId: string): void {
+  const tab = getTabById(newId);
   router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
