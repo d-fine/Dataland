@@ -1,10 +1,10 @@
 <template>
   <div v-bind="$attrs">
-    <div v-if="isPending" class="d-center-div text-center px-7 py-4">
+    <div v-if="isEnrichedPortfolioPending" class="d-center-div text-center px-7 py-4">
       <h1>Loading portfolio data...</h1>
       <DatalandProgressSpinner />
     </div>
-    <div v-else-if="isError" class="d-center-div text-center px-7 py-4">
+    <div v-else-if="isEnrichedPortfolioError" class="d-center-div text-center px-7 py-4">
       <h1>Error loading portfolio data</h1>
       An unexpected error occurred. Please try again later or with [Ctrl] + [F5] or contact the support team if the
       issue persists.
@@ -200,7 +200,7 @@ import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, toRef } from 'vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
@@ -212,9 +212,14 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/vue-query';
+import { useMutation } from '@tanstack/vue-query';
 import { useQueryClient } from '@tanstack/vue-query';
 import { useIsUserDatalandMemberOrAdmin } from '@/backend-access/community-manager/inheritedRoles.ts';
+import {
+  portfolioControllerKeys,
+  useGetEnrichedPortfolio,
+  useGetPortfolio,
+} from '@/backend-access/user-service/portfolio.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -301,29 +306,16 @@ const monitoredTagAttributes = computed(() => ({
 
 const {
   data: enrichedPortfolio,
-  isPending,
-  isError,
-} = useQuery({
-  queryKey: ['enrichedPortfolio', props.portfolioId],
-  staleTime: 3600 * 1000,
-  queryFn: () =>
-    apiClientProvider.apiClients.portfolioController
-      .getEnrichedPortfolio(props.portfolioId)
-      .then((response) => response.data),
-  placeholderData: keepPreviousData,
-});
+  isPending: isEnrichedPortfolioPending,
+  isError: isEnrichedPortfolioError,
+} = useGetEnrichedPortfolio(toRef(props, 'portfolioId'));
 
 const {
   data: basePortfolio,
   isError: isBasePortfolioError,
   isPending: isBasePortfolioPending,
   isSuccess: isBasePortfolioSuccess,
-} = useQuery({
-  queryKey: ['basePortfolio', props.portfolioId],
-  queryFn: () =>
-    apiClientProvider.apiClients.portfolioController.getPortfolio(props.portfolioId).then((response) => response.data),
-  placeholderData: keepPreviousData,
-});
+} = useGetPortfolio(toRef(props, 'portfolioId'));
 
 const portfolioEntriesToDisplay = computed(() => {
   if (!enrichedPortfolio.value) return [];
@@ -532,7 +524,7 @@ function openEditModal(): void {
     },
     onClose(options) {
       if (options?.data?.monitoringSaved) {
-        queryClient.invalidateQueries({ queryKey: ['enrichedPortfolio', props.portfolioId] });
+        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.detail(props.portfolioId) });
         queryClient.invalidateQueries({ queryKey: ['basePortfolio', props.portfolioId] });
         isSuccessDialogVisible.value = true;
       }

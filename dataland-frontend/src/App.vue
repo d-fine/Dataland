@@ -24,7 +24,7 @@ import {
 import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
-import { ApiClientProvider } from '@/services/ApiClients';
+import { ApiClientProvider, apiClientProviderKey } from '@/services/ApiClients';
 import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
@@ -100,9 +100,8 @@ export default defineComponent({
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
       }),
-      apiClientProvider: computed(() => {
-        return this.apiClientProvider;
-      }),
+      apiClientProvider: computed(() => this.apiClientProvider),
+      [apiClientProviderKey]: computed(() => this.apiClientProvider),
       useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
     };
   },

@@ -19,6 +19,7 @@ import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import { DataPointControllerApi } from '@clients/backend/api';
 import { CreditsControllerApi } from '@clients/accountingservice';
+import { InjectionKey } from 'vue';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -125,3 +126,5 @@ export class ApiClientProvider {
     };
   }
 }
+
+export const apiClientProviderKey: InjectionKey<ApiClientProvider> = Symbol('apiClientProvider');
