@@ -1,11 +1,11 @@
 <template>
-  <Tabs :value="currentTabIndex" @update:value="onTabChange">
+  <Tabs :value="currentTabId" @update:value="onTabChange">
     <TabList>
       <Tab
         v-for="tab in tabs"
-        :key="tab.label"
-        :value="tabs.indexOf(tab)"
-        :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
+        :key="tab.id"
+        :value="tab.id"
+        :disabled="!(tab.id === currentTabId || (tab.isVisible ?? true))"
         :pt="{
           root: ({ props }) => {
             return {
@@ -22,11 +22,11 @@
     <TabPanels>
       <TabPanel
         v-for="tab in tabs"
-        :key="tab.label"
-        :value="tabs.indexOf(tab)"
-        :disabled="!(tabs.indexOf(tab) == currentTabIndex || (tab.isVisible ?? true))"
+        :key="tab.id"
+        :value="tab.id"
+        :disabled="!(tab.id === currentTabId || (tab.isVisible ?? true))"
       >
-        <slot v-if="tabs.indexOf(tab) == currentTabIndex" />
+        <slot v-if="tab.id === currentTabId" />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -86,8 +86,19 @@ const tabs = ref<Array<TabInfo>>([
   },
 ]);
 
-const currentTabIndex = computed(() => {
-  return (route.meta.initialTabIndex as number) ?? -1;
+const currentTabId = computed(() => {
+  const defaultId = (route.meta.initialTabId as string) ?? 'my-portfolios';
+
+  if (route.name === 'Company Cockpit') {
+    const myCompanyId = companyRoleAssignments?.value?.[0]?.companyId;
+    const currentCompanyId = route.params.companyId as string | undefined;
+
+    if (myCompanyId && currentCompanyId && myCompanyId === currentCompanyId) {
+      return getTabById('my-company').id;
+    }
+  }
+
+  return defaultId;
 });
 
 onMounted(() => {
@@ -104,8 +115,8 @@ watchEffect(() => {
 /**
  * Handles the tab change event.
  */
-function onTabChange(newIndex: number | string): void {
-  const tab = tabs.value[newIndex as number];
+function onTabChange(newId: string | number): void {
+  const tab = tabs.value.find((t) => t.id === newId);
   if (!tab) return;
   router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
@@ -150,24 +161,25 @@ function setVisibilityForTabWithQualityAssurance(): void {
  * - Shows the "Data requests for my companies" tab if the user is a company owner.
  */
 function configureCompanyRelatedTabs(): void {
-  const firstAssignment = companyRoleAssignments?.value?.[0];
+  const assignments = companyRoleAssignments?.value ?? [];
   const myCompanyTab = getTabById('my-company');
+  const requestsForMyCompaniesTab = getTabById('data-requests-for-my-companies');
 
-  if (firstAssignment) {
-    myCompanyTab.isVisible = true;
-    myCompanyTab.route = `/companies/${firstAssignment.companyId}`;
-  } else {
+  const firstAssignment = assignments[0];
+
+  if (!firstAssignment) {
     myCompanyTab.isVisible = false;
-    myCompanyTab.route = `/companies`;
+    myCompanyTab.route = '/companies';
+    requestsForMyCompaniesTab.isVisible = false;
     return;
   }
 
-  const companyOwnershipAssignments = companyRoleAssignments.value.filter(
-    (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
+  myCompanyTab.isVisible = true;
+  myCompanyTab.route = `/companies/${firstAssignment.companyId}`;
+
+  requestsForMyCompaniesTab.isVisible = assignments.some(
+    (roleAssignment) => roleAssignment.companyRole === CompanyRole.CompanyOwner
   );
-  if (companyOwnershipAssignments) {
-    getTabById('data-requests-for-my-companies').isVisible = companyOwnershipAssignments.length > 0;
-  }
 }
 
 /**
