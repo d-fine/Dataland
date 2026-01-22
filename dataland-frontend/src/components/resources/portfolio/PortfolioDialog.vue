@@ -72,7 +72,7 @@
         label="SAVE PORTFOLIO"
         icon="pi pi-save"
         :disabled="!isValidPortfolioUpload"
-        :loading="isPortfolioSaving"
+        :loading="portfolioMutation.isPending.value"
         @click="savePortfolio()"
         data-test="portfolio-dialog-save-button"
       />
@@ -100,7 +100,12 @@ import { useDialog } from 'primevue/usedialog';
 import GetHelpDialog from '@/components/resources/portfolio/GetHelpDialog.vue';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
-import {useQueryClient} from "@tanstack/vue-query";
+import {UseMutationReturnType, useQueryClient} from "@tanstack/vue-query";
+import {
+  portfolioControllerKeys,
+  useCreatePortfolio,
+  useReplacePortfolio
+} from "@/backend-access/user-service/portfolio.ts";
 
 class CompanyIdAndName {
   companyId: string;
@@ -119,12 +124,10 @@ const queryClient = useQueryClient();
 const companyIdentifiersInput = ref('');
 const showIdentifierError = ref(false);
 const isCompaniesLoading = ref(false);
-const isPortfolioSaving = ref(false);
 const portfolioErrors = ref('');
 const portfolioId = ref<string | undefined>(undefined);
 const portfolioName = ref<string | undefined>(undefined);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-var initialPortfolioIdentifiers: Set<string> = new Set();
 const enrichedPortfolio = ref<EnrichedPortfolio>();
 const portfolioFrameworks = ref<string[]>([
   'sfdr',
@@ -132,6 +135,9 @@ const portfolioFrameworks = ref<string[]>([
   'eutaxonomy-non-financials',
   'nuclear-and-gas',
 ]);
+const portfolioMutation = dialogRef?.value.data?.portfolio?.portfolioId ?
+  useReplacePortfolio(dialogRef?.value.data.portfolio.portfolioId, queryClient) :
+  useCreatePortfolio(queryClient);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -148,7 +154,6 @@ onMounted(() => {
   portfolioName.value = portfolio.portfolioName;
   enrichedPortfolio.value = portfolio;
   portfolioCompanies.value = getUniqueSortedCompanies(portfolio.entries.map((entry) => new CompanyIdAndName(entry)));
-  initialPortfolioIdentifiers = new Set(portfolioCompanies.value.map((company) => company.companyId));
 });
 
 /**
@@ -219,51 +224,44 @@ function openHelpDialog(): void {
  * dialog's close function. This way, the parent component (portfolioOverview) can use this information to switch to the
  * according tab.
  */
-async function savePortfolio(): Promise<void> {
+function savePortfolio(): void {
   if (!isValidPortfolioUpload.value) return;
 
-  isPortfolioSaving.value = true;
-  try {
-    const portfolioUpload: PortfolioUpload = {
-      portfolioName: portfolioName.value!,
-      // as unknown as Set<string> cast required to ensure proper json is created
-      identifiers: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
-      isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
-      // as unknown as Set<string> cast required to ensure proper json is created
-      monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
-      notificationFrequency: enrichedPortfolio.value?.notificationFrequency ?? NotificationFrequency.Weekly,
-      timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? undefined,
-      // as unknown as Set<string> cast required to ensure proper json is created
-      sharedUserIds: Array.from(enrichedPortfolio.value?.sharedUserIds ?? []) as unknown as Set<string>,
-    };
-    const response = await (portfolioId.value
-      ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
-      : apiClientProvider.apiClients.portfolioController.createPortfolio(portfolioUpload));
-    await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
-    if (portfolioId.value) {
-      await queryClient.invalidateQueries({ queryKey: ['basePortfolio', portfolioId.value] });
-      if (initialPortfolioIdentifiers.symmetricDifference(new Set(portfolioUpload.identifiers)).size !== 0) {
-        await queryClient.invalidateQueries({queryKey: ['enrichedPortfolio', portfolioId.value]});
-      }
-    }
+  const portfolioUpload: PortfolioUpload = {
+    portfolioName: portfolioName.value!,
+    // as unknown as Set<string> cast required to ensure proper json is created
+    identifiers: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+    isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
+    // as unknown as Set<string> cast required to ensure proper json is created
+    monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
+    notificationFrequency: enrichedPortfolio.value?.notificationFrequency ?? NotificationFrequency.Weekly,
+    timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? undefined,
+    // as unknown as Set<string> cast required to ensure proper json is created
+    sharedUserIds: Array.from(enrichedPortfolio.value?.sharedUserIds ?? []) as unknown as Set<string>,
+  };
 
-    dialogRef?.value.close({
-      portfolioId: response.data.portfolioId,
-      portfolioName: response.data.portfolioName,
-    } as BasePortfolioName);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      portfolioErrors.value =
-        error.status == 409
-          ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
-          : error.message;
-    } else {
-      portfolioErrors.value = 'An unknown error occurred.';
-      console.log(error);
-    }
-  } finally {
-    isPortfolioSaving.value = false;
-  }
+  portfolioMutation.mutate(
+    { portfolioUpload: portfolioUpload },
+      {
+        onSuccess: (response: any) => {
+          dialogRef?.value.close({
+            portfolioId: response.data.portfolioId,
+            portfolioName: response.data.portfolioName,
+          } as BasePortfolioName);
+        },
+        onError: (error: any) => {
+          if (error instanceof AxiosError) {
+            portfolioErrors.value =
+                error.status == 409
+                    ? 'A portfolio with same name exists already. Please choose a different portfolio name.'
+                    : error.message;
+          } else {
+            portfolioErrors.value = 'An unknown error occurred.';
+            console.log(error);
+          }
+        }
+      }
+  );
 }
 
 /**
@@ -282,12 +280,12 @@ async function deletePortfolio(): Promise<void> {
 
   try {
     await apiClientProvider.apiClients.portfolioController.deletePortfolio(portfolioId.value);
+    await queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.allForUser() });
+    queryClient.removeQueries({ queryKey: portfolioControllerKeys.enriched(portfolioId.value) });
+    queryClient.removeQueries({ queryKey: portfolioControllerKeys.base(portfolioId.value) });
     dialogRef?.value.close({
       isDeleted: true,
     });
-    await queryClient.invalidateQueries({ queryKey: ['portfolioNames'] });
-    await queryClient.removeQueries({ queryKey: ['enrichedPortfolio', portfolioId.value] });
-    await queryClient.removeQueries({ queryKey: ['basePortfolio', portfolioId.value] });
   } catch (error) {
     portfolioErrors.value = error instanceof AxiosError ? error.message : 'Portfolio could not be deleted';
   }

@@ -28,7 +28,7 @@
           />
         </div>
 
-        <Tag data-test="is-monitored-tag" v-if="isBasePortfolioSuccess" v-bind="monitoredTagAttributes" />
+        <Tag data-test="is-monitored-tag" v-if="isEnrichedPortfolioSuccess" v-bind="monitoredTagAttributes" />
         <Button
           class="reset-button-align-right"
           data-test="reset-filter"
@@ -218,7 +218,6 @@ import { useIsUserDatalandMemberOrAdmin } from '@/backend-access/community-manag
 import {
   portfolioControllerKeys,
   useGetEnrichedPortfolio,
-  useGetPortfolio,
 } from '@/backend-access/user-service/portfolio.ts';
 
 /**
@@ -287,11 +286,11 @@ const props = defineProps<{
 }>();
 
 const successDialogMessage = computed(() => {
-  if (isBasePortfolioPending.value) return 'Updating portfolio monitoring...';
-  else if (isBasePortfolioError.value)
+  if (isEnrichedPortfolioPending.value) return 'Updating portfolio monitoring...';
+  else if (isEnrichedPortfolioError.value)
     return 'An error occurred while updating portfolio monitoring. Please try again later.';
   else
-    return basePortfolio.value?.isMonitored
+    return enrichedPortfolio.value?.isMonitored
       ? 'Portfolio monitoring updated successfully.\nData requests will be created automatically overnight.'
       : 'Portfolio monitoring updated successfully.';
 });
@@ -299,23 +298,17 @@ const isSuccessDialogVisible = ref(false);
 const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 
 const monitoredTagAttributes = computed(() => ({
-  value: basePortfolio.value?.isMonitored ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
-  icon: basePortfolio.value?.isMonitored ? 'pi pi-check-circle' : 'pi pi-times-circle',
-  severity: basePortfolio.value?.isMonitored ? 'success' : 'danger',
+  value: enrichedPortfolio.value?.isMonitored ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
+  icon: enrichedPortfolio.value?.isMonitored ? 'pi pi-check-circle' : 'pi pi-times-circle',
+  severity: enrichedPortfolio.value?.isMonitored ? 'success' : 'danger',
 }));
 
 const {
   data: enrichedPortfolio,
   isPending: isEnrichedPortfolioPending,
   isError: isEnrichedPortfolioError,
+  isSuccess: isEnrichedPortfolioSuccess,
 } = useGetEnrichedPortfolio(toRef(props, 'portfolioId'));
-
-const {
-  data: basePortfolio,
-  isError: isBasePortfolioError,
-  isPending: isBasePortfolioPending,
-  isSuccess: isBasePortfolioSuccess,
-} = useGetPortfolio(toRef(props, 'portfolioId'));
 
 const portfolioEntriesToDisplay = computed(() => {
   if (!enrichedPortfolio.value) return [];
@@ -587,11 +580,12 @@ function openMonitoringModal(): void {
       },
     },
     data: {
-      portfolio: basePortfolio.value,
+      portfolio: enrichedPortfolio.value,
     },
     onClose(options) {
       if (options?.data?.monitoringSaved) {
-        queryClient.invalidateQueries({ queryKey: ['basePortfolio', props.portfolioId] });
+        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.base(props.portfolioId) });
+        queryClient.invalidateQueries({ queryKey: portfolioControllerKeys.enriched(props.portfolioId) });
         isSuccessDialogVisible.value = true;
       }
     },
