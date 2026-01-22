@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.controller.DataController
 <#list frameworkDataType.imports as import>import ${import}
 </#list>
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation

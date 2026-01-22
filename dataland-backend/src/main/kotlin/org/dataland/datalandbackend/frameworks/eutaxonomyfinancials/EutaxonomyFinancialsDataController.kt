@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -68,7 +68,7 @@ class EutaxonomyFinancialsDataController
             exportRequestData: ExportRequestData,
             keepValueFieldsOnly: Boolean,
             includeAliases: Boolean,
-        ): ResponseEntity<ExportJob> =
+        ): ResponseEntity<ExportJobInfo> =
             super
                 .postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
 

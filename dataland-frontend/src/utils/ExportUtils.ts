@@ -9,7 +9,7 @@ import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 const EXPORT_POLL_INTERVAL_MS = 500;
-const EXPORT_MAX_POLL_ATTEMPTS = 180;
+const EXPORT_MAX_POLL_ATTEMPTS = 240;
 
 /**
  * Polls the export job status until completion or timeout

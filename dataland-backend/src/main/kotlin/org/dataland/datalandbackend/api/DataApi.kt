@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -160,7 +160,7 @@ interface DataApi<T> {
             value = "includeAliases",
             defaultValue = "true",
         ) includeAliases: Boolean = true,
-    ): ResponseEntity<ExportJob>
+    ): ResponseEntity<ExportJobInfo>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its

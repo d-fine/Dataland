@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.dataland.datalandbackend.entities.ExportJobEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.utils.DataExportUtils
 import org.dataland.datalandbackend.utils.DataPointUtils
@@ -94,7 +94,7 @@ open class DataExportService<T>(
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
      * @param listDataDimensions the passed list of SingleCompanyExportData to be exported
      * @param exportFileType the file type to be exported
-     * @param newExportJobEntity correlationId for unique identification
+     * @param newExportJob correlationId for unique identification
      * @param keepValueFieldsOnly if true, non value fields are stripped
      * @return InputStreamResource byteStream for export.
      * Note that swagger only supports InputStreamResources and not OutputStreams
@@ -103,13 +103,13 @@ open class DataExportService<T>(
     open fun startExportJob(
         listDataDimensions: ListDataDimensions,
         exportFileType: ExportFileType,
-        newExportJobEntity: ExportJobEntity,
+        newExportJob: ExportJob,
         clazz: Class<T>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ) {
         val portfolioData =
-            buildCompanyExportData(listDataDimensions, clazz, newExportJobEntity.id.toString())
+            buildCompanyExportData(listDataDimensions, clazz, newExportJob.id.toString())
 
         val jsonData = portfolioData.map { convertDataToJson(it) }
         if (jsonData.isEmpty()) {
@@ -117,7 +117,7 @@ open class DataExportService<T>(
         }
         val dataType = DataType.valueOf(listDataDimensions.dataTypes.first())
 
-        newExportJobEntity.fileToExport =
+        newExportJob.fileToExport =
             when (exportFileType) {
                 ExportFileType.CSV -> {
                     buildCsvStreamFromPortfolioAsJsonData(
@@ -141,7 +141,7 @@ open class DataExportService<T>(
                     buildJsonStreamFromPortfolioAsJsonData(jsonData)
                 }
             }
-        newExportJobEntity.progressState = ExportJobProgressState.Success
+        newExportJob.progressState = ExportJobProgressState.Success
     }
 
     /**

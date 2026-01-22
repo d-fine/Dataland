@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.entities.ExportJobEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.exceptions.JOB_NOT_FOUND_SUMMARY
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.scheduling.annotation.Scheduled
@@ -24,18 +24,18 @@ class DataExportStore {
         private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 5L
     }
 
-    private val exportJobStorage = mutableMapOf<String, MutableList<ExportJobEntity>>()
+    private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
 
     /**
-     * Instantiates and saves ExportJob in memory.
+     * Instantiates and saves ExportJobInfo in memory.
      */
     internal fun createAndSaveExportJob(
         correlationId: UUID,
         fileType: ExportFileType,
         dataType: String,
-    ): ExportJobEntity {
-        val newExportJobEntity =
-            ExportJobEntity(
+    ): ExportJob {
+        val newExportJob =
+            ExportJob(
                 correlationId,
                 null,
                 fileType,
@@ -43,27 +43,24 @@ class DataExportStore {
                 creationTime = Instant.now().toEpochMilli(),
             )
         exportJobStorage
-            .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf(newExportJobEntity) }
-            .add(newExportJobEntity)
-        return newExportJobEntity
+            .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf(newExportJob) }
+            .add(newExportJob)
+        return newExportJob
     }
 
     /**
      * Filters exportJob associated to user by id and returns progressState
      */
-    fun getExportJobState(exportJobId: UUID): ExportJobProgressState {
-        exportJobStorage["test"] = mutableListOf()
-        exportJobStorage["train"] = mutableListOf()
-        return exportJobStorage[DatalandAuthentication.fromContext().userId]
+    fun getExportJobState(exportJobId: UUID): ExportJobProgressState =
+        exportJobStorage[DatalandAuthentication.fromContext().userId]
             ?.firstOrNull { it.id == exportJobId }
             ?.progressState
             ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)
-    }
 
     /**
      * Get an export job from exportJobStorage by its ID.
      */
-    fun getExportJob(exportJobId: UUID): ExportJobEntity =
+    fun getExportJob(exportJobId: UUID): ExportJob =
         exportJobStorage[DatalandAuthentication.fromContext().userId]
             ?.firstOrNull { it.id == exportJobId }
             ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)

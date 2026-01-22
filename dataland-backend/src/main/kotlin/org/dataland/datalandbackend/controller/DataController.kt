@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
-import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -168,7 +168,7 @@ open class DataController<T>(
         exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): ResponseEntity<ExportJob> {
+    ): ResponseEntity<ExportJobInfo> {
         if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
                 it.companyInformation == null
             }
@@ -207,7 +207,7 @@ open class DataController<T>(
             return ResponseEntity.noContent().build()
         }
         return ResponseEntity
-            .ok(ExportJob(id = correlationId))
+            .ok(ExportJobInfo(id = correlationId))
     }
 
     private fun buildStorableDataset(
