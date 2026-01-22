@@ -73,7 +73,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): ResponseEntity<ExportJob> {
+    ): ResponseEntity<ExportJobInfo> {
         return super.postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
     }
 
