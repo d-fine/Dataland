@@ -68,8 +68,8 @@ interface EmailAddressApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
-            "@CompanyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany() or " +
-            "@CompanyRolesManager.currentUserHasRoleInMemberCompany()",
+            "@SecurityUtilsService.isCurrentUserOwnerOrAdminOfAtLeastOneCompany() or " +
+            "@SecurityUtilsService.isCurrentUserDatalandMember()",
     )
     fun postEmailAddressValidation(
         @RequestBody emailAddress: EmailAddress,

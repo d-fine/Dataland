@@ -95,8 +95,7 @@ describe('Check the portfolio details view', function (): void {
         portfolioFixtureWithMonitoring = {
           ...portfolioFixtureWithoutMonitoring,
           isMonitored: true,
-          // as unknown as Set<string> cast required to ensure proper json is created
-          monitoredFrameworks: ['sfdr', 'eutaxonomy'] as unknown as Set<string>,
+          monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
         } as EnrichedPortfolio;
         memberConfigurationParametersWithMonitoring = {
           inheritedRoleMap: datalandMemberInheritedRoleMap,
