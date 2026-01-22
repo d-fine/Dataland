@@ -15,8 +15,6 @@
         <br />
         Am Steinernen Stock 1
         <br />
-        Briefkasten Nr. 8
-        <br />
         60320 Frankfurt am Main
         <br />
         <br />
