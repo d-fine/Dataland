@@ -420,6 +420,7 @@ async function handleDatasetDownload(
   includeAlias: boolean
 ): Promise<void> {
   isDownloading.value = true;
+  downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
