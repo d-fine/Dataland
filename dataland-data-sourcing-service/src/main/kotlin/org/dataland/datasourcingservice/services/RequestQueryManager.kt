@@ -105,7 +105,7 @@ class RequestQueryManager
         /**
          * Search for requests based on userId
          * @param userId to filter by
-         * @return list of matching ExtendedStoredRequest objects
+         * @return list of matching MixedExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
         fun getRequestsByUser(userId: UUID): List<MixedExtendedStoredRequest> {
@@ -130,7 +130,7 @@ class RequestQueryManager
 
         /**
          * Get requests for requesting user
-         * @return list of matching ExtendedStoredRequest objects
+         * @return list of matching MixedExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
         fun getRequestsForRequestingUser(): List<MixedExtendedStoredRequest> {
@@ -154,7 +154,7 @@ class RequestQueryManager
             )
 
         /**
-         * Transform RequestEntity to ExtendedStoredRequest by adding company name and user email address.
+         * Transform RequestEntity to MixedExtendedStoredRequest by adding company name and user email address.
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
