@@ -74,7 +74,7 @@ const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || t
 const currentTabId = computed<TabInfo['id']>(() => {
   const myCompanyId = companyRoleAssignments.value?.[0]?.companyId;
   if (myCompanyId && route.path.includes(`/companies/${myCompanyId}`)) {
-    return getTabById('my-company').id;
+    return 'my-company';
   }
 
   return (route.meta.initialTabId as TabInfo['id']) ?? '';
