@@ -68,6 +68,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingRepository,
             mockDataRevisionRepository,
             mockDataSourcingValidator,
+            existingRequestsManager,
             mockCloudEventMessageHandler,
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()

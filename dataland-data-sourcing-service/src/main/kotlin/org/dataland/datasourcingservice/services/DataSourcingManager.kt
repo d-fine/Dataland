@@ -39,6 +39,7 @@ class DataSourcingManager
         private val dataSourcingRepository: DataSourcingRepository,
         private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingValidator: DataSourcingValidator,
+        private val existingRequestsManager: ExistingRequestsManager,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -129,6 +130,13 @@ class DataSourcingManager
             if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
                     it.state = RequestState.Processed
+                    existingRequestsManager.patchRequestState(
+                        it.id,
+                        RequestState.Processed,
+                        "Request automatically marked as Processed because associated Data Sourcing " +
+                            "Entity with id ${dataSourcingEntityWithFetchedRequests.dataSourcingId} " +
+                            "was marked as $state.",
+                    )
                 }
             }
             if (state == DataSourcingState.NonSourceable &&

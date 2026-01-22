@@ -6,18 +6,22 @@ import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
+import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
@@ -27,6 +31,7 @@ class DataSourcingManagerTest {
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
+    private val mockExistingRequestsManager = mock<ExistingRequestsManager>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
@@ -77,16 +82,41 @@ class DataSourcingManagerTest {
             mockDataSourcingValidator,
             mockDataRevisionRepository,
             mockDataSourcingRepository,
+            mockExistingRequestsManager,
+            mockCloudEventMessageHandler,
         )
 
         doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockDataSourcingRepository).save(any())
+
+        val storedRequestResponse =
+            StoredRequest(
+                id = newRequest.id.toString(),
+                companyId = newRequest.companyId.toString(),
+                reportingPeriod = newRequest.reportingPeriod,
+                dataType = newRequest.dataType,
+                userId = newRequest.userId.toString(),
+                creationTimestamp = newRequest.creationTimestamp,
+                memberComment = newRequest.memberComment,
+                adminComment = newRequest.adminComment,
+                lastModifiedDate = newRequest.lastModifiedDate,
+                requestPriority = newRequest.requestPriority,
+                state = RequestState.Processed,
+                dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
+            )
+
+        doReturn(storedRequestResponse).whenever(mockExistingRequestsManager).patchRequestState(
+            any<UUID>(),
+            eq(RequestState.Processed),
+            anyOrNull(),
+        )
 
         dataSourcingManager =
             DataSourcingManager(
                 dataSourcingValidator = mockDataSourcingValidator,
                 dataRevisionRepository = mockDataRevisionRepository,
                 dataSourcingRepository = mockDataSourcingRepository,
+                existingRequestsManager = mockExistingRequestsManager,
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
             )
     }
