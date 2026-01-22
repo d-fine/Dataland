@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.mixed.DataSourcingDetails
+import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.hibernate.envers.Audited
@@ -92,6 +94,37 @@ class RequestEntity(
             requestPriority = requestPriority,
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+            companyName = companyName,
+            userEmailAddress = userEmailAddress,
+        )
+
+    /**
+     * Converts this RequestEntity to a MixedExtendedStoredRequest.
+     */
+    fun toMixedExtendedStoredRequest(
+        companyName: String,
+        userEmailAddress: String?,
+    ): MixedExtendedStoredRequest =
+        MixedExtendedStoredRequest(
+            id = id.toString(),
+            companyId = companyId.toString(),
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            userId = userId.toString(),
+            creationTimestamp = creationTimestamp,
+            memberComment = memberComment,
+            adminComment = adminComment,
+            lastModifiedDate = lastModifiedDate,
+            requestPriority = requestPriority,
+            state = state,
+            dataSourcingDetails =
+                DataSourcingDetails(
+                    dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+                    dataSourcingState = dataSourcingEntity?.state,
+                    dateOfNextDocumentSourcingAttempt = dataSourcingEntity?.dateOfNextDocumentSourcingAttempt,
+                    documentCollector = dataSourcingEntity?.documentCollector.toString(),
+                    dataExtractor = dataSourcingEntity?.dataExtractor.toString(),
+                ),
             companyName = companyName,
             userEmailAddress = userEmailAddress,
         )

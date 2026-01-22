@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import java.util.UUID
@@ -91,6 +92,18 @@ data class MixedRequestSearchFilter<IdType>(
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
     )
     val companySearchString: String? = null,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
+                example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE,
+            ),
+        schema =
+            Schema(
+                implementation = RequestState::class,
+            ),
+    )
+    val dataSourcingState: Set<DataSourcingState>? = null,
 ) {
     /**
      * Converts this RequestSearchFilter with String IDs to a RequestSearchFilter with UUID IDs.
@@ -114,5 +127,6 @@ data class MixedRequestSearchFilter<IdType>(
             adminComment = this.adminComment,
             emailAddress = this.emailAddress,
             companySearchString = this.companySearchString,
+            dataSourcingState = this.dataSourcingState,
         )
 }

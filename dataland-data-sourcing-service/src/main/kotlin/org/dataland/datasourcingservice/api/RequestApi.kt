@@ -13,7 +13,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestI
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
@@ -284,38 +283,4 @@ interface RequestApi {
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
     ): ResponseEntity<List<StoredRequest>>
-
-    /**
-     * Get the number of requests based on filters.
-     */
-    @Operation(
-        summary = "Get the number of requests based on filters.",
-        description =
-            "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, " +
-                "data type, reporting period or state.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully queried the number of requests."),
-            ApiResponse(
-                responseCode = "400",
-                description = "At least one of your provided filters is not of the correct format.",
-                content = [Content(array = ArraySchema())],
-            ),
-            ApiResponse(
-                responseCode = "403",
-                description = "Only Dataland admins have the right to query the number of requests.",
-                content = [Content(array = ArraySchema())],
-            ),
-        ],
-    )
-    @PostMapping(
-        value = ["/count"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun postRequestCountQuery(
-        @RequestBody
-        mixedRequestSearchFilter: MixedRequestSearchFilter<String>,
-    ): ResponseEntity<Int>
 }

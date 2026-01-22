@@ -356,7 +356,7 @@ interface DataSourcingApi {
         @RequestParam(required = false)
         reportingPeriod: String? = null,
         @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.STATE_DESCRIPTION,
+            description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
         )
         state: DataSourcingState? = null,
         @Parameter(

@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
 import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
-import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +38,7 @@ class RequestQueryManager
             mixedRequestSearchFilter: MixedRequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
-        ): List<ExtendedStoredRequest> {
+        ): List<MixedExtendedStoredRequest> {
             val pageRequest =
                 PageRequest.of(
                     chunkIndex,
@@ -108,7 +108,7 @@ class RequestQueryManager
          * @return list of matching ExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> {
+        fun getRequestsByUser(userId: UUID): List<MixedExtendedStoredRequest> {
             val userEmailAddress = keycloakUserService.getUser(userId.toString()).email
             val requestEntities = requestRepository.findByUserId(userId)
             val validationResults =
@@ -121,7 +121,7 @@ class RequestQueryManager
                         .find { it.identifier == entity.companyId.toString() }
                         ?.companyInformation
                         ?.companyName ?: ""
-                entity.toExtendedStoredRequest(
+                entity.toMixedExtendedStoredRequest(
                     companyName,
                     userEmailAddress,
                 )
@@ -133,7 +133,7 @@ class RequestQueryManager
          * @return list of matching ExtendedStoredRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsForRequestingUser(): List<ExtendedStoredRequest> {
+        fun getRequestsForRequestingUser(): List<MixedExtendedStoredRequest> {
             val userId = DatalandAuthentication.fromContext().userId
             return getRequestsByUser(
                 UUID.fromString(userId),
@@ -158,8 +158,8 @@ class RequestQueryManager
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
-        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
-            entity.toExtendedStoredRequest(
+        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest =
+            entity.toMixedExtendedStoredRequest(
                 companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
                 keycloakUserService.getUser(entity.userId.toString()).email,
             )

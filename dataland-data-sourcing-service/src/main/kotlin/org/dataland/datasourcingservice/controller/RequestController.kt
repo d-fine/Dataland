@@ -4,7 +4,6 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
@@ -14,7 +13,6 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestCreationService
-import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -29,7 +27,6 @@ class RequestController
         private val existingRequestsManager: ExistingRequestsManager,
         private val bulkDataRequestManager: BulkRequestManager,
         private val requestCreationService: RequestCreationService,
-        private val requestQueryManager: RequestQueryManager,
     ) : RequestApi {
         override fun postBulkDataRequest(
             bulkDataRequest: BulkDataRequest,
@@ -100,9 +97,4 @@ class RequestController
                         ),
                     ),
                 )
-
-        override fun postRequestCountQuery(mixedRequestSearchFilter: MixedRequestSearchFilter<String>): ResponseEntity<Int> =
-            ResponseEntity.ok(
-                requestQueryManager.getNumberOfRequests(mixedRequestSearchFilter.convertToSearchFilterWithUUIDs()),
-            )
     }
