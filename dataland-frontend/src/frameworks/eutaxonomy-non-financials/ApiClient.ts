@@ -7,7 +7,7 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ExportFileType,
-  type ExportJob,
+  type ExportJobInfo,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -55,7 +55,7 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): AxiosPromise<ExportJob> {
+  ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
