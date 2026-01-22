@@ -481,6 +481,7 @@ function handleFetchedCompanyInformation(info: CompanyInformation): void {
  * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
  */
 function downloadData(): void {
+  downloadErrors.value = '';
   const fullName = 'Download Data';
 
   dialog.open(DownloadData, {

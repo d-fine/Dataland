@@ -468,6 +468,7 @@ async function handleDatasetDownload(
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  */
 function openDownloadModal(): void {
+  downloadErrors.value = '';
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(DownloadData, {
