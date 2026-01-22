@@ -129,7 +129,6 @@ class DataSourcingManager
 
             if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
                 dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
-                    it.state = RequestState.Processed
                     existingRequestsManager.patchRequestState(
                         it.id,
                         RequestState.Processed,
