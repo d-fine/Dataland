@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
 import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -70,7 +71,7 @@ class RequestQueryManager
                 }
 
             return orderedEntities.map { entity ->
-                transformRequestEntityToExtendedStoredRequest(entity)
+                transformRequestEntityToMixedExtendedStoredRequest(entity)
             }
         }
 
@@ -158,8 +159,19 @@ class RequestQueryManager
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
-        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest =
+        fun transformRequestEntityToMixedExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest =
             entity.toMixedExtendedStoredRequest(
+                companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
+                keycloakUserService.getUser(entity.userId.toString()).email,
+            )
+
+        /**
+         * Transform RequestEntity to ExtendedStoredRequest by adding company name and user email address.
+         * @param entity the RequestEntity to transform
+         * @return the transformed ExtendedStoredRequest
+         */
+        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
+            entity.toExtendedStoredRequest(
                 companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
                 keycloakUserService.getUser(entity.userId.toString()).email,
             )

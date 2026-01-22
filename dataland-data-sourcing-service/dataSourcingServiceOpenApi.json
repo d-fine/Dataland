@@ -98,10 +98,82 @@
         ]
       }
     },
-    "/requests/search": {
+    "/requests/bulk": {
       "post": {
         "tags": [
           "request-controller"
+        ],
+        "summary": "Send a bulk request",
+        "description": "A bulk of data requests for specific frameworks and companies is being sent.",
+        "operationId": "postBulkDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Dataland ID of the user in whose name the request shall be made. Please omit it if you are making the request on your own behalf.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully processed a bulk of data requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/mixed/search": {
+      "post": {
+        "tags": [
+          "mixed-controller"
         ],
         "summary": "Search requests by filters.",
         "description": "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
@@ -133,7 +205,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RequestSearchFilterString"
+                "$ref": "#/components/schemas/MixedRequestSearchFilterString"
               }
             }
           },
@@ -147,7 +219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExtendedStoredRequest"
+                    "$ref": "#/components/schemas/MixedExtendedStoredRequest"
                   }
                 }
               }
@@ -190,10 +262,10 @@
         ]
       }
     },
-    "/requests/count": {
+    "/mixed/count": {
       "post": {
         "tags": [
-          "request-controller"
+          "mixed-controller"
         ],
         "summary": "Get the number of requests based on filters.",
         "description": "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
@@ -202,7 +274,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RequestSearchFilterString"
+                "$ref": "#/components/schemas/MixedRequestSearchFilterString"
               }
             }
           },
@@ -225,78 +297,6 @@
           },
           "403": {
             "description": "Only Dataland admins have the right to query the number of requests."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/requests/bulk": {
-      "post": {
-        "tags": [
-          "request-controller"
-        ],
-        "summary": "Send a bulk request",
-        "description": "A bulk of data requests for specific frameworks and companies is being sent.",
-        "operationId": "postBulkDataRequest",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "Dataland ID of the user in whose name the request shall be made. Please omit it if you are making the request on your own behalf.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkDataRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully processed a bulk of data requests.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkDataRequestResponse"
-                }
-              }
-            }
           },
           "default": {
             "description": "An error occurred",
@@ -1054,10 +1054,10 @@
         ]
       }
     },
-    "/requests/user": {
+    "/mixed/user": {
       "get": {
         "tags": [
-          "request-controller"
+          "mixed-controller"
         ],
         "summary": "Get all stored data requests of the user making the request.",
         "description": "Gets all the stored data request created by the user who is making the request.",
@@ -1070,7 +1070,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExtendedStoredRequest"
+                    "$ref": "#/components/schemas/MixedExtendedStoredRequest"
                   }
                 }
               }
@@ -1576,159 +1576,6 @@
           }
         }
       },
-      "RequestPriority": {
-        "type": "string",
-        "enum": [
-          "Low",
-          "Baseline",
-          "High",
-          "Urgent"
-        ]
-      },
-      "RequestSearchFilterString": {
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataTypes": {
-            "type": "array",
-            "description": "A list of associated reporting frameworks or data point types (as applicable).",
-            "example": [
-              "sfdr",
-              "eutaxonomy-financials"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "reportingPeriods": {
-            "type": "array",
-            "description": "The relevant reporting periods (e.g. fiscal years).",
-            "example": [
-              "2023",
-              "2024"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "userId": {
-            "type": "string",
-            "description": "The ID of the user who created the data request.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "requestStates": {
-            "type": "array",
-            "description": "A list of associated request states.",
-            "example": [
-              "Open",
-              "Processing"
-            ],
-            "items": {
-              "$ref": "#/components/schemas/RequestState"
-            }
-          },
-          "requestPriorities": {
-            "type": "array",
-            "description": "A list of associated request priorities.",
-            "example": [
-              "Low",
-              "High"
-            ],
-            "items": {
-              "$ref": "#/components/schemas/RequestPriority"
-            }
-          },
-          "emailAddress": {
-            "type": "string",
-            "description": "The email address of the user who created this data request.",
-            "example": "test@example.com"
-          },
-          "adminComment": {
-            "type": "string",
-            "description": "A comment that can be set by Dataland admins to provide additional information.",
-            "example": "The data sourcing process is delayed due to unforeseen circumstances."
-          },
-          "companySearchString": {
-            "type": "string",
-            "description": "Search string used for company substring matching. Matched against company names and identifiers.",
-            "example": "Inc."
-          }
-        }
-      },
-      "RequestState": {
-        "type": "string",
-        "enum": [
-          "Open",
-          "Withdrawn",
-          "Processing",
-          "Processed"
-        ]
-      },
-      "ExtendedStoredRequest": {
-        "required": [
-          "companyId",
-          "companyName",
-          "creationTimestamp",
-          "dataType",
-          "id",
-          "lastModifiedDate",
-          "reportingPeriod",
-          "requestPriority",
-          "state",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "memberComment": {
-            "type": "string"
-          },
-          "adminComment": {
-            "type": "string"
-          },
-          "lastModifiedDate": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "requestPriority": {
-            "$ref": "#/components/schemas/RequestPriority"
-          },
-          "state": {
-            "$ref": "#/components/schemas/RequestState"
-          },
-          "dataSourcingEntityId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "userEmailAddress": {
-            "type": "string"
-          }
-        }
-      },
       "BulkDataRequest": {
         "required": [
           "companyIdentifiers",
@@ -1852,6 +1699,200 @@
           }
         }
       },
+      "MixedRequestSearchFilterString": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataTypes": {
+            "type": "array",
+            "description": "A list of associated reporting frameworks or data point types (as applicable).",
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriods": {
+            "type": "array",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "requestStates": {
+            "type": "array",
+            "description": "A list of associated request states.",
+            "example": [
+              "Open",
+              "Processing"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestState"
+            }
+          },
+          "requestPriorities": {
+            "type": "array",
+            "description": "A list of associated request priorities.",
+            "example": [
+              "Low",
+              "High"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
+          },
+          "emailAddress": {
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "example": "test@example.com"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "companySearchString": {
+            "type": "string",
+            "description": "Search string used for company substring matching. Matched against company names and identifiers.",
+            "example": "Inc."
+          },
+          "dataSourcingState": {
+            "type": "array",
+            "description": "The current state of the data sourcing object.",
+            "example": "DataVerification.",
+            "items": {
+              "$ref": "#/components/schemas/RequestState"
+            }
+          }
+        }
+      },
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "RequestState": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Withdrawn",
+          "Processing",
+          "Processed"
+        ]
+      },
+      "DataSourcingDetails": {
+        "type": "object",
+        "properties": {
+          "dataSourcingEntityId": {
+            "type": "string"
+          },
+          "dataSourcingState": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "dateOfNextDocumentSourcingAttempt": {
+            "type": "string",
+            "format": "date"
+          },
+          "documentCollector": {
+            "type": "string"
+          },
+          "dataExtractor": {
+            "type": "string"
+          }
+        }
+      },
+      "DataSourcingState": {
+        "type": "string",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
+      "MixedExtendedStoredRequest": {
+        "required": [
+          "companyId",
+          "companyName",
+          "creationTimestamp",
+          "dataType",
+          "id",
+          "lastModifiedDate",
+          "reportingPeriod",
+          "requestPriority",
+          "state",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "memberComment": {
+            "type": "string"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "dataSourcingDetails": {
+            "$ref": "#/components/schemas/DataSourcingDetails"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "userEmailAddress": {
+            "type": "string"
+          }
+        }
+      },
       "StoredRequest": {
         "required": [
           "companyId",
@@ -1905,19 +1946,6 @@
             "type": "string"
           }
         }
-      },
-      "DataSourcingState": {
-        "type": "string",
-        "description": "The current state of the data sourcing object.",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Done"
-        ]
       },
       "ExpectedPublicationDateOfDocument": {
         "required": [
@@ -2088,6 +2116,67 @@
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+          }
+        }
+      },
+      "ExtendedStoredRequest": {
+        "required": [
+          "companyId",
+          "companyName",
+          "creationTimestamp",
+          "dataType",
+          "id",
+          "lastModifiedDate",
+          "reportingPeriod",
+          "requestPriority",
+          "state",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "memberComment": {
+            "type": "string"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "dataSourcingEntityId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "userEmailAddress": {
+            "type": "string"
           }
         }
       },
