@@ -155,24 +155,39 @@ class RequestQueryManager
             )
 
         /**
+         * Fetch company name and user email for a given RequestEntity.
+         */
+        private fun getCompanyNameAndEmail(entity: RequestEntity): Pair<String, String?> {
+            val companyName =
+                companyDataController
+                    .getCompanyInfo(entity.companyId.toString())
+                    .companyName
+
+            val email =
+                keycloakUserService
+                    .getUser(entity.userId.toString())
+                    .email
+
+            return companyName to email
+        }
+
+        /**
          * Transform RequestEntity to MixedExtendedStoredRequest by adding company name and user email address.
          * @param entity the RequestEntity to transform
-         * @return the transformed ExtendedStoredRequest
+         * @return the transformed MixedExtendedStoredRequest
          */
-        fun transformRequestEntityToMixedExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest =
-            entity.toMixedExtendedStoredRequest(
-                companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
-                keycloakUserService.getUser(entity.userId.toString()).email,
-            )
+        fun transformRequestEntityToMixedExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest {
+            val (companyName, email) = getCompanyNameAndEmail(entity)
+            return entity.toMixedExtendedStoredRequest(companyName, email)
+        }
 
         /**
          * Transform RequestEntity to ExtendedStoredRequest by adding company name and user email address.
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
          */
-        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
-            entity.toExtendedStoredRequest(
-                companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
-                keycloakUserService.getUser(entity.userId.toString()).email,
-            )
+        fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest {
+            val (companyName, email) = getCompanyNameAndEmail(entity)
+            return entity.toExtendedStoredRequest(companyName, email)
+        }
     }

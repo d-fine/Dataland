@@ -20,7 +20,9 @@ private const val FILTER_WHERE_CLAUSE =
         "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
         "(:#{#searchFilter.adminComment} IS NULL " +
         "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
-        "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds})"
+        "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds}) AND " +
+        "((:#{#searchFilter.dataSourcingStates == null} = TRUE) OR (request.dataSourcingEntity IS NOT NULL " +
+        "AND request.dataSourcingEntity.state IN :#{#searchFilter.dataSourcingStates}))"
 
 /**
  * A JPA Repository for managing RequestEntity instances.

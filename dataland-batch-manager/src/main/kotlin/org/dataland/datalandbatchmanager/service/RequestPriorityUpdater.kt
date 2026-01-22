@@ -1,14 +1,16 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.dataland.dataSourcingService.openApiClient.api.MixedControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
-import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
+import org.dataland.dataSourcingService.openApiClient.model.MixedExtendedStoredRequest
+import org.dataland.dataSourcingService.openApiClient.model.MixedRequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
-import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -21,7 +23,8 @@ class RequestPriorityUpdater
     constructor(
         private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
-        private val requestControllerApi: RequestControllerApi,
+        @Qualifier("getRequestControllerApi") private val requestControllerApi: RequestControllerApi,
+        @Qualifier("getMixedControllerApi") private val mixedControllerApi: MixedControllerApi,
         private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
     ) {
@@ -73,7 +76,7 @@ class RequestPriorityUpdater
         private fun updateRequestPriorities(
             currentPriority: RequestPriority,
             newPriority: RequestPriority,
-            filterCondition: (ExtendedStoredRequest) -> Boolean,
+            filterCondition: (MixedExtendedStoredRequest) -> Boolean,
         ) {
             val requests = getAllRequests(currentPriority)
             requests
@@ -92,10 +95,10 @@ class RequestPriorityUpdater
                 }
         }
 
-        private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredRequest> {
+        private fun getAllRequests(priority: RequestPriority): List<MixedExtendedStoredRequest> {
             val expectedNumberOfRequests =
-                requestControllerApi.postRequestCountQuery(
-                    RequestSearchFilterString(
+                mixedControllerApi.postRequestCountQuery(
+                    MixedRequestSearchFilterString(
                         requestPriorities = listOf(priority),
                         requestStates = listOf(RequestState.Open, RequestState.Processing),
                     ),
@@ -103,15 +106,15 @@ class RequestPriorityUpdater
             logger.info(
                 "Found $expectedNumberOfRequests requests with priority $priority to be considered for updating.",
             )
-            val allRequests = mutableListOf<ExtendedStoredRequest>()
+            val allRequests = mutableListOf<MixedExtendedStoredRequest>()
 
             var page = 0
 
             while (true) {
-                val requestsWithSpecifiedState: Collection<ExtendedStoredRequest> =
-                    requestControllerApi.postRequestSearch(
-                        requestSearchFilterString =
-                            RequestSearchFilterString(
+                val requestsWithSpecifiedState: Collection<MixedExtendedStoredRequest> =
+                    mixedControllerApi.postRequestSearch(
+                        mixedRequestSearchFilterString =
+                            MixedRequestSearchFilterString(
                                 requestStates = listOf(RequestState.Open, RequestState.Processing),
                                 requestPriorities = listOf(priority),
                             ),

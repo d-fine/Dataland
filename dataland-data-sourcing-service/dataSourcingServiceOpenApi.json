@@ -1771,7 +1771,7 @@
             "description": "Search string used for company substring matching. Matched against company names and identifiers.",
             "example": "Inc."
           },
-          "dataSourcingState": {
+          "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
             "example": "DataVerification.",

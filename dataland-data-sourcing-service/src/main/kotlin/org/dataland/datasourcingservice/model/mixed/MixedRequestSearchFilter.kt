@@ -103,7 +103,7 @@ data class MixedRequestSearchFilter<IdType>(
                 implementation = RequestState::class,
             ),
     )
-    val dataSourcingState: Set<DataSourcingState>? = null,
+    val dataSourcingStates: Set<DataSourcingState>? = null,
 ) {
     /**
      * Converts this RequestSearchFilter with String IDs to a RequestSearchFilter with UUID IDs.
@@ -127,6 +127,6 @@ data class MixedRequestSearchFilter<IdType>(
             adminComment = this.adminComment,
             emailAddress = this.emailAddress,
             companySearchString = this.companySearchString,
-            dataSourcingState = this.dataSourcingState,
+            dataSourcingStates = this.dataSourcingStates,
         )
 }
