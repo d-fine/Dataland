@@ -8,15 +8,20 @@ import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
+import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.datasourcingservice.utils.ADMIN_COMMENT
 import org.dataland.datasourcingservice.utils.ADMIN_COMMENT_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.COMPANY_ID_2
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_1
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
 import org.dataland.datasourcingservice.utils.DATA_TYPE_2
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
@@ -57,8 +62,10 @@ class RequestQueryManagerTest
     constructor(
         private val requestQueryManager: RequestQueryManager,
         private val requestRepository: RequestRepository,
+        private val dataSourcingRepository: DataSourcingRepository,
     ) : BaseIntegrationTest() {
-        private val dataBaseCreationUtils = DataBaseCreationUtils(requestRepository = requestRepository)
+        private val dataBaseCreationUtils =
+            DataBaseCreationUtils(requestRepository = requestRepository, dataSourcingRepository = dataSourcingRepository)
         private lateinit var requestEntities: List<RequestEntity>
 
         @MockitoBean
@@ -93,15 +100,46 @@ class RequestQueryManagerTest
          * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
          */
         fun setupParameterizedTest() {
+            val dataSourcingEntitiesByDataDimension =
+                mutableMapOf<Triple<UUID, String, String>, DataSourcingEntity>()
             requestEntities =
                 (0..15).map {
+                    val companyId = UUID.fromString(if (it / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2)
+                    val reportingPeriod = if (it / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2
+                    val dataType = if (it / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2
+                    val requestState = RequestState.valueOf(if (it % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2)
+                    val dataSourcingEntity =
+                        if (requestState == RequestState.Processing) {
+                            val key = Triple(companyId, reportingPeriod, dataType)
+                            dataSourcingEntitiesByDataDimension.getOrPut(key) {
+                                dataBaseCreationUtils.storeDataSourcing(
+                                    dataSourcingId = UUID.randomUUID(),
+                                    companyId = companyId,
+                                    reportingPeriod = reportingPeriod,
+                                    dataType = dataType,
+                                    state =
+                                        DataSourcingState.valueOf(
+                                            if (it / 4 % 2 ==
+                                                0
+                                            ) {
+                                                DATA_SOURCING_STATE_1
+                                            } else {
+                                                DATA_SOURCING_STATE_2
+                                            },
+                                        ),
+                                )
+                            }
+                        } else {
+                            null
+                        }
                     dataBaseCreationUtils.storeRequest(
-                        companyId = UUID.fromString(if (it / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2),
-                        dataType = if (it / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2,
-                        reportingPeriod = if (it / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2,
-                        state = RequestState.valueOf(if (it % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2),
+                        companyId = companyId,
+                        dataType = dataType,
+                        reportingPeriod = reportingPeriod,
+                        state = requestState,
                         userId = if (it % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID(),
                         adminComment = if (it / 8 % 2 == 0) ADMIN_COMMENT else null,
+                        dataSourcingEntity = dataSourcingEntity,
                     )
                 }
         }
@@ -114,6 +152,7 @@ class RequestQueryManagerTest
             val emailAddressSearchString: String?,
             val companySearchString: String?,
             val adminCommentSearchString: String?,
+            val dataSourcingState: String?,
             val indexString: String,
         )
 
@@ -123,15 +162,23 @@ class RequestQueryManagerTest
             @JvmStatic
             fun requestSearchTestCases() =
                 listOf(
-                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, "0"),
-                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, "0;1"),
-                    RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, "0;2;4;6;8;10;12;14"),
-                    RequestSearchTestCase(null, null, null, null, null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, "0;2;4;6;8;10;12;14"),
-                    RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
-                    RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, null, "0"),
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, null, "0;1"),
+                    RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(
+                        null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null, null, ALL_INDICES,
+                    ),
+                    RequestSearchTestCase(null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, null, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, DATA_SOURCING_STATE_1, "1;3;9;11"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, DATA_SOURCING_STATE_2, "5;7;13;15"),
+                    RequestSearchTestCase(
+                        null, null, null, null, null, null, null, "${DATA_SOURCING_STATE_1};${DATA_SOURCING_STATE_2}",
+                        "1;3;5;7;9;11;13;15",
+                    ),
                 )
         }
 
@@ -155,6 +202,11 @@ class RequestQueryManagerTest
                     ?.split(';')
                     ?.map { RequestState.valueOf(it) }
                     ?.toSet()
+            val dataSourcingStates =
+                testCase.dataSourcingState
+                    ?.split(';')
+                    ?.map { DataSourcingState.valueOf(it) }
+                    ?.toSet()
             val mixedRequestSearchFilter =
                 MixedRequestSearchFilter<UUID>(
                     companyId = testCase.companyId?.let { UUID.fromString(it) },
@@ -166,6 +218,7 @@ class RequestQueryManagerTest
                     emailAddress = testCase.emailAddressSearchString,
                     companySearchString = testCase.companySearchString,
                     adminComment = testCase.adminCommentSearchString,
+                    dataSourcingStates = dataSourcingStates,
                 )
             val actualResults = requestQueryManager.searchRequests(mixedRequestSearchFilter)
             val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(mixedRequestSearchFilter)
