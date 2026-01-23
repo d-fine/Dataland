@@ -47,8 +47,8 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ):
-    AxiosPromise<ExportJobInfo> {
+  ):  
+  AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedSfdrDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
