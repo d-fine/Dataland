@@ -104,44 +104,69 @@ class RequestQueryManagerTest
                 mutableMapOf<Triple<UUID, String, String>, DataSourcingEntity>()
             requestEntities =
                 (0..15).map {
-                    val companyId = UUID.fromString(if (it / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2)
-                    val reportingPeriod = if (it / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2
-                    val dataType = if (it / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2
-                    val requestState = RequestState.valueOf(if (it % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2)
+                    val parameterizedRequestData = buildParameterizedRequestData(it)
                     val dataSourcingEntity =
-                        if (requestState == RequestState.Processing) {
-                            val key = Triple(companyId, reportingPeriod, dataType)
-                            dataSourcingEntitiesByDataDimension.getOrPut(key) {
-                                dataBaseCreationUtils.storeDataSourcing(
-                                    dataSourcingId = UUID.randomUUID(),
-                                    companyId = companyId,
-                                    reportingPeriod = reportingPeriod,
-                                    dataType = dataType,
-                                    state =
-                                        DataSourcingState.valueOf(
-                                            if (it / 4 % 2 ==
-                                                0
-                                            ) {
-                                                DATA_SOURCING_STATE_1
-                                            } else {
-                                                DATA_SOURCING_STATE_2
-                                            },
-                                        ),
-                                )
-                            }
+                        if (parameterizedRequestData.requestState == RequestState.Processing) {
+                            getOrCreateDataSourcingEntity(parameterizedRequestData, dataSourcingEntitiesByDataDimension)
                         } else {
                             null
                         }
                     dataBaseCreationUtils.storeRequest(
-                        companyId = companyId,
-                        dataType = dataType,
-                        reportingPeriod = reportingPeriod,
-                        state = requestState,
-                        userId = if (it % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID(),
-                        adminComment = if (it / 8 % 2 == 0) ADMIN_COMMENT else null,
+                        companyId = parameterizedRequestData.companyId,
+                        dataType = parameterizedRequestData.dataType,
+                        reportingPeriod = parameterizedRequestData.reportingPeriod,
+                        state = parameterizedRequestData.requestState,
+                        userId = parameterizedRequestData.userId,
+                        adminComment = parameterizedRequestData.adminComment,
                         dataSourcingEntity = dataSourcingEntity,
                     )
                 }
+        }
+
+        private data class ParameterizedRequestData(
+            val companyId: UUID,
+            val reportingPeriod: String,
+            val dataType: String,
+            val requestState: RequestState,
+            val userId: UUID,
+            val adminComment: String?,
+            val dataSourcingState: DataSourcingState,
+        )
+
+        private fun buildParameterizedRequestData(index: Int): ParameterizedRequestData {
+            val companyId = UUID.fromString(if (index / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2)
+            val reportingPeriod = if (index / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2
+            val dataType = if (index / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2
+            val requestState = RequestState.valueOf(if (index % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2)
+            val userId = if (index % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID()
+            val adminComment = if (index / 8 % 2 == 0) ADMIN_COMMENT else null
+            val dataSourcingState = DataSourcingState.valueOf(if (index / 4 % 2 == 0) DATA_SOURCING_STATE_1 else DATA_SOURCING_STATE_2)
+            return ParameterizedRequestData(
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                requestState = requestState,
+                userId = userId,
+                adminComment = adminComment,
+                dataSourcingState = dataSourcingState,
+            )
+        }
+
+        private fun getOrCreateDataSourcingEntity(
+            parameterizedRequestData: ParameterizedRequestData,
+            dataSourcingEntitiesByDataDimension: MutableMap<Triple<UUID, String, String>, DataSourcingEntity>,
+        ): DataSourcingEntity {
+            val key =
+                Triple(parameterizedRequestData.companyId, parameterizedRequestData.reportingPeriod, parameterizedRequestData.dataType)
+            return dataSourcingEntitiesByDataDimension.getOrPut(key) {
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.randomUUID(),
+                    companyId = parameterizedRequestData.companyId,
+                    reportingPeriod = parameterizedRequestData.reportingPeriod,
+                    dataType = parameterizedRequestData.dataType,
+                    state = parameterizedRequestData.dataSourcingState,
+                )
+            }
         }
 
         data class RequestSearchTestCase(
