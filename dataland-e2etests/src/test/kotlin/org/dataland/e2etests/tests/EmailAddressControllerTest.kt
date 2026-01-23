@@ -121,12 +121,31 @@ class EmailAddressControllerTest {
         }
     }
 
-    @Test
-    fun `ensure that dataland members can validate email addresses`() {
-        val memberUser = TechnicalUser.Reader
+    private fun removeAllCompanyRolesFromUser(userId: UUID) {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
-            assignCompanyRole(memberUser, companyId, CompanyRole.Analyst)
+            apiAccessor.companyRolesControllerApi
+                .getExtendedCompanyRoleAssignments(userId = userId)
+                .forEach {
+                    apiAccessor.companyRolesControllerApi.removeCompanyRole(it.companyRole, UUID.fromString(it.companyId), userId)
+                }
+        }
+    }
+
+    @Test
+    fun `ensure that dataland members but no other users can validate email addresses`() {
+        val user = TechnicalUser.Reader
+        removeAllCompanyRolesFromUser(UUID.fromString(user.technicalUserId))
+        val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+        assignCompanyRole(user, companyId, CompanyRole.Analyst)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        assertThrows<ClientException> {
+            apiAccessor.emailAddressControllerApi.postEmailAddressValidation(EmailAddress("data.admin@example.com"))
+        }.also {
+            assertEquals(403, it.statusCode)
+        }
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.companyRightsControllerApi.postCompanyRight(
                 CompanyRightAssignmentString(
                     companyId.toString(),
@@ -134,11 +153,10 @@ class EmailAddressControllerTest {
                 ),
             )
         }
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(memberUser)
         assertDoesNotThrow {
             apiAccessor.emailAddressControllerApi
                 .postEmailAddressValidation(EmailAddress("data.admin@example.com"))
-                .also { assertEquals(it.id, "136a9394-4873-4a61-a25b-65b1e8e7cc2f") }
+                .also { assertEquals(it.id, TechnicalUser.Admin.technicalUserId) }
         }
     }
 }
