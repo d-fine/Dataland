@@ -47,7 +47,8 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): AxiosPromise<ExportJobInfo> {
+  ):
+    AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedPcafDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
