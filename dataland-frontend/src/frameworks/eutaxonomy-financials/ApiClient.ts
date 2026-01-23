@@ -55,7 +55,8 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ): AxiosPromise<ExportJobInfo> {
+  ):
+    AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,
