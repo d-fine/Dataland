@@ -21,8 +21,8 @@ private const val FILTER_WHERE_CLAUSE =
         "(:#{#searchFilter.adminComment} IS NULL " +
         "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
         "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds}) AND " +
-        "((:#{#searchFilter.dataSourcingStates == null} = TRUE) OR (request.dataSourcingEntity IS NOT NULL " +
-        "AND request.dataSourcingEntity.state IN :#{#searchFilter.dataSourcingStates}))"
+        "((:#{#searchFilter.dataSourcingStates == null} = TRUE) OR (dataSourcing IS NOT NULL " +
+        "AND dataSourcing.state IN :#{#searchFilter.dataSourcingStates}))"
 
 /**
  * A JPA Repository for managing RequestEntity instances.
@@ -69,6 +69,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT request.id FROM RequestEntity request " +
+            "LEFT JOIN request.dataSourcingEntity dataSourcing " +
             FILTER_WHERE_CLAUSE,
     )
     fun searchRequests(
@@ -106,6 +107,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
      */
     @Query(
         "SELECT COUNT(request) FROM RequestEntity request " +
+            "LEFT JOIN request.dataSourcingEntity dataSourcing " +
             FILTER_WHERE_CLAUSE,
     )
     fun getNumberOfRequests(
