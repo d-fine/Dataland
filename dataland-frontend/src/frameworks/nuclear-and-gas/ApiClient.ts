@@ -55,8 +55,7 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
     options?: AxiosRequestConfig
-  ):  
-  AxiosPromise<ExportJobInfo> {
+  ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedNuclearAndGasDataByDimensions(
       { reportingPeriods, companyIds, fileFormat },
       keepValueFieldsOnly,

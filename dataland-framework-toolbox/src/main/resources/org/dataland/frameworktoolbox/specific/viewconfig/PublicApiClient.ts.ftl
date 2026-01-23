@@ -46,9 +46,7 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
      fileFormat: ExportFileType,
      keepValueFieldsOnly?: Boolean,
      includeAliases?: Boolean,
-     options?: AxiosRequestConfig):
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosPromise<ExportJobInfo> {
+     options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociated${frameworkBaseName}DataByDimensions({reportingPeriods, companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
   }
 
