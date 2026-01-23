@@ -1,14 +1,19 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString.CompanyRight
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.EmailAddress
 import org.dataland.communitymanager.openApiClient.model.KeycloakUserInfo
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyRolesTestUtils
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -113,6 +118,27 @@ class EmailAddressControllerTest {
                     )
                 }
             }
+        }
+    }
+
+    @Test
+    fun `ensure that dataland members can validate email addresses`() {
+        val memberUser = TechnicalUser.Reader
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+            assignCompanyRole(memberUser, companyId, CompanyRole.Analyst)
+            apiAccessor.companyRightsControllerApi.postCompanyRight(
+                CompanyRightAssignmentString(
+                    companyId.toString(),
+                    CompanyRight.Member,
+                ),
+            )
+        }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(memberUser)
+        assertDoesNotThrow {
+            apiAccessor.emailAddressControllerApi
+                .postEmailAddressValidation(EmailAddress("data.admin@example.com"))
+                .also { assertEquals(it.id, "136a9394-4873-4a61-a25b-65b1e8e7cc2f") }
         }
     }
 }
