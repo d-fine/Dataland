@@ -131,6 +131,12 @@ class EmailAddressControllerTest {
         }
     }
 
+    private fun verifyAdminMailAddress() {
+        apiAccessor.emailAddressControllerApi
+            .postEmailAddressValidation(EmailAddress("data.admin@example.com"))
+            .also { assertEquals(it.id, TechnicalUser.Admin.technicalUserId) }
+    }
+
     @Test
     fun `ensure that dataland members but no other users can validate email addresses`() {
         val user = TechnicalUser.Reader
@@ -139,9 +145,7 @@ class EmailAddressControllerTest {
         assignCompanyRole(user, companyId, CompanyRole.Analyst)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
 
-        assertThrows<ClientException> {
-            apiAccessor.emailAddressControllerApi.postEmailAddressValidation(EmailAddress("data.admin@example.com"))
-        }.also {
+        assertThrows<ClientException> { verifyAdminMailAddress() }.also {
             assertEquals(403, it.statusCode)
         }
 
@@ -153,10 +157,26 @@ class EmailAddressControllerTest {
                 ),
             )
         }
-        assertDoesNotThrow {
-            apiAccessor.emailAddressControllerApi
-                .postEmailAddressValidation(EmailAddress("data.admin@example.com"))
-                .also { assertEquals(it.id, TechnicalUser.Admin.technicalUserId) }
+        assertDoesNotThrow { verifyAdminMailAddress() }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = CompanyRole::class)
+    fun `ensure that company owners and admins can validate email addresses`(role: CompanyRole) {
+        val user = TechnicalUser.Reader
+        removeAllCompanyRolesFromUser(UUID.fromString(user.technicalUserId))
+        val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+        assignCompanyRole(user, companyId, role)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        when (role) {
+            CompanyRole.CompanyOwner, CompanyRole.Admin,
+            -> assertDoesNotThrow { verifyAdminMailAddress() }
+            else
+            ->
+                assertThrows<ClientException> { verifyAdminMailAddress() }.also {
+                    assertEquals(403, it.statusCode)
+                }
         }
     }
 }
