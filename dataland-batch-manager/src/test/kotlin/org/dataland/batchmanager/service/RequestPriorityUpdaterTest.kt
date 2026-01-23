@@ -2,7 +2,7 @@ package org.dataland.batchmanager.service
 
 import org.dataland.dataSourcingService.openApiClient.api.MixedControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
-import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
+import org.dataland.dataSourcingService.openApiClient.model.MixedExtendedStoredRequest
 import org.dataland.dataSourcingService.openApiClient.model.MixedRequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
@@ -75,8 +75,8 @@ class RequestPriorityUpdaterTest {
         requestId: UUID,
         state: RequestState,
         priority: RequestPriority,
-    ): ExtendedStoredRequest =
-        ExtendedStoredRequest(
+    ): MixedExtendedStoredRequest =
+        MixedExtendedStoredRequest(
             id = requestId.toString(),
             companyId = UUID.randomUUID().toString(),
             userId = userId,
@@ -105,6 +105,7 @@ class RequestPriorityUpdaterTest {
         reset(
             mockCompanyRolesControllerApi,
             mockRequestControllerApi,
+            mockMixedControllerApi,
             mockKeycloakUserService,
             mockDerivedRightsUtilsComponent,
         )
