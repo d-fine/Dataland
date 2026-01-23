@@ -185,12 +185,12 @@ open class DataController<T>(
                 exportRequestData.reportingPeriods,
                 listOf(dataType.toString()),
             )
-        val correlationId = UUID.randomUUID()
-        logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
+        val exportJobId = UUID.randomUUID()
+        logger.info("Received a request to export portfolio data. ID of new export Job: $exportJobId")
 
         val newExportJobEntity =
             dataExportStorage
-                .createAndSaveExportJob(correlationId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
+                .createAndSaveExportJob(exportJobId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
 
         try {
             // Async function
@@ -207,7 +207,7 @@ open class DataController<T>(
             return ResponseEntity.noContent().build()
         }
         return ResponseEntity
-            .ok(ExportJobInfo(id = correlationId))
+            .ok(ExportJobInfo(id = exportJobId))
     }
 
     private fun buildStorableDataset(

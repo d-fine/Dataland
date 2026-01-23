@@ -30,13 +30,13 @@ class DataExportStore {
      * Instantiates and saves ExportJobInfo in memory.
      */
     internal fun createAndSaveExportJob(
-        correlationId: UUID,
+        exportJobId: UUID,
         fileType: ExportFileType,
         dataType: String,
     ): ExportJob {
         val newExportJob =
             ExportJob(
-                correlationId,
+                exportJobId,
                 null,
                 fileType,
                 dataType,

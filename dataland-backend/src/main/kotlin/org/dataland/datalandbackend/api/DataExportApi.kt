@@ -50,9 +50,7 @@ interface DataExportApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getExportJobState(
-        @PathVariable(
-            value = "exportJobId",
-        ) exportJobId: String,
+        @PathVariable exportJobId: String,
     ): ResponseEntity<ExportJobProgressState>
 
     /**
@@ -61,8 +59,7 @@ interface DataExportApi {
     @Operation(
         summary = "Export data exportJobId provided.",
         description =
-            "Export data for each combination of reportingPeriod and companyId provided into a file of the " +
-                "specified format (CSV, Excel-compatible CSV, JSON).",
+            "Given the exportJobId download the corresponding file.",
     )
     @ApiResponses(
         value = [
@@ -85,8 +82,6 @@ interface DataExportApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun exportCompanyAssociatedDataById(
-        @PathVariable(
-            value = "exportJobId",
-        ) exportJobId: String,
+        @PathVariable exportJobId: String,
     ): ResponseEntity<InputStreamResource>
 }
