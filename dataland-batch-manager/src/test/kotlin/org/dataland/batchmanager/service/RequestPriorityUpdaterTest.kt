@@ -1,10 +1,9 @@
 package org.dataland.batchmanager.service
 
-import org.dataland.dataSourcingService.openApiClient.api.MixedControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.model.ExtendedStoredRequest
-import org.dataland.dataSourcingService.openApiClient.model.MixedRequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.DerivedRightsUtilsComponent
@@ -31,7 +30,6 @@ import java.util.UUID
 class RequestPriorityUpdaterTest {
     private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockRequestControllerApi = mock<RequestControllerApi>()
-    private val mockMixedControllerApi = mock<MixedControllerApi>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
@@ -105,7 +103,6 @@ class RequestPriorityUpdaterTest {
         reset(
             mockCompanyRolesControllerApi,
             mockRequestControllerApi,
-            mockMixedControllerApi,
             mockKeycloakUserService,
             mockDerivedRightsUtilsComponent,
         )
@@ -116,18 +113,18 @@ class RequestPriorityUpdaterTest {
                     it.requestPriority == priority && it.state in setOf(RequestState.Open, RequestState.Processing)
                 }
             doReturn(matchingStoredRequests)
-                .whenever(mockMixedControllerApi)
+                .whenever(mockRequestControllerApi)
                 .postRequestSearch(
-                    mixedRequestSearchFilterString =
-                        MixedRequestSearchFilterString(
+                    requestSearchFilterString =
+                        RequestSearchFilterString(
                             requestStates = listOf(RequestState.Open, RequestState.Processing),
                             requestPriorities = listOf(priority),
                         ),
                     chunkSize = resultsPerPage,
                     chunkIndex = 0,
                 )
-            doReturn(matchingStoredRequests.size).whenever(mockMixedControllerApi).postRequestCountQuery(
-                MixedRequestSearchFilterString(
+            doReturn(matchingStoredRequests.size).whenever(mockRequestControllerApi).postRequestCountQuery(
+                RequestSearchFilterString(
                     requestStates = listOf(RequestState.Open, RequestState.Processing),
                     requestPriorities = listOf(priority),
                 ),
@@ -139,7 +136,6 @@ class RequestPriorityUpdaterTest {
                 companyRolesControllerApi = mockCompanyRolesControllerApi,
                 keycloakUserService = mockKeycloakUserService,
                 requestControllerApi = mockRequestControllerApi,
-                mixedControllerApi = mockMixedControllerApi,
                 derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
                 resultsPerPage = resultsPerPage,
             )

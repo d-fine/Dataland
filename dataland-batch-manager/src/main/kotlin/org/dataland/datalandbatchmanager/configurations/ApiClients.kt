@@ -1,7 +1,6 @@
 package org.dataland.datalandbatchmanager.configurations
 
 import okhttp3.OkHttpClient
-import org.dataland.dataSourcingService.openApiClient.api.MixedControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
@@ -60,14 +59,6 @@ class ApiClients(
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
-
-    /**
-     * Creates an auto-authenticated version of the MixedControllerApi of the data sourcing sevice
-     */
-    @Bean
-    fun getMixedControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MixedControllerApi = MixedControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an ActuatorApi of the data sourcing service
