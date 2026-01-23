@@ -21,7 +21,7 @@ import kotlin.collections.firstOrNull
 @Service
 class DataExportStore {
     companion object {
-        private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 5L
+        private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 10L
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -65,17 +65,26 @@ class DataExportStore {
             ?.firstOrNull { it.id == exportJobId }
             ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)
 
+    /**
+     * Delete an export job from exportJobStorage by its ID.
+     */
+    fun deleteExportJob(exportJobId: UUID) {
+        val userId = DatalandAuthentication.fromContext().userId
+        exportJobStorage[userId]?.removeAll { it.id == exportJobId }
+        if (exportJobStorage[userId]?.isEmpty() ?: false) {
+            exportJobStorage.remove(userId)
+        }
+    }
+
     @Suppress("UnusedPrivateMember")
-    @Scheduled(cron = "0 /10 * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     private fun regularExportJobCleanup() {
         val cutoff = Instant.now().minus(Duration.ofMinutes(MAX_AGE_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
-
         exportJobStorage.values.forEach { jobs ->
             jobs.removeAll { job ->
                 job.creationTime < cutoff
             }
         }
-
         exportJobStorage.entries.removeIf { (_, jobs) ->
             jobs.isEmpty()
         }

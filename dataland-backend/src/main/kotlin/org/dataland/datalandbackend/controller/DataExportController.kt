@@ -19,7 +19,7 @@ import java.util.UUID
  * @param dataExportStore service for storing data export jobs
  */
 @RestController
-open class DataExportController(
+class DataExportController(
     private val dataExportStore: DataExportStore,
 ) : DataExportApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -30,8 +30,9 @@ open class DataExportController(
     }
 
     override fun exportCompanyAssociatedDataById(exportJobId: String): ResponseEntity<InputStreamResource> {
-        val exportJob = dataExportStore.getExportJob(UUID.fromString(exportJobId))
         logger.info("Download of export job $exportJobId requested.")
+        val exportJob = dataExportStore.getExportJob(UUID.fromString(exportJobId))
+        dataExportStore.deleteExportJob(UUID.fromString(exportJobId))
 
         return ResponseEntity
             .ok()

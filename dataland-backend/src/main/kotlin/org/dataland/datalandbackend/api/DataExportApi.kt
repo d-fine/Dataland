@@ -59,7 +59,7 @@ interface DataExportApi {
     @Operation(
         summary = "Export data exportJobId provided.",
         description =
-            "Given the exportJobId download the corresponding file.",
+            "Given the exportJobId download the corresponding file. Files can only be downloaded once.",
     )
     @ApiResponses(
         value = [
@@ -71,7 +71,7 @@ interface DataExportApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Company Id could not be found.",
+                description = "Export job Id could not be found.",
                 content = [Content(mediaType = "")],
             ),
         ],
