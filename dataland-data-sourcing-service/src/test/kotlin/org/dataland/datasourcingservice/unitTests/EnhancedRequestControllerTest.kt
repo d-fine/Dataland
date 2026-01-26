@@ -1,8 +1,8 @@
 package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datasourcingservice.controller.MixedController
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.controller.EnhancedRequestController
+import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -12,10 +12,10 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 
-class MixedControllerTest {
+class EnhancedRequestControllerTest {
     private val mockRequestQueryManager = mock<RequestQueryManager>()
 
-    private lateinit var mixedController: MixedController
+    private lateinit var enhancedRequestController: EnhancedRequestController
 
     companion object {
         const val UUID_STRING = "00000000-0000-0000-0000-000000000000"
@@ -28,8 +28,8 @@ class MixedControllerTest {
             mockRequestQueryManager,
         )
 
-        mixedController =
-            MixedController(
+        enhancedRequestController =
+            EnhancedRequestController(
                 requestQueryManager = mockRequestQueryManager,
             )
     }
@@ -51,9 +51,9 @@ class MixedControllerTest {
     ) {
         if (companyId == NON_UUID_STRING || userId == NON_UUID_STRING) {
             assertThrows<ResourceNotFoundApiException> {
-                mixedController.postRequestSearch(
-                    mixedRequestSearchFilter =
-                        MixedRequestSearchFilter<String>(
+                enhancedRequestController.postRequestSearch(
+                    requestSearchFilter =
+                        RequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -62,9 +62,9 @@ class MixedControllerTest {
                 )
             }
             assertThrows<ResourceNotFoundApiException> {
-                mixedController.postRequestCountQuery(
-                    mixedRequestSearchFilter =
-                        MixedRequestSearchFilter<String>(
+                enhancedRequestController.postRequestCountQuery(
+                    requestSearchFilter =
+                        RequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -72,9 +72,9 @@ class MixedControllerTest {
             }
         } else {
             assertDoesNotThrow {
-                mixedController.postRequestSearch(
-                    mixedRequestSearchFilter =
-                        MixedRequestSearchFilter<String>(
+                enhancedRequestController.postRequestSearch(
+                    requestSearchFilter =
+                        RequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),
@@ -83,9 +83,9 @@ class MixedControllerTest {
                 )
             }
             assertDoesNotThrow {
-                mixedController.postRequestCountQuery(
-                    mixedRequestSearchFilter =
-                        MixedRequestSearchFilter<String>(
+                enhancedRequestController.postRequestCountQuery(
+                    requestSearchFilter =
+                        RequestSearchFilter<String>(
                             companyId = companyId,
                             userId = userId,
                         ),

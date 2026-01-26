@@ -170,10 +170,10 @@
         ]
       }
     },
-    "/mixed/search": {
+    "/enhanced-requests/search": {
       "post": {
         "tags": [
-          "mixed-controller"
+          "enhanced-request-controller"
         ],
         "summary": "Search requests by filters.",
         "description": "Search all requests in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
@@ -205,7 +205,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MixedRequestSearchFilterString"
+                "$ref": "#/components/schemas/RequestSearchFilterString"
               }
             }
           },
@@ -219,7 +219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MixedExtendedStoredRequest"
+                    "$ref": "#/components/schemas/DataSourcingEnhancedRequest"
                   }
                 }
               }
@@ -262,10 +262,10 @@
         ]
       }
     },
-    "/mixed/count": {
+    "/enhanced-requests/search/count": {
       "post": {
         "tags": [
-          "mixed-controller"
+          "enhanced-request-controller"
         ],
         "summary": "Get the number of requests based on filters.",
         "description": "Retrieve the number of requests stored in the data sourcing service, optionally filtering by company ID, data type, reporting period or state.",
@@ -274,7 +274,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MixedRequestSearchFilterString"
+                "$ref": "#/components/schemas/RequestSearchFilterString"
               }
             }
           },
@@ -1054,10 +1054,10 @@
         ]
       }
     },
-    "/mixed/user": {
+    "/enhanced-requests/": {
       "get": {
         "tags": [
-          "mixed-controller"
+          "enhanced-request-controller"
         ],
         "summary": "Get all stored data requests of the user making the request.",
         "description": "Gets all the stored data request created by the user who is making the request.",
@@ -1070,7 +1070,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MixedExtendedStoredRequest"
+                    "$ref": "#/components/schemas/DataSourcingEnhancedRequest"
                   }
                 }
               }
@@ -1699,7 +1699,16 @@
           }
         }
       },
-      "MixedRequestSearchFilterString": {
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "RequestSearchFilterString": {
         "type": "object",
         "properties": {
           "companyId": {
@@ -1781,15 +1790,6 @@
           }
         }
       },
-      "RequestPriority": {
-        "type": "string",
-        "enum": [
-          "Low",
-          "Baseline",
-          "High",
-          "Urgent"
-        ]
-      },
       "RequestState": {
         "type": "string",
         "enum": [
@@ -1820,19 +1820,7 @@
           }
         }
       },
-      "DataSourcingState": {
-        "type": "string",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Done"
-        ]
-      },
-      "MixedExtendedStoredRequest": {
+      "DataSourcingEnhancedRequest": {
         "required": [
           "companyId",
           "companyName",
@@ -1892,6 +1880,18 @@
             "type": "string"
           }
         }
+      },
+      "DataSourcingState": {
+        "type": "string",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
       },
       "StoredRequest": {
         "required": [

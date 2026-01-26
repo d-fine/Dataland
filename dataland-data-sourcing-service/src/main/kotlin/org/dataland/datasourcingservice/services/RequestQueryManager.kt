@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -29,17 +29,17 @@ class RequestQueryManager
     ) {
         /**
          * Method to get all data requests based on filters.
-         * @param mixedRequestSearchFilter the search filter containing relevant search parameters
+         * @param requestSearchFilter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
          * @param chunkSize the size of entries per chunk which should be returned
          * @return all filtered data requests
          */
         @Transactional(readOnly = true)
         fun searchRequests(
-            mixedRequestSearchFilter: MixedRequestSearchFilter<UUID>,
+            requestSearchFilter: RequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
-        ): List<MixedExtendedStoredRequest> {
+        ): List<DataSourcingEnhancedRequest> {
             val pageRequest =
                 PageRequest.of(
                     chunkIndex,
@@ -54,10 +54,10 @@ class RequestQueryManager
 
             val matchingIdsPage =
                 requestRepository.searchRequests(
-                    searchFilter = mixedRequestSearchFilter,
+                    searchFilter = requestSearchFilter,
                     pageable = pageRequest,
-                    companyIds = companyIdsMatchingSearchString(mixedRequestSearchFilter.companySearchString),
-                    userIds = setupEmailAddressFilter(mixedRequestSearchFilter.emailAddress),
+                    companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
+                    userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
                 )
 
             val ids = matchingIdsPage.content
@@ -71,7 +71,7 @@ class RequestQueryManager
                 }
 
             return orderedEntities.map { entity ->
-                transformRequestEntityToMixedExtendedStoredRequest(entity)
+                transformRequestEntityToDataSourcingEnhancedRequest(entity)
             }
         }
 
@@ -106,10 +106,10 @@ class RequestQueryManager
         /**
          * Search for requests based on userId
          * @param userId to filter by
-         * @return list of matching MixedExtendedStoredRequest objects
+         * @return list of matching DataSourcingEnhancedRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsByUser(userId: UUID): List<MixedExtendedStoredRequest> {
+        fun getRequestsByUser(userId: UUID): List<DataSourcingEnhancedRequest> {
             val userEmailAddress = keycloakUserService.getUser(userId.toString()).email
             val requestEntities = requestRepository.findByUserId(userId)
             val validationResults =
@@ -122,7 +122,7 @@ class RequestQueryManager
                         .find { it.identifier == entity.companyId.toString() }
                         ?.companyInformation
                         ?.companyName ?: ""
-                entity.toMixedExtendedStoredRequest(
+                entity.toDataSourcingEnhancedRequest(
                     companyName,
                     userEmailAddress,
                 )
@@ -131,10 +131,10 @@ class RequestQueryManager
 
         /**
          * Get requests for requesting user
-         * @return list of matching MixedExtendedStoredRequest objects
+         * @return list of matching DataSourcingEnhancedRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsForRequestingUser(): List<MixedExtendedStoredRequest> {
+        fun getRequestsForRequestingUser(): List<DataSourcingEnhancedRequest> {
             val userId = DatalandAuthentication.fromContext().userId
             return getRequestsByUser(
                 UUID.fromString(userId),
@@ -143,15 +143,15 @@ class RequestQueryManager
 
         /**
          * Get the number of requests that match the optional filters.
-         * @param mixedRequestSearchFilter to filter by
+         * @param requestSearchFilter to filter by
          * @return the number of matching requests
          */
         @Transactional(readOnly = true)
-        fun getNumberOfRequests(mixedRequestSearchFilter: MixedRequestSearchFilter<UUID>): Int =
+        fun getNumberOfRequests(requestSearchFilter: RequestSearchFilter<UUID>): Int =
             requestRepository.getNumberOfRequests(
-                mixedRequestSearchFilter,
-                companyIds = companyIdsMatchingSearchString(mixedRequestSearchFilter.companySearchString),
-                userIds = setupEmailAddressFilter(mixedRequestSearchFilter.emailAddress),
+                requestSearchFilter,
+                companyIds = companyIdsMatchingSearchString(requestSearchFilter.companySearchString),
+                userIds = setupEmailAddressFilter(requestSearchFilter.emailAddress),
             )
 
         /**
@@ -172,13 +172,13 @@ class RequestQueryManager
         }
 
         /**
-         * Transform RequestEntity to MixedExtendedStoredRequest by adding company name and user email address.
+         * Transform RequestEntity to DataSourcingEnhancedRequest by adding company name and user email address.
          * @param entity the RequestEntity to transform
-         * @return the transformed MixedExtendedStoredRequest
+         * @return the transformed DataSourcingEnhancedRequest
          */
-        fun transformRequestEntityToMixedExtendedStoredRequest(entity: RequestEntity): MixedExtendedStoredRequest {
+        fun transformRequestEntityToDataSourcingEnhancedRequest(entity: RequestEntity): DataSourcingEnhancedRequest {
             val (companyName, email) = getCompanyNameAndEmail(entity)
-            return entity.toMixedExtendedStoredRequest(companyName, email)
+            return entity.toDataSourcingEnhancedRequest(companyName, email)
         }
 
         /**

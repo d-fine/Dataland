@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -73,7 +73,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             FILTER_WHERE_CLAUSE,
     )
     fun searchRequests(
-        searchFilter: MixedRequestSearchFilter<UUID>,
+        searchFilter: RequestSearchFilter<UUID>,
         pageable: Pageable,
         companyIds: List<UUID>? = null,
         userIds: List<UUID>? = null,
@@ -111,7 +111,7 @@ interface RequestRepository : JpaRepository<RequestEntity, UUID> {
             FILTER_WHERE_CLAUSE,
     )
     fun getNumberOfRequests(
-        searchFilter: MixedRequestSearchFilter<UUID>,
+        searchFilter: RequestSearchFilter<UUID>,
         companyIds: List<UUID>? = null,
         userIds: List<UUID>? = null,
     ): Int

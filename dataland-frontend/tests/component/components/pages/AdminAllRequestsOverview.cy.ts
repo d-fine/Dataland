@@ -2,7 +2,7 @@ import AdminAllRequestsOverview from '@/components/pages/AdminAllRequestsOvervie
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { type MixedExtendedStoredRequest, RequestPriority, RequestState } from '@clients/datasourcingservice';
+import { type DataSourcingEnhancedRequest, RequestPriority, RequestState } from '@clients/datasourcingservice';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
@@ -25,8 +25,8 @@ function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
 }
 
 describe('Component test for the admin-requests-overview page', () => {
-  let mockRequests: MixedExtendedStoredRequest[];
-  let mockRequestsLarge: MixedExtendedStoredRequest[];
+  let mockRequests: DataSourcingEnhancedRequest[];
+  let mockRequestsLarge: DataSourcingEnhancedRequest[];
   const chunkSize = 100;
 
   /**
@@ -48,7 +48,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * is undefined, a random value will be chosen using faker
    * @returns the generated ExtendedStoredRequest
    */
-  function generateExtendedStoredRequest(filterParameters: FilterParameters): MixedExtendedStoredRequest {
+  function generateExtendedStoredRequest(filterParameters: FilterParameters): DataSourcingEnhancedRequest {
     return {
       id: crypto.randomUUID(),
       userId: crypto.randomUUID(),
@@ -159,12 +159,12 @@ describe('Component test for the admin-requests-overview page', () => {
    * Sets up the interceptions for the unfiltered initial requests and number of requests
    */
   function setUpUnfilteredInterceptions(): void {
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequests.length.toString());
       }
@@ -200,12 +200,12 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function mountAdminAllRequestsPageWithManyMocks(): void {
     const expectedNumberOfRequests = mockRequestsLarge.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(mockRequestsLarge);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Object.keys(req.body).length === 0) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -227,12 +227,12 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateEmailAddressFilter(): void {
     const mockResponse = [mockRequests[0], mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (req.body.emailAddress === mailSearchTerm) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (req.body.emailAddress === mailSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -253,12 +253,12 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -280,12 +280,12 @@ describe('Component test for the admin-requests-overview page', () => {
     const requestStateToFilterFor = RequestState.Open;
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -306,12 +306,12 @@ describe('Component test for the admin-requests-overview page', () => {
     const priorityToFilterFor = RequestPriority.Urgent;
     const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -334,12 +334,12 @@ describe('Component test for the admin-requests-overview page', () => {
     const reportingPeriodToFilterFor = '2023';
     const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -360,12 +360,12 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateAdminCommentFilter(): void {
     const mockResponse = [mockRequests[1], mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (req.body.adminComment === commentSearchTerm) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (req.body.adminComment === commentSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -384,12 +384,12 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateCompanySearchStringFilter(): void {
     const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (req.body.companySearchString === companyNameSearchTerm) {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (req.body.companySearchString === companyNameSearchTerm) {
         req.reply(expectedNumberOfRequests.toString());
       }
@@ -411,7 +411,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/mixed/search**', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (
         Array.isArray(req.body.dataTypes) &&
         req.body.dataTypes.includes(frameworkToFilterFor) &&
@@ -420,7 +420,7 @@ describe('Component test for the admin-requests-overview page', () => {
         req.reply(mockResponse);
       }
     });
-    cy.intercept('POST', '**/data-sourcing/mixed/count', (req) => {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (
         Array.isArray(req.body.dataTypes) &&
         req.body.dataTypes.includes(frameworkToFilterFor) &&
@@ -460,10 +460,11 @@ describe('Component test for the admin-requests-overview page', () => {
     const secondPageMockResponse = mockRequestsLarge.slice(chunkSize);
     const expectedNumberOfRequests = mockRequestsLarge.length;
     const expectedNumberOfRows = secondPageMockResponse.length;
-    cy.intercept(`**/data-sourcing/mixed/search?chunkSize=${chunkSize}&chunkIndex=1`, secondPageMockResponse).as(
-      'fetchRequests'
-    );
-    cy.intercept(`**/data-sourcing/mixed/count`, expectedNumberOfRequests.toString());
+    cy.intercept(
+      `**/data-sourcing/enhanced-requests/search?chunkSize=${chunkSize}&chunkIndex=1`,
+      secondPageMockResponse
+    ).as('fetchRequests');
+    cy.intercept(`**/data-sourcing/enhanced-requests/search/count`, expectedNumberOfRequests.toString());
 
     cy.get(`button[aria-label="Page 2"]`).first().click();
 

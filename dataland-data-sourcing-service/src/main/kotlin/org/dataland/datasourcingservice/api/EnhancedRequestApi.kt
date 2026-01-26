@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
-import org.dataland.datasourcingservice.model.mixed.MixedRequestSearchFilter
+import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * API interface for handling mixed data for both requests and data sourcing objects.
  */
-@RequestMapping("/mixed")
+@RequestMapping("/enhanced-requests")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface MixedApi {
+interface EnhancedRequestApi {
     /**
      * Search requests by filters.
      */
@@ -56,7 +56,7 @@ interface MixedApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postRequestSearch(
         @RequestBody
-        mixedRequestSearchFilter: MixedRequestSearchFilter<String>,
+        requestSearchFilter: RequestSearchFilter<String>,
         @RequestParam(defaultValue = "100")
         chunkSize: Int,
         @Parameter(
@@ -65,7 +65,7 @@ interface MixedApi {
         )
         @RequestParam(defaultValue = "0")
         chunkIndex: Int,
-    ): ResponseEntity<List<MixedExtendedStoredRequest>>
+    ): ResponseEntity<List<DataSourcingEnhancedRequest>>
 
     /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list
@@ -80,11 +80,11 @@ interface MixedApi {
         ],
     )
     @GetMapping(
-        value = ["/user"],
+        value = ["/"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getRequestsForRequestingUser(): ResponseEntity<List<MixedExtendedStoredRequest>>
+    fun getRequestsForRequestingUser(): ResponseEntity<List<DataSourcingEnhancedRequest>>
 
     /**
      * Get the number of requests based on filters.
@@ -111,12 +111,12 @@ interface MixedApi {
         ],
     )
     @PostMapping(
-        value = ["/count"],
+        value = ["/search/count"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postRequestCountQuery(
         @RequestBody
-        mixedRequestSearchFilter: MixedRequestSearchFilter<String>,
+        requestSearchFilter: RequestSearchFilter<String>,
     ): ResponseEntity<Int>
 }

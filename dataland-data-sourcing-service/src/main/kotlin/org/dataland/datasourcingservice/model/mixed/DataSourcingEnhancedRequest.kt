@@ -6,7 +6,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 /**
  * DTO for creating and transferring request data along with associated data sourcing details.
  */
-data class MixedExtendedStoredRequest(
+data class DataSourcingEnhancedRequest(
     val id: String,
     val companyId: String,
     val reportingPeriod: String,

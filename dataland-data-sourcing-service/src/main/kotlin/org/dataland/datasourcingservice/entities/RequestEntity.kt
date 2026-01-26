@@ -12,7 +12,7 @@ import jakarta.persistence.Table
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.mixed.DataSourcingDetails
-import org.dataland.datasourcingservice.model.mixed.MixedExtendedStoredRequest
+import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.hibernate.envers.Audited
@@ -99,13 +99,13 @@ class RequestEntity(
         )
 
     /**
-     * Converts this RequestEntity to a MixedExtendedStoredRequest.
+     * Converts this RequestEntity to a DataSourcingEnhancedRequest.
      */
-    fun toMixedExtendedStoredRequest(
+    fun toDataSourcingEnhancedRequest(
         companyName: String,
         userEmailAddress: String?,
-    ): MixedExtendedStoredRequest =
-        MixedExtendedStoredRequest(
+    ): DataSourcingEnhancedRequest =
+        DataSourcingEnhancedRequest(
             id = id.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,

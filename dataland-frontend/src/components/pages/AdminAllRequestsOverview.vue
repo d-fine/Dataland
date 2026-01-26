@@ -282,12 +282,12 @@ async function getAllRequestsForFilters(): Promise<void> {
       };
 
       const [dataResponse, countResponse] = await Promise.all([
-        apiClientProvider.apiClients.mixedController.postRequestSearch(
+        apiClientProvider.apiClients.enhancedRequestController.postRequestSearch(
           filters,
           datasetsPerPage,
           currentChunkIndex.value
         ),
-        apiClientProvider.apiClients.mixedController.postRequestCountQuery(filters),
+        apiClientProvider.apiClients.enhancedRequestController.postRequestCountQuery(filters),
       ]);
 
       currentDataRequests.value = dataResponse.data;

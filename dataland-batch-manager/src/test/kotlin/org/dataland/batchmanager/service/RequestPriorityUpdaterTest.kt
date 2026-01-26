@@ -1,10 +1,10 @@
 package org.dataland.batchmanager.service
 
-import org.dataland.dataSourcingService.openApiClient.api.MixedControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
-import org.dataland.dataSourcingService.openApiClient.model.MixedExtendedStoredRequest
-import org.dataland.dataSourcingService.openApiClient.model.MixedRequestSearchFilterString
+import org.dataland.dataSourcingService.openApiClient.model.DataSourcingEnhancedRequest
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.DerivedRightsUtilsComponent
@@ -31,7 +31,7 @@ import java.util.UUID
 class RequestPriorityUpdaterTest {
     private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockRequestControllerApi = mock<RequestControllerApi>()
-    private val mockMixedControllerApi = mock<MixedControllerApi>()
+    private val mockEnhancedRequestControllerApi = mock<EnhancedRequestControllerApi>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
@@ -75,8 +75,8 @@ class RequestPriorityUpdaterTest {
         requestId: UUID,
         state: RequestState,
         priority: RequestPriority,
-    ): MixedExtendedStoredRequest =
-        MixedExtendedStoredRequest(
+    ): DataSourcingEnhancedRequest =
+        DataSourcingEnhancedRequest(
             id = requestId.toString(),
             companyId = UUID.randomUUID().toString(),
             userId = userId,
@@ -105,29 +105,29 @@ class RequestPriorityUpdaterTest {
         reset(
             mockCompanyRolesControllerApi,
             mockRequestControllerApi,
-            mockMixedControllerApi,
+            mockEnhancedRequestControllerApi,
             mockKeycloakUserService,
             mockDerivedRightsUtilsComponent,
         )
 
         requestPriorities.forEach { priority ->
-            val matchingMixedStoredRequests =
+            val matchingDataSourcingEnhancedRequests =
                 storedRequestsMap.values.filter {
                     it.requestPriority == priority && it.state in setOf(RequestState.Open, RequestState.Processing)
                 }
-            doReturn(matchingMixedStoredRequests)
-                .whenever(mockMixedControllerApi)
+            doReturn(matchingDataSourcingEnhancedRequests)
+                .whenever(mockEnhancedRequestControllerApi)
                 .postRequestSearch(
-                    mixedRequestSearchFilterString =
-                        MixedRequestSearchFilterString(
+                    requestSearchFilterString =
+                        RequestSearchFilterString(
                             requestStates = listOf(RequestState.Open, RequestState.Processing),
                             requestPriorities = listOf(priority),
                         ),
                     chunkSize = resultsPerPage,
                     chunkIndex = 0,
                 )
-            doReturn(matchingMixedStoredRequests.size).whenever(mockMixedControllerApi).postRequestCountQuery(
-                MixedRequestSearchFilterString(
+            doReturn(matchingDataSourcingEnhancedRequests.size).whenever(mockEnhancedRequestControllerApi).postRequestCountQuery(
+                RequestSearchFilterString(
                     requestStates = listOf(RequestState.Open, RequestState.Processing),
                     requestPriorities = listOf(priority),
                 ),
@@ -139,7 +139,7 @@ class RequestPriorityUpdaterTest {
                 companyRolesControllerApi = mockCompanyRolesControllerApi,
                 keycloakUserService = mockKeycloakUserService,
                 requestControllerApi = mockRequestControllerApi,
-                mixedControllerApi = mockMixedControllerApi,
+                enhancedRequestControllerApi = mockEnhancedRequestControllerApi,
                 derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
                 resultsPerPage = resultsPerPage,
             )

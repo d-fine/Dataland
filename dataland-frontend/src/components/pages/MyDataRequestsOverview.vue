@@ -215,7 +215,9 @@ async function getStoredRequestDataList(): Promise<void> {
   try {
     if (getKeycloakPromise) {
       storedDataRequests.value = (
-        await new ApiClientProvider(getKeycloakPromise()).apiClients.mixedController.getRequestsForRequestingUser()
+        await new ApiClientProvider(
+          getKeycloakPromise()
+        ).apiClients.enhancedRequestController.getRequestsForRequestingUser()
       ).data;
     }
   } catch (error) {

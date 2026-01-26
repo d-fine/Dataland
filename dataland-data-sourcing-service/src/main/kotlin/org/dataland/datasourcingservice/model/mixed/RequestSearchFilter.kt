@@ -18,7 +18,7 @@ import java.util.UUID
  * If a field is provided, only requests matching the filter criteria are returned.
  * This data class is generic to accommodate versions where companyId and userId are of type String or UUID.
  */
-data class MixedRequestSearchFilter<IdType>(
+data class RequestSearchFilter<IdType>(
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
@@ -110,8 +110,8 @@ data class MixedRequestSearchFilter<IdType>(
      * @return RequestSearchFilter with UUID IDs
      */
     @JsonIgnore
-    fun convertToSearchFilterWithUUIDs(): MixedRequestSearchFilter<UUID> =
-        MixedRequestSearchFilter<UUID>(
+    fun convertToSearchFilterWithUUIDs(): RequestSearchFilter<UUID> =
+        RequestSearchFilter<UUID>(
             companyId =
                 this.companyId?.let {
                     ValidationUtils.convertToUUID(it.toString())
