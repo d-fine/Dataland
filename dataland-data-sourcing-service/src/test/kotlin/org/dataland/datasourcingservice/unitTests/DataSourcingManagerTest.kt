@@ -12,6 +12,7 @@ import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
@@ -35,6 +36,7 @@ class DataSourcingManagerTest {
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
+    private lateinit var requestDataSourcingAssigner: RequestDataSourcingAssigner
 
     private val companyId = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
@@ -105,7 +107,14 @@ class DataSourcingManagerTest {
                 dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
             )
 
-        doReturn(storedRequestResponse).whenever(mockExistingRequestsManager).patchRequestState(
+        doAnswer { invocation ->
+            val requestId = invocation.arguments[0] as UUID
+            val state = invocation.arguments[1] as RequestState
+            if (requestId == newRequest.id) {
+                newRequest.state = state
+            }
+            storedRequestResponse
+        }.whenever(mockExistingRequestsManager).patchRequestState(
             any<UUID>(),
             eq(RequestState.Processed),
             anyOrNull(),
@@ -118,6 +127,11 @@ class DataSourcingManagerTest {
                 dataSourcingRepository = mockDataSourcingRepository,
                 existingRequestsManager = mockExistingRequestsManager,
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
+            )
+
+        requestDataSourcingAssigner =
+            RequestDataSourcingAssigner(
+                dataSourcingRepository = mockDataSourcingRepository,
             )
     }
 
@@ -147,7 +161,7 @@ class DataSourcingManagerTest {
                 newRequest.reportingPeriod,
             )
 
-        val updatedDataSourcing = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(newRequest)
+        val updatedDataSourcing = requestDataSourcingAssigner.useExistingOrCreateDataSourcingAndAddRequest(newRequest)
 
         if (dataSourcingState in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
             assertEquals(DataSourcingState.Initialized, updatedDataSourcing.state)
