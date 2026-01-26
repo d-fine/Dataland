@@ -131,9 +131,7 @@ class DataSourcingManager
                     existingRequestsManager.patchRequestState(
                         it.id,
                         RequestState.Processed,
-                        "Request automatically marked as Processed because associated Data Sourcing " +
-                            "Entity with id ${dataSourcingEntityWithFetchedRequests.dataSourcingId} " +
-                            "was marked as $state.",
+                        null,
                     )
                 }
             }
