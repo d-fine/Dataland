@@ -100,13 +100,12 @@ interface DataPointApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPoint(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
     ): ResponseEntity<UploadedDataPoint>
 
     /**
@@ -129,12 +128,11 @@ interface DataPointApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPointMetaInfo(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
     ): ResponseEntity<DataPointMetaInformation>
 }
