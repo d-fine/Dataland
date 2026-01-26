@@ -111,11 +111,11 @@ class RequestPriorityUpdaterTest {
         )
 
         requestPriorities.forEach { priority ->
-            val matchingStoredRequests =
+            val matchingMixedStoredRequests =
                 storedRequestsMap.values.filter {
                     it.requestPriority == priority && it.state in setOf(RequestState.Open, RequestState.Processing)
                 }
-            doReturn(matchingStoredRequests)
+            doReturn(matchingMixedStoredRequests)
                 .whenever(mockMixedControllerApi)
                 .postRequestSearch(
                     mixedRequestSearchFilterString =
@@ -126,7 +126,7 @@ class RequestPriorityUpdaterTest {
                     chunkSize = resultsPerPage,
                     chunkIndex = 0,
                 )
-            doReturn(matchingStoredRequests.size).whenever(mockMixedControllerApi).postRequestCountQuery(
+            doReturn(matchingMixedStoredRequests.size).whenever(mockMixedControllerApi).postRequestCountQuery(
                 MixedRequestSearchFilterString(
                     requestStates = listOf(RequestState.Open, RequestState.Processing),
                     requestPriorities = listOf(priority),

@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -23,8 +22,8 @@ class RequestPriorityUpdater
     constructor(
         private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
-        @Qualifier("getRequestControllerApi") private val requestControllerApi: RequestControllerApi,
-        @Qualifier("getMixedControllerApi") private val mixedControllerApi: MixedControllerApi,
+        private val requestControllerApi: RequestControllerApi,
+        private val mixedControllerApi: MixedControllerApi,
         private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
     ) {
