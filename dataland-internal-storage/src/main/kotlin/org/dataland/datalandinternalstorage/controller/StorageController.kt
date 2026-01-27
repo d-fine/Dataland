@@ -57,7 +57,7 @@ class StorageController
             dataIds: List<String>,
             correlationId: String,
         ): ResponseEntity<Map<String, StorableDataPoint>> {
-            logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
+            logger.info("Selecting ${dataIds.size} data points from the database. Correlation id: $correlationId.")
             return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
         }
 

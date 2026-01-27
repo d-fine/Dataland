@@ -11,19 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository
  */
 interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, CompanyIdentifierEntityId> {
     /**
-     * Auto-Generated function to delete all identifiers of a specific type belonging to a company
-     */
-    fun deleteAllByCompanyAndIdentifierType(
-        company: StoredCompanyEntity,
-        identifierType: IdentifierType,
-    )
-
-    /**
-     * Auto-Generated function to delete all identifiers belonging to a company
-     */
-    fun deleteAllByCompany(company: StoredCompanyEntity)
-
-    /**
      * Retrieve an entry based on the identifier value
      */
     fun getFirstByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?

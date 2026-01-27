@@ -7,6 +7,7 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ExportFileType,
+  type ExportJobInfo,
 } from "@clients/backend";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
@@ -39,16 +40,14 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     return this.openApiDataController.postCompanyAssociated${frameworkBaseName}Data(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
      reportingPeriods: string[],
      companyIds: string[],
      fileFormat: ExportFileType,
      keepValueFieldsOnly?: Boolean,
      includeAliases?: Boolean,
-     options?: AxiosRequestConfig):
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriods, companyIds, fileFormat, keepValueFieldsOnly, includeAliases, options);
+     options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportJobCompanyAssociated${frameworkBaseName}DataByDimensions({reportingPeriods, companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
   }
 
   getCompanyAssociatedDataByDimensions(

@@ -6,12 +6,15 @@ import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
+import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -21,19 +24,15 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.ExportFileType
+import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.ContentDisposition
-import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
@@ -45,7 +44,8 @@ import java.time.format.DateTimeFormatter
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
-    private val dataExportService: DataExportService,
+    private val dataExportService: DataExportService<T>,
+    private val dataExportStorage: DataExportStore,
     private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -164,73 +164,50 @@ open class DataController<T>(
         )
     }
 
-    override fun exportCompanyAssociatedDataByDimensions(
-        reportingPeriods: List<String>,
-        companyIds: List<String>,
-        exportFileType: ExportFileType,
+    override fun postExportJobCompanyAssociatedDataByDimensions(
+        exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): ResponseEntity<InputStreamResource> {
-        if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
+    ): ResponseEntity<ExportJobInfo> {
+        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
                 it.companyInformation == null
             }
         ) {
             throw ResourceNotFoundApiException(
-                summary = "CompanyIds $companyIds not found.",
+                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
                 message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
             )
         }
 
-        val companyIdAndReportingPeriodPairs = mutableSetOf<Pair<String, String>>()
-        companyIds.forEach { companyId ->
-            reportingPeriods.forEach { reportingPeriod ->
-                companyIdAndReportingPeriodPairs.add(Pair(companyId, reportingPeriod))
-            }
+        val listDataDimensions =
+            ListDataDimensions(
+                exportRequestData.companyIds,
+                exportRequestData.reportingPeriods,
+                listOf(dataType.toString()),
+            )
+        val exportJobId = UUID.randomUUID()
+        logger.info("Received a request to export portfolio data. ID of new export Job: $exportJobId")
+
+        val newExportJobEntity =
+            dataExportStorage
+                .createAndSaveExportJob(exportJobId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
+
+        try {
+            // Async function
+            dataExportService.startExportJob(
+                listDataDimensions,
+                exportRequestData.fileFormat,
+                newExportJobEntity,
+                clazz,
+                keepValueFieldsOnly,
+                includeAliases,
+            )
+        } catch (_: DownloadDataNotFoundApiException) {
+            newExportJobEntity.progressState = ExportJobProgressState.Failure
+            return ResponseEntity.noContent().build()
         }
-
-        val correlationId = IdUtils.generateUUID()
-        logger.info("Received a request to export portfolio data. Correlation ID: $correlationId")
-
-        val companyAssociatedDataForExport =
-            try {
-                dataExportService.buildStreamFromPortfolioExportData(
-                    this.buildCompanyExportData(
-                        companyIdAndReportingPeriodPairs,
-                        dataType.toString(), correlationId,
-                    ),
-                    exportFileType,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
-                )
-            } catch (_: DownloadDataNotFoundApiException) {
-                return ResponseEntity.noContent().build()
-            }
-        logger.info("Creation of ${exportFileType.name} for export successful. Correlation ID: $correlationId")
-
         return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(exportFileType))
-            .body(companyAssociatedDataForExport)
-    }
-
-    /**
-     * Builds HTTP headers for exporting data, setting the appropriate content type and
-     * content disposition for file download.
-     * @param exportFileType type of export selected by user
-     */
-
-    private fun buildHttpHeadersForExport(exportFileType: ExportFileType): HttpHeaders {
-        val headers = HttpHeaders()
-        val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"))
-        val frameworkName = DataTypeNameMapper.getDisplayName(dataType.name)
-        headers.contentType = exportFileType.mediaType
-        headers.contentDisposition =
-            ContentDisposition
-                .attachment()
-                .filename("data-export-$frameworkName-$timestamp.${exportFileType.fileExtension}")
-                .build()
-        return headers
+            .ok(ExportJobInfo(id = exportJobId))
     }
 
     private fun buildStorableDataset(
@@ -279,29 +256,6 @@ open class DataController<T>(
             },
             correlationId,
         )
-
-    private fun buildCompanyExportData(
-        companyAndReportingPeriodPairs: Set<Pair<String, String>>,
-        framework: String,
-        correlationId: String,
-    ): List<SingleCompanyExportData<T>> {
-        val dataDimensionsWithDataStrings =
-            getFrameworkDataStrings(companyAndReportingPeriodPairs, framework, correlationId)
-
-        val basicCompanyInformation =
-            companyQueryManager.getBasicCompanyInformationByIds(
-                dataDimensionsWithDataStrings.map { it.key.companyId },
-            )
-
-        return dataDimensionsWithDataStrings.map {
-            SingleCompanyExportData(
-                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
-                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
-                reportingPeriod = it.key.reportingPeriod,
-                data = defaultObjectMapper.readValue(it.value, clazz),
-            )
-        }
-    }
 
     @Throws(AccessDeniedException::class)
     private fun verifyAccess(metaInfo: DataMetaInformationEntity) {

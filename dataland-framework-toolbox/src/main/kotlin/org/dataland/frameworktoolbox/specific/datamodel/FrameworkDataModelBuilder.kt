@@ -84,6 +84,7 @@ class FrameworkDataModelBuilder(
         freemarkerTemplate.process(
             mapOf(
                 "frameworkDataManager" to if (assembledDataset) assembledDataManager else storedDataManager,
+                "frameworkDataExportService" to if (assembledDataset) "AssembledExportService" else "UnassembledExportService",
                 "frameworkIdentifier" to framework.identifier,
                 "frameworkPackageName" to removeUnallowedJavaIdentifierCharacters(framework.identifier),
                 "frameworkDataType" to rootDataModelClass.getTypeReference(false),
