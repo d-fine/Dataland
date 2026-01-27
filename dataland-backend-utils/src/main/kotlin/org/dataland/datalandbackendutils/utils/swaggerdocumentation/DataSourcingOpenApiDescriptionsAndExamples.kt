@@ -62,6 +62,12 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_STATES_DESCRIPTION = "A list of associated request states."
     const val REQUEST_STATES_EXAMPLE = "[\"Open\",\"Processing\"]"
 
+    const val REQUEST_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was created."
+    const val REQUEST_CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
+    const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
+    const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
             "If set to false, the provided document IDs replace the existing ones instead."
@@ -95,4 +101,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
         "Contains information about all data requests with already existing datasets that were not created"
     const val NON_SOURCEABLE_REQUESTS_DESCRIPTION =
         "Contains information about all data requests that could not be sourced due to missing documents"
+
+    const val DATA_SOURCING_DETAILS_DESCRIPTION =
+        "The data sourcing details associated with this request."
 }
