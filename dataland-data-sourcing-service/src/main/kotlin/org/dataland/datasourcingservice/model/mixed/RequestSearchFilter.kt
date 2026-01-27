@@ -96,7 +96,7 @@ data class RequestSearchFilter<IdType>(
         arraySchema =
             Schema(
                 description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
-                example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE,
+                example = "[${DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE}]",
             ),
         schema =
             Schema(

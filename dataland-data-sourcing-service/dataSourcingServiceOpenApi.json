@@ -1783,7 +1783,7 @@
           "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
-            "example": "DataVerification.",
+            "example": "[DataVerification]",
             "items": {
               "$ref": "#/components/schemas/RequestState"
             }
@@ -1919,7 +1919,7 @@
       "DataSourcingState": {
         "type": "string",
         "description": "The current state of the data sourcing object.",
-        "example": "DataVerification.",
+        "example": "DataVerification",
         "enum": [
           "Initialized",
           "DocumentSourcing",
