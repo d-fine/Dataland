@@ -4,8 +4,9 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +39,7 @@ class RequestQueryManager
             requestSearchFilter: RequestSearchFilter<UUID>,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
-        ): List<ExtendedStoredRequest> {
+        ): List<DataSourcingEnhancedRequest> {
             val pageRequest =
                 PageRequest.of(
                     chunkIndex,
@@ -69,8 +70,14 @@ class RequestQueryManager
                     fetchedEntities.find { it.id == id }
                 }
 
+            val companyNamesById = getCompanyNamesByCompanyIds(collectCompanyIdsForEntities(orderedEntities))
+
             return orderedEntities.map { entity ->
-                transformRequestEntityToExtendedStoredRequest(entity)
+                transformRequestEntityToDataSourcingEnhancedRequest(
+                    entity = entity,
+                    companyNamesById = companyNamesById,
+                    userEmailAddress = getEmail(entity.userId),
+                )
             }
         }
 
@@ -105,35 +112,29 @@ class RequestQueryManager
         /**
          * Search for requests based on userId
          * @param userId to filter by
-         * @return list of matching ExtendedStoredRequest objects
+         * @return list of matching DataSourcingEnhancedRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsByUser(userId: UUID): List<ExtendedStoredRequest> {
-            val userEmailAddress = keycloakUserService.getUser(userId.toString()).email
+        fun getRequestsByUser(userId: UUID): List<DataSourcingEnhancedRequest> {
+            val userEmailAddress = getEmail(userId)
             val requestEntities = requestRepository.findByUserId(userId)
-            val validationResults =
-                companyDataController.postCompanyValidation(
-                    requestEntities.map { it.companyId.toString() },
-                )
+            val companyNamesById = getCompanyNamesByCompanyIds(collectCompanyIdsForEntities(requestEntities))
+
             return requestEntities.map { entity ->
-                val companyName =
-                    validationResults
-                        .find { it.identifier == entity.companyId.toString() }
-                        ?.companyInformation
-                        ?.companyName ?: ""
-                entity.toExtendedStoredRequest(
-                    companyName,
-                    userEmailAddress,
+                transformRequestEntityToDataSourcingEnhancedRequest(
+                    entity = entity,
+                    companyNamesById = companyNamesById,
+                    userEmailAddress = userEmailAddress,
                 )
             }
         }
 
         /**
          * Get requests for requesting user
-         * @return list of matching ExtendedStoredRequest objects
+         * @return list of matching DataSourcingEnhancedRequest objects
          */
         @Transactional(readOnly = true)
-        fun getRequestsForRequestingUser(): List<ExtendedStoredRequest> {
+        fun getRequestsForRequestingUser(): List<DataSourcingEnhancedRequest> {
             val userId = DatalandAuthentication.fromContext().userId
             return getRequestsByUser(
                 UUID.fromString(userId),
@@ -154,6 +155,54 @@ class RequestQueryManager
             )
 
         /**
+         * Fetch user email for a given userId.
+         */
+        private fun getEmail(userId: UUID): String? = keycloakUserService.getUser(userId.toString()).email
+
+        /**
+         * Fetch company names for the given company ids.
+         */
+        private fun getCompanyNamesByCompanyIds(companyIds: List<UUID>): Map<UUID, String> {
+            if (companyIds.isEmpty()) return emptyMap()
+
+            val validationResults =
+                companyDataController.postCompanyValidation(
+                    companyIds.distinct().map { it.toString() },
+                )
+
+            return validationResults
+                .mapNotNull { result ->
+                    val name = result.companyInformation?.companyName ?: return@mapNotNull null
+                    convertToUUID(result.identifier) to name
+                }.toMap()
+        }
+
+        private fun collectCompanyIdsForEntities(requestEntities: List<RequestEntity>): List<UUID> =
+            requestEntities
+                .map { it.companyId }
+                .plus(requestEntities.mapNotNull { it.dataSourcingEntity?.documentCollector })
+                .plus(requestEntities.mapNotNull { it.dataSourcingEntity?.dataExtractor })
+
+        /**
+         * Transform RequestEntity to DataSourcingEnhancedRequest by adding company name and user email address.
+         * @param entity the RequestEntity to transform
+         * @param companyNamesById map of company IDs to company names
+         * @param userEmailAddress the email address of the user who created the request
+         * @return the transformed DataSourcingEnhancedRequest
+         */
+        fun transformRequestEntityToDataSourcingEnhancedRequest(
+            entity: RequestEntity,
+            companyNamesById: Map<UUID, String>,
+            userEmailAddress: String?,
+        ): DataSourcingEnhancedRequest =
+            entity.toDataSourcingEnhancedRequest(
+                companyName = companyNamesById[entity.companyId] ?: "",
+                userEmailAddress = userEmailAddress,
+                documentCollectorName = entity.dataSourcingEntity?.documentCollector?.let { companyNamesById[it] },
+                dataExtractorName = entity.dataSourcingEntity?.dataExtractor?.let { companyNamesById[it] },
+            )
+
+        /**
          * Transform RequestEntity to ExtendedStoredRequest by adding company name and user email address.
          * @param entity the RequestEntity to transform
          * @return the transformed ExtendedStoredRequest
@@ -161,6 +210,6 @@ class RequestQueryManager
         fun transformRequestEntityToExtendedStoredRequest(entity: RequestEntity): ExtendedStoredRequest =
             entity.toExtendedStoredRequest(
                 companyDataController.getCompanyInfo(entity.companyId.toString()).companyName,
-                keycloakUserService.getUser(entity.userId.toString()).email,
+                getEmail(userId = entity.userId),
             )
     }

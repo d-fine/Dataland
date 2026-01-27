@@ -177,7 +177,7 @@ class UserServiceTest {
         val requests =
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 ApiAwait.waitForData {
-                    apiAccessor.dataSourcingRequestControllerApi.postRequestSearch(
+                    apiAccessor.enhancedRequestControllerApi.postRequestSearch(
                         RequestSearchFilterString(
                             companyId = dummyCompanyId,
                         ),

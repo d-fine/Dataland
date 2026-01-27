@@ -9,6 +9,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingDetails
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
@@ -92,6 +94,39 @@ class RequestEntity(
             requestPriority = requestPriority,
             state = state,
             dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+            companyName = companyName,
+            userEmailAddress = userEmailAddress,
+        )
+
+    /**
+     * Converts this RequestEntity to a DataSourcingEnhancedRequest.
+     */
+    fun toDataSourcingEnhancedRequest(
+        companyName: String,
+        userEmailAddress: String?,
+        documentCollectorName: String?,
+        dataExtractorName: String?,
+    ): DataSourcingEnhancedRequest =
+        DataSourcingEnhancedRequest(
+            id = id.toString(),
+            companyId = companyId.toString(),
+            reportingPeriod = reportingPeriod,
+            dataType = dataType,
+            userId = userId.toString(),
+            creationTimestamp = creationTimestamp,
+            memberComment = memberComment,
+            adminComment = adminComment,
+            lastModifiedDate = lastModifiedDate,
+            requestPriority = requestPriority,
+            state = state,
+            dataSourcingDetails =
+                DataSourcingDetails(
+                    dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
+                    dataSourcingState = dataSourcingEntity?.state,
+                    dateOfNextDocumentSourcingAttempt = dataSourcingEntity?.dateOfNextDocumentSourcingAttempt,
+                    documentCollectorName = documentCollectorName,
+                    dataExtractorName = dataExtractorName,
+                ),
             companyName = companyName,
             userEmailAddress = userEmailAddress,
         )
