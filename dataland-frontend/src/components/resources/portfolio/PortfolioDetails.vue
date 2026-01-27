@@ -58,15 +58,14 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
 
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const dialog = useDialog();
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const emit = defineEmits(['update:portfolio-overview']);
+
 const props = defineProps<{
   portfolioId: string;
 }>();
-
-const emit = defineEmits(['update:portfolio-overview']);
-
-const dialog = useDialog();
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const isUserDatalandMemberOrAdmin = ref(false);
 const isSuccessDialogVisible = ref(false);
