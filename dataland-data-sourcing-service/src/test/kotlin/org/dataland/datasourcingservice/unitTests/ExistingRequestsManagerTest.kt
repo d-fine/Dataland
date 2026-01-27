@@ -16,6 +16,7 @@ import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingServiceMessageSender
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -39,7 +40,7 @@ import java.util.UUID
 class ExistingRequestsManagerTest {
     private val mockRequestRepository = mock<RequestRepository>()
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
-    private val mockDataSourcingManager = mock<DataSourcingManager>()
+    private val mockRequestDataSourcingAssigner = mock<RequestDataSourcingAssigner>()
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockDataRevisionRepository = mock<DataRevisionRepository>()
     private val mockDataSourcingServiceMessageSender = mock<DataSourcingServiceMessageSender>()
@@ -57,7 +58,7 @@ class ExistingRequestsManagerTest {
     private val existingRequestsManager =
         ExistingRequestsManager(
             mockRequestRepository,
-            mockDataSourcingManager,
+            mockRequestDataSourcingAssigner,
             mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
             mockRequestQueryManager,
@@ -68,6 +69,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingRepository,
             mockDataRevisionRepository,
             mockDataSourcingValidator,
+            existingRequestsManager,
             mockCloudEventMessageHandler,
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()
@@ -103,7 +105,7 @@ class ExistingRequestsManagerTest {
 
         reset(
             mockRequestRepository,
-            mockDataSourcingManager,
+            mockRequestDataSourcingAssigner,
             mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
             mockRequestQueryManager,
@@ -121,7 +123,7 @@ class ExistingRequestsManagerTest {
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockRequestRepository).save(any())
 
         doReturn(dataSourcingEntity)
-            .whenever(mockDataSourcingManager)
+            .whenever(mockRequestDataSourcingAssigner)
             .useExistingOrCreateDataSourcingAndAddRequest(requestEntitySfdr)
     }
 
@@ -133,14 +135,14 @@ class ExistingRequestsManagerTest {
         existingRequestsManager.patchRequestState(dataRequestIdForSfdr, requestState, null)
 
         if (requestState == RequestState.Processing) {
-            verify(mockDataSourcingManager, times(1)).useExistingOrCreateDataSourcingAndAddRequest(any())
+            verify(mockRequestDataSourcingAssigner, times(1)).useExistingOrCreateDataSourcingAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, times(1))
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntitySfdr,
                 )
         } else {
-            verify(mockDataSourcingManager, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
+            verify(mockRequestDataSourcingAssigner, never()).useExistingOrCreateDataSourcingAndAddRequest(any())
             verify(mockDataSourcingServiceMessageSender, never())
                 .sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = anyOrNull(),
@@ -229,7 +231,7 @@ class ExistingRequestsManagerTest {
                 dataSourcingEntity = anyOrNull(),
                 requestEntity = anyOrNull(),
             )
-        verify(mockDataSourcingManager, never())
+        verify(mockRequestDataSourcingAssigner, never())
             .useExistingOrCreateDataSourcingAndAddRequest(any())
         verify(mockRequestRepository, times(1)).save(requestEntity)
 

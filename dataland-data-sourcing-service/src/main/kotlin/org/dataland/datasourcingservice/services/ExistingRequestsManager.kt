@@ -24,7 +24,7 @@ class ExistingRequestsManager
     @Autowired
     constructor(
         private val requestRepository: RequestRepository,
-        private val dataSourcingManager: DataSourcingManager,
+        private val requestDataSourcingAssigner: RequestDataSourcingAssigner,
         private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingServiceMessageSender: DataSourcingServiceMessageSender,
         private val requestQueryManager: RequestQueryManager,
@@ -78,7 +78,8 @@ class ExistingRequestsManager
             }
 
             if (requestEntity.state == RequestState.Processing) {
-                val dataSourcingEntity = dataSourcingManager.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
+                val dataSourcingEntity =
+                    requestDataSourcingAssigner.useExistingOrCreateDataSourcingAndAddRequest(requestEntity)
                 dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestProcessing(
                     dataSourcingEntity = dataSourcingEntity,
                     requestEntity = requestEntity,
