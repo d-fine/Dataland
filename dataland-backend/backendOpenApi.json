@@ -3661,7 +3661,7 @@
         }
       }
     },
-    "/export/state/{exportJobId}": {
+    "/export/{exportJobId}/state": {
       "get": {
         "tags": [
           "data-export-controller"
@@ -3727,7 +3727,7 @@
         ]
       }
     },
-    "/export/download/{exportJobId}": {
+    "/export/{exportJobId}/download": {
       "get": {
         "tags": [
           "data-export-controller"

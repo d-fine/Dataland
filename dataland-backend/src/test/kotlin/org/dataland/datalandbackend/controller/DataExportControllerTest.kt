@@ -100,7 +100,7 @@ class DataExportControllerTest(
 
         mockMvc
             .perform(
-                get("/export/state/{exportJobId}", nonExistentJobId)
+                get("/export/{exportJobId}/state", nonExistentJobId)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
@@ -129,7 +129,7 @@ class DataExportControllerTest(
 
         mockMvc
             .perform(
-                get("/export/state/{exportJobId}", testJobId)
+                get("/export/{exportJobId}/state", testJobId)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
@@ -144,7 +144,7 @@ class DataExportControllerTest(
 
         mockMvc
             .perform(
-                get("/export/download/{exportJobId}", nonExistentJobId)
+                get("/export/{exportJobId}/download", nonExistentJobId)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isNotFound)
             .andExpect(
