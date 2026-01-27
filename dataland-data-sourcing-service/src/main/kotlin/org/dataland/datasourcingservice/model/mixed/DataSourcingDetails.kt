@@ -26,13 +26,13 @@ data class DataSourcingDetails(
     )
     val dateOfNextDocumentSourcingAttempt: LocalDate? = null,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_NAME_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_NAME_EXAMPLE,
     )
-    val documentCollector: String? = null,
+    val documentCollectorName: String? = null,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_NAME_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_NAME_EXAMPLE,
     )
-    val dataExtractor: String? = null,
+    val dataExtractorName: String? = null,
 )

@@ -104,6 +104,8 @@ class RequestEntity(
     fun toDataSourcingEnhancedRequest(
         companyName: String,
         userEmailAddress: String?,
+        documentCollectorName: String?,
+        dataExtractorName: String?,
     ): DataSourcingEnhancedRequest =
         DataSourcingEnhancedRequest(
             id = id.toString(),
@@ -122,8 +124,8 @@ class RequestEntity(
                     dataSourcingEntityId = dataSourcingEntity?.dataSourcingId?.toString(),
                     dataSourcingState = dataSourcingEntity?.state,
                     dateOfNextDocumentSourcingAttempt = dataSourcingEntity?.dateOfNextDocumentSourcingAttempt,
-                    documentCollector = dataSourcingEntity?.documentCollector?.toString(),
-                    dataExtractor = dataSourcingEntity?.dataExtractor?.toString(),
+                    documentCollectorName = documentCollectorName,
+                    dataExtractorName = dataExtractorName,
                 ),
             companyName = companyName,
             userEmailAddress = userEmailAddress,

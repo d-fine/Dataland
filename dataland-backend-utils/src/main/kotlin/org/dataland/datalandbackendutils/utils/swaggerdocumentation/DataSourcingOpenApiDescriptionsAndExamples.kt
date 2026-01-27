@@ -25,10 +25,18 @@ object DataSourcingOpenApiDescriptionsAndExamples {
             "this data sourcing object."
     const val DOCUMENT_COLLECTOR_EXAMPLE = "d23d16de-e9c8-470f-b08b-e576e0c4193e"
 
+    const val DOCUMENT_COLLECTOR_NAME_DESCRIPTION =
+        "The name of the company which is responsible for the collection of documents concerning this data sourcing object."
+    const val DOCUMENT_COLLECTOR_NAME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
+
     const val DATA_EXTRACTOR_DESCRIPTION =
         "The Dataland company ID of the company which is responsible for the extraction of data from documents " +
             "concerning this data sourcing object."
     const val DATA_EXTRACTOR_EXAMPLE = "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+
+    const val DATA_EXTRACTOR_NAME_DESCRIPTION =
+        "The name of the company which is responsible for the extraction of data from documents concerning this data sourcing object."
+    const val DATA_EXTRACTOR_NAME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
 
     const val ADMIN_COMMENT_DESCRIPTION = "A comment that can be set by Dataland admins to provide additional information."
     const val ADMIN_COMMENT_EXAMPLE = "The data sourcing process is delayed due to unforeseen circumstances."

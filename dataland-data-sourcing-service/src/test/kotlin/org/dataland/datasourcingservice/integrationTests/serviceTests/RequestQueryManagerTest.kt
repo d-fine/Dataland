@@ -3,7 +3,6 @@ package org.dataland.datasourcingservice.integrationTests.serviceTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
@@ -76,8 +75,6 @@ class RequestQueryManagerTest
         private val firstUser = KeycloakUserInfo(USER_EMAIL, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
         private val secondUser = mock<KeycloakUserInfo>()
         private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
-        private val companyInfo1 = mock<CompanyInformation>()
-        private val companyInfo2 = mock<CompanyInformation>()
 
         @BeforeEach
         fun setupMocks() {
@@ -89,10 +86,31 @@ class RequestQueryManagerTest
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
-            doReturn(TEST_COMPANY_NAME_1).whenever(companyInfo1).companyName
-            doReturn(TEST_COMPANY_NAME_2).whenever(companyInfo2).companyName
-            doReturn(companyInfo1).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_1)
-            doReturn(companyInfo2).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_2)
+            val defaultValidationResult1 =
+                CompanyIdentifierValidationResult(
+                    identifier = COMPANY_ID_1,
+                    companyInformation =
+                        BasicCompanyInformation(
+                            companyId = COMPANY_ID_1,
+                            companyName = TEST_COMPANY_NAME_1,
+                            headquarters = "HQ1",
+                            countryCode = "DE",
+                        ),
+                )
+            val defaultValidationResult2 =
+                CompanyIdentifierValidationResult(
+                    identifier = COMPANY_ID_2,
+                    companyInformation =
+                        BasicCompanyInformation(
+                            companyId = COMPANY_ID_2,
+                            companyName = TEST_COMPANY_NAME_2,
+                            headquarters = "HQ2",
+                            countryCode = "FR",
+                        ),
+                )
+            doReturn(listOf(defaultValidationResult1, defaultValidationResult2))
+                .whenever(mockCompanyDataControllerApi)
+                .postCompanyValidation(anyOrNull())
         }
 
         /**
