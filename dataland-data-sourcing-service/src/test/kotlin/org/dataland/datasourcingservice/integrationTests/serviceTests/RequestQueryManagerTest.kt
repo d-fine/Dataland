@@ -373,4 +373,59 @@ class RequestQueryManagerTest
                 Assertions.assertEquals(USER_EMAIL, result.userEmailAddress)
             }
         }
+
+        @Test
+        fun `searchRequests returns correct document collector and data extractor names`() {
+            val dataSourcingWithBoth =
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.fromString("00000000-0000-0000-0000-000000000010"),
+                    companyId = UUID.fromString(COMPANY_ID_1),
+                    reportingPeriod = REPORTING_PERIOD_1,
+                    dataType = DATA_TYPE_1,
+                    documentCollector = UUID.fromString(COMPANY_ID_1),
+                    dataExtractor = UUID.fromString(COMPANY_ID_2),
+                )
+
+            val dataSourcingWithNone =
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.fromString("00000000-0000-0000-0000-000000000011"),
+                    companyId = UUID.fromString(COMPANY_ID_2),
+                    reportingPeriod = REPORTING_PERIOD_2,
+                    dataType = DATA_TYPE_2,
+                    documentCollector = null,
+                    dataExtractor = null,
+                )
+
+            dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000020"),
+                companyId = UUID.fromString(COMPANY_ID_1),
+                userId = UUID.fromString(firstUser.userId),
+                dataType = DATA_TYPE_1,
+                reportingPeriod = REPORTING_PERIOD_1,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                dataSourcingEntity = dataSourcingWithBoth,
+            )
+
+            dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000021"),
+                companyId = UUID.fromString(COMPANY_ID_2),
+                userId = UUID.fromString(firstUser.userId),
+                dataType = DATA_TYPE_2,
+                reportingPeriod = REPORTING_PERIOD_2,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                dataSourcingEntity = dataSourcingWithNone,
+            )
+
+            val results = requestQueryManager.searchRequests(RequestSearchFilter())
+
+            val requestWithBoth = results.find { it.id == "00000000-0000-0000-0000-000000000020" }
+            assert(requestWithBoth != null) { "Expected request with id 00000000-0000-0000-0000-000000000020 not found." }
+            Assertions.assertEquals(TEST_COMPANY_NAME_1, requestWithBoth?.dataSourcingDetails?.documentCollectorName)
+            Assertions.assertEquals(TEST_COMPANY_NAME_2, requestWithBoth?.dataSourcingDetails?.dataExtractorName)
+
+            val requestWithNone = results.find { it.id == "00000000-0000-0000-0000-000000000021" }
+            assert(requestWithNone != null) { "Expected request with id 00000000-0000-0000-0000-000000000021 not found." }
+            Assertions.assertEquals(null, requestWithNone?.dataSourcingDetails?.documentCollectorName)
+            Assertions.assertEquals(null, requestWithNone?.dataSourcingDetails?.dataExtractorName)
+        }
     }
