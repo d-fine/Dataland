@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.model.mixed
+package org.dataland.datasourcingservice.model.enhanced
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.ArraySchema

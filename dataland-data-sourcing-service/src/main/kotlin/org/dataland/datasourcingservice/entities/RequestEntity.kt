@@ -9,10 +9,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingDetails
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.mixed.DataSourcingDetails
-import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.hibernate.envers.Audited

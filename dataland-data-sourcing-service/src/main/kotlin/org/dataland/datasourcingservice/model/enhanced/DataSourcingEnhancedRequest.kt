@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.model.mixed
+package org.dataland.datasourcingservice.model.enhanced
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples

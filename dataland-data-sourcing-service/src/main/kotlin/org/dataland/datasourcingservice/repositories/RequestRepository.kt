@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.repositories
 
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

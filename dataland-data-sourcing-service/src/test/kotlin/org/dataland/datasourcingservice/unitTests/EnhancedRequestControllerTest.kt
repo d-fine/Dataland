@@ -2,7 +2,7 @@ package org.dataland.datasourcingservice.unitTests
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datasourcingservice.controller.EnhancedRequestController
-import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertDoesNotThrow

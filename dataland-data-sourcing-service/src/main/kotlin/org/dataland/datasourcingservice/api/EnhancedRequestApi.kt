@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
-import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
-import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * API interface for handling mixed data for both requests and data sourcing objects.
+ * API interface for handling requests enhanced by data sourcing details.
  */
 @RequestMapping("/enhanced-requests")
 @SecurityRequirement(name = "default-bearer-auth")

@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datasourcingservice.entities.RequestEntity
-import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
-import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication

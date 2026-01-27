@@ -1,8 +1,8 @@
 package org.dataland.datasourcingservice.controller
 
 import org.dataland.datasourcingservice.api.EnhancedRequestApi
-import org.dataland.datasourcingservice.model.mixed.DataSourcingEnhancedRequest
-import org.dataland.datasourcingservice.model.mixed.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enhanced.DataSourcingEnhancedRequest
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
