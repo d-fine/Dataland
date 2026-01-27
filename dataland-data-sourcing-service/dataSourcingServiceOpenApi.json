@@ -1054,7 +1054,7 @@
         ]
       }
     },
-    "/enhanced-requests/": {
+    "/enhanced-requests": {
       "get": {
         "tags": [
           "enhanced-request-controller"

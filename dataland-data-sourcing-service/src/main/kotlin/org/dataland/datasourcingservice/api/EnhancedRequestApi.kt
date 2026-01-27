@@ -80,7 +80,6 @@ interface EnhancedRequestApi {
         ],
     )
     @GetMapping(
-        value = ["/"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
