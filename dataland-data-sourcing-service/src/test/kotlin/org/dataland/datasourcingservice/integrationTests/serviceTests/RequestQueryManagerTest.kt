@@ -76,6 +76,29 @@ class RequestQueryManagerTest
         private val secondUser = mock<KeycloakUserInfo>()
         private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
 
+        private val defaultValidationResult1 =
+            CompanyIdentifierValidationResult(
+                identifier = COMPANY_ID_1,
+                companyInformation =
+                    BasicCompanyInformation(
+                        companyId = COMPANY_ID_1,
+                        companyName = TEST_COMPANY_NAME_1,
+                        headquarters = "HQ1",
+                        countryCode = "DE",
+                    ),
+            )
+        private val defaultValidationResult2 =
+            CompanyIdentifierValidationResult(
+                identifier = COMPANY_ID_2,
+                companyInformation =
+                    BasicCompanyInformation(
+                        companyId = COMPANY_ID_2,
+                        companyName = TEST_COMPANY_NAME_2,
+                        headquarters = "HQ2",
+                        countryCode = "FR",
+                    ),
+            )
+
         @BeforeEach
         fun setupMocks() {
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(firstUser.userId)
@@ -86,28 +109,6 @@ class RequestQueryManagerTest
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
-            val defaultValidationResult1 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_1,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_1,
-                            companyName = TEST_COMPANY_NAME_1,
-                            headquarters = "HQ1",
-                            countryCode = "DE",
-                        ),
-                )
-            val defaultValidationResult2 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_2,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_2,
-                            companyName = TEST_COMPANY_NAME_2,
-                            headquarters = "HQ2",
-                            countryCode = "FR",
-                        ),
-                )
             doReturn(listOf(defaultValidationResult1, defaultValidationResult2))
                 .whenever(mockCompanyDataControllerApi)
                 .postCompanyValidation(anyOrNull())
@@ -336,29 +337,8 @@ class RequestQueryManagerTest
         fun `getRequestsByUser returns correct company names and user emails`() {
             val requests = setupFourTestRequests()
             val userId = UUID.fromString(firstUser.userId)
-            val validationResult1 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_1,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_1,
-                            companyName = TEST_COMPANY_NAME_1,
-                            headquarters = "HQ1",
-                            countryCode = "DE",
-                        ),
-                )
-            val validationResult2 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_2,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_2,
-                            companyName = TEST_COMPANY_NAME_2,
-                            headquarters = "HQ2",
-                            countryCode = "FR",
-                        ),
-                )
-            doReturn(listOf(validationResult2, validationResult1))
+
+            doReturn(listOf(defaultValidationResult2, defaultValidationResult1))
                 .whenever(mockCompanyDataControllerApi)
                 .postCompanyValidation(listOf(COMPANY_ID_2, COMPANY_ID_1))
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(userId.toString())
