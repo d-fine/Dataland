@@ -45,7 +45,7 @@ interface DataExportApi {
         ],
     )
     @GetMapping(
-        value = ["/state/{exportJobId}"],
+        value = ["/{exportJobId}/state"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -77,7 +77,7 @@ interface DataExportApi {
         ],
     )
     @GetMapping(
-        value = ["/download/{exportJobId}"],
+        value = ["/{exportJobId}/download"],
         produces = ["application/octet-stream"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
