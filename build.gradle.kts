@@ -173,6 +173,10 @@ sonar {
                 "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt" +
 
                 // data sourcing service
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/request/StoredRequest.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/request/ExtendedStoredRequest.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/" +
+                "enhanced/DataSourcingEnhancedRequest.kt," +
                 "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/DataSourcingApi.kt," +
                 "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/RequestApi.kt," +
                 "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
