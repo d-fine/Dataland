@@ -98,7 +98,7 @@ const routes = [
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
     meta: {
-      initialTabIndex: 2,
+      initialTabId: 'companies',
       requiresAuthentication: true,
     },
   },
@@ -171,7 +171,7 @@ const routes = [
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
     meta: {
-      initialTabIndex: 8,
+      initialTabId: 'all-data-requests',
       requiresAuthentication: true,
     },
   },
@@ -180,7 +180,7 @@ const routes = [
     name: 'Admin overview for all requests (Legacy)',
     component: AdminRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 9,
+      initialTabId: 'all-data-requests-legacy',
       requiresAuthentication: true,
     },
   },
@@ -189,7 +189,7 @@ const routes = [
     name: 'UI for quality assurance',
     component: QualityAssurance,
     meta: {
-      initialTabIndex: 4,
+      initialTabId: 'qa',
       requiresAuthentication: true,
     },
   },
@@ -198,7 +198,7 @@ const routes = [
     name: 'Dataset Overview',
     component: DatasetOverview,
     meta: {
-      initialTabIndex: 3,
+      initialTabId: 'my-datasets',
       requiresAuthentication: true,
     },
   },
@@ -207,7 +207,7 @@ const routes = [
     name: 'MyDataRequestsOverview',
     component: MyDataRequestsOverview,
     meta: {
-      initialTabIndex: 5,
+      initialTabId: 'my-data-requests',
       requiresAuthentication: true,
     },
   },
@@ -216,7 +216,7 @@ const routes = [
     name: 'MyDataRequestsOverview (Legacy)',
     component: MyDataRequestsOverviewLegacy,
     meta: {
-      initialTabIndex: 6,
+      initialTabId: 'my-data-requests-legacy',
       requiresAuthentication: true,
     },
   },
@@ -243,7 +243,7 @@ const routes = [
     name: 'CompanyDataRequestsOverview',
     component: CompanyDataRequestsOverview,
     meta: {
-      initialTabIndex: 7,
+      initialTabId: 'data-requests-for-my-company',
       requiresAuthentication: true,
     },
   },
@@ -261,7 +261,7 @@ const routes = [
     name: 'Portfolio Overview',
     component: PortfolioOverview,
     meta: {
-      initialTabIndex: 0,
+      initialTabId: 'my-portfolios',
       requiresAuthentication: true,
     },
   },
@@ -270,7 +270,7 @@ const routes = [
     name: 'Shared Portfolio Overview',
     component: SharedPortfolioOverview,
     meta: {
-      initialTabIndex: 1,
+      initialTabId: 'shared-portfolios',
       requiresAuthentication: true,
     },
   },
