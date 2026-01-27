@@ -81,7 +81,7 @@
     <div class="dataland-info-text small">
       Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
     </div>
-    <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
+    <Message v-if="dialogRef?.data?.downloadErrors" severity="error" class="mt-2">
       {{ dialogRef?.data?.downloadErrors }}
     </Message>
     <div>

@@ -9,6 +9,7 @@ import org.dataland.dataSourcingService.openApiClient.api.DataSourcingController
 import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataExportControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
@@ -59,6 +60,7 @@ class ApiAccessor {
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val enhancedRequestControllerApi = EnhancedRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+    val exportControllerApi = DataExportControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
@@ -192,18 +194,28 @@ class ApiAccessor {
         )
 
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadDataset(testDataProviderForLksgData, ::lksgUploaderFunction)
-            DataTypeEnum.sfdr -> uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+            DataTypeEnum.lksg -> {
+                uploadDataset(testDataProviderForLksgData, ::lksgUploaderFunction)
+            }
+
+            DataTypeEnum.sfdr -> {
+                uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            }
+
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> {
                 uploadDataset(
                     testDataProviderForEuTaxonomyDataForNonFinancials,
                     ::euTaxonomyNonFinancialsUploaderFunction,
                 )
+            }
 
-            DataTypeEnum.eutaxonomyMinusFinancials ->
+            DataTypeEnum.eutaxonomyMinusFinancials -> {
                 uploadDataset(testDataProviderEuTaxonomyForFinancials, ::euTaxonomyFinancialsUploaderFunction)
+            }
 
-            else -> throw IllegalArgumentException("Datatype $dataType not integrated into ApiAccessor.")
+            else -> {
+                throw IllegalArgumentException("Datatype $dataType not integrated into ApiAccessor.")
+            }
         }
     }
 
@@ -227,21 +239,31 @@ class ApiAccessor {
             ensureQaPassed = ensureQaPassed,
         )
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadCompaniesAndDatasets(testDataProviderForLksgData, ::lksgUploaderFunction)
-            DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(testDataProviderForSfdrData, ::sfdrUploaderFunction)
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+            DataTypeEnum.lksg -> {
+                uploadCompaniesAndDatasets(testDataProviderForLksgData, ::lksgUploaderFunction)
+            }
+
+            DataTypeEnum.sfdr -> {
+                uploadCompaniesAndDatasets(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            }
+
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> {
                 uploadCompaniesAndDatasets(
                     testDataProviderForEuTaxonomyDataForNonFinancials,
                     ::euTaxonomyNonFinancialsUploaderFunction,
                 )
+            }
 
-            DataTypeEnum.eutaxonomyMinusFinancials ->
+            DataTypeEnum.eutaxonomyMinusFinancials -> {
                 uploadCompaniesAndDatasets(
                     testDataProviderEuTaxonomyForFinancials,
                     ::euTaxonomyFinancialsUploaderFunction,
                 )
+            }
 
-            else -> throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
         }
     }
 

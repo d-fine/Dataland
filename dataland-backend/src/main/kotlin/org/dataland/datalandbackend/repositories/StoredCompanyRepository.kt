@@ -234,7 +234,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "JOIN FETCH company.identifiers companyIdentifierEntity " +
             "WHERE companyIdentifierEntity.identifierValue in :leis ",
     )
-    fun findCompaniesbyListOfLeis(
+    fun findCompaniesByListOfLeis(
         @Param("leis") leis: List<String>,
     ): List<StoredCompanyEntity>?
 }
