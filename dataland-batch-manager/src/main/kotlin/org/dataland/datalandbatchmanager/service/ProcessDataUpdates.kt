@@ -33,6 +33,7 @@ class ProcessDataUpdates
         private val backendActuatorApi: BackendActuatorApi,
         private val requestPriorityUpdater: RequestPriorityUpdater,
         private val dataSourcingActuatorApi: DataSourcingActuatorApi,
+        private val portfolioSharingUpdater: PortfolioSharingUpdater,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
         private val allGleifCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
@@ -158,6 +159,14 @@ class ProcessDataUpdates
             logger.info("Running scheduled update of request priorities.")
             waitForDataSourcingService()
             requestPriorityUpdater.processRequestPriorityUpdates()
+        }
+
+        @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
+        @Scheduled(cron = "0 0 4 * * *")
+        private fun processPortfolioSharingUpdates() {
+            logger.info("Running scheduled update of portfolio sharing access rights.")
+            waitForDataSourcingService()
+            portfolioSharingUpdater.updatePortfolioSharing()
         }
 
         /**
