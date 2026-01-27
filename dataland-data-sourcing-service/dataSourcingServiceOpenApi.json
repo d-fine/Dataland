@@ -1803,22 +1803,32 @@
         "type": "object",
         "properties": {
           "dataSourcingEntityId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           "dataSourcingState": {
             "$ref": "#/components/schemas/DataSourcingState"
           },
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
-            "format": "date"
+            "description": "The date of the next planned attempt to source documents for this data sourcing object.",
+            "format": "date",
+            "example": "2025-12-31"
           },
-          "documentCollector": {
-            "type": "string"
+          "documentCollectorName": {
+            "type": "string",
+            "description": "The name of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "example": "ABC Corporation"
           },
-          "dataExtractor": {
-            "type": "string"
+          "dataExtractorName": {
+            "type": "string",
+            "description": "The name of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "example": "ABC Corporation"
           }
-        }
+        },
+        "description": "The data sourcing details associated with this request.",
+        "nullable": true
       },
       "DataSourcingEnhancedRequest": {
         "required": [
@@ -1836,33 +1846,53 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the stored request.",
+            "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "memberComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that accompanies the data sourcing request.",
+            "nullable": true,
+            "example": "The previously provided data is lacking scope 3 emissions, but they should be available."
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -1874,15 +1904,22 @@
             "$ref": "#/components/schemas/DataSourcingDetails"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "nullable": true,
+            "example": "test@example.com"
           }
         }
       },
       "DataSourcingState": {
         "type": "string",
+        "description": "The current state of the data sourcing object.",
+        "example": "DataVerification.",
         "enum": [
           "Initialized",
           "DocumentSourcing",
@@ -1908,33 +1945,53 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the stored request.",
+            "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "memberComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that accompanies the data sourcing request.",
+            "nullable": true,
+            "example": "The previously provided data is lacking scope 3 emissions, but they should be available."
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -1943,7 +2000,10 @@
             "$ref": "#/components/schemas/RequestState"
           },
           "dataSourcingEntityId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "nullable": true,
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           }
         }
       },
@@ -2135,33 +2195,53 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the stored request.",
+            "example": "40c84975-529a-41d2-b5dc-dbb4c803d2bc"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
           },
           "userId": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the user who created the data request.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "creationTimestamp": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was created.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "memberComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that accompanies the data sourcing request.",
+            "nullable": true,
+            "example": "The previously provided data is lacking scope 3 emissions, but they should be available."
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "lastModifiedDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -2170,13 +2250,21 @@
             "$ref": "#/components/schemas/RequestState"
           },
           "dataSourcingEntityId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data sourcing object.",
+            "nullable": true,
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           },
           "userEmailAddress": {
-            "type": "string"
+            "type": "string",
+            "description": "The email address of the user who created this data request.",
+            "nullable": true,
+            "example": "test@example.com"
           }
         }
       },
