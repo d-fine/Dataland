@@ -42,7 +42,6 @@ class DataPointQaReportController(
                 dataPointId = dataPointId,
                 reporterUserId = reportingUser.userId,
                 uploadTime = uploadTime,
-                correlationId = correlationId,
             )
         return ResponseEntity(
             report,
