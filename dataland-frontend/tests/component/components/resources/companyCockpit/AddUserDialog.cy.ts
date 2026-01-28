@@ -142,6 +142,11 @@ describe('AddMemberDialog Component Tests', function () {
   });
 
   describe('Input Validation and Error Handling', function () {
+    it('does nothing when email is empty', function () {
+      cy.get('[data-test="select-user-button"]').click();
+      cy.get('[data-test="search-error"]').should('not.exist');
+    });
+
     it('handles invalid inputs correctly', function () {
       addUser('invalid@test.com');
       cy.get('[data-test="search-error"]').should(
@@ -184,6 +189,10 @@ describe('AddMemberDialog Component Tests', function () {
   });
 
   describe('Save Operations and API Integration', function () {
+    it('disables save button when no users selected', function () {
+      cy.get('[data-test="save-changes-button"]').should('be.disabled');
+    });
+
     it('handles save operations with API calls', function () {
       addUser('john@doe.com');
       addUser('jane@doe.com');
@@ -191,6 +200,17 @@ describe('AddMemberDialog Component Tests', function () {
 
       cy.wait('@assignRole');
       cy.get('@assignRole.all').should('have.length', 2);
+    });
+
+    it('handles save API failure', function () {
+      cy.intercept('POST', '**/company-role-assignments/*/*/*', {
+        statusCode: 500,
+        body: { errors: [{ message: 'Server error' }] },
+      }).as('assignRoleError');
+      addUser('john@doe.com');
+      saveChanges();
+      cy.wait('@assignRoleError');
+      cy.get('[data-test="error-message"]').should('contain', 'Server error');
     });
   });
 

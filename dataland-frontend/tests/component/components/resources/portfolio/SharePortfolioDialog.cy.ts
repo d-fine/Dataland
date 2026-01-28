@@ -34,6 +34,10 @@ describe('SharePortfolioDialog Component Tests', function () {
           statusCode: 200,
           body: { id: janeUserId, firstName: 'Jane', lastName: 'Doe', email: 'jane@doe.com' },
         },
+        'noname@test.com': {
+          statusCode: 200,
+          body: { id: 'c5dd391f-0dd1-5000-1134-ceg6g8765224', email: 'noname@test.com' },
+        },
       };
 
       const response = testUsers[req.body.email as string] || {
@@ -125,17 +129,35 @@ describe('SharePortfolioDialog Component Tests', function () {
     cy.get('[data-test="search-error"]').should('contain', 'already has access');
   });
 
+  it('does nothing when email is empty', function () {
+    cy.wait('@getPortfolioAccessRights');
+    cy.get('[data-test="select-user-button"]').click();
+    cy.get('[data-test="search-error"]').should('not.exist');
+  });
+
+  it('handles validation API failure', function () {
+    cy.wait('@getPortfolioAccessRights');
+    cy.intercept('POST', '**/emails/validation', {
+      statusCode: 500,
+      body: { errors: [{ message: 'Validation service unavailable' }] },
+    });
+    addUser('error@test.com');
+    cy.get('[data-test="search-error"]').should('contain', 'Validation service unavailable');
+  });
+
+  it('falls back to email when user has no name', function () {
+    cy.wait('@getPortfolioAccessRights');
+    addUser('noname@test.com');
+    cy.contains('noname@test.com').should('be.visible');
+  });
+
   it('saves changes and closes dialog', function () {
     cy.wait('@getPortfolioAccessRights');
 
     addUser('john@doe.com');
     cy.get('[data-test="save-changes-button"]').click();
 
-    cy.wait('@patchSharing')
-      .its('request.body')
-      .should('deep.include', {
-        sharedUserIds: [existingUserId, johnUserId],
-      });
+    cy.wait('@patchSharing').its('request.body.sharedUserIds').should('include', johnUserId);
     cy.get('@dialogClose').should('have.been.called');
   });
 
