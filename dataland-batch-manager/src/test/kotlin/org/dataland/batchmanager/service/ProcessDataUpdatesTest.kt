@@ -11,6 +11,7 @@ import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
+import org.dataland.datalandbatchmanager.service.PortfolioSharingUpdater
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
@@ -49,6 +50,7 @@ class ProcessDataUpdatesTest {
     private val mockBackendActuatorApi = mock<BackendActuatorApi>()
     private val mockRequestPriorityUpdater = mock<RequestPriorityUpdater>()
     private val mockDataSourcingActuatorApi = mock<DataSourcingActuatorApi>()
+    private val mockPortfolioSharingUpdater = mock<PortfolioSharingUpdater>()
     private val mockFile = mock<File>()
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
@@ -75,6 +77,7 @@ class ProcessDataUpdatesTest {
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockDataSourcingActuatorApi,
+                mockPortfolioSharingUpdater,
                 allGleifCompaniesForceIngest = false,
                 allNorthDataCompaniesForceIngest = false,
                 allGleifCompaniesIngestFlagFilePath = flagFileGleif,
