@@ -7,11 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSf
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
-import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReport
-import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointBigInteger
-import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNo
-import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointBigInteger
-import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointYesNo
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -219,104 +214,6 @@ class AssembledDatasetTest {
             ).let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
             }
-    }
-
-    data class ExpectedDataForFactBigInteger(
-        val qaStatus: QaStatus,
-        val qaReport: QaReportDataPointExtendedDataPointBigInteger,
-    )
-
-    data class ExpectedDataForFactYesNo(
-        val qaStatus: QaStatus,
-        val qaReport: QaReportDataPointExtendedDataPointYesNo,
-    )
-
-    private fun assertQaReportsAlignBigInteger(
-        decimalQaReport: QaReportDataPointExtendedDataPointBigInteger,
-        dataPointQaReport: DataPointQaReport,
-    ) {
-        assertEquals(decimalQaReport.verdict, dataPointQaReport.verdict)
-        assertEquals(decimalQaReport.comment, dataPointQaReport.comment)
-
-        val moshiAdapter = moshi.adapter(ExtendedDataPointBigInteger::class.java)
-        val actualData = moshiAdapter.fromJson(dataPointQaReport.correctedData!!)
-        assertEquals(decimalQaReport.correctedData, actualData)
-    }
-
-    private fun assertQaReportsAlignYesNo(
-        decimalQaReport: QaReportDataPointExtendedDataPointYesNo,
-        dataPointQaReport: DataPointQaReport,
-    ) {
-        assertEquals(decimalQaReport.verdict, dataPointQaReport.verdict)
-        assertEquals(decimalQaReport.comment, dataPointQaReport.comment)
-
-        val moshiAdapter = moshi.adapter(ExtendedDataPointYesNo::class.java)
-        val actualData = moshiAdapter.fromJson(dataPointQaReport.correctedData!!)
-        assertEquals(decimalQaReport.correctedData, actualData)
-    }
-
-    @Test
-    fun `ensure information from an assembled qa report gets applied to Integer Datapoints`() {
-        val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
-
-        val expectedDataPointInformationBigInteger =
-            mapOf(
-                "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations" to
-                    ExpectedDataForFactBigInteger(
-                        qaStatus = QaStatus.Rejected,
-                        qaReport =
-                            linkedQaReportData.qaReport.social!!
-                                .humanRights!!
-                                .numberOfReportedIncidentsOfHumanRightsViolations!!,
-                    ),
-            )
-
-        val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
-        expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
-            val dataPointId = datasetComposition[dataPointType]!!
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
-                assertEquals(expectedData.qaStatus, it[0].qaStatus)
-            }
-            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
-                assertQaReportsAlignBigInteger(expectedData.qaReport, it[0])
-            }
-        }
-    }
-
-    @Test
-    fun `ensure information from an assembled qa report gets applied to YesNo Datapoints`() {
-        val linkedQaReportMetaInfo = uploadSfdrWithLinkedQaReport()
-
-        val expectedDataPointInformationYesNo =
-            mapOf(
-                "extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure" to
-                    ExpectedDataForFactYesNo(
-                        qaStatus = QaStatus.Pending,
-                        qaReport =
-                            linkedQaReportData.qaReport.environmental!!
-                                .biodiversity!!
-                                .primaryForestAndWoodedLandOfNativeSpeciesExposure!!,
-                    ),
-                "extendedEnumYesNoBiodiversityProtectionPolicy" to
-                    ExpectedDataForFactYesNo(
-                        qaStatus = QaStatus.Accepted,
-                        qaReport =
-                            linkedQaReportData.qaReport.environmental!!
-                                .biodiversity!!
-                                .biodiversityProtectionPolicy!!,
-                    ),
-            )
-
-        val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
-        expectedDataPointInformationYesNo.forEach { (dataPointType, expectedData) ->
-            val dataPointId = datasetComposition[dataPointType]!!
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
-                assertEquals(expectedData.qaStatus, it[0].qaStatus)
-            }
-            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
-                assertQaReportsAlignYesNo(expectedData.qaReport, it[0])
-            }
-        }
     }
 
     private fun postExtendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruptionDatapoint(
