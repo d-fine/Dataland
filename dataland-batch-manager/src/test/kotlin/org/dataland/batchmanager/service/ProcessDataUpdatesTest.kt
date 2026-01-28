@@ -36,6 +36,7 @@ import java.io.FileReader
 import java.net.ConnectException
 import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
@@ -51,6 +52,7 @@ class ProcessDataUpdatesTest {
     private val mockRequestPriorityUpdater = mock<RequestPriorityUpdater>()
     private val mockDataSourcingActuatorApi = mock<DataSourcingActuatorApi>()
     private val mockPortfolioSharingUpdater = mock<PortfolioSharingUpdater>()
+    private val mockUserServiceActuatorApi = mock<UserServiceActuatorApi>()
     private val mockFile = mock<File>()
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
@@ -77,6 +79,7 @@ class ProcessDataUpdatesTest {
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
                 mockDataSourcingActuatorApi,
+                mockUserServiceActuatorApi,
                 mockPortfolioSharingUpdater,
                 allGleifCompaniesForceIngest = false,
                 allNorthDataCompaniesForceIngest = false,
@@ -227,6 +230,14 @@ class ProcessDataUpdatesTest {
                     it.formattedMessage.contains("deleted successfully")
             },
         )
+    }
+
+    @Test
+    fun `waitForUserService should stop on first successful health check`() {
+        whenever(mockUserServiceActuatorApi.health()).thenReturn(Any())
+        initProcessDataUpdates()
+        processDataUpdates.waitForUserService()
+        verify(mockUserServiceActuatorApi).health()
     }
 }
 
