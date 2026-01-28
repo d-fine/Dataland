@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
@@ -83,4 +84,10 @@ class ApiClients(
     fun getPortfolioControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): PortfolioControllerApi = PortfolioControllerApi(userServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an ActuatorApi of the user-service
+     */
+    @Bean
+    fun getUserServiceActuatorApi(): UserServiceActuatorApi = UserServiceActuatorApi(userServiceBaseUrl)
 }
