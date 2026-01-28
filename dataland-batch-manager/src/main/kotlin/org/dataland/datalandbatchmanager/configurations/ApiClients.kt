@@ -1,6 +1,7 @@
 package org.dataland.datalandbatchmanager.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
@@ -62,6 +63,14 @@ class ApiClients(
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the EnhancedRequestControllerApi of the data sourcing sevice
+     */
+    @Bean
+    fun getEnhancedRequestControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): EnhancedRequestControllerApi = EnhancedRequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an ActuatorApi of the data sourcing service

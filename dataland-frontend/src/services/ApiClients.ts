@@ -9,7 +9,7 @@ import {
   CompanyRightsControllerApi,
   RequestControllerApi as CommunityManagerRequestControllerApi,
 } from '@clients/communitymanager';
-import { RequestControllerApi } from '@clients/datasourcingservice';
+import { EnhancedRequestControllerApi, RequestControllerApi } from '@clients/datasourcingservice';
 import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
 import { QaControllerApi } from '@clients/qaservice';
@@ -17,7 +17,7 @@ import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
-import { DataPointControllerApi } from '@clients/backend/api';
+import { DataPointControllerApi, DataExportControllerApi } from '@clients/backend/api';
 import { CreditsControllerApi } from '@clients/accountingservice';
 
 interface ApiBackendClients {
@@ -31,6 +31,7 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApi;
+  enhancedRequestController: EnhancedRequestControllerApi;
   communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
   inheritedRolesController: InheritedRolesControllerApi;
@@ -39,6 +40,7 @@ interface ApiClients {
   portfolioController: PortfolioControllerApi;
   emailAddressController: EmailAddressControllerApi;
   dataPointController: DataPointControllerApi;
+  dataExportController: DataExportControllerApi;
   companyRightsController: CompanyRightsControllerApi;
   creditsController: CreditsControllerApi;
 }
@@ -96,6 +98,7 @@ export class ApiClientProvider {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
       requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
+      enhancedRequestController: this.getClientFactory('/data-sourcing')(EnhancedRequestControllerApi),
       communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       inheritedRolesController: this.getClientFactory('/community')(InheritedRolesControllerApi),
@@ -104,6 +107,7 @@ export class ApiClientProvider {
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
       emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
       dataPointController: this.getClientFactory('/api')(DataPointControllerApi),
+      dataExportController: this.getClientFactory('/api')(DataExportControllerApi),
       companyRightsController: this.getClientFactory('/community')(CompanyRightsControllerApi),
       creditsController: this.getClientFactory('/accounting')(CreditsControllerApi),
     };

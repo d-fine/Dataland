@@ -1,7 +1,10 @@
 // SFDR Test Implementation
 package org.dataland.e2etests.tests.frameworks
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class SfdrExportTest : BaseExportTest<SfdrData>() {
     private lateinit var fullTestData: SfdrData
@@ -91,28 +95,46 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
-        includeAlias: Boolean,
-    ): File =
-        apiAccessor.dataControllerApiForSfdrData
-            .exportCompanyAssociatedSfdrDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
-                keepValueFieldsOnly = keepValueFieldsOnly,
-                includeAliases = false,
-            )
+        includeAliases: Boolean,
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForSfdrData
+                .postExportJobCompanyAssociatedSfdrDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.CSV,
+                    ),
+                    keepValueFieldsOnly = keepValueFieldsOnly,
+                    includeAliases = includeAliases,
+                ).id
+                .toString()
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File =
-        apiAccessor.dataControllerApiForSfdrData
-            .exportCompanyAssociatedSfdrDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.EXCEL,
-                includeAliases = false,
-            )
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForSfdrData
+                .postExportJobCompanyAssociatedSfdrDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.EXCEL,
+                    ),
+                    includeAliases = false,
+                ).id
+                .toString()
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun retrieveData(companyId: String): Any =
         apiAccessor.dataControllerApiForSfdrData

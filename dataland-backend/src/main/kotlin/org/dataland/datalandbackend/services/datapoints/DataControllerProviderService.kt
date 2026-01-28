@@ -4,10 +4,12 @@ import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
+import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.stereotype.Service
@@ -20,7 +22,8 @@ import java.util.concurrent.ConcurrentHashMap
 class DataControllerProviderService
     @Autowired
     constructor(
-        private val dataExportService: DataExportService,
+        @Qualifier("AssembledExportService") private val dataExportService: DataExportService<Any>,
+        private val dataExportStore: DataExportStore,
         private val storedDataManager: DataManager,
         private val assembledDataManager: AssembledDataManager,
         private val metaDataManager: DataMetaInformationManager,
@@ -36,6 +39,7 @@ class DataControllerProviderService
                 dataManager,
                 metaDataManager,
                 dataExportService,
+                dataExportStore,
                 companyQueryManager,
                 dataTypeClass as? Class<Any>
                     ?: throw IllegalArgumentException("Class type for data type is not compatible."),

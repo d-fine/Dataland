@@ -6,9 +6,10 @@ import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.EmailAddressControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.CompanyProxyControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataExportControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
@@ -51,7 +52,6 @@ class ApiAccessor {
     }
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val companyProxyController = CompanyProxyControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -59,6 +59,8 @@ class ApiAccessor {
     val emailAddressControllerApi = EmailAddressControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+    val enhancedRequestControllerApi = EnhancedRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+    val exportControllerApi = DataExportControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
@@ -192,18 +194,28 @@ class ApiAccessor {
         )
 
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadDataset(testDataProviderForLksgData, ::lksgUploaderFunction)
-            DataTypeEnum.sfdr -> uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+            DataTypeEnum.lksg -> {
+                uploadDataset(testDataProviderForLksgData, ::lksgUploaderFunction)
+            }
+
+            DataTypeEnum.sfdr -> {
+                uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            }
+
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> {
                 uploadDataset(
                     testDataProviderForEuTaxonomyDataForNonFinancials,
                     ::euTaxonomyNonFinancialsUploaderFunction,
                 )
+            }
 
-            DataTypeEnum.eutaxonomyMinusFinancials ->
+            DataTypeEnum.eutaxonomyMinusFinancials -> {
                 uploadDataset(testDataProviderEuTaxonomyForFinancials, ::euTaxonomyFinancialsUploaderFunction)
+            }
 
-            else -> throw IllegalArgumentException("Datatype $dataType not integrated into ApiAccessor.")
+            else -> {
+                throw IllegalArgumentException("Datatype $dataType not integrated into ApiAccessor.")
+            }
         }
     }
 
@@ -227,21 +239,31 @@ class ApiAccessor {
             ensureQaPassed = ensureQaPassed,
         )
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadCompaniesAndDatasets(testDataProviderForLksgData, ::lksgUploaderFunction)
-            DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(testDataProviderForSfdrData, ::sfdrUploaderFunction)
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+            DataTypeEnum.lksg -> {
+                uploadCompaniesAndDatasets(testDataProviderForLksgData, ::lksgUploaderFunction)
+            }
+
+            DataTypeEnum.sfdr -> {
+                uploadCompaniesAndDatasets(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            }
+
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> {
                 uploadCompaniesAndDatasets(
                     testDataProviderForEuTaxonomyDataForNonFinancials,
                     ::euTaxonomyNonFinancialsUploaderFunction,
                 )
+            }
 
-            DataTypeEnum.eutaxonomyMinusFinancials ->
+            DataTypeEnum.eutaxonomyMinusFinancials -> {
                 uploadCompaniesAndDatasets(
                     testDataProviderEuTaxonomyForFinancials,
                     ::euTaxonomyFinancialsUploaderFunction,
                 )
+            }
 
-            else -> throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
         }
     }
 

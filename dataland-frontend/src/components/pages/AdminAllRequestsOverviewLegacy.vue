@@ -221,9 +221,9 @@ import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkD
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStates,
+  retrieveAvailableRequestStatuses,
   retrieveAvailableReportingPeriods,
-} from '@/utils/RequestsOverviewPageUtils';
+} from '@/utils/RequestsOverviewPageUtilsLegacy.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type { DataTypeEnum } from '@clients/backend';
 import {
@@ -289,7 +289,7 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
-    this.availableRequestStatuses = retrieveAvailableRequestStates();
+    this.availableRequestStatuses = retrieveAvailableRequestStatuses();
     this.availablePriorities = retrieveAvailablePriorities();
     this.availableReportingPeriods = retrieveAvailableReportingPeriods();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
