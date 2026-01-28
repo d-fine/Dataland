@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.model.request
+package org.dataland.datasourcingservice.model.enhanced
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
@@ -7,9 +7,9 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 
 /**
- * DTO for creating and transferring request data.
+ * DTO for creating and transferring request data along with associated data sourcing details.
  */
-data class ExtendedStoredRequest(
+data class DataSourcingEnhancedRequest(
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_ID_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.STORED_REQUEST_ID_EXAMPLE,
@@ -68,11 +68,10 @@ data class ExtendedStoredRequest(
     )
     val state: RequestState,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_DETAILS_DESCRIPTION,
         nullable = true,
     )
-    val dataSourcingEntityId: String? = null,
+    val dataSourcingDetails: DataSourcingDetails? = null,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,

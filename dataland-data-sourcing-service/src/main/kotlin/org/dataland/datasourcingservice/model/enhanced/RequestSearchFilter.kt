@@ -1,11 +1,12 @@
-package org.dataland.datasourcingservice.model.request
+package org.dataland.datasourcingservice.model.enhanced
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import java.util.UUID
@@ -91,6 +92,18 @@ data class RequestSearchFilter<IdType>(
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_SEARCH_STRING_EXAMPLE,
     )
     val companySearchString: String? = null,
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
+                example = "[${DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE}]",
+            ),
+        schema =
+            Schema(
+                implementation = RequestState::class,
+            ),
+    )
+    val dataSourcingStates: Set<DataSourcingState>? = null,
 ) {
     /**
      * Converts this RequestSearchFilter with String IDs to a RequestSearchFilter with UUID IDs.
@@ -101,18 +114,19 @@ data class RequestSearchFilter<IdType>(
         RequestSearchFilter<UUID>(
             companyId =
                 this.companyId?.let {
-                    convertToUUID(it.toString())
+                    ValidationUtils.convertToUUID(it.toString())
                 },
             dataTypes = this.dataTypes,
             reportingPeriods = this.reportingPeriods,
             userId =
                 this.userId?.let {
-                    convertToUUID(it.toString())
+                    ValidationUtils.convertToUUID(it.toString())
                 },
             requestStates = this.requestStates,
             requestPriorities = this.requestPriorities,
             adminComment = this.adminComment,
             emailAddress = this.emailAddress,
             companySearchString = this.companySearchString,
+            dataSourcingStates = this.dataSourcingStates,
         )
 }

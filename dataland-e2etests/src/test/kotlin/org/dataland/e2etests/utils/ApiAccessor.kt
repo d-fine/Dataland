@@ -6,6 +6,7 @@ import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.EmailAddressControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataExportControllerApi
@@ -58,6 +59,7 @@ class ApiAccessor {
     val emailAddressControllerApi = EmailAddressControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val dataSourcingControllerApi = DataSourcingControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val dataSourcingRequestControllerApi = DataSourcingRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
+    val enhancedRequestControllerApi = EnhancedRequestControllerApi(BASE_PATH_TO_DATA_SOURCING_SERVICE)
     val exportControllerApi = DataExportControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)

@@ -1,10 +1,10 @@
 import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
-import { RequestState, type ExtendedStoredRequest, RequestPriority } from '@clients/datasourcingservice';
+import { RequestState, type DataSourcingEnhancedRequest, RequestPriority } from '@clients/datasourcingservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
-const mockDataRequests: ExtendedStoredRequest[] = [];
+const mockDataRequests: DataSourcingEnhancedRequest[] = [];
 const expectedHeaders = ['COMPANY', 'FRAMEWORK', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATE', 'LAST UPDATED'];
 const dummyRequestId = 'dummyRequestId';
 
@@ -26,7 +26,7 @@ before(function () {
     companyId: string,
     state: RequestState,
     requestPriority: RequestPriority
-  ): ExtendedStoredRequest {
+  ): DataSourcingEnhancedRequest {
     return {
       id: dummyRequestId,
       userId: 'some-user-id',
@@ -91,11 +91,11 @@ before(function () {
 function interceptUserRequests({
   data = mockDataRequests,
 }: {
-  data?: ExtendedStoredRequest[];
+  data?: DataSourcingEnhancedRequest[];
   alias?: string;
   matchPattern?: string;
 } = {}): void {
-  cy.intercept('**/data-sourcing/requests/user', {
+  cy.intercept('**/data-sourcing/enhanced-requests', {
     body: data,
     status: 200,
   });

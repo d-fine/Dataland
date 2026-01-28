@@ -4,7 +4,8 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val DATA_SOURCING_ID_DESCRIPTION = "The unique identifier of the data sourcing object."
     const val DATA_SOURCING_ID_EXAMPLE = "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
 
-    const val STATE_DESCRIPTION = "The current state of the data sourcing object."
+    const val DATA_SOURCING_STATE_DESCRIPTION = "The current state of the data sourcing object."
+    const val DATA_SOURCING_STATE_EXAMPLE = "DataVerification"
 
     const val DOCUMENT_IDS_DESCRIPTION = "The IDs of documents from which the data for this data sourcing object are extracted."
     const val DOCUMENT_IDS_PATCH_DESCRIPTION = "The IDs of documents to append to or overwrite the existing document IDs."
@@ -24,10 +25,18 @@ object DataSourcingOpenApiDescriptionsAndExamples {
             "this data sourcing object."
     const val DOCUMENT_COLLECTOR_EXAMPLE = "d23d16de-e9c8-470f-b08b-e576e0c4193e"
 
+    const val DOCUMENT_COLLECTOR_NAME_DESCRIPTION =
+        "The name of the company which is responsible for the collection of documents concerning this data sourcing object."
+    const val DOCUMENT_COLLECTOR_NAME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
+
     const val DATA_EXTRACTOR_DESCRIPTION =
         "The Dataland company ID of the company which is responsible for the extraction of data from documents " +
             "concerning this data sourcing object."
     const val DATA_EXTRACTOR_EXAMPLE = "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+
+    const val DATA_EXTRACTOR_NAME_DESCRIPTION =
+        "The name of the company which is responsible for the extraction of data from documents concerning this data sourcing object."
+    const val DATA_EXTRACTOR_NAME_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE
 
     const val ADMIN_COMMENT_DESCRIPTION = "A comment that can be set by Dataland admins to provide additional information."
     const val ADMIN_COMMENT_EXAMPLE = "The data sourcing process is delayed due to unforeseen circumstances."
@@ -60,6 +69,12 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val REQUEST_STATES_DESCRIPTION = "A list of associated request states."
     const val REQUEST_STATES_EXAMPLE = "[\"Open\",\"Processing\"]"
+
+    const val REQUEST_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was created."
+    const val REQUEST_CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
+    const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
+    const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
@@ -94,4 +109,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
         "Contains information about all data requests with already existing datasets that were not created"
     const val NON_SOURCEABLE_REQUESTS_DESCRIPTION =
         "Contains information about all data requests that could not be sourced due to missing documents"
+
+    const val DATA_SOURCING_DETAILS_DESCRIPTION =
+        "The data sourcing details associated with this request."
 }
