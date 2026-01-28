@@ -7,14 +7,12 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestCreationService
-import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -29,7 +27,6 @@ class RequestController
         private val existingRequestsManager: ExistingRequestsManager,
         private val bulkDataRequestManager: BulkRequestManager,
         private val requestCreationService: RequestCreationService,
-        private val requestQueryManager: RequestQueryManager,
     ) : RequestApi {
         override fun postBulkDataRequest(
             bulkDataRequest: BulkDataRequest,
@@ -100,25 +97,4 @@ class RequestController
                         ),
                     ),
                 )
-
-        override fun postRequestSearch(
-            requestSearchFilter: RequestSearchFilter<String>,
-            chunkSize: Int,
-            chunkIndex: Int,
-        ): ResponseEntity<List<ExtendedStoredRequest>> =
-            ResponseEntity.ok(
-                requestQueryManager.searchRequests(
-                    requestSearchFilter.convertToSearchFilterWithUUIDs(), chunkSize, chunkIndex,
-                ),
-            )
-
-        override fun getRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredRequest>> =
-            ResponseEntity.ok(
-                requestQueryManager.getRequestsForRequestingUser(),
-            )
-
-        override fun postRequestCountQuery(requestSearchFilter: RequestSearchFilter<String>): ResponseEntity<Int> =
-            ResponseEntity.ok(
-                requestQueryManager.getNumberOfRequests(requestSearchFilter.convertToSearchFilterWithUUIDs()),
-            )
     }

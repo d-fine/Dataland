@@ -45,8 +45,17 @@ class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+    private val mockCompanyQueryManager = mock<CompanyQueryManager>()
+    private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
-        DataExportService(mockDataPointUtils, mock<ReferencedReportsUtilities>(), mockSpecificationApi)
+        DataExportService<LksgData>(
+            mockDataPointUtils,
+            mockReferencedReportsUtils,
+            mockSpecificationApi,
+            mockCompanyQueryManager,
+            mockDatasetStorageService,
+        )
 
     private val testDataProvider = TestDataProvider(objectMapper)
 

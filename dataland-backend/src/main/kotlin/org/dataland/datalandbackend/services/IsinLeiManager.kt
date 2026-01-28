@@ -82,7 +82,7 @@ class IsinLeiManager
             val chunks = isinLeiMappingData.chunked(chunkSize)
             val futures =
                 chunks.map { chunk ->
-                    val companies = storedCompanyRepository.findCompaniesbyListOfLeis(chunk.map { it.lei }.toSet().toList())
+                    val companies = storedCompanyRepository.findCompaniesByListOfLeis(chunk.map { it.lei }.toSet().toList())
                     val entities = convertToIsinLeiEntity(chunk, companies)
                     isinLeiTransactionalService.saveAllJpaHibernate(entities)
                 }

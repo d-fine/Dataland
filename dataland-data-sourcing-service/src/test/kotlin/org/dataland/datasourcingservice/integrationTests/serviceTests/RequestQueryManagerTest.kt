@@ -3,20 +3,24 @@ package org.dataland.datasourcingservice.integrationTests.serviceTests
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datasourcingservice.DatalandDataSourcingService
+import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.model.enhanced.RequestSearchFilter
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.RequestSearchFilter
+import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.dataland.datasourcingservice.utils.ADMIN_COMMENT
 import org.dataland.datasourcingservice.utils.ADMIN_COMMENT_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.COMPANY_ID_2
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_1
+import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
 import org.dataland.datasourcingservice.utils.DATA_TYPE_2
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
@@ -57,8 +61,10 @@ class RequestQueryManagerTest
     constructor(
         private val requestQueryManager: RequestQueryManager,
         private val requestRepository: RequestRepository,
+        private val dataSourcingRepository: DataSourcingRepository,
     ) : BaseIntegrationTest() {
-        private val dataBaseCreationUtils = DataBaseCreationUtils(requestRepository = requestRepository)
+        private val dataBaseCreationUtils =
+            DataBaseCreationUtils(requestRepository = requestRepository, dataSourcingRepository = dataSourcingRepository)
         private lateinit var requestEntities: List<RequestEntity>
 
         @MockitoBean
@@ -69,8 +75,29 @@ class RequestQueryManagerTest
         private val firstUser = KeycloakUserInfo(USER_EMAIL, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
         private val secondUser = mock<KeycloakUserInfo>()
         private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
-        private val companyInfo1 = mock<CompanyInformation>()
-        private val companyInfo2 = mock<CompanyInformation>()
+
+        private val defaultValidationResult1 =
+            CompanyIdentifierValidationResult(
+                identifier = COMPANY_ID_1,
+                companyInformation =
+                    BasicCompanyInformation(
+                        companyId = COMPANY_ID_1,
+                        companyName = TEST_COMPANY_NAME_1,
+                        headquarters = "HQ1",
+                        countryCode = "DE",
+                    ),
+            )
+        private val defaultValidationResult2 =
+            CompanyIdentifierValidationResult(
+                identifier = COMPANY_ID_2,
+                companyInformation =
+                    BasicCompanyInformation(
+                        companyId = COMPANY_ID_2,
+                        companyName = TEST_COMPANY_NAME_2,
+                        headquarters = "HQ2",
+                        countryCode = "FR",
+                    ),
+            )
 
         @BeforeEach
         fun setupMocks() {
@@ -82,10 +109,9 @@ class RequestQueryManagerTest
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
                 .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
-            doReturn(TEST_COMPANY_NAME_1).whenever(companyInfo1).companyName
-            doReturn(TEST_COMPANY_NAME_2).whenever(companyInfo2).companyName
-            doReturn(companyInfo1).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_1)
-            doReturn(companyInfo2).whenever(mockCompanyDataControllerApi).getCompanyInfo(COMPANY_ID_2)
+            doReturn(listOf(defaultValidationResult1, defaultValidationResult2))
+                .whenever(mockCompanyDataControllerApi)
+                .postCompanyValidation(anyOrNull())
         }
 
         /**
@@ -93,17 +119,73 @@ class RequestQueryManagerTest
          * Note: i / 2^k % 2 is the position k binary digit of i, with k=0 for the least significant bit.
          */
         fun setupParameterizedTest() {
+            val dataSourcingEntitiesByDataDimension =
+                mutableMapOf<Triple<UUID, String, String>, DataSourcingEntity>()
             requestEntities =
                 (0..15).map {
+                    val parameterizedRequestData = buildParameterizedRequestData(it)
+                    val dataSourcingEntity =
+                        if (parameterizedRequestData.requestState == RequestState.Processing) {
+                            getOrCreateDataSourcingEntity(parameterizedRequestData, dataSourcingEntitiesByDataDimension)
+                        } else {
+                            null
+                        }
                     dataBaseCreationUtils.storeRequest(
-                        companyId = UUID.fromString(if (it / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2),
-                        dataType = if (it / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2,
-                        reportingPeriod = if (it / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2,
-                        state = RequestState.valueOf(if (it % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2),
-                        userId = if (it % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID(),
-                        adminComment = if (it / 8 % 2 == 0) ADMIN_COMMENT else null,
+                        companyId = parameterizedRequestData.companyId,
+                        dataType = parameterizedRequestData.dataType,
+                        reportingPeriod = parameterizedRequestData.reportingPeriod,
+                        state = parameterizedRequestData.requestState,
+                        userId = parameterizedRequestData.userId,
+                        adminComment = parameterizedRequestData.adminComment,
+                        dataSourcingEntity = dataSourcingEntity,
                     )
                 }
+        }
+
+        private data class ParameterizedRequestData(
+            val companyId: UUID,
+            val reportingPeriod: String,
+            val dataType: String,
+            val requestState: RequestState,
+            val userId: UUID,
+            val adminComment: String?,
+            val dataSourcingState: DataSourcingState,
+        )
+
+        private fun buildParameterizedRequestData(index: Int): ParameterizedRequestData {
+            val companyId = UUID.fromString(if (index / 8 % 2 == 0) COMPANY_ID_1 else COMPANY_ID_2)
+            val reportingPeriod = if (index / 2 % 2 == 0) REPORTING_PERIOD_1 else REPORTING_PERIOD_2
+            val dataType = if (index / 4 % 2 == 0) DATA_TYPE_1 else DATA_TYPE_2
+            val requestState = RequestState.valueOf(if (index % 2 == 0) REQUEST_STATE_1 else REQUEST_STATE_2)
+            val userId = if (index % 2 == 0) UUID.fromString(firstUser.userId) else UUID.randomUUID()
+            val adminComment = if (index / 8 % 2 == 0) ADMIN_COMMENT else null
+            val dataSourcingState = DataSourcingState.valueOf(if (index / 4 % 2 == 0) DATA_SOURCING_STATE_1 else DATA_SOURCING_STATE_2)
+            return ParameterizedRequestData(
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                dataType = dataType,
+                requestState = requestState,
+                userId = userId,
+                adminComment = adminComment,
+                dataSourcingState = dataSourcingState,
+            )
+        }
+
+        private fun getOrCreateDataSourcingEntity(
+            parameterizedRequestData: ParameterizedRequestData,
+            dataSourcingEntitiesByDataDimension: MutableMap<Triple<UUID, String, String>, DataSourcingEntity>,
+        ): DataSourcingEntity {
+            val key =
+                Triple(parameterizedRequestData.companyId, parameterizedRequestData.reportingPeriod, parameterizedRequestData.dataType)
+            return dataSourcingEntitiesByDataDimension.getOrPut(key) {
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.randomUUID(),
+                    companyId = parameterizedRequestData.companyId,
+                    reportingPeriod = parameterizedRequestData.reportingPeriod,
+                    dataType = parameterizedRequestData.dataType,
+                    state = parameterizedRequestData.dataSourcingState,
+                )
+            }
         }
 
         data class RequestSearchTestCase(
@@ -114,6 +196,7 @@ class RequestQueryManagerTest
             val emailAddressSearchString: String?,
             val companySearchString: String?,
             val adminCommentSearchString: String?,
+            val dataSourcingState: String?,
             val indexString: String,
         )
 
@@ -123,15 +206,23 @@ class RequestQueryManagerTest
             @JvmStatic
             fun requestSearchTestCases() =
                 listOf(
-                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, "0"),
-                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, "0;1"),
-                    RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, "0;2;4;6;8;10;12;14"),
-                    RequestSearchTestCase(null, null, null, null, null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null, ALL_INDICES),
-                    RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, "0;2;4;6;8;10;12;14"),
-                    RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
-                    RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, REQUEST_STATE_1, null, null, null, null, "0"),
+                    RequestSearchTestCase(COMPANY_ID_1, DATA_TYPE_1, REPORTING_PERIOD_1, null, null, null, null, null, "0;1"),
+                    RequestSearchTestCase(null, null, null, REQUEST_STATE_1, null, null, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(
+                        null, null, "${REPORTING_PERIOD_1};${REPORTING_PERIOD_2}", null, null, null, null, null, ALL_INDICES,
+                    ),
+                    RequestSearchTestCase(null, null, null, "${REQUEST_STATE_1};${REQUEST_STATE_2}", null, null, null, null, ALL_INDICES),
+                    RequestSearchTestCase(null, null, null, null, USER_EMAIL_SEARCH_STRING, null, null, null, "0;2;4;6;8;10;12;14"),
+                    RequestSearchTestCase(null, null, null, null, null, TEST_COMPANY_SEARCH_STRING, null, null, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(null, null, null, null, null, null, ADMIN_COMMENT_SEARCH_STRING, null, "0;1;2;3;4;5;6;7"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, DATA_SOURCING_STATE_1, "1;3;9;11"),
+                    RequestSearchTestCase(null, null, null, null, null, null, null, DATA_SOURCING_STATE_2, "5;7;13;15"),
+                    RequestSearchTestCase(
+                        null, null, null, null, null, null, null, "${DATA_SOURCING_STATE_1};${DATA_SOURCING_STATE_2}",
+                        "1;3;5;7;9;11;13;15",
+                    ),
                 )
         }
 
@@ -155,6 +246,11 @@ class RequestQueryManagerTest
                     ?.split(';')
                     ?.map { RequestState.valueOf(it) }
                     ?.toSet()
+            val dataSourcingStates =
+                testCase.dataSourcingState
+                    ?.split(';')
+                    ?.map { DataSourcingState.valueOf(it) }
+                    ?.toSet()
             val requestSearchFilter =
                 RequestSearchFilter<UUID>(
                     companyId = testCase.companyId?.let { UUID.fromString(it) },
@@ -166,6 +262,7 @@ class RequestQueryManagerTest
                     emailAddress = testCase.emailAddressSearchString,
                     companySearchString = testCase.companySearchString,
                     adminComment = testCase.adminCommentSearchString,
+                    dataSourcingStates = dataSourcingStates,
                 )
             val actualResults = requestQueryManager.searchRequests(requestSearchFilter)
             val actualNumberOfResultsAccordingToEndpoint = requestQueryManager.getNumberOfRequests(requestSearchFilter)
@@ -240,29 +337,8 @@ class RequestQueryManagerTest
         fun `getRequestsByUser returns correct company names and user emails`() {
             val requests = setupFourTestRequests()
             val userId = UUID.fromString(firstUser.userId)
-            val validationResult1 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_1,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_1,
-                            companyName = TEST_COMPANY_NAME_1,
-                            headquarters = "HQ1",
-                            countryCode = "DE",
-                        ),
-                )
-            val validationResult2 =
-                CompanyIdentifierValidationResult(
-                    identifier = COMPANY_ID_2,
-                    companyInformation =
-                        BasicCompanyInformation(
-                            companyId = COMPANY_ID_2,
-                            companyName = TEST_COMPANY_NAME_2,
-                            headquarters = "HQ2",
-                            countryCode = "FR",
-                        ),
-                )
-            doReturn(listOf(validationResult2, validationResult1))
+
+            doReturn(listOf(defaultValidationResult2, defaultValidationResult1))
                 .whenever(mockCompanyDataControllerApi)
                 .postCompanyValidation(listOf(COMPANY_ID_2, COMPANY_ID_1))
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(userId.toString())
@@ -276,5 +352,60 @@ class RequestQueryManagerTest
                 Assertions.assertEquals(expectedCompanyName, result.companyName)
                 Assertions.assertEquals(USER_EMAIL, result.userEmailAddress)
             }
+        }
+
+        @Test
+        fun `searchRequests returns correct document collector and data extractor names`() {
+            val dataSourcingWithBoth =
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.fromString("00000000-0000-0000-0000-000000000010"),
+                    companyId = UUID.fromString(COMPANY_ID_1),
+                    reportingPeriod = REPORTING_PERIOD_1,
+                    dataType = DATA_TYPE_1,
+                    documentCollector = UUID.fromString(COMPANY_ID_1),
+                    dataExtractor = UUID.fromString(COMPANY_ID_2),
+                )
+
+            val dataSourcingWithNone =
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.fromString("00000000-0000-0000-0000-000000000011"),
+                    companyId = UUID.fromString(COMPANY_ID_2),
+                    reportingPeriod = REPORTING_PERIOD_2,
+                    dataType = DATA_TYPE_2,
+                    documentCollector = null,
+                    dataExtractor = null,
+                )
+
+            dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000020"),
+                companyId = UUID.fromString(COMPANY_ID_1),
+                userId = UUID.fromString(firstUser.userId),
+                dataType = DATA_TYPE_1,
+                reportingPeriod = REPORTING_PERIOD_1,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                dataSourcingEntity = dataSourcingWithBoth,
+            )
+
+            dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000021"),
+                companyId = UUID.fromString(COMPANY_ID_2),
+                userId = UUID.fromString(firstUser.userId),
+                dataType = DATA_TYPE_2,
+                reportingPeriod = REPORTING_PERIOD_2,
+                state = RequestState.valueOf(REQUEST_STATE_2),
+                dataSourcingEntity = dataSourcingWithNone,
+            )
+
+            val results = requestQueryManager.searchRequests(RequestSearchFilter())
+
+            val requestWithBoth = results.find { it.id == "00000000-0000-0000-0000-000000000020" }
+            assert(requestWithBoth != null) { "Expected request with id 00000000-0000-0000-0000-000000000020 not found." }
+            Assertions.assertEquals(TEST_COMPANY_NAME_1, requestWithBoth?.dataSourcingDetails?.documentCollectorName)
+            Assertions.assertEquals(TEST_COMPANY_NAME_2, requestWithBoth?.dataSourcingDetails?.dataExtractorName)
+
+            val requestWithNone = results.find { it.id == "00000000-0000-0000-0000-000000000021" }
+            assert(requestWithNone != null) { "Expected request with id 00000000-0000-0000-0000-000000000021 not found." }
+            Assertions.assertEquals(null, requestWithNone?.dataSourcingDetails?.documentCollectorName)
+            Assertions.assertEquals(null, requestWithNone?.dataSourcingDetails?.dataExtractorName)
         }
     }

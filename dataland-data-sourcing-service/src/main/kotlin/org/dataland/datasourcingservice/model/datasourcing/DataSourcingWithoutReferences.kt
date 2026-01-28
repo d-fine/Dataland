@@ -32,7 +32,7 @@ data class DataSourcingWithoutReferences(
     )
     val dataType: String,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.STATE_DESCRIPTION,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
     )
     val state: DataSourcingState,
     @field:Schema(

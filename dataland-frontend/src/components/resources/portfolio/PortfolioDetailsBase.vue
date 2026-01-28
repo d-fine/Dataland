@@ -164,11 +164,7 @@
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import {
-  ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-  MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE,
-} from '@/utils/Constants.ts';
+import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -189,9 +185,9 @@ import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import type { AxiosError, AxiosRequestConfig } from 'axios';
-import { getDateStringForDataExport } from '@/utils/DataFormatUtils.ts';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
+import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -424,6 +420,7 @@ async function handleDatasetDownload(
   includeAlias: boolean
 ): Promise<void> {
   isDownloading.value = true;
+  downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
     // DataExport Button does not exist for private frameworks, so cast is safe
@@ -435,23 +432,29 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
+    const exportJobId = (
+      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+        selectedYears,
+        getCompanyIds(),
+        exportFileType,
+        keepValuesOnly,
+        includeAlias
+      )
+    ).data.id;
+
+    await pollExportJobStatus(assertDefined(exportJobId), apiClientProvider.apiClients.dataExportController);
+
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =
       fileExtension === 'xlsx' ? { responseType: 'arraybuffer' } : undefined;
 
-    const label = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.find((f) => f === humanizeStringOrNumber(selectedFramework));
-    const filename = `data-export-${label ?? humanizeStringOrNumber(selectedFramework)}-${getDateStringForDataExport(new Date())}.${fileExtension}`;
-
-    const response = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
-      selectedYears,
-      getCompanyIds(),
-      exportFileType,
-      keepValuesOnly,
-      includeAlias,
+    const response = await apiClientProvider.apiClients.dataExportController.exportCompanyAssociatedDataById(
+      exportJobId,
       options
     );
 
-    const content = exportFileType === ExportFileType.Json ? JSON.stringify(response.data) : response.data;
+    const { filename, content } = prepareDownloadFile(exportFileType, selectedFramework, response.data);
+
     forceFileDownload(content, filename);
   } catch (err) {
     console.error(err);
@@ -465,6 +468,7 @@ async function handleDatasetDownload(
  * Opens the PortfolioDownload with the current portfolio's data for downloading.
  */
 function openDownloadModal(): void {
+  downloadErrors.value = '';
   const fullName = 'Download ' + enrichedPortfolio.value?.portfolioName;
 
   dialog.open(DownloadData, {
